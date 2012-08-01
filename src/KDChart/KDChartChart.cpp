@@ -55,6 +55,12 @@
 
 #include <KDABLibFakes>
 
+static const Qt::Alignment s_gridAlignments[ 3 ][ 3 ] = { // [ row ][ column ]
+    { Qt::AlignTop | Qt::AlignLeft,     Qt::AlignTop | Qt::AlignHCenter,     Qt::AlignTop | Qt::AlignRight },
+    { Qt::AlignVCenter | Qt::AlignLeft, Qt::AlignVCenter | Qt::AlignHCenter, Qt::AlignVCenter | Qt::AlignRight },
+    { Qt::AlignBottom | Qt::AlignLeft,  Qt::AlignBottom | Qt::AlignHCenter,  Qt::AlignBottom | Qt::AlignRight }
+};
+
 // Layout widgets even if they are not visible
 class MyWidgetItem : public QWidgetItem
 {
@@ -167,28 +173,18 @@ void Chart::Private::layoutHeadersAndFooters()
         };
 
         if ( hf->position() != Position::Unknown ) {
-            int row, column;
-            Qt::Alignment hAlign, vAlign;
+            int row = 1;
             if ( hf->position().isNorthSide() ) {
                 row = 0;
-                vAlign = Qt::AlignTop;
             } else if ( hf->position().isSouthSide() ) {
                 row = 2;
-                vAlign = Qt::AlignBottom;
-            } else {
-                row = 1;
-                vAlign = Qt::AlignVCenter;
             }
 
+            int column = 1;
             if ( hf->position().isWestSide() ) {
                 column = 0;
-                hAlign = Qt::AlignLeft;
             } else if ( hf->position().isEastSide() ) {
                 column = 2;
-                hAlign = Qt::AlignRight;
-            } else {
-                column = 1;
-                hAlign = Qt::AlignHCenter;
             }
 
             switch ( hf->type() ) {
@@ -208,30 +204,18 @@ void Chart::Private::layoutHeadersAndFooters()
                     footersLineFilled[ row ] = true;
                 }
                 break;
-            };
+            }
+
             textLayoutItems << hf;
             QVBoxLayout* headerFooterLayout = innerHdFtLayouts[innerLayoutIdx][row][column];
             hf->setParentLayout( headerFooterLayout );
-            hf->setAlignment( hAlign | vAlign );
+            hf->setAlignment( s_gridAlignments[ row ][ column ] );
             headerFooterLayout->addItem( hf );
         } else {
             qWarning( "Unknown header/footer position" );
         }
     }
 }
-
-static void addVBoxWithLegends( const QList< Legend* >& legends, QGridLayout* gridLayout,
-                                int row, int column, Qt::Alignment align )
-{
-    QVBoxLayout* innerLayout = new QVBoxLayout();
-    Q_FOREACH( Legend* legend, legends ) {
-        if ( legend->alignment() == align ) {
-            innerLayout->addItem( new MyWidgetItem( legend, Qt::AlignLeft ) );
-        }
-    }
-    gridLayout->addLayout( innerLayout, row, column, align );
-}
-
 
 void Chart::Private::layoutLegends()
 {
@@ -281,33 +265,27 @@ void Chart::Private::layoutLegends()
     // so we can design their layout now.
     for ( int row = 0; row < 3; ++row ) {
         for ( int column = 0; column < 3; ++column ) {
-            QList< Legend* >& list = infoGrid[row][column];
-            const int count = list.size();
-            switch ( count ) {
-            case 0:
-                break;
-            case 1: {
+            const QList< Legend* >& list = infoGrid[row][column];
+            if ( list.isEmpty() ) {
+                continue;
+            }
+
+            if ( list.count() == 1 ) {
                 Legend* legend = list.first();
                 dataAndLegendLayout->addItem( new MyWidgetItem( legend ), row, column,
                                               1, 1, legend->alignment() );
-                break; }
-            default: {
-                // We have more than one legend in the same cell
-                // of the big dataAndLegendLayout grid.
+            } else {
+                // We have more than one legend in the same cell of the dataAndLegendLayout grid.
                 //
-                // So we need to find out, if they are aligned the
-                // same way:
-                // Those legends, that are aligned the same way, will be drawn
-                // leftbound, on top of each other, in a little VBoxLayout.
+                // Legends with the same alignment will be drawn left-aligned,
+                // vertically stacked in a VBoxLayout.
                 //
-                // If not al of the legends are aligned the same way,
-                // there will be a grid with 3 cells: for left/mid/right side
-                // (or top/mid/bottom side, resp.) legends
+                // If not all legends use the same alignment they are put into a 3x3 grid
+                // for left/hCenter/right and top/vCenter/bottom.
                 Legend* legend = list.first();
                 Qt::Alignment alignment = legend->alignment();
                 bool haveSameAlign = true;
-                for (int i = 1; i < count; ++i) {
-                    legend = list.at(i);
+                KDAB_FOREACH( Legend* legend, list ) {
                     if ( alignment != legend->alignment() ) {
                         haveSameAlign = false;
                         break;
@@ -324,21 +302,21 @@ void Chart::Private::layoutLegends()
                     QGridLayout* grid = new QGridLayout();
                     grid->setMargin( 0 );
 
-                    addVBoxWithLegends( list, grid, 0, 0, Qt::AlignTop | Qt::AlignLeft );
-                    addVBoxWithLegends( list, grid, 0, 1, Qt::AlignTop | Qt::AlignHCenter );
-                    addVBoxWithLegends( list, grid, 0, 2, Qt::AlignTop | Qt::AlignRight );
-
-                    addVBoxWithLegends( list, grid, 1, 0, Qt::AlignVCenter | Qt::AlignLeft );
-                    addVBoxWithLegends( list, grid, 1, 1, Qt::AlignCenter );
-                    addVBoxWithLegends( list, grid, 1, 2, Qt::AlignVCenter | Qt::AlignRight );
-
-                    addVBoxWithLegends( list, grid, 2, 0, Qt::AlignBottom | Qt::AlignLeft );
-                    addVBoxWithLegends( list, grid, 2, 1, Qt::AlignBottom | Qt::AlignHCenter );
-                    addVBoxWithLegends( list, grid, 2, 2, Qt::AlignBottom | Qt::AlignRight );
+                    for ( int innerRow = 0; innerRow < 3; innerRow++ ) {
+                        for ( int innerColumn = 0; innerColumn < 3; innerColumn++ ) {
+                            Qt::Alignment align = s_gridAlignments[ innerRow ][ innerColumn ];
+                            QVBoxLayout* innerLayout = new QVBoxLayout();
+                            KDAB_FOREACH( Legend* legend, list ) {
+                                if ( legend->alignment() == align ) {
+                                    innerLayout->addItem( new MyWidgetItem( legend, Qt::AlignLeft ) );
+                                }
+                            }
+                            grid->addLayout( innerLayout, innerRow, innerColumn, align );
+                        }
+                    }
 
                     dataAndLegendLayout->addLayout( grid, row, column, 1, 1 );
                 }
-                break; }
             }
         }
     }
@@ -1107,24 +1085,18 @@ void Chart::Private::createLayouts()
     //    Each of the 9 header cells (the 9 footer cells)
     //    contain their own QVBoxLayout
     //    since there can be more than one header (footer) per cell.
-    static const Qt::Alignment hdFtAlignments[3][3] = {
-        { Qt::AlignTop     | Qt::AlignLeft,  Qt::AlignTop     | Qt::AlignHCenter,  Qt::AlignTop     | Qt::AlignRight },
-        { Qt::AlignVCenter | Qt::AlignLeft,  Qt::AlignVCenter | Qt::AlignHCenter,  Qt::AlignVCenter | Qt::AlignRight },
-        { Qt::AlignBottom  | Qt::AlignLeft,  Qt::AlignBottom  | Qt::AlignHCenter,  Qt::AlignBottom  | Qt::AlignRight }
-    };
     for ( int row = 0; row < 3; ++row ) {
         for ( int column = 0; column < 3; ++ column ) {
-            QVBoxLayout* innerHdLayout = new QVBoxLayout();
-            QVBoxLayout* innerFtLayout = new QVBoxLayout();
-            innerHdFtLayouts[0][row][column] = innerHdLayout;
-            innerHdFtLayouts[1][row][column] = innerFtLayout;
-            innerHdLayout->setMargin( 0 );
-            innerFtLayout->setMargin( 0 );
-            const Qt::Alignment align = hdFtAlignments[row][column];
-            innerHdLayout->setAlignment( align );
-            innerFtLayout->setAlignment( align );
-            headerLayout->addLayout( innerHdLayout, row, column, align );
-            footerLayout->addLayout( innerFtLayout, row, column, align );
+            const Qt::Alignment align = s_gridAlignments[ row ][ column ];
+            for ( int headOrFoot = 0; headOrFoot < 2; headOrFoot++ ) {
+                QVBoxLayout* innerLayout = new QVBoxLayout();
+                innerLayout->setMargin( 0 );
+                innerLayout->setAlignment( align );
+                innerHdFtLayouts[ headOrFoot ][ row ][ column ] = innerLayout;
+
+                QGridLayout* outerLayout = headOrFoot == 0 ? headerLayout : footerLayout;
+                outerLayout->addLayout( innerLayout, row, column, align );
+            }
         }
     }
 
