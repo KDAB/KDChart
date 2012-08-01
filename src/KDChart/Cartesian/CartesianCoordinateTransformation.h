@@ -62,12 +62,10 @@ namespace KDChart {
 
         qreal logTransform( qreal value, bool isPositiveRange ) const
         {
-            if ( value > 0.0 && isPositiveRange ) {
+            if ( isPositiveRange ) {
                 return log10( value );
-            } else if ( value < 0.0 && !isPositiveRange ) {
+            } else  {
                 return -log10( -value );
-            } else {
-                return std::numeric_limits< qreal >::quiet_NaN();
             }
         }
 
