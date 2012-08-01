@@ -157,63 +157,53 @@ void Chart::Private::layoutHeadersAndFooters()
     bool footersLineFilled[] = { false, false, false };
 
     Q_FOREACH( HeaderFooter *hf, headerFooters ) {
-        // for now, there are only two types of Header/Footer,
-        // we use a pointer to the right layout, depending on the type():
+        Q_ASSERT( hf->type() == HeaderFooter::Header || hf->type() == HeaderFooter::Footer );
+        if ( hf->position() == Position::Unknown ) {
+            qWarning( "Unknown header/footer position" );
+            continue;
+        }
+
+        int row = 1;
+        if ( hf->position().isNorthSide() ) {
+            row = 0;
+        } else if ( hf->position().isSouthSide() ) {
+            row = 2;
+        }
+
+        int column = 1;
+        if ( hf->position().isWestSide() ) {
+            column = 0;
+        } else if ( hf->position().isEastSide() ) {
+            column = 2;
+        }
+
         int innerLayoutIdx = 0;
         switch ( hf->type() ) {
         case HeaderFooter::Header:
             innerLayoutIdx = 0;
+            if ( !headersLineFilled[ row ] ) {
+                for ( int col = 0; col < 3; ++col ) {
+                    innerHdFtLayouts[ 0 ][ row ][ col ]->addItem( &( dummyHeaders[ row ][ col ] ) );
+                }
+                headersLineFilled[ row ] = true;
+            }
             break;
         case HeaderFooter::Footer:
             innerLayoutIdx = 1;
-            break;
-        default:
-            Q_ASSERT( false ); // all types need to be handled
-            break;
-        };
-
-        if ( hf->position() != Position::Unknown ) {
-            int row = 1;
-            if ( hf->position().isNorthSide() ) {
-                row = 0;
-            } else if ( hf->position().isSouthSide() ) {
-                row = 2;
-            }
-
-            int column = 1;
-            if ( hf->position().isWestSide() ) {
-                column = 0;
-            } else if ( hf->position().isEastSide() ) {
-                column = 2;
-            }
-
-            switch ( hf->type() ) {
-            case HeaderFooter::Header:
-                if ( !headersLineFilled[ row ] ) {
-                    for ( int col = 0; col < 3; ++col ) {
-                        innerHdFtLayouts[0][row][col]->addItem( &( dummyHeaders[ row ][ col ] ) );
-                    }
-                    headersLineFilled[ row ] = true;
+            if ( !footersLineFilled[ row ] ) {
+                for ( int col = 0; col < 3; ++col ) {
+                    innerHdFtLayouts[ 1 ][ row ][ col ]->addItem( &( dummyFooters[ row ][ col ] ) );
                 }
-                break;
-            case HeaderFooter::Footer:
-                if ( !footersLineFilled[ row ] ) {
-                    for ( int col = 0; col < 3; ++col ) {
-                        innerHdFtLayouts[1][row][col]->addItem( &( dummyFooters[ row ][ col ] ) );
-                    }
-                    footersLineFilled[ row ] = true;
-                }
-                break;
+                footersLineFilled[ row ] = true;
             }
-
-            textLayoutItems << hf;
-            QVBoxLayout* headerFooterLayout = innerHdFtLayouts[innerLayoutIdx][row][column];
-            hf->setParentLayout( headerFooterLayout );
-            hf->setAlignment( s_gridAlignments[ row ][ column ] );
-            headerFooterLayout->addItem( hf );
-        } else {
-            qWarning( "Unknown header/footer position" );
+            break;
         }
+
+        textLayoutItems << hf;
+        QVBoxLayout* headerFooterLayout = innerHdFtLayouts[ innerLayoutIdx ][ row ][ column ];
+        hf->setParentLayout( headerFooterLayout );
+        hf->setAlignment( s_gridAlignments[ row ][ column ] );
+        headerFooterLayout->addItem( hf );
     }
 }
 
