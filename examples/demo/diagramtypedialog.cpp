@@ -6,6 +6,7 @@
 #include <KDChart/KDChartCartesianCoordinatePlane>
 #include <KDChart/KDChartPolarCoordinatePlane>
 
+#include <KDChart/KDChartBarDiagram>
 #include <KDChart/KDChartLineDiagram>
 #include <KDChart/KDChartPieDiagram>
 
@@ -64,6 +65,7 @@ void DiagramTypeDialog::Private::init()
 void DiagramTypeDialog::Private::createPlanes()
 {
     m_planes[ DiagramTypeDialog::Bar ] = m_chart->coordinatePlane();
+    m_planes[ DiagramTypeDialog::LyingBar ] = m_chart->coordinatePlane();
     CartesianCoordinatePlane *linePlane = new CartesianCoordinatePlane;
     LineDiagram *lineDiagram = new LineDiagram;
     linePlane->addDiagram( lineDiagram );
@@ -82,11 +84,22 @@ void DiagramTypeDialog::Private::typeChanged( int index )
     const DiagramTypeDialog::DiagramType lastType = static_cast< DiagramTypeDialog::DiagramType >( ui.typeSelector->itemData( lastIndex ).toInt() );
     if ( m_planes.contains( type ) )
     {
-        qDebug() << Q_FUNC_INFO << index;
+        if ( type == DiagramTypeDialog::LyingBar )
+        {
+            BarDiagram * diag = qobject_cast< BarDiagram* >( m_planes[ type ]->diagram() );
+            diag->setOrientation( Qt::Horizontal );
+        }
+        else if ( type == DiagramTypeDialog::Bar )
+        {
+            BarDiagram * diag = qobject_cast< BarDiagram* >( m_planes[ type ]->diagram() );
+            diag->setOrientation( Qt::Vertical );
+        }
+        this->type = type;
         m_chart->addCoordinatePlane( m_planes[ type ] );
         m_chart->takeCoordinatePlane( m_planes[ lastType ] );
 
         lastIndex = index;
+        Q_EMIT qq->diagramTypeChanged( type, subType );
     }
     else
     {

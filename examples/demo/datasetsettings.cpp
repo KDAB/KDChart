@@ -118,7 +118,7 @@ void DatasetSettings::setDatasetCount( int value )
 
 void DatasetSettings::indexChanged( int index )
 {
-    if ( d->m_chart )
+    if ( d->m_chart && index >= 0 )
     {
         QBrush setBrush = d->m_chart->coordinatePlane()->diagram()->brush( index );
         QPalette palette = d->ui->colorDisplay->palette();

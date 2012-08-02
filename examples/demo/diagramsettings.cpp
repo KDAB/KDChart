@@ -7,9 +7,13 @@
 #include <QtGui/QCleanlooksStyle>
 
 #include <KDChart/KDChartThreeDBarAttributes>
+#include <KDChart/KDChartThreeDLineAttributes>
+#include <KDChart/KDChartThreeDPieAttributes>
 
 #include <KDChart/KDChartChart>
 #include <KDChart/KDChartBarDiagram>
+#include <KDChart/KDChartLineDiagram>
+#include <KDChart/KDChartPieDiagram>
 #include <KDChart/KDChartCartesianCoordinatePlane>
 
 #include <KDChart/KDChartBackgroundAttributes>
@@ -23,6 +27,8 @@ public:
     Private( Chart *chart = 0, DiagramSettings *q = 0 );
     ~Private();
     void init();
+    void setThreeDData( const AbstractThreeDAttributes &attr );
+
     Chart *m_chart;
     Ui::DiagramSettings *ui;
     DiagramSettings *qq;
@@ -49,18 +55,7 @@ DiagramSettings::Private::~Private()
 
 void DiagramSettings::Private::changeAutoGradient()
 {
-
-    BarDiagram *bars = qobject_cast< BarDiagram* >( m_chart->coordinatePlane()->diagram() );
-    if ( bars )
-    {
-        ThreeDBarAttributes td( bars->threeDBarAttributes() );
-        td.setEnabled( ui->threeDSelector->checkState() == Qt::Checked );
-        td.setUseShadowColors( true );
-        td.setDepth( ui->barHeightInput->value() );
-        td.setThreeDBrushEnabled( ui->autoGradient->checkState() == Qt::Checked );
-        bars->setThreeDBarAttributes( td );
-        m_chart->update();
-    }
+    changeThreeD();
 }
 
 void DiagramSettings::Private::changeThreeD()
@@ -68,6 +63,8 @@ void DiagramSettings::Private::changeThreeD()
     if ( m_chart && m_chart->coordinatePlane() && m_chart->coordinatePlane()->diagram() )
     {
         BarDiagram *bars = qobject_cast< BarDiagram* >( m_chart->coordinatePlane()->diagram() );
+        LineDiagram *lines = qobject_cast< LineDiagram* >( m_chart->coordinatePlane()->diagram() );
+        PieDiagram *pie = qobject_cast< PieDiagram* >( m_chart->coordinatePlane()->diagram() );
         if ( bars )
         {
             ThreeDBarAttributes td( bars->threeDBarAttributes() );
@@ -76,6 +73,24 @@ void DiagramSettings::Private::changeThreeD()
             td.setDepth( ui->barHeightInput->value() );
             td.setThreeDBrushEnabled( ui->autoGradient->checkState() == Qt::Checked );
             bars->setThreeDBarAttributes( td );
+            m_chart->update();
+        }
+        else if ( lines )
+        {
+            ThreeDLineAttributes td( lines->threeDLineAttributes() );
+            td.setEnabled( ui->threeDSelector->checkState() == Qt::Checked );
+            td.setDepth( ui->barHeightInput->value() );
+            td.setThreeDBrushEnabled( ui->autoGradient->checkState() == Qt::Checked );
+            lines->setThreeDLineAttributes( td );
+            m_chart->update();
+        }
+        else if ( pie )
+        {
+            ThreeDPieAttributes td( pie->threeDPieAttributes() );
+            td.setEnabled( ui->threeDSelector->checkState() == Qt::Checked );
+            td.setDepth( ui->barHeightInput->value() );
+            td.setThreeDBrushEnabled( ui->autoGradient->checkState() == Qt::Checked );
+            pie->setThreeDPieAttributes( td );
             m_chart->update();
         }
     }
@@ -138,29 +153,21 @@ void DiagramSettings::Private::init()
 #ifdef Q_OS_LINUX
     ui->diagramBackground->setStyle( new QCleanlooksStyle );
 #endif
-    BackgroundAttributes bat = m_chart->coordinatePlane()->backgroundAttributes();
-    QBrush setBrush = bat.brush();
-    QPalette palette = ui->diagramBackground->palette();
-    if ( bat.isVisible() )
-        palette.setBrush( QPalette::Button, setBrush );
-    else
-        palette.setBrush( QPalette::Button, qq->palette().brush( QPalette::Button ) );
-    ui->diagramBackground->setPalette( palette );
+
     connect( ui->threeDSelector, SIGNAL( toggled( bool ) ), this, SLOT( changeThreeD() ) );
     connect( ui->diagramBackground, SIGNAL( clicked() ), this, SLOT( changeBackgroundColor() ) );
     connect( ui->visibleBtn, SIGNAL( toggled( bool ) ), this, SLOT( changeBackgroundVisibility() ) );
     connect( ui->barHeightInput, SIGNAL( valueChanged( int ) ), this, SLOT( changeThreeD() ) );
     connect( ui->autoGradient, SIGNAL( toggled( bool ) ), this, SLOT( changeAutoGradient() ) );
 
-    if ( m_chart && m_chart->coordinatePlane() && m_chart->coordinatePlane()->diagram() )
-    {
-        BarDiagram *bars = qobject_cast< BarDiagram* >( m_chart->coordinatePlane()->diagram() );
-        if ( bars )
-        {
-            const ThreeDBarAttributes td( bars->threeDBarAttributes() );
-            ui->barHeightInput->setValue( td.depth() );
-        }
-    }
+    qq->refreshSettings();
+}
+
+void DiagramSettings::Private::setThreeDData( const AbstractThreeDAttributes &attr )
+{
+    ui->threeDSelector->setCheckState( attr.isEnabled() ? Qt::Checked : Qt::Unchecked );
+    ui->autoGradient->setCheckState( attr.isThreeDBrushEnabled() ? Qt::Checked : Qt::Unchecked );
+    ui->barHeightInput->setValue( attr.depth() );
 }
 
 DiagramSettings::DiagramSettings( Chart *chart, QWidget *parent )
@@ -173,6 +180,40 @@ DiagramSettings::DiagramSettings( Chart *chart, QWidget *parent )
 DiagramSettings::~DiagramSettings()
 {
     delete d;
+}
+
+void DiagramSettings::refreshSettings()
+{
+    if ( d->m_chart && d->m_chart->coordinatePlane() && d->m_chart->coordinatePlane()->diagram() )
+    {
+        BarDiagram *bars = qobject_cast< BarDiagram* >( d->m_chart->coordinatePlane()->diagram() );
+        LineDiagram *lines = qobject_cast< LineDiagram* >( d->m_chart->coordinatePlane()->diagram() );
+        PieDiagram *pie = qobject_cast< PieDiagram* >( d->m_chart->coordinatePlane()->diagram() );
+
+        if ( bars )
+        {
+            const AbstractThreeDAttributes &td = bars->threeDBarAttributes();
+            d->setThreeDData( td );
+        }
+        else if ( lines )
+        {
+            const AbstractThreeDAttributes &td = lines->threeDLineAttributes();
+            d->setThreeDData( td );
+        }
+        else if ( pie )
+        {
+            const AbstractThreeDAttributes &td = pie->threeDPieAttributes();
+            d->setThreeDData( td );
+        }
+        BackgroundAttributes bat = d->m_chart->coordinatePlane()->backgroundAttributes();
+        QBrush setBrush = bat.brush();
+        QPalette palette = d->ui->diagramBackground->palette();
+        if ( bat.isVisible() )
+            palette.setBrush( QPalette::Button, setBrush );
+        else
+            palette.setBrush( QPalette::Button, this->palette().brush( QPalette::Button ) );
+        d->ui->diagramBackground->setPalette( palette );
+    }
 }
 
 #include "diagramsettings.moc"

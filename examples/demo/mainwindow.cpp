@@ -47,6 +47,8 @@ public:
     MainWindow *qq;
 Q_SIGNALS:
     void datasetCountChanged( int );
+public Q_SLOTS:
+    void changedChartType();
 };
 
 MainWindow::Private::Private( MainWindow *q )
@@ -62,6 +64,7 @@ MainWindow::Private::Private( MainWindow *q )
     m_cartPlane->replaceDiagram( m_curDiagram );
     m_curDiagram->setModel( m_model );
     m_modelTable[ DiagramTypeDialog::Bar ] = m_model;
+    m_modelTable[ DiagramTypeDialog::LyingBar ] = m_model;
     TableModel *lineModel = new TableModel( q );
     lineModel->loadFromCSV( ":/data/lineSimple.csv" );
     m_modelTable[ DiagramTypeDialog::Line ] = lineModel;
@@ -74,6 +77,7 @@ MainWindow::Private::Private( MainWindow *q )
     QDockWidget *diagramTypeSettingsDock = new QDockWidget( tr( "DiagramType" ), qq );
     diagramTypeSettingsDock->setWidget( diagramTypeSettings );
     diagramTypeSettingsDock->setFloating( false );
+    connect( diagramTypeSettings, SIGNAL( diagramTypeChanged( DiagramType, Subtype ) ), this, SLOT( changedChartType() ) );
     q->addDockWidget( Qt::LeftDockWidgetArea, diagramTypeSettingsDock );
 
     DatasetSettings *setSettings = new DatasetSettings( m_chartWin, qq );
@@ -89,6 +93,7 @@ MainWindow::Private::Private( MainWindow *q )
     diagSettingsDock->setWidget( diagSettings );
     diagSettingsDock->setFloating( false );
     q->addDockWidget( Qt::LeftDockWidgetArea, diagSettingsDock );
+    connect( diagramTypeSettings, SIGNAL( diagramTypeChanged( DiagramType, Subtype ) ), diagSettings, SLOT( refreshSettings() ) );
 
     DataValueSettings *dataValueSettings = new DataValueSettings( m_chartWin, qq );
     QDockWidget *dataValueSettingsDock = new QDockWidget( tr( "DataValueSettings" ), qq );
@@ -100,13 +105,19 @@ MainWindow::Private::Private( MainWindow *q )
 
 int MainWindow::Private::datasetCount() const
 {
-    switch ( m_type )
+    if ( m_chartWin->coordinatePlane() && m_chartWin->coordinatePlane()->diagram() )
     {
-    case( Bar ):
-        return m_model->columnCount();
-    default:
-        return 0;
+        const AbstractDiagram *diag = m_chartWin->coordinatePlane()->diagram();
+        if ( !diag->model() )
+            return 0;
+        return diag->model()->columnCount() / diag->datasetDimension();
     }
+    return 0;
+}
+
+void MainWindow::Private::changedChartType()
+{
+    Q_EMIT datasetCountChanged( datasetCount() );
 }
 
 MainWindow::MainWindow( QWidget *parent )

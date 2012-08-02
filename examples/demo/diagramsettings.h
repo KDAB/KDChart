@@ -15,6 +15,9 @@ public:
     explicit DiagramSettings( KDChart::Chart* chart, QWidget *parent = 0 );
     ~DiagramSettings();
 
+public Q_SLOTS:
+    void refreshSettings();
+
 private:
     class Private;
     Private *d;
