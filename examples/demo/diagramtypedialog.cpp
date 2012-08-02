@@ -28,10 +28,12 @@ public:
     DiagramTypeDialog::Subtype subType;
     QHash< DiagramTypeDialog::DiagramType, QAbstractItemModel* > m_defaultModels;
     QHash< DiagramTypeDialog::DiagramType, AbstractCoordinatePlane* > m_planes;
+    QHash< DiagramTypeDialog::DiagramType, DiagramTypeDialog::Subtype > m_typemap;
     DiagramTypeDialog *qq;
     Ui::DiagramTypeDialog ui;
 public Q_SLOTS:
     void typeChanged( int index );
+    void subtypeChanged( int index );
 };
 
 DiagramTypeDialog::Private::Private( KDChart::Chart *chart, DiagramTypeDialog * q )
@@ -58,8 +60,13 @@ void DiagramTypeDialog::Private::init()
     ui.subtypeSelector->addItem( QIcon(), tr( "Percent" ), DiagramTypeDialog::Percent );
 
     createPlanes();
+    m_typemap[ DiagramTypeDialog::Bar ] = DiagramTypeDialog::Normal;
+    m_typemap[ DiagramTypeDialog::LyingBar ] = DiagramTypeDialog::Normal;
+    m_typemap[ DiagramTypeDialog::Line ] = DiagramTypeDialog::Normal;
+    m_typemap[ DiagramTypeDialog::Plotter ] = DiagramTypeDialog::Normal;
 
     connect( ui.typeSelector, SIGNAL( currentIndexChanged( int ) ), this, SLOT( typeChanged( int ) ) );
+    connect( ui.subtypeSelector, SIGNAL( currentIndexChanged( int ) ), this, SLOT( subtypeChanged( int ) ) );
 }
 
 void DiagramTypeDialog::Private::createPlanes()
@@ -84,6 +91,7 @@ void DiagramTypeDialog::Private::typeChanged( int index )
     const DiagramTypeDialog::DiagramType lastType = static_cast< DiagramTypeDialog::DiagramType >( ui.typeSelector->itemData( lastIndex ).toInt() );
     if ( m_planes.contains( type ) )
     {
+        ui.subtypeSelector->setEnabled( true );
         if ( type == DiagramTypeDialog::LyingBar )
         {
             BarDiagram * diag = qobject_cast< BarDiagram* >( m_planes[ type ]->diagram() );
@@ -94,7 +102,10 @@ void DiagramTypeDialog::Private::typeChanged( int index )
             BarDiagram * diag = qobject_cast< BarDiagram* >( m_planes[ type ]->diagram() );
             diag->setOrientation( Qt::Vertical );
         }
+        else if ( type == DiagramTypeDialog::Pie )
+            ui.subtypeSelector->setEnabled( false );
         this->type = type;
+        ui.subtypeSelector->setCurrentIndex( m_typemap[ type ] );
         m_chart->addCoordinatePlane( m_planes[ type ] );
         m_chart->takeCoordinatePlane( m_planes[ lastType ] );
 
@@ -104,6 +115,36 @@ void DiagramTypeDialog::Private::typeChanged( int index )
     else
     {
         ui.typeSelector->setCurrentIndex( lastIndex );
+    }
+}
+
+void DiagramTypeDialog::Private::subtypeChanged( int index )
+{
+    const DiagramTypeDialog::DiagramType type = static_cast< DiagramTypeDialog::DiagramType >( ui.typeSelector->itemData( ui.typeSelector->currentIndex() ).toInt() );
+    switch ( type )
+    {
+    case( DiagramTypeDialog::Bar ):
+    case( DiagramTypeDialog::LyingBar ):
+    {
+        BarDiagram *bar = qobject_cast< BarDiagram* >( m_planes[ type ]->diagram() );
+        Q_ASSERT( bar );
+        bar->setType( static_cast< BarDiagram::BarType >( index ) );
+        m_typemap[ type ] = static_cast< DiagramTypeDialog::Subtype >( index );
+        break;
+    }
+    case( DiagramTypeDialog::Line ):
+    {
+        LineDiagram *line = qobject_cast< LineDiagram* >( m_planes[ type ]->diagram() );
+        Q_ASSERT( line );
+        line->setType( static_cast< LineDiagram::LineType >( index ) );
+        m_typemap[ type ] = static_cast< DiagramTypeDialog::Subtype >( index );
+        break;
+        break;
+    }
+    case( DiagramTypeDialog::Pie ):
+        break;
+    default:
+        Q_ASSERT( false );
     }
 }
 

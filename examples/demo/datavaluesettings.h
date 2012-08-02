@@ -37,6 +37,9 @@ public:
     DataValueSettings( KDChart::Chart *chart, QWidget* parent = 0 );
     ~DataValueSettings();
 
+public Q_SLOTS:
+    void refresh();
+
 private:
     class Private;
     Private *d;

@@ -142,6 +142,11 @@ DataValueSettings::~DataValueSettings()
     delete d;
 }
 
+void DataValueSettings::refresh()
+{
+    d->populateWidgets();
+}
+
 
 void DataValueSettings::Private::on_scopeOneBarRB_toggled(  bool checked )
 {

@@ -100,6 +100,7 @@ MainWindow::Private::Private( MainWindow *q )
     dataValueSettingsDock->setWidget( dataValueSettings );
     dataValueSettingsDock->setFloating( false );
     q->addDockWidget( Qt::RightDockWidgetArea, dataValueSettingsDock );
+    connect( diagramTypeSettings, SIGNAL( diagramTypeChanged( DiagramType, Subtype ) ), dataValueSettings, SLOT( refresh() ) );
 
 }
 
