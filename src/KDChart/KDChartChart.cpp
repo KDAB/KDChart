@@ -122,40 +122,14 @@ Chart::Private::Private( Chart* chart_ )
     , globalLeadingTop( 0 )
     , globalLeadingBottom( 0 )
 {
-    for ( int row = 0; row < 3; ++row ) {
-        for ( int column = 0; column < 3; ++column ) {
-            dummyHeaders[ row ][ column ] = HorizontalLineLayoutItem();
-            dummyFooters[ row ][ column ] = HorizontalLineLayoutItem();
-            innerHdFtLayouts[0][row][column] = 0;
-            innerHdFtLayouts[1][row][column] = 0;
-        }
-    }
 }
 
 Chart::Private::~Private()
 {
-    removeDummyHeaderFooters();
-}
-
-void Chart::Private::removeDummyHeaderFooters()
-{
-    for ( int row = 0; row < 3; ++row ) {
-        for ( int column = 0; column < 3; ++ column ) {
-            if ( innerHdFtLayouts[0][row][column] ) {
-                innerHdFtLayouts[0][row][column]->removeItem( &( dummyHeaders[row][column] ) );
-                innerHdFtLayouts[1][row][column]->removeItem( &( dummyFooters[row][column] ) );
-            }
-        }
-    }
 }
 
 void Chart::Private::layoutHeadersAndFooters()
 {
-    removeDummyHeaderFooters();
-
-    bool headersLineFilled[] = { false, false, false };
-    bool footersLineFilled[] = { false, false, false };
-
     Q_FOREACH( HeaderFooter *hf, headerFooters ) {
         Q_ASSERT( hf->type() == HeaderFooter::Header || hf->type() == HeaderFooter::Footer );
         if ( hf->position() == Position::Unknown ) {
@@ -177,29 +151,8 @@ void Chart::Private::layoutHeadersAndFooters()
             column = 2;
         }
 
-        int innerLayoutIdx = 0;
-        switch ( hf->type() ) {
-        case HeaderFooter::Header:
-            innerLayoutIdx = 0;
-            if ( !headersLineFilled[ row ] ) {
-                for ( int col = 0; col < 3; ++col ) {
-                    innerHdFtLayouts[ 0 ][ row ][ col ]->addItem( &( dummyHeaders[ row ][ col ] ) );
-                }
-                headersLineFilled[ row ] = true;
-            }
-            break;
-        case HeaderFooter::Footer:
-            innerLayoutIdx = 1;
-            if ( !footersLineFilled[ row ] ) {
-                for ( int col = 0; col < 3; ++col ) {
-                    innerHdFtLayouts[ 1 ][ row ][ col ]->addItem( &( dummyFooters[ row ][ col ] ) );
-                }
-                footersLineFilled[ row ] = true;
-            }
-            break;
-        }
-
         textLayoutItems << hf;
+        int innerLayoutIdx = hf->type() == HeaderFooter::Header ? 0 : 1;
         QVBoxLayout* headerFooterLayout = innerHdFtLayouts[ innerLayoutIdx ][ row ][ column ];
         hf->setParentLayout( headerFooterLayout );
         hf->setAlignment( s_gridAlignments[ row ][ column ] );
@@ -1028,8 +981,6 @@ void Chart::Private::createLayouts()
         layoutItem->removeFromParentLayout();
     }
     layoutItems.clear();
-
-    removeDummyHeaderFooters();
 
     // layout for the planes is handled separately, so we don't want to delete it here
     if ( dataAndLegendLayout) {

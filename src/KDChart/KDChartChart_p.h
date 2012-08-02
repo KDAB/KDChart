@@ -141,9 +141,6 @@ class Chart::Private : public QObject
 
         QVBoxLayout* innerHdFtLayouts[2][3][3];
 
-        QMap< int, QMap< int, HorizontalLineLayoutItem > > dummyHeaders;
-        QMap< int, QMap< int, HorizontalLineLayoutItem > > dummyFooters;
-
         QVector<KDChart::TextArea*> textLayoutItems;
         QVector<KDChart::AbstractArea*> layoutItems;
         QVector<KDChart::AbstractLayoutItem*> planeLayoutItems;
@@ -166,8 +163,6 @@ class Chart::Private : public QObject
         Private( Chart* );
 
         virtual ~Private();
-
-        void removeDummyHeaderFooters();
 
         void createLayouts();
         void layoutLegends();
