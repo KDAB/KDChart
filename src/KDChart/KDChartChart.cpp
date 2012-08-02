@@ -122,6 +122,13 @@ Chart::Private::Private( Chart* chart_ )
     , globalLeadingTop( 0 )
     , globalLeadingBottom( 0 )
 {
+    for ( int row = 0; row < 3; ++row ) {
+        for ( int column = 0; column < 3; ++column ) {
+            for ( int i = 0; i < 2; i++ ) {
+                innerHdFtLayouts[ i ][ row ][ column ] = 0;
+            }
+        }
+    }
 }
 
 Chart::Private::~Private()
