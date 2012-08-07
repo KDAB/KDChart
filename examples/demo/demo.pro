@@ -7,7 +7,8 @@ SOURCES= main.cpp \
     colorslider.cpp \
     diagramsettings.cpp \
     datavaluesettings.cpp \
-    diagramtypedialog.cpp
+    diagramtypedialog.cpp \
+    axissettings.cpp
 
 message( "Building ''$$TARGET'' using LIBS ''$$LIBS''" )
 
@@ -18,7 +19,8 @@ HEADERS += \
     colorslider.h \
     diagramsettings.h \
     datavaluesettings.h \
-    diagramtypedialog.h
+    diagramtypedialog.h \
+    axissettings.h
 
 RESOURCES += \
     demo.qrc
@@ -28,4 +30,5 @@ FORMS += \
     gradientdialog.ui \
     diagramsettings.ui \
     datavaluesettings.ui \
-    diagramtypedialog.ui
+    diagramtypedialog.ui \
+    axissettings.ui

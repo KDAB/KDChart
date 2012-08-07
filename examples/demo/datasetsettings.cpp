@@ -54,7 +54,9 @@ void DatasetSettings::Private::changeColor()
     if ( ui->Color->isChecked() )
     {
         QBrush setBrush = m_chart->coordinatePlane()->diagram()->brush( index );
-        QColor color = QColorDialog::getColor( setBrush.color(), qq, tr( "Choose new color" ) );
+        const QColor color = QColorDialog::getColor( setBrush.color(), qq, tr( "Choose new color" ) );
+        if ( !color.isValid() )
+            return;
         m_chart->coordinatePlane()->diagram()->setBrush( index, color );
         QPalette palette = ui->colorDisplay->palette();
         palette.setBrush( QPalette::Button, color );

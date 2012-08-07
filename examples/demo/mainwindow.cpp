@@ -27,6 +27,7 @@
 #include "diagramsettings.h"
 #include "datavaluesettings.h"
 #include "diagramtypedialog.h"
+#include "axissettings.h"
 
 using namespace KDChart;
 
@@ -80,6 +81,13 @@ MainWindow::Private::Private( MainWindow *q )
     connect( diagramTypeSettings, SIGNAL( diagramTypeChanged( DiagramType, Subtype ) ), this, SLOT( changedChartType() ) );
     q->addDockWidget( Qt::LeftDockWidgetArea, diagramTypeSettingsDock );
 
+    AxisSettings *axisSettings = new AxisSettings( m_chartWin, qq );
+    QDockWidget *axisSettingsDock = new QDockWidget( tr( "AxisSettings" ), qq );
+    axisSettingsDock->setWidget( axisSettings );
+    axisSettingsDock->setFloating( false );
+    q->addDockWidget( Qt::LeftDockWidgetArea, axisSettingsDock );
+    connect( diagramTypeSettings, SIGNAL( diagramTypeChanged( DiagramType, Subtype ) ), axisSettings, SLOT( diagramTypeChanged() ) );
+
     DatasetSettings *setSettings = new DatasetSettings( m_chartWin, qq );
     QDockWidget *setSettingsDock = new QDockWidget( tr( "DatasetSettings" ), qq );
     setSettingsDock->setWidget( setSettings );
@@ -87,7 +95,7 @@ MainWindow::Private::Private( MainWindow *q )
     q->addDockWidget( Qt::LeftDockWidgetArea, setSettingsDock );
     connect( this, SIGNAL( datasetCountChanged( int ) ), setSettings, SLOT( setDatasetCount( int ) ) );
     setSettings->setDatasetCount( m_model->columnCount() );
-    //Q_EMIT datasetCountChanged( m_model)
+
     DiagramSettings *diagSettings = new DiagramSettings( m_chartWin, qq );
     QDockWidget *diagSettingsDock = new QDockWidget( tr( "DiagramSettings" ), qq );
     diagSettingsDock->setWidget( diagSettings );

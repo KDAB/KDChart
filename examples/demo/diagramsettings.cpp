@@ -107,7 +107,9 @@ void DiagramSettings::Private::changeBackgroundColor()
         {
 
             QBrush setBrush = bat.brush();
-            QColor color = QColorDialog::getColor( setBrush.color(), qq, tr( "Choose new color" ) );
+            const QColor color = QColorDialog::getColor( setBrush.color(), qq, tr( "Choose new color" ) );
+            if ( !color.isValid() )
+                return;
             bat.setBrush( color );
             QPalette palette = ui->diagramBackground->palette();
             palette.setBrush( QPalette::Button, color );
