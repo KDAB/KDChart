@@ -27,7 +27,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <widget class="QRadioButton" name="Color">
           <property name="text">
@@ -45,6 +45,16 @@
          <widget class="QRadioButton" name="radioButton_2">
           <property name="text">
            <string>Gradient</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">buttonGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="textureBtn">
+          <property name="text">
+           <string>Texture</string>
           </property>
           <attribute name="buttonGroup">
            <string notr="true">buttonGroup</string>

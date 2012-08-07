@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>314</width>
-    <height>297</height>
+    <height>351</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -88,7 +88,7 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QVBoxLayout" name="verticalLayout_5">
         <item>
          <widget class="QRadioButton" name="color">
           <property name="text">
@@ -106,6 +106,16 @@
          <widget class="QRadioButton" name="gradient">
           <property name="text">
            <string>Gradient</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">buttonGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="textureBtn">
+          <property name="text">
+           <string>Texture</string>
           </property>
           <attribute name="buttonGroup">
            <string notr="true">buttonGroup</string>

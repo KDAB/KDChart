@@ -5,8 +5,10 @@
 #include <KDChart/KDChartChart>
 
 #include <QtGui/QColorDialog>
+#include <QtGui/QFileDialog>
 
 #include <QtGui/QCleanlooksStyle>
+#include <QtGui/QImage>
 
 #include <QtCore/QObject>
 
@@ -60,6 +62,20 @@ void DatasetSettings::Private::changeColor()
         m_chart->coordinatePlane()->diagram()->setBrush( index, color );
         QPalette palette = ui->colorDisplay->palette();
         palette.setBrush( QPalette::Button, color );
+        ui->colorDisplay->setPalette( palette );
+    }
+    else if( ui->textureBtn->isChecked() )
+    {
+        //QBrush setBrush = m_chart->coordinatePlane()->diagram()->brush( index );
+        QImage texture;
+
+        const QString filename = QFileDialog::getOpenFileName( qq, tr( "Choose Texture" ), QString(), tr( "Images (*.png *.xpm *.jpg)" ) );
+        if ( filename.isEmpty() )
+            return;
+        texture = QImage( filename );
+        m_chart->coordinatePlane()->diagram()->setBrush( index, texture );
+        QPalette palette = ui->colorDisplay->palette();
+        palette.setBrush( QPalette::Button, QBrush( texture ) );
         ui->colorDisplay->setPalette( palette );
     }
     else
@@ -126,6 +142,8 @@ void DatasetSettings::indexChanged( int index )
         QPalette palette = d->ui->colorDisplay->palette();
         if ( setBrush.gradient() )
             d->ui->radioButton_2->setChecked( true );
+        else if( !setBrush.textureImage().isNull() )
+            d->ui->textureBtn->setChecked( true );
         else
             d->ui->Color->setChecked( true );
         palette.setBrush( QPalette::Button, setBrush );

@@ -5,6 +5,7 @@
 
 #include <QtGui/QColorDialog>
 #include <QtGui/QCleanlooksStyle>
+#include <QtGui/QFileDialog>
 
 #include <KDChart/KDChartThreeDBarAttributes>
 #include <KDChart/KDChartThreeDLineAttributes>
@@ -113,6 +114,20 @@ void DiagramSettings::Private::changeBackgroundColor()
             bat.setBrush( color );
             QPalette palette = ui->diagramBackground->palette();
             palette.setBrush( QPalette::Button, color );
+            ui->diagramBackground->setPalette( palette );
+        }
+        else if( ui->textureBtn->isChecked() )
+        {
+            //QBrush setBrush = m_chart->coordinatePlane()->diagram()->brush( index );
+            QImage texture;
+
+            const QString filename = QFileDialog::getOpenFileName( qq, tr( "Choose Texture" ), QString(), tr( "Images (*.png *.xpm *.jpg)" ) );
+            if ( filename.isEmpty() )
+                return;
+            texture = QImage( filename );
+            bat.setBrush( texture );
+            QPalette palette = ui->diagramBackground->palette();
+            palette.setBrush( QPalette::Button, QBrush( texture ) );
             ui->diagramBackground->setPalette( palette );
         }
         else
