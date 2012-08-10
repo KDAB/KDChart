@@ -76,7 +76,7 @@ void AxisSettings::Private::currentIndexChanged( int index )
         }
 
         ui.axisVisibility->setCheckState( foundAxis ? Qt::Checked : Qt::Unchecked );
-        if ( !m_currentAxis )
+        if ( m_currentAxis )
         {
             const RulerAttributes rulerAttr = m_currentAxis->rulerAttributes();
             ui.majorTicks->setCheckState( rulerAttr.showMajorTickMarks() ? Qt::Checked : Qt::Unchecked );
