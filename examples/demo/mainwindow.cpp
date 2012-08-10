@@ -94,6 +94,7 @@ MainWindow::Private::Private( MainWindow *q )
     setSettingsDock->setFloating( false );
     q->addDockWidget( Qt::LeftDockWidgetArea, setSettingsDock );
     connect( this, SIGNAL( datasetCountChanged( int ) ), setSettings, SLOT( setDatasetCount( int ) ) );
+    connect( diagramTypeSettings, SIGNAL( diagramTypeChanged( DiagramType, Subtype ) ), setSettings, SLOT( diagramTypeChanged() ) );
     setSettings->setDatasetCount( m_model->columnCount() );
 
     DiagramSettings *diagSettings = new DiagramSettings( m_chartWin, qq );

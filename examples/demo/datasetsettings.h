@@ -11,7 +11,7 @@ class DatasetSettings : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY( int datasetCount READ datasetCount WRITE setDatasetCount NOTIFY datasetCountChanged() )
-    
+
 public:
     explicit DatasetSettings( KDChart::Chart *chart, QWidget *parent = 0 );
     ~DatasetSettings();
@@ -19,10 +19,11 @@ public:
 public Q_SLOTS:
     void setDatasetCount( int value );
     void indexChanged( int index );
+    void diagramTypeChanged();
 
 Q_SIGNALS:
-    void datasetCountChanged();    
-    
+    void datasetCountChanged();
+
 private:
     class Private;
     Private *d;

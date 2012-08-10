@@ -32,6 +32,7 @@ public:
     DatasetSettings *qq;
 public Q_SLOTS:
     void changeColor();
+    void changeOutline();
 };
 
 DatasetSettings::Private::Private( Chart *chart, DatasetSettings *q, QObject *parent )
@@ -97,6 +98,23 @@ void DatasetSettings::Private::changeColor()
     }
 }
 
+void DatasetSettings::Private::changeOutline()
+{
+    const int index = ui->datasetSelector->currentIndex();
+    if ( ui->Color->isChecked() )
+    {
+        QPen pen = m_chart->coordinatePlane()->diagram()->pen( index );
+        const QColor color = QColorDialog::getColor( pen.color(), qq, tr( "Choose new color" ) );
+        if ( !color.isValid() )
+            return;
+        pen.setColor( color );
+        m_chart->coordinatePlane()->diagram()->setPen( index, pen );
+        QPalette palette = ui->outlineBtn->palette();
+        palette.setBrush( QPalette::Button, color );
+        ui->outlineBtn->setPalette( palette );
+    }
+}
+
 DatasetSettings::DatasetSettings( Chart *chart, QWidget *parent )
     : QWidget( parent )
     , d( new Private( chart, this, this ) )
@@ -107,6 +125,7 @@ DatasetSettings::DatasetSettings( Chart *chart, QWidget *parent )
 #endif
     connect( d->ui->datasetSelector, SIGNAL( currentIndexChanged( int ) ), this, SLOT( indexChanged( int ) ) );
     connect( d->ui->colorDisplay, SIGNAL( clicked() ), d, SLOT( changeColor() ) );
+    connect( d->ui->outlineBtn, SIGNAL( clicked() ), d, SLOT( changeOutline() ) );
 }
 
 DatasetSettings::~DatasetSettings()
@@ -138,7 +157,7 @@ void DatasetSettings::indexChanged( int index )
 {
     if ( d->m_chart && index >= 0 )
     {
-        QBrush setBrush = d->m_chart->coordinatePlane()->diagram()->brush( index );
+        const QBrush setBrush = d->m_chart->coordinatePlane()->diagram()->brush( index );
         QPalette palette = d->ui->colorDisplay->palette();
         if ( setBrush.gradient() )
             d->ui->radioButton_2->setChecked( true );
@@ -148,7 +167,16 @@ void DatasetSettings::indexChanged( int index )
             d->ui->Color->setChecked( true );
         palette.setBrush( QPalette::Button, setBrush );
         d->ui->colorDisplay->setPalette( palette );
+        const QPen pen = d->m_chart->coordinatePlane()->diagram()->pen( index );
+        QPalette penPalette = d->ui->outlineBtn->palette();
+        penPalette.setBrush( QPalette::Button, pen.color() );
+        d->ui->outlineBtn->setPalette( penPalette );
     }
+}
+
+void DatasetSettings::diagramTypeChanged()
+{
+
 }
 
 #include "datasetsettings.moc"

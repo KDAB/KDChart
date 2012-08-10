@@ -57,6 +57,7 @@ void AxisSettings::Private::init()
 
 void AxisSettings::Private::currentIndexChanged( int index )
 {
+    m_currentAxis = 0;
     const CartesianAxis::Position pos = ( CartesianAxis::Position ) ui.axisSelection->itemData( index ).toInt();
     CartesianCoordinatePlane *plane =  qobject_cast< CartesianCoordinatePlane* >( m_chart->coordinatePlane() );
     AbstractCartesianDiagram *diag =  qobject_cast< AbstractCartesianDiagram* >( m_chart->coordinatePlane()->diagram() );
@@ -73,10 +74,14 @@ void AxisSettings::Private::currentIndexChanged( int index )
                 break;
             }
         }
+
         ui.axisVisibility->setCheckState( foundAxis ? Qt::Checked : Qt::Unchecked );
-        const RulerAttributes rulerAttr = m_currentAxis->rulerAttributes();
-        ui.majorTicks->setCheckState( rulerAttr.showMajorTickMarks() ? Qt::Checked : Qt::Unchecked );
-        ui.minorTicks->setCheckState( rulerAttr.showMinorTickMarks() ? Qt::Checked : Qt::Unchecked );
+        if ( !m_currentAxis )
+        {
+            const RulerAttributes rulerAttr = m_currentAxis->rulerAttributes();
+            ui.majorTicks->setCheckState( rulerAttr.showMajorTickMarks() ? Qt::Checked : Qt::Unchecked );
+            ui.minorTicks->setCheckState( rulerAttr.showMinorTickMarks() ? Qt::Checked : Qt::Unchecked );
+        }
     }
 }
 
@@ -156,6 +161,7 @@ void AxisSettings::diagramTypeChanged()
 {
     CartesianCoordinatePlane *plane =  qobject_cast< CartesianCoordinatePlane* >( d->m_chart->coordinatePlane() );
     setEnabled( plane );
+    if ( plane )
     d->currentIndexChanged( d->ui.axisSelection->currentIndex() );
 }
 
