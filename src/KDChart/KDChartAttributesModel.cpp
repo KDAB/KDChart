@@ -492,6 +492,7 @@ bool KDChart::AttributesModel::setModelData( const QVariant value, int role )
     if ( sourceModel() && numRows > 0 && numCols > 0 ) {
         emit attributesChanged( index( 0, 0, QModelIndex() ),
                                 index( numRows - 1, numCols - 1, QModelIndex() ) );
+        reset();
     }
     return true;
 }
