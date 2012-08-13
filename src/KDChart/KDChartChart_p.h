@@ -142,7 +142,6 @@ class Chart::Private : public QObject
         QVBoxLayout* innerHdFtLayouts[2][3][3];
 
         QVector<KDChart::TextArea*> textLayoutItems;
-        QVector<KDChart::AbstractArea*> layoutItems;
         QVector<KDChart::AbstractLayoutItem*> planeLayoutItems;
         QVector<KDChart::Legend*> legendLayoutItems;
 

@@ -984,11 +984,6 @@ void Chart::Private::createLayouts()
     }
     textLayoutItems.clear();
 
-    KDAB_FOREACH( KDChart::AbstractArea* layoutItem, layoutItems ) {
-        layoutItem->removeFromParentLayout();
-    }
-    layoutItems.clear();
-
     // layout for the planes is handled separately, so we don't want to delete it here
     if ( dataAndLegendLayout) {
         dataAndLegendLayout->removeItem( planesLayout );
@@ -1126,9 +1121,6 @@ void Chart::Private::paintAll( QPainter* painter )
 
     chart->reLayoutFloatingLegends();
 
-    KDAB_FOREACH( KDChart::AbstractArea* layoutItem, layoutItems ) {
-        layoutItem->paintAll( *painter );
-    }
     KDAB_FOREACH( KDChart::AbstractLayoutItem* planeLayoutItem, planeLayoutItems ) {
         planeLayoutItem->paintAll( *painter );
     }
