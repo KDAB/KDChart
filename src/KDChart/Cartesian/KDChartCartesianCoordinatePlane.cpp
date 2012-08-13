@@ -894,7 +894,7 @@ void CartesianCoordinatePlane::setGeometry( const QRect& rectangle )
     }
 
     d->geometry = rectangle;
-    if ( d->isometricScaling ) {
+    if ( d->isometricScaling && rectangle.width() != d->geometry.width() ) {
         // same scaling for x and y means a fixed aspect ratio, which is enforced here
         d->geometry.setHeight( heightForWidth( rectangle.width() ) );
     }
@@ -911,7 +911,8 @@ QSize CartesianCoordinatePlane::minimumSize() const
         // HACK(?): we use the fact that minimumSize() is considered quite late in
         // the layout process (cf. "Layout Management" documentation) to enforce our
         // height-for-width requirement without interference from other constraints.
-        return QSize( AbstractCoordinatePlane::minimumSize().width(), geometry().height() );
+        return QSize( AbstractCoordinatePlane::minimumSize().width(),
+                      heightForWidth( geometry().width() ) );
     } else {
         return AbstractCoordinatePlane::minimumSize();
     }
@@ -930,6 +931,9 @@ bool CartesianCoordinatePlane::hasHeightForWidth() const
 
 int CartesianCoordinatePlane::heightForWidth( int w ) const
 {
-    QRectF dataRect = visibleDataRange();
+    // ### using anything for dataRect that depends on geometry will close a feedback loop which
+    //     prevents the geometry from stabilizing. specifically, visibleDataRange() depends on
+    //     drawingArea(), and no good will come out of using it here.
+    QRectF dataRect = logicalArea();
     return qRound( qreal( w ) * qAbs( dataRect.height() / dataRect.width() ) );
 }
