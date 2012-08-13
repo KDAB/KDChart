@@ -988,10 +988,9 @@ QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
             AbstractArea* area = dynamic_cast<AbstractArea*>(mTopBottomLayout->itemAt(i));
             if( area ){
                 //qDebug() << "AutoSpacerLayoutItem testing" << area;
-                topBottomOverlap =
-                    mLayoutIsAtLeftPosition
-                    ? qMax( topBottomOverlap, area->rightOverlap() )
-                    : qMax( topBottomOverlap, area->leftOverlap() );
+                topBottomOverlap = qMax( topBottomOverlap,
+                                         mLayoutIsAtLeftPosition ? area->rightOverlap()
+                                                                 : area->leftOverlap() );
                 updateCommonBrush( commonBrush, bStart, *area );
             }
         }
@@ -1003,10 +1002,9 @@ QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
             AbstractArea* area = dynamic_cast<AbstractArea*>(mRightLeftLayout->itemAt(i));
             if( area ){
                 //qDebug() << "AutoSpacerLayoutItem testing" << area;
-                leftRightOverlap =
-                        mLayoutIsAtTopPosition
-                        ? qMax( leftRightOverlap, area->bottomOverlap() )
-                        : qMax( leftRightOverlap, area->topOverlap() );
+                leftRightOverlap = qMax( leftRightOverlap,
+                                         mLayoutIsAtTopPosition ? area->bottomOverlap()
+                                                                : area->topOverlap() );
                 updateCommonBrush( commonBrush, bStart, *area );
             }
         }
@@ -1060,9 +1058,7 @@ void KDChart::AutoSpacerLayoutItem::paint( QPainter* painter )
         return;
 
     painter->drawRect( mRect );
-    painter->drawLine( QPointF( mRect.x(), mRect.top() ),
-                       QPointF( mRect.right(), mRect.bottom() ) );
-    painter->drawLine( QPointF( mRect.right(), mRect.top() ),
-                       QPointF( mRect.x(), mRect.bottom() ) );
+    painter->drawLine( QPointF( mRect.topLeft(), mRect.bottomRight() ) );
+    painter->drawLine( QPointF( mRect.topRight(), mRect.bottomLeft() ) );
 #endif
 }
