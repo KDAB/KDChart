@@ -38,7 +38,7 @@ QT_END_NAMESPACE
 namespace KDChart {
 
     /**
-      * @brief A set of ottributes controlling the appearance of data set markers
+      * @brief A set of attributes controlling the appearance of data set markers
       */
     class KDCHART_EXPORT MarkerAttributes
     {
