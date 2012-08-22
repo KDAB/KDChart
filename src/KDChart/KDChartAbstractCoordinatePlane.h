@@ -45,7 +45,6 @@ namespace KDChart {
     {
         Q_OBJECT
 
-        Q_DISABLE_COPY( AbstractCoordinatePlane )
         KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( AbstractCoordinatePlane, Chart* )
 
     friend class AbstractGrid;
