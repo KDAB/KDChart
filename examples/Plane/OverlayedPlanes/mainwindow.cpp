@@ -37,7 +37,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 {
     setupUi( this );
 
-    QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+    QHBoxLayout *chartLayout = new QHBoxLayout( chartFrame );
     m_chart = new Chart();
     chartLayout->addWidget( m_chart );
 
@@ -58,12 +58,12 @@ MainWindow::MainWindow( QWidget* parent ) :
     plane2->setReferenceCoordinatePlane( m_chart->coordinatePlane() );
 
     CartesianAxis *xAxis = new CartesianAxis( m_lines2 );
-    CartesianAxis *yAxis = new CartesianAxis ( m_lines );
-    CartesianAxis *yAxis2 = new CartesianAxis ( m_lines2 );
+    CartesianAxis *yAxis = new CartesianAxis( m_lines );
+    CartesianAxis *yAxis2 = new CartesianAxis( m_lines2 );
 
-    xAxis->setPosition ( KDChart::CartesianAxis::Top );
-    yAxis->setPosition ( KDChart::CartesianAxis::Left );
-    yAxis2->setPosition ( KDChart::CartesianAxis::Left );
+    xAxis->setPosition( KDChart::CartesianAxis::Top );
+    yAxis->setPosition( KDChart::CartesianAxis::Left );
+    yAxis2->setPosition( KDChart::CartesianAxis::Left );
 
     m_lines->addAxis( yAxis );
 
@@ -72,7 +72,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     plane2->replaceDiagram( m_lines2 );
-    m_chart->addCoordinatePlane( plane2/*, 1*/);
+    m_chart->addCoordinatePlane( plane2/*, 1*/ );
     m_chart->setGlobalLeading( 20, 20, 20, 20 );
     init();
 }
@@ -85,23 +85,20 @@ void MainWindow::init()
 
 void MainWindow::on_displayGrid1CB_toggled( bool checked )
 {
-    CartesianCoordinatePlane* plane = static_cast <CartesianCoordinatePlane*>
-                                      ( m_chart->coordinatePlane() );
+    CartesianCoordinatePlane* plane = qobject_cast< CartesianCoordinatePlane * >( m_chart->coordinatePlane() );
 
-    // disable grids display for plane
-    GridAttributes gv ( plane->gridAttributes( Qt::Vertical) );
-    gv.setGridVisible( checked ? true : false );
-    plane->setGridAttributes(Qt::Vertical, gv );
-    plane->setGridAttributes(Qt::Horizontal, gv );
+    // disable grid for plane
+    GridAttributes gv( plane->gridAttributes( Qt::Vertical) );
+    gv.setGridVisible( checked );
+    plane->setGridAttributes( Qt::Vertical, gv );
+    plane->setGridAttributes( Qt::Horizontal, gv );
 }
 
 void MainWindow::on_displayGrid2CB_toggled( bool checked )
 {
-
-    // disable grids display for plane
-    GridAttributes gv ( plane2->gridAttributes( Qt::Vertical) );
-    gv.setGridVisible( checked ? true : false );
-    plane2->setGridAttributes(Qt::Vertical, gv );
-    plane2->setGridAttributes(Qt::Horizontal, gv );
-
+    // disable grid for plane2
+    GridAttributes gv( plane2->gridAttributes( Qt::Vertical ) );
+    gv.setGridVisible( checked );
+    plane2->setGridAttributes( Qt::Vertical, gv );
+    plane2->setGridAttributes( Qt::Horizontal, gv );
 }
