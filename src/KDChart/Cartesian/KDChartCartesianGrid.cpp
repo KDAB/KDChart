@@ -141,7 +141,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
         XySwitch xy( i == 1 ); // first iteration paints the X grid lines, second paints the Y grid lines
         const GridAttributes& gridAttrs = xy( gridAttrsX, gridAttrsY );
         bool hasMajorLines = gridAttrs.isGridVisible();
-        bool hasMinorLines = gridAttrs.isSubGridVisible();
+        bool hasMinorLines = hasMajorLines && gridAttrs.isSubGridVisible();
         if ( !hasMajorLines && !hasMinorLines ) {
             continue;
         }
