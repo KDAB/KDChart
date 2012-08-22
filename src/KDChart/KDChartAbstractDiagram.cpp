@@ -184,6 +184,8 @@ void AbstractDiagram::setSelectionModel( QItemSelectionModel* newSelectionModel 
   own internal set of attributes, but an external one can be set. This can be used to
   share attributes between several diagrams. The diagram does not take ownership of the
   attributesmodel.
+
+  @param amodel The AttributesModel to use for this diagram.
 */
 void AbstractDiagram::setAttributesModel( AttributesModel* amodel )
 {
