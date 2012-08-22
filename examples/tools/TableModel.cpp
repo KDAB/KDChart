@@ -120,12 +120,12 @@ QVariant TableModel::headerData ( int section, Qt::Orientation orientation, int 
 
 bool TableModel::setData ( const QModelIndex & index, const QVariant & value, int role/* = Qt::EditRole */ )
 {
-    Q_ASSERT ( index.row() >= 0 && index.row() < rowCount() );
-    Q_ASSERT ( index.column() >= 0 && index.column() < columnCount() );
+    Q_ASSERT( index.row() >= 0 && index.row() < rowCount() );
+    Q_ASSERT( index.column() >= 0 && index.column() < columnCount() );
 
     if ( role == Qt::EditRole )
     {
-        m_rows[index.row()] [index.column()] = value;
+        m_rows[ index.row() ][ index.column() ] = value;
         emit dataChanged( index, index );
         return true;
     } else {
@@ -158,22 +158,20 @@ bool TableModel::loadFromCSV ( const QString& filename )
 
             for ( int row = 0; row < data.size(); ++row )
             {
-                QStringList parts = data.at( row ).split ( QString( ',' ) );
+                QStringList parts = data.at( row ).split( QString( ',' ) );
 
                 QVector<QVariant> values( m_dataHasVerticalHeaders ? parts.size() - 1 : parts.size() );
 
                 for ( int column = 0; column < parts.size(); ++column )
                 {
                     // get rid of trailing or leading whitespaces and quotes:
-                    QString cell ( parts.at( column ).simplified() );
+                    QString cell( parts.at( column ).simplified() );
 
-                    if ( cell.startsWith( '\"') )
-                    {
-                        cell.remove ( 0, 1 );
+                    if ( cell.startsWith( '\"') ) {
+                        cell.remove( 0, 1 );
                     }
-                    if ( cell.endsWith( '\"') )
-                    {
-                        cell.remove ( cell.length()-1, 1 );
+                    if ( cell.endsWith( '\"') ) {
+                        cell.remove( cell.length() - 1, 1 );
                     }
 
 
