@@ -1,2 +1,2 @@
 TEMPLATE    = subdirs
-SUBDIRS	    = Simple BubbleChart Advanced Logarithmic Timeline BigDataset
+SUBDIRS	    = Simple BubbleChart Advanced Logarithmic Timeline BigDataset Isometric
