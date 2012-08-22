@@ -219,7 +219,7 @@ void PolarDiagram::paint( PaintContext* ctx,
             PainterSaver painterSaver( ctx->painter() );
             ctx->painter()->setRenderHint ( QPainter::Antialiasing );
             ctx->painter()->setBrush( brush );
-            QPen p( model()->headerData( iCol, Qt::Horizontal, KDChart::DatasetPenRole ).value< QPen >() );
+            QPen p = qVariantValue< QPen >( d->datasetAttrs( iCol, KDChart::DatasetPenRole ) );
             if ( p.style() != Qt::NoPen )
             {
                 ctx->painter()->setPen( PrintingParameters::scalePen( p ) );

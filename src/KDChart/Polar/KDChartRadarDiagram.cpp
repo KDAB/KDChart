@@ -257,10 +257,10 @@ void RadarDiagram::paint( PaintContext* ctx,
                 polygon.append( point0 );
 
             QBrush brush = qVariantValue<QBrush>( d->datasetAttrs( iCol, KDChart::DatasetBrushRole ) );
-            QPen p( model()->headerData( iCol, Qt::Horizontal, KDChart::DatasetPenRole ).value< QPen >() );
+            QPen p = qVariantValue< QPen >( d->datasetAttrs( iCol, KDChart::DatasetPenRole ) );
             if ( p.style() != Qt::NoPen )
             {
-                polygons.append( Polygon(polygon, brush, PrintingParameters::scalePen( p )) );
+                polygons.append( Polygon( polygon, brush, PrintingParameters::scalePen( p ) ) );
             }
         }
 
