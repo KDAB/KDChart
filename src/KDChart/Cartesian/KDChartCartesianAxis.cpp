@@ -610,11 +610,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
     TextAttributes labelTA = textAttributes();
     RulerAttributes rulerAttr = rulerAttributes();
     const bool isBarChartAbscissa = referenceDiagramIsBarDiagram( d->diagram() ) && isAbscissa();
-    if ( isBarChartAbscissa ) {
-        // in the abscissa of a bar diagram the x values are not usually displayed as numbers,
-        // so the number zero has no special meaning
-        rulerAttr.setShowZeroLabel( true );
-    }
 
     int labelThinningFactor = 1;
     // TODO: label thinning also when grid line distance < 4 pixels, not only when labels collide
@@ -630,10 +625,13 @@ void CartesianAxis::paintCtx( PaintContext* context )
     for ( int step = labelTA.isVisible() ? Layout : Painting; step < Done; step++ ) {
         delete prevTickLabel;
         prevTickLabel = 0;
+        bool skipFirstTick = !rulerAttr.showFirstTick();
         for ( TickIterator it( this, plane, labelThinningFactor, isBarChartAbscissa ); !it.isAtEnd(); ++it ) {
-            if ( !rulerAttr.showZeroLabel() && it.areAlmostEqual( it.position(), 0.0 ) ) {
+            if ( skipFirstTick ) {
+                skipFirstTick = false;
                 continue;
             }
+
             const qreal drawPos = it.position() + ( centerTicks ? 0.5 : 0. );
             QPointF onAxis = plane->translate( geoXy( QPointF( drawPos, transversePosition ) ,
                                                       QPointF( transversePosition, drawPos ) ) );

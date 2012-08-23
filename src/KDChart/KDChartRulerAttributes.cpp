@@ -54,7 +54,7 @@ private:
     bool majorTickLengthIsSet : 1;
     bool minorTickLengthIsSet : 1;
 
-    bool showZeroLabel : 1;
+    bool showFirstTick : 1;
 
     int labelMargin;
     int majorTickLength;
@@ -74,7 +74,7 @@ RulerAttributes::Private::Private()
     , showRulerLine( false )
     , majorTickLengthIsSet( false )
     , minorTickLengthIsSet( false )
-    , showZeroLabel( false )
+    , showFirstTick( true )
     , labelMargin( -1 )
     , majorTickLength( 3 )
     , minorTickLength( 2 )
@@ -242,14 +242,14 @@ bool RulerAttributes::minorTickMarkLengthIsSet() const
     return d->minorTickLengthIsSet;
 }
     
-void RulerAttributes::setShowZeroLabel( bool show )
+void RulerAttributes::setShowFirstTick( bool show )
 {
-    d->showZeroLabel = show;
+    d->showFirstTick = show;
 }
 
-bool RulerAttributes::showZeroLabel() const
+bool RulerAttributes::showFirstTick() const
 {
-    return d->showZeroLabel;
+    return d->showFirstTick;
 }
 
 RulerAttributes & RulerAttributes::operator=( const RulerAttributes& r )

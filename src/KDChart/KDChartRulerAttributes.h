@@ -122,10 +122,11 @@ public:
     int labelMargin() const;
 
     /**
-     * Shows or hides the label for the zero value
+     * Shows or hides the first tick. This is usually where the axes cross.
+     * The tick itself may be obscured by the other axis, but the label will be visible.
      */
-    void setShowZeroLabel(bool show);
-    bool showZeroLabel() const;
+    void setShowFirstTick( bool show );
+    bool showFirstTick() const;
 
     bool operator==( const RulerAttributes& ) const;
     inline bool operator!=( const RulerAttributes& other ) const { return !operator==(other); }
