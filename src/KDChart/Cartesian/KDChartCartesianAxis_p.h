@@ -130,7 +130,7 @@ public:
         CustomTick
     };
     TickIterator( CartesianAxis *a, CartesianCoordinatePlane* plane, uint majorThinningFactor,
-                  bool isBarChartAbscissa /* sorry about that */ );
+                  bool omitLastTick /* sorry about that */ );
     TickIterator( bool isY, const DataDimension& dimension, bool hasMajorTicks, bool hasMinorTicks,
                   CartesianCoordinatePlane* plane, uint majorThinningFactor );
 
@@ -145,8 +145,8 @@ public:
     bool areAlmostEqual( qreal r1, qreal r2 ) const;
 
 private:
-    void init( bool isY, bool hasMajorTicks, bool hasMinorTicks, CartesianCoordinatePlane* plane,
-               bool isBarChartAbscissa ); // code shared by the two constructors
+    // code shared by the two constructors
+    void init( bool isY, bool hasMajorTicks, bool hasMinorTicks, CartesianCoordinatePlane* plane );
 
     bool isHigherPrecedence( qreal importantLabelValue, qreal unimportantLabelValue ) const;
     void computeMajorTickLabel();

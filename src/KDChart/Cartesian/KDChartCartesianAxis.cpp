@@ -60,7 +60,7 @@ static qreal slightlyLessThan( qreal r )
 }
 
 TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, uint majorThinningFactor,
-                            bool isBarChartAbscissa )
+                            bool omitLastTick )
    : m_axis( a ),
      m_majorThinningFactor( majorThinningFactor ),
      m_majorLabelCount( 0 ),
@@ -69,6 +69,11 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
     // deal with the things that are specfic to axes (like annotations), before the generic init().
     XySwitch xy( m_axis->isOrdinate() );
     m_dimension = xy( plane->gridDimensionsList().first(), plane->gridDimensionsList().last() );
+    if ( omitLastTick ) {
+        // In bar and stock charts the last X tick is a fencepost with no associated value, which is
+        // convenient for grid painting. Here we have to manually exclude it to avoid overpainting.
+        m_dimension.end -= m_dimension.stepWidth;
+    }
 
     m_annotations = m_axis->d_func()->annotations;
     m_customTicks = m_axis->d_func()->customTicksPositions;
@@ -94,7 +99,7 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
     bool hasMajorTicks = m_axis->rulerAttributes().showMajorTickMarks();
     bool hasMinorTicks = m_axis->rulerAttributes().showMinorTickMarks();
 
-    init( xy.isY, hasMajorTicks, hasMinorTicks, plane, isBarChartAbscissa );
+    init( xy.isY, hasMajorTicks, hasMinorTicks, plane );
 }
 
 TickIterator::TickIterator( bool isY, const DataDimension& dimension, bool hasMajorTicks, bool hasMinorTicks,
@@ -108,11 +113,11 @@ TickIterator::TickIterator( bool isY, const DataDimension& dimension, bool hasMa
      m_type( NoTick ),
      m_customTick( std::numeric_limits< qreal >::infinity() )
 {
-    init( isY, hasMajorTicks, hasMinorTicks, plane, false );
+    init( isY, hasMajorTicks, hasMinorTicks, plane );
 }
 
 void TickIterator::init( bool isY, bool hasMajorTicks, bool hasMinorTicks,
-                         CartesianCoordinatePlane* plane, bool isBarChartAbscissa )
+                         CartesianCoordinatePlane* plane )
 {
     Q_ASSERT( std::numeric_limits< qreal >::has_infinity );
 
@@ -120,12 +125,6 @@ void TickIterator::init( bool isY, bool hasMajorTicks, bool hasMinorTicks,
     // sanity check against infinite loops
     hasMajorTicks = hasMajorTicks && ( m_dimension.stepWidth > 0 || m_isLogarithmic );
     hasMinorTicks = hasMinorTicks && ( m_dimension.subStepWidth > 0 || m_isLogarithmic );
-
-    if ( isBarChartAbscissa ) {
-        // In bar charts the last x tick is a fencepost with no associated value, which is convenient
-        // for grid painting. Here we have to manually exclude it to avoid overpainting.
-        m_dimension.end -= m_dimension.stepWidth;
-    }
 
     XySwitch xy( isY );
 
@@ -609,7 +608,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     TextAttributes labelTA = textAttributes();
     RulerAttributes rulerAttr = rulerAttributes();
-    const bool isBarChartAbscissa = referenceDiagramIsBarDiagram( d->diagram() ) && isAbscissa();
 
     int labelThinningFactor = 1;
     // TODO: label thinning also when grid line distance < 4 pixels, not only when labels collide
@@ -626,7 +624,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
         delete prevTickLabel;
         prevTickLabel = 0;
         bool skipFirstTick = !rulerAttr.showFirstTick();
-        for ( TickIterator it( this, plane, labelThinningFactor, isBarChartAbscissa ); !it.isAtEnd(); ++it ) {
+        for ( TickIterator it( this, plane, labelThinningFactor, centerTicks ); !it.isAtEnd(); ++it ) {
             if ( skipFirstTick ) {
                 skipFirstTick = false;
                 continue;
@@ -834,7 +832,8 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
     CartesianCoordinatePlane* plane = dynamic_cast< CartesianCoordinatePlane* >( diagram()->coordinatePlane() );
     Q_ASSERT( plane );
     QObject* refArea = plane->parent();
-    const bool isBarChartAbscissa = referenceDiagramIsBarDiagram( diagram() ) && axis()->isAbscissa();
+    const bool centerTicks = referenceDiagramNeedsCenteredAbscissaTicks( diagram() )
+                             && axis()->isAbscissa();
 
     // we ignore:
     // - label thinning (expensive, not worst case and we want worst case)
@@ -850,7 +849,7 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                                   KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
         const qreal tickLabelSpacing = 1; // this is implicitly defined in paintCtx()
 
-        for ( TickIterator it( axis(), plane, 1, isBarChartAbscissa ); !it.isAtEnd(); ++it ) {
+        for ( TickIterator it( axis(), plane, 1, centerTicks ); !it.isAtEnd(); ++it ) {
             qreal labelSize = 0.0;
             if ( !it.text().isEmpty() ) {
                 tickLabel.setText( it.text() );
