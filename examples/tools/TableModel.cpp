@@ -48,16 +48,11 @@ int TableModel::rowCount ( const QModelIndex & ) const
 
 int TableModel::columnCount ( const QModelIndex & ) const
 {
-    if ( m_rows.isEmpty() ) {
-        return 0;
-    } else {
-        return m_rows[0].size();
-    }
+    return m_rows.isEmpty() ? 0 : m_rows.first().size();
 }
 
 QVariant TableModel::data ( const QModelIndex & index, int role) const
 {
-
     // FIXME kdchart queries (-1, -1) for empty models
     if ( index.row() == -1 || index.column() == -1 )
     {
@@ -75,8 +70,7 @@ QVariant TableModel::data ( const QModelIndex & index, int role) const
     Q_ASSERT ( index.row() >= 0 && index.row() < rowCount() );
     Q_ASSERT ( index.column() >= 0 && index.column() < columnCount() );
 
-    if ( role == Qt::DisplayRole || role == Qt::EditRole )
-    {
+    if ( role == Qt::DisplayRole || role == Qt::EditRole ) {
         return m_rows[index.row()] [index.column()];
     } else {
         return QVariant();
@@ -133,101 +127,88 @@ bool TableModel::setData ( const QModelIndex & index, const QVariant & value, in
     }
 }
 
+static QStringList splitLine( const QString& line )
+{
+    QStringList sl = line.split( QChar( ',' ) );
+    QStringList ret;
+    for ( int i = 0; i < sl.size(); i++ ) {
+        // get rid of leading and trailing whitespace and quotes
+        QString s = sl.at( i ).simplified();
+        if ( s.startsWith( '\"') ) {
+            s.remove( 0, 1 );
+        }
+        if ( s.endsWith( '\"') ) {
+              s.remove( s.length() - 1, 1 );
+        }
+        ret.append( s );
+    }
+    return ret;
+}
+
 bool TableModel::loadFromCSV ( const QString& filename )
 {
-    QFile file ( filename );
-    QStringList data;
-
-    if ( file.exists() && file.open ( QIODevice::ReadOnly ) )
-    {
-        while ( !file.atEnd() )
-        {
-            QString line = QString::fromUtf8( file.readLine() );
-            data.append ( line );
-        }
-
-        if ( data.size() > 0 )
-        {
-//             qDebug() << "TableModel::loadFromCSV: " << data.size()
-//                      << " data rows found." << endl;
-
-            setTitleText("");
-            m_rows.resize ( data.size() - 1 );
-
-            // debugging code:
-
-            for ( int row = 0; row < data.size(); ++row )
-            {
-                QStringList parts = data.at( row ).split( QString( ',' ) );
-
-                QVector<QVariant> values( m_dataHasVerticalHeaders ? parts.size() - 1 : parts.size() );
-
-                for ( int column = 0; column < parts.size(); ++column )
-                {
-                    // get rid of trailing or leading whitespaces and quotes:
-                    QString cell( parts.at( column ).simplified() );
-
-                    if ( cell.startsWith( '\"') ) {
-                        cell.remove( 0, 1 );
-                    }
-                    if ( cell.endsWith( '\"') ) {
-                        cell.remove( cell.length() - 1, 1 );
-                    }
-
-
-                    if ( row == 0 && m_dataHasHorizontalHeaders )
-                    {   // interpret the first row as column headers:
-                        // the first one is an exception: interpret that as title
-                        if( column == 0 && m_dataHasVerticalHeaders )
-                            setTitleText( cell );
-                        else
-                            m_horizontalHeaderData.append( cell );
-                    } else {
-                        if ( column == 0 && m_dataHasVerticalHeaders )
-                        {   // interpret first column as row headers:
-                            m_verticalHeaderData.append( cell );
-                        } else {
-                            // interpret cell values as floating point:
-                            bool convertedOk = false;
-                            qreal value = cell.toDouble( &convertedOk );
-                            //qDebug() << convertedOk;
-                            const int destColumn = m_dataHasVerticalHeaders ? column - 1 : column;
-                            values[destColumn] = convertedOk
-                                    ? QVariant( value )
-                                    : (cell.isEmpty() ? QVariant() : QVariant( cell ));
-                            //qDebug() << values[destColumn];
-                        }
-                    }
-                }
-                if ( row > 0 ) {
-                    const int destRow = m_dataHasHorizontalHeaders ? row - 1 : row;
-                    m_rows[destRow] = values;
-                }
-            }
-        } else {
-            m_rows.resize ( 0 );
-        }
-
-        reset();
-        if ( m_rows.size () > 0 )
-        {
-//             qDebug() << "TableModel::loadFromCSV: table loaded, "
-//                      << rowCount() << " rows, " << columnCount() << "columns."
-//                      << endl;
-        } else {
-            qDebug() << "TableModel::loadFromCSV: table loaded, but no "
-                "model data found." << endl;
-        }
-        return true;
-    } else {
+    QFile file( filename );
+    if ( !file.exists() || !file.open ( QIODevice::ReadOnly ) ) {
         qDebug() << "TableModel::loadFromCSV: file" << filename
-                << "does not exist / or could not be opened" << endl;
+                 << "does not exist or could not be opened";
         return false;
     }
+
+    QStringList lines;
+    while ( !file.atEnd() ) {
+        lines.append( QString::fromUtf8( file.readLine() ) );
+    }
+
+    setTitleText("");
+    m_rows.clear();
+    m_rows.resize( qMax( 0, lines.size() - ( m_dataHasHorizontalHeaders ? 1 : 0 ) ) );
+
+    for ( int row = 0; row < lines.size(); ++row ) {
+        QStringList cells = splitLine( lines.at( row ) );
+
+        QVector<QVariant> values( qMax( 0, cells.size() - ( m_dataHasVerticalHeaders ? 1 : 0 ) ) );
+
+        for ( int column = 0; column < cells.size(); ++column ) {
+            QString cell = cells.at( column );
+
+            if ( row == 0 && m_dataHasHorizontalHeaders ) {
+                // interpret the first row as column headers:
+                // the first one is an exception: interpret that as title
+                if ( column == 0 && m_dataHasVerticalHeaders ) {
+                    setTitleText( cell );
+                } else {
+                    m_horizontalHeaderData.append( cell );
+                }
+            } else {
+                if ( column == 0 && m_dataHasVerticalHeaders ) {
+                    // interpret first column as row headers:
+                    m_verticalHeaderData.append( cell );
+                } else {
+                    // try to interpret cell values as floating point
+                    bool convertedOk = false;
+                    qreal numeric = cell.toDouble( &convertedOk );
+                    const int destColumn = column - ( m_dataHasVerticalHeaders ? 1 : 0 );
+                    values[ destColumn ] = convertedOk ? numeric : ( cell.isEmpty() ? QVariant() : cell );
+                }
+            }
+        }
+        const int destRow = row - ( m_dataHasHorizontalHeaders ? 1 : 0 );
+        if ( destRow >= 0 ) {
+            m_rows[ destRow ] = values;
+        }
+    }
+
+    reset();
+
+    if ( m_rows.isEmpty() ) {
+        qDebug() << "TableModel::loadFromCSV: table loaded, but no "
+                    "model data found.";
+    }
+    return true;
 }
 
 void TableModel::clear()
 {
-    m_rows.resize( 0 );
+    m_rows.clear();
     reset();
 }
