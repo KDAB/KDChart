@@ -42,49 +42,46 @@ private:
     QPen tickMarkPen;
     QPen majorTickMarkPen;
     QPen minorTickMarkPen;
-    
-    bool majorTickMarkPenIsSet;
-    bool minorTickMarkPenIsSet;
 
-    bool showMajorTickMarks;
-    bool showMinorTickMarks;
+    bool majorTickMarkPenIsSet : 1;
+    bool minorTickMarkPenIsSet : 1;
 
-    bool showRulerLine;
-    
+    bool showMajorTickMarks : 1;
+    bool showMinorTickMarks : 1;
+
+    bool showRulerLine : 1;
+
+    bool majorTickLengthIsSet : 1;
+    bool minorTickLengthIsSet : 1;
+
+    bool showZeroLabel : 1;
+
     int labelMargin;
     int majorTickLength;
     int minorTickLength;
-    bool majorTickLengthIsSet;
-    bool minorTickLengthIsSet;
-
-    bool showZeroLabel;
 
     RulerAttributes::TickMarkerPensMap customTickMarkPens;
 };
 
 RulerAttributes::Private::Private()
-    : tickMarkPen( QColor( 0x00, 0x00, 0x00 ) )
-    , majorTickMarkPen( QColor( 0x00, 0x00, 0x00 ) )
-    , minorTickMarkPen( QColor( 0x00, 0x00, 0x00 ) )
+    : tickMarkPen( Qt::black )
+    , majorTickMarkPen( Qt::black )
+    , minorTickMarkPen( Qt::black )
+    , majorTickMarkPenIsSet( false )
+    , minorTickMarkPenIsSet( false )
+    , showMajorTickMarks( true )
+    , showMinorTickMarks( true )
     , showRulerLine( false )
+    , majorTickLengthIsSet( false )
+    , minorTickLengthIsSet( false )
     , showZeroLabel( false )
+    , labelMargin( -1 )
+    , majorTickLength( 3 )
+    , minorTickLength( 2 )
 {
     tickMarkPen.setCapStyle( Qt::FlatCap );
     majorTickMarkPen.setCapStyle( Qt::FlatCap );
     minorTickMarkPen.setCapStyle( Qt::FlatCap );
-
-    majorTickMarkPenIsSet = false;
-    minorTickMarkPenIsSet = false;
-
-    showMajorTickMarks = true;
-    showMinorTickMarks = true;
-
-    majorTickLength = 3;
-    minorTickLength = 2;
-    majorTickLengthIsSet = false;
-    minorTickLengthIsSet = false;
-    
-    labelMargin = -1;
 }
 
 RulerAttributes::RulerAttributes()
