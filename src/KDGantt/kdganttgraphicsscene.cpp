@@ -274,9 +274,12 @@ AbstractRowController* GraphicsScene::rowController() const
 
 void GraphicsScene::setGrid( AbstractGrid* grid )
 {
-    QAbstractItemModel* model = d->grid->model();
+    QAbstractItemModel* model = 0;
     if ( grid == 0 ) grid = &d->default_grid;
-    if ( d->grid ) d->grid->disconnect( this );
+    if ( d->grid ) {
+	d->grid->disconnect( this );
+	model = d->grid->model();
+    }
     d->grid = grid;
     connect( d->grid, SIGNAL( gridChanged() ), this, SLOT( slotGridChanged() ) );
     d->grid->setModel( model );
