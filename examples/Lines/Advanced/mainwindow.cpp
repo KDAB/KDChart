@@ -52,25 +52,25 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines = new LineDiagram( this );
     m_lines->setModel( &m_model );
 
-    CartesianAxis *xAxis = new CartesianAxis( m_lines );
-    CartesianAxis *yAxis = new CartesianAxis ( m_lines );
-    xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
-    yAxis->setPosition ( KDChart::CartesianAxis::Left );
+    CartesianAxis* xAxis = new CartesianAxis( m_lines );
+    CartesianAxis* yAxis = new CartesianAxis( m_lines );
+    xAxis->setPosition( KDChart::CartesianAxis::Bottom );
+    yAxis->setPosition( KDChart::CartesianAxis::Left );
     m_lines->addAxis( xAxis );
     m_lines->addAxis( yAxis );
 
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     m_chart->setGlobalLeading( 20,  20,  20,  20 );
     // Instantiate the timer
-    QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(slot_timerFired()));
-    timer->start(30);
+    QTimer* timer = new QTimer( this );
+    connect( timer, SIGNAL( timeout() ), this, SLOT( slot_timerFired() ) );
+    timer->start( 30 );
 
     //Change the cursor to IBeamCursor inside Chart widget.
-    m_chart->setCursor(Qt::IBeamCursor);
+    m_chart->setCursor( Qt::IBeamCursor );
 
     //Install event filter on Chart to get the mouse position
-    m_chart->installEventFilter(this);
+    m_chart->installEventFilter( this );
 }
 
 /**
@@ -80,14 +80,14 @@ bool MainWindow::eventFilter(QObject* target, QEvent* event)
 {
     if (target == m_chart) {
         if (event->type() == QEvent::MouseMove) {
-            QMouseEvent* mouseEvent = static_cast<QMouseEvent *>(event);
-            qDebug() << "Mouse position " << mouseEvent->pos();
+            QMouseEvent* mouseEvent = static_cast< QMouseEvent* >( event );
+            qDebug() << "Mouse position" << mouseEvent->pos();
         }
     }
     return QWidget::eventFilter(target, event);
 }
 
-void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
+void MainWindow::on_lineTypeCB_currentIndexChanged( const QString& text )
 {
     if ( text == "Normal" )
         m_lines->setType( LineDiagram::Normal );
@@ -103,7 +103,7 @@ void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
 
 void MainWindow::on_paintValuesCB_toggled( bool checked )
 {
-    const int colCount = m_lines->model()->columnCount(m_lines->rootIndex());
+    const int colCount = m_lines->model()->columnCount( m_lines->rootIndex() );
     for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
         DataValueAttributes a( m_lines->dataValueAttributes( iColumn ) );
         QBrush brush( m_lines->brush( iColumn ) );
@@ -131,22 +131,21 @@ void MainWindow::on_centerDataPointsCB_toggled( bool checked )
 
 void MainWindow::on_animateAreasCB_toggled( bool checked )
 {
-    if( checked ){
+    if ( checked ) {
         highlightAreaCB->setCheckState( Qt::Unchecked );
         m_curRow = 0;
         m_curColumn = 0;
-    }else{
+    } else {
         m_curColumn = -1;
     }
-    highlightAreaCB->setEnabled( ! checked );
-    highlightAreaSB->setEnabled( ! checked );
+    highlightAreaCB->setEnabled( !checked );
+    highlightAreaSB->setEnabled( !checked );
     // un-highlight all previously highlighted columns
     const int rowCount = m_lines->model()->rowCount();
     const int colCount = m_lines->model()->columnCount();
-    for ( int iColumn = 0; iColumn<colCount; ++iColumn ){
+    for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
         setHighlightArea( -1, iColumn, 127, false, false );
         for ( int iRow = 0; iRow<rowCount; ++iRow )
-        //    m_lines->resetLineAttributes( cellIndex );
             setHighlightArea( iRow, iColumn, 127, false, false );
     }
     m_chart->update();
@@ -155,17 +154,18 @@ void MainWindow::on_animateAreasCB_toggled( bool checked )
 
 void MainWindow::slot_timerFired()
 {
-    if( m_curColumn < 0 ) return;
+    if ( m_curColumn < 0 ) {
+        return;
+    }
     m_curOpacity += 8;
-    if( m_curOpacity > 255 ){
+    if ( m_curOpacity > 255 ) {
         setHighlightArea( m_curRow, m_curColumn, 127, false, false );
         m_curOpacity = 5;
         ++m_curRow;
-        if( m_curRow >= m_lines->model()->rowCount(m_lines->rootIndex()) ){
+        if ( m_curRow >= m_lines->model()->rowCount( m_lines->rootIndex() ) ) {
             m_curRow = 0;
             ++m_curColumn;
-            if( m_curColumn >=
-                m_lines->model()->columnCount( m_lines->rootIndex() ) )
+            if ( m_curColumn >= m_lines->model()->columnCount( m_lines->rootIndex() ) )
                 m_curColumn = 0;
         }
     }
@@ -175,25 +175,25 @@ void MainWindow::slot_timerFired()
 void MainWindow::setHighlightArea( int row, int column, int opacity,
                                    bool checked, bool doUpdate )
 {
-    if( row < 0 ){
+    if ( row < 0 ) {
         // highlight a complete dataset
         LineAttributes la = m_lines->lineAttributes( column );
         if ( checked ) {
             la.setDisplayArea( true );
             la.setTransparency( opacity );
-        }  else {
+        } else {
             la.setDisplayArea( false );
         }
         m_lines->setLineAttributes( column, la );
-    }else{
+    } else {
         // highlight two segments only
-        if( row ){
-            QModelIndex cellIndex( m_lines->model()->index(
-                    row-1, column, m_lines->rootIndex() ) );
+        if ( row ) {
+            QModelIndex cellIndex( m_lines->model()->index( row - 1, column,
+                                                            m_lines->rootIndex() ) );
             if ( checked ) {
                 LineAttributes la( m_lines->lineAttributes( cellIndex ) );
                 la.setDisplayArea( true );
-                la.setTransparency( 255-opacity );
+                la.setTransparency( 255 - opacity );
                 // set specific line attribute settings for this cell
                 m_lines->setLineAttributes( cellIndex, la );
             }  else {
@@ -202,23 +202,22 @@ void MainWindow::setHighlightArea( int row, int column, int opacity,
                 m_lines->resetLineAttributes( cellIndex );
             }
         }
-        if( row < m_lines->model()->rowCount(m_lines->rootIndex()) ){
-            QModelIndex cellIndex( m_lines->model()->index(
-                    row, column, m_lines->rootIndex() ) );
+        if ( row < m_lines->model()->rowCount(m_lines->rootIndex() ) ) {
+            QModelIndex cellIndex( m_lines->model()->index( row, column, m_lines->rootIndex() ) );
             if ( checked ) {
                 LineAttributes la( m_lines->lineAttributes( cellIndex ) );
                 la.setDisplayArea( true );
                 la.setTransparency( opacity );
                 // set specific line attribute settings for this cell
                 m_lines->setLineAttributes( cellIndex, la );
-            }  else {
+            } else {
                 // remove any cell-specific line attribute settings
                 // from the indexed cell
                 m_lines->resetLineAttributes( cellIndex );
             }
         }
     }
-    if( doUpdate )
+    if ( doUpdate )
         m_chart->update();
 }
 
@@ -233,7 +232,7 @@ void MainWindow::on_highlightAreaSB_valueChanged( int i )
     if ( highlightAreaCB->isChecked() )
         on_highlightAreaCB_toggled( true );
     else
-        on_highlightAreaCB_toggled( false);
+        on_highlightAreaCB_toggled( false );
 }
 
 void MainWindow::on_threeDModeCB_toggled( bool checked )
@@ -270,37 +269,34 @@ void MainWindow::on_trackAreasSB_valueChanged( int i )
 
 void MainWindow::setTrackedArea( int column, bool checked, bool doUpdate )
 {
-    const int rowCount    = m_model.rowCount(    m_lines->rootIndex() );
+    const int rowCount = m_model.rowCount( m_lines->rootIndex() );
     const int columnCount = m_model.columnCount( m_lines->rootIndex() );
     for( int i = 0; i < rowCount; ++i ) {
         for( int j = 0; j < columnCount; ++j ) {
             QModelIndex cellIndex( m_model.index( i, j,
                                    m_lines->rootIndex() ) );
-            ValueTrackerAttributes va(
-                    m_lines->valueTrackerAttributes( cellIndex ) );
+            ValueTrackerAttributes va( m_lines->valueTrackerAttributes( cellIndex ) );
             va.setEnabled( checked && j == column );
             va.setAreaBrush( QColor( 255, 255, 0, 50 ) );
-	    va.setOrientations( Qt::Horizontal | Qt::Vertical );
+            va.setOrientations( Qt::Horizontal | Qt::Vertical );
             QColor color = Qt::cyan;
             color.setAlphaF( 0.5 );
             va.setAreaBrush( color );
             m_lines->setValueTrackerAttributes( cellIndex, va );
         }
     }
-    if( doUpdate )
+    if ( doUpdate )
         m_chart->update();
 }
 
 void MainWindow::on_reverseHorizontalCB_toggled( bool checked )
 {
-    static_cast<KDChart::CartesianCoordinatePlane*>(
-            m_chart->coordinatePlane() )->setHorizontalRangeReversed(
-                checked );
+    static_cast< KDChart::CartesianCoordinatePlane* >( m_chart->coordinatePlane() )
+        ->setHorizontalRangeReversed( checked );
 }
 
 void MainWindow::on_reverseVerticalCB_toggled( bool checked )
 {
-    static_cast<KDChart::CartesianCoordinatePlane*>(
-            m_chart->coordinatePlane() )->setVerticalRangeReversed(
-                checked );
+    static_cast< KDChart::CartesianCoordinatePlane* >( m_chart->coordinatePlane() )
+        ->setVerticalRangeReversed( checked );
 }
