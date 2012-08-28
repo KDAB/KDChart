@@ -44,25 +44,25 @@ class TESTTOOLS_EXPORT TableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    TableModel ( QObject * parent = 0 );
-    ~TableModel ();
+    TableModel( QObject* parent = 0 );
+    ~TableModel();
 
     /** Return header data from the model.
         The model will use the first data row and the first data column of the
-        physical data as source of column and row header data. This data isnot
+        physical data as source of column and row header data. This data is not
         exposed as model data, that means, the first model row and column will
-        start at index (1,1).
+        start at index (0, 0).
     */
-    QVariant headerData ( int section, Qt::Orientation orientation,
-                          int role = Qt::DisplayRole ) const ;
+    QVariant headerData( int section, Qt::Orientation orientation,
+                         int role = Qt::DisplayRole ) const;
 
-    int rowCount ( const QModelIndex & parent = QModelIndex() ) const;
+    int rowCount( const QModelIndex& parent = QModelIndex() ) const;
 
-    int columnCount ( const QModelIndex & parent = QModelIndex() ) const;
+    int columnCount( const QModelIndex& parent = QModelIndex() ) const;
 
-    QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole ) const;
+    QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const;
 
-    bool setData ( const QModelIndex & index, const QVariant & value, int role = Qt::EditRole );
+    bool setData( const QModelIndex& index, const QVariant& value, int role = Qt::EditRole );
 
     /** Load the table from a comma separated file.
      *
@@ -79,7 +79,7 @@ public:
      *
      * @sa titleText
      */
-    bool loadFromCSV ( const QString& filename );
+    bool loadFromCSV( const QString& filename );
 
     /**
      * If both DataHasHorizontalHeaders and DataHasVerticalHeaders is

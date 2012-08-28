@@ -29,74 +29,71 @@
 #include <QString>
 #include <QStringList>
 
-TableModel::TableModel ( QObject * parent )
-    : QAbstractTableModel ( parent ),
+TableModel::TableModel( QObject* parent )
+    : QAbstractTableModel( parent ),
       m_dataHasHorizontalHeaders( true ),
       m_dataHasVerticalHeaders( true ),
       m_supplyHeaderData( true )
 {
 }
 
-TableModel::~TableModel ()
+TableModel::~TableModel()
 {
 }
 
-int TableModel::rowCount ( const QModelIndex & ) const
+int TableModel::rowCount( const QModelIndex& ) const
 {
     return m_rows.size();
 }
 
-int TableModel::columnCount ( const QModelIndex & ) const
+int TableModel::columnCount( const QModelIndex& ) const
 {
     return m_rows.isEmpty() ? 0 : m_rows.first().size();
 }
 
-QVariant TableModel::data ( const QModelIndex & index, int role) const
+QVariant TableModel::data( const QModelIndex& index, int role ) const
 {
     // FIXME kdchart queries (-1, -1) for empty models
-    if ( index.row() == -1 || index.column() == -1 )
-    {
-        qDebug() << "TableModel::data: row: "
-                 << index.row() << ", column: " << index.column()
-                 << ", rowCount: " << rowCount() << ", columnCount: "
+    if ( index.row() == -1 || index.column() == -1 ) {
+        qDebug() << "TableModel::data: row:"
+                 << index.row() << ", column:" << index.column()
+                 << ", rowCount:" << rowCount() << ", columnCount:"
                  << columnCount() << endl
                  << "TableModel::data: FIXME fix kdchart views to not query"
-            " model data for invalid indices!" << endl;
+                    " model data for invalid indices!";
         return QVariant();
     }
 
 /*    qDebug () << "TableModel::data: row: "<< index.row() << ", column: "
               << index.column() << endl;*/
-    Q_ASSERT ( index.row() >= 0 && index.row() < rowCount() );
-    Q_ASSERT ( index.column() >= 0 && index.column() < columnCount() );
+    Q_ASSERT( index.row() >= 0 && index.row() < rowCount() );
+    Q_ASSERT( index.column() >= 0 && index.column() < columnCount() );
 
     if ( role == Qt::DisplayRole || role == Qt::EditRole ) {
-        return m_rows[index.row()] [index.column()];
+        return m_rows[ index.row() ][ index.column() ];
     } else {
         return QVariant();
     }
 }
 
-QVariant TableModel::headerData ( int section, Qt::Orientation orientation, int role) const
+QVariant TableModel::headerData( int section, Qt::Orientation orientation, int role ) const
 {
     QVariant result;
 
-    switch ( role )
-    {
+    switch ( role ) {
     case Qt::DisplayRole:
     case Qt::EditRole:
-    if ( m_supplyHeaderData )
-    {
-        if ( orientation == Qt::Horizontal )
-        {   // column header data:
-            if ( !m_horizontalHeaderData.isEmpty() )
-                result = m_horizontalHeaderData[section];
-        } else {
-            // row header data:
-            if ( !m_verticalHeaderData.isEmpty() )
-                result = m_verticalHeaderData[section];
+        if ( m_supplyHeaderData ){
+            if ( orientation == Qt::Horizontal ) {
+                // column header data
+                if ( !m_horizontalHeaderData.isEmpty() )
+                    result = m_horizontalHeaderData[ section ];
+            } else {
+                // row header data:
+                if ( !m_verticalHeaderData.isEmpty() )
+                    result = m_verticalHeaderData[ section ];
+            }
         }
-    }
     break;
     case Qt::TextAlignmentRole:
 //        result = QVariant ( Qt::AlignHCenter | Qt::AlignHCenter );
@@ -112,13 +109,12 @@ QVariant TableModel::headerData ( int section, Qt::Orientation orientation, int 
 }
 
 
-bool TableModel::setData ( const QModelIndex & index, const QVariant & value, int role/* = Qt::EditRole */ )
+bool TableModel::setData( const QModelIndex& index, const QVariant& value, int role/* = Qt::EditRole */ )
 {
     Q_ASSERT( index.row() >= 0 && index.row() < rowCount() );
     Q_ASSERT( index.column() >= 0 && index.column() < columnCount() );
 
-    if ( role == Qt::EditRole )
-    {
+    if ( role == Qt::EditRole ) {
         m_rows[ index.row() ][ index.column() ] = value;
         emit dataChanged( index, index );
         return true;
@@ -145,7 +141,7 @@ static QStringList splitLine( const QString& line )
     return ret;
 }
 
-bool TableModel::loadFromCSV ( const QString& filename )
+bool TableModel::loadFromCSV( const QString& filename )
 {
     QFile file( filename );
     if ( !file.exists() || !file.open ( QIODevice::ReadOnly ) ) {
@@ -159,7 +155,7 @@ bool TableModel::loadFromCSV ( const QString& filename )
         lines.append( QString::fromUtf8( file.readLine() ) );
     }
 
-    setTitleText("");
+    setTitleText( QString() );
     m_rows.clear();
     m_rows.resize( qMax( 0, lines.size() - ( m_dataHasHorizontalHeaders ? 1 : 0 ) ) );
 
