@@ -274,7 +274,7 @@ const QFontMetrics AbstractDiagram::Private::cachedFontMetrics() const
 QString AbstractDiagram::Private::formatNumber( qreal value, int decimalDigits ) const
 {
     const int digits = qMax(decimalDigits, 0);
-    const qreal roundingEpsilon = pow( 0.1, digits ) * value >= 0.0 ? 0.5 : -0.5;
+    const qreal roundingEpsilon = pow( 0.1, digits ) * ( value >= 0.0 ? 0.5 : -0.5 );
     QString asString = QString::number( value + roundingEpsilon, 'f' );
     const int decimalPos = asString.indexOf( QLatin1Char( '.' ) );
     if ( decimalPos < 0 ) {
