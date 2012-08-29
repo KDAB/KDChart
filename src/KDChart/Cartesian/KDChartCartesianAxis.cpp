@@ -96,22 +96,21 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
     }
     m_manualLabelIndex = m_manualLabelTexts.isEmpty() ? -1 : 0;
 
-    {
+    if ( m_axis->isAbscissa() ){
         // when no annotations or manual labels texts (which otherwise take precedence) were given,
         // see if the dataset supplies textual header data.
         // we use m_annotations to store the header data, although semantically wrong, for convenience.
+        // ### depending on the data, it is difficult to impossible to choose anchors (where ticks
+        //     corresponding to the header labels are) on the ordinate or even the abscissa with
+        //     2-dimensional data.
         AbstractDiagram* const dia = plane->diagram();
-        QStringList dataHeaderLabels = xy( dia->itemRowLabels(), dia->datasetLabels() );
+        QStringList dataHeaderLabels = dia->itemRowLabels();
         if ( m_annotations.isEmpty() && m_manualLabelTexts.isEmpty() && !dataHeaderLabels.isEmpty() ) {
             AttributesModel* model = dia->attributesModel();
-            const int anchorCount = xy( model->rowCount( QModelIndex() ),
-                                        model->columnCount( QModelIndex() ) );
+            const int anchorCount = model->rowCount( QModelIndex() );
             if ( anchorCount == dataHeaderLabels.count() ) {
                 for ( int i = 0; i < anchorCount; i++ ) {
-                    // TODO With two-dimensional data, or on the ordinate, we need to get the anchor values
-                    //      from the model. That is only going to make sense when data points of the same
-                    //      row have the same X values (2-dim abscissa) / when data points of the same
-                    //      column have the same Y values (ordinate).
+                    // ### ordinal number as anchor point generally only works for 1-dimensional data
                     m_annotations.insert( qreal( i ), dataHeaderLabels.at( i ) );
                 }
             }
