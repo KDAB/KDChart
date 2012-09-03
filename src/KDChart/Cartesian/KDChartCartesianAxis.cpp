@@ -594,8 +594,13 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     // determine the position of the axis (also required for labels) and paint it
 
-    qreal transversePosition;
+    qreal transversePosition; // in data space
+    // the next one describes an additional shift in screen space; it is unfortunately required to
+    // make axis sharing work, which uses the areaGeometry() to override the position of the axis.
+    qreal transverseScreenSpaceShift;
     {
+        // determine the unadulterated position in screen space
+
         DataDimension dimX = plane->gridDimensionsList().first();
         DataDimension dimY = plane->gridDimensionsList().last();
         QPointF start( dimX.start, dimY.start );
@@ -616,13 +621,40 @@ void CartesianAxis::paintCtx( PaintContext* context )
             start.setX( dimX.end );
             break;
         }
+
+        transversePosition = geoXy( start.y(), start.x() );
+
+        QPointF transStart = plane->translate( start );
+        QPointF transEnd = plane->translate( end );
+
+        // an externally set areaGeometry() moves the axis position transversally; the shift is
+        // nonzero only when this is a shared axis
+
+        const QRect geo = areaGeometry();
+        switch ( position() ) {
+        case CartesianAxis::Bottom:
+            transverseScreenSpaceShift = geo.top() - transStart.y();
+            break;
+        case CartesianAxis::Top:
+            transverseScreenSpaceShift = geo.bottom() - transStart.y();
+            break;
+        case CartesianAxis::Left:
+            transverseScreenSpaceShift = geo.right() - transStart.x();
+            break;
+        case CartesianAxis::Right:
+            transverseScreenSpaceShift = geo.left() - transStart.x();
+            break;
+        }
+
+        geoXy.lvalue( transStart.ry(), transStart.rx() ) += transverseScreenSpaceShift;
+        geoXy.lvalue( transEnd.ry(), transEnd.rx() ) += transverseScreenSpaceShift;
+
         if ( rulerAttributes().showRulerLine() ) {
             bool clipSaved = context->painter()->hasClipping();
             painter->setClipping( false );
-            painter->drawLine( plane->translate( start ), plane->translate( end ) );
+            painter->drawLine( transStart, transEnd );
             painter->setClipping( clipSaved );
         }
-        transversePosition = geoXy( start.y(), start.x() );
     }
 
     // paint ticks and labels
@@ -654,6 +686,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             const qreal drawPos = it.position() + ( centerTicks ? 0.5 : 0. );
             QPointF onAxis = plane->translate( geoXy( QPointF( drawPos, transversePosition ) ,
                                                       QPointF( transversePosition, drawPos ) ) );
+            geoXy.lvalue( onAxis.ry(), onAxis.rx() ) += transverseScreenSpaceShift;
             const bool isOutwardsPositive = position() == Bottom || position() == Right;
 
             // paint the tick mark
