@@ -169,7 +169,7 @@ void BarDiagram::BarDiagramType::addLabel( LabelPaintCache* lpc,
                                            const Position& autoPositionNegative, qreal value )
 {
     m_private->addLabel( lpc, index, 0, points,
-                         autoPositionPositive, autoPositionNegative, value, -45 );
+                         autoPositionPositive, autoPositionNegative, value );
 }
 
 void BarDiagram::BarDiagramType::paintDataValueTextsAndMarkers(
