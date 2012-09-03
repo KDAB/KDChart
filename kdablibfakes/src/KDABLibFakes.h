@@ -37,6 +37,10 @@
 
 #include <qglobal.h>
 
+#include <limits>
+
+#define NaN std::numeric_limits< qreal >::quiet_NaN()
+#define signalingNaN std::numeric_limits< qreal >::signaling_NaN()
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846

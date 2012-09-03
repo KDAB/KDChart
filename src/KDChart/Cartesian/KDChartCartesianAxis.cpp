@@ -594,10 +594,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     // determine the position of the axis (also required for labels) and paint it
 
-    qreal transversePosition; // in data space
+    qreal transversePosition = signalingNaN; // in data space
     // the next one describes an additional shift in screen space; it is unfortunately required to
     // make axis sharing work, which uses the areaGeometry() to override the position of the axis.
-    qreal transverseScreenSpaceShift;
+    qreal transverseScreenSpaceShift = signalingNaN;
     {
         // determine the unadulterated position in screen space
 
