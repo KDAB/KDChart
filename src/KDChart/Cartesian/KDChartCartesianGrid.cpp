@@ -161,8 +161,10 @@ void CartesianGrid::drawGrid( PaintContext* context )
             }
             xy.lvalue( lineStart.rx(), lineStart.ry() ) = it.position();
             xy.lvalue( lineEnd.rx(), lineEnd.ry() ) = it.position();
-            if ( ISNAN( lineStart.x() ) || ISNAN( lineStart.y() ) ||
-                 ISNAN( lineEnd.x() ) || ISNAN( lineEnd.y() ) ) {
+            QPointF transLineStart = plane->translate( lineStart );
+            QPointF transLineEnd = plane->translate( lineEnd );
+            if ( ISNAN( transLineStart.x() ) || ISNAN( transLineStart.y() ) ||
+                 ISNAN( transLineEnd.x() ) || ISNAN( transLineEnd.y() ) ) {
                 // ### can we catch NaN problems earlier, wasting fewer cycles?
                 continue;
             }
@@ -173,7 +175,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
             } else {
                 p->setPen( PrintingParameters::scalePen( gridAttrs.gridPen() ) );
             }
-            p->drawLine( plane->translate( lineStart ), plane->translate( lineEnd ) );
+            p->drawLine( transLineStart, transLineEnd );
         }
     }
 }
