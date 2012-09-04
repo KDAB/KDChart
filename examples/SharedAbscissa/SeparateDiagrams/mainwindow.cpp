@@ -55,12 +55,12 @@ MainWindow::MainWindow( QWidget* parent ) :
     plane2 = new CartesianCoordinatePlane( m_chart );
 
     CartesianAxis *xAxis = new CartesianAxis( m_lines );
-    CartesianAxis *yAxis = new CartesianAxis ( m_lines );
-    CartesianAxis *yAxis2 = new CartesianAxis ( m_lines2 );
+    CartesianAxis *yAxis = new CartesianAxis( m_lines );
+    CartesianAxis *yAxis2 = new CartesianAxis( m_lines2 );
 
-    xAxis->setPosition ( KDChart::CartesianAxis::Top );
-    yAxis->setPosition ( KDChart::CartesianAxis::Left );
-    yAxis2->setPosition ( KDChart::CartesianAxis::Right );
+    xAxis->setPosition( KDChart::CartesianAxis::Top );
+    yAxis->setPosition( KDChart::CartesianAxis::Left );
+    yAxis2->setPosition( KDChart::CartesianAxis::Right );
 
     m_lines->addAxis( yAxis );
     m_lines2->addAxis( xAxis );
@@ -69,5 +69,5 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     m_chart->setGlobalLeading( 20, 20, 20, 20 );
     plane2->replaceDiagram( m_lines2 );
-    m_chart->addCoordinatePlane( plane2/*, 1*/);
+    m_chart->addCoordinatePlane( plane2 );
 }
