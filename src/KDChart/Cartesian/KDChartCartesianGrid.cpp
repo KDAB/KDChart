@@ -75,12 +75,12 @@ void CartesianGrid::drawGrid( PaintContext* context )
         return;
     }
     // This plane is used for translating the coordinates - not for the data boundaries
+    QPainter *p = context->painter();
+    PainterSaver painterSaver( p );
+    // sharedAxisMasterPlane() changes the painter's coordinate transformation(!)
     plane = qobject_cast< CartesianCoordinatePlane* >( plane->sharedAxisMasterPlane( context->painter() ) );
     Q_ASSERT_X ( plane, "CartesianGrid::drawGrid",
                  "Bad function call: PaintContext::coodinatePlane() NOT a cartesian plane." );
-
-    QPainter *const p = context->painter();
-    PainterSaver painterSaver( p );
 
     // update the calculated mDataDimensions before using them
     updateData( context->coordinatePlane() ); // this, in turn, calls our calculateGrid().
