@@ -45,13 +45,6 @@ namespace KDChart {
         virtual BarDiagram::BarType type() const;
         virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const;
         virtual void paint( PaintContext* ctx );
-/*
-        virtual void calculateValueAndGapWidths( int rowCount,int colCount,
-				    qreal groupWidth,
-				    qreal& outBarWidth,
-				    qreal& outSpaceBetweenBars,
-				    qreal& outSpaceBetweenGroups );
-*/
     };
 
 }
