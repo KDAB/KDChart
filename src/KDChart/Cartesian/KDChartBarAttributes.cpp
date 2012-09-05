@@ -57,8 +57,8 @@ BarAttributes::Private::Private()
     barWidth( -1 ),
     useFixedBarWidth( false ),
     drawSolidExcessArrows( false ),
-    groupGapFactor( 1.0 ),
-    barGapFactor( 0.5 )
+    groupGapFactor( 2.0 ),
+    barGapFactor( 0.4 )
 {
 }
 

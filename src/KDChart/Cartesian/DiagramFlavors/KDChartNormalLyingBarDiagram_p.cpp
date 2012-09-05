@@ -104,7 +104,7 @@ void NormalLyingBarDiagram::paint( PaintContext* ctx )
     qreal barWidth = 0;
     qreal maxDepth = 0;
     qreal width = boundLeft.y() - boundRight.y();
-    qreal groupWidth = width / (rowCount + 2);
+    qreal groupWidth = width / rowCount;
     qreal spaceBetweenBars = 0;
     qreal spaceBetweenGroups = 0;
 
