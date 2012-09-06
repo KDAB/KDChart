@@ -117,7 +117,7 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
     // We set the DataValueAttributes on a per-column basis here,
     // because we want the texts to be printed in different
     // colours - according to their respective dataset's colour.
-    const QFont font(QFont( "Comic", 10 ));
+    const QFont font( "Comic", 10 );
     const int colCount = m_lines->model()->columnCount();
     for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
         QBrush brush( m_lines->brush( iColumn ) );
