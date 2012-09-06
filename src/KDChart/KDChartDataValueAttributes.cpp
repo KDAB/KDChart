@@ -92,7 +92,7 @@ DataValueAttributes::Private::Private() :
     showOverlappingDataLabels = false;
 
     usePercentage = false;
-    mirrorNegativeValueTextRotation = true;
+    mirrorNegativeValueTextRotation = false;
 }
 
 
@@ -124,7 +124,7 @@ DataValueAttributes::~DataValueAttributes()
 
 bool DataValueAttributes::operator==( const DataValueAttributes& r ) const
 {
-    return ( isVisible() == r.isVisible() &&
+    return  isVisible() == r.isVisible() &&
             textAttributes() == r.textAttributes() &&
             frameAttributes() == r.frameAttributes() &&
             backgroundAttributes() == r.backgroundAttributes() &&
@@ -139,7 +139,8 @@ bool DataValueAttributes::operator==( const DataValueAttributes& r ) const
             positivePosition() == r.positivePosition() &&
             showRepetitiveDataLabels() == r.showRepetitiveDataLabels() &&
             showOverlappingDataLabels() == r.showOverlappingDataLabels() &&
-            usePercentage() == r.usePercentage() );
+            usePercentage() == r.usePercentage() &&
+            mirrorNegativeValueTextRotation() == r.mirrorNegativeValueTextRotation();
 }
 
 /*static*/
