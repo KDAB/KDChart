@@ -25,7 +25,7 @@ Model::Model()
 int Model::columnCount( const QModelIndex& parent ) const
 {
     Q_UNUSED( parent );
-    return 2; // row 0: x, row 1: y, more rows: y2, y3, y4...
+    return 2; // row 0: x, row 1: y
 }
 
 int Model::rowCount( const QModelIndex& parent ) const
