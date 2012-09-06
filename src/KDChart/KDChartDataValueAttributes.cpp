@@ -82,30 +82,14 @@ DataValueAttributes::Private::Private() :
     textAttributes.setRotation( -45 );
 
     // we set the Position to unknown: so the diagrams can take their own decisions
-    positiveRelPos.setReferencePosition( Position::Unknown ); // a bar diagram will use: Position::NorthWest
-    negativeRelPos.setReferencePosition( Position::Unknown ); // a bar diagram will use: Position::SouthEast
+    positiveRelPos.setReferencePosition( Position::Unknown );
+    negativeRelPos.setReferencePosition( Position::Unknown );
 
     positiveRelPos.setAlignment( Qt::AlignTop | Qt::AlignRight );
     negativeRelPos.setAlignment( Qt::AlignBottom | Qt::AlignRight );
 
     showRepetitiveDataLabels = false;
     showOverlappingDataLabels = false;
-
-#if 0
-    // By default use 0.4 (or 0.5, resp.) of the font height as horizontal distance between
-    // the data and their respective data value texts,
-    // and use 0.75 as the vertical distance.
-    const qreal posHoriPadding =  400.0; const qreal posVertPadding = -75.0;
-    const qreal negHoriPadding = -500.0; const qreal negVertPadding =  75.0;
-    Measure m( posHoriPadding, KDChartEnums::MeasureCalculationModeAuto );
-    positiveRelPos.setHorizontalPadding( m );
-    m.setValue( posVertPadding );
-    positiveRelPos.setVerticalPadding( m );
-    m.setValue( negHoriPadding );
-    negativeRelPos.setHorizontalPadding( m );
-    m.setValue( negVertPadding );
-    negativeRelPos.setVerticalPadding( m );
-#endif
 
     usePercentage = false;
     mirrorNegativeValueTextRotation = true;
