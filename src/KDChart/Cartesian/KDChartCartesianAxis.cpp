@@ -96,22 +96,22 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
     }
     m_manualLabelIndex = m_manualLabelTexts.isEmpty() ? -1 : 0;
 
-    if ( m_axis->isAbscissa() ){
-        // when no annotations or manual labels texts (which otherwise take precedence) were given,
-        // see if the dataset supplies textual header data.
-        // we use m_annotations to store the header data, although semantically wrong, for convenience.
+    if ( !m_dimension.isCalculated ) {
         // ### depending on the data, it is difficult to impossible to choose anchors (where ticks
         //     corresponding to the header labels are) on the ordinate or even the abscissa with
-        //     2-dimensional data.
+        //     2-dimensional data. this should be somewhat mitigated by isCalculated only being false
+        //     when header data labels should work, at least that seems to be what the code that sets up
+        //     the dimensions is trying to do.
+        QStringList dataHeaderLabels;
         AbstractDiagram* const dia = plane->diagram();
-        QStringList dataHeaderLabels = dia->itemRowLabels();
-        if ( m_annotations.isEmpty() && m_manualLabelTexts.isEmpty() && !dataHeaderLabels.isEmpty() ) {
+        dataHeaderLabels = dia->itemRowLabels();
+        if ( !dataHeaderLabels.isEmpty() ) {
             AttributesModel* model = dia->attributesModel();
             const int anchorCount = model->rowCount( QModelIndex() );
             if ( anchorCount == dataHeaderLabels.count() ) {
                 for ( int i = 0; i < anchorCount; i++ ) {
                     // ### ordinal number as anchor point generally only works for 1-dimensional data
-                    m_annotations.insert( qreal( i ), dataHeaderLabels.at( i ) );
+                    m_dataHeaderLabels.insert( qreal( i ), dataHeaderLabels.at( i ) );
                 }
             }
         }
@@ -218,11 +218,20 @@ void TickIterator::computeMajorTickLabel()
     } else {
         // if m_axis is null, we are dealing with grid lines. grid lines never need labels.
         if ( m_axis && ( m_majorLabelCount++ % m_majorThinningFactor ) == 0 ) {
-            m_text = QString::number( m_position ); // TODO proper number formatting
+            QMap< qreal, QString >::ConstIterator it =
+                m_dataHeaderLabels.lowerBound( slightlyLessThan( m_position ) );
+
+            if ( it != m_dataHeaderLabels.constEnd() && areAlmostEqual( it.key(), m_position ) ) {
+                m_text = it.value();
+                m_type = MajorTickHeaderDataLabel;
+            } else {
+                m_text = QString::number( m_position ); // TODO proper number formatting
+                m_type = MajorTick;
+            }
         } else {
             m_text.clear();
+            m_type = MajorTick;
         }
-        m_type = MajorTick;
     }
 }
 
@@ -801,7 +810,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 const bool canShortenLabels = !geoXy.isY && it.type() == TickIterator::MajorTickManualLong &&
                                               it.hasShorterLabels();
                 bool collides = false;
-                if ( it.type() == TickIterator::MajorTick || canShortenLabels || canRotate ) {
+                if ( it.type() == TickIterator::MajorTick || it.type() == TickIterator::MajorTickHeaderDataLabel
+                     || canShortenLabels || canRotate ) {
                     if ( !prevTickLabel ) {
                         // this is the first label of the axis, so just instantiate the second
                         prevTickLabel = tickLabel;

@@ -124,6 +124,7 @@ public:
     enum TickType {
         NoTick = 0,
         MajorTick,
+        MajorTickHeaderDataLabel,
         MajorTickManualShort,
         MajorTickManualLong,
         MinorTick,
@@ -156,6 +157,7 @@ private:
     DataDimension m_dimension; // upper and lower bounds
     bool m_isLogarithmic;
     QMap< qreal, QString > m_annotations;
+    QMap< qreal, QString > m_dataHeaderLabels;
     QList< qreal > m_customTicks;
     QStringList m_manualLabelTexts;
     uint m_majorThinningFactor;
