@@ -908,22 +908,72 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
     XySwitch geoXy( isVertical() );
     qreal size = 0; // this is the size transverse to the axis direction
 
+    // the following variables describle how much the first and last label stick out over the axis
+    // area, so that the geometry of surrounding layout items can be adjusted to make room.
+    qreal startOverhang = 0.0;
+    qreal endOverhang = 0.0;
+
     if ( mAxis->textAttributes().isVisible() ) {
+        // these are all used just to calculate startOverhang and endOverhang
+        qreal lowestValue = signalingNaN;
+        qreal highestValue = signalingNaN;
+        qreal lowestLabelPosition = signalingNaN;
+        qreal highestLabelPosition = signalingNaN;
+        qreal lowestLabelLongitudinalSize = signalingNaN;
+        qreal highestLabelLongitudinalSize = signalingNaN;
+
         TextLayoutItem tickLabel( QString(), mAxis->textAttributes(), refArea,
                                   KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
         const qreal tickLabelSpacing = 1; // this is implicitly defined in paintCtx()
-
+        bool isFirstTick = true;
         for ( TickIterator it( axis(), plane, 1, centerTicks ); !it.isAtEnd(); ++it ) {
-            qreal labelSize = 0.0;
+            highestValue = it.position();
+            const qreal drawPos = it.position() + ( centerTicks ? 0.5 : 0. );
+            if ( isFirstTick ) {
+                isFirstTick = false;
+                lowestValue = it.position();
+                if ( !mAxis->rulerAttributes().showFirstTick() ) {
+                    continue;
+                }
+            }
+
+            qreal labelSizeTransverse = 0.0;
             if ( !it.text().isEmpty() ) {
+                QPointF labelPosition = plane->translate( QPointF( geoXy( drawPos, 1.0 ),
+                                                                   geoXy( 1.0, drawPos ) ) );
+                highestLabelPosition = geoXy( labelPosition.x(), labelPosition.y() );
+                if ( ISNAN( lowestLabelPosition ) ) {
+                    lowestLabelPosition = highestLabelPosition;
+                }
+
                 tickLabel.setText( it.text() );
                 QSize sz = tickLabel.sizeHint();
-                labelSize = geoXy( sz.height(), sz.width() );
+
+                highestLabelLongitudinalSize = geoXy( sz.width(), sz.height() );
+                if ( ISNAN( lowestLabelLongitudinalSize ) ) {
+                    lowestLabelLongitudinalSize = highestLabelLongitudinalSize;
+                }
+
+                labelSizeTransverse = geoXy( sz.height(), sz.width() );
             }
             qreal tickLength = axis()->tickLength( it.type() == TickIterator::MinorTick );
-            size = qMax( size, tickLength + tickLabelSpacing + labelSize );
+            size = qMax( size, tickLength + tickLabelSpacing + labelSizeTransverse );
         }
+
+        QPointF pt = plane->translate( QPointF( geoXy( lowestValue, 1.0 ), geoXy( 1.0, lowestValue ) ) );
+        const qreal lowestPosition = geoXy( pt.x(), pt.y() );
+        highestValue += centerTicks ? 1.0 : 0.0;
+        pt = plane->translate( QPointF( geoXy( highestValue, 1.0 ), geoXy( 1.0, highestValue ) ) );
+        const qreal highestPosition = geoXy( pt.x(), pt.y() );
+
+        startOverhang = qMax( 0.0, lowestPosition - lowestLabelPosition + lowestLabelLongitudinalSize * 0.5 );
+        endOverhang = qMax( 0.0, highestLabelPosition - highestPosition + highestLabelLongitudinalSize * 0.5 );
     }
+
+    amountOfLeftOverlap = geoXy( startOverhang, 0.0 );
+    amountOfRightOverlap = geoXy( endOverhang, 0.0 );
+    amountOfBottomOverlap = geoXy( 0.0, startOverhang );
+    amountOfTopOverlap = geoXy( 0.0, endOverhang );
 
     const TextAttributes titleTA = titleTextAttributesWithAdjustedRotation();
     if ( titleTA.isVisible() && !axis()->titleText().isEmpty() ) {
