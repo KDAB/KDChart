@@ -908,15 +908,13 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
     XySwitch geoXy( isVertical() );
     qreal size = 0; // this is the size transverse to the axis direction
 
-    // the following variables describle how much the first and last label stick out over the axis
+    // the following variables describe how much the first and last label stick out over the axis
     // area, so that the geometry of surrounding layout items can be adjusted to make room.
     qreal startOverhang = 0.0;
     qreal endOverhang = 0.0;
 
     if ( mAxis->textAttributes().isVisible() ) {
-        // these are all used just to calculate startOverhang and endOverhang
-        qreal lowestValue = signalingNaN;
-        qreal highestValue = signalingNaN;
+        // these four are used just to calculate startOverhang and endOverhang
         qreal lowestLabelPosition = signalingNaN;
         qreal highestLabelPosition = signalingNaN;
         qreal lowestLabelLongitudinalSize = signalingNaN;
@@ -925,16 +923,12 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
         TextLayoutItem tickLabel( QString(), mAxis->textAttributes(), refArea,
                                   KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
         const qreal tickLabelSpacing = 1; // this is implicitly defined in paintCtx()
-        bool isFirstTick = true;
+        bool showFirstTick = mAxis->rulerAttributes().showFirstTick();
         for ( TickIterator it( axis(), plane, 1, centerTicks ); !it.isAtEnd(); ++it ) {
-            highestValue = it.position();
             const qreal drawPos = it.position() + ( centerTicks ? 0.5 : 0. );
-            if ( isFirstTick ) {
-                isFirstTick = false;
-                lowestValue = it.position();
-                if ( !mAxis->rulerAttributes().showFirstTick() ) {
-                    continue;
-                }
+            if ( !showFirstTick ) {
+                showFirstTick = true;
+                continue;
             }
 
             qreal labelSizeTransverse = 0.0;
@@ -960,9 +954,13 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
             size = qMax( size, tickLength + tickLabelSpacing + labelSizeTransverse );
         }
 
+        const DataDimension dimX = plane->gridDimensionsList().first();
+        const DataDimension dimY = plane->gridDimensionsList().last();
+        const qreal lowestValue = geoXy( dimX.start, dimY.start );
+        const qreal highestValue = geoXy( dimX.end, dimY.end );
+
         QPointF pt = plane->translate( QPointF( geoXy( lowestValue, 1.0 ), geoXy( 1.0, lowestValue ) ) );
         const qreal lowestPosition = geoXy( pt.x(), pt.y() );
-        highestValue += centerTicks ? 1.0 : 0.0;
         pt = plane->translate( QPointF( geoXy( highestValue, 1.0 ), geoXy( 1.0, highestValue ) ) );
         const qreal highestPosition = geoXy( pt.x(), pt.y() );
 
