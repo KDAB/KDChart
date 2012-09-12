@@ -951,12 +951,10 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
 
         const DataDimension dimX = plane->gridDimensionsList().first();
         const DataDimension dimY = plane->gridDimensionsList().last();
-        const qreal lowestValue = geoXy( dimX.start, dimY.start );
-        const qreal highestValue = geoXy( dimX.end, dimY.end );
 
-        QPointF pt = plane->translate( QPointF( geoXy( lowestValue, 1.0 ), geoXy( 1.0, lowestValue ) ) );
+        QPointF pt = plane->translate( QPointF( dimX.start, dimY.start ) );
         const qreal lowestPosition = geoXy( pt.x(), pt.y() );
-        pt = plane->translate( QPointF( geoXy( highestValue, 1.0 ), geoXy( 1.0, highestValue ) ) );
+        pt = plane->translate( QPointF( dimX.end, dimY.end ) );
         const qreal highestPosition = geoXy( pt.x(), pt.y() );
 
         startOverhang = qMax( 0.0, lowestPosition - lowestLabelPosition + lowestLabelLongitudinalSize * 0.5 );
