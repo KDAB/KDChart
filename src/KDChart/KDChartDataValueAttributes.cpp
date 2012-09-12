@@ -72,9 +72,7 @@ DataValueAttributes::Private::Private() :
     visible( false ),
     showInfinite( true )
 {
-    Measure me( 25.0,
-                KDChartEnums::MeasureCalculationModeAuto,
-                KDChartEnums::MeasureOrientationAuto );
+    Measure me( 20.0, KDChartEnums::MeasureCalculationModeAuto, KDChartEnums::MeasureOrientationAuto );
     textAttributes.setFontSize( me );
     me.setValue( 8.0 );
     me.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
