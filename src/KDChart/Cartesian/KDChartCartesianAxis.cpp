@@ -675,7 +675,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
     // TODO: label thinning also when grid line distance < 4 pixels, not only when labels collide
     TextLayoutItem *tickLabel = new TextLayoutItem( QString(), labelTA, plane->parent(),
                                                     KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
-    TextLayoutItem *prevTickLabel = 0;
+    TextLayoutItem *prevTickLabel = new TextLayoutItem( QString(), labelTA, plane->parent(),
+                                                        KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
     QPointF prevTickLabelPos;
     enum {
         Layout = 0,
@@ -683,9 +684,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
         Done
     };
     for ( int step = labelTA.isVisible() ? Layout : Painting; step < Done; step++ ) {
-        delete prevTickLabel;
-        prevTickLabel = 0;
         bool skipFirstTick = !rulerAttr.showFirstTick();
+        bool isFirstLabel = true;
         for ( TickIterator it( this, plane, labelThinningFactor, centerTicks ); !it.isAtEnd(); ++it ) {
             if ( skipFirstTick ) {
                 skipFirstTick = false;
@@ -812,11 +812,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 bool collides = false;
                 if ( it.type() == TickIterator::MajorTick || it.type() == TickIterator::MajorTickHeaderDataLabel
                      || canShortenLabels || canRotate ) {
-                    if ( !prevTickLabel ) {
-                        // this is the first label of the axis, so just instantiate the second
-                        prevTickLabel = tickLabel;
-                        tickLabel = new TextLayoutItem( QString(), labelTA, plane->parent(),
-                                                        KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
+                    if ( isFirstLabel ) {
+                        isFirstLabel = false;
                     } else {
                         collides = tickLabel->intersects( *prevTickLabel, labelPos, prevTickLabelPos );
                         qSwap( prevTickLabel, tickLabel );
