@@ -119,12 +119,9 @@ AbstractAxis::~AbstractAxis()
 
 void AbstractAxis::init()
 {
-    Measure m(
-        12.5,
-        KDChartEnums::MeasureCalculationModeAuto,
-        KDChartEnums::MeasureOrientationAuto );
+    Measure m( 14, KDChartEnums::MeasureCalculationModeAuto, KDChartEnums::MeasureOrientationAuto );
     d->textAttributes.setFontSize( m );
-    m.setValue( 5 );
+    m.setValue( 6 );
     m.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
     d->textAttributes.setMinimalFontSize( m );
     if ( d->diagram() )
