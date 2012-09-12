@@ -933,9 +933,6 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                 QPointF labelPosition = plane->translate( QPointF( geoXy( drawPos, 1.0 ),
                                                                    geoXy( 1.0, drawPos ) ) );
                 highestLabelPosition = geoXy( labelPosition.x(), labelPosition.y() );
-                if ( ISNAN( lowestLabelPosition ) ) {
-                    lowestLabelPosition = highestLabelPosition;
-                }
 
                 tickLabel.setText( it.text() );
                 QSize sz = tickLabel.sizeHint();
@@ -943,6 +940,7 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                 highestLabelLongitudinalSize = geoXy( sz.width(), sz.height() );
                 if ( ISNAN( lowestLabelLongitudinalSize ) ) {
                     lowestLabelLongitudinalSize = highestLabelLongitudinalSize;
+                    lowestLabelPosition = highestLabelPosition;
                 }
 
                 labelSizeTransverse = geoXy( sz.height(), sz.width() );
