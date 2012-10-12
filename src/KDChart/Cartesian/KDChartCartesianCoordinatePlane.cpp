@@ -402,22 +402,8 @@ void CartesianCoordinatePlane::layoutDiagrams()
 void CartesianCoordinatePlane::setFixedDataCoordinateSpaceRelation( bool fixed )
 {
     d->fixedDataCoordinateSpaceRelation = fixed;
-    d->fixedDataCoordinateSpaceRelationSize = QSize();
-    /*
-    //TODO(khz): We need to discuss if we want to do this:
-    if( ! fixed ){
-        bool bChanged = false;
-        if( doneSetZoomFactorY( 1.0 ) )
-            bChanged = true;
-        if( doneSetZoomFactorX( 1.0 ) )
-            bChanged = true;
-        if( doneSetZoomCenter( QPointF(0.5, 0.5) ) )
-            bChanged = true;
-        if( bChanged ){
-            emit propertiesChanged();
-        }
-    }
-    */
+    d->fixedDataCoordinateSpaceRelationPinnedSize = QSize();
+    handleFixedDataCoordinateSpaceRelation( drawingArea() );
 }
 
 bool CartesianCoordinatePlane::hasFixedDataCoordinateSpaceRelation() const
@@ -440,39 +426,44 @@ bool CartesianCoordinatePlane::xAxisStartAtZero() const
 
 void CartesianCoordinatePlane::handleFixedDataCoordinateSpaceRelation( const QRectF& geometry )
 {
-    // is the feature enabled?
-    if( !d->fixedDataCoordinateSpaceRelation )
+    if ( !d->fixedDataCoordinateSpaceRelation ) {
         return;
-
+    }
     // is the new geometry ok?
-    if( geometry.height() < 1 || geometry.width() < 1 )
+    if ( !geometry.isValid() ) {
         return;
-
-    // if the size was changed, we calculate new zoom settings
-    if( d->fixedDataCoordinateSpaceRelationSize != geometry.size() && d->fixedDataCoordinateSpaceRelationSize.isValid() )
-    {
-        const qreal newZoomX = zoomFactorX() * d->fixedDataCoordinateSpaceRelationSize.width() / geometry.width();
-        const qreal newZoomY = zoomFactorY() * d->fixedDataCoordinateSpaceRelationSize.height() / geometry.height();
-
-        const QPointF oldCenter = zoomCenter();
-        const QPointF newCenter = QPointF( oldCenter.x() * geometry.width() / d->fixedDataCoordinateSpaceRelationSize.width(),
-                                           oldCenter.y() * geometry.height() / d->fixedDataCoordinateSpaceRelationSize.height() );
-
-        // Use these internal methods to avoid sending
-        // the propertiesChanged signal three times:
-        bool bChanged = false;
-        if( doneSetZoomFactorY( newZoomY ) )
-            bChanged = true;
-        if( doneSetZoomFactorX( newZoomX ) )
-            bChanged = true;
-        if( doneSetZoomCenter( newCenter ) )
-            bChanged = true;
-        if( bChanged ){
-            emit propertiesChanged();
-        }
     }
 
-    d->fixedDataCoordinateSpaceRelationSize = geometry.size();
+    // note that the pinned size can be invalid even after setting it, if geometry wasn't valid.
+    // this is relevant for the cooperation between this method, setFixedDataCoordinateSpaceRelation(),
+    // and handleFixedDataCoordinateSpaceRelation().
+    if ( !d->fixedDataCoordinateSpaceRelationPinnedSize.isValid() ) {
+        d->fixedDataCoordinateSpaceRelationPinnedSize = geometry.size();
+        d->fixedDataCoordinateSpaceRelationPinnedZoom = ZoomParameters( zoomFactorX(), zoomFactorY(), zoomCenter() );
+        return;
+    }
+
+    // if the plane size was changed, change zoom factors to keep the diagram size constant
+    if ( d->fixedDataCoordinateSpaceRelationPinnedSize != geometry.size() ) {
+        const qreal widthScaling = d->fixedDataCoordinateSpaceRelationPinnedSize.width() / geometry.width();
+        const qreal heightScaling = d->fixedDataCoordinateSpaceRelationPinnedSize.height() / geometry.height();
+
+        const qreal newZoomX = d->fixedDataCoordinateSpaceRelationPinnedZoom.xFactor * widthScaling;
+        const qreal newZoomY = d->fixedDataCoordinateSpaceRelationPinnedZoom.yFactor * heightScaling;
+
+        const QPointF newCenter = QPointF( d->fixedDataCoordinateSpaceRelationPinnedZoom.xCenter / widthScaling,
+                                           d->fixedDataCoordinateSpaceRelationPinnedZoom.yCenter / heightScaling );
+        // Use these internal methods to avoid sending the propertiesChanged signal more than once
+        bool changed = false;
+        if ( doneSetZoomFactorY( newZoomY ) )
+            changed = true;
+        if ( doneSetZoomFactorX( newZoomX ) )
+            changed = true;
+        if ( doneSetZoomCenter( newCenter ) )
+            changed = true;
+        if ( changed )
+            emit propertiesChanged();
+    }
 }
 
 const QPointF CartesianCoordinatePlane::translate( const QPointF& diagramPoint ) const

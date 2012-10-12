@@ -37,6 +37,7 @@
 #include "KDChartAbstractCoordinatePlane_p.h"
 #include "CartesianCoordinateTransformation.h"
 #include "KDChartCartesianGrid.h"
+#include "KDChartZoomParameters.h"
 
 #include <KDABLibFakes>
 
@@ -121,7 +122,8 @@ public:
 
     bool fixedDataCoordinateSpaceRelation;
     bool xAxisStartAtZero;
-    QSizeF fixedDataCoordinateSpaceRelationSize;
+    QSizeF fixedDataCoordinateSpaceRelationPinnedSize;
+    ZoomParameters fixedDataCoordinateSpaceRelationPinnedZoom;
 
     DataDimensionsList dimensions;
 
