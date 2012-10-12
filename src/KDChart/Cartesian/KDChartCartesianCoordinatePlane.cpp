@@ -402,7 +402,7 @@ void CartesianCoordinatePlane::layoutDiagrams()
 void CartesianCoordinatePlane::setFixedDataCoordinateSpaceRelation( bool fixed )
 {
     d->fixedDataCoordinateSpaceRelation = fixed;
-    d->fixedDataCoordinateSpaceRelationOldSize = QRectF();
+    d->fixedDataCoordinateSpaceRelationSize = QSize();
     /*
     //TODO(khz): We need to discuss if we want to do this:
     if( ! fixed ){
@@ -449,14 +449,14 @@ void CartesianCoordinatePlane::handleFixedDataCoordinateSpaceRelation( const QRe
         return;
 
     // if the size was changed, we calculate new zoom settings
-    if( d->fixedDataCoordinateSpaceRelationOldSize != geometry && !d->fixedDataCoordinateSpaceRelationOldSize.isNull() )
+    if( d->fixedDataCoordinateSpaceRelationSize != geometry.size() && d->fixedDataCoordinateSpaceRelationSize.isValid() )
     {
-        const qreal newZoomX = zoomFactorX() * d->fixedDataCoordinateSpaceRelationOldSize.width() / geometry.width();
-        const qreal newZoomY = zoomFactorY() * d->fixedDataCoordinateSpaceRelationOldSize.height() / geometry.height();
+        const qreal newZoomX = zoomFactorX() * d->fixedDataCoordinateSpaceRelationSize.width() / geometry.width();
+        const qreal newZoomY = zoomFactorY() * d->fixedDataCoordinateSpaceRelationSize.height() / geometry.height();
 
         const QPointF oldCenter = zoomCenter();
-        const QPointF newCenter = QPointF( oldCenter.x() * geometry.width() / d->fixedDataCoordinateSpaceRelationOldSize.width(),
-                                           oldCenter.y() * geometry.height() / d->fixedDataCoordinateSpaceRelationOldSize.height() );
+        const QPointF newCenter = QPointF( oldCenter.x() * geometry.width() / d->fixedDataCoordinateSpaceRelationSize.width(),
+                                           oldCenter.y() * geometry.height() / d->fixedDataCoordinateSpaceRelationSize.height() );
 
         // Use these internal methods to avoid sending
         // the propertiesChanged signal three times:
@@ -472,7 +472,7 @@ void CartesianCoordinatePlane::handleFixedDataCoordinateSpaceRelation( const QRe
         }
     }
 
-    d->fixedDataCoordinateSpaceRelationOldSize = geometry;
+    d->fixedDataCoordinateSpaceRelationSize = geometry.size();
 }
 
 const QPointF CartesianCoordinatePlane::translate( const QPointF& diagramPoint ) const

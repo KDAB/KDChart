@@ -121,7 +121,7 @@ public:
 
     bool fixedDataCoordinateSpaceRelation;
     bool xAxisStartAtZero;
-    QRectF fixedDataCoordinateSpaceRelationOldSize;
+    QSizeF fixedDataCoordinateSpaceRelationSize;
 
     DataDimensionsList dimensions;
 
