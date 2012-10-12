@@ -114,6 +114,16 @@ public:
    * font size as it is used for rendering text, taking into account
    * any measures that were set via setFontSize and/or setMinimalFontSize.
    */
+  qreal calculatedFontSize( const QSizeF &referenceSize,
+                            KDChartEnums::MeasureOrientation autoReferenceOrientation ) const;
+
+  /**
+   * \brief Returns the font size that is used at drawing time.
+   *
+   * This method is called at drawing time. It returns the
+   * font size as it is used for rendering text, taking into account
+   * any measures that were set via setFontSize and/or setMinimalFontSize.
+   */
 #if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
   const qreal calculatedFontSize(
 #else

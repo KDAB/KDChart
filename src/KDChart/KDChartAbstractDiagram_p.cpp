@@ -153,6 +153,7 @@ void AbstractDiagram::Private::addLabel(
 
         const qreal fontHeight = cachedFontMetrics( dva.textAttributes().
                 calculatedFont( plane, KDChartEnums::MeasureOrientationMinimum ), diagram )->height();
+
         // Note: When printing data value texts and padding's Measure is using automatic reference area
         //       detection, the font height is used as reference size for both horizontal and vertical
         //       padding.

@@ -62,6 +62,11 @@ public:
         grid = new CartesianGrid();
     }
 
+    static Private *get( CartesianCoordinatePlane *plane )
+    {
+        return static_cast< Private * >( plane->d_func() );
+    }
+
     virtual bool isVisiblePoint( const AbstractCoordinatePlane * plane, const QPointF& point ) const
     {
         QPointF p = point;

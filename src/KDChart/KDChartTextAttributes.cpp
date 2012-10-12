@@ -23,6 +23,7 @@
 #include "KDChartTextAttributes.h"
 
 #include <KDChartCartesianCoordinatePlane.h>
+#include <KDChartCartesianCoordinatePlane_p.h>
 
 #include <QFont>
 #include <QPen>
@@ -162,6 +163,13 @@ bool TextAttributes::hasAbsoluteFontSize() const
         && d->minimalFontSize.calculationMode() == KDChartEnums::MeasureCalculationModeAbsolute;
 }
 
+qreal TextAttributes::calculatedFontSize( const QSizeF &referenceSize,
+                                          KDChartEnums::MeasureOrientation autoReferenceOrientation ) const
+{
+    const qreal normalSize  = fontSize().calculatedValue( referenceSize, autoReferenceOrientation );
+    const qreal minimalSize = minimalFontSize().calculatedValue( referenceSize, autoReferenceOrientation );
+    return qMax( normalSize, minimalSize );
+}
 
 #if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
 const
@@ -174,16 +182,24 @@ qreal TextAttributes::calculatedFontSize( const QObject* autoReferenceArea,
     return qMax( normalSize, minimalSize );
 }
 
-
 const QFont TextAttributes::calculatedFont( const QObject* autoReferenceArea,
                                             KDChartEnums::MeasureOrientation autoReferenceOrientation ) const
 {
-    qreal size = calculatedFontSize( autoReferenceArea, autoReferenceOrientation );
+    qreal size = NaN;
 
     const CartesianCoordinatePlane* plane = qobject_cast< const CartesianCoordinatePlane* >( autoReferenceArea );
     if ( plane  && plane->hasFixedDataCoordinateSpaceRelation() ) {
-        // FIXME (KDCH-514) make sure to return the same size as last time for this plane
-        //       note that a proper fix might have to be implemented somewhere else, not here
+        // HACK
+        // if hasFixedDataCoordinateSpaceRelation, we use a zoom trick to keep the diagram at a constant size
+        // even when the plane size changes. calculatedFontSize() usually uses the plane size, not the diagram
+        // size, to determine the font size. here we need to give it the diagram size in order to make the font
+        // size constant, too. see KDCHDEV-219.
+        CartesianCoordinatePlane::Private *priv
+            = CartesianCoordinatePlane::Private::get( const_cast< CartesianCoordinatePlane * >( plane ) );
+        size = calculatedFontSize( priv->fixedDataCoordinateSpaceRelationPinnedSize,
+                                   autoReferenceOrientation );
+    } else {
+        size = calculatedFontSize( autoReferenceArea, autoReferenceOrientation );
     }
 
     if ( size > 0.0 && d->cachedFontSize != size ) {
