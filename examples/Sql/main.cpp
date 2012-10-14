@@ -1,3 +1,25 @@
+/****************************************************************************
+** Copyright (C) 2001-2012 Klaralvdalens Datakonsult AB.  All rights reserved.
+**
+** This file is part of the KD Chart library.
+**
+** Licensees holding valid commercial KD Chart licenses may use this file in
+** accordance with the KD Chart Commercial License Agreement provided with
+** the Software.
+**
+**
+** This file may be distributed and/or modified under the terms of the
+** GNU General Public License version 2 and version 3 as published by the
+** Free Software Foundation and appearing in the file LICENSE.GPL.txt included.
+**
+** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+**
+** Contact info@kdab.com if any conditions of this licensing are not
+** clear to you.
+**
+**********************************************************************/
+
 #include <QtGui>
 #include <QSqlTableModel>
 #include <QSqlQuery>
@@ -24,7 +46,7 @@ public:
   virtual ~TransposeProxyModel() {}
   QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const { return index(sourceIndex.column(), sourceIndex.row()); }
   QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const { return sourceModel()->index(proxyIndex.column(), proxyIndex.row()); }
-  QModelIndex index(int r, int c, const QModelIndex &ind=QModelIndex()) const { return createIndex(r,c); }
+  QModelIndex index(int r, int c, const QModelIndex &ind=QModelIndex()) const { Q_UNUSED(ind) return createIndex(r,c); }
   QModelIndex parent(const QModelIndex&) const { return QModelIndex(); }
   int rowCount(const QModelIndex &) const { return sourceModel()->columnCount(); }
   int columnCount(const QModelIndex &) const { return sourceModel()->rowCount(); }
@@ -48,7 +70,8 @@ public:
     //db.setPassword("");
     bool ok = db.open();
     Q_ASSERT(ok);
-    
+    Q_UNUSED(ok) // release mode
+
     QSqlQuery createTableQuery = db.exec("CREATE TABLE IF NOT EXISTS MyTable (col1 INT NOT NULL PRIMARY KEY, col2 INT);");
     Q_ASSERT(!createTableQuery.lastError().isValid());
 
@@ -59,7 +82,7 @@ public:
 
     ok = m_model->select();
     Q_ASSERT(ok);
-    
+
     m_model->setHeaderData(0, Qt::Horizontal, tr("Column 1"));
     m_model->setHeaderData(1, Qt::Horizontal, tr("Column 2"));
 

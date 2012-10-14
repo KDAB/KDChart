@@ -1,28 +1,29 @@
-TEMPLATE	= subdirs
+TEMPLATE = subdirs
 CONFIG += ordered
-SUBDIRS		= tools \
-                  Widget \
-                  DrawIntoPainter \
-                  HeadersFooters \
-                  Legends \
-                  Axis \
-                  SharedAbscissa \
-                  Zoom \
-                  Pie \
-                  Bars \
-                  Stock \
-                  Lines \
-                  ModelView \
-                  EmptyValues \
-                  NoValues \
-                  Background \
-                  Grids \
-                  RealTime \
-                  Polar \
-                  Plane \
-                  TernaryCharts \
-                  Plotter \
-                  LeveyJennings \
-                  DataValueTexts \
-                  Gantt \
-		  demo
+SUBDIRS = tools \
+          Axis \
+          Background \
+          Bars \
+          DataValueTexts \
+          demo \
+          DrawIntoPainter \
+          EmptyValues \
+          Gantt \
+          Grids \
+          HeadersFooters \
+          Legends \
+          LeveyJennings \
+          Lines \
+          ModelView \
+          NoValues \
+          Pie \
+          Plane \
+          Plotter \
+          Polar \
+          RealTime \
+          SharedAbscissa \
+          Sql \
+          Stock \
+          TernaryCharts \
+          Widget \
+          Zoom

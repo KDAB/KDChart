@@ -74,10 +74,14 @@
 /examples/Plane/OverlayedPlanes/OverlayedPlanes.app/
 /examples/Plotter/Advanced/PlotterAdvanced$
 /examples/Plotter/Advanced/PlotterAdvanced.app/
+/examples/Plotter/BigDataset/BigDataset$
+/examples/Plotter/BigDataset/BigDataset.app/
 /examples/Plotter/BubbleChart/BubbleChart$
 /examples/Plotter/BubbleChart/BubbleChart.app/
-/examples/Plotter/SignalChart/SignalChart$
-/examples/Plotter/SignalChart/SignalChart.app/
+/examples/Plotter/Isometric/Isometric$
+/examples/Plotter/Isometric/Isometric.app/
+/examples/Plotter/Logarithmic/Logarithmic$
+/examples/Plotter/Logarithmic/Logarithmic.app/
 /examples/Plotter/Simple/PlotterSimple$
 /examples/Plotter/Simple/PlotterSimple.app/
 /examples/Plotter/Timeline/PlotterTimeline$
@@ -106,6 +110,8 @@
 /examples/Zoom/Keyboard/ZoomKeyboard.app/
 /examples/Zoom/ScrollBars/ZoomScrollBars$
 /examples/Zoom/ScrollBars/ZoomScrollBars.app/
+/examples/demo/demo$
+/examples/demo/demo.app/
 /qtests/AttributesModel/AttributesModel$
 /qtests/AttributesModel/AttributesModel.app/
 /qtests/AxisOwnership/AxisOwnership$
@@ -140,10 +146,6 @@
 /qtests/RelativePosition/RelativePosition.app/
 /qtests/WidgetElementOwnership/WidgetElementOwnership$
 /qtests/WidgetElementOwnership/WidgetElementOwnership.app/
-/qtests/XmlToolsTests/XmlToolsTests$
-/qtests/XmlToolsTests/XmlToolsTests.app/
-/qtests/runTest.bat$
-/qtests/runTest.bat.app/
 /tests/DelayedData/DelayedData$
 /tests/DelayedData/DelayedData.app/
 /tests/Gantt/apireview/TestApiReview$

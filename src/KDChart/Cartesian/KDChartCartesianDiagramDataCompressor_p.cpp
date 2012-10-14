@@ -180,6 +180,7 @@ void CartesianDiagramDataCompressor::slotRowsRemoved( const QModelIndex& parent,
     if ( parent != m_rootIndex )
         return;
     Q_ASSERT( start <= end );
+    Q_UNUSED( end )
 
     CachePosition startPos = mapToCache( start, 0 );
     static const CachePosition nullPosition;
@@ -209,6 +210,7 @@ void CartesianDiagramDataCompressor::slotColumnsRemoved( const QModelIndex& pare
     if ( parent != m_rootIndex )
         return;
     Q_ASSERT( start <= end );
+    Q_UNUSED( end );
 
     const CachePosition startPos = mapToCache( 0, start );
 

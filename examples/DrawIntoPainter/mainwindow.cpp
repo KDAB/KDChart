@@ -355,7 +355,7 @@ void MainWindow::on_transparencySB_valueChanged( int alpha )
         on_displayAreasCB_toggled( true );
 }
 
-void MainWindow::on_zoomFactorSB_valueChanged( qreal factor )
+void MainWindow::on_zoomFactorSB_valueChanged( double factor )
 {
     if ( factor > 1 ) {
         hSBar->setVisible( true );

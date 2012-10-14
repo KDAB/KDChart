@@ -86,7 +86,7 @@ private slots:
         QCOMPARE( m_bars->barAttributes( idx ),  baIndex );
         // try and override the cols and index level - should not work
         m_bars->setBarAttributes( ba );
-        QVERIFY( m_bars->barAttributes().barGapFactor() == 0.5 );
+        QVERIFY( m_bars->barAttributes().barGapFactor() == 0.4 );
         QVERIFY( m_bars->barAttributes( cols-2 ).barGapFactor() == 2 );
         QVERIFY( m_bars->barAttributes( idx ).barGapFactor() == 3 );
     }
@@ -103,8 +103,8 @@ private slots:
         QVERIFY( ba.fixedBarWidth() ==  -1 );
         QVERIFY( ba.useFixedBarWidth() == false );
         QVERIFY( ba.drawSolidExcessArrows() == false );
-        QVERIFY( ba.groupGapFactor() == 1.0 );
-        QVERIFY( ba.barGapFactor() == 0.5 );
+        QVERIFY( ba.groupGapFactor() == 2.0 );
+        QVERIFY( ba.barGapFactor() == 0.4 );
         //change settings
         ba.setFixedDataValueGap( 7 );
         ba.setUseFixedDataValueGap( true );

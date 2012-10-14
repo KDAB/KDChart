@@ -24,7 +24,6 @@
 
 #include <QList>
 #include <QDateTime>
-#include <QDomDocument>
 #include <QFile>
 
 #include <QDebug>
@@ -155,24 +154,11 @@ ProjectModel::~ProjectModel()
 
 bool ProjectModel::load( const QString& filename )
 {
+    Q_UNUSED(filename)
+    // TODO: read data
     delete m_root;
-
-    QFile file( filename );
-    if ( file.open( QIODevice::ReadOnly ) ) {
-        QString errorMsg;
-        int errorLine;
-        int errorColumn;
-        QDomDocument doc;
-        if ( doc.setContent( &file, true, &errorMsg, &errorLine, &errorColumn) ) {
-            // TODO: Read data
-        } else {
-            qWarning() << "Error in line" << errorLine << ":"<<errorMsg;
-        }
-        file.close();
-    }
-
     m_root = new Node;
-
+ 
     return true;
 }
 

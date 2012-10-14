@@ -6,7 +6,7 @@ After reading the introductory overview files in doc/
 you will find more information at three places:
 
 detailed browsable API reference:   doc/refman/index.html
-                              or:   http://docs.kdab.com/kdchart/2.4/
+                              or:   http://docs.kdab.com/kdchart/2.5/
 programmers manual with examples:   doc/manual/kdchart.pdf
 our sorted example programs:        examples/
 

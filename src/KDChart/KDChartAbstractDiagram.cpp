@@ -612,8 +612,11 @@ void AbstractDiagram::paintMarker( QPainter* painter,
             case MarkerAttributes::PainterPathMarker:
                 {
                     QPainterPath path = markerAttributes.customMarkerPath();
-                    painter->scale(maSize.height()/path.boundingRect().height(),
-                                   maSize.width()/path.boundingRect().width());
+                    const QRectF pathBoundingRect = path.boundingRect();
+                    const qreal xScaling = maSize.height() / pathBoundingRect.height();
+                    const qreal yScaling = maSize.width() / pathBoundingRect.width();
+                    const qreal scaling = qMin( xScaling, yScaling );
+                    painter->scale( scaling, scaling );
                     painter->setPen( PrintingParameters::scalePen( QPen( brush.color() ) ) );
                     painter->drawPath(path);
                     break;

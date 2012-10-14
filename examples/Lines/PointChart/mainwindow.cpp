@@ -38,7 +38,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 {
     setupUi( this );
     path = new QPainterPath();
-    path->addEllipse( 0.5, 0.5, 0.5, 0.2 );
+    path->addEllipse( -2.0, -1.0, 4.0, 2.0 );
 
     QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
     m_chart = new Chart();

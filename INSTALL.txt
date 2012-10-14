@@ -1,4 +1,4 @@
-KD Chart 2.x requires a Qt version >= 4 with XML support enabled.
+KD Chart 2.x requires a Qt version 4.x.
 
 ================== UNIX ==========================
      
@@ -12,66 +12,37 @@ KD Chart 2.x requires a Qt version >= 4 with XML support enabled.
 
    To define the install-location use for example;
      ./configure.sh -shared -debug -prefix /opt/kdchart
-	 
+ 
    NOTE: Don't use releative paths for the prefix, they will not work.
 
 
 1) set your LD_LIBRARY_PATH to point to your KD Chart installation lib directory.
 
-If you do not have LD_LIBRARY_PATH set already then use this line:
+   If you do not have LD_LIBRARY_PATH set already then use this line:
 LD_LIBRARY_PATH=/path/to/kdchart/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH
 
-The above has to be added into your .bashrc or similar to remain. It may also of course be run from a shell just before building KD Chart, but in this case your settings will only be available for this shell.
+   The above has to be added into your .bashrc or similar to make it permanent. It may also,
+   of course, be run from a shell just before building KD Chart, but in this case your settings
+   will only be available for this shell.
 
-
-4) Build everything by typing:
+2) Build everything by typing:
 
 make
 
-
-5) (optionally:) Install KD Chart:
+3) (optionally:) Install KD Chart:
 
    From your top-level KD Chart directory just type
 
 make install
 
-   NOTE: Maybe admin rights are needed for installing it to /usr/local. Run "sudo make install", to install with admin rights.
+   NOTE: Admin rights are needed for installing it to /usr/local.
+         Run "sudo make install", to install with admin rights.
 
    This will copy the necessary files into the sub-directories of
    your installation path: /usr/local/KDAB/KDChart-VERSION/
 
-
-6) (optionally:) Install the Qt Designer Plug-in:
-
-a) automatic installation
-   * Go to the plugins directory of your KD Chart installation.
-   * Run "make distclean"
-   * Run "qmake CONFIG+=install-qt"
-   * Run "make install"
-
-   This will copy the Plug-in into the QT plugin path,
-   e.g. this might be $QTDIR/plugins/designer/
-
-b) manual installation
-
-   NOTE: This is only needed if you have skipped the top-level installation
-         described above:
-
-   Run "make install"
-   from the plugins directory of your KD Chart installation.
-   Make sure that your environment variable are set (see above) before doing so.
-
-   This will copy the Plug-in into the lib/plugin/ directory of your installation path:
-   /usr/local/KDAB/KDChart-VERSION/lib/plugin
-
-   From there you can copy it into your desired QT's version plugin path,
-   e.g. this might be (your QT directory)/plugins/designer/,
-   or you can set the QT_PLUGIN_PATH environment variable before running
-   the designer.  If set, Qt will look for plugins in the paths
-   (separated by the system path separator) specified in the variable.
-
-7) Have a look at the examples applications it will get you started with KD Chart 2.x and its new API.
+4) Have a look at the example applications to get you started with the KD Chart 2.x API.
 
 
 ================ WINDOWS =======================
@@ -86,13 +57,13 @@ b) manual installation
      
     To define the install-location use for example;
      configure.bat -shared -debug -prefix c:/kdchart
-	 
+
     NOTE: Don't use releative paths for the prefix, they will not work.
 
 1) Add the path to KD Chart lib into your LIB environment variable and the path 
-to KD Chart bin into your PATH environment variable.
+   to KD Chart bin into your PATH environment variable.
 
-Or run:
+   Or run:
 set PATH=\path\to\kdchart\bin;%PATH%
 set LIB=\path\to\kdchart\lib;%LIB%
 
@@ -109,42 +80,7 @@ set LIB=\path\to\kdchart\lib;%LIB%
    This will copy the necessary files into the sub-directories of
    your installation path: C:\KDAB\KDChart-VERSION\
    
-4) (optionally:) Install the Qt Designer Plug-in:
-
-a) automatic installation
-   * Go to the plugins directory of your KD Chart installation.
-   * Run "nmake distclean"
-   * Run "qmake CONFIG+=install-qt"
-   * Run "nmake install"
-
-   This will copy the Plug-in into the QT plugin path,
-   e.g. this might be $QTDIR/plugins/designer/
-   
-   NOTE: To make the plugin working it is needed to build kdchart
-   with the exact same configuration designer was build with (what is usually
-   "configure.bat -shared -release" if you installed the pre-compiled Qt
-   provided by Nokia). Also it is needed to add your KD Chart installation
-   directory to the PATH variable (e.g. set PATH=C:\KDAB\KDChart\lib;%PATH%).
-
-b) manual installation
-
-   NOTE: This is only needed if you have skipped the top-level installation
-         described above:
-
-   Run "nmake install"
-   from the plugins directory of your KD Chart installation.
-   Make sure that your environment variable are set (see above) before doing so.
-
-   This will copy the Plug-in into the lib/plugin/ directory of your installation path:
-   C:\KDAB\KDChart-VERSION\lib\plugin\
-
-   From there you can copy it into your desired QT's version plugin path,
-   e.g. this might be (your QT directory)/plugins/designer/,
-   or you can set the QT_PLUGIN_PATH environment variable before running
-   the designer.  If set, Qt will look for plugins in the paths
-   (separated by the system path separator) specified in the variable.
-
-5) Have a look at the examples applications it will get you started with KD Chart 2.x and its new API.
+4) Have a look at the example applications to get you started with the KD Chart 2.x API.
    
 ================== MAC ==========================
    
@@ -161,13 +97,15 @@ b) manual installation
 
    NOTE: Don't use releative paths for the prefix, they will not work.
 
-1) set your DYLD_LIBRARY_PATH to point to your KD Chart installation lib directory.
-
-If you do not have DYLD_LIBRARY_PATH set already then use this line:
+1) Set your DYLD_LIBRARY_PATH to point to your KD Chart installation lib directory.
+   
+   If you do not have DYLD_LIBRARY_PATH set already then use these lines:
 DYLD_LIBRARY_PATH=/path/to/kdchart/lib:$DYLD_LIBRARY_PATH
 export DYLD_LIBRARY_PATH
 
-The above has to be added into your .bashrc or similar to remain. It may also of course be run from a shell just before building KD Chart, but in this case your settings will only be available for this shell.
+   The above has to be added into your .bashrc or similar to make it permanent. It may also,
+   of course, be run from a shell just before building KD Chart, but in this case your settings
+   will only be available for this shell.
 
 2) Build everything by typing:
 
@@ -182,34 +120,4 @@ make install
    This will copy the necessary files into the sub-directories of
    your installation path: /usr/local/KDAB/KDChart-VERSION/
 
-
-4) (optionally:) Install the Qt Designer Plug-in:
-
-a) automatic installation
-   * Go to the plugins directory of your KD Chart installation.
-   * Run "make distclean"
-   * Run "qmake CONFIG+=install-qt"
-   * Run "make install"
-
-   This will copy the Plug-in into the QT plugin path,
-   e.g. this might be $QTDIR/plugins/designer/
-
-b) manual installation
-
-   NOTE: This is only needed if you have skipped the top-level installation
-         described above:
-
-   Run "make install"
-   from the plugins directory of your KD Chart installation.
-   Make sure that your environment variable are set (see above) before doing so.
-
-   This will copy the Plug-in into the lib/plugin/ directory of your installation path:
-   /usr/local/KDAB/KDChart-VERSION/lib/plugin
-
-   From there you can copy it into your desired QT's version plugin path,
-   e.g. this might be (your QT directory)/plugins/designer/,
-   or you can set the QT_PLUGIN_PATH environment variable before running
-   the designer.  If set, Qt will look for plugins in the paths
-   (separated by the system path separator) specified in the variable.
-
-5) Have a look at the examples applications it will get you started with KD Chart 2.x and its new API.
+4) Have a look at the example applications to get you started with the KD Chart 2.x API.

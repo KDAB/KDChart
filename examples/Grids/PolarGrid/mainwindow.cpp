@@ -89,7 +89,7 @@ void MainWindow::setItemModelData()
 }
 
 
-void MainWindow::on_startPositionSB_valueChanged( qreal pos )
+void MainWindow::on_startPositionSB_valueChanged( double pos )
 {
     const int intValue = static_cast<int>( pos );
     startPositionSL->blockSignals( true );

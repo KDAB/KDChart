@@ -1,7 +1,5 @@
 include( $${TOP_SOURCE_DIR}/examples/examples.pri )
 
-QT+=xml
-
 HEADERS += mainwindow.h projectmodel.h
 SOURCES += main.cpp mainwindow.cpp projectmodel.cpp
 

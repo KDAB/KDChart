@@ -919,8 +919,9 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
 
         TextLayoutItem tickLabel( QString(), mAxis->textAttributes(), refArea,
                                   KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
-        const qreal tickLabelSpacing = 1; // this is implicitly defined in paintCtx()
-        bool showFirstTick = mAxis->rulerAttributes().showFirstTick();
+        const RulerAttributes rulerAttr = mAxis->rulerAttributes();
+
+        bool showFirstTick = rulerAttr.showFirstTick();
         for ( TickIterator it( axis(), plane, 1, centerTicks ); !it.isAtEnd(); ++it ) {
             const qreal drawPos = it.position() + ( centerTicks ? 0.5 : 0. );
             if ( !showFirstTick ) {
@@ -929,6 +930,7 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
             }
 
             qreal labelSizeTransverse = 0.0;
+            qreal labelMargin = 0.0;
             if ( !it.text().isEmpty() ) {
                 QPointF labelPosition = plane->translate( QPointF( geoXy( drawPos, 1.0 ),
                                                                    geoXy( 1.0, drawPos ) ) );
@@ -944,9 +946,16 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                 }
 
                 labelSizeTransverse = geoXy( sz.height(), sz.width() );
+                labelMargin = rulerAttr.labelMargin();
+                if ( labelMargin < 0 ) {
+                    // HACK not height() * 0.5 like in paintCtx because ???, the size would be too small that way.
+                    labelMargin = QFontMetricsF( tickLabel.realFont() ).height();
+                }
+                // HACK #2: leaving this out unlike in paintCtx, this would make the size too small
+                // labelMargin -= tickLabel.marginWidth(); // make up for the margin that's already there
             }
             qreal tickLength = axis()->tickLength( it.type() == TickIterator::MinorTick );
-            size = qMax( size, tickLength + tickLabelSpacing + labelSizeTransverse );
+            size = qMax( size, tickLength + labelMargin + labelSizeTransverse );
         }
 
         const DataDimension dimX = plane->gridDimensionsList().first();
