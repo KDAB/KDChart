@@ -80,8 +80,14 @@ bool MainWindow::eventFilter(QObject* target, QEvent* event)
 {
     if (target == m_chart) {
         if (event->type() == QEvent::MouseMove) {
+            // When the mouse is over a data-point then fetch that data-point
+            // that belongs to the mouse-position and print the data value.
             QMouseEvent* mouseEvent = static_cast< QMouseEvent* >( event );
-            qDebug() << "Mouse position" << mouseEvent->pos();
+            QPointF pos = mouseEvent->pos();
+            QModelIndex index = m_lines->indexAt(pos.toPoint());
+            if (index.isValid()) {
+                qDebug() << "Mouse position"  << pos << "Data:" << m_model.data(index).toDouble();
+            }
         }
     }
     return QWidget::eventFilter(target, event);
