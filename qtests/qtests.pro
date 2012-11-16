@@ -23,11 +23,11 @@ unix:SUBDIRS += AxisOwnership
 test.target=test
 unix:!macx {
     LIB_PATH=$${TOP_BUILD_DIR}/lib:\$\$LD_LIBRARY_PATH
-    test.commands=for d in $${SUBDIRS}; do cd "\$$d" && LD_LIBRARY_PATH=$$LIB_PATH $(MAKE) test && cd .. || exit 1; done
+    test.commands=for d in $${SUBDIRS}; do cd "\$$d" && LD_LIBRARY_PATH=$$LIB_PATH $(MAKE) test || TEST_FAIL=1; cd ..; done; if [ -n \"\$$TEST_FAIL\" ]; then exit 1; fi
 }
 unix:macx {
     LIB_PATH=$${TOP_BUILD_DIR}/lib:\$\$DYLD_LIBRARY_PATH
-    test.commands=for d in $${SUBDIRS}; do ( cd "\$$d" && DYLD_LIBRARY_PATH=$$LIB_PATH $(MAKE) test ) || exit 1; done
+    test.commands=for d in $${SUBDIRS}; do ( cd "\$$d" && export DYLD_FRAMEWORK_PATH=$$LIB_PATH && $(MAKE) test ) || TEST_FAIL=1; done; if [ -n \"\$$TEST_FAIL\" ]; then exit 1; fi
 }
 
 win32 {
