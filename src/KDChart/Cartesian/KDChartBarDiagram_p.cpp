@@ -163,24 +163,6 @@ BarDiagram* BarDiagram::BarDiagramType::diagram() const
     return static_cast< BarDiagram* >( m_private->diagram );
 }
 
-void BarDiagram::BarDiagramType::addLabel( LabelPaintCache* lpc,
-                                           const QModelIndex& index, const PositionPoints& points,
-                                           const Position& autoPositionPositive,
-                                           const Position& autoPositionNegative, qreal value )
-{
-    m_private->addLabel( lpc, index, 0, points,
-                         autoPositionPositive, autoPositionNegative, value );
-}
-
-void BarDiagram::BarDiagramType::paintDataValueTextsAndMarkers(
-    PaintContext* ctx,
-    const LabelPaintCache& lpc,
-    bool paintMarkers )
-{
-    m_private->paintDataValueTextsAndMarkers( ctx, lpc, paintMarkers );
-}
-
-
 void BarDiagram::BarDiagramType::calculateValueAndGapWidths( int rowCount,int colCount,
                                              qreal groupWidth,
                                              qreal& outBarWidth,
