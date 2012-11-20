@@ -569,12 +569,15 @@ QModelIndexList CartesianDiagramDataCompressor::mapToModel( const CachePosition&
         indexes << m_model->index( position.row, position.column * 2 + 1, m_rootIndex ); // checked
     } else {
         // assumption: indexes per column == 1
+        Q_ASSERT( position.column < m_model->columnCount() );
         const qreal ipp = indexesPerPixel();
-        for ( int i = 0; i < ipp; ++i ) {
-            int row = qRound( position.row * ipp ) + i;
-            int col = position.column;
-            Q_ASSERT( row < m_model->rowCount() && col < m_model->columnCount() );
-            const QModelIndex index = m_model->index( row, col, m_rootIndex ); // checked
+        const int baseRow = floor( position.row * ipp );
+        // the following line needs to work for the last row(s), too...
+        const int endRow = floor( ( position.row + 1 ) * ipp );
+        qDebug() << Q_FUNC_INFO << ipp << position.row << baseRow << endRow;
+        for ( int row = 0; row < endRow; ++row ) {
+            Q_ASSERT( row < m_model->rowCount() );
+            const QModelIndex index = m_model->index( row, position.column, m_rootIndex );
             if ( index.isValid() ) {
                 indexes << index;
             }
