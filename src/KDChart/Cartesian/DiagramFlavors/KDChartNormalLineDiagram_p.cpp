@@ -159,10 +159,11 @@ void NormalLineDiagram::paint( PaintContext* ctx )
             }
 
             // area corners, a + b are the line ends:
-            const QPointF a( plane->translate( QPointF( diagram()->centerDataPoints() ? lastPoint.key + 0.5 : lastPoint.key, lastPoint.value ) ) );
-            const QPointF b( plane->translate( QPointF( diagram()->centerDataPoints() ? point.key + 0.5 : point.key, point.value ) ) );
-            const QPointF c( plane->translate( QPointF( diagram()->centerDataPoints() ? lastPoint.key + 0.5 : lastPoint.key, lastAreaBoundingValue ) ) );
-            const QPointF d( plane->translate( QPointF( diagram()->centerDataPoints() ? point.key + 0.5 : point.key, areaBoundingValue ) ) );
+            const qreal offset = diagram()->centerDataPoints() ? 0.5 : 0;
+            const QPointF a( plane->translate( QPointF( lastPoint.key + offset, lastPoint.value ) ) );
+            const QPointF b( plane->translate( QPointF( point.key + offset, point.value ) ) );
+            const QPointF c( plane->translate( QPointF( lastPoint.key + offset, lastAreaBoundingValue ) ) );
+            const QPointF d( plane->translate( QPointF( point.key + offset, areaBoundingValue ) ) );
             // add the line to the list:
            // add data point labels:
             const PositionPoints pts = PositionPoints( b, a, d, c );
