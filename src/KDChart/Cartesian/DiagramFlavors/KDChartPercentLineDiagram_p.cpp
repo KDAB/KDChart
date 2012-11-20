@@ -215,8 +215,8 @@ void PercentLineDiagram::paint( PaintContext* ctx )
             if( !ISNAN( point.value ) )
             {
                 const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
-                addLabel( &lpc, sourceIndex, &position, pts, Position::NorthWest,
-                          Position::SouthWest, point.value );
+                m_private->addLabel( &lpc, sourceIndex, &position, pts, Position::NorthWest,
+                                     Position::NorthWest, point.value );
             }
         }
         if( areas.count() ){

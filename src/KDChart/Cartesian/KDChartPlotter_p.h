@@ -111,10 +111,6 @@ namespace KDChart {
 
         int datasetDimension() const;
 
-        void addLabel( LabelPaintCache* lpc, const QModelIndex& index,
-                       const PositionPoints& points, const Position& autoPositionPositive,
-                       const Position& autoPositionNegative, qreal value );
-
         Plotter::Private* m_private;
         // TODO: do we need them or not? (currently unused, but maybe there are supposed to be several
         //       compressors

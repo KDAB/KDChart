@@ -65,17 +65,6 @@ qreal LineDiagram::LineDiagramType::valueForCell( int row, int column ) const
     return diagram()->valueForCell( row, column );
 }
 
-void LineDiagram::LineDiagramType::addLabel( LabelPaintCache* lpc,
-                                             const QModelIndex & index,
-                                             const CartesianDiagramDataCompressor::CachePosition* position,
-                                             const PositionPoints& points,
-                                             const Position& autoPositionPositive,
-                                             const Position& autoPositionNegative, qreal value )
-{
-    m_private->addLabel( lpc, index, position, points,
-                         autoPositionPositive, autoPositionNegative, value );
-}
-
 CartesianDiagramDataCompressor& LineDiagram::LineDiagramType::compressor() const
 {
     return m_private->compressor;

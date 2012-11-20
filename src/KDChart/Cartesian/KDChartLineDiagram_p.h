@@ -97,10 +97,6 @@ namespace KDChart {
         int datasetDimension() const;
 
         qreal valueForCell( int row, int column ) const;
-        void addLabel( LabelPaintCache* lpc, const QModelIndex& index,
-                       const CartesianDiagramDataCompressor::CachePosition* position,
-                       const PositionPoints& points, const Position& autoPositionPositive,
-                       const Position& autoPositionNegative, qreal value );
 
         LineDiagram::Private* m_private;
     };

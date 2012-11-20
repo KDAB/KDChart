@@ -107,8 +107,8 @@ void NormalPlotter::paint( PaintContext* ctx )
                         polygon << a << b << d << c;
                         areas << polygon;
                     }
-                    addLabel( &lpc, sourceIndex, pts, Position::NorthWest,
-                              Position::SouthWest, point.value );
+                    m_private->addLabel( &lpc, sourceIndex, 0, pts, Position::NorthWest,
+                                         Position::NorthWest, point.value );
                     if( !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) )
                     {
                         PaintingHelpers::paintAreas( m_private, ctx,
@@ -183,8 +183,8 @@ void NormalPlotter::paint( PaintContext* ctx )
                         polygon << a << b << d << c;
                         areas << polygon;
                     }
-                    addLabel( &lpc, sourceIndex, pts, Position::NorthWest,
-                              Position::SouthWest, point.value );
+                    m_private->addLabel( &lpc, sourceIndex, 0, pts, Position::NorthWest,
+                                         Position::NorthWest, point.value );
                     PaintingHelpers::paintAreas( m_private, ctx,
                                                  attributesModel()->mapToSource( lastPoint.index ),
                                                  areas, laCell.transparency() );

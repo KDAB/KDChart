@@ -78,14 +78,6 @@ Plotter* Plotter::PlotterType::diagram() const
     return static_cast< Plotter* >( m_private->diagram );
 }
 
-void Plotter::PlotterType::addLabel( LabelPaintCache *lpc,
-                                     const QModelIndex& index, const PositionPoints& points,
-                                     const Position& autoPositionPositive,
-                                     const Position& autoPositionNegative, qreal value )
-{
-    m_private->addLabel( lpc, index, 0, points, autoPositionPositive, autoPositionNegative, value );
-}
-
 CartesianDiagramDataCompressor& Plotter::PlotterType::compressor() const
 {
     return m_private->compressor;

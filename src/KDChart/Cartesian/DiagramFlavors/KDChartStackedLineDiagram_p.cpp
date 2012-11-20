@@ -220,8 +220,8 @@ void StackedLineDiagram::paint( PaintContext* ctx )
 
             const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
             if( !ISNAN( point.value ) )
-                addLabel( &lpc, sourceIndex, &position, pts, Position::NorthWest,
-                          Position::SouthWest, point.value );
+                m_private->addLabel( &lpc, sourceIndex, &position, pts, Position::NorthWest,
+                                     Position::NorthWest, point.value );
         }
         if ( areas.count() ) {
             PaintingHelpers::paintAreas( m_private, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
