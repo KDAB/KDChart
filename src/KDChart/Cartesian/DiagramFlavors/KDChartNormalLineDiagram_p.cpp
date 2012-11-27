@@ -65,8 +65,8 @@ const QPair< QPointF, QPointF > NormalLineDiagram::calculateDataBoundaries() con
             const qreal value = ISNAN( point.value ) ? 0.0 : point.value;
 
             if ( ISNAN( yMin ) ) {
-                    yMin = value;
-                    yMax = value;
+                yMin = value;
+                yMax = value;
             } else {
                 yMin = qMin( yMin, value );
                 yMax = qMax( yMax, value );
