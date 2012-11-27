@@ -574,7 +574,7 @@ QModelIndexList CartesianDiagramDataCompressor::mapToModel( const CachePosition&
         const int baseRow = floor( position.row * ipp );
         // the following line needs to work for the last row(s), too...
         const int endRow = floor( ( position.row + 1 ) * ipp );
-        for ( int row = 0; row < endRow; ++row ) {
+        for ( int row = baseRow; row < endRow; ++row ) {
             Q_ASSERT( row < m_model->rowCount() );
             const QModelIndex index = m_model->index( row, position.column, m_rootIndex );
             if ( index.isValid() ) {
