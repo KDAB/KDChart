@@ -382,27 +382,26 @@ void CartesianDiagramDataCompressor::recalcResolution()
 
 void CartesianDiagramDataCompressor::setResolution( int x, int y )
 {
-    const int oldX = m_xResolution;
-    const int oldY = m_yResolution;
-
-    if( m_datasetDimension != 1 )
-    {
-        // just ignore the resolution in that case
-        m_xResolution = m_model == 0 ? 0 : m_model->rowCount( m_rootIndex );
-        m_yResolution = qMax( 0, y );
+    if ( setResolutionInternal( x, y ) ) {
+        rebuildCache();
+        calculateSampleStepWidth();
     }
-    else if ( x != m_xResolution || y != m_yResolution ) {
+}
+
+bool CartesianDiagramDataCompressor::setResolutionInternal( int x, int y )
+{
+    const int oldXRes = m_xResolution;
+    const int oldYRes = m_yResolution;
+
+    if ( m_datasetDimension != 1 ) {
+        // just ignore the X resolution in that case
+        m_xResolution = m_model ? m_model->rowCount( m_rootIndex ) : 0;
+    } else {
         m_xResolution = qMax( 0, x );
-        m_yResolution = qMax( 0, y );
-        rebuildCache();
-        calculateSampleStepWidth();
     }
+    m_yResolution = qMax( 0, y );
 
-    if( oldX != m_xResolution || oldY != m_yResolution || ( oldY != m_yResolution && m_datasetDimension == 1 ) )
-    {
-        rebuildCache();
-        calculateSampleStepWidth();
-    }
+    return m_xResolution != oldXRes || m_yResolution != oldYRes;
 }
 
 void CartesianDiagramDataCompressor::clearCache()
@@ -416,7 +415,7 @@ void CartesianDiagramDataCompressor::rebuildCache()
     Q_ASSERT( m_datasetDimension != 0 );
 
     m_data.clear();
-    recalcResolution();
+    setResolutionInternal( m_xResolution, m_yResolution );
     const int columnDivisor = m_datasetDimension != 2 ? 1 : m_datasetDimension;
     const int columnCount = m_model ? m_model->columnCount( m_rootIndex ) / columnDivisor : 0;
     const int rowCount = qMin( m_model ? m_model->rowCount( m_rootIndex ) : 0, m_xResolution );

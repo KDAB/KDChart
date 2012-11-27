@@ -175,6 +175,8 @@ namespace KDChart {
         void clearCache();
 
     private:
+        // private version of setResolution() that does *not* call rebuildCache()
+        bool setResolutionInternal( int x, int y );
         // forget cached data at the position
         void invalidate( const CachePosition& );
         // check if position is inside the dataset's index range
