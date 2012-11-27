@@ -428,6 +428,7 @@ void BarDiagram::resize( const QSizeF& size )
     d->compressor.setResolution( static_cast< int >( size.width() * coordinatePlane()->zoomFactorX() ),
                                  static_cast< int >( size.height() * coordinatePlane()->zoomFactorY() ) );
     setDataBoundariesDirty();
+    QAbstractItemView::resize( size.toSize() );
 }
 
 #if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)

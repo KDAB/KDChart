@@ -430,6 +430,7 @@ void Plotter::resize ( const QSizeF& size )
         calcMergeRadius();
     }
     setDataBoundariesDirty();
+    QAbstractItemView::resize( size.toSize() );
 }
 
 void Plotter::setDataBoundariesDirty()
