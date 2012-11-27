@@ -260,7 +260,7 @@ QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
         const_cast<CartesianCoordinatePlane*>(this)->d->verticalMin = dataBoundingRect.bottom();
         const_cast<CartesianCoordinatePlane*>(this)->d->verticalMax = dataBoundingRect.top();
     }
-    //qDebug() << "CartesianCoordinatePlane::calculateRawDataBoundingRect()\nreturns data boundaries: " << dataBoundingRect;
+    // qDebug() << Q_FUNC_INFO << dataBoundingRect;
     return dataBoundingRect;
 }
 
