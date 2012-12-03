@@ -225,7 +225,8 @@ void TickIterator::computeMajorTickLabel()
                 m_text = it.value();
                 m_type = MajorTickHeaderDataLabel;
             } else {
-                m_text = QString::number( m_position ); // TODO proper number formatting
+                // 'f' to avoid exponential notation for large numbers, consistent with data value text
+                m_text = QString::number( m_position, 'f' );
                 m_type = MajorTick;
             }
         } else {
