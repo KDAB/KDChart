@@ -120,11 +120,8 @@ void AbstractArea::paintIntoRect( QPainter& painter, const QRect& rect )
 void AbstractArea::paintAll( QPainter& painter )
 {
     // Paint the background and frame
-    const QRect overlappingArea( geometry().adjusted(
-            -d->amountOfLeftOverlap,
-            -d->amountOfTopOverlap,
-            d->amountOfRightOverlap,
-            d->amountOfBottomOverlap ) );
+    const QRect overlappingArea( geometry().adjusted( -d->amountOfLeftOverlap, -d->amountOfTopOverlap,
+                                                      d->amountOfRightOverlap, d->amountOfBottomOverlap ) );
     paintBackground( painter, overlappingArea );
     paintFrame( painter, overlappingArea );
 
@@ -132,15 +129,22 @@ void AbstractArea::paintAll( QPainter& painter )
     // to fit into the inner rectangle
     const QRect oldGeometry( areaGeometry() );
     QRect inner( innerRect() );
-    inner.moveTo(
-        oldGeometry.left() + inner.left(),
-        oldGeometry.top()  + inner.top() );
+    inner.moveTo( oldGeometry.left() + inner.left(), oldGeometry.top() + inner.top() );
     const bool needAdjustGeometry = oldGeometry != inner;
-    if( needAdjustGeometry )
+    if ( needAdjustGeometry ) {
+        // don't notify others of this change for internal purposes
+        bool prevSignalBlocked = signalsBlocked();
+        blockSignals( true );
         setGeometry( inner );
+        blockSignals( prevSignalBlocked );
+    }
     paint( &painter );
-    if( needAdjustGeometry )
+    if ( needAdjustGeometry ) {
+        bool prevSignalBlocked = signalsBlocked();
+        blockSignals( true );
         setGeometry( oldGeometry );
+        blockSignals( prevSignalBlocked );
+    }
     //qDebug() << "AbstractAreaWidget::paintAll() done.";
 }
 
