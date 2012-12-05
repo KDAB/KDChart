@@ -848,13 +848,10 @@ void Legend::buildLegend()
     if( !titleText().isEmpty() && titleTextAttributes().isVisible() ) {
         // PENDING(kalle) Other properties!
         KDChart::TextLayoutItem* titleItem =
-            new KDChart::TextLayoutItem( titleText(),
-                titleTextAttributes(),
-                referenceArea(),
-                (orientation() == Qt::Vertical)
-                ? KDChartEnums::MeasureOrientationMinimum
-                : KDChartEnums::MeasureOrientationHorizontal,
-                d->textAlignment );
+            new KDChart::TextLayoutItem( titleText(), titleTextAttributes(), referenceArea(),
+                                         orientation() == Qt::Vertical ? KDChartEnums::MeasureOrientationMinimum
+                                                                       : KDChartEnums::MeasureOrientationHorizontal,
+                                         d->textAlignment );
         titleItem->setParentWidget( this );
 
         d->layoutItems << titleItem;
@@ -1083,4 +1080,3 @@ bool Legend::datasetIsHidden( uint dataset ) const
 {
     return d->hiddenDatasets.contains( dataset );
 }
-
