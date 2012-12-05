@@ -112,8 +112,10 @@ bool HeaderFooter::compare( const HeaderFooter& other ) const
 
 void HeaderFooter::setType( HeaderFooterType type )
 {
-    d->type = type;
-    emit positionChanged( this );
+    if ( d->type != type ) {
+        d->type = type;
+        emit positionChanged( this );
+    }
 }
 
 HeaderFooter::HeaderFooterType HeaderFooter::type() const
@@ -123,8 +125,10 @@ HeaderFooter::HeaderFooterType HeaderFooter::type() const
 
 void HeaderFooter::setPosition( Position position )
 {
-    d->position = position;
-    emit positionChanged( this );
+    if ( d->position != position ) {
+        d->position = position;
+        emit positionChanged( this );
+    }
 }
 
 Position HeaderFooter::position() const
