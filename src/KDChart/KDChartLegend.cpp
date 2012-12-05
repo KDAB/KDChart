@@ -1056,8 +1056,6 @@ void Legend::buildLegend()
     activateTheLayout();
 
     emit propertiesChanged();
-    //emit positionChanged( this );
-    //emitPositionChanged();
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "leaving Legend::buildLegend()";
 #endif
