@@ -117,6 +117,10 @@ Chart::Private::Private( Chart* chart_ )
     , headerLayout( 0 )
     , footerLayout( 0 )
     , dataAndLegendLayout( 0 )
+    , leftOuterSpacer( 0 )
+    , rightOuterSpacer( 0 )
+    , topOuterSpacer( 0 )
+    , bottomOuterSpacer( 0 )
     , globalLeadingLeft( 0 )
     , globalLeadingRight( 0 )
     , globalLeadingTop( 0 )
@@ -211,8 +215,7 @@ void Chart::Private::layoutLegends()
             infoGrid[row][column] << legend;
         }
     }
-    // We have collected all legend information,
-    // so we can design their layout now.
+    // We have collected all legend information, so we can build their layout now.
     for ( int row = 0; row < 3; ++row ) {
         for ( int column = 0; column < 3; ++column ) {
             const QList< Legend* >& list = infoGrid[row][column];
@@ -272,6 +275,7 @@ void Chart::Private::layoutLegends()
     }
     //qDebug() << "finished Chart::Private::layoutLegends()";
 }
+
 enum VisitorState{ Visited, Unknown };
 struct ConnectedComponentsComparator{
     bool operator()( const LayoutGraphNode *lhs, const LayoutGraphNode *rhs ) const
@@ -997,6 +1001,7 @@ void Chart::Private::createLayouts()
     layout->setMargin( 0 );
     layout->setObjectName( QString::fromLatin1( "Chart::Private::layout" ) );
     layout->addSpacing( globalLeadingLeft );
+    leftOuterSpacer = layout->itemAt( layout->count() - 1 )->spacerItem();
 
     // The vLayout provides top and bottom global margins and lays
     // out headers, footers and the diagram area.
@@ -1006,9 +1011,11 @@ void Chart::Private::createLayouts()
 
     layout->addLayout( vLayout, 1000 );
     layout->addSpacing( globalLeadingRight );
+    rightOuterSpacer = layout->itemAt( layout->count() - 1 )->spacerItem();
 
     // 1. the gap above the top edge of the headers area
     vLayout->addSpacing( globalLeadingTop );
+    topOuterSpacer = vLayout->itemAt( vLayout->count() - 1 )->spacerItem();
     // 2. the header(s) area
     headerLayout = new QGridLayout();
     headerLayout->setMargin( 0 );
@@ -1045,6 +1052,7 @@ void Chart::Private::createLayouts()
 
     // 6. the gap below the bottom edge of the headers area
     vLayout->addSpacing( globalLeadingBottom );
+    bottomOuterSpacer = vLayout->itemAt( vLayout->count() - 1 )->spacerItem();
 
     // the data+axes area
     dataAndLegendLayout->addLayout( planesLayout, 1, 1 );
@@ -1268,13 +1276,13 @@ void Chart::setGlobalLeading( int left, int top, int right, int bottom )
     setGlobalLeadingTop( top );
     setGlobalLeadingRight( right );
     setGlobalLeadingBottom( bottom );
-    d->slotRelayout();
 }
 
 void Chart::setGlobalLeadingLeft( int leading )
 {
     d->globalLeadingLeft = leading;
-    d->slotRelayout();
+    d->leftOuterSpacer->changeSize( leading, 0, QSizePolicy::Fixed, QSizePolicy::Minimum );
+    d->layout->invalidate();
 }
 
 int Chart::globalLeadingLeft() const
@@ -1285,7 +1293,8 @@ int Chart::globalLeadingLeft() const
 void Chart::setGlobalLeadingTop( int leading )
 {
     d->globalLeadingTop = leading;
-    d->slotRelayout();
+    d->topOuterSpacer->changeSize( 0, leading, QSizePolicy::Minimum, QSizePolicy::Fixed );
+    d->layout->invalidate();
 }
 
 int Chart::globalLeadingTop() const
@@ -1296,7 +1305,8 @@ int Chart::globalLeadingTop() const
 void Chart::setGlobalLeadingRight( int leading )
 {
     d->globalLeadingRight = leading;
-    d->slotRelayout();
+    d->rightOuterSpacer->changeSize( leading, 0, QSizePolicy::Fixed, QSizePolicy::Minimum );
+    d->layout->invalidate();
 }
 
 int Chart::globalLeadingRight() const
@@ -1307,7 +1317,8 @@ int Chart::globalLeadingRight() const
 void Chart::setGlobalLeadingBottom( int leading )
 {
     d->globalLeadingBottom = leading;
-    d->slotRelayout();
+    d->bottomOuterSpacer->changeSize( 0, leading, QSizePolicy::Minimum, QSizePolicy::Fixed );
+    d->layout->invalidate();
 }
 
 int Chart::globalLeadingBottom() const

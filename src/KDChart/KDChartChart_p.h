@@ -138,6 +138,10 @@ class Chart::Private : public QObject
         QGridLayout* headerLayout;
         QGridLayout* footerLayout;
         QGridLayout* dataAndLegendLayout;
+        QSpacerItem* leftOuterSpacer;
+        QSpacerItem* rightOuterSpacer;
+        QSpacerItem* topOuterSpacer;
+        QSpacerItem* bottomOuterSpacer;
 
         QVBoxLayout* innerHdFtLayouts[2][3][3];
 
@@ -152,7 +156,7 @@ class Chart::Private : public QObject
         KDChart::FrameAttributes frameAttributes;
         KDChart::BackgroundAttributes backgroundAttributes;
 
-        // ### wrong word, leading means inter-line distance of text. spacing? margin?
+        // ### wrong names, "leading" means inter-line distance of text. spacing? margin?
         int globalLeadingLeft, globalLeadingRight, globalLeadingTop, globalLeadingBottom;
 
         QList< AbstractCoordinatePlane* > mouseClickedPlanes;
