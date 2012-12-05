@@ -496,34 +496,34 @@ QHash<AbstractCoordinatePlane*, PlaneInfo> Chart::Private::buildPlaneLayoutInfos
 
 void Chart::Private::slotLayoutPlanes()
 {
+    /*TODO make sure this is really needed */
+    const QBoxLayout::Direction oldPlanesDirection = planesLayout ? planesLayout->direction()
+                                                                  : QBoxLayout::TopToBottom;
+    if ( planesLayout && dataAndLegendLayout )
+        dataAndLegendLayout->removeItem( planesLayout );
+
+    const bool hadPlanesLayout = planesLayout != 0;
+    int left, top, right, bottom;
+    if ( hadPlanesLayout )
+        planesLayout->getContentsMargins(&left, &top, &right, &bottom);
+
+    KDAB_FOREACH( KDChart::AbstractLayoutItem* plane, planeLayoutItems ) {
+        plane->removeFromParentLayout();
+    }
+    //TODO they should get a correct parent, but for now it works
+    KDAB_FOREACH( KDChart::AbstractLayoutItem* plane, planeLayoutItems ) {
+        if ( dynamic_cast< KDChart::AutoSpacerLayoutItem* >( plane ) )
+            delete plane;
+    }
+
+    planeLayoutItems.clear();
+    delete planesLayout;
+    //hint: The direction is configurable by the user now, as
+    //      we are using a QBoxLayout rather than a QVBoxLayout.  (khz, 2007/04/25)
+    planesLayout = new QBoxLayout( oldPlanesDirection );
+
     if ( useNewLayoutSystem )
     {
-        /*TODO make sure this is really needed */
-        const QBoxLayout::Direction oldPlanesDirection =
-            planesLayout ? planesLayout->direction() : QBoxLayout::TopToBottom;
-        if ( planesLayout && dataAndLegendLayout )
-            dataAndLegendLayout->removeItem( planesLayout );
-        //*/
-        const bool hadPlanesLayout = planesLayout != 0;
-        int left, top, right, bottom;
-        if(hadPlanesLayout)
-            planesLayout->getContentsMargins(&left, &top, &right, &bottom);
-
-        KDAB_FOREACH( KDChart::AbstractLayoutItem* plane, planeLayoutItems ) {
-            plane->removeFromParentLayout();
-        }
-        //TODO they should get a correct parent, but for now it works
-        KDAB_FOREACH( KDChart::AbstractLayoutItem* plane, planeLayoutItems ) {
-            if ( dynamic_cast< KDChart::AutoSpacerLayoutItem* >( plane ) )
-                delete plane;
-        }
-        //qDebug() << Q_FUNC_INFO << "Relayout called";
-        planeLayoutItems.clear();
-        delete planesLayout;
-        //hint: The direction is configurable by the user now, as
-        //      we are using a QBoxLayout rather than a QVBoxLayout.  (khz, 2007/04/25)
-        planesLayout = new QBoxLayout( oldPlanesDirection );
-
         gridPlaneLayout = new QGridLayout;
         planesLayout->addLayout( gridPlaneLayout );
 
@@ -668,26 +668,6 @@ void Chart::Private::slotLayoutPlanes()
         //qDebug() << Q_FUNC_INFO << "Relayout ended";
 #endif
     } else {
-        const QBoxLayout::Direction oldPlanesDirection =
-            planesLayout ? planesLayout->direction() : QBoxLayout::TopToBottom;
-        if ( planesLayout && dataAndLegendLayout )
-            dataAndLegendLayout->removeItem( planesLayout );
-
-        const bool hadPlanesLayout = planesLayout != 0;
-        int left, top, right, bottom;
-        if ( hadPlanesLayout ) {
-            planesLayout->getContentsMargins( &left, &top, &right, &bottom );
-        }
-
-        KDAB_FOREACH( KDChart::AbstractLayoutItem* plane, planeLayoutItems ) {
-            plane->removeFromParentLayout();
-        }
-        planeLayoutItems.clear();
-        delete planesLayout;
-        //hint: The direction is configurable by the user now, as
-        //      we are using a QBoxLayout rather than a QVBoxLayout.  (khz, 2007/04/25)
-        planesLayout = new QBoxLayout( oldPlanesDirection );
-
         if ( hadPlanesLayout ) {
             planesLayout->setContentsMargins( left, top, right, bottom );
         }
