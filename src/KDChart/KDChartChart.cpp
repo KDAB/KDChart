@@ -61,6 +61,32 @@ static const Qt::Alignment s_gridAlignments[ 3 ][ 3 ] = { // [ row ][ column ]
     { Qt::AlignBottom | Qt::AlignLeft,  Qt::AlignBottom | Qt::AlignHCenter,  Qt::AlignBottom | Qt::AlignRight }
 };
 
+static void getRowAndColumnForPosition(KDChartEnums::PositionValue pos, int* row, int* column)
+{
+    switch ( pos ) {
+    case KDChartEnums::PositionNorthWest:  *row = 0;  *column = 0;
+        break;
+    case KDChartEnums::PositionNorth:      *row = 0;  *column = 1;
+        break;
+    case KDChartEnums::PositionNorthEast:  *row = 0;  *column = 2;
+        break;
+    case KDChartEnums::PositionEast:       *row = 1;  *column = 2;
+        break;
+    case KDChartEnums::PositionSouthEast:  *row = 2;  *column = 2;
+        break;
+    case KDChartEnums::PositionSouth:      *row = 2;  *column = 1;
+        break;
+    case KDChartEnums::PositionSouthWest:  *row = 2;  *column = 0;
+        break;
+    case KDChartEnums::PositionWest:       *row = 1;  *column = 0;
+        break;
+    case KDChartEnums::PositionCenter:     *row = 1;  *column = 1;
+        break;
+    default:                               *row = -1; *column = -1;
+        break;
+    }
+}
+
 // Layout widgets even if they are not visible
 class MyWidgetItem : public QWidgetItem
 {
@@ -85,16 +111,12 @@ using namespace KDChart;
 
 void Chart::Private::slotUnregisterDestroyedLegend( Legend *l )
 {
-    legends.removeAll( l );
-    slotRelayout();
+    chart->takeLegend( l );
 }
 
 void Chart::Private::slotUnregisterDestroyedHeaderFooter( HeaderFooter* hf )
 {
-    headerFooters.removeAll( hf );
-    hf->removeFromParentLayout();
-    textLayoutItems.remove( textLayoutItems.indexOf( hf ) );
-    slotRelayout();
+    chart->takeHeaderFooter( hf );
 }
 
 void Chart::Private::slotUnregisterDestroyedPlane( AbstractCoordinatePlane* plane )
@@ -137,143 +159,6 @@ Chart::Private::Private( Chart* chart_ )
 
 Chart::Private::~Private()
 {
-}
-
-void Chart::Private::layoutHeadersAndFooters()
-{
-    Q_FOREACH( HeaderFooter *hf, headerFooters ) {
-        Q_ASSERT( hf->type() == HeaderFooter::Header || hf->type() == HeaderFooter::Footer );
-        if ( hf->position() == Position::Unknown ) {
-            qWarning( "Unknown header/footer position" );
-            continue;
-        }
-
-        int row = 1;
-        if ( hf->position().isNorthSide() ) {
-            row = 0;
-        } else if ( hf->position().isSouthSide() ) {
-            row = 2;
-        }
-
-        int column = 1;
-        if ( hf->position().isWestSide() ) {
-            column = 0;
-        } else if ( hf->position().isEastSide() ) {
-            column = 2;
-        }
-
-        textLayoutItems << hf;
-        int innerLayoutIdx = hf->type() == HeaderFooter::Header ? 0 : 1;
-        QVBoxLayout* headerFooterLayout = innerHdFtLayouts[ innerLayoutIdx ][ row ][ column ];
-        hf->setParentLayout( headerFooterLayout );
-        hf->setAlignment( s_gridAlignments[ row ][ column ] );
-        headerFooterLayout->addItem( hf );
-    }
-}
-
-void Chart::Private::layoutLegends()
-{
-    //qDebug() << "starting Chart::Private::layoutLegends()";
-    // To support more than one Legend, we first collect them all
-    // in little lists: one list per grid position.
-    // Since the dataAndLegendLayout is a 3x3 grid, we need 9 little lists.
-    QList<Legend*> infoGrid[3][3];
-
-    Q_FOREACH( Legend *legend, legends ) {
-        legend->needSizeHint(); // we'll lay it out soon
-
-        int row = -1;
-        int column = -1;
-        //qDebug() << legend->position().name();
-        switch ( legend->position().value() ) {
-        case KDChartEnums::PositionNorthWest:  row = 0;  column = 0;
-            break;
-        case KDChartEnums::PositionNorth:      row = 0;  column = 1;
-            break;
-        case KDChartEnums::PositionNorthEast:  row = 0;  column = 2;
-            break;
-        case KDChartEnums::PositionEast:       row = 1;  column = 2;
-            break;
-        case KDChartEnums::PositionSouthEast:  row = 2;  column = 2;
-            break;
-        case KDChartEnums::PositionSouth:      row = 2;  column = 1;
-            break;
-        case KDChartEnums::PositionSouthWest:  row = 2;  column = 0;
-            break;
-        case KDChartEnums::PositionWest:       row = 1;  column = 0;
-            break;
-        case KDChartEnums::PositionCenter:
-            qDebug( "Sorry: Legend not shown because position Center is not supported." );
-            break;
-        case KDChartEnums::PositionFloating:
-            break;
-        default:
-            qDebug( "Sorry: Legend not shown because of unknown legend position." );
-            break;
-        }
-        if ( row >= 0 ) {
-            infoGrid[row][column] << legend;
-        }
-    }
-    // We have collected all legend information, so we can build their layout now.
-    for ( int row = 0; row < 3; ++row ) {
-        for ( int column = 0; column < 3; ++column ) {
-            const QList< Legend* >& list = infoGrid[row][column];
-            if ( list.isEmpty() ) {
-                continue;
-            }
-
-            if ( list.count() == 1 ) {
-                Legend* legend = list.first();
-                dataAndLegendLayout->addItem( new MyWidgetItem( legend ), row, column,
-                                              1, 1, legend->alignment() );
-            } else {
-                // We have more than one legend in the same cell of the dataAndLegendLayout grid.
-                //
-                // Legends with the same alignment will be drawn left-aligned,
-                // vertically stacked in a VBoxLayout.
-                //
-                // If not all legends use the same alignment they are put into a 3x3 grid
-                // for left/hCenter/right and top/vCenter/bottom.
-                Legend* legend = list.first();
-                Qt::Alignment alignment = legend->alignment();
-                bool haveSameAlign = true;
-                KDAB_FOREACH( Legend* legend, list ) {
-                    if ( alignment != legend->alignment() ) {
-                        haveSameAlign = false;
-                        break;
-                    }
-                }
-                if ( haveSameAlign ) {
-                    QVBoxLayout* vLayout = new QVBoxLayout();
-                    vLayout->setMargin( 0 );
-                    Q_FOREACH( Legend* legend, list) {
-                        vLayout->addItem( new MyWidgetItem( legend, Qt::AlignLeft ) );
-                    }
-                    dataAndLegendLayout->addLayout( vLayout, row, column, 1, 1, alignment );
-                } else {
-                    QGridLayout* grid = new QGridLayout();
-                    grid->setMargin( 0 );
-
-                    for ( int innerRow = 0; innerRow < 3; innerRow++ ) {
-                        for ( int innerColumn = 0; innerColumn < 3; innerColumn++ ) {
-                            Qt::Alignment align = s_gridAlignments[ innerRow ][ innerColumn ];
-                            QVBoxLayout* innerLayout = new QVBoxLayout();
-                            KDAB_FOREACH( Legend* legend, list ) {
-                                if ( legend->alignment() == align ) {
-                                    innerLayout->addItem( new MyWidgetItem( legend, Qt::AlignLeft ) );
-                                }
-                            }
-                            grid->addLayout( innerLayout, innerRow, innerColumn, align );
-                        }
-                    }
-
-                    dataAndLegendLayout->addLayout( grid, row, column, 1, 1 );
-                }
-            }
-        }
-    }
-    //qDebug() << "finished Chart::Private::layoutLegends()";
 }
 
 enum VisitorState{ Visited, Unknown };
@@ -768,7 +653,7 @@ void Chart::Private::slotLayoutPlanes()
             dataAndLegendLayout->setRowStretch( 1, 1000 );
             dataAndLegendLayout->setColumnStretch( 1, 1000 );
         }
-        slotRelayout();
+        slotResizePlanes();
 #ifdef NEW_LAYOUT_DEBUG
         for ( int i = 0; i < gridPlaneLayout->rowCount(); ++i )
         {
@@ -977,25 +862,12 @@ void Chart::Private::slotLayoutPlanes()
             dataAndLegendLayout->setColumnStretch( 1, 1000 );
         }
 
-        slotRelayout();
+        slotResizePlanes();
     }
 }
 
 void Chart::Private::createLayouts()
 {
-    KDAB_FOREACH( KDChart::TextArea* textLayoutItem, textLayoutItems ) {
-        textLayoutItem->removeFromParentLayout();
-    }
-    textLayoutItems.clear();
-
-    // layout for the planes is handled separately, so we don't want to delete it here
-    if ( dataAndLegendLayout) {
-        dataAndLegendLayout->removeItem( planesLayout );
-        planesLayout->setParent( 0 );
-    }
-    // start from scratch
-    delete layout;
-
     // The toplevel layout provides the left and right global margins
     layout = new QHBoxLayout( chart );
     layout->setMargin( 0 );
@@ -1060,33 +932,16 @@ void Chart::Private::createLayouts()
     dataAndLegendLayout->setColumnStretch( 1, 1 );
 }
 
-void Chart::Private::slotRelayout()
+void Chart::Private::slotResizePlanes()
 {
-    //qDebug() << "Chart relayouting started.";
-    createLayouts();
-
-    layoutHeadersAndFooters();
-    layoutLegends();
-
-    // This triggers the qlayout, see QBoxLayout::setGeometry
-    // The geometry is not necessarily w->rect(), when using paint(), this is why
-    // we don't call layout->activate().
-    const QRect geo( QRect( 0, 0, currentLayoutSize.width(), currentLayoutSize.height() ) );
-    if ( geo.isValid() && geo != layout->geometry() ) {
-        //qDebug() << "Chart slotRelayout() adjusting geometry to" << geo;
-        //if ( coordinatePlanes.count() )
-        //    qDebug() << "           plane geo before" << coordinatePlanes.first()->geometry();
-        layout->setGeometry( geo );
-        //if ( coordinatePlanes.count() ) {
-        //    qDebug() << "           plane geo after " << coordinatePlanes.first()->geometry();
-        //}
+    if ( !dataAndLegendLayout ) {
+        return;
     }
-
+    dataAndLegendLayout->activate();
     // Adapt diagram drawing to the new size
     KDAB_FOREACH (AbstractCoordinatePlane* plane, coordinatePlanes ) {
         plane->layoutDiagrams();
     }
-    //qDebug() << "Chart relayouting done.";
 }
 
 // Called when the size of the chart changes.
@@ -1095,26 +950,7 @@ void Chart::Private::slotRelayout()
 void Chart::Private::resizeLayout( const QSize& size )
 {
     currentLayoutSize = size;
-    //qDebug() << "Chart::resizeLayout(" << currentLayoutSize << ")";
-
-    /*
-    // We need to make sure that the legend's layouts are populated,
-    // so that setGeometry gets proper sizeHints from them and resizes them properly.
-    KDAB_FOREACH( Legend *legend, legends ) {
-    // This forceRebuild will see a wrong areaGeometry, but I don't care about geometries yet,
-    // only about the fact that legends should have their contents populated.
-    // -> it would be better to dissociate "building contents" and "resizing" in Legend...
-
-    //        legend->forceRebuild();
-
-    legend->resizeLayout( size );
-    }
-    */
-    slotLayoutPlanes(); // includes slotRelayout
-
-    //qDebug() << "Chart::resizeLayout done";
 }
-
 
 void Chart::Private::paintAll( QPainter* painter )
 {
@@ -1139,6 +975,8 @@ void Chart::Private::paintAll( QPainter* painter )
 
 // ******** Chart interface implementation ***********
 
+#define d d_func()
+
 Chart::Chart ( QWidget* parent )
     : QWidget ( parent )
     , _d( new Private( this ) )
@@ -1155,14 +993,14 @@ Chart::Chart ( QWidget* parent )
     setFrameAttributes( frameAttrs );
 
     addCoordinatePlane( new CartesianCoordinatePlane ( this ) );
+
+    d->createLayouts();
 }
 
 Chart::~Chart()
 {
-    delete _d;
+    delete d;
 }
-
-#define d d_func()
 
 void Chart::setFrameAttributes( const FrameAttributes &a )
 {
@@ -1227,7 +1065,7 @@ void Chart::insertCoordinatePlane( int index, AbstractCoordinatePlane* plane )
     connect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
              d,   SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
     connect( plane, SIGNAL( needUpdate() ),       this,   SLOT( update() ) );
-    connect( plane, SIGNAL( needRelayout() ),     d,      SLOT( slotRelayout() ) ) ;
+    connect( plane, SIGNAL( needRelayout() ),     d,      SLOT( slotResizePlanes() ) ) ;
     connect( plane, SIGNAL( needLayoutPlanes() ), d,      SLOT( slotLayoutPlanes() ) ) ;
     connect( plane, SIGNAL( propertiesChanged() ),this, SIGNAL( propertiesChanged() ) );
     d->coordinatePlanes.insert( index, plane );
@@ -1258,8 +1096,8 @@ void Chart::takeCoordinatePlane( AbstractCoordinatePlane* plane )
     const int idx = d->coordinatePlanes.indexOf( plane );
     if ( idx != -1 ) {
         d->coordinatePlanes.takeAt( idx );
-        disconnect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
-                    d, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
+        disconnect( plane, 0, d, 0 );
+        disconnect( plane, 0, this, 0 );
         plane->removeFromParentLayout();
         plane->setParent( 0 );
         d->mouseClickedPlanes.removeAll(plane);
@@ -1387,11 +1225,10 @@ void Chart::resizeEvent ( QResizeEvent * )
     reLayoutFloatingLegends();
 }
 
-
 void Chart::reLayoutFloatingLegends()
 {
     KDAB_FOREACH( Legend *legend, d->legends ) {
-        const bool hidden = legend->isHidden() && legend->testAttribute(Qt::WA_WState_ExplicitShowHide);
+        const bool hidden = legend->isHidden() && legend->testAttribute( Qt::WA_WState_ExplicitShowHide );
         if ( legend->position().isFloating() && !hidden ) {
             // resize the legend
             const QSize legendSize( legend->sizeHint() );
@@ -1433,22 +1270,42 @@ void Chart::paintEvent( QPaintEvent* )
     emit finishedDrawing();
 }
 
-void Chart::addHeaderFooter( HeaderFooter* headerFooter )
+void Chart::addHeaderFooter( HeaderFooter* hf )
 {
-    TextAttributes textAttrs( headerFooter->textAttributes() );
+    Q_ASSERT( hf->type() == HeaderFooter::Header || hf->type() == HeaderFooter::Footer );
+    int row;
+    int column;
+    getRowAndColumnForPosition( hf->position().value(), &row, &column );
+    if ( row == -1 ) {
+        qWarning( "Unknown header/footer position" );
+        return;
+    }
+
+    d->headerFooters.append( hf );
+    d->textLayoutItems.append( hf );
+    connect( hf, SIGNAL( destroyedHeaderFooter( HeaderFooter* ) ),
+             d, SLOT( slotUnregisterDestroyedHeaderFooter( HeaderFooter* ) ) );
+    connect( hf, SIGNAL( positionChanged( HeaderFooter* ) ), d, SLOT( slotResizePlanes() ) );
+
+    // set the text attributes (why?)
+
+    TextAttributes textAttrs( hf->textAttributes() );
     KDChart::Measure measure( textAttrs.fontSize() );
     measure.setRelativeMode( this, KDChartEnums::MeasureOrientationMinimum );
     measure.setValue( 20 );
     textAttrs.setFontSize( measure );
-    headerFooter->setTextAttributes( textAttrs );
+    hf->setTextAttributes( textAttrs );
 
-    d->headerFooters.append( headerFooter );
-    headerFooter->setParent( this );
-    connect( headerFooter, SIGNAL( destroyedHeaderFooter( HeaderFooter* ) ),
-             d, SLOT( slotUnregisterDestroyedHeaderFooter( HeaderFooter* ) ) );
-    connect( headerFooter, SIGNAL( positionChanged( HeaderFooter* ) ),
-             d, SLOT( slotRelayout() ) );
-    d->slotRelayout();
+    // add it to the appropriate layout
+
+    int innerLayoutIdx = hf->type() == HeaderFooter::Header ? 0 : 1;
+    QVBoxLayout* headerFooterLayout = d->innerHdFtLayouts[ innerLayoutIdx ][ row ][ column ];
+
+    hf->setParentLayout( headerFooterLayout );
+    hf->setAlignment( s_gridAlignments[ row ][ column ] );
+    headerFooterLayout->addItem( hf );
+
+    d->slotResizePlanes();
 }
 
 void Chart::replaceHeaderFooter( HeaderFooter* headerFooter,
@@ -1472,16 +1329,18 @@ void Chart::replaceHeaderFooter( HeaderFooter* headerFooter,
 void Chart::takeHeaderFooter( HeaderFooter* headerFooter )
 {
     const int idx = d->headerFooters.indexOf( headerFooter );
-    if ( idx != -1 ) {
-        d->headerFooters.takeAt( idx );
-        disconnect( headerFooter, SIGNAL( destroyedHeaderFooter( HeaderFooter* ) ),
-                    d, SLOT( slotUnregisterDestroyedHeaderFooter( HeaderFooter* ) ) );
-        headerFooter->setParent( 0 );
+    if ( idx == -1 ) {
+        return;
     }
-    d->slotRelayout();
-    // Need to emit the signal: In case somebody has connected the signal
-    // to her own slot for e.g. calling update() on a widget containing the chart.
-    emit propertiesChanged();
+    disconnect( headerFooter, SIGNAL( destroyedHeaderFooter( HeaderFooter* ) ),
+                d, SLOT( slotUnregisterDestroyedHeaderFooter( HeaderFooter* ) ) );
+
+    d->headerFooters.takeAt( idx );
+    headerFooter->removeFromParentLayout();
+    headerFooter->setParentLayout( 0 );
+    d->textLayoutItems.remove( d->textLayoutItems.indexOf( headerFooter ) );
+
+    d->slotResizePlanes();
 }
 
 HeaderFooter* Chart::headerFooter()
@@ -1498,41 +1357,116 @@ HeaderFooterList Chart::headerFooters()
     return d->headerFooters;
 }
 
+void Chart::Private::slotLegendPositionChanged( AbstractAreaWidget* aw )
+{
+    Legend* legend = qobject_cast< Legend* >( aw );
+    Q_ASSERT( legend );
+    chart->takeLegend( legend );
+    chart->addLegendInternal( legend, false );
+}
+
 void Chart::addLegend( Legend* legend )
 {
-    if ( ! legend ) return;
+    addLegendInternal( legend, true );
+}
 
-    //qDebug() << "adding the legend";
+void Chart::addLegendInternal( Legend* legend, bool setMeasures )
+{
+    if ( !legend ) {
+        return;
+    }
+
+    KDChartEnums::PositionValue pos = legend->position().value();
+    if ( pos == KDChartEnums::PositionCenter ) {
+       qWarning( "Not showing legend because PositionCenter is not supported for legends." );
+    }
+
+    int row;
+    int column;
+    getRowAndColumnForPosition( pos, &row, &column );
+    if ( row < 0 && pos != KDChartEnums::PositionFloating ) {
+        qWarning( "Not showing legend because of unknown legend position." );
+        return;
+    }
+
     d->legends.append( legend );
     legend->setParent( this );
 
-    TextAttributes textAttrs( legend->textAttributes() );
+    // set text attributes (why?)
 
-    KDChart::Measure measure( textAttrs.fontSize() );
-    measure.setRelativeMode( this, KDChartEnums::MeasureOrientationMinimum );
-    measure.setValue( 20 );
-    textAttrs.setFontSize( measure );
-    legend->setTextAttributes( textAttrs );
+    if ( setMeasures ) {
+        TextAttributes textAttrs( legend->textAttributes() );
+        KDChart::Measure measure( textAttrs.fontSize() );
+        measure.setRelativeMode( this, KDChartEnums::MeasureOrientationMinimum );
+        measure.setValue( 20 );
+        textAttrs.setFontSize( measure );
+        legend->setTextAttributes( textAttrs );
 
-    textAttrs = legend->titleTextAttributes();
-    measure.setRelativeMode( this, KDChartEnums::MeasureOrientationMinimum );
-    measure.setValue( 24 );
-    textAttrs.setFontSize( measure );
+        textAttrs = legend->titleTextAttributes();
+        measure.setRelativeMode( this, KDChartEnums::MeasureOrientationMinimum );
+        measure.setValue( 24 );
+        textAttrs.setFontSize( measure );
 
-    legend->setTitleTextAttributes( textAttrs );
+        legend->setTitleTextAttributes( textAttrs );
+        legend->setReferenceArea( this );
+    }
 
-    legend->setReferenceArea( this );
+    legend->setVisible( true );
+
+    // add it to the appropriate layout
+
+    if ( pos != KDChartEnums::PositionFloating ) {
+        legend->needSizeHint();
+
+        // in each edge and corner of the outer layout, there's a grid for the different alignments that we create
+        // on demand. we don't remove it when empty.
+
+        QLayoutItem* edgeItem = d->dataAndLegendLayout->itemAtPosition( row, column );
+        QGridLayout* alignmentsLayout = dynamic_cast< QGridLayout* >( edgeItem );
+        Q_ASSERT( !edgeItem || alignmentsLayout ); // if it exists, it must be a QGridLayout
+        if ( !alignmentsLayout ) {
+            alignmentsLayout = new QGridLayout;
+            d->dataAndLegendLayout->addLayout( alignmentsLayout, row, column );
+            alignmentsLayout->setMargin( 0 );
+        }
+
+        // in case there are several legends in the same edge or corner with the same alignment, they are stacked
+        // vertically using a QVBoxLayout. it is created on demand as above.
+
+        row = 1;
+        column = 1;
+        for ( int i = 0; i < 3; i++ ) {
+            for ( int j = 0; j < 3; j++ ) {
+                Qt::Alignment align = s_gridAlignments[ i ][ j ];
+                if ( align == legend->alignment() ) {
+                    row = i;
+                    column = j;
+                    break;
+                }
+            }
+        }
+
+        QLayoutItem* alignmentItem = alignmentsLayout->itemAtPosition( row, column );
+        QVBoxLayout* sameAlignmentLayout = dynamic_cast< QVBoxLayout* >( alignmentItem );
+        Q_ASSERT( !alignmentItem || sameAlignmentLayout ); // if it exists, it must be a QVBoxLayout
+        if ( !sameAlignmentLayout ) {
+            sameAlignmentLayout = new QVBoxLayout;
+            alignmentsLayout->addLayout( sameAlignmentLayout, row, column );
+            sameAlignmentLayout->setMargin( 0 );
+        }
+
+        // TODO delete the MyWidgetItem in takeLegend()
+        sameAlignmentLayout->addItem( new MyWidgetItem( legend, legend->alignment() ) );
+    }
 
     connect( legend, SIGNAL( destroyedLegend( Legend* ) ),
              d, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
     connect( legend, SIGNAL( positionChanged( AbstractAreaWidget* ) ),
-             d, SLOT( slotLayoutPlanes() ) ); //slotRelayout() ) );
-    connect( legend, SIGNAL( propertiesChanged() ),
-             this,   SIGNAL( propertiesChanged() ) );
-    legend->setVisible( true );
-    d->slotRelayout();
-}
+             d, SLOT( slotLegendPositionChanged( AbstractAreaWidget* ) ) );
+    connect( legend, SIGNAL( propertiesChanged() ), this, SIGNAL( propertiesChanged() ) );
 
+    d->slotResizePlanes();
+}
 
 void Chart::replaceLegend( Legend* legend, Legend* oldLegend_ )
 {
@@ -1554,24 +1488,18 @@ void Chart::replaceLegend( Legend* legend, Legend* oldLegend_ )
 void Chart::takeLegend( Legend* legend )
 {
     const int idx = d->legends.indexOf( legend );
-    if ( idx != -1 ) {
-        d->legends.takeAt( idx );
-        disconnect( legend, SIGNAL( destroyedLegend( Legend* ) ),
-                    d, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
-        disconnect( legend, SIGNAL( positionChanged( AbstractAreaWidget* ) ),
-                    d, SLOT( slotLayoutPlanes() ) ); //slotRelayout() ) );
-        disconnect( legend, SIGNAL( propertiesChanged() ),
-                    this,   SIGNAL( propertiesChanged() ) );
-        legend->setParent( 0 );
-        legend->setVisible( false );
+    if ( idx == -1 ) {
+        return;
     }
-    d->slotRelayout();
 
-    // Need to emit the signal: In case somebody has connected the signal
-    // to her own slot for e.g. calling update() on a widget containing the chart.
-    // Note:
-    // We do this ourselves in examples/DrawIntoPainter/mainwindow.cpp
-    emit propertiesChanged();
+    d->legends.takeAt( idx );
+    disconnect( legend, 0, d, 0 );
+    disconnect( legend, 0, this, 0 );
+    // the following removes the legend from its layout and destroys its MyWidgetItem (the link to the layout)
+    legend->setParent( 0 );
+    legend->setVisible( false );
+
+    d->slotResizePlanes();
 }
 
 Legend* Chart::legend()
@@ -1583,7 +1511,6 @@ LegendList Chart::legends()
 {
     return d->legends;
 }
-
 
 void Chart::mousePressEvent( QMouseEvent* event )
 {

@@ -50,6 +50,7 @@
 
 namespace KDChart {
 
+class AbstractAreaWidget;
 class CartesianAxis;
 
 /*
@@ -168,8 +169,6 @@ class Chart::Private : public QObject
         virtual ~Private();
 
         void createLayouts();
-        void layoutLegends();
-        void layoutHeadersAndFooters();
         void resizeLayout( const QSize& sz );
         void paintAll( QPainter* painter );
 
@@ -184,7 +183,8 @@ class Chart::Private : public QObject
 
     public Q_SLOTS:
         void slotLayoutPlanes();
-        void slotRelayout();
+        void slotResizePlanes();
+        void slotLegendPositionChanged( AbstractAreaWidget* legend );
         void slotUnregisterDestroyedLegend( Legend * legend );
         void slotUnregisterDestroyedHeaderFooter( HeaderFooter* headerFooter );
         void slotUnregisterDestroyedPlane( AbstractCoordinatePlane* plane );

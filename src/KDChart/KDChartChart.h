@@ -446,6 +446,10 @@ namespace KDChart {
         void mouseReleaseEvent( QMouseEvent* event );
         /** reimp */
         bool event( QEvent* event );
+
+    private:
+        // TODO move this to the private class
+        void addLegendInternal( Legend *legend, bool setMeasures );
     };
 
 // Here we have a few docu block to be included into the API documentation:
