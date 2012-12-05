@@ -1523,17 +1523,6 @@ void Chart::addLegend( Legend* legend )
 
     legend->setReferenceArea( this );
 
-/*
-    future: Use relative sizes for the markers too!
-
-    const uint nMA = Legend::datasetCount();
-    for ( uint iMA = 0; iMA < nMA; ++iMA ) {
-        MarkerAttributes ma( legend->markerAttributes( iMA ) );
-        ma.setMarkerSize( ... )
-        legend->setMarkerAttributes( iMA, ma )
-    }
-*/
-
     connect( legend, SIGNAL( destroyedLegend( Legend* ) ),
              d, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
     connect( legend, SIGNAL( positionChanged( AbstractAreaWidget* ) ),
