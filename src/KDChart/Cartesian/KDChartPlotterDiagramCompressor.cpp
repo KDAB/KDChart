@@ -792,6 +792,12 @@ PlotterDiagramCompressor::PlotterDiagramCompressor(QObject *parent)
 {
 }
 
+PlotterDiagramCompressor::~PlotterDiagramCompressor()
+{
+    delete d;
+    d = 0;
+}
+
 void PlotterDiagramCompressor::setForcedDataBoundaries( const QPair< qreal, qreal > &bounds, Qt::Orientation direction )
 {
     if ( direction == Qt::Vertical )
