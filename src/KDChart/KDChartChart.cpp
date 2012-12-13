@@ -1435,7 +1435,6 @@ void Chart::addLegendInternal( Legend* legend, bool setMeasures )
             sameAlignmentLayout->setMargin( 0 );
         }
 
-        // TODO delete the MyWidgetItem in takeLegend()
         sameAlignmentLayout->addItem( new MyWidgetItem( legend, legend->alignment() ) );
     }
 
