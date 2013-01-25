@@ -488,6 +488,7 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
 {
     Q_ASSERT( mapsToModelIndex( position ) );
     DataPoint result;
+    result.hidden = true;
 
     switch ( m_mode ) {
     case Precise:
@@ -516,6 +517,13 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
             result.index = indexes.at( 0 );
             result.key /= indexes.size();
             result.value /= indexes.size();
+        }
+
+        Q_FOREACH( const QModelIndex& index, indexes ) {
+            // the DataPoint point is visible if any of the underlying, aggregated points is visible
+            if ( qVariantValue<bool>( m_model->data( index, DataHiddenRole ) ) == false ) {
+                result.hidden = false;
+            }
         }
         break;
     }
