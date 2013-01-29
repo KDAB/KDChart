@@ -34,7 +34,7 @@ using namespace KDGantt;
 /*!\class KDGantt::ConstraintGraphicsItem
  * \internal
  */
-
+#if QT_VERSION < 0x050000
 ConstraintGraphicsItem::ConstraintGraphicsItem( const Constraint& c, QGraphicsItem* parent, GraphicsScene* scene )
     : QGraphicsItem( parent, scene ),  m_constraint( c )
 {
@@ -43,6 +43,18 @@ ConstraintGraphicsItem::ConstraintGraphicsItem( const Constraint& c, QGraphicsIt
     setAcceptedMouseButtons( Qt::NoButton );
     setZValue( 10. );
 }
+#else
+ConstraintGraphicsItem::ConstraintGraphicsItem( const Constraint& c, QGraphicsItem* parent, GraphicsScene* scene )
+    : QGraphicsItem( parent ),  m_constraint( c )
+{
+    if ( scene )
+        scene->addItem( this );
+    setPos( QPointF( 0., 0. ) );
+    setAcceptHoverEvents( false );
+    setAcceptedMouseButtons( Qt::NoButton );
+    setZValue( 10. );
+}
+#endif
 
 ConstraintGraphicsItem::~ConstraintGraphicsItem()
 {

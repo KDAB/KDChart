@@ -21,6 +21,7 @@
 **********************************************************************/
 
 #include <QtGui/QtGui>
+#include <QApplication>
 #include <KDChart/KDChartChart>
 #include <KDChart/KDChartBarDiagram>
 

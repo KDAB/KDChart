@@ -23,8 +23,8 @@
 #ifndef GRADIENTDIALOG_H
 #define GRADIENTDIALOG_H
 
-#include <QtGui/QDialog>
-#include <QtGui/QGradient>
+#include <QDialog>
+#include <QGradient>
 
 class GradientDialog : public QDialog
 {

@@ -18,6 +18,8 @@ RESOURCES += KDChart/KDAB_kdchart_LeveyJennings_resources.qrc
 
 QT += svg
 
+contains(QT_VERSION, ^5\\.[0-9]\\..*): QT += printsupport
+
 FORMS += KDChart/KDChartDatasetSelector.ui
 
 INSTALLHEADERS_INCLUDE = \

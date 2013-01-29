@@ -21,6 +21,8 @@
 **********************************************************************/
 
 #include <QtGui>
+#include <QPushButton>
+#include <QApplication>
 #include <KDChartChart>
 #include <KDChartBarDiagram>
 #include <KDChartCartesianAxis>

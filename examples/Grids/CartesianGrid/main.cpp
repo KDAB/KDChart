@@ -32,6 +32,7 @@
 #include <KDChartCartesianCoordinatePlane>
 #include <KDChartAbstractCartesianDiagram>
 #include <KDChartDataValueAttributes>
+#include <QApplication>
 
 
 using namespace KDChart;

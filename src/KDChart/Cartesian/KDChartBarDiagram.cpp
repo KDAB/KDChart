@@ -261,8 +261,7 @@ void BarDiagram::setBarAttributes( const QModelIndex& index, const BarAttributes
   */
 BarAttributes BarDiagram::barAttributes() const
 {
-    return qVariantValue<BarAttributes>(
-        d->attributesModel->data( KDChart::BarAttributesRole ) );
+    return d->attributesModel->data( KDChart::BarAttributesRole ).value<BarAttributes>();
 }
 
 /**
@@ -272,7 +271,7 @@ BarAttributes BarDiagram::barAttributes( int column ) const
 {
     const QVariant attrs( d->datasetAttrs( column, KDChart::BarAttributesRole ) );
     if( attrs.isValid() )
-        return qVariantValue< BarAttributes >( attrs );
+        return attrs.value<BarAttributes>();
     return barAttributes();
 }
 
@@ -281,10 +280,9 @@ BarAttributes BarDiagram::barAttributes( int column ) const
   */
 BarAttributes BarDiagram::barAttributes( const QModelIndex& index ) const
 {
-    return qVariantValue<BarAttributes>(
-        d->attributesModel->data(
+    return d->attributesModel->data(
             d->attributesModel->mapFromSource( index ),
-            KDChart::BarAttributesRole ) );
+            KDChart::BarAttributesRole ).value<BarAttributes>();
 }
 
 /**
@@ -329,8 +327,7 @@ void BarDiagram::setThreeDBarAttributes( const QModelIndex& index, const ThreeDB
   */
 ThreeDBarAttributes BarDiagram::threeDBarAttributes() const
 {
-    return qVariantValue<ThreeDBarAttributes>(
-        d->attributesModel->data( KDChart::ThreeDBarAttributesRole ) );
+    return d->attributesModel->data( KDChart::ThreeDBarAttributesRole ).value<ThreeDBarAttributes>();
 }
 
 /**
@@ -340,7 +337,7 @@ ThreeDBarAttributes BarDiagram::threeDBarAttributes( int column ) const
 {
     const QVariant attrs( d->datasetAttrs( column, KDChart::ThreeDBarAttributesRole ) );
     if( attrs.isValid() )
-        return qVariantValue< ThreeDBarAttributes >( attrs );
+        return attrs.value<ThreeDBarAttributes>();
     return threeDBarAttributes();
 }
 
@@ -349,10 +346,9 @@ ThreeDBarAttributes BarDiagram::threeDBarAttributes( int column ) const
   */
 ThreeDBarAttributes BarDiagram::threeDBarAttributes( const QModelIndex& index ) const
 {
-    return qVariantValue<ThreeDBarAttributes>(
-        d->attributesModel->data(
+    return d->attributesModel->data(
             d->attributesModel->mapFromSource(index),
-            KDChart::ThreeDBarAttributesRole ) );
+            KDChart::ThreeDBarAttributesRole ).value<ThreeDBarAttributes>();
 }
 
 qreal BarDiagram::threeDItemDepth( const QModelIndex& index ) const

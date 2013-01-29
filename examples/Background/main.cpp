@@ -20,6 +20,7 @@
 **
 **********************************************************************/
 
+#include <QApplication>
 #include <QtGui>
 #include <KDChartChart>
 #include <KDChartBarDiagram>

@@ -23,7 +23,7 @@
 #ifndef DIAGRAMSETTINGS_H
 #define DIAGRAMSETTINGS_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 namespace KDChart{
     class Chart;

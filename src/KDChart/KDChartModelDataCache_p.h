@@ -199,7 +199,7 @@ namespace KDChart
             const QModelIndex index = m_model->index( row, column, m_rootIndex );
             const QVariant data = index.data( role );
             const T value = data.isNull() ? ModelDataCachePrivate::nan< T >()
-                                          : qVariantValue< T >( data );
+                                          : ( data.value< T >() );
 
             m_data[ row ][ column ] = value;
             m_cacheValid[ row ][ column ] = true;

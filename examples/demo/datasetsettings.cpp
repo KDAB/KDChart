@@ -26,10 +26,15 @@
 #include <KDChart/KDChartAbstractCoordinatePlane>
 #include <KDChart/KDChartChart>
 
-#include <QtGui/QColorDialog>
-#include <QtGui/QFileDialog>
+#include <QColorDialog>
+#include <QFileDialog>
 
+#if QT_VERSION < 0x050000
 #include <QtGui/QCleanlooksStyle>
+#else
+#include <QtGui/QStyleFactory>
+#endif
+
 #include <QtGui/QImage>
 
 #include <QtCore/QObject>
@@ -143,8 +148,13 @@ DatasetSettings::DatasetSettings( Chart *chart, QWidget *parent )
 {
     d->ui->setupUi(this);
 #ifdef Q_OS_LINUX
+#if QT_VERSION < 0x050000
     d->ui->colorDisplay->setStyle( new QCleanlooksStyle );
     d->ui->outlineBtn->setStyle( new QCleanlooksStyle );
+#else
+    d->ui->colorDisplay->setStyle( QStyleFactory::create( QStringLiteral( "cleanlooks" ) ) );
+    d->ui->outlineBtn->setStyle( QStyleFactory::create( QStringLiteral( "cleanlooks" ) ) );
+#endif
 #endif
     connect( d->ui->datasetSelector, SIGNAL( currentIndexChanged( int ) ), this, SLOT( indexChanged( int ) ) );
     connect( d->ui->colorDisplay, SIGNAL( clicked() ), d, SLOT( changeColor() ) );

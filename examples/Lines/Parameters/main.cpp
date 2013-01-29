@@ -24,6 +24,7 @@
 #include <KDChartChart>
 #include <KDChartLineDiagram>
 #include <KDChartDataValueAttributes>
+#include <QApplication>
 
 using namespace KDChart;
 

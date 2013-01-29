@@ -188,14 +188,14 @@ bool AttributesModel::compareAttributes(
     if( isKnownAttributesRole( role ) ){
         switch( role ) {
             case DataValueLabelAttributesRole:
-                return (qVariantValue<DataValueAttributes>( a ) ==
-                        qVariantValue<DataValueAttributes>( b ));
+                return (a.value<DataValueAttributes>() ==
+                        b.value<DataValueAttributes>());
             case DatasetBrushRole:
-                return (qVariantValue<QBrush>( a ) ==
-                        qVariantValue<QBrush>( b ));
+                return (a.value<QBrush>() ==
+                        b.value<QBrush>());
             case DatasetPenRole:
-                return (qVariantValue<QPen>( a ) ==
-                        qVariantValue<QPen>( b ));
+                return (a.value<QPen>() ==
+                        b.value<QPen>());
             case ThreeDAttributesRole:
                 // As of yet there is no ThreeDAttributes class,
                 // and the AbstractThreeDAttributes class is pure virtual,
@@ -207,32 +207,32 @@ bool AttributesModel::compareAttributes(
                 */
                 break;
             case LineAttributesRole:
-                return (qVariantValue<LineAttributes>( a ) ==
-                        qVariantValue<LineAttributes>( b ));
+                return (a.value<LineAttributes>() ==
+                        b.value<LineAttributes>());
             case ThreeDLineAttributesRole:
-                return (qVariantValue<ThreeDLineAttributes>( a ) ==
-                        qVariantValue<ThreeDLineAttributes>( b ));
+                return (a.value<ThreeDLineAttributes>() ==
+                        b.value<ThreeDLineAttributes>());
             case BarAttributesRole:
-                return (qVariantValue<BarAttributes>( a ) ==
-                        qVariantValue<BarAttributes>( b ));
+                return (a.value<BarAttributes>() ==
+                        b.value<BarAttributes>());
             case StockBarAttributesRole:
-                return (qVariantValue<StockBarAttributes>( a ) ==
-                        qVariantValue<StockBarAttributes>( b ));
+                return (a.value<StockBarAttributes>() ==
+                        b.value<StockBarAttributes>());
             case ThreeDBarAttributesRole:
-                return (qVariantValue<ThreeDBarAttributes>( a ) ==
-                        qVariantValue<ThreeDBarAttributes>( b ));
+                return (a.value<ThreeDBarAttributes>() ==
+                        b.value<ThreeDBarAttributes>());
             case PieAttributesRole:
-                return (qVariantValue<PieAttributes>( a ) ==
-                        qVariantValue<PieAttributes>( b ));
+                return (a.value<PieAttributes>() ==
+                        b.value<PieAttributes>());
             case ThreeDPieAttributesRole:
-                return (qVariantValue<ThreeDPieAttributes>( a ) ==
-                        qVariantValue<ThreeDPieAttributes>( b ));
+                return (a.value<ThreeDPieAttributes>() ==
+                        b.value<ThreeDPieAttributes>());
             case ValueTrackerAttributesRole:
-                return (qVariantValue<ValueTrackerAttributes>( a ) ==
-                        qVariantValue<ValueTrackerAttributes>( b ));
+                return (a.value<ValueTrackerAttributes>() ==
+                        b.value<ValueTrackerAttributes>());
             case DataHiddenRole:
-                return (qVariantValue<bool>( a ) ==
-                        qVariantValue<bool>( b ));
+                return (a.value<bool>() ==
+                        b.value<bool>());
             default:
                 Q_ASSERT( false ); // all of our own roles need to be handled
                 break;
@@ -285,7 +285,7 @@ QVariant AttributesModel::defaultHeaderData( int section, Qt::Orientation orient
     case KDChart::DatasetPenRole:
         // if no per model override was set, use the (possibly default) color set for the brush
         if ( !modelData( role ).isValid() ) {
-            QBrush brush = qVariantValue< QBrush >( headerData( section, orientation, DatasetBrushRole ) );
+            QBrush brush = headerData( section, orientation, DatasetBrushRole ).value< QBrush >();
             return QPen( brush.color() );
         }
     default:
@@ -492,7 +492,8 @@ bool KDChart::AttributesModel::setModelData( const QVariant value, int role )
     if ( sourceModel() && numRows > 0 && numCols > 0 ) {
         emit attributesChanged( index( 0, 0, QModelIndex() ),
                                 index( numRows - 1, numCols - 1, QModelIndex() ) );
-        reset();
+        beginResetModel();
+	endResetModel();
     }
     return true;
 }
@@ -704,7 +705,7 @@ void AttributesModel::setDefaultForRole( int role, const QVariant& value )
         }
     }
 
-    Q_ASSERT( defaultsForRole( role ) == value );
+    Q_ASSERT( defaultsForRole( role ).value<KDChart::DataValueAttributes>()  == value.value<KDChart::DataValueAttributes>() );
 }
 
 void AttributesModel::setDatasetDimension( int dimension )

@@ -23,7 +23,7 @@
 #ifndef COLORSLIDER_H
 #define COLORSLIDER_H
 
-#include <QtGui/QAbstractSlider>
+#include <QAbstractSlider>
 
 class ColorSlider : public QAbstractSlider
 {

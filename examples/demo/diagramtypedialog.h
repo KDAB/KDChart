@@ -23,7 +23,7 @@
 #ifndef DIAGRAMTYPEDIALOG_H
 #define DIAGRAMTYPEDIALOG_H
 
-#include <QtGui/QDialog>
+#include <QDialog>
 #include <QtCore/QHash>
 
 class QAbstractItemModel;

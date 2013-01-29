@@ -21,6 +21,9 @@
 **********************************************************************/
 
 #include <QtGui>
+
+#include <QApplication>
+
 #include <QSqlTableModel>
 #include <QSqlQuery>
 #include <QSqlError>

@@ -257,7 +257,7 @@ void Plotter::resetLineAttributes( const QModelIndex & index )
   */
 LineAttributes Plotter::lineAttributes() const
 {
-    return qVariantValue<LineAttributes>( d->attributesModel->data( KDChart::LineAttributesRole ) );
+    return d->attributesModel->data( KDChart::LineAttributesRole ).value<LineAttributes>();
 }
 
 /**
@@ -267,7 +267,7 @@ LineAttributes Plotter::lineAttributes( int column ) const
 {
     const QVariant attrs( d->datasetAttrs( column, LineAttributesRole ) );
     if( attrs.isValid() )
-        return qVariantValue< LineAttributes >( attrs );
+        return attrs.value<LineAttributes>();
     return lineAttributes();
 }
 
@@ -276,8 +276,8 @@ LineAttributes Plotter::lineAttributes( int column ) const
   */
 LineAttributes Plotter::lineAttributes( const QModelIndex& index ) const
 {
-    return qVariantValue< LineAttributes >( d->attributesModel->data(
-        d->attributesModel->mapFromSource( index ), KDChart::LineAttributesRole ) );
+    return d->attributesModel->data(
+        d->attributesModel->mapFromSource( index ), KDChart::LineAttributesRole ).value<LineAttributes>();
 }
 
 /**
@@ -316,8 +316,7 @@ void Plotter::setThreeDLineAttributes( const QModelIndex& index, const ThreeDLin
   */
 ThreeDLineAttributes Plotter::threeDLineAttributes() const
 {
-    return qVariantValue<ThreeDLineAttributes>(
-        d->attributesModel->data( KDChart::ThreeDLineAttributesRole ) );
+    return d->attributesModel->data( KDChart::ThreeDLineAttributesRole ).value<ThreeDLineAttributes>();
 }
 
 /**
@@ -327,7 +326,7 @@ ThreeDLineAttributes Plotter::threeDLineAttributes( int column ) const
 {
     const QVariant attrs( d->datasetAttrs( column, ThreeDLineAttributesRole ) );
     if( attrs.isValid() ) {
-        return qVariantValue< ThreeDLineAttributes >( attrs );
+        return attrs.value<ThreeDLineAttributes>();
     }
     return threeDLineAttributes();
 }
@@ -337,8 +336,8 @@ ThreeDLineAttributes Plotter::threeDLineAttributes( int column ) const
   */
 ThreeDLineAttributes Plotter::threeDLineAttributes( const QModelIndex& index ) const
 {
-    return qVariantValue< ThreeDLineAttributes >( d->attributesModel->data(
-        d->attributesModel->mapFromSource( index ), KDChart::ThreeDLineAttributesRole ) );
+    return d->attributesModel->data(
+        d->attributesModel->mapFromSource( index ), KDChart::ThreeDLineAttributesRole ).value<ThreeDLineAttributes>();
 }
 
 qreal Plotter::threeDItemDepth( const QModelIndex & index ) const
@@ -366,8 +365,8 @@ void Plotter::setValueTrackerAttributes( const QModelIndex & index, const ValueT
   */
 ValueTrackerAttributes Plotter::valueTrackerAttributes( const QModelIndex & index ) const
 {
-    return qVariantValue<ValueTrackerAttributes>( d->attributesModel->data(
-        d->attributesModel->mapFromSource( index ), KDChart::ValueTrackerAttributesRole ) );
+    return d->attributesModel->data(
+        d->attributesModel->mapFromSource( index ), KDChart::ValueTrackerAttributesRole ).value<ValueTrackerAttributes>();
 }
 
 void Plotter::resizeEvent ( QResizeEvent* )

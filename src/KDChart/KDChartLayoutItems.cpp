@@ -413,7 +413,7 @@ bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPo
         QRegion otherRegion( otherPolygon );
 
         // now the question - do they intersect or not?
-        return ! myRegion.intersect( otherRegion ).isEmpty();
+        return ! myRegion.intersected( otherRegion ).isEmpty();
 
     } else {
         // the rotation angles match so we can use a faster algorithm

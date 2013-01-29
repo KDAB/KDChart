@@ -294,14 +294,14 @@ void AbstractDiagram::setHidden( bool hidden )
 
 bool AbstractDiagram::isHidden() const
 {
-    return qVariantValue< bool >( attributesModel()->modelData( DataHiddenRole ) );
+    return attributesModel()->modelData( DataHiddenRole ).value< bool >();
 }
 
 bool AbstractDiagram::isHidden( int dataset ) const
 {
     const QVariant boolFlag( d->datasetAttrs( dataset, DataHiddenRole ) );
     if( boolFlag.isValid() )
-        return qVariantValue< bool >( boolFlag );
+        return boolFlag.value< bool >();
     return isHidden();
 }
 
@@ -310,7 +310,7 @@ bool AbstractDiagram::isHidden( const QModelIndex & index ) const
     const QVariant boolFlag( attributesModel()->data( conditionallyMapFromSource( index ),
                                                       DataHiddenRole ) );
     if ( boolFlag.isValid() ) {
-        return qVariantValue< bool >( boolFlag );
+        return boolFlag.value< bool >();
     }
     int dataset = index.column() / d->datasetDimension;
     return isHidden( dataset );
@@ -334,8 +334,7 @@ void AbstractDiagram::setDataValueAttributes( int dataset, const DataValueAttrib
 
 DataValueAttributes AbstractDiagram::dataValueAttributes() const
 {
-    return qVariantValue<DataValueAttributes>(
-        attributesModel()->modelData( KDChart::DataValueLabelAttributesRole ) );
+    return attributesModel()->modelData( KDChart::DataValueLabelAttributesRole ).value< DataValueAttributes >();
 }
 
 DataValueAttributes AbstractDiagram::dataValueAttributes( int dataset ) const
@@ -354,16 +353,15 @@ DataValueAttributes AbstractDiagram::dataValueAttributes( int dataset ) const
     const QVariant headerAttrs(
         d->datasetAttrs( dataset, KDChart::DataValueLabelAttributesRole ) );
     if( headerAttrs.isValid() )
-        return qVariantValue< DataValueAttributes >( headerAttrs );
+        return headerAttrs.value< DataValueAttributes >();
     return dataValueAttributes();
 }
 
 DataValueAttributes AbstractDiagram::dataValueAttributes( const QModelIndex & index ) const
 {
-    return qVariantValue<DataValueAttributes>(
-        attributesModel()->data(
+    return attributesModel()->data(
             conditionallyMapFromSource( index ),
-            KDChart::DataValueLabelAttributesRole ) );
+            KDChart::DataValueLabelAttributesRole ).value< DataValueAttributes >();
 }
 
 void AbstractDiagram::setDataValueAttributes( const DataValueAttributes & a )
@@ -678,24 +676,22 @@ void AbstractDiagram::setPen( int dataset, const QPen& pen )
 
 QPen AbstractDiagram::pen() const
 {
-    return qVariantValue<QPen>(
-        attributesModel()->data( DatasetPenRole ) );
+    return attributesModel()->data( DatasetPenRole ).value< QPen >();
 }
 
 QPen AbstractDiagram::pen( int dataset ) const
 {
     const QVariant penSettings( d->datasetAttrs( dataset, DatasetPenRole ) );
     if( penSettings.isValid() )
-        return qVariantValue< QPen >( penSettings );
+        return penSettings.value< QPen >();
     return pen();
 }
 
 QPen AbstractDiagram::pen( const QModelIndex& index ) const
 {
-    return qVariantValue<QPen>(
-        attributesModel()->data(
+    return  attributesModel()->data(
             conditionallyMapFromSource( index ),
-            DatasetPenRole ) );
+            DatasetPenRole ).value< QPen >();
 }
 
 void AbstractDiagram::setBrush( const QModelIndex& index, const QBrush& brush )
@@ -721,22 +717,21 @@ void AbstractDiagram::setBrush( int dataset, const QBrush& brush )
 
 QBrush AbstractDiagram::brush() const
 {
-    return qVariantValue<QBrush>(
-        attributesModel()->data( DatasetBrushRole ) );
+    return attributesModel()->data( DatasetBrushRole ).value< QBrush >();
 }
 
 QBrush AbstractDiagram::brush( int dataset ) const
 {
     const QVariant brushSettings( d->datasetAttrs( dataset, DatasetBrushRole ) );
     if( brushSettings.isValid() )
-        return qVariantValue< QBrush >( brushSettings );
+        return brushSettings.value< QBrush >();
     return brush();
 }
 
 QBrush AbstractDiagram::brush( const QModelIndex& index ) const
 {
-    return qVariantValue<QBrush>(
-        attributesModel()->data( conditionallyMapFromSource( index ), DatasetBrushRole ) );
+    return 
+        attributesModel()->data( conditionallyMapFromSource( index ), DatasetBrushRole ).value< QBrush >();
 }
 
 /**

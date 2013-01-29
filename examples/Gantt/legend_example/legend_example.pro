@@ -12,4 +12,6 @@ SOURCES += main.cpp \
 FORMS += mainwindow.ui \
          entrydialog.ui
 
+contains(QT_VERSION, ^5\\.[0-9]\\..*):QT += printsupport
+
 message( "Building ''$$TARGET'' using LIBS ''$$LIBS''" )

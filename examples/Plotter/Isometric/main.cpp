@@ -32,6 +32,8 @@
 #include <KDChartLegend>
 #include <KDChartBackgroundAttributes>
 
+#include <QApplication>
+
 int main(int argc, char *argv[]) {
 	QApplication a(argc, argv);
 	KDChart::Chart chart;

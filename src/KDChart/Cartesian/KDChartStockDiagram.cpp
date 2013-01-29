@@ -90,8 +90,7 @@ void StockDiagram::setStockBarAttributes( const StockBarAttributes &attr )
 
 StockBarAttributes StockDiagram::stockBarAttributes() const
 {
-    return qVariantValue<StockBarAttributes>(
-        attributesModel()->modelData( StockBarAttributesRole ) );
+    return attributesModel()->modelData( StockBarAttributesRole ).value<StockBarAttributes>();
 }
 
 void StockDiagram::setStockBarAttributes( int column, const StockBarAttributes &attr )
@@ -104,7 +103,7 @@ StockBarAttributes StockDiagram::stockBarAttributes( int column ) const
 {
     const QVariant attr( d->datasetAttrs( column, StockBarAttributesRole ) );
     if ( attr.isValid() )
-        return qVariantValue<StockBarAttributes>( attr );
+        return attr.value<StockBarAttributes>();
     return stockBarAttributes();
 }
 
@@ -128,8 +127,7 @@ void StockDiagram::setThreeDBarAttributes( const ThreeDBarAttributes &attr )
  */
 ThreeDBarAttributes StockDiagram::threeDBarAttributes() const
 {
-	return qVariantValue<ThreeDBarAttributes>(
-			attributesModel()->modelData( ThreeDBarAttributesRole ) );
+	return attributesModel()->modelData( ThreeDBarAttributesRole ).value<ThreeDBarAttributes>();
 }
 
 /**
@@ -160,7 +158,7 @@ ThreeDBarAttributes StockDiagram::threeDBarAttributes( int column ) const
 {
     const QVariant attr( d->datasetAttrs( column, ThreeDBarAttributesRole ) );
     if ( attr.isValid() )
-        return qVariantValue<ThreeDBarAttributes>( attr );
+        return attr.value<ThreeDBarAttributes>();
     return threeDBarAttributes();
 }
 

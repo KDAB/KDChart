@@ -7,5 +7,7 @@ INCLUDEPATH += . $${TOP_SOURCE_DIR}/include
 
 LIBS+= -L$${TOP_BUILD_DIR}/lib -l$$KDCHARTLIB
 
+QT += printsupport
+
 # Input
 SOURCES += main.cpp

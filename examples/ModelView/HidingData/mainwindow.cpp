@@ -23,6 +23,7 @@
 #include "mainwindow.h"
 
 #include <QtGui>
+#include <QFileDialog>
 
 #include <KDChartChart>
 #include <KDChartDataValueAttributes>

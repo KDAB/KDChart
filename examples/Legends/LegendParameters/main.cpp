@@ -27,6 +27,7 @@
 #include <KDChartPosition>
 #include <KDChartBackgroundAttributes>
 #include <KDChartFrameAttributes>
+#include <QApplication>
 
 using namespace KDChart;
 

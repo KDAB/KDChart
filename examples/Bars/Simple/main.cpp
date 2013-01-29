@@ -24,6 +24,7 @@
 #include <QtSvg/QSvgGenerator>
 #include <KDChartChart>
 #include <KDChartBarDiagram>
+#include <QApplication>
 
 class ChartWidget : public QWidget {
   Q_OBJECT

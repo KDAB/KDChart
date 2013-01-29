@@ -32,6 +32,8 @@
 #include <KDChartLegend>
 #include <QStandardItemModel>
 
+#include <QApplication>
+
 using namespace KDChart;
 
 int main( int argc, char** argv )

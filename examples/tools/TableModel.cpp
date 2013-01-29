@@ -194,7 +194,8 @@ bool TableModel::loadFromCSV( const QString& filename )
         }
     }
 
-    reset();
+    beginResetModel();
+    endResetModel();
 
     if ( m_rows.isEmpty() ) {
         qDebug() << "TableModel::loadFromCSV: table loaded, but no "
@@ -205,6 +206,7 @@ bool TableModel::loadFromCSV( const QString& filename )
 
 void TableModel::clear()
 {
+    beginResetModel();
     m_rows.clear();
-    reset();
+    endResetModel();
 }

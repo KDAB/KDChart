@@ -130,7 +130,7 @@ StyleOptionGanttItem Legend::getStyleOption( const QModelIndex& index ) const
     opt.displayPosition = StyleOptionGanttItem::Right;
     opt.displayAlignment = Qt::Alignment( d->proxyModel.data( index, Qt::TextAlignmentRole ).toInt() );
     opt.text = index.model()->data( index, LegendRole ).toString();
-    opt.font = qVariantValue< QFont >( index.model()->data( index, Qt::FontRole ) );
+    opt.font = ( index.model()->data( index, Qt::FontRole ) ).value< QFont >();
     return opt;
 }
 
@@ -189,7 +189,7 @@ QSize Legend::measureItem( const QModelIndex& index, bool recursive ) const
     QSize baseSize;
     if( index.model() != 0 )
     {
-        QFontMetrics fm( qVariantValue< QFont >( index.model()->data( index, Qt::FontRole ) ) );
+        QFontMetrics fm( ( index.model()->data( index, Qt::FontRole ) ).value< QFont >() );
         const QString text = index.model()->data( index, LegendRole ).toString();
         if( !text.isEmpty() )
             baseSize += QSize( fm.width( text ) + fm.height() + 2, fm.height() + 2 );

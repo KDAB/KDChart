@@ -31,6 +31,13 @@
 #include <KDChartBarDiagram>
 #include <KDChartTextAttributes>
 #include <KDChartDataValueAttributes>
+#include <QMenuBar>
+#include <QMenu>
+#include <QTableView>
+#include <QSplitter>
+#include <QFileDialog>
+#include <QStatusBar>
+#include <QApplication>
 
 
 using namespace KDChart;

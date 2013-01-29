@@ -23,7 +23,7 @@
 #ifndef DATAVALUESETTINGS_H
 #define DATAVALUESETTINGS_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 namespace KDChart {
     class Chart;

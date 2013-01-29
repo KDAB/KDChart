@@ -24,7 +24,7 @@
 #include <KDChartChart>
 #include <KDChartLegend>
 #include <KDChartCartesianAxis>
-#include <QtGui/QColorDialog>
+#include <QColorDialog>
 
 using namespace KDChart;
 

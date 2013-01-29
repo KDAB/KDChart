@@ -74,20 +74,20 @@ void SummaryHandlingProxyModel::Private::insertInCache( const SummaryHandlingPro
         /* The probably results in recursive calls here */
 	QVariant tmpsv = model->data( pdIdx, StartTimeRole );
 	QVariant tmpev = model->data( pdIdx, EndTimeRole );
-	if( !qVariantCanConvert<QDateTime>(tmpsv) ||
-	    !qVariantCanConvert<QDateTime>(tmpev) ) {
+	if( !tmpsv.canConvert( QVariant::DateTime ) ||
+	    !tmpev.canConvert( QVariant::DateTime ) ) {
             qDebug() << "Skipping item " << sourceIdx << " because it doesn't contain QDateTime";
             continue;
         }
 
         // check for valid datetimes
-        if( tmpsv.type() == QVariant::DateTime && !qVariantValue<QDateTime>(tmpsv).isValid()) continue;
-        if( tmpev.type() == QVariant::DateTime && !qVariantValue<QDateTime>(tmpev).isValid()) continue;
+        if( tmpsv.type() == QVariant::DateTime && !tmpsv.value<QDateTime>().isValid()) continue;
+        if( tmpev.type() == QVariant::DateTime && !tmpev.value<QDateTime>().isValid()) continue;
 
 	// We need to test for empty strings to
 	// avoid a stupid Qt warning
-	if( tmpsv.type() == QVariant::String && qVariantValue<QString>(tmpsv).isEmpty()) continue;
-	if( tmpev.type() == QVariant::String && qVariantValue<QString>(tmpev).isEmpty()) continue;
+	if( tmpsv.type() == QVariant::String && tmpsv.value<QString>().isEmpty()) continue;
+	if( tmpev.type() == QVariant::String && tmpev.value<QString>().isEmpty()) continue;
         QDateTime tmpst = tmpsv.toDateTime();
         QDateTime tmpet = tmpev.toDateTime();
         if ( st.isNull() || st > tmpst ) st = tmpst;
@@ -95,13 +95,13 @@ void SummaryHandlingProxyModel::Private::insertInCache( const SummaryHandlingPro
     }
     QVariant tmpssv = sourceModel->data( mainIdx, StartTimeRole );
     QVariant tmpsev = sourceModel->data( mainIdx, EndTimeRole );
-    if ( qVariantCanConvert<QDateTime>( tmpssv )
-         && !( qVariantCanConvert<QString>( tmpssv ) && qVariantValue<QString>( tmpssv ).isEmpty() )
-         && qVariantValue<QDateTime>( tmpssv ) != st )
+    if ( tmpssv.canConvert( QVariant::DateTime )
+         && !( tmpssv.canConvert( QVariant::String ) && tmpssv.toString().isEmpty() )
+         && tmpssv.toDateTime() != st )
         sourceModel->setData( mainIdx, st, StartTimeRole );
-    if ( qVariantCanConvert<QDateTime>( tmpsev )
-         && !( qVariantCanConvert<QString>( tmpsev ) && qVariantValue<QString>( tmpsev ).isEmpty() )
-         && qVariantValue<QDateTime>( tmpsev ) != et )
+    if ( tmpsev.canConvert( QVariant::DateTime )
+         && !( tmpsev.canConvert( QVariant::String ) && tmpsev.toString().isEmpty() )
+         && tmpsev.toDateTime() != et )
         sourceModel->setData( mainIdx, et, EndTimeRole );
     cached_summary_items[sourceIdx]=qMakePair( st, et );
 }

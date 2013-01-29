@@ -201,7 +201,7 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
     //testing
     const int colCount = m_lines->model()->columnCount();
     for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
-        QBrush brush = qVariantValue<QBrush>( m_lines->model()->headerData( iColumn, Qt::Vertical, DatasetBrushRole ) );
+        QBrush brush = m_lines->model()->headerData( iColumn, Qt::Vertical, DatasetBrushRole ).value<QBrush>();
         DataValueAttributes a = m_lines->dataValueAttributes( iColumn );
         if ( !paintMarkersCB->isChecked() ) {
             MarkerAttributes ma = a.markerAttributes();
@@ -298,7 +298,7 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
         }
         for ( int j=0; j< rowCount; ++j ) {
             QModelIndex index = m_lines->model()->index( j, iColumn, QModelIndex() );
-            QBrush brush = qVariantValue<QBrush>( m_lines->model()->headerData( iColumn, Qt::Vertical, DatasetBrushRole ) );
+            QBrush brush = m_lines->model()->headerData( iColumn, Qt::Vertical, DatasetBrushRole ).value<QBrush>();
             qreal value = m_lines->model()->data( index ).toReal();
             /* Set a specific color - marker for a specific value */
             if ( value == 13 ) {
@@ -459,7 +459,7 @@ void MainWindow::paintMarkers( bool checked, const QRect & printSize )
         }
         for ( int j=0; j< rowCount; ++j ) {
             QModelIndex index = m_lines->model()->index( j, iColumn, QModelIndex() );
-            QBrush brush = qVariantValue<QBrush>( m_lines->model()->headerData( iColumn, Qt::Vertical, DatasetBrushRole ) );
+            QBrush brush = m_lines->model()->headerData( iColumn, Qt::Vertical, DatasetBrushRole ).value<QBrush>();
             qreal value = m_lines->model()->data( index ).toReal();
             /* Set a specific color - marker for a specific value */
             if ( value == 13 ) {

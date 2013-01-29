@@ -90,7 +90,7 @@ bool BackgroundAttributes::isEqualTo(
             brush()      == other.brush() &&
             pixmapMode() == other.pixmapMode() &&
             (ignorePixmap ||
-            pixmap().serialNumber() == other.pixmap().serialNumber()) );
+            pixmap().cacheKey() == other.pixmap().cacheKey()) );
 }
 
 

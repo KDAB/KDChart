@@ -139,7 +139,8 @@ void ForwardingProxyModel::sourceModelAboutToBeReset()
 void ForwardingProxyModel::sourceModelReset()
 {
   //qDebug() << "ForwardingProxyModel::sourceModelReset()";
-    reset();
+    beginResetModel();
+    endResetModel();
 }
 
 /*! Called just before the layout of the source model is changed.
@@ -158,7 +159,8 @@ void ForwardingProxyModel::sourceLayoutAboutToBeChanged()
 void ForwardingProxyModel::sourceLayoutChanged()
 {
   //qDebug() << "ForwardingProxyModel::sourceLayoutChanged()";
-    reset();
+    beginResetModel();
+    endResetModel();
 }
 
 /*! Called when the data in an existing item in the source model changes.

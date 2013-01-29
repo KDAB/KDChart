@@ -201,7 +201,7 @@ void PolarDiagram::paint( PaintContext* ctx,
             //           but it draws every polyline in one go - using one color.
             //           This needs to be enhanced to allow for cell-specific settings
             //           in the same way as LineDiagram does it.
-            QBrush brush = qVariantValue<QBrush>( d->datasetAttrs( iCol, KDChart::DatasetBrushRole ) );
+            QBrush brush = d->datasetAttrs( iCol, KDChart::DatasetBrushRole ).value<QBrush>();
             QPolygonF polygon;
             for ( int iRow = 0; iRow < rowCount; ++iRow ) {
                 QModelIndex index = model()->index( iRow, iCol, rootIndex() ); // checked
@@ -219,7 +219,7 @@ void PolarDiagram::paint( PaintContext* ctx,
             PainterSaver painterSaver( ctx->painter() );
             ctx->painter()->setRenderHint ( QPainter::Antialiasing );
             ctx->painter()->setBrush( brush );
-            QPen p = qVariantValue< QPen >( d->datasetAttrs( iCol, KDChart::DatasetPenRole ) );
+            QPen p = d->datasetAttrs( iCol, KDChart::DatasetPenRole ).value< QPen >();
             if ( p.style() != Qt::NoPen )
             {
                 ctx->painter()->setPen( PrintingParameters::scalePen( p ) );

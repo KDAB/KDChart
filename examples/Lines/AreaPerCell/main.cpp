@@ -23,6 +23,7 @@
 #include <QtGui>
 #include <KDChartChart>
 #include <KDChartLineDiagram>
+#include <QApplication>
 
 using namespace KDChart;
 

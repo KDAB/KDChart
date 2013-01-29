@@ -23,7 +23,7 @@
 #ifndef AXISSETTINGS_H
 #define AXISSETTINGS_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 namespace KDChart
 {

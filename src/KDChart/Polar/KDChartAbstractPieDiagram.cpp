@@ -140,8 +140,7 @@ void AbstractPieDiagram::setPieAttributes( const QModelIndex & index, const PieA
 //       (khz, 2006-07-28)
 PieAttributes AbstractPieDiagram::pieAttributes() const
 {
-    return qVariantValue<PieAttributes>(
-        d->attributesModel->data( PieAttributesRole ) );
+    return d->attributesModel->data( PieAttributesRole ).value<PieAttributes>();
 }
 
 // Note: Our users NEED this method - even if
@@ -151,16 +150,15 @@ PieAttributes AbstractPieDiagram::pieAttributes( int column ) const
 {
     const QVariant attrs( d->datasetAttrs( column, PieAttributesRole ) );
     if( attrs.isValid() )
-        return qVariantValue< PieAttributes >( attrs );
+        return attrs.value< PieAttributes >();
     return pieAttributes();
 }
 
 PieAttributes AbstractPieDiagram::pieAttributes( const QModelIndex & index ) const
 {
-    return qVariantValue<PieAttributes>(
-        d->attributesModel->data(
+    return d->attributesModel->data(
             d->attributesModel->mapFromSource( index ),
-            PieAttributesRole ) );
+            PieAttributesRole ).value<PieAttributes>();
 }
 
 
@@ -187,8 +185,7 @@ void AbstractPieDiagram::setThreeDPieAttributes( const QModelIndex & index, cons
 //       (khz, 2006-07-28)
 ThreeDPieAttributes AbstractPieDiagram::threeDPieAttributes() const
 {
-    return qVariantValue<ThreeDPieAttributes>(
-        d->attributesModel->data( ThreeDPieAttributesRole ) );
+    return d->attributesModel->data( ThreeDPieAttributesRole ).value<ThreeDPieAttributes>();
 }
 
 // Note: Our users NEED this method - even if
@@ -198,15 +195,14 @@ ThreeDPieAttributes AbstractPieDiagram::threeDPieAttributes( int column ) const
 {
     const QVariant attrs( d->datasetAttrs( column, ThreeDPieAttributesRole ) );
     if( attrs.isValid() )
-        return qVariantValue< ThreeDPieAttributes >( attrs );
+        return attrs.value< ThreeDPieAttributes >();
     return threeDPieAttributes();
 }
 
 ThreeDPieAttributes AbstractPieDiagram::threeDPieAttributes( const QModelIndex & index ) const
 {
-    return qVariantValue<ThreeDPieAttributes>(
-        d->attributesModel->data(
+    return d->attributesModel->data(
             d->attributesModel->mapFromSource( index ),
-            ThreeDPieAttributesRole ) );
+            ThreeDPieAttributesRole ).value<ThreeDPieAttributes>();
 }
 

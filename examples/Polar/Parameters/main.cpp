@@ -26,6 +26,8 @@
 #include <KDChartDataValueAttributes>
 #include <KDChartBackgroundAttributes>
 
+#include <QApplication>
+
 using namespace KDChart;
 
 class ChartWidget : public QWidget {

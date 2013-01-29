@@ -504,8 +504,8 @@ QBrush DateTimeGrid::noInformationBrush() const
  */
 qreal DateTimeGrid::mapToChart( const QVariant& value ) const
 {
-    if ( ! qVariantCanConvert<QDateTime>( value ) ||
-         ( value.type() == QVariant::String && qVariantValue<QString>(value).isEmpty() ) )
+    if ( ! value.canConvert( QVariant::DateTime ) ||
+         ( value.type() == QVariant::String && value.toString().isEmpty() ) )
     {
         return -1.0;
     }
@@ -531,10 +531,10 @@ Span DateTimeGrid::mapToChart( const QModelIndex& idx ) const
     assert( idx.model()==model() );
     const QVariant sv = model()->data( idx, StartTimeRole );
     const QVariant ev = model()->data( idx, EndTimeRole );
-    if( qVariantCanConvert<QDateTime>(sv) &&
-    qVariantCanConvert<QDateTime>(ev) &&
-    !(sv.type() == QVariant::String && qVariantValue<QString>(sv).isEmpty()) &&
-    !(ev.type() == QVariant::String && qVariantValue<QString>(ev).isEmpty())
+    if( sv.canConvert( QVariant::DateTime ) &&
+        ev.canConvert( QVariant::DateTime ) &&
+    !(sv.type() == QVariant::String && sv.toString().isEmpty()) &&
+    !(ev.type() == QVariant::String && ev.toString().isEmpty())
     ) {
       QDateTime st = sv.toDateTime();
       QDateTime et = ev.toDateTime();
@@ -546,7 +546,7 @@ Span DateTimeGrid::mapToChart( const QModelIndex& idx ) const
       }
     }
     // Special case for Events with only a start date
-    if( qVariantCanConvert<QDateTime>(sv) && !(sv.type() == QVariant::String && qVariantValue<QString>(sv).isEmpty()) ) {
+    if( sv.canConvert( QVariant::DateTime ) && !(sv.type() == QVariant::String && sv.toString().isEmpty()) ) {
       QDateTime st = sv.toDateTime();
       if ( st.isValid() ) {
         qreal sx = d->dateTimeToChartX( st );
@@ -1014,7 +1014,7 @@ void DateTimeGrid::paintHourScaleHeader( QPainter* painter,
         virtual ~HourFormatter() {}
 
         QString format( const QDateTime& dt ) {
-            return dt.time().toString( QString::fromAscii( "hh" ) );
+            return dt.time().toString( QString::fromLatin1( "hh" ) );
         }
         QRect textRect( qreal x, qreal offset, qreal dayWidth, const QRectF& headerRect, const QDateTime& dt ) {
             Q_UNUSED(dt);
@@ -1054,7 +1054,7 @@ void DateTimeGrid::paintDayScaleHeader( QPainter* painter,  const QRectF& header
         virtual ~DayFormatter() {}
 
         QString format( const QDateTime& dt ) {
-            return dt.toString( QString::fromAscii( "ddd" ) ).left( 1 );
+            return dt.toString( QString::fromLatin1( "ddd" ) ).left( 1 );
         }
         QRect textRect( qreal x, qreal offset, qreal dayWidth, const QRectF& headerRect, const QDateTime& dt ) {
             Q_UNUSED(dt);

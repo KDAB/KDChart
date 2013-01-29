@@ -21,6 +21,7 @@
 **********************************************************************/
 
 #include <QtGui>
+#include <QApplication>
 #include <KDChartChart>
 #include <KDChartBarDiagram>
 #include <KDChartDataValueAttributes>

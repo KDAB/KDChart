@@ -28,6 +28,8 @@
 #include <KDChartPieAttributes>
 #include <KDChartPosition>
 
+#include <QApplication>
+
 using namespace KDChart;
 
 class ChartWidget : public QWidget {

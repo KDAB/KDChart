@@ -560,7 +560,7 @@ void GraphicsScene::slotGridChanged()
 void GraphicsScene::helpEvent( QGraphicsSceneHelpEvent *helpEvent )
 {
 #ifndef QT_NO_TOOLTIP
-    QGraphicsItem *item = itemAt( helpEvent->scenePos() );
+    QGraphicsItem *item = itemAt( helpEvent->scenePos(), QTransform() );
     if ( GraphicsItem* gitem = qgraphicsitem_cast<GraphicsItem*>( item ) ) {
         QToolTip::showText(helpEvent->screenPos(), gitem->ganttToolTip());
     } else if ( ConstraintGraphicsItem* citem = qgraphicsitem_cast<ConstraintGraphicsItem*>( item ) ) {

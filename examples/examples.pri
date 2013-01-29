@@ -32,6 +32,8 @@ win32: LIBS += -L$${TOP_BUILD_DIR}/lib -l$$KDCHARTLIB -l$$TESTTOOLSLIB
 # 4. Miscellaneous settings:
 QT += svg
 
+contains(QT_VERSION, ^5\\.[0-9]\\..*):QT += printsupport
+
 unix {
   MOC_DIR = .moc
   OBJECTS_DIR = .obj

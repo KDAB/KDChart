@@ -65,7 +65,7 @@ namespace {
         }
     };
 }
-
+#if QT_VERSION < 0x050000
 GraphicsItem::GraphicsItem( QGraphicsItem* parent, GraphicsScene* scene )
     : BASE( parent, scene ),  m_isupdating( false )
 {
@@ -78,6 +78,25 @@ GraphicsItem::GraphicsItem( const QModelIndex& idx, QGraphicsItem* parent,
 {
   init();
 }
+#else
+GraphicsItem::GraphicsItem( QGraphicsItem* parent, GraphicsScene* scene )
+    : BASE( parent ),  m_isupdating( false )
+{
+  if ( scene )
+    scene->addItem( this );
+  init();
+}
+
+GraphicsItem::GraphicsItem( const QModelIndex& idx, QGraphicsItem* parent,
+                                            GraphicsScene* scene )
+    : BASE( parent ),  m_index( idx ), m_isupdating( false )
+{
+  init();
+  if ( scene )
+    scene->addItem( this );
+}
+#endif
+
 
 GraphicsItem::~GraphicsItem()
 {
@@ -89,7 +108,11 @@ void GraphicsItem::init()
     setCacheMode( QGraphicsItem::DeviceCoordinateCache );
 #endif
     setFlags( ItemIsMovable|ItemIsSelectable|ItemIsFocusable );
+#if QT_VERSION < 0x050000
     setAcceptsHoverEvents( true );
+#else
+    setAcceptHoverEvents( true );
+#endif
     setHandlesChildEvents( true );
     setZValue( 100. );
     m_dragline = 0;
@@ -447,7 +470,7 @@ void GraphicsItem::mouseReleaseEvent( QGraphicsSceneMouseEvent* event )
     delete m_dragline; m_dragline = 0;
     if ( scene()->dragSource() ) {
         // Create a new constraint
-        GraphicsItem* other = qgraphicsitem_cast<GraphicsItem*>( scene()->itemAt( event->scenePos() ) );
+        GraphicsItem* other = qgraphicsitem_cast<GraphicsItem*>( scene()->itemAt( event->scenePos(), QTransform() ) );
         if ( other && scene()->dragSource()!=other &&
              other->index().data(KDGantt::ItemTypeRole) == KDGantt::TypeEvent )
         {

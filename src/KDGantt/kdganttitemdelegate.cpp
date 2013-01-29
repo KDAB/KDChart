@@ -112,8 +112,8 @@ QPen ItemDelegate::Private::constraintPen( const QPointF& start, const QPointF& 
     }
 
     // ... unless constraint.data() returned a valid pen for this case
-    if( qVariantCanConvert< QPen >( dataPen ) ) {
-        pen = qVariantValue< QPen >( dataPen );
+    if( dataPen.canConvert( QVariant::Pen ) ) {
+        pen = dataPen.value< QPen >();
     }
 
     return pen;
