@@ -144,6 +144,7 @@ DatasetSettings::DatasetSettings( Chart *chart, QWidget *parent )
     d->ui->setupUi(this);
 #ifdef Q_OS_LINUX
     d->ui->colorDisplay->setStyle( new QCleanlooksStyle );
+    d->ui->outlineBtn->setStyle( new QCleanlooksStyle );
 #endif
     connect( d->ui->datasetSelector, SIGNAL( currentIndexChanged( int ) ), this, SLOT( indexChanged( int ) ) );
     connect( d->ui->colorDisplay, SIGNAL( clicked() ), d, SLOT( changeColor() ) );
