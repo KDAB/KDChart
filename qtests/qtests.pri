@@ -5,7 +5,12 @@ CONFIG( static ) {
 
 QT += xml svg
 
-CONFIG+=qtestlib
+contains(QT_VERSION, ^5\\.[0-9]\\..*) {
+    CONFIG+=testlib
+} else {
+    CONFIG+=qtestlib
+}
+
 TEMPLATE = app
 INCLUDEPATH +=  $${TOP_SOURCE_DIR}/examples/tools $${TOP_SOURCE_DIR}/include \
         $${TOP_SOURCE_DIR}/src/KDChart \
