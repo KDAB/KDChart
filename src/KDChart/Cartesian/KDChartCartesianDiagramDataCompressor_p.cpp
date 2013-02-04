@@ -521,7 +521,7 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
 
         Q_FOREACH( const QModelIndex& index, indexes ) {
             // the DataPoint point is visible if any of the underlying, aggregated points is visible
-            if ( qVariantValue<bool>( m_model->data( index, DataHiddenRole ) ) == false ) {
+            if ( m_model->data( index, DataHiddenRole ).value<bool>() == false ) {
                 result.hidden = false;
             }
         }
