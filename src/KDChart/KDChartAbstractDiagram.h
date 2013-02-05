@@ -185,7 +185,11 @@ namespace KDChart {
         virtual QRegion visualRegionForSelection(const QItemSelection &selection) const;
         virtual QRegion visualRegion(const QModelIndex &index) const;
         /** \reimpl */
+#if QT_VERSION < 0x050000
         virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+#else
+        virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles = QVector<int>());
+#endif
         /** \reimpl */
         virtual void doItemsLayout();
 
