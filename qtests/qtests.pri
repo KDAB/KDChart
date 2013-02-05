@@ -3,13 +3,9 @@ CONFIG( static ) {
   DEFINES += KDCHART_STATICLIB
 }
 
-QT += xml svg
+QT += xml svg testlib
 
-contains(QT_VERSION, ^5\\.[0-9]\\..*) {
-    CONFIG+=testlib
-} else {
-    CONFIG+=qtestlib
-}
+CONFIG += testlib
 
 TEMPLATE = app
 INCLUDEPATH +=  $${TOP_SOURCE_DIR}/examples/tools $${TOP_SOURCE_DIR}/include \
