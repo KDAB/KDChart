@@ -136,7 +136,6 @@ void PercentLineDiagram::paint( PaintContext* ctx )
                 const CartesianDiagramDataCompressor::CachePosition position( row, column2 );
                 CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
 
-                const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
                 const LineAttributes::MissingValuesPolicy policy = laCell.missingValuesPolicy();
                 if( ISNAN( point.value ) && policy == LineAttributes::MissingValuesAreBridged )
                     point.value = interpolateMissingValue( position );
@@ -149,7 +148,6 @@ void PercentLineDiagram::paint( PaintContext* ctx )
                     const CartesianDiagramDataCompressor::CachePosition position( row + 1, column2 );
                     CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
 
-                    const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
                     const LineAttributes::MissingValuesPolicy policy = laCell.missingValuesPolicy();
                     if( ISNAN( point.value ) && policy == LineAttributes::MissingValuesAreBridged )
                         point.value = interpolateMissingValue( position );
