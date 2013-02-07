@@ -25,15 +25,15 @@
 
 #include "gradientdialog.h"
 
-#include <QtGui/QColorDialog>
+#include <QColorDialog>
 
 #if QT_VERSION < 0x050000
 #include <QtGui/QCleanlooksStyle>
 #else
-#include <QtGui/QStyleFactory>
+#include <QStyleFactory>
 #endif
 
-#include <QtGui/QFileDialog>
+#include <QFileDialog>
 
 #include <KDChart/KDChartThreeDBarAttributes>
 #include <KDChart/KDChartThreeDLineAttributes>

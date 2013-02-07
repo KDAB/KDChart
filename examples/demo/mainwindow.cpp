@@ -43,7 +43,7 @@
 
 #include <TableModel.h>
 
-#include <QtGui/QDockWidget>
+#include <QDockWidget>
 
 #include "datasetsettings.h"
 #include "diagramsettings.h"

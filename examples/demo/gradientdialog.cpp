@@ -25,11 +25,11 @@
 
 #include "colorslider.h"
 
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QSpinBox>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QSpinBox>
 
-#include <QtGui/QLabel>
+#include <QLabel>
 
 
 class GradientDialog::Private : public QObject

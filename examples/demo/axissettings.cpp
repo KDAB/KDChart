@@ -27,7 +27,7 @@
 #include <QtCore/QHash>
 #include <QtCore/QVector>
 
-#include <QtGui/QComboBox>
+#include <QComboBox>
 
 #include <KDChart/KDChartChart>
 #include <KDChart/KDChartCartesianAxis>

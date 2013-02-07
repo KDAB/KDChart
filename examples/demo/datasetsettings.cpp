@@ -32,7 +32,7 @@
 #if QT_VERSION < 0x050000
 #include <QtGui/QCleanlooksStyle>
 #else
-#include <QtGui/QStyleFactory>
+#include <QStyleFactory>
 #endif
 
 #include <QtGui/QImage>

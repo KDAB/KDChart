@@ -524,7 +524,7 @@ void PieDiagram::paintInternal( PaintContext* paintContext )
     d->angleLens.clear();
 }
 
-#if defined ( Q_WS_WIN)
+#if defined ( Q_OS_WIN)
 #define trunc(x) ((int)(x))
 #endif
 
