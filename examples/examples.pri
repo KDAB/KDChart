@@ -4,6 +4,8 @@
 # needed for the export macros.
 CONFIG( static ) {
   DEFINES += KDCHART_STATICLIB
+} else {
+  DEFINES += TESTTOOLS_DLL
 }
 
 INCLUDEPATH += \
