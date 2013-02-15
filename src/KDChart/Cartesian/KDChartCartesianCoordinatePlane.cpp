@@ -319,13 +319,12 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
 QRectF CartesianCoordinatePlane::drawingArea() const
 {
     // the rectangle the diagrams cover in the *plane*:
-    // (Why -3? We save 1px on each side for the antialiased drawing, and
-    // respect the way QPainter calculates the width of a painted rect (the
-    // size is the rectangle size plus the pen width). This way, most clipping
-    // for regular pens should be avoided. When pens with a penWidth or larger
+    // We reserve 1px on each side for antialiased drawing, and respect the way QPainter calculates
+    // the width of a painted rect (the size is the rectangle size plus the pen width). The latter
+    // accounts for another pixel that we subtract from height and width.
+    // This way, most clipping for regular pens should be avoided. When pens with a width larger
     // than 1 are used, this may not be sufficient.
-    const QRect rect( areaGeometry() );
-    return QRectF ( rect.left()+1, rect.top()+1, rect.width() - 3, rect.height() - 3 );
+    return QRectF( areaGeometry() ).adjusted( 1.0, 1.0, -2.0, -2.0 );
 }
 
 
@@ -340,17 +339,9 @@ QRectF CartesianCoordinatePlane::logicalArea() const
     const QSizeF siz( qAbs( dimX.distance() ), -qAbs( dimY.distance() ) );
     const QRectF dataBoundingRect( pt, siz );
 
-    // determine logical top left, taking the "reverse" option of
-    // horizontal and vertical dimension into account
-    QPointF topLeft;
-    if( !d->reverseVerticalPlane && !d->reverseHorizontalPlane )
-        topLeft = dataBoundingRect.topLeft();
-    else if( d->reverseVerticalPlane && !d->reverseHorizontalPlane )
-        topLeft = dataBoundingRect.bottomLeft();
-    else if( d->reverseVerticalPlane && d->reverseHorizontalPlane )
-        topLeft = dataBoundingRect.bottomRight();
-    else if( !d->reverseVerticalPlane && d->reverseHorizontalPlane )
-        topLeft = dataBoundingRect.topRight();
+    // determine logical top left, taking the "reverse" options into account
+    const QPointF topLeft( d->reverseHorizontalPlane ? dataBoundingRect.right() : dataBoundingRect.left(),
+                           d->reverseVerticalPlane ? dataBoundingRect.bottom() : dataBoundingRect.top() );
 
     const qreal width  = dataBoundingRect.width()  * ( d->reverseHorizontalPlane ? -1.0 : 1.0 );
     const qreal height = dataBoundingRect.height() * ( d->reverseVerticalPlane   ? -1.0 : 1.0 );
