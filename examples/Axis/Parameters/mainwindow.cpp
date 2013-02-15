@@ -159,38 +159,37 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
     const int rowCount = m_lines->model()->rowCount();
     const int colCount = m_lines->model()->columnCount();
     for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
-        // Specify column-specific attributes!
-        if ( markersStyleCB->currentIndex() == 0 ) {
-            ma.setMarkerStyle( ma.markerStylesMap().value( iColumn ) );
-        } else {
-            switch ( markersStyleCB->currentIndex() ) {
-            case 1:
-                ma.setMarkerStyle( MarkerAttributes::MarkerCircle );
-                break;
-            case 2:
-                ma.setMarkerStyle( MarkerAttributes::MarkerSquare );
-                break;
-            case 3:
-                ma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
-                break;
-            case 4:
-                ma.setMarkerStyle( MarkerAttributes::Marker1Pixel );
-                break;
-            case 5:
-                ma.setMarkerStyle( MarkerAttributes::Marker4Pixels );
-                break;
-            case 6:
-                ma.setMarkerStyle( MarkerAttributes::MarkerRing );
-                break;
-            case 7:
-                ma.setMarkerStyle( MarkerAttributes::MarkerCross );
-                break;
-            case 8:
-                ma.setMarkerStyle( MarkerAttributes::MarkerFastCross );
-                break;
-            default:
-                Q_ASSERT( false );
-            }
+        switch ( markersStyleCB->currentIndex() ) {
+        case 0:
+            ma.setMarkerStyle( MarkerAttributes::MarkerSquare );
+            break;
+        case 1:
+            // Column-specific attributes
+            ma.setMarkerStyle( map.value( iColumn ) );
+            break;
+        case 2:
+            ma.setMarkerStyle( MarkerAttributes::MarkerCircle );
+            break;
+        case 3:
+            ma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
+            break;
+        case 4:
+            ma.setMarkerStyle( MarkerAttributes::Marker1Pixel );
+            break;
+        case 5:
+            ma.setMarkerStyle( MarkerAttributes::Marker4Pixels );
+            break;
+        case 6:
+            ma.setMarkerStyle( MarkerAttributes::MarkerRing );
+            break;
+        case 7:
+            ma.setMarkerStyle( MarkerAttributes::MarkerCross );
+            break;
+        case 8:
+            ma.setMarkerStyle( MarkerAttributes::MarkerFastCross );
+            break;
+        default:
+            Q_ASSERT( false );
         }
         ma.setVisible( checked );
         if ( checked ) {
