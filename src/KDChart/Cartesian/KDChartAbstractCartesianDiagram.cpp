@@ -74,7 +74,8 @@ void AbstractCartesianDiagram::init()
              &( d->compressor ), SLOT( slotDiagramLayoutChanged( AbstractDiagram* ) ) );
     if ( d->plane )
     {
-        const bool res = connect( d->plane, SIGNAL( viewportCoordinateSystemChanged() ), this, SIGNAL( viewportCoordinateSystemChanged() ) );
+        const bool res = connect( d->plane, SIGNAL( viewportCoordinateSystemChanged() ),
+                                  this, SIGNAL( viewportCoordinateSystemChanged() ) );
         Q_UNUSED( res )
         Q_ASSERT( res );
     }
@@ -116,13 +117,13 @@ void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePl
 {
     if( coordinatePlane() ) {
         disconnect( attributesModel(), SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ),
-                 coordinatePlane(), SLOT( relayout() ) );
+                    coordinatePlane(), SLOT( relayout() ) );
         disconnect( attributesModel(), SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
-                 coordinatePlane(), SLOT( relayout() ) );
+                    coordinatePlane(), SLOT( relayout() ) );
         disconnect( attributesModel(), SIGNAL( columnsRemoved( const QModelIndex&, int, int ) ),
-                 coordinatePlane(), SLOT( relayout() ) );
+                    coordinatePlane(), SLOT( relayout() ) );
         disconnect( attributesModel(), SIGNAL( columnsInserted( const QModelIndex&, int, int ) ),
-                 coordinatePlane(), SLOT( relayout() ) );
+                    coordinatePlane(), SLOT( relayout() ) );
         disconnect( coordinatePlane() );
     }
     
@@ -142,18 +143,8 @@ void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePl
         Q_ASSERT( con );
         con = connect( plane, SIGNAL( viewportCoordinateSystemChanged() ), this, SLOT( update() ) );
         Q_ASSERT( con );
-        Q_UNUSED( con ) //not read in release builds
+        Q_UNUSED( con );
     }
-    // show the axes, after all have been layoutPlanes
-    // (because they might depend on each other)
-    /*
-    if( plane )
-        Q_FOREACH( CartesianAxis* axis, d->axesList )
-            axis->show();
-    else
-        Q_FOREACH( CartesianAxis* axis, d->axesList )
-            axis->hide();
-    */
 }
 
 void AbstractCartesianDiagram::setReferenceDiagram( AbstractCartesianDiagram* diagram, const QPointF& offset )
