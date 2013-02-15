@@ -192,29 +192,4 @@ void DiagramTypeDialog::setDefaultModels( QHash< DiagramType, QAbstractItemModel
     }
 }
 
-DiagramTypeDialog::DiagramType DiagramTypeDialog::type() const
-{
-    return d->type;
-}
-DiagramTypeDialog::Subtype DiagramTypeDialog::subType() const
-{
-    return d->subType;
-}
-void DiagramTypeDialog::setType( DiagramType type )
-{
-    if ( d->type == type )
-    {
-        d->type = type;
-        Q_EMIT diagramTypeChanged( d->type, d->subType );
-    }
-}
-void DiagramTypeDialog::setSubType( Subtype type )
-{
-    if ( d->subType == type )
-    {
-        d->subType = type;
-        Q_EMIT diagramTypeChanged( d->type, d->subType );
-    }
-}
-
 #include "diagramtypedialog.moc"
