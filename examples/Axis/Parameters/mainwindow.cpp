@@ -44,7 +44,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
     m_chart = new Chart();
-    m_chart->setGlobalLeading( 20,  20,  20,  20 );
+    m_chart->setGlobalLeading( 20, 20, 20, 20 );
     chartLayout->addWidget( m_chart );
     hSBar->setVisible( false );
     vSBar->setVisible( false );
@@ -56,26 +56,26 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->setModel( &m_model );
     //CartesianAxisList List = m_lines->axesList();
     CartesianAxis *xAxis = new CartesianAxis( m_lines );
-    CartesianAxis *yAxis = new CartesianAxis ( m_lines );
-    CartesianAxis *axisTop = new CartesianAxis ( m_lines );
-    CartesianAxis *axisRight = new CartesianAxis ( m_lines );
-    xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
-    yAxis->setPosition ( KDChart::CartesianAxis::Left );
+    CartesianAxis *yAxis = new CartesianAxis( m_lines );
+    CartesianAxis *axisTop = new CartesianAxis( m_lines );
+    CartesianAxis *axisRight = new CartesianAxis( m_lines );
+    xAxis->setPosition( KDChart::CartesianAxis::Bottom );
+    yAxis->setPosition( KDChart::CartesianAxis::Left );
     axisTop->setPosition( KDChart::CartesianAxis::Top );
     axisRight->setPosition( KDChart::CartesianAxis::Right );
 
-    xAxis->setTitleText ( "Abscissa axis at the bottom" );
-    yAxis->setTitleText ( "Ordinate axis at the left side" );
-    axisTop->setTitleText ( "Abscissa axis at the top" );
-    axisRight->setTitleText ( "Ordinate axis at the right side" );
-    TextAttributes taTop ( xAxis->titleTextAttributes () );
+    xAxis->setTitleText( "Abscissa axis at the bottom" );
+    yAxis->setTitleText( "Ordinate axis at the left side" );
+    axisTop->setTitleText( "Abscissa axis at the top" );
+    axisRight->setTitleText( "Ordinate axis at the right side" );
+    TextAttributes taTop( xAxis->titleTextAttributes () );
     taTop.setPen( QPen( Qt::red ) );
-    axisTop->setTitleTextAttributes ( taTop );
-    TextAttributes taRight ( xAxis->titleTextAttributes () );
+    axisTop->setTitleTextAttributes( taTop );
+    TextAttributes taRight( xAxis->titleTextAttributes () );
     Measure me( taRight.fontSize() );
     me.setValue( me.value() * 1.5 );
     taRight.setFontSize( me );
-    axisRight->setTitleTextAttributes ( taRight );
+    axisRight->setTitleTextAttributes( taRight );
 
     m_lines->addAxis( xAxis );
     m_lines->addAxis( yAxis );
@@ -130,11 +130,8 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
         TextAttributes ta( a.textAttributes() );
         ta.setRotation( 0 );
         ta.setFont( font );
-        ta .setPen( QPen( brush.color() ) );
-        if ( checked )
-            ta.setVisible( true );
-        else
-            ta.setVisible( false );
+        ta.setPen( QPen( brush.color() ) );
+        ta.setVisible( checked );
 
         a.setTextAttributes( ta );
         a.setVisible( true );
@@ -161,14 +158,12 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
     // next: Specify column- / cell-specific attributes!
     const int rowCount = m_lines->model()->rowCount();
     const int colCount = m_lines->model()->columnCount();
-    for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
+    for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
         // Specify column-specific attributes!
-        if ( markersStyleCB->currentIndex() == 0 )
+        if ( markersStyleCB->currentIndex() == 0 ) {
             ma.setMarkerStyle( ma.markerStylesMap().value( iColumn ) );
-        else {
+        } else {
             switch ( markersStyleCB->currentIndex() ) {
-            case 0:
-                break;
             case 1:
                 ma.setMarkerStyle( MarkerAttributes::MarkerCircle );
                 break;
@@ -193,18 +188,15 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
             case 8:
                 ma.setMarkerStyle( MarkerAttributes::MarkerFastCross );
                 break;
+            default:
+                Q_ASSERT( false );
             }
         }
+        ma.setVisible( checked );
         if ( checked ) {
-            ma.setVisible( true );
             attrs.setVisible(  true );
-            if ( paintValuesCB->isChecked() )
-                ta.setVisible(  true );
-            else
-                ta.setVisible(  false );
+            ta.setVisible( paintValuesCB->isChecked() );
         }
-        else
-            ma.setVisible( false );
 
         ma.setMarkerSize( QSize( markersWidthSB->value(), markersHeightSB->value() ) );
         attrs.setTextAttributes( ta );
@@ -213,7 +205,7 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
         m_lines->setDataValueAttributes( iColumn, attrs );
 
         // Specify cell-specific attributes for some values!
-        for ( int j=0; j< rowCount; ++j ) {
+        for ( int j = 0; j < rowCount; ++j ) {
             const QModelIndex index( m_lines->model()->index( j, iColumn, QModelIndex() ) );
             //const QBrush brush( m_lines->brush( index ) );
             const qreal value = m_lines->model()->data( index ).toReal();
@@ -227,14 +219,8 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
                 yellowMarker.setMarkerColor( Qt::yellow );
                 yellowMarker.setMarkerSize( QSize( markersWidthSB->value(), markersHeightSB->value() ) );
                 yellowAttributes.setMarkerAttributes( yellowMarker );
-                if ( checked ) {
-                    yellowMarker.setVisible( true );
-                    yellowAttributes.setVisible(  true );
-                 }
-                else {
-                    yellowMarker.setVisible( false );
-                    yellowAttributes.setVisible(  false );
-                 }
+                yellowMarker.setVisible( checked );
+                yellowAttributes.setVisible( checked );
                 //cell specific attributes:
                 m_lines->setDataValueAttributes( index, yellowAttributes );
             }
@@ -248,10 +234,7 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
 void MainWindow::on_markersStyleCB_currentIndexChanged( const QString & text )
 {
     Q_UNUSED( text );
-    if ( paintMarkersCB->isChecked() )
-        on_paintMarkersCB_toggled( true );
-    else
-        on_paintMarkersCB_toggled( false );
+    on_paintMarkersCB_toggled( paintMarkersCB->isChecked() );
 }
 
 
@@ -274,11 +257,10 @@ void MainWindow::on_markersHeightSB_valueChanged( int /*i*/ )
 void MainWindow::on_displayAreasCB_toggled( bool checked )
 {
     LineAttributes la( m_lines->lineAttributes() );
+    la.setDisplayArea( checked );
     if ( checked  ) {
-        la.setDisplayArea( true );
         la.setTransparency( transparencySB->value() );
-    } else
-        la.setDisplayArea( false );
+    }
     m_lines->setLineAttributes( la );
     m_chart->update();
 }
@@ -318,4 +300,3 @@ void MainWindow::on_vSBar_valueChanged( int vPos )
     m_chart->coordinatePlane()->setZoomCenter( QPointF( hSBar->value()/1000.0, vPos/1000.0) );
     m_chart->update();
 }
-
