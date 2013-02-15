@@ -91,6 +91,7 @@ MainWindow::Private::Private( MainWindow *q )
     TableModel *lineModel = new TableModel( q );
     lineModel->loadFromCSV( ":/data/lineSimple.csv" );
     m_modelTable[ DiagramTypeDialog::Line ] = lineModel;
+    m_modelTable[ DiagramTypeDialog::Plotter ] = lineModel;
     TableModel *pieModel = new TableModel( q );
     pieModel->loadFromCSV( ":/data/pieSimple.csv" );
     m_modelTable[ DiagramTypeDialog::Pie ] = pieModel;

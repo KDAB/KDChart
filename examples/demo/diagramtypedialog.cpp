@@ -31,6 +31,7 @@
 #include <KDChart/KDChartBarDiagram>
 #include <KDChart/KDChartLineDiagram>
 #include <KDChart/KDChartPieDiagram>
+#include <KDChart/KDChartPlotter>
 
 #include <QDebug>
 
@@ -95,13 +96,17 @@ void DiagramTypeDialog::Private::createPlanes()
 {
     m_planes[ DiagramTypeDialog::Bar ] = m_chart->coordinatePlane();
     m_planes[ DiagramTypeDialog::LyingBar ] = m_chart->coordinatePlane();
+
     CartesianCoordinatePlane *linePlane = new CartesianCoordinatePlane;
-    LineDiagram *lineDiagram = new LineDiagram;
-    linePlane->addDiagram( lineDiagram );
+    linePlane->addDiagram( new LineDiagram );
     m_planes[ DiagramTypeDialog::Line ] = linePlane;
+
+    CartesianCoordinatePlane *plotterPlane = new CartesianCoordinatePlane;
+    plotterPlane->addDiagram( new KDChart::Plotter );
+    m_planes[ DiagramTypeDialog::Plotter ] = plotterPlane;
+
     PolarCoordinatePlane *piePlane = new PolarCoordinatePlane;
-    PieDiagram *pieDiagram = new PieDiagram;
-    piePlane->addDiagram( pieDiagram );
+    piePlane->addDiagram( new PieDiagram );
     m_planes[ DiagramTypeDialog::Pie ] = piePlane;
 }
 
@@ -128,8 +133,8 @@ void DiagramTypeDialog::Private::typeChanged( int index )
             ui.subtypeSelector->setEnabled( false );
         this->type = type;
         ui.subtypeSelector->setCurrentIndex( m_typemap[ type ] );
-        m_chart->addCoordinatePlane( m_planes[ type ] );
         m_chart->takeCoordinatePlane( m_planes[ lastType ] );
+        m_chart->addCoordinatePlane( m_planes[ type ] );
 
         lastIndex = index;
         Q_EMIT qq->diagramTypeChanged( type, subType );
