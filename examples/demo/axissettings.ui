@@ -69,38 +69,5 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>axisVisibility</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>majorTicks</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>199</x>
-     <y>70</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>95</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>axisVisibility</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>minorTicks</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>199</x>
-     <y>70</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>120</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

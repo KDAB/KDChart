@@ -55,6 +55,8 @@ public Q_SLOTS:
     void setVisible( bool value );
     void setShowMajorTickMarks( bool value );
     void setShowMinorTickMarks( bool value );
+private:
+    void updateUiForCurrentAxis();
 };
 
 AxisSettings::Private::Private( Chart* chart, AxisSettings *q )
@@ -86,24 +88,36 @@ void AxisSettings::Private::currentIndexChanged( int index )
     if ( plane && diag )
     {
         QVector< CartesianAxis* > axes = diag->axes().toVector();
-        bool foundAxis = false;
         Q_FOREACH( CartesianAxis *axis, axes )
         {
             if ( axis->position() == pos )
             {
-                foundAxis = true;
                 m_currentAxis = axis;
                 break;
             }
         }
+    }
+    updateUiForCurrentAxis();
+}
 
-        ui.axisVisibility->setCheckState( foundAxis ? Qt::Checked : Qt::Unchecked );
-        if ( m_currentAxis )
-        {
-            const RulerAttributes rulerAttr = m_currentAxis->rulerAttributes();
-            ui.majorTicks->setCheckState( rulerAttr.showMajorTickMarks() ? Qt::Checked : Qt::Unchecked );
-            ui.minorTicks->setCheckState( rulerAttr.showMinorTickMarks() ? Qt::Checked : Qt::Unchecked );
-        }
+void AxisSettings::Private::updateUiForCurrentAxis()
+{
+    const bool prevSignalsBlocked = ui.axisVisibility->blockSignals( true );
+    ui.axisVisibility->setChecked( m_currentAxis );
+    ui.axisVisibility->blockSignals( prevSignalsBlocked );
+
+    ui.majorTicks->setEnabled( m_currentAxis );
+    ui.minorTicks->setEnabled( m_currentAxis );
+    if ( m_currentAxis )
+    {
+        const RulerAttributes rulerAttr = m_currentAxis->rulerAttributes();
+        ui.majorTicks->setChecked( rulerAttr.showMajorTickMarks() );
+        ui.minorTicks->setChecked( rulerAttr.showMinorTickMarks() );
+    }
+    else
+    {
+        ui.majorTicks->setChecked( false );
+        ui.minorTicks->setChecked( false );
     }
 }
 
@@ -122,24 +136,28 @@ void AxisSettings::Private::setVisible( bool value )
             {
                 foundAxis = true;
                 if ( !value )
+                {
                     diag->takeAxis( axis );
+                    m_currentAxis = 0;
+                }
                 else
+                {
                     diag->addAxis( axis );
-                m_currentAxis = axis;
+                    m_currentAxis = axis;
+                }
                 break;
             }
         }
         if ( !foundAxis )
         {
+            Q_ASSERT( value );
             CartesianAxis *axis = new CartesianAxis( diag );
             axis->setPosition( pos );
             diag->addAxis( axis );
             m_axisCache[ plane ].append( axis );
             m_currentAxis = axis;
         }
-        const RulerAttributes rulerAttr = m_currentAxis->rulerAttributes();
-        ui.majorTicks->setCheckState( rulerAttr.showMajorTickMarks() ? Qt::Checked : Qt::Unchecked );
-        ui.minorTicks->setCheckState( rulerAttr.showMinorTickMarks() ? Qt::Checked : Qt::Unchecked );
+        updateUiForCurrentAxis();
         m_chart->update();
     }
 }
