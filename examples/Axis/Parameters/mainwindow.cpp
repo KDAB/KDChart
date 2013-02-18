@@ -274,14 +274,12 @@ void MainWindow::on_transparencySB_valueChanged( int alpha )
 
 void MainWindow::on_zoomFactorSB_valueChanged( double factor )
 {
-    if ( factor > 1 ) {
-        hSBar->setVisible( true );
-        vSBar->setVisible( true );
-    } else {
+    const bool isZoomedIn = factor > 1;
+    hSBar->setVisible( isZoomedIn );
+    vSBar->setVisible( isZoomedIn );
+    if ( !isZoomedIn) {
         hSBar->setValue( 500 );
         vSBar->setValue( 500 );
-        hSBar->setVisible( false );
-        vSBar->setVisible( false );
     }
     m_chart->coordinatePlane()->setZoomFactorX( factor );
     m_chart->coordinatePlane()->setZoomFactorY( factor );
