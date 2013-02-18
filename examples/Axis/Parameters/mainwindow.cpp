@@ -89,6 +89,13 @@ MainWindow::MainWindow( QWidget* parent ) :
     // Set up the legend
     m_legend = new Legend( m_lines, m_chart );
     m_chart->addLegend( m_legend );
+
+    // initialize attributes; this is necessary because we need to enable data value attributes before
+    // any of them (e.g. only markers) can be displayed. but if we enable data value attributs, a default
+    // data value text is included, even if we only wanted to set markers. so we enable DVA and then
+    // individually disable the parts we don't want.
+    on_paintValuesCB_toggled( false );
+    on_paintMarkersCB_toggled( false );
 }
 
 void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
@@ -119,23 +126,19 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
     // colours - according to their respective dataset's colour.
     const QFont font( "Comic", 10 );
     const int colCount = m_lines->model()->columnCount();
-    for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
-        QBrush brush( m_lines->brush( iColumn ) );
-        DataValueAttributes a( m_lines->dataValueAttributes( iColumn ) );
-        if ( ! paintMarkersCB->isChecked() ) {
-            MarkerAttributes ma( a.markerAttributes() );
-            ma.setVisible( false );
-            a.setMarkerAttributes( ma );
-        }
-        TextAttributes ta( a.textAttributes() );
+    for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
+        DataValueAttributes dva = m_lines->dataValueAttributes( iColumn );
+        dva.setVisible( true );
+
+        TextAttributes ta( dva.textAttributes() );
         ta.setRotation( 0 );
         ta.setFont( font );
-        ta.setPen( QPen( brush.color() ) );
+        ta.setPen( QPen( m_lines->brush( iColumn ).color() ) );
         ta.setVisible( checked );
 
-        a.setTextAttributes( ta );
-        a.setVisible( true );
-        m_lines->setDataValueAttributes( iColumn, a);
+        dva.setTextAttributes( ta );
+        dva.setVisible( true );
+        m_lines->setDataValueAttributes( iColumn, dva);
     }
     m_chart->update();
 }
@@ -151,14 +154,15 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
     map.insert( 3, MarkerAttributes::MarkerCross );
     map.insert( 4, MarkerAttributes::MarkerDiamond );
 
-    DataValueAttributes attrs( m_lines->dataValueAttributes() );
-    TextAttributes ta( attrs.textAttributes() );
-    MarkerAttributes ma( attrs.markerAttributes() );
-    ma.setMarkerStylesMap( map );
     // next: Specify column- / cell-specific attributes!
     const int rowCount = m_lines->model()->rowCount();
     const int colCount = m_lines->model()->columnCount();
     for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
+
+        DataValueAttributes dva = m_lines->dataValueAttributes( iColumn );
+        dva.setVisible( true );
+        MarkerAttributes ma( dva.markerAttributes() );
+
         switch ( markersStyleCB->currentIndex() ) {
         case 0:
             ma.setMarkerStyle( MarkerAttributes::MarkerSquare );
@@ -192,21 +196,14 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
             Q_ASSERT( false );
         }
         ma.setVisible( checked );
-        if ( checked ) {
-            attrs.setVisible(  true );
-            ta.setVisible( paintValuesCB->isChecked() );
-        }
 
         ma.setMarkerSize( QSize( markersWidthSB->value(), markersHeightSB->value() ) );
-        attrs.setTextAttributes( ta );
-        attrs.setMarkerAttributes( ma );
-        // column attributes:
-        m_lines->setDataValueAttributes( iColumn, attrs );
+        dva.setMarkerAttributes( ma );
+        m_lines->setDataValueAttributes( iColumn, dva );
 
         // Specify cell-specific attributes for some values!
         for ( int j = 0; j < rowCount; ++j ) {
             const QModelIndex index( m_lines->model()->index( j, iColumn, QModelIndex() ) );
-            //const QBrush brush( m_lines->brush( index ) );
             const qreal value = m_lines->model()->data( index ).toReal();
             /* Set a specific color - marker for a specific value */
             if ( value == 8 ) {
