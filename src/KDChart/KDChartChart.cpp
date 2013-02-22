@@ -951,6 +951,13 @@ void Chart::Private::paintAll( QPainter* painter )
     KDAB_FOREACH( KDChart::TextArea* textLayoutItem, textLayoutItems ) {
         textLayoutItem->paintAll( *painter );
     }
+    KDAB_FOREACH( Legend *legend, legends ) {
+        const bool hidden = legend->isHidden() && legend->testAttribute( Qt::WA_WState_ExplicitShowHide );
+        if ( !hidden ) {
+            //qDebug() << "painting legend at " << legend->geometry();
+            legend->paintIntoRect( *painter, legend->geometry() );
+        }
+    }
 }
 
 // ******** Chart interface implementation ***********
@@ -1181,14 +1188,6 @@ void Chart::paint( QPainter* painter, const QRect& target )
     //painter->setPen(QPen(Qt::blue, 8));
     //painter->drawRect(target.adjusted(12,12,-12,-12));
 
-    KDAB_FOREACH( Legend *legend, d->legends ) {
-        const bool hidden = legend->isHidden() && legend->testAttribute( Qt::WA_WState_ExplicitShowHide );
-        if ( !hidden ) {
-            //qDebug() << "painting legend at " << legend->geometry();
-            legend->paintIntoRect( *painter, legend->geometry() );
-        }
-    }
-
     painter->translate( -translation.x(), -translation.y() );
 
     GlobalMeasureScaling::instance()->resetFactors();
@@ -1391,8 +1390,6 @@ void Chart::addLegendInternal( Legend* legend, bool setMeasures )
         legend->setReferenceArea( this );
     }
 
-    legend->setVisible( true );
-
     // add it to the appropriate layout
 
     if ( pos != KDChartEnums::PositionFloating ) {
@@ -1476,7 +1473,6 @@ void Chart::takeLegend( Legend* legend )
     disconnect( legend, 0, this, 0 );
     // the following removes the legend from its layout and destroys its MyWidgetItem (the link to the layout)
     legend->setParent( 0 );
-    legend->setVisible( false );
 
     d->slotResizePlanes();
 }
