@@ -123,6 +123,9 @@ void NormalLineDiagram::paint( PaintContext* ctx )
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
             // get where to draw the line from:
             CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+            if ( point.hidden ) {
+                continue;
+            }
 
             const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
 
@@ -134,9 +137,10 @@ void NormalLineDiagram::paint( PaintContext* ctx )
             if ( laCell.areaBoundingDataset() != -1 ) {
                 const CartesianDiagramDataCompressor::CachePosition areaBoundingCachePosition( row, laCell.areaBoundingDataset() );
                 areaBoundingValue = compressor().data( areaBoundingCachePosition ).value;
-            } else
+            } else {
                 // Use min. y value (i.e. zero line in most cases) if no bounding dataset is set
                 areaBoundingValue = minYValue;
+            }
 
             if( ISNAN( point.value ) )
             {
@@ -158,40 +162,39 @@ void NormalLineDiagram::paint( PaintContext* ctx )
                 }
             }
 
-            // area corners, a + b are the line ends:
-            const qreal offset = diagram()->centerDataPoints() ? 0.5 : 0;
-            const QPointF a( plane->translate( QPointF( lastPoint.key + offset, lastPoint.value ) ) );
-            const QPointF b( plane->translate( QPointF( point.key + offset, point.value ) ) );
-            const QPointF c( plane->translate( QPointF( lastPoint.key + offset, lastAreaBoundingValue ) ) );
-            const QPointF d( plane->translate( QPointF( point.key + offset, areaBoundingValue ) ) );
-            // add the line to the list:
-           // add data point labels:
-            const PositionPoints pts = PositionPoints( b, a, d, c );
-            // if necessary, add the area to the area list:
-            QList<QPolygonF> areas;
-            if ( !ISNAN( point.value ) && !ISNAN( lastPoint.value ) && laCell.displayArea() ) {
-                areas << ( QPolygonF() << a << b << d << c );//polygon;
-            }
-            // add the pieces to painting if this is not hidden:
-            if ( ! point.hidden && !ISNAN( point.value ) )
-            {
+            if ( !ISNAN( point.value ) ) {
+                // area corners, a + b are the line ends:
+                const qreal offset = diagram()->centerDataPoints() ? 0.5 : 0;
+                const QPointF a( plane->translate( QPointF( lastPoint.key + offset, lastPoint.value ) ) );
+                const QPointF b( plane->translate( QPointF( point.key + offset, point.value ) ) );
+                const QPointF c( plane->translate( QPointF( lastPoint.key + offset, lastAreaBoundingValue ) ) );
+                const QPointF d( plane->translate( QPointF( point.key + offset, areaBoundingValue ) ) );
+                const PositionPoints pts = PositionPoints( b, a, d, c );
+
+                // add label
                 m_private->addLabel( &lpc, sourceIndex, &position, pts, Position::NorthWest,
                                      Position::NorthWest, point.value );
-                PaintingHelpers::paintAreas( m_private, ctx, attributesModel()->mapToSource( lastPoint.index ),
-                                             areas, laCell.transparency() );
-                // position 0 is not really painted, since it takes two points to make a line :-)
-                if( row > 0 && !ISNAN( lastPoint.value ) )
+
+                // add line and area, if switched on and we have a current and previous value
+                if ( !ISNAN( lastPoint.value ) ) {
                     lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
+
+                    if ( laCell.displayArea() ) {
+                        QList<QPolygonF> areas;
+                        areas << ( QPolygonF() << a << b << d << c );
+                        PaintingHelpers::paintAreas( m_private, ctx, attributesModel()->mapToSource( lastPoint.index ),
+                                                     areas, laCell.transparency() );
+                    }
+                }
             }
 
-            // wrap it up:
             previousCellPosition = position;
             laPreviousCell = laCell;
             lastAreaBoundingValue = areaBoundingValue;
             lastPoint = point;
         }
-
     }
 
+    // paint the lines
     PaintingHelpers::paintElements( m_private, ctx, lpc, lineList );
 }
