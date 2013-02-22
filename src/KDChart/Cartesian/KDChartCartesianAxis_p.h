@@ -155,6 +155,7 @@ private:
     // these are generally set once in the constructor
     CartesianAxis* m_axis;
     DataDimension m_dimension; // upper and lower bounds
+    int m_decimalPlaces; // for numeric labels
     bool m_isLogarithmic;
     QMap< qreal, QString > m_annotations;
     QMap< qreal, QString > m_dataHeaderLabels;

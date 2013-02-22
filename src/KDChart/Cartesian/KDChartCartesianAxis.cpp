@@ -59,6 +59,18 @@ static qreal slightlyLessThan( qreal r )
     return r - diff;
 }
 
+static int numSignificantDecimalPlaces(qreal floatNumber)
+{
+    QString sample = QString::number( floatNumber, 'f', 12 ).section( QLatin1Char('.'), 1,  2 );
+    int ret = 12;
+    for ( ; ret > 0; ret-- ) {
+        if ( sample[ ret - 1 ] != QLatin1Char( '0' ) ) {
+            break;
+        }
+    }
+    return ret;
+}
+
 TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, uint majorThinningFactor,
                             bool omitLastTick )
    : m_axis( a ),
@@ -74,6 +86,7 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
         // convenient for grid painting. Here we have to manually exclude it to avoid overpainting.
         m_dimension.end -= m_dimension.stepWidth;
     }
+    m_decimalPlaces = numSignificantDecimalPlaces( m_dimension.stepWidth );
 
     m_annotations = m_axis->d_func()->annotations;
     m_customTicks = m_axis->d_func()->customTicksPositions;
@@ -226,7 +239,7 @@ void TickIterator::computeMajorTickLabel()
                 m_type = MajorTickHeaderDataLabel;
             } else {
                 // 'f' to avoid exponential notation for large numbers, consistent with data value text
-                m_text = QString::number( m_position, 'f' );
+                m_text = QString::number( m_position, 'f', m_decimalPlaces );
                 m_type = MajorTick;
             }
         } else {
