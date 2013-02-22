@@ -150,7 +150,8 @@ class Chart::Private : public QObject
         QVector<KDChart::AbstractLayoutItem*> planeLayoutItems;
         QVector<KDChart::Legend*> legendLayoutItems;
 
-        QSize currentLayoutSize;
+        bool isFloatingLegendsLayoutDirty;
+        bool isPlanesLayoutDirty;
 
         // since we do not want to derive Chart from AbstractAreaBase, we store the attributes
         // here and call two static painting methods to draw the background and frame.
@@ -169,7 +170,7 @@ class Chart::Private : public QObject
         virtual ~Private();
 
         void createLayouts();
-        void resizeLayout( const QSize& sz );
+        void updateDirtyLayouts();
         void paintAll( QPainter* painter );
 
         struct AxisInfo {

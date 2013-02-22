@@ -143,6 +143,8 @@ Chart::Private::Private( Chart* chart_ )
     , rightOuterSpacer( 0 )
     , topOuterSpacer( 0 )
     , bottomOuterSpacer( 0 )
+    , isFloatingLegendsLayoutDirty( true )
+    , isPlanesLayoutDirty( true )
     , globalLeadingLeft( 0 )
     , globalLeadingRight( 0 )
     , globalLeadingTop( 0 )
@@ -521,6 +523,8 @@ void Chart::Private::slotLayoutPlanes()
     //hint: The direction is configurable by the user now, as
     //      we are using a QBoxLayout rather than a QVBoxLayout.  (khz, 2007/04/25)
     planesLayout = new QBoxLayout( oldPlanesDirection );
+
+    isPlanesLayoutDirty = true; // here we create the layouts; we need to "run" them before painting
 
     if ( useNewLayoutSystem )
     {
@@ -924,17 +928,27 @@ void Chart::Private::slotResizePlanes()
     }
 }
 
-// Called when the size of the chart changes.
-// So in theory, we only need to adjust geometries.
-// But this also needs to make sure that everything is in place for the first painting.
-void Chart::Private::resizeLayout( const QSize& size )
+void Chart::Private::updateDirtyLayouts()
 {
-    currentLayoutSize = size;
+    if ( isPlanesLayoutDirty ) {
+        Q_FOREACH ( AbstractCoordinatePlane* p, coordinatePlanes ) {
+            p->setGridNeedsRecalculate();
+            p->layoutPlanes();
+            p->layoutDiagrams();
+        }
+    }
+    if ( isPlanesLayoutDirty || isFloatingLegendsLayoutDirty ) {
+        chart->reLayoutFloatingLegends();
+    }
+    isPlanesLayoutDirty = false;
+    isFloatingLegendsLayoutDirty = false;
 }
 
 void Chart::Private::paintAll( QPainter* painter )
 {
-    QRect rect( QPoint(0, 0), currentLayoutSize );
+    updateDirtyLayouts();
+
+    QRect rect( QPoint(0, 0), chart->size() );
 
     //qDebug() << this<<"::paintAll() uses layout size" << currentLayoutSize;
 
@@ -1175,14 +1189,24 @@ void Chart::paint( QPainter* painter, const QRect& target )
                                           qreal( target.height() ) / qreal( geometry().size().height() ) * resY );
     }
 
-
-    if ( target.size() != d->currentLayoutSize ) {
-        d->resizeLayout( target.size() );
-    }
     const QPoint translation = target.topLeft();
     painter->translate( translation );
 
+    // the following layout logic has the disadvantage that repeatedly calling this method can
+    // cause a relayout every time, but since this method's main use seems to be printing, the
+    // gratuitous relayouts shouldn't be much of a performance problem.
+    const bool differentSize = target.size() != size();
+    if ( differentSize ) {
+        d->isPlanesLayoutDirty = true;
+        d->isFloatingLegendsLayoutDirty = true;
+    }
+
     d->paintAll( painter );
+
+    if ( differentSize ) {
+        d->isPlanesLayoutDirty = true;
+        d->isFloatingLegendsLayoutDirty = true;
+    }
 
     // for debugging:
     //painter->setPen(QPen(Qt::blue, 8));
@@ -1195,13 +1219,11 @@ void Chart::paint( QPainter* painter, const QRect& target )
     GlobalMeasureScaling::setPaintDevice( prevDevice );
 }
 
-void Chart::resizeEvent ( QResizeEvent * )
+void Chart::resizeEvent ( QResizeEvent* event )
 {
-    d->resizeLayout( size() );
-    KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
-        plane->setGridNeedsRecalculate();
-    }
-    reLayoutFloatingLegends();
+    d->isPlanesLayoutDirty = true;
+    d->isFloatingLegendsLayoutDirty = true;
+    QWidget::resizeEvent( event );
 }
 
 void Chart::reLayoutFloatingLegends()
@@ -1239,12 +1261,6 @@ void Chart::reLayoutFloatingLegends()
 void Chart::paintEvent( QPaintEvent* )
 {
     QPainter painter( this );
-
-    if ( size() != d->currentLayoutSize ) {
-        d->resizeLayout( size() );
-        reLayoutFloatingLegends();
-    }
-
     d->paintAll( &painter );
     emit finishedDrawing();
 }
