@@ -365,13 +365,7 @@ QRectF CartesianCoordinatePlane::visibleDiagramArea() const
 
 void CartesianCoordinatePlane::layoutDiagrams()
 {
-    if ( diagrams().isEmpty() )
-    {   // FIXME evaluate what can still be prepared
-        // FIXME decide default dimension if no diagrams are present (to make empty planes useable)
-    }
-
     d->dimensions = gridDimensionsList();
-    // test for programming errors: critical
     Q_ASSERT_X ( d->dimensions.count() == 2, "CartesianCoordinatePlane::layoutDiagrams",
                  "Error: gridDimensionsList() did not return exactly two dimensions." );
 
