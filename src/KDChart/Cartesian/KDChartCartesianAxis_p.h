@@ -68,6 +68,7 @@ public:
     const TextAttributes titleTextAttributesWithAdjustedRotation() const;
     QSize calculateMaximumSize() const;
     QString customizedLabelText( const QString& text, Qt::Orientation orientation, qreal value ) const;
+    bool isTransposed() const;
     bool isVertical() const;
 
 private:
