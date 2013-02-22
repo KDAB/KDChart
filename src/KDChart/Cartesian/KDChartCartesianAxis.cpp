@@ -79,7 +79,7 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
      m_type( NoTick )
 {
     // deal with the things that are specfic to axes (like annotations), before the generic init().
-    XySwitch xy( m_axis->isOrdinate() );
+    XySwitch xy( m_axis->d_func()->isVertical() );
     m_dimension = xy( plane->gridDimensionsList().first(), plane->gridDimensionsList().last() );
     if ( omitLastTick ) {
         // In bar and stock charts the last X tick is a fencepost with no associated value, which is
