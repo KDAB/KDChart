@@ -984,8 +984,11 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
         pt = plane->translate( QPointF( dimX.end, dimY.end ) );
         const qreal highestPosition = geoXy( pt.x(), pt.y() );
 
-        startOverhang = qMax( 0.0, lowestPosition - lowestLabelPosition + lowestLabelLongitudinalSize * 0.5 );
-        endOverhang = qMax( 0.0, highestLabelPosition - highestPosition + highestLabelLongitudinalSize * 0.5 );
+        // the geoXy( 1.0, -1.0 ) here is necessary because Qt's y coordinate is inverted
+        startOverhang = qMax( 0.0, ( lowestPosition - lowestLabelPosition ) * geoXy( 1.0, -1.0 ) +
+                                     lowestLabelLongitudinalSize * 0.5 );
+        endOverhang = qMax( 0.0, ( highestLabelPosition - highestPosition ) * geoXy( 1.0, -1.0 ) +
+                                   highestLabelLongitudinalSize * 0.5 );
     }
 
     amountOfLeftOverlap = geoXy( startOverhang, 0.0 );
