@@ -109,23 +109,6 @@ protected:
 public:
     void resize ( const QSizeF& area );
 
-#if 0
-    // FIXME merge with 3DAttributes?
-    void setThreeDimensionalBars( bool threeDBars );
-    bool threeDimensionalBars() const;
-
-    void setThreeDimensionalBarsShadowColors( bool shadow );
-    bool threeDimensionalBarsShadowColors() const;
-
-    void setThreeDimensionalBarAngle( uint angle );
-    uint threeDimensionalBarAngle() const;
-
-    void setThreeDimensionalBarDepth( qreal depth );
-    qreal threeDimensionalBarDepth() const;
-
-#endif
-
-
 protected:
     virtual qreal threeDItemDepth( const QModelIndex & index ) const;
     virtual qreal threeDItemDepth( int column ) const;
@@ -135,9 +118,6 @@ protected:
     void resizeEvent ( QResizeEvent* );
 private:
 
-    /*
-    void paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, qreal& maxDepth );
-    */
     void calculateValueAndGapWidths( int rowCount, int colCount,
                                      qreal groupWidth,
                                      qreal& barWidth,
