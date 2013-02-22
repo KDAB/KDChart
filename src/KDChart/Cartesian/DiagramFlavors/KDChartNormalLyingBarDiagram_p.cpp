@@ -90,6 +90,8 @@ const QPair<QPointF, QPointF> NormalLyingBarDiagram::calculateDataBoundaries() c
 
 void NormalLyingBarDiagram::paint( PaintContext* ctx )
 {
+    // FIXME: in all LyingBarDiagram types, the datasets are rendered top to bottom, but the abscissa
+    // (in that case Y axis) ticks are still bottom to top. So tick labels are in reverse order.
     reverseMapper().clear();
 
     const QPair<QPointF,QPointF> boundaries = diagram()->dataBoundaries(); // cached
