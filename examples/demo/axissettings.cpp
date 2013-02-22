@@ -202,7 +202,7 @@ void AxisSettings::diagramTypeChanged()
     CartesianCoordinatePlane *plane =  qobject_cast< CartesianCoordinatePlane* >( d->m_chart->coordinatePlane() );
     setEnabled( plane );
     if ( plane )
-    d->currentIndexChanged( d->ui.axisSelection->currentIndex() );
+        d->currentIndexChanged( d->ui.axisSelection->currentIndex() );
 }
 
 #include "axissettings.moc"

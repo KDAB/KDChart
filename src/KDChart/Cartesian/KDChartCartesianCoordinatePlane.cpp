@@ -285,10 +285,8 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
     DataDimensionsList l;
     if ( dgr ) {
         const QRectF r( calculateRawDataBoundingRect() );
-        // note:
-        // We do *not* access d->gridAttributesHorizontal here, but
-        // we use the getter function, to get the global attrs, if no
-        // special ones have been set for the respective orientation.
+        // We do not access d->gridAttributesHorizontal/Vertical here, but we use the getter function,
+        // to get the global attrs, if no special ones have been set for the given orientation.
         const GridAttributes gaH( gridAttributes( Qt::Horizontal ) );
         const GridAttributes gaV( gridAttributes( Qt::Vertical ) );
         // append the first dimension: for Abscissa axes

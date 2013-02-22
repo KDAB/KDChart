@@ -948,7 +948,7 @@ void Chart::Private::paintAll( QPainter* painter )
 {
     updateDirtyLayouts();
 
-    QRect rect( QPoint(0, 0), chart->size() );
+    QRect rect( QPoint( 0, 0 ), chart->size() );
 
     //qDebug() << this<<"::paintAll() uses layout size" << currentLayoutSize;
 

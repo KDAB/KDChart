@@ -99,8 +99,8 @@ void NormalLyingBarDiagram::paint( PaintContext* ctx )
     const QPointF boundLeft = ctx->coordinatePlane()->translate( boundaries.first ) ;
     const QPointF boundRight = ctx->coordinatePlane()->translate( boundaries.second );
 
-    const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
-    const int colCount = attributesModel()->columnCount(attributesModelRootIndex());
+    const int rowCount = attributesModel()->rowCount( attributesModelRootIndex() );
+    const int colCount = attributesModel()->columnCount( attributesModelRootIndex() );
 
     BarAttributes ba = diagram()->barAttributes();
     qreal barWidth = 0;
@@ -120,20 +120,20 @@ void NormalLyingBarDiagram::paint( PaintContext* ctx )
         if ( groupWidth < 0 )
             groupWidth = 0;
 
-        if ( groupWidth  * rowCount > width )
+        if ( groupWidth * rowCount > width )
             groupWidth = width / rowCount;
     }
 
     // maxLimit: allow the space between bars to be larger until area.width()
     // is covered by the groups.
-    qreal maxLimit = rowCount * (groupWidth + ((colCount-1) * ba.fixedDataValueGap()) );
+    qreal maxLimit = rowCount * ( groupWidth + ( colCount - 1 ) * ba.fixedDataValueGap() );
 
     //Pending Michel: FixMe
     if ( ba.useFixedDataValueGap() ) {
         if ( width > maxLimit )
             spaceBetweenBars += ba.fixedDataValueGap();
         else
-            spaceBetweenBars = ((width/rowCount) - groupWidth)/(colCount-1);
+            spaceBetweenBars = ( width / rowCount - groupWidth ) / ( colCount - 1 );
     }
 
     if ( ba.useFixedValueBlockGap() ) {
@@ -147,7 +147,7 @@ void NormalLyingBarDiagram::paint( PaintContext* ctx )
 
     for( int row = rowCount - 1; row >= 0; --row )
     {
-        qreal offset = (groupWidth + spaceBetweenGroups) / 2.0 - spaceBetweenBars;
+        qreal offset = ( groupWidth + spaceBetweenGroups ) * 0.5 - spaceBetweenBars;
 
         if ( ba.useFixedDataValueGap() )
         {
@@ -156,7 +156,7 @@ void NormalLyingBarDiagram::paint( PaintContext* ctx )
                 if ( width > maxLimit )
                     offset -= ba.fixedDataValueGap();
                 else
-                    offset -= ((width/rowCount) - groupWidth)/(colCount-1);
+                    offset -= ( width / rowCount - groupWidth ) / ( colCount - 1 );
 
             }
             else
