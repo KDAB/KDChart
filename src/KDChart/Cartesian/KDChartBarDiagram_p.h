@@ -61,6 +61,8 @@ public:
     Private( const Private& rhs );
     ~Private();
 
+    void setOrientationAndType( Qt::Orientation, BarDiagram::BarType );
+
     Qt::Orientation orientation;
 
     BarDiagramType* implementor; // the current type

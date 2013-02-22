@@ -53,7 +53,7 @@ BarDiagram::Private::Private()
     , normalLyingDiagram( 0 )
     , stackedLyingDiagram( 0 )
     , percentLyingDiagram( 0 )
-{    
+{
 }
 
 BarDiagram::Private::~Private()
@@ -64,6 +64,54 @@ BarDiagram::Private::~Private()
     delete normalLyingDiagram;
     delete stackedLyingDiagram;
     delete percentLyingDiagram;
+}
+
+void BarDiagram::Private::setOrientationAndType( Qt::Orientation o, BarDiagram::BarType type )
+{
+    if ( orientation == o && implementor->type() == type ) {
+        return;
+    }
+    BarDiagram *barDia = qobject_cast< BarDiagram * >( diagram );
+
+    orientation = o;
+
+    if ( orientation == Qt::Vertical ) {
+        switch( type ) {
+        case Normal:
+            implementor = normalDiagram;
+            break;
+        case Stacked:
+            implementor = stackedDiagram;
+            break;
+        case Percent:
+            implementor = percentDiagram;
+            break;
+        default:
+            Q_ASSERT_X( false, "BarDiagram::setType", "unknown diagram subtype" );
+        }
+    } else {
+        switch( type ) {
+        case Normal:
+            implementor = normalLyingDiagram;
+            break;
+        case Stacked:
+            implementor = stackedLyingDiagram;
+            break;
+        case Percent:
+            implementor = percentLyingDiagram;
+            break;
+        default:
+            Q_ASSERT_X( false, "BarDiagram::setType", "unknown diagram subtype" );
+        }
+    }
+
+    Q_ASSERT( implementor->type() == type );
+
+    // AbstractAxis settings - see AbstractDiagram and CartesianAxis
+    barDia->setPercentMode( type == BarDiagram::Percent );
+    barDia->setDataBoundariesDirty();
+    emit barDia->layoutChanged( barDia );
+    emit barDia->propertiesChanged();
 }
 
 #define d d_func()
@@ -121,47 +169,7 @@ bool BarDiagram::compare( const BarDiagram* other ) const
   */
 void BarDiagram::setType( const BarType type )
 {
-    //if ( type == d->barType ) return;
-     if ( d->implementor->type() == type ) return;
-
-     if ( d->orientation == Qt::Vertical ) {
-         switch( type ) {
-         case Normal:
-             d->implementor = d->normalDiagram;
-             break;
-         case Stacked:
-             d->implementor = d->stackedDiagram;
-             break;
-         case Percent:
-             d->implementor = d->percentDiagram;
-             break;
-         default:
-             Q_ASSERT_X( false, "BarDiagram::setType", "unknown diagram subtype" );
-         }
-     } else {
-         switch( type ) {
-         case Normal:
-             d->implementor = d->normalLyingDiagram;
-             break;
-         case Stacked:
-             d->implementor = d->stackedLyingDiagram;
-             break;
-         case Percent:
-             d->implementor = d->percentLyingDiagram;
-             break;
-         default:
-             Q_ASSERT_X( false, "BarDiagram::setType", "unknown diagram subtype" );
-         }
-     }
-
-   Q_ASSERT( d->implementor->type() == type );
-
-   //d->barType = type;
-    // AbstractAxis settings - see AbstractDiagram and CartesianAxis
-    setPercentMode( type == BarDiagram::Percent );
-    setDataBoundariesDirty();
-    emit layoutChanged( this );
-    emit propertiesChanged();
+    d->setOrientationAndType( d->orientation, type );
 }
 
 /**
@@ -177,45 +185,7 @@ BarDiagram::BarType BarDiagram::type() const
   */
 void BarDiagram::setOrientation( Qt::Orientation orientation )
 {
-    if ( d->orientation == orientation )
-        return;
-    d->orientation = orientation;
-
-     if ( d->orientation == Qt::Vertical ) {
-         switch( type() ) {
-         case Normal:
-             d->implementor = d->normalDiagram;
-             break;
-         case Stacked:
-             d->implementor = d->stackedDiagram;
-             break;
-         case Percent:
-             d->implementor = d->percentDiagram;
-             break;
-         default:
-             Q_ASSERT_X( false, "BarDiagram::setType", "unknown diagram subtype" );
-         }
-     } else {
-         switch( type() ) {
-         case Normal:
-             d->implementor = d->normalLyingDiagram;
-             break;
-         case Stacked:
-             d->implementor = d->stackedLyingDiagram;
-             break;
-         case Percent:
-             d->implementor = d->percentLyingDiagram;
-             break;
-         default:
-             Q_ASSERT_X( false, "BarDiagram::setType", "unknown diagram subtype" );
-         }
-     }
-
-    // AbstractAxis settings - see AbstractDiagram and CartesianAxis
-    setPercentMode( type() == BarDiagram::Percent );
-    setDataBoundariesDirty();
-    emit layoutChanged( this );
-    emit propertiesChanged();
+    d->setOrientationAndType( orientation, d->implementor->type() );
 }
 
 /**
