@@ -486,10 +486,19 @@ void CartesianAxis::paint( QPainter* painter )
     }
     PaintContext ctx;
     ctx.setPainter ( painter );
-    ctx.setCoordinatePlane( d->diagram()->coordinatePlane() );
+    AbstractCoordinatePlane *const plane = d->diagram()->coordinatePlane();
+    ctx.setCoordinatePlane( plane );
 
     ctx.setRectangle( QRectF( areaGeometry() ) );
     PainterSaver painterSaver( painter );
+
+    // enable clipping only when required due to zoom, because it slows down painting
+    // (the alternative to clipping when zoomed in requires much more work to paint just the right area)
+    const qreal zoomFactor = d->isVertical() ? plane->zoomFactorY() : plane->zoomFactorX();
+    if ( zoomFactor > 1.0 ) {
+        painter->setClipRegion( areaGeometry().adjusted( - d->amountOfLeftOverlap - 1, - d->amountOfTopOverlap - 1,
+                                                         d->amountOfRightOverlap + 1, d->amountOfBottomOverlap + 1 ) );
+    }
     paintCtx( &ctx );
 }
 
