@@ -74,7 +74,7 @@ private:
     KDChart::DatasetProxyModel* m_datasetProxy;
     KDChart::Legend* m_legend;
 
-    void paintMarkers( bool checked, const QRect & printSize );
+    void paintMarkers( bool checked, const QSize& printSize );
 
 protected:
     KDChart::Chart* m_chart;

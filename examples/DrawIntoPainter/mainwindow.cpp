@@ -221,85 +221,7 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
 
 void MainWindow::on_paintMarkersCB_toggled( bool checked )
 {
-   //testing
-    DataValueAttributes a( m_lines->dataValueAttributes() );
-    // don't paint the values
-    if ( !paintValuesCB->isChecked() ) {
-        TextAttributes ta = a.textAttributes();
-        ta.setVisible( false );
-        a.setTextAttributes( ta );
-    }
-    MarkerAttributes ma( a.markerAttributes() );
-
-    switch ( markersStyleCB->currentIndex() ) {
-    case 0:
-        ma.setMarkerStyle( MarkerAttributes::MarkerSquare );
-        break;
-    case 1: {
-        MarkerAttributes::MarkerStylesMap map;
-        map.insert( 0, MarkerAttributes::MarkerSquare );
-        map.insert( 1, MarkerAttributes::MarkerCircle );
-        map.insert( 2, MarkerAttributes::MarkerRing );
-        map.insert( 3, MarkerAttributes::MarkerCross );
-        map.insert( 4, MarkerAttributes::MarkerDiamond );
-
-        ma.setMarkerStylesMap( map );
-        break; }
-    case 2:
-        ma.setMarkerStyle( MarkerAttributes::MarkerCircle );
-        break;
-    case 3:
-        ma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
-        break;
-    case 4:
-        ma.setMarkerStyle( MarkerAttributes::Marker1Pixel );
-        break;
-    case 5:
-        ma.setMarkerStyle( MarkerAttributes::Marker4Pixels );
-        break;
-    case 6:
-        ma.setMarkerStyle( MarkerAttributes::MarkerRing );
-        break;
-    case 7:
-        ma.setMarkerStyle( MarkerAttributes::MarkerCross );
-        break;
-    case 8:
-        ma.setMarkerStyle( MarkerAttributes::MarkerFastCross );
-        break;
-    }
-    ma.setMarkerSize( QSize( markersWidthSB->value(), markersHeightSB->value() ) );
-
-    ma.setVisible( checked );
-
-    a.setMarkerAttributes( ma );
-    a.setVisible( true );
-
-    // make a special one for certain values
-    DataValueAttributes yellowAttributes( a );
-    MarkerAttributes yellowMarker( yellowAttributes.markerAttributes() );
-    yellowMarker.setMarkerColor( Qt::yellow );
-    yellowAttributes.setMarkerAttributes( yellowMarker );
-
-    const int rowCount = m_lines->model()->rowCount();
-    const int colCount = m_lines->model()->columnCount();
-    for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
-        DataValueAttributes colAttributes( a );
-        if ( markersStyleCB->currentIndex() == 1 ) {
-            MarkerAttributes ma( colAttributes.markerAttributes() );
-            ma.setMarkerStyle( ma.markerStylesMap().value(iColumn) );
-            colAttributes.setMarkerAttributes( ma );
-        }
-        for ( int j = 0; j < rowCount; ++j ) {
-            QModelIndex index = m_lines->model()->index( j, iColumn, QModelIndex() );
-            QBrush brush = m_lines->model()->headerData( iColumn, Qt::Vertical, DatasetBrushRole ).value<QBrush>();
-            qreal value = m_lines->model()->data( index ).toReal();
-            /* Set a specific color - marker for a specific value */
-            if ( value == 13 ) {
-                m_lines->setDataValueAttributes( index, yellowAttributes );
-            }
-        }
-        m_lines->setDataValueAttributes( iColumn, colAttributes );
-    }
+    paintMarkers( checked, QSize() );
 }
 
 void MainWindow::on_markersStyleCB_currentIndexChanged( const QString & text )
@@ -372,11 +294,9 @@ void MainWindow::on_vSBar_valueChanged( int vPos )
     m_chart->coordinatePlane()->setZoomCenter( QPointF( hSBar->value() / 1000.0, vPos / 1000.0 ) );
 }
 
-// since DataValue markers have no relative sizing mode we need to scale them
-// for printing
-void MainWindow::paintMarkers( bool checked, const QRect & printSize )
+// since DataValue markers have no relative sizing mode we need to scale them for printing
+void MainWindow::paintMarkers( bool checked, const QSize& printSize )
 {
-   //testing
     DataValueAttributes a( m_lines->dataValueAttributes() );
     // don't paint the values
     if ( !paintValuesCB->isChecked() ) {
@@ -422,8 +342,8 @@ void MainWindow::paintMarkers( bool checked, const QRect & printSize )
         ma.setMarkerStyle( MarkerAttributes::MarkerFastCross );
         break;
     }
-    qreal factorWidth = printSize.width() / m_chart->rect().width();
-    qreal factorHeight = printSize.height() / m_chart->rect().height();
+    qreal factorWidth = printSize.isValid() ? ( printSize.width() / m_chart->rect().width() ) : 1.0f;
+    qreal factorHeight = printSize.isValid() ? ( printSize.height() / m_chart->rect().height() ) : 1.0f;
     ma.setMarkerSize( QSize( markersWidthSB->value() * factorWidth, markersHeightSB->value() * factorHeight ) );
 
     ma.setVisible( checked );
@@ -485,12 +405,12 @@ void MainWindow::on_savePDF_clicked()
     printer.setOrientation( QPrinter::Landscape );
     printer.setOutputFormat( QPrinter::PdfFormat );
     printer.setOutputFileName( file );
-    paintMarkers( paintMarkersCB->isChecked(), printer.pageRect() );
+    paintMarkers( paintMarkersCB->isChecked(), printer.pageRect().size() );
     QPainter painter;
     painter.begin( &printer );
     m_chart->paint( &painter, printer.pageRect() );
     painter.end();
-    paintMarkers( paintMarkersCB->isChecked(), m_chart->geometry() );
+    paintMarkers( paintMarkersCB->isChecked(), m_chart->geometry().size() );
     qDebug() << "Painting into PDF - done";
 }
 
