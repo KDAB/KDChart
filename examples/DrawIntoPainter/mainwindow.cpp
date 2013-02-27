@@ -142,9 +142,6 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     m_chart->addLegend( m_legend );
 
-
-    //m_chart->setGeometry(10,10,50,50);
-
     // for illustration we paint the same chart at different sizes:
     QSize size1 = QSize( 200, 200 );
     QSize size2 = QSize( 800, 800 );
@@ -168,6 +165,13 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     faChart.setPen( QPen( QColor( 0xb0, 0xb0, 0xff ), 8 ) );
     m_chart->setFrameAttributes( faChart );
+
+    // initialize attributes; this is necessary because we need to enable data value attributes before
+    // any of them (e.g. only markers) can be displayed. but if we enable data value attributs, a default
+    // data value text is included, even if we only wanted to set markers. so we enable DVA and then
+    // individually disable the parts we don't want.
+    on_paintValuesCB_toggled( false );
+    on_paintMarkersCB_toggled( false );
 }
 
 void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
@@ -196,25 +200,19 @@ void MainWindow::on_paintLegendCB_toggled( bool checked )
 
 void MainWindow::on_paintValuesCB_toggled( bool checked )
 {
-    //testing
     const int colCount = m_lines->model()->columnCount();
-    for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
-        QBrush brush = m_lines->model()->headerData( iColumn, Qt::Vertical, DatasetBrushRole ).value<QBrush>();
+    for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
         DataValueAttributes a = m_lines->dataValueAttributes( iColumn );
-        if ( !paintMarkersCB->isChecked() ) {
-            MarkerAttributes ma = a.markerAttributes();
-            ma.setVisible( false );
-            a.setMarkerAttributes( ma );
-        }
+        a.setVisible( true );
+
         TextAttributes ta = a.textAttributes();
         ta.setRotation( 0 );
         ta.setFont( QFont( "Comic", 10 ) );
-        ta .setPen( QPen( brush.color() ) );
+        ta.setPen( m_lines->brush( iColumn ).color() );
         ta.setVisible( checked );
 
         a.setTextAttributes( ta );
-        a.setVisible( true );
-        m_lines->setDataValueAttributes( iColumn, a);
+        m_lines->setDataValueAttributes( iColumn, a );
     }
 }
 
@@ -227,8 +225,7 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
 void MainWindow::on_markersStyleCB_currentIndexChanged( const QString & text )
 {
     Q_UNUSED( text );
-    if ( paintMarkersCB->isChecked() )
-        on_paintMarkersCB_toggled( true );
+    on_paintMarkersCB_toggled( paintMarkersCB->isChecked() );
 }
 
 
@@ -236,23 +233,21 @@ void MainWindow::on_markersWidthSB_valueChanged( int i )
 {
     Q_UNUSED( i );
     markersHeightSB->setValue( markersWidthSB->value() );
-    if ( paintMarkersCB->isChecked() )
-        on_paintMarkersCB_toggled( true );
+    on_paintMarkersCB_toggled( paintMarkersCB->isChecked() );
 }
 
 void MainWindow::on_markersHeightSB_valueChanged( int i )
 {
     Q_UNUSED( i );
     markersWidthSB->setValue( markersHeightSB->value() );
-    if ( paintMarkersCB->isChecked() )
-        on_paintMarkersCB_toggled( true );
+    on_paintMarkersCB_toggled( paintMarkersCB->isChecked() );
 }
 
 
 void MainWindow::on_displayAreasCB_toggled( bool checked )
 {
     const int colCount = m_lines->model()->columnCount();
-    for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
+    for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
         LineAttributes la( m_lines->lineAttributes( iColumn ) );
         la.setDisplayArea( checked );
         if ( checked  )
@@ -263,8 +258,8 @@ void MainWindow::on_displayAreasCB_toggled( bool checked )
 
 void MainWindow::on_transparencySB_valueChanged( int alpha )
 {
-    Q_UNUSED(alpha)
-    if( ! displayAreasCB->isChecked() )
+    Q_UNUSED( alpha );
+    if ( !displayAreasCB->isChecked() )
         displayAreasCB->setChecked( true );
     else
         on_displayAreasCB_toggled( true );
@@ -297,75 +292,70 @@ void MainWindow::on_vSBar_valueChanged( int vPos )
 // since DataValue markers have no relative sizing mode we need to scale them for printing
 void MainWindow::paintMarkers( bool checked, const QSize& printSize )
 {
-    DataValueAttributes a( m_lines->dataValueAttributes() );
-    // don't paint the values
-    if ( !paintValuesCB->isChecked() ) {
-        TextAttributes ta = a.textAttributes();
-        ta.setVisible( false );
-        a.setTextAttributes( ta );
-    }
-    MarkerAttributes ma( a.markerAttributes() );
+    MarkerAttributes::MarkerStylesMap map;
+    map.insert( 0, MarkerAttributes::MarkerSquare );
+    map.insert( 1, MarkerAttributes::MarkerCircle );
+    map.insert( 2, MarkerAttributes::MarkerRing );
+    map.insert( 3, MarkerAttributes::MarkerCross );
+    map.insert( 4, MarkerAttributes::MarkerDiamond );
 
-    switch ( markersStyleCB->currentIndex() ) {
-    case 0:
-        ma.setMarkerStyle( MarkerAttributes::MarkerSquare );
-        break;
-    case 1: {
-        MarkerAttributes::MarkerStylesMap map;
-        map.insert( 0, MarkerAttributes::MarkerSquare );
-        map.insert( 1, MarkerAttributes::MarkerCircle );
-        map.insert( 2, MarkerAttributes::MarkerRing );
-        map.insert( 3, MarkerAttributes::MarkerCross );
-        map.insert( 4, MarkerAttributes::MarkerDiamond );
-
-        ma.setMarkerStylesMap( map );
-        break; }
-    case 2:
-        ma.setMarkerStyle( MarkerAttributes::MarkerCircle );
-        break;
-    case 3:
-        ma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
-        break;
-    case 4:
-        ma.setMarkerStyle( MarkerAttributes::Marker1Pixel );
-        break;
-    case 5:
-        ma.setMarkerStyle( MarkerAttributes::Marker4Pixels );
-        break;
-    case 6:
-        ma.setMarkerStyle( MarkerAttributes::MarkerRing );
-        break;
-    case 7:
-        ma.setMarkerStyle( MarkerAttributes::MarkerCross );
-        break;
-    case 8:
-        ma.setMarkerStyle( MarkerAttributes::MarkerFastCross );
-        break;
-    }
-    qreal factorWidth = printSize.isValid() ? ( printSize.width() / m_chart->rect().width() ) : 1.0f;
-    qreal factorHeight = printSize.isValid() ? ( printSize.height() / m_chart->rect().height() ) : 1.0f;
-    ma.setMarkerSize( QSize( markersWidthSB->value() * factorWidth, markersHeightSB->value() * factorHeight ) );
-
-    ma.setVisible( checked );
-
-    a.setMarkerAttributes( ma );
-    a.setVisible( true );
-
-    // make a special one for certain values
-    DataValueAttributes yellowAttributes( a );
-    MarkerAttributes yellowMarker( yellowAttributes.markerAttributes() );
-    yellowMarker.setMarkerColor( Qt::yellow );
-    yellowAttributes.setMarkerAttributes( yellowMarker );
-
+    // next: Specify column- / cell-specific attributes!
     const int rowCount = m_lines->model()->rowCount();
     const int colCount = m_lines->model()->columnCount();
     for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
-        DataValueAttributes colAttributes( a );
-        if ( markersStyleCB->currentIndex() == 1 ) {
-            MarkerAttributes ma( colAttributes.markerAttributes() );
-            ma.setMarkerStyle( ma.markerStylesMap().value(iColumn) );
-            colAttributes.setMarkerAttributes( ma );
+
+        DataValueAttributes dva = m_lines->dataValueAttributes( iColumn );
+        dva.setVisible( true );
+        MarkerAttributes ma( dva.markerAttributes() );
+
+        switch ( markersStyleCB->currentIndex() ) {
+        case 0:
+            ma.setMarkerStyle( MarkerAttributes::MarkerSquare );
+            break;
+        case 1:
+            // Column-specific attributes
+            ma.setMarkerStyle( map.value( iColumn ) );
+            break;
+        case 2:
+            ma.setMarkerStyle( MarkerAttributes::MarkerCircle );
+            break;
+        case 3:
+            ma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
+            break;
+        case 4:
+            ma.setMarkerStyle( MarkerAttributes::Marker1Pixel );
+            break;
+        case 5:
+            ma.setMarkerStyle( MarkerAttributes::Marker4Pixels );
+            break;
+        case 6:
+            ma.setMarkerStyle( MarkerAttributes::MarkerRing );
+            break;
+        case 7:
+            ma.setMarkerStyle( MarkerAttributes::MarkerCross );
+            break;
+        case 8:
+            ma.setMarkerStyle( MarkerAttributes::MarkerFastCross );
+            break;
+        default:
+            Q_ASSERT( false );
         }
+        ma.setVisible( checked );
+
+        qreal factorWidth = printSize.isValid() ? ( printSize.width() / m_chart->rect().width() ) : 1.0f;
+        qreal factorHeight = printSize.isValid() ? ( printSize.height() / m_chart->rect().height() ) : 1.0f;
+        ma.setMarkerSize( QSize( markersWidthSB->value() * factorWidth, markersHeightSB->value() * factorHeight ) );
+
+        dva.setMarkerAttributes( ma );
+        m_lines->setDataValueAttributes( iColumn, dva );
+
+        // make a special one for certain values
+        DataValueAttributes yellowAttributes( dva );
+        MarkerAttributes yellowMarker( yellowAttributes.markerAttributes() );
+        yellowMarker.setMarkerColor( Qt::yellow );
+        yellowAttributes.setMarkerAttributes( yellowMarker );
+
+        const int rowCount = m_lines->model()->rowCount();
         for ( int j = 0; j < rowCount; ++j ) {
             QModelIndex index = m_lines->model()->index( j, iColumn, QModelIndex() );
             QBrush brush = m_lines->model()->headerData( iColumn, Qt::Vertical, DatasetBrushRole ).value<QBrush>();
@@ -375,7 +365,6 @@ void MainWindow::paintMarkers( bool checked, const QSize& printSize )
                 m_lines->setDataValueAttributes( index, yellowAttributes );
             }
         }
-        m_lines->setDataValueAttributes( iColumn, colAttributes );
     }
 }
 
