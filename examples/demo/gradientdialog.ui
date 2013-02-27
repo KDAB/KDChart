@@ -45,7 +45,7 @@
    <item>
     <widget class="QGroupBox" name="gradientStopBox">
      <property name="title">
-      <string>GradientStop:</string>
+      <string>GradientStop</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -59,7 +59,7 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Position:</string>
+           <string>Position</string>
           </property>
          </widget>
         </item>

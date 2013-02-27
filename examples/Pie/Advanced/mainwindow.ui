@@ -44,7 +44,7 @@
        <item>
         <widget class="QLabel" name="zoomFactorLB">
          <property name="text">
-          <string>Start position:</string>
+          <string>Start position</string>
          </property>
         </widget>
        </item>
@@ -166,8 +166,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Dataset
-</string>
+           <string>Dataset</string>
           </property>
          </widget>
         </item>

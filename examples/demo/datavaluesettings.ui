@@ -44,7 +44,7 @@
       <item row="1" column="0">
        <widget class="QRadioButton" name="scopeOneBarRB">
         <property name="text">
-         <string>One Bar:</string>
+         <string>One Bar</string>
         </property>
        </widget>
       </item>
@@ -65,7 +65,7 @@
       <item row="2" column="0">
        <widget class="QRadioButton" name="scopeDatasetRB">
         <property name="text">
-         <string>A Series:</string>
+         <string>A Series</string>
         </property>
        </widget>
       </item>
@@ -118,7 +118,7 @@
      <item>
       <widget class="QLabel" name="barTypeLB">
        <property name="text">
-        <string>Font:</string>
+        <string>Font</string>
        </property>
       </widget>
      </item>
@@ -130,7 +130,7 @@
    <item row="5" column="0" colspan="2">
     <widget class="QLabel" name="barOrientationLB_4">
      <property name="text">
-      <string>Relative Size:</string>
+      <string>Relative Size</string>
      </property>
     </widget>
    </item>
@@ -150,7 +150,7 @@
    <item row="6" column="0" colspan="2">
     <widget class="QLabel" name="barOrientationLB_3">
      <property name="text">
-      <string>minimum Size:</string>
+      <string>Minimum Size</string>
      </property>
     </widget>
    </item>
@@ -160,7 +160,7 @@
    <item row="7" column="0">
     <widget class="QLabel" name="barOrientationLB_2">
      <property name="text">
-      <string>Rotation:</string>
+      <string>Rotation</string>
      </property>
     </widget>
    </item>
@@ -200,7 +200,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Positive Pos.:</string>
+      <string>Positive Position</string>
      </property>
     </widget>
    </item>
@@ -261,7 +261,7 @@
    <item row="10" column="0" colspan="2">
     <widget class="QLabel" name="barOrientationLB_7">
      <property name="text">
-      <string>Alignment:</string>
+      <string>Alignment</string>
      </property>
     </widget>
    </item>
@@ -317,14 +317,14 @@
    <item row="11" column="0" colspan="2">
     <widget class="QLabel" name="barOrientationLB_6">
      <property name="text">
-      <string>Padding:</string>
+      <string>Padding</string>
      </property>
     </widget>
    </item>
    <item row="11" column="2">
     <widget class="QLabel" name="barOrientationLB_9">
      <property name="text">
-      <string>H.:</string>
+      <string>H.</string>
      </property>
     </widget>
    </item>
@@ -344,7 +344,7 @@
    <item row="11" column="4">
     <widget class="QLabel" name="barOrientationLB_10">
      <property name="text">
-      <string>V.:</string>
+      <string>V.</string>
      </property>
     </widget>
    </item>
@@ -382,7 +382,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Negative Pos.:</string>
+      <string>Negative Position</string>
      </property>
     </widget>
    </item>
@@ -443,7 +443,7 @@
    <item row="14" column="0" colspan="2">
     <widget class="QLabel" name="barOrientationLB_8">
      <property name="text">
-      <string>Alignment:</string>
+      <string>Alignment</string>
      </property>
     </widget>
    </item>
@@ -499,21 +499,21 @@
    <item row="15" column="0" colspan="2">
     <widget class="QLabel" name="barOrientationLB_11">
      <property name="text">
-      <string>Padding:</string>
+      <string>Padding</string>
      </property>
     </widget>
    </item>
    <item row="15" column="2">
     <widget class="QLabel" name="barOrientationLB_12">
      <property name="text">
-      <string>H.:</string>
+      <string>H.</string>
      </property>
     </widget>
    </item>
    <item row="15" column="4">
     <widget class="QLabel" name="barOrientationLB_13">
      <property name="text">
-      <string>V.:</string>
+      <string>V.</string>
      </property>
     </widget>
    </item>
@@ -548,7 +548,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Custom Label:</string>
+        <string>Custom Label</string>
        </property>
       </widget>
      </item>
@@ -558,7 +558,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Prefix:</string>
+        <string>Prefix</string>
        </property>
       </widget>
      </item>
@@ -568,7 +568,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>Suffix:</string>
+        <string>Suffix</string>
        </property>
       </widget>
      </item>

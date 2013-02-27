@@ -43,7 +43,7 @@
      <item>
       <widget class="QLabel" name="lineTypeLB">
        <property name="text">
-        <string>Stock Chart Type:</string>
+        <string>Stock Chart Type</string>
        </property>
       </widget>
      </item>

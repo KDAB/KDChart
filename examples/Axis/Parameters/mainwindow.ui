@@ -117,7 +117,7 @@
        <item>
         <widget class="QLabel" name="lineTypeLB">
          <property name="text">
-          <string>Line Chart Type:</string>
+          <string>Line Chart Type</string>
          </property>
         </widget>
        </item>
@@ -160,7 +160,7 @@
        <item>
         <widget class="QLabel" name="markersLB">
          <property name="text">
-          <string>Markers:</string>
+          <string>Markers</string>
          </property>
         </widget>
        </item>
@@ -247,7 +247,7 @@
        <item>
         <widget class="QLabel" name="markersSizeLB">
          <property name="text">
-          <string>Markers Size:</string>
+          <string>Markers Size</string>
          </property>
         </widget>
        </item>
@@ -270,7 +270,7 @@
            <item>
             <widget class="QLabel" name="markersWidthLB">
              <property name="text">
-              <string>Width:</string>
+              <string>Width</string>
              </property>
             </widget>
            </item>
@@ -329,7 +329,7 @@
        <item>
         <widget class="QLabel" name="AreaChartLB">
          <property name="text">
-          <string>Area Charts:</string>
+          <string>Area Charts</string>
          </property>
         </widget>
        </item>
@@ -351,7 +351,7 @@
          <item>
           <widget class="QLabel" name="transparencyLB">
            <property name="text">
-            <string>Opacity:</string>
+            <string>Opacity</string>
            </property>
           </widget>
          </item>
@@ -387,7 +387,7 @@
        <item>
         <widget class="QLabel" name="zoomingLB">
          <property name="text">
-          <string>Zooming:</string>
+          <string>Zoom</string>
          </property>
         </widget>
        </item>
@@ -402,7 +402,7 @@
          <item>
           <widget class="QLabel" name="zoomFactorLB">
            <property name="text">
-            <string>Zoom Factor:</string>
+            <string>Zoom Factor</string>
            </property>
           </widget>
          </item>

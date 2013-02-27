@@ -80,7 +80,7 @@
    <item row="1" column="3">
     <widget class="QLabel" name="typeLabel">
      <property name="text">
-      <string>Select type:</string>
+      <string>Select type</string>
      </property>
      <property name="buddy">
       <cstring>typeSelector</cstring>
@@ -90,7 +90,7 @@
    <item row="1" column="1">
     <widget class="QLabel" name="leadingLabel">
      <property name="text">
-      <string>Leading:</string>
+      <string>Leading</string>
      </property>
     </widget>
    </item>

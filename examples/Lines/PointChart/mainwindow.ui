@@ -58,7 +58,7 @@
        <item>
         <widget class="QLabel" name="lineTypeLB">
          <property name="text">
-          <string>Line Chart Type:</string>
+          <string>Line Chart Type</string>
          </property>
         </widget>
        </item>
@@ -111,7 +111,7 @@
        <item>
         <widget class="QLabel" name="markersLB">
          <property name="text">
-          <string>Markers:</string>
+          <string>Markers</string>
          </property>
         </widget>
        </item>
@@ -199,7 +199,7 @@
        <item>
         <widget class="QLabel" name="markersSizeLB">
          <property name="text">
-          <string>Markers Size:</string>
+          <string>Markers Size</string>
          </property>
         </widget>
        </item>
@@ -222,7 +222,7 @@
            <item>
             <widget class="QLabel" name="markersWidthLB">
              <property name="text">
-              <string>Width:</string>
+              <string>Width</string>
              </property>
             </widget>
            </item>

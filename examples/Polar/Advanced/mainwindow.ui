@@ -87,7 +87,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="zoomFactorLB_2">
         <property name="text">
-         <string>Start:</string>
+         <string>Start</string>
         </property>
        </widget>
       </item>

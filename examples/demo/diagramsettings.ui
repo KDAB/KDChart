@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>314</width>
-    <height>351</height>
+    <height>357</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>3D Settings:</string>
+      <string>3D Settings</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -62,7 +62,7 @@
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>BarWidth:</string>
+           <string>Bar Width</string>
           </property>
          </widget>
         </item>
