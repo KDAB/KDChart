@@ -76,11 +76,11 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->setModel( &m_model );
 
     CartesianAxis *xAxis = new CartesianAxis( m_lines );
-    CartesianAxis *yAxis = new CartesianAxis ( m_lines );
-    CartesianAxis *axisTop = new CartesianAxis ( m_lines );
-    CartesianAxis *axisRight = new CartesianAxis ( m_lines );
-    xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
-    yAxis->setPosition ( KDChart::CartesianAxis::Left );
+    CartesianAxis *yAxis = new CartesianAxis( m_lines );
+    CartesianAxis *axisTop = new CartesianAxis( m_lines );
+    CartesianAxis *axisRight = new CartesianAxis( m_lines );
+    xAxis->setPosition( KDChart::CartesianAxis::Bottom );
+    yAxis->setPosition( KDChart::CartesianAxis::Left );
     axisTop->setPosition( KDChart::CartesianAxis::Top );
     axisRight->setPosition( KDChart::CartesianAxis::Right );
 
@@ -103,7 +103,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
 
-    for ( int iColumn = 0; iColumn<m_lines->model()->columnCount(); ++iColumn ){
+    for ( int iColumn = 0; iColumn<m_lines->model()->columnCount(); ++iColumn ) {
         QPen pen(m_lines->pen( iColumn ));
         pen.setWidth(4);
         m_lines->setPen( iColumn, pen );
@@ -111,12 +111,12 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     FrameAttributes faChart( m_chart->frameAttributes() );
     faChart.setVisible( true );
-    faChart.setPen( QPen(QColor(0x60,0x60,0xb0), 8) );
+    faChart.setPen( QPen(QColor( 0x60, 0x60, 0xb0 ), 8 ) );
     m_chart->setFrameAttributes( faChart );
 
     BackgroundAttributes baChart( m_chart->backgroundAttributes() );
     baChart.setVisible( true );
-    baChart.setBrush( QColor(0xd0,0xd0,0xff) );
+    baChart.setBrush( QColor( 0xd0, 0xd0, 0xff ) );
     m_chart->setBackgroundAttributes( baChart );
 
     // Set up the legend
@@ -129,10 +129,10 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_legend->setOrientation( Qt::Horizontal );
 
     // setting the legend frame and background to the same color:
-    const QColor legendColor(0xff,0xe0,0x80);
+    const QColor legendColor( 0xff, 0xe0, 0x80 );
     FrameAttributes faLegend( m_legend->frameAttributes() );
     faLegend.setVisible( true );
-    faLegend.setPen( QPen(legendColor, 1) );
+    faLegend.setPen( QPen( legendColor, 1 ) );
     m_legend->setFrameAttributes( faLegend );
 
     BackgroundAttributes baLegend( m_legend->backgroundAttributes() );
@@ -156,19 +156,17 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_smallChart1->setWindowTitle( "200x200" );
     m_smallChart1->setPixmap( m_pix1 );
     m_smallChart1->setFixedSize( m_pix1.size() );
-    m_smallChart1->move( width() - m_pix1.width()*2,
-                         height()/2 - m_pix1.height()-5 );
+    m_smallChart1->move( width() - m_pix1.width() * 2,  height() / 2 - m_pix1.height() - 5 );
     m_smallChart1->show();
 
     m_smallChart2 = new QLabel( this );
     m_smallChart2->setWindowTitle( "800x800 scaled down" );
     m_smallChart2->setPixmap( m_pix2 );
     m_smallChart2->setFixedSize( m_pix2.size() );
-    m_smallChart2->move( width() - m_pix2.width()*2,
-                         height()/2 + 5 );
+    m_smallChart2->move( width() - m_pix2.width() * 2, height() / 2 + 5 );
     m_smallChart2->show();
 
-    faChart.setPen( QPen(QColor(0xb0,0xb0,0xff), 8) );
+    faChart.setPen( QPen( QColor( 0xb0, 0xb0, 0xff ), 8 ) );
     m_chart->setFrameAttributes( faChart );
 }
 
@@ -188,8 +186,8 @@ void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
 void MainWindow::on_paintLegendCB_toggled( bool checked )
 {
     KDChart::Legend* legend = m_chart->legend();
-    if( checked != (legend != 0) ){
-        if( checked )
+    if ( checked != ( legend != 0 ) ) {
+        if ( checked )
             m_chart->addLegend( m_legend );
         else
             m_chart->takeLegend( legend );
@@ -212,10 +210,7 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
         ta.setRotation( 0 );
         ta.setFont( QFont( "Comic", 10 ) );
         ta .setPen( QPen( brush.color() ) );
-        if ( checked )
-            ta.setVisible( true );
-        else
-            ta.setVisible( false );
+        ta.setVisible( checked );
 
         a.setTextAttributes( ta );
         a.setVisible( true );
@@ -235,48 +230,46 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
         a.setTextAttributes( ta );
     }
     MarkerAttributes ma( a.markerAttributes() );
-    MarkerAttributes::MarkerStylesMap map;
-    map.insert( 0, MarkerAttributes::MarkerSquare );
-    map.insert( 1, MarkerAttributes::MarkerCircle );
-    map.insert( 2, MarkerAttributes::MarkerRing );
-    map.insert( 3, MarkerAttributes::MarkerCross );
-    map.insert( 4, MarkerAttributes::MarkerDiamond );
-    ma.setMarkerStylesMap( map );
 
     switch ( markersStyleCB->currentIndex() ) {
-        case 0:{
-                   break; }
-        case 1:{
-                   ma.setMarkerStyle( MarkerAttributes::MarkerCircle );
-                   break; }
-        case 2:{
-                   ma.setMarkerStyle( MarkerAttributes::MarkerSquare );
-                   break; }
-        case 3:{
-                   ma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
-                   break; }
-        case 4:{
-                   ma.setMarkerStyle( MarkerAttributes::Marker1Pixel );
-                   break; }
-        case 5:{
-                   ma.setMarkerStyle( MarkerAttributes::Marker4Pixels );
-                   break; }
-        case 6:{
-                   ma.setMarkerStyle( MarkerAttributes::MarkerRing );
-                   break; }
-        case 7:{
-                   ma.setMarkerStyle( MarkerAttributes::MarkerCross );
-                   break; }
-        case 8:{
-                   ma.setMarkerStyle( MarkerAttributes::MarkerFastCross );
-                   break; }
+    case 0: {
+        MarkerAttributes::MarkerStylesMap map;
+        map.insert( 0, MarkerAttributes::MarkerSquare );
+        map.insert( 1, MarkerAttributes::MarkerCircle );
+        map.insert( 2, MarkerAttributes::MarkerRing );
+        map.insert( 3, MarkerAttributes::MarkerCross );
+        map.insert( 4, MarkerAttributes::MarkerDiamond );
+
+        ma.setMarkerStylesMap( map );
+        break; }
+    case 1:
+        ma.setMarkerStyle( MarkerAttributes::MarkerCircle );
+        break;
+    case 2:
+        ma.setMarkerStyle( MarkerAttributes::MarkerSquare );
+        break;
+    case 3:
+        ma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
+        break;
+    case 4:
+        ma.setMarkerStyle( MarkerAttributes::Marker1Pixel );
+        break;
+    case 5:
+        ma.setMarkerStyle( MarkerAttributes::Marker4Pixels );
+        break;
+    case 6:
+        ma.setMarkerStyle( MarkerAttributes::MarkerRing );
+        break;
+    case 7:
+        ma.setMarkerStyle( MarkerAttributes::MarkerCross );
+        break;
+    case 8:
+        ma.setMarkerStyle( MarkerAttributes::MarkerFastCross );
+        break;
     }
     ma.setMarkerSize( QSize( markersWidthSB->value(), markersHeightSB->value() ) );
 
-    if ( checked )
-        ma.setVisible( true );
-    else
-        ma.setVisible( false );
+    ma.setVisible( checked );
 
     a.setMarkerAttributes( ma );
     a.setVisible( true );
@@ -289,14 +282,14 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
 
     const int rowCount = m_lines->model()->rowCount();
     const int colCount = m_lines->model()->columnCount();
-    for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
+    for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
         DataValueAttributes colAttributes( a );
         if ( markersStyleCB->currentIndex() == 0 ) {
             MarkerAttributes ma( colAttributes.markerAttributes() );
             ma.setMarkerStyle( ma.markerStylesMap().value(iColumn) );
             colAttributes.setMarkerAttributes( ma );
         }
-        for ( int j=0; j< rowCount; ++j ) {
+        for ( int j = 0; j < rowCount; ++j ) {
             QModelIndex index = m_lines->model()->index( j, iColumn, QModelIndex() );
             QBrush brush = m_lines->model()->headerData( iColumn, Qt::Vertical, DatasetBrushRole ).value<QBrush>();
             qreal value = m_lines->model()->data( index ).toReal();
@@ -357,14 +350,12 @@ void MainWindow::on_transparencySB_valueChanged( int alpha )
 
 void MainWindow::on_zoomFactorSB_valueChanged( double factor )
 {
-    if ( factor > 1 ) {
-        hSBar->setVisible( true );
-        vSBar->setVisible( true );
-    } else {
+    const bool isZoomedIn = factor > 1.0f;
+    hSBar->setVisible( isZoomedIn );
+    vSBar->setVisible( isZoomedIn );
+    if ( !isZoomedIn ) {
         hSBar->setValue( 500 );
         vSBar->setValue( 500 );
-        hSBar->setVisible( false );
-        vSBar->setVisible( false );
     }
     m_chart->coordinatePlane()->setZoomFactorX( factor );
     m_chart->coordinatePlane()->setZoomFactorY( factor );
@@ -372,13 +363,13 @@ void MainWindow::on_zoomFactorSB_valueChanged( double factor )
 
 void MainWindow::on_hSBar_valueChanged( int hPos )
 {
-    m_chart->coordinatePlane()->setZoomCenter( QPointF(hPos/1000.0, vSBar->value()/1000.0) );
+    m_chart->coordinatePlane()->setZoomCenter( QPointF( hPos / 1000.0, vSBar->value() / 1000.0 ) );
     m_chart->update();
 }
 
 void MainWindow::on_vSBar_valueChanged( int vPos )
 {
-    m_chart->coordinatePlane()->setZoomCenter( QPointF( hSBar->value()/1000.0, vPos/1000.0) );
+    m_chart->coordinatePlane()->setZoomCenter( QPointF( hSBar->value() / 1000.0, vPos / 1000.0 ) );
 }
 
 // since DataValue markers have no relative sizeing mode we need to scale them
@@ -394,50 +385,47 @@ void MainWindow::paintMarkers( bool checked, const QRect & printSize )
         a.setTextAttributes( ta );
     }
     MarkerAttributes ma( a.markerAttributes() );
-    MarkerAttributes::MarkerStylesMap map;
-    map.insert( 0, MarkerAttributes::MarkerSquare );
-    map.insert( 1, MarkerAttributes::MarkerCircle );
-    map.insert( 2, MarkerAttributes::MarkerRing );
-    map.insert( 3, MarkerAttributes::MarkerCross );
-    map.insert( 4, MarkerAttributes::MarkerDiamond );
-    ma.setMarkerStylesMap( map );
 
     switch ( markersStyleCB->currentIndex() ) {
-        case 0:{
-                   break; }
-        case 1:{
-                   ma.setMarkerStyle( MarkerAttributes::MarkerCircle );
-                   break; }
-        case 2:{
-                   ma.setMarkerStyle( MarkerAttributes::MarkerSquare );
-                   break; }
-        case 3:{
-                   ma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
-                   break; }
-        case 4:{
-                   ma.setMarkerStyle( MarkerAttributes::Marker1Pixel );
-                   break; }
-        case 5:{
-                   ma.setMarkerStyle( MarkerAttributes::Marker4Pixels );
-                   break; }
-        case 6:{
-                   ma.setMarkerStyle( MarkerAttributes::MarkerRing );
-                   break; }
-        case 7:{
-                   ma.setMarkerStyle( MarkerAttributes::MarkerCross );
-                   break; }
-        case 8:{
-                   ma.setMarkerStyle( MarkerAttributes::MarkerFastCross );
-                   break; }
+    case 0: {
+        MarkerAttributes::MarkerStylesMap map;
+        map.insert( 0, MarkerAttributes::MarkerSquare );
+        map.insert( 1, MarkerAttributes::MarkerCircle );
+        map.insert( 2, MarkerAttributes::MarkerRing );
+        map.insert( 3, MarkerAttributes::MarkerCross );
+        map.insert( 4, MarkerAttributes::MarkerDiamond );
+        ma.setMarkerStylesMap( map );
+        break; }
+    case 1:
+        ma.setMarkerStyle( MarkerAttributes::MarkerCircle );
+        break;
+    case 2:
+        ma.setMarkerStyle( MarkerAttributes::MarkerSquare );
+        break;
+    case 3:
+        ma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
+        break;
+    case 4:
+        ma.setMarkerStyle( MarkerAttributes::Marker1Pixel );
+        break;
+    case 5:
+        ma.setMarkerStyle( MarkerAttributes::Marker4Pixels );
+        break;
+    case 6:
+        ma.setMarkerStyle( MarkerAttributes::MarkerRing );
+        break;
+    case 7:
+        ma.setMarkerStyle( MarkerAttributes::MarkerCross );
+        break;
+    case 8:
+        ma.setMarkerStyle( MarkerAttributes::MarkerFastCross );
+        break;
     }
     qreal factorWidth = printSize.width() / m_chart->rect().width();
     qreal factorHeight = printSize.height() / m_chart->rect().height();
     ma.setMarkerSize( QSize( markersWidthSB->value() * factorWidth, markersHeightSB->value() * factorHeight ) );
 
-    if ( checked )
-        ma.setVisible( true );
-    else
-        ma.setVisible( false );
+    ma.setVisible( checked );
 
     a.setMarkerAttributes( ma );
     a.setVisible( true );
@@ -457,7 +445,7 @@ void MainWindow::paintMarkers( bool checked, const QRect & printSize )
             ma.setMarkerStyle( ma.markerStylesMap().value(iColumn) );
             colAttributes.setMarkerAttributes( ma );
         }
-        for ( int j=0; j< rowCount; ++j ) {
+        for ( int j = 0; j < rowCount; ++j ) {
             QModelIndex index = m_lines->model()->index( j, iColumn, QModelIndex() );
             QBrush brush = m_lines->model()->headerData( iColumn, Qt::Vertical, DatasetBrushRole ).value<QBrush>();
             qreal value = m_lines->model()->data( index ).toReal();
@@ -472,43 +460,41 @@ void MainWindow::paintMarkers( bool checked, const QRect & printSize )
 
 void MainWindow::on_savePB_clicked()
 {
-    const QString file = QFileDialog::getSaveFileName(this, tr("Choose PNG File..."));
-    if(file.isEmpty()) return;
+    const QString file = QFileDialog::getSaveFileName( this, tr( "Choose PNG File..." ) );
+    if ( file.isEmpty() )
+        return;
     qDebug() << "Painting into PNG";
-    QPixmap qpix(600,600);
-    QPainter painter(&qpix);
-    painter.setBrush(Qt::white);
+    QPixmap qpix( 600, 600 );
+    QPainter painter( &qpix );
+    painter.setBrush( Qt::white );
     painter.fillRect( 0, 0, 600, 600, Qt::white);
-    m_chart->paint(&painter, QRect(100, 100, 400, 400));
+    m_chart->paint( &painter, QRect( 100, 100, 400, 400 ) );
     painter.end();
-    qpix.save(file, "PNG");
+    qpix.save( file, "PNG" );
     qDebug() << "Painting into PNG - done";
 }
 
 void MainWindow::on_savePDF_clicked()
 {
-    const QString file = QFileDialog::getSaveFileName(this, tr("Choose PDF File..."));
-    if(file.isEmpty()) return;
+    const QString file = QFileDialog::getSaveFileName( this, tr( "Choose PDF File..." ) );
+    if( file.isEmpty() )
+        return;
     qDebug() << "Painting into PDF";
-    QPrinter printer(QPrinter::HighResolution);
-    printer.setOrientation(QPrinter::Landscape);
-    printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setOutputFileName(file);
+    QPrinter printer( QPrinter::HighResolution );
+    printer.setOrientation( QPrinter::Landscape );
+    printer.setOutputFormat( QPrinter::PdfFormat );
+    printer.setOutputFileName( file );
     paintMarkers( paintMarkersCB->isChecked(), printer.pageRect() );
     QPainter painter;
-    painter.begin(&printer);
-    m_chart->paint(&painter, printer.pageRect());
+    painter.begin( &printer );
+    m_chart->paint( &painter, printer.pageRect() );
     painter.end();
     paintMarkers( paintMarkersCB->isChecked(), m_chart->geometry() );
     qDebug() << "Painting into PDF - done";
 }
 
-void MainWindow::resizeEvent ( QResizeEvent * )
+void MainWindow::resizeEvent( QResizeEvent * )
 {
-    m_smallChart1->move( width() - m_pix1.width()*2,
-                         height()/2 - m_pix1.height()-5 );
-    m_smallChart2->move( width() - m_pix2.width()*2,
-                         height()/2 + 5 );
+    m_smallChart1->move( width() - m_pix1.width() * 2, height() / 2 - m_pix1.height() - 5 );
+    m_smallChart2->move( width() - m_pix2.width() * 2, height() / 2 + 5 );
 }
-
-
