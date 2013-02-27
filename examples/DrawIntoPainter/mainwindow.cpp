@@ -232,7 +232,10 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
     MarkerAttributes ma( a.markerAttributes() );
 
     switch ( markersStyleCB->currentIndex() ) {
-    case 0: {
+    case 0:
+        ma.setMarkerStyle( MarkerAttributes::MarkerSquare );
+        break;
+    case 1: {
         MarkerAttributes::MarkerStylesMap map;
         map.insert( 0, MarkerAttributes::MarkerSquare );
         map.insert( 1, MarkerAttributes::MarkerCircle );
@@ -242,11 +245,8 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
 
         ma.setMarkerStylesMap( map );
         break; }
-    case 1:
-        ma.setMarkerStyle( MarkerAttributes::MarkerCircle );
-        break;
     case 2:
-        ma.setMarkerStyle( MarkerAttributes::MarkerSquare );
+        ma.setMarkerStyle( MarkerAttributes::MarkerCircle );
         break;
     case 3:
         ma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
@@ -284,7 +284,7 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
     const int colCount = m_lines->model()->columnCount();
     for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
         DataValueAttributes colAttributes( a );
-        if ( markersStyleCB->currentIndex() == 0 ) {
+        if ( markersStyleCB->currentIndex() == 1 ) {
             MarkerAttributes ma( colAttributes.markerAttributes() );
             ma.setMarkerStyle( ma.markerStylesMap().value(iColumn) );
             colAttributes.setMarkerAttributes( ma );
@@ -372,7 +372,7 @@ void MainWindow::on_vSBar_valueChanged( int vPos )
     m_chart->coordinatePlane()->setZoomCenter( QPointF( hSBar->value() / 1000.0, vPos / 1000.0 ) );
 }
 
-// since DataValue markers have no relative sizeing mode we need to scale them
+// since DataValue markers have no relative sizing mode we need to scale them
 // for printing
 void MainWindow::paintMarkers( bool checked, const QRect & printSize )
 {
@@ -387,20 +387,21 @@ void MainWindow::paintMarkers( bool checked, const QRect & printSize )
     MarkerAttributes ma( a.markerAttributes() );
 
     switch ( markersStyleCB->currentIndex() ) {
-    case 0: {
+    case 0:
+        ma.setMarkerStyle( MarkerAttributes::MarkerSquare );
+        break;
+    case 1: {
         MarkerAttributes::MarkerStylesMap map;
         map.insert( 0, MarkerAttributes::MarkerSquare );
         map.insert( 1, MarkerAttributes::MarkerCircle );
         map.insert( 2, MarkerAttributes::MarkerRing );
         map.insert( 3, MarkerAttributes::MarkerCross );
         map.insert( 4, MarkerAttributes::MarkerDiamond );
+
         ma.setMarkerStylesMap( map );
         break; }
-    case 1:
-        ma.setMarkerStyle( MarkerAttributes::MarkerCircle );
-        break;
     case 2:
-        ma.setMarkerStyle( MarkerAttributes::MarkerSquare );
+        ma.setMarkerStyle( MarkerAttributes::MarkerCircle );
         break;
     case 3:
         ma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
@@ -440,7 +441,7 @@ void MainWindow::paintMarkers( bool checked, const QRect & printSize )
     const int colCount = m_lines->model()->columnCount();
     for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
         DataValueAttributes colAttributes( a );
-        if ( markersStyleCB->currentIndex() == 0 ) {
+        if ( markersStyleCB->currentIndex() == 1 ) {
             MarkerAttributes ma( colAttributes.markerAttributes() );
             ma.setMarkerStyle( ma.markerStylesMap().value(iColumn) );
             colAttributes.setMarkerAttributes( ma );
