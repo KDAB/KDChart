@@ -137,8 +137,7 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
         ta.setVisible( checked );
 
         dva.setTextAttributes( ta );
-        dva.setVisible( true );
-        m_lines->setDataValueAttributes( iColumn, dva);
+        m_lines->setDataValueAttributes( iColumn, dva );
     }
     m_chart->update();
 }
@@ -146,7 +145,7 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
 
 void MainWindow::on_paintMarkersCB_toggled( bool checked )
 {
-    // build a map with different markert types
+    // build a map with different marker types
     MarkerAttributes::MarkerStylesMap map;
     map.insert( 0, MarkerAttributes::MarkerSquare );
     map.insert( 1, MarkerAttributes::MarkerCircle );
