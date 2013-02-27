@@ -439,7 +439,7 @@ void MainWindow::paintMarkers( bool checked, const QRect & printSize )
 
     const int rowCount = m_lines->model()->rowCount();
     const int colCount = m_lines->model()->columnCount();
-    for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
+    for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
         DataValueAttributes colAttributes( a );
         if ( markersStyleCB->currentIndex() == 1 ) {
             MarkerAttributes ma( colAttributes.markerAttributes() );

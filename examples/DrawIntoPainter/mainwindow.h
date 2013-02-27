@@ -32,8 +32,6 @@ namespace KDChart {
     class Chart;
     class DatasetProxyModel;
     class LineDiagram;
-    class LineAttributes;
-    class CartesianAxis;
     class Legend;
 }
 
@@ -49,10 +47,10 @@ public:
     MainWindow( QWidget* parent = 0 );
 
     protected:
-        /**
-         * Adjusts the two small charts when the window is resized.
-         */
-        /* reimp */ void resizeEvent ( QResizeEvent * );
+    /**
+     * Adjusts the two small charts when the window is resized.
+     */
+    /* reimp */ void resizeEvent ( QResizeEvent * );
 
 private slots:
 
@@ -71,13 +69,10 @@ private slots:
     void on_savePB_clicked();
     void on_savePDF_clicked();
 
-
 private:
     TableModel m_model;
     KDChart::DatasetProxyModel* m_datasetProxy;
     KDChart::Legend* m_legend;
-    // mutable KDChart::CartesianAxis xAxis;
-    //mutable KDChart::CartesianAxis yAxis;
 
     void paintMarkers( bool checked, const QRect & printSize );
 
@@ -87,10 +82,6 @@ protected:
     QPixmap m_pix1, m_pix2;
     QLabel* m_smallChart1;
     QLabel* m_smallChart2;
-
-
 };
 
-
 #endif /* MAINWINDOW_H */
-
