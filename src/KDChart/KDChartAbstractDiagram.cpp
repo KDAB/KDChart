@@ -567,6 +567,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
             case MarkerAttributes::MarkerRing:
                 {
                     painter->setBrush( Qt::NoBrush );
+                    painter->setPen( PrintingParameters::scalePen( QPen( brush.color() ) ) );
                     painter->drawEllipse( QRectF( 0 - maSize.height()/2, 0 - maSize.width()/2,
                                         maSize.height(), maSize.width()) );
                     break;
