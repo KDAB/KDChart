@@ -213,8 +213,8 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
                 MarkerAttributes yellowMarker( yellowAttributes.markerAttributes() );
                 yellowMarker.setMarkerColor( Qt::yellow );
                 yellowMarker.setMarkerSize( QSize( markersWidthSB->value(), markersHeightSB->value() ) );
-                yellowAttributes.setMarkerAttributes( yellowMarker );
                 yellowMarker.setVisible( checked );
+                yellowAttributes.setMarkerAttributes( yellowMarker );
                 yellowAttributes.setVisible( checked );
                 //cell specific attributes:
                 m_lines->setDataValueAttributes( index, yellowAttributes );
