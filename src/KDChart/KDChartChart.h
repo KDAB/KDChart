@@ -28,12 +28,41 @@
 #include "kdchart_export.h"
 #include "KDChartGlobal.h"
 
-/** \file KDChartChart.h
- *  \brief Declaring the class KDChart::Chart.
- *
- *
- */
+/*
+Simplified(*) overview of object ownership in a chart:
 
+                Chart is-a QWidget
+                 |
+          n CoordinatePlanes is-a AbstractArea is-a AbstractLayoutItem is-a QLayoutItem
+                 |
+            n Diagrams is-a QAbstractItemView is-a QWidget
+              /   |   \
+  AbstractGrid    |   Axes (can be shared between diagrams) is-a AbstractArea is-a... QLayoutItem
+ (no base class)  |
+                Legends is-a AbstractAreaWidget is-a QWidget
+
+(*) less important classes, including base classes, removed.
+
+
+Layout rules:
+
+In principle, every size or existence change in one of the objects listed above must be propagated
+to all other objects. This could change their size.
+There are also settings changes that invalidate the size of other components, where the size changes
+are detected and propagated.
+
+
+Painting call tree (simplified):
+
+Chart::paint() (from users) / paintEvent() (from framework)
+ChartPrivate::paintAll()-----------------------------------------------\
+CoordinatePlane::paintAll() (from AbstractArea)--------\               Axis::paintAll()-\
+CoordinatePlane::paint() (from AbstractLayoutItem)     Grid::drawGrid()                 Axis::paint()
+Diagram::paint( PaintContext* paintContext )
+
+Note that grids are painted from the coordinate plane, not from the diagram as ownership would suggest.
+
+*/
 
 namespace KDChart {
 
