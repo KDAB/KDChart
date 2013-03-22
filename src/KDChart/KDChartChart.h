@@ -400,7 +400,7 @@ namespace KDChart {
         int globalLeadingBottom() const;
 
         /**
-          * Paints all the contents of the chart. Use this method, to make KDChart
+          * Paints all the contents of the chart. Use this method to make KDChart
           * draw into your QPainter.
           *
           * \note Any global leading settings will be used by the paint method too,

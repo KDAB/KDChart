@@ -40,9 +40,9 @@ namespace KDChart {
   * that have a set of background attributes and frame attributes, such as
   * headers or footers.
   *
-  * @note This class inherits from AbstractAreaBase, TextLayoutItem, QObject.
-  * The reason for this tripple inheritance is that neither AbstractAreaBase nor
-  * TextLayoutItem are QObject.
+  * @note This class inherits AbstractAreaBase, TextLayoutItem, and QObject.
+  * The reason for this triple inheritance is that neither AbstractAreaBase nor
+  * TextLayoutItem inherit QObject.
   */
 class KDCHART_EXPORT TextArea : public QObject, public AbstractAreaBase, public TextLayoutItem
 {

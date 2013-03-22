@@ -55,10 +55,8 @@ void FrameWidget::paintEvent( QPaintEvent* e )
         painter.setBrush( oldBrush );
         painter.setPen(   oldPen );
         // paint the chart
-        mChart->paint(
-            &painter,
-            QRect( r.left()+wid/2, r.top()+wid/2,
-                   r.width()-wid, r.height()-wid ) );
+        mChart->paint(&painter, QRect( r.left() + wid / 2, r.top() + wid / 2,
+                                       r.width() - wid,    r.height() - wid ) );
         // paint over the chart
         painter.setPen( QPen(Qt::NoPen) );
         painter.setBrush( QBrush(QColor(0xd0,0xff,0xff)) );
