@@ -150,6 +150,7 @@ class Chart::Private : public QObject
         QVector<KDChart::AbstractLayoutItem*> planeLayoutItems;
         QVector<KDChart::Legend*> legendLayoutItems;
 
+        QSize overrideSize;
         bool isFloatingLegendsLayoutDirty;
         bool isPlanesLayoutDirty;
 

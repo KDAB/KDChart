@@ -921,7 +921,13 @@ void Chart::Private::slotResizePlanes()
     if ( !dataAndLegendLayout ) {
         return;
     }
-    dataAndLegendLayout->activate();
+    if ( !overrideSize.isValid() ) {
+        // activate() takes the size from the layout's parent QWidget, which is not updated when overrideSize
+        // is set. So don't let the layout grab the wrong size in that case.
+        // When overrideSize *is* set, we call layout->setGeometry() in paint( QPainter*, const QRect& ),
+        // which also "activates" the layout in the sense that it distributes space internally.
+        layout->activate();
+    }
     // Adapt diagram drawing to the new size
     KDAB_FOREACH (AbstractCoordinatePlane* plane, coordinatePlanes ) {
         plane->layoutDiagrams();
@@ -948,7 +954,7 @@ void Chart::Private::paintAll( QPainter* painter )
 {
     updateDirtyLayouts();
 
-    QRect rect( QPoint( 0, 0 ), chart->size() );
+    QRect rect( QPoint( 0, 0 ), overrideSize.isValid() ? overrideSize : chart->size() );
 
     //qDebug() << this<<"::paintAll() uses layout size" << currentLayoutSize;
 
@@ -1196,21 +1202,27 @@ void Chart::paint( QPainter* painter, const QRect& target )
     // cause a relayout every time, but since this method's main use seems to be printing, the
     // gratuitous relayouts shouldn't be much of a performance problem.
     const bool differentSize = target.size() != size();
+    QRect oldGeometry;
     if ( differentSize ) {
+        oldGeometry = geometry();
         d->isPlanesLayoutDirty = true;
         d->isFloatingLegendsLayoutDirty = true;
+        d->dataAndLegendLayout->setGeometry( QRect( QPoint(), target.size() ) );
     }
 
+    d->overrideSize = target.size();
     d->paintAll( painter );
+    d->overrideSize = QSize();
 
     if ( differentSize ) {
+        d->dataAndLegendLayout->setGeometry( oldGeometry );
         d->isPlanesLayoutDirty = true;
         d->isFloatingLegendsLayoutDirty = true;
     }
 
-    // for debugging:
-    //painter->setPen(QPen(Qt::blue, 8));
-    //painter->drawRect(target.adjusted(12,12,-12,-12));
+    // for debugging
+    // painter->setPen( QPen( Qt::blue, 8 ) );
+    // painter->drawRect( target );
 
     painter->translate( -translation.x(), -translation.y() );
 
