@@ -136,11 +136,6 @@
         <widget class="QComboBox" name="markersStyleCB">
          <item>
           <property name="text">
-           <string>Map</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
            <string>Circle</string>
           </property>
          </item>
