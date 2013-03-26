@@ -27,13 +27,11 @@
 #include "KDChartPieDiagram.h"
 #include "KDChartPieDiagram_p.h"
 
-#include "KDChartAttributesModel.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPieAttributes.h"
 #include "KDChartPolarCoordinatePlane_p.h"
 #include "KDChartThreeDPieAttributes.h"
 #include "KDChartPainterSaver_p.h"
-#include "KDChartDataValueAttributes.h"
 
 #include <KDABLibFakes>
 

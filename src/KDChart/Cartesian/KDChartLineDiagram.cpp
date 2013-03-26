@@ -25,11 +25,8 @@
 
 #include "KDChartBarDiagram.h"
 #include "KDChartPalette.h"
-#include "KDChartPosition.h"
-#include "KDChartTextAttributes.h"
 #include "KDChartAttributesModel.h"
 #include "KDChartAbstractGrid.h"
-#include "KDChartDataValueAttributes.h"
 #include "KDChartPainterSaver_p.h"
 
 #include <KDABLibFakes>

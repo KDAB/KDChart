@@ -27,10 +27,7 @@
 #include <QDebug>
 #include <QApplication>
 #include <QAbstractProxyModel>
-#include <QAbstractTextDocumentLayout>
-#include <QStandardItemModel>
 #include <QSizeF>
-#include <QTextDocument>
 
 #include "KDChartAbstractCoordinatePlane.h"
 #include "KDChartChart.h"
