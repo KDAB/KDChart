@@ -136,7 +136,7 @@ void NormalBarDiagram::paint( PaintContext* ctx )
 
     // maxLimit: allow the space between bars to be larger until area.width()
     // is covered by the groups.
-    qreal maxLimit = rowCount * (groupWidth + ((colCount-1) * ba.fixedDataValueGap()) );
+    qreal maxLimit = rowCount * ( groupWidth + ( ( colCount - 1 ) * ba.fixedDataValueGap() ) );
 
     //Pending Michel: FixMe
     if ( ba.useFixedDataValueGap() ) {
@@ -182,7 +182,7 @@ void NormalBarDiagram::paint( PaintContext* ctx )
                 QPointF bottomPoint =  ctx->coordinatePlane()->translate( QPointF( point.key, 0 ) );
 
                 if ( threeDAttrs.isEnabled() ) {
-                    const qreal usedDepth = threeDAttrs.depth()/4;
+                    const qreal usedDepth = threeDAttrs.depth() / 4;
                     topPoint.setY( topPoint.y() + usedDepth + 1.0 );
                 }
 

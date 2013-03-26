@@ -42,31 +42,31 @@ BarDiagram::BarType NormalLyingBarDiagram::type() const
     return BarDiagram::Normal;
 }
 
+// TODO there is a lot of duplication between this and the non-lying bar diagram, fix it someday...
 const QPair<QPointF, QPointF> NormalLyingBarDiagram::calculateDataBoundaries() const
 {
     const int rowCount = compressor().modelDataRows();
     const int colCount = compressor().modelDataColumns();
 
     qreal xMin = 0.0;
-    qreal xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
-    qreal yMin = 0.0, yMax = 0.0;
+    qreal xMax = rowCount;
+    qreal yMin = 0.0;
+    qreal yMax = 0.0;
 
-    bool bStarting = true;
-    for ( int column = 0; column < colCount; ++column )
-    {
-        for ( int row = 0; row < rowCount; ++row )
-        {
+    bool isFirst = true;
+    for ( int column = 0; column < colCount; ++column ) {
+        for ( int row = 0; row < rowCount; ++row ) {
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             const qreal value = ISNAN( point.value ) ? 0.0 : point.value;
             // this is always true yMin can be 0 in case all values
             // are the same
             // same for yMax it can be zero if all values are negative
-            if( bStarting ){
+            if ( isFirst ) {
                 yMin = value;
                 yMax = value;
-                bStarting = false;
-            }else{
+                isFirst = false;
+            } else {
                 yMin = qMin( yMin, value );
                 yMax = qMax( yMax, value );
             }
@@ -75,17 +75,18 @@ const QPair<QPointF, QPointF> NormalLyingBarDiagram::calculateDataBoundaries() c
 
     // special cases
     if ( yMax == yMin ) {
-        if ( yMin == 0.0 )
-            yMax = 0.1; //we need at least a range
-        else if( yMax < 0.0 )
+        if ( yMin == 0.0 ) {
+            yMax = 0.1; // we need at least a range
+	} else if ( yMax < 0.0 ) {
             yMax = 0.0; // they are the same and negative
-        else if( yMin > 0.0 )
+	} else if ( yMin > 0.0 ) {
             yMin = 0.0; // they are the same but positive
+	}
     }
-    const QPointF bottomLeft ( QPointF( yMin, xMin ) );
-    const QPointF topRight ( QPointF( yMax, xMax ) );
+    const QPointF bottomLeft( QPointF( yMin, xMin ) );
+    const QPointF topRight( QPointF( yMax, xMax ) );
 
-    return QPair< QPointF, QPointF >( bottomLeft,  topRight );
+    return QPair< QPointF, QPointF >( bottomLeft, topRight );
 }
 
 void NormalLyingBarDiagram::paint( PaintContext* ctx )
@@ -145,28 +146,22 @@ void NormalLyingBarDiagram::paint( PaintContext* ctx )
 
     LabelPaintCache lpc;
 
-    for( int row = rowCount - 1; row >= 0; --row )
-    {
+    for( int row = rowCount - 1; row >= 0; --row ) {
         qreal offset = ( groupWidth + spaceBetweenGroups ) * 0.5 - spaceBetweenBars;
 
-        if ( ba.useFixedDataValueGap() )
-        {
-            if ( spaceBetweenBars > 0 )
-            {
-                if ( width > maxLimit )
+        if ( ba.useFixedDataValueGap() ) {
+            if ( spaceBetweenBars > 0 ) {
+                if ( width > maxLimit ) {
                     offset -= ba.fixedDataValueGap();
-                else
+		} else {
                     offset -= ( width / rowCount - groupWidth ) / ( colCount - 1 );
-
-            }
-            else
-            {
-                offset += barWidth/2;
+		}
+            } else {
+                offset += barWidth / 2;
             }
         }
 
-        for( int column = colCount - 1; column >= 0; --column )
-        {
+        for( int column = colCount - 1; column >= 0; --column ) {
             offset -= barWidth + spaceBetweenBars;
 
             // paint one group
@@ -174,7 +169,7 @@ void NormalLyingBarDiagram::paint( PaintContext* ctx )
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
             const qreal value = point.value;//attributesModel()->data( sourceIndex ).toReal();
-            QPointF topPoint = ctx->coordinatePlane()->translate( QPointF( value, rowCount - (point.key + 0.5) ) );
+            QPointF topPoint = ctx->coordinatePlane()->translate( QPointF( value, rowCount - ( point.key + 0.5 ) ) );
             QPointF bottomPoint =  ctx->coordinatePlane()->translate( QPointF( 0, rowCount - point.key ) );
             const qreal barHeight = topPoint.x() - bottomPoint.x();
             topPoint.ry() += offset;
