@@ -48,50 +48,41 @@ int main( int argc, char** argv )
 #if defined PLOTTED_POINTS
     const int points = 60;
 #else
-    const int points = 100000;
+    const int points = 1000;
 #endif
     const qreal xMin = -2 * PI;
     const qreal xMax = 2 * PI;
     const qreal step = ( xMax - xMin ) / ( points - 1 );
 
-    QStandardItemModel model( points, 4 );
+    QStandardItemModel model( points, 6 );
 
-    QVariantList column0;
-    QVariantList column1;
-    QVariantList column2;
-    QVariantList column3;
-
-    qreal x = xMin;
+    double x = xMin;
     for( int n = 0; n < points; ++n, x += step) {
         QModelIndex index = model.index( n, 0 );
-        model.setData( index, QVariant( x ) );
-        column0.push_back( model.data( index ) );
+        model.setData( index, x );
         index = model.index( n, 1 );
-        model.setData( index, QVariant( sin( x ) * 100 ) );
-        column1.push_back( model.data( index ) );
+        model.setData( index, sin( x ) * 100.0 );
 
         index = model.index( n, 2 );
-        model.setData( index, QVariant( x ) );
-        column2.push_back( model.data( index ) );
+        model.setData( index, x );
         index = model.index( n, 3 );
-        model.setData( index, QVariant( x*x*x ) );
-        column3.push_back( model.data( index ) );
+        model.setData( index, x );
+
+        index = model.index( n, 4 );
+        model.setData( index, x );
+        index = model.index( n, 5 );
+        model.setData( index, x * x * x );
     }
 
     model.setHeaderData( 0, Qt::Horizontal, QString::fromLatin1( "100 * sin(x)" ) );
-    model.setHeaderData( 2, Qt::Horizontal, QString::fromLatin1( "x^3" ) );
-    
-/*    model.setHeaderData( 0, Qt::Horizontal, column0, KDChart::ColumnDataRole );
-    model.setHeaderData( 1, Qt::Horizontal, column1, KDChart::ColumnDataRole );
-    model.setHeaderData( 2, Qt::Horizontal, column2, KDChart::ColumnDataRole );
-    model.setHeaderData( 3, Qt::Horizontal, column3, KDChart::ColumnDataRole );*/
+    model.setHeaderData( 2, Qt::Horizontal, QString::fromLatin1( "x" ) );
+    model.setHeaderData( 4, Qt::Horizontal, QString::fromLatin1( "x^3" ) );
 
     KDChart::Chart* chart = new KDChart::Chart();
 
     KDChart::AbstractCartesianDiagram* diagram = new KDChart::Plotter;
     diagram->setModel( &model );
     chart->coordinatePlane()->replaceDiagram( diagram );
-
 
 #if defined PLOTTED_POINTS
     diagram->setPen( QPen(Qt::NoPen) );
@@ -106,8 +97,8 @@ int main( int argc, char** argv )
         ma.setMarkerSize( QSize( 3,3 ) );
 
         dva.setVisible( true );
-        ta.setVisible(  false );
-        ma.setVisible(  true );
+        ta.setVisible( false );
+        ma.setVisible( true );
         dva.setTextAttributes(   ta );
         dva.setMarkerAttributes( ma );
         diagram->setDataValueAttributes( iColumn, dva );
