@@ -33,6 +33,7 @@
 
 #include "KDChartAbstractDiagram_p.h"
 
+#include "KDChartBarDiagram.h"
 #include "KDChartFrameAttributes.h"
 #include "KDChartPainterSaver_p.h"
 
@@ -168,6 +169,22 @@ void AbstractDiagram::Private::addLabel(
         if ( relPos.referencePosition().isUnknown() ) {
             relPos.setReferencePosition( isPositive ? autoPositionPositive : autoPositionNegative );
         }
+
+        // Rotate the label position (not the label itself) if the diagram is rotated so that the defaults still work
+        if ( isTransposed() ) {
+            KDChartEnums::PositionValue posValue = relPos.referencePosition().value();
+            if ( posValue >= KDChartEnums::PositionNorthWest && posValue <= KDChartEnums::PositionWest ) {
+                // rotate 90 degrees clockwise
+                posValue = static_cast< KDChartEnums::PositionValue >( posValue + 2 );
+                if ( posValue > KDChartEnums::PositionWest ) {
+                    // wraparound
+                    posValue = static_cast< KDChartEnums::PositionValue >( posValue -
+                                ( KDChartEnums::PositionWest - KDChartEnums::PositionNorthWest ) );
+                }
+                relPos.setReferencePosition( Position( posValue ) );
+            }
+        }
+
         const QPointF referencePoint = relPos.referencePoint();
         if ( !diagram->coordinatePlane()->isVisiblePoint( referencePoint ) ) {
             continue;
@@ -588,6 +605,24 @@ void AbstractDiagram::Private::resetDatasetAttrs( int dataset, int role )
     attributesModel->resetHeaderData( column, Qt::Horizontal, role );
 }
 
+bool AbstractDiagram::Private::isTransposed() const
+{
+     // Determine the diagram that specifies the orientation.
+     // That diagram is the reference diagram, if it exists, or otherwise the diagram itself.
+     // Note: In KDChart 2.3 or earlier, only a bar diagram can be transposed.
+     const AbstractCartesianDiagram* refDiagram = qobject_cast< const AbstractCartesianDiagram * >( diagram );
+     if ( !refDiagram ) {
+         return false;
+     }
+     if ( refDiagram->referenceDiagram() ) {
+         refDiagram = refDiagram->referenceDiagram();
+     }
+     const BarDiagram* barDiagram = qobject_cast< const BarDiagram* >( refDiagram );
+     if ( !barDiagram ) {
+         return false;
+     }
+     return barDiagram->orientation() == Qt::Horizontal;
+}
 
 LineAttributesInfo::LineAttributesInfo()
 {

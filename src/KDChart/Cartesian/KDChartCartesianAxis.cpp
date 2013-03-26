@@ -34,6 +34,7 @@
 #include "KDChartPaintContext.h"
 #include "KDChartChart.h"
 #include "KDChartAbstractCartesianDiagram.h"
+#include "KDChartAbstractDiagram_p.h"
 #include "KDChartAbstractGrid.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartLayoutItems.h"
@@ -588,23 +589,9 @@ void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordina
     }
 }
 
-bool CartesianAxis::Private::isTransposed() const
-{
-    // Determine the diagram that specifies the orientation of the diagram
-    // That diagram is the reference diagram, if it exists, or otherwise the diagram itself.
-    // Note: In KDChart 2.3 or earlier, only a bar diagram can be transposed.
-    const AbstractCartesianDiagram* refDiagram = qobject_cast< const AbstractCartesianDiagram * >( diagram() );
-    if ( refDiagram && refDiagram->referenceDiagram() ) {
-        refDiagram = refDiagram->referenceDiagram();
-    }
-    const BarDiagram* barDiagram = qobject_cast< const BarDiagram* >( refDiagram );
-    Qt::Orientation diagramOrientation = barDiagram ? barDiagram->orientation() : Qt::Vertical;
-    return diagramOrientation == Qt::Horizontal;
-}
-
 bool CartesianAxis::Private::isVertical() const
 {
-    return axis()->isAbscissa() == isTransposed();
+    return axis()->isAbscissa() == AbstractDiagram::Private::get( diagram() )->isTransposed();
 }
 
 void CartesianAxis::paintCtx( PaintContext* context )

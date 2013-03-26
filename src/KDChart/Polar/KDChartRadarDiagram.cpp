@@ -335,5 +335,3 @@ void RadarDiagram::setFillAlpha(qreal alphaF)
 void RadarDiagram::resizeEvent ( QResizeEvent*)
 {
 }
-
-

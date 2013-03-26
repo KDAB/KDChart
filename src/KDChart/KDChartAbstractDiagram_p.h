@@ -181,6 +181,12 @@ namespace KDChart {
          */
         void resetDatasetAttrs( int dataset, int role );
 
+        /**
+         * Whether the diagram is transposed (X and Y swapped), which has the same effect as rotating
+         * the diagram 90° clockwise and then inverting the vertical (then X) coordinate.
+         */
+        bool isTransposed() const;
+
         static Private* get( AbstractDiagram *diagram ) { return diagram->_d; }
 
         AbstractDiagram* diagram;
