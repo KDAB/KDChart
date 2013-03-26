@@ -442,7 +442,6 @@ void AbstractDiagram::Private::paintDataValueText(
         doc.setPlainText( text );
     }
 
-    const RelativePosition relPos( attrs.position( valueIsPositive ) );
     const QFont calculatedFont( ta.calculatedFont( plane, KDChartEnums::MeasureOrientationMinimum ) );
 
     const PainterSaver painterSaver( painter );
