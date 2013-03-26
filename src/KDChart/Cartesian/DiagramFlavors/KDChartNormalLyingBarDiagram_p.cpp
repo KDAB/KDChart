@@ -146,8 +146,8 @@ void NormalLyingBarDiagram::paint( PaintContext* ctx )
 
     LabelPaintCache lpc;
 
-    for( int row = rowCount - 1; row >= 0; --row ) {
-        qreal offset = ( groupWidth + spaceBetweenGroups ) * 0.5 - spaceBetweenBars;
+    for ( int row = 0; row < rowCount; row++ ) {
+	qreal offset = -groupWidth / 2 + spaceBetweenGroups / 2;
 
         if ( ba.useFixedDataValueGap() ) {
             if ( spaceBetweenBars > 0 ) {
@@ -161,9 +161,7 @@ void NormalLyingBarDiagram::paint( PaintContext* ctx )
             }
         }
 
-        for( int column = colCount - 1; column >= 0; --column ) {
-            offset -= barWidth + spaceBetweenBars;
-
+        for( int column = 0; column < colCount; column++ ) {
             // paint one group
             const CartesianDiagramDataCompressor::CachePosition position( row,  column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
@@ -178,6 +176,8 @@ void NormalLyingBarDiagram::paint( PaintContext* ctx )
             m_private->addLabel( &lpc, sourceIndex, 0, PositionPoints( rect ), Position::North,
                                  Position::South, point.value );
             paintBars( ctx, sourceIndex, rect, maxDepth );
+
+	    offset += barWidth + spaceBetweenBars;
         }
     }
     m_private->paintDataValueTextsAndMarkers( ctx, lpc, false );
