@@ -233,7 +233,7 @@ void CartesianDiagramDataCompressor::slotModelHeaderDataChanged( Qt::Orientation
     if( orientation != Qt::Vertical )
         return;
 
-    if ( m_model->rowCount() > 0 ) {
+    if ( m_model->rowCount( m_rootIndex ) > 0 ) {
         const QModelIndex firstRow = m_model->index( 0, first, m_rootIndex ); // checked
         const QModelIndex lastRow = m_model->index( m_model->rowCount( m_rootIndex ) - 1, last, m_rootIndex ); // checked
 
@@ -569,20 +569,18 @@ QModelIndexList CartesianDiagramDataCompressor::mapToModel( const CachePosition&
         return indexes;
     }
 
+    Q_ASSERT( position.column <= modelDataColumns() );
     if ( m_datasetDimension == 2 ) {
-        // check consistency with data dimension of 2
-        Q_ASSERT( m_model->columnCount() > position.column * 2 + 1 );
         indexes << m_model->index( position.row, position.column * 2, m_rootIndex ); // checked
         indexes << m_model->index( position.row, position.column * 2 + 1, m_rootIndex ); // checked
     } else {
-        // assumption: indexes per column == 1
-        Q_ASSERT( position.column < m_model->columnCount() );
+        Q_ASSERT( m_datasetDimension == 1 );
         const qreal ipp = indexesPerPixel();
         const int baseRow = floor( position.row * ipp );
         // the following line needs to work for the last row(s), too...
         const int endRow = floor( ( position.row + 1 ) * ipp );
         for ( int row = baseRow; row < endRow; ++row ) {
-            Q_ASSERT( row < m_model->rowCount() );
+            Q_ASSERT( row < m_model->rowCount( m_rootIndex ) );
             const QModelIndex index = m_model->index( row, position.column, m_rootIndex );
             if ( index.isValid() ) {
                 indexes << index;
