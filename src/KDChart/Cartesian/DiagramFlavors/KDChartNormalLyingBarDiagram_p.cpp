@@ -77,11 +77,11 @@ const QPair<QPointF, QPointF> NormalLyingBarDiagram::calculateDataBoundaries() c
     if ( yMax == yMin ) {
         if ( yMin == 0.0 ) {
             yMax = 0.1; // we need at least a range
-	} else if ( yMax < 0.0 ) {
+        } else if ( yMax < 0.0 ) {
             yMax = 0.0; // they are the same and negative
-	} else if ( yMin > 0.0 ) {
+        } else if ( yMin > 0.0 ) {
             yMin = 0.0; // they are the same but positive
-	}
+        }
     }
     const QPointF bottomLeft( QPointF( yMin, xMin ) );
     const QPointF topRight( QPointF( yMax, xMax ) );
@@ -147,15 +147,15 @@ void NormalLyingBarDiagram::paint( PaintContext* ctx )
     LabelPaintCache lpc;
 
     for ( int row = 0; row < rowCount; row++ ) {
-	qreal offset = -groupWidth / 2 + spaceBetweenGroups / 2;
+    qreal offset = -groupWidth / 2 + spaceBetweenGroups / 2;
 
         if ( ba.useFixedDataValueGap() ) {
             if ( spaceBetweenBars > 0 ) {
                 if ( width > maxLimit ) {
                     offset -= ba.fixedDataValueGap();
-		} else {
+                } else {
                     offset -= ( width / rowCount - groupWidth ) / ( colCount - 1 );
-		}
+                }
             } else {
                 offset += barWidth / 2;
             }
@@ -177,7 +177,7 @@ void NormalLyingBarDiagram::paint( PaintContext* ctx )
                                  Position::South, point.value );
             paintBars( ctx, sourceIndex, rect, maxDepth );
 
-	    offset += barWidth + spaceBetweenBars;
+            offset += barWidth + spaceBetweenBars;
         }
     }
     m_private->paintDataValueTextsAndMarkers( ctx, lpc, false );
