@@ -168,7 +168,7 @@ GraphicsScene::GraphicsScene( QObject* parent )
 GraphicsScene::~GraphicsScene()
 {
     clearConstraintItems();
-    clearItems();
+    qDeleteAll( items() );
     delete _d;
 }
 
@@ -498,7 +498,10 @@ GraphicsItem* GraphicsScene::findItem( const QPersistentModelIndex& idx ) const
 void GraphicsScene::clearItems()
 {
     // TODO constraints
-    qDeleteAll( items() );
+    QHash<QPersistentModelIndex, GraphicsItem*>::const_iterator it = d->items.constBegin();
+    for ( ; it != d->items.constEnd(); ++it ) {
+        delete *it;
+    }
     d->items.clear();
 }
 
@@ -848,3 +851,111 @@ void GraphicsScene::doPrint( QPainter* painter, const QRectF& targetRect,
 
 #include "moc_kdganttgraphicsscene.cpp"
 
+
+#ifndef KDAB_NO_UNIT_TESTS
+#include "unittest/test.h"
+
+#include <QGraphicsLineItem>
+#include <QPointer>
+#include <QStandardItemModel>
+
+#include "kdganttgraphicsview.h"
+
+class MyRowController : public KDGantt::AbstractRowController {
+private:
+    static const int ROW_HEIGHT;
+    QPointer<QAbstractItemModel> m_model;
+
+public:
+    MyRowController()
+    {
+    }
+
+    void setModel( QAbstractItemModel* model )
+    {
+        m_model = model;
+    }
+
+    /*reimp*/int headerHeight() const { return 40; }
+
+    /*reimp*/ bool isRowVisible( const QModelIndex& ) const { return true;}
+    /*reimp*/ bool isRowExpanded( const QModelIndex& ) const { return false; }
+    /*reimp*/ KDGantt::Span rowGeometry( const QModelIndex& idx ) const
+    {
+        return KDGantt::Span( idx.row() * ROW_HEIGHT, ROW_HEIGHT );
+    }
+    /*reimp*/ int maximumItemHeight() const {
+        return ROW_HEIGHT/2;
+    }
+    /*reimp*/int totalHeight() const {
+        return m_model->rowCount()* ROW_HEIGHT;
+    }
+
+    /*reimp*/ QModelIndex indexAt( int height ) const {
+        return m_model->index( height/ROW_HEIGHT, 0 );
+    }
+
+    /*reimp*/ QModelIndex indexBelow( const QModelIndex& idx ) const {
+        if ( !idx.isValid() )return QModelIndex();
+        return idx.model()->index( idx.row()+1, idx.column(), idx.parent() );
+    }
+    /*reimp*/ QModelIndex indexAbove( const QModelIndex& idx ) const {
+        if ( !idx.isValid() )return QModelIndex();
+        return idx.model()->index( idx.row()-1, idx.column(), idx.parent() );
+    }
+
+};
+
+class TestLineItem : public QGraphicsLineItem
+{
+public:
+    TestLineItem( bool *destroyedFlag )
+         : QGraphicsLineItem( 0, 0, 10, 10 ), // geometry doesn't matter
+           m_destroyedFlag( destroyedFlag )
+    {}
+
+    ~TestLineItem()
+    { *m_destroyedFlag = true; }
+
+private:
+    bool *m_destroyedFlag;
+};
+
+const int MyRowController::ROW_HEIGHT = 30;
+
+KDAB_SCOPED_UNITTEST_SIMPLE( KDGantt, GraphicsView, "test" ) {
+    QStandardItemModel model;
+
+    QStandardItem* item = new QStandardItem();
+    item->setData( KDGantt::TypeTask, KDGantt::ItemTypeRole );
+    item->setData( QString::fromLatin1( "Decide on new product" ) );
+    item->setData( QDateTime( QDate( 2007, 3, 1 ) ), KDGantt::StartTimeRole );
+    item->setData( QDateTime( QDate( 2007, 3, 3 ) ), KDGantt::EndTimeRole );
+
+    QStandardItem* item2 = new QStandardItem();
+    item2->setData( KDGantt::TypeTask, KDGantt::ItemTypeRole );
+    item2->setData( QString::fromLatin1( "Educate personnel" ) );
+    item2->setData( QDateTime( QDate( 2007, 3, 3 ) ), KDGantt::StartTimeRole );
+    item2->setData( QDateTime( QDate( 2007, 3, 6 ) ), KDGantt::EndTimeRole );
+
+    model.appendRow( item );
+    model.appendRow( item2 );
+
+    MyRowController rowController;
+    rowController.setModel( &model );
+
+    KDGantt::GraphicsView graphicsView;
+    graphicsView.setRowController( &rowController );
+    graphicsView.setModel( &model );
+
+    // Now the interesting stuff - the items above are just for a "realistic environment"
+
+    bool foreignItemDestroyed = false;
+    TestLineItem *foreignItem = new TestLineItem( &foreignItemDestroyed );
+    graphicsView.scene()->addItem( foreignItem );
+
+    assertFalse( foreignItemDestroyed );
+    graphicsView.updateScene();
+    assertFalse( foreignItemDestroyed );
+}
+#endif /* KDAB_NO_UNIT_TESTS */
