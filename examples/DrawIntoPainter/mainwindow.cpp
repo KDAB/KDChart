@@ -300,7 +300,6 @@ void MainWindow::paintMarkers( bool checked, const QSize& printSize )
     map.insert( 4, MarkerAttributes::MarkerDiamond );
 
     // next: Specify column- / cell-specific attributes!
-    const int rowCount = m_lines->model()->rowCount();
     const int colCount = m_lines->model()->columnCount();
     for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
 

@@ -377,7 +377,6 @@ void GraphicsItem::updateModel()
         if ( model ) {
             //ItemType typ = static_cast<ItemType>( model->data( index(),
             //                                                   ItemTypeRole ).toInt() );
-            const QModelIndex sourceIdx = scene()->summaryHandlingModel()->mapToSource( index() );
             QList<Constraint> constraints;
             for( QList<ConstraintGraphicsItem*>::iterator it1 = m_startConstraints.begin() ;
                  it1 != m_startConstraints.end() ;
