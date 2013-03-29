@@ -861,13 +861,13 @@ void GraphicsScene::doPrint( QPainter* painter, const QRectF& targetRect,
 
 #include "kdganttgraphicsview.h"
 
-class MyRowController : public KDGantt::AbstractRowController {
+class SceneTestRowController : public KDGantt::AbstractRowController {
 private:
     static const int ROW_HEIGHT;
     QPointer<QAbstractItemModel> m_model;
 
 public:
-    MyRowController()
+    SceneTestRowController()
     {
     }
 
@@ -921,7 +921,7 @@ private:
     bool *m_destroyedFlag;
 };
 
-const int MyRowController::ROW_HEIGHT = 30;
+const int SceneTestRowController::ROW_HEIGHT = 30;
 
 KDAB_SCOPED_UNITTEST_SIMPLE( KDGantt, GraphicsView, "test" ) {
     QStandardItemModel model;
@@ -941,7 +941,7 @@ KDAB_SCOPED_UNITTEST_SIMPLE( KDGantt, GraphicsView, "test" ) {
     model.appendRow( item );
     model.appendRow( item2 );
 
-    MyRowController rowController;
+    SceneTestRowController rowController;
     rowController.setModel( &model );
 
     KDGantt::GraphicsView graphicsView;
