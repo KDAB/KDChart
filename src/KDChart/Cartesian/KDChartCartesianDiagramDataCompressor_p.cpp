@@ -569,7 +569,7 @@ QModelIndexList CartesianDiagramDataCompressor::mapToModel( const CachePosition&
         return indexes;
     }
 
-    Q_ASSERT( position.column <= modelDataColumns() );
+    Q_ASSERT( position.column < modelDataColumns() );
     if ( m_datasetDimension == 2 ) {
         indexes << m_model->index( position.row, position.column * 2, m_rootIndex ); // checked
         indexes << m_model->index( position.row, position.column * 2 + 1, m_rootIndex ); // checked
