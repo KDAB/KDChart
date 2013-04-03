@@ -92,7 +92,7 @@ void DatasetSettings::Private::changeColor()
         palette.setBrush( QPalette::Button, color );
         ui->colorDisplay->setPalette( palette );
     }
-    else if( ui->textureBtn->isChecked() )
+    else if ( ui->textureBtn->isChecked() )
     {
         //QBrush setBrush = m_chart->coordinatePlane()->diagram()->brush( index );
         QImage texture;
@@ -194,7 +194,7 @@ void DatasetSettings::indexChanged( int index )
         QPalette palette = d->ui->colorDisplay->palette();
         if ( setBrush.gradient() )
             d->ui->radioButton_2->setChecked( true );
-        else if( !setBrush.textureImage().isNull() )
+        else if ( !setBrush.textureImage().isNull() )
             d->ui->textureBtn->setChecked( true );
         else
             d->ui->Color->setChecked( true );

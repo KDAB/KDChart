@@ -71,7 +71,7 @@ ValueTrackerAttributes::ValueTrackerAttributes( const ValueTrackerAttributes& r 
 
 ValueTrackerAttributes & ValueTrackerAttributes::operator=( const ValueTrackerAttributes& r )
 {
-    if( this == &r )
+    if ( this == &r )
         return *this;
 
     *d = *r.d;

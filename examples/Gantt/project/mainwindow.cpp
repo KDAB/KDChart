@@ -119,7 +119,7 @@ QWidget* MyItemDelegate::createEditor( QWidget* parent,
 void MyItemDelegate::setEditorData ( QWidget* editor, const QModelIndex& index ) const
 {
   ItemTypeComboBox* c;
-  if( (c = qobject_cast<ItemTypeComboBox*>(editor)) && index.isValid() ) {
+  if ( (c = qobject_cast<ItemTypeComboBox*>(editor)) && index.isValid() ) {
       c->setItemType(static_cast<KDGantt::ItemType>(index.data(Qt::EditRole).toInt()));
   } else {
       ItemDelegate::setEditorData(editor,index);
@@ -130,7 +130,7 @@ void MyItemDelegate::setModelData ( QWidget* editor, QAbstractItemModel* model,
 				  const QModelIndex & index ) const
 {
   ItemTypeComboBox* c;
-  if( (c = qobject_cast<ItemTypeComboBox*>(editor)) && index.isValid() ) {
+  if ( (c = qobject_cast<ItemTypeComboBox*>(editor)) && index.isValid() ) {
       model->setData(index,c->itemType());
   } else {
       ItemDelegate::setModelData(editor,model,index);
@@ -143,7 +143,7 @@ void MyItemDelegate::drawDisplay( QPainter* painter, const QStyleOptionViewItem&
   //qDebug() << "MyItemDelegate::drawDisplay(" <<painter<<rect<<text<<")";
   KDGantt::ItemType typ = static_cast<KDGantt::ItemType>(text.toInt());
   QString str;
-  switch(typ){
+  switch (typ) {
       case KDGantt::TypeTask: str = tr("Task"); break;
       case KDGantt::TypeEvent: str = tr("Event"); break;
       case KDGantt::TypeSummary: str = tr("Summary"); break;
@@ -227,7 +227,7 @@ void DateTimeGrid::paintUserDefinedHeader( QPainter* painter, const QRectF& head
     QDateTime dt = formatter->currentRangeBegin( mapToDateTime( offset + exposedRect.left() ) ).toUTC();
     qreal x = mapFromDateTime( dt );
 
-    while( x < exposedRect.right() + offset ) {
+    while ( x < exposedRect.right() + offset ) {
         const QDateTime next = formatter->nextRangeBegin( dt );
         const qreal nextx = mapFromDateTime( next );
 
@@ -305,7 +305,7 @@ MainWindow::MainWindow( QWidget* parent )
     slotToolsNewItem();
     slotToolsNewItem();
     slotToolsNewItem();
-    for(int i = 0; i < 3; ++i) {
+    for (int i = 0; i < 3; ++i) {
         m_model->setData(m_model->index(i,2,QModelIndex()), qVariantFromValue(QDateTime::currentDateTime().addDays(i)), KDGantt::StartTimeRole);
         m_model->setData(m_model->index(i,3,QModelIndex()), qVariantFromValue(QDateTime::currentDateTime().addDays(i+1)), KDGantt::EndTimeRole);
     }

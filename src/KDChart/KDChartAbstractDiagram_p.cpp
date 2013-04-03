@@ -88,7 +88,7 @@ AbstractDiagram::Private::Private()
 
 AbstractDiagram::Private::~Private()
 {
-  if( attributesModel && qobject_cast<PrivateAttributesModel*>(attributesModel) )
+  if ( attributesModel && qobject_cast<PrivateAttributesModel*>(attributesModel) )
     delete attributesModel;
 }
 
@@ -109,7 +109,7 @@ bool AbstractDiagram::Private::usesExternalAttributesModel() const
 
 void AbstractDiagram::Private::setAttributesModel( AttributesModel* amodel )
 {
-    if( !attributesModel.isNull() &&
+    if ( !attributesModel.isNull() &&
         qobject_cast<PrivateAttributesModel*>(attributesModel) ) {
         delete attributesModel;
     }

@@ -90,8 +90,8 @@ LineDiagram * LineDiagram::clone() const
 
 bool LineDiagram::compare( const LineDiagram* other ) const
 {
-    if( other == this ) return true;
-    if( ! other ){
+    if ( other == this ) return true;
+    if ( ! other ) {
         return false;
     }
     return  // compare the base class
@@ -114,7 +114,7 @@ void LineDiagram::setType( const LineType type )
                     "This line chart type can't be used with multi-dimensional data." );
        return;
    }
-   switch( type ) {
+   switch ( type ) {
    case Normal:
        d->implementor = d->normalDiagram;
        break;
@@ -236,7 +236,7 @@ LineAttributes LineDiagram::lineAttributes() const
 LineAttributes LineDiagram::lineAttributes( int column ) const
 {
     const QVariant attrs( d->datasetAttrs( column, LineAttributesRole ) );
-    if( attrs.isValid() )
+    if ( attrs.isValid() )
         return attrs.value<LineAttributes>();
     return lineAttributes();
 }
@@ -306,7 +306,7 @@ ThreeDLineAttributes LineDiagram::threeDLineAttributes() const
 ThreeDLineAttributes LineDiagram::threeDLineAttributes( int column ) const
 {
     const QVariant attrs( d->datasetAttrs( column, ThreeDLineAttributesRole ) );
-    if( attrs.isValid() )
+    if ( attrs.isValid() )
         return attrs.value<ThreeDLineAttributes>();
     return threeDLineAttributes();
 }
@@ -393,7 +393,7 @@ qreal LineDiagram::valueForCellTesting( int row, int column,
         return 0.0;
     }
     qreal value;
-    if( showHiddenCellsAsInvalid && isHidden( model()->index( row, column, rootIndex() ) ) ) // checked
+    if ( showHiddenCellsAsInvalid && isHidden( model()->index( row, column, rootIndex() ) ) ) // checked
         bOK = false;
     else
         value = d->attributesModel->data(
@@ -413,7 +413,7 @@ LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
     valueX = ( datasetDimension() > 1 && column > 0 )
              ? valueForCellTesting( row, column-1, bOK, true )
              : ((shiftCountedXValuesByHalfSection ? 0.5 : 0.0) + row);
-    if( bOK )
+    if ( bOK )
         valueY = valueForCellTesting( row, column, bOK, true );
     else if ( model()->hasIndex( row, column, rootIndex() ) ) {
         // missing value: find out the policy
@@ -431,7 +431,7 @@ void LineDiagram::paint( PaintContext* ctx )
     if ( !checkInvariants( true ) ) return;
     if ( !AbstractGrid::isBoundariesValid(dataBoundaries()) ) return;
     const PainterSaver p( ctx->painter() );
-    if( model()->rowCount( rootIndex() ) == 0 || model()->columnCount( rootIndex() ) == 0 )
+    if ( model()->rowCount( rootIndex() ) == 0 || model()->columnCount( rootIndex() ) == 0 )
         return; // nothing to paint for us
 
     AbstractCoordinatePlane* const plane = ctx->coordinatePlane();

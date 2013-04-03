@@ -103,7 +103,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
 
-    for ( int iColumn = 0; iColumn<m_lines->model()->columnCount(); ++iColumn ) {
+    for ( int iColumn = 0; iColumn < m_lines->model()->columnCount(); ++iColumn ) {
         QPen pen(m_lines->pen( iColumn ));
         pen.setWidth(4);
         m_lines->setPen( iColumn, pen );
@@ -386,7 +386,7 @@ void MainWindow::on_savePB_clicked()
 void MainWindow::on_savePDF_clicked()
 {
     const QString file = QFileDialog::getSaveFileName( this, tr( "Choose PDF File..." ) );
-    if( file.isEmpty() )
+    if ( file.isEmpty() )
         return;
     qDebug() << "Painting into PDF";
     QPrinter printer( QPrinter::HighResolution );

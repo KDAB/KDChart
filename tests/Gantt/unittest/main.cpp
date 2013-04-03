@@ -37,7 +37,7 @@ int main( int argc , char ** argv ) {
     for ( int i = 1 ; i < argc ; ++i )
       if ( argv[i] && *argv[i] )
         failed += r.run( argv[i] );
-      else{
+      else {
         std::cerr << argv[0] << ": skipping empty group name" << std::endl;
       }
   }

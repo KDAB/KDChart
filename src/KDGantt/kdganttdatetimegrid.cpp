@@ -41,7 +41,7 @@ using namespace KDGantt;
 
 QDebug operator<<( QDebug dbg, KDGantt::DateTimeScaleFormatter::Range range )
 {
-    switch( range ) {
+    switch ( range ) {
     case KDGantt::DateTimeScaleFormatter::Second: dbg << "KDGantt::DateTimeScaleFormatter::Second"; break;
     case KDGantt::DateTimeScaleFormatter::Minute: dbg << "KDGantt::DateTimeScaleFormatter::Minute"; break;
     case KDGantt::DateTimeScaleFormatter::Hour:   dbg << "KDGantt::DateTimeScaleFormatter::Hour"; break;
@@ -188,7 +188,7 @@ Qt::Alignment DateTimeScaleFormatter::alignment() const
 QDateTime DateTimeScaleFormatter::nextRangeBegin( const QDateTime& datetime ) const
 {
     QDateTime result = datetime;
-    switch( d->range )
+    switch ( d->range )
     {
     case Second:
         result = result.addSecs( 60 );
@@ -214,7 +214,7 @@ QDateTime DateTimeScaleFormatter::nextRangeBegin( const QDateTime& datetime ) co
         // iterate day-wise, until weekNumber changes
         {
             const int weekNumber = result.date().weekNumber();
-            while( weekNumber == result.date().weekNumber() )
+            while ( weekNumber == result.date().weekNumber() )
                 result = result.addDays( 1 );
         }
         break;
@@ -243,7 +243,7 @@ QDateTime DateTimeScaleFormatter::nextRangeBegin( const QDateTime& datetime ) co
 QDateTime DateTimeScaleFormatter::currentRangeBegin( const QDateTime& datetime ) const
 {
     QDateTime result = datetime;
-    switch( d->range )
+    switch ( d->range )
     {
     case Second:
         break; // nothing
@@ -265,7 +265,7 @@ QDateTime DateTimeScaleFormatter::currentRangeBegin( const QDateTime& datetime )
         // iterate day-wise, as long weekNumber is the same
         {
             const int weekNumber = result.date().weekNumber();
-            while( weekNumber == result.date().addDays( -1 ).weekNumber() )
+            while ( weekNumber == result.date().addDays( -1 ).weekNumber() )
                 result = result.addDays( -1 );
         }
         break;
@@ -531,7 +531,7 @@ Span DateTimeGrid::mapToChart( const QModelIndex& idx ) const
     assert( idx.model()==model() );
     const QVariant sv = model()->data( idx, StartTimeRole );
     const QVariant ev = model()->data( idx, EndTimeRole );
-    if( sv.canConvert( QVariant::DateTime ) &&
+    if ( sv.canConvert( QVariant::DateTime ) &&
         ev.canConvert( QVariant::DateTime ) &&
     !(sv.type() == QVariant::String && sv.toString().isEmpty()) &&
     !(ev.type() == QVariant::String && ev.toString().isEmpty())
@@ -546,7 +546,7 @@ Span DateTimeGrid::mapToChart( const QModelIndex& idx ) const
       }
     }
     // Special case for Events with only a start date
-    if( sv.canConvert( QVariant::DateTime ) && !(sv.type() == QVariant::String && sv.toString().isEmpty()) ) {
+    if ( sv.canConvert( QVariant::DateTime ) && !(sv.type() == QVariant::String && sv.toString().isEmpty()) ) {
       QDateTime st = sv.toDateTime();
       if ( st.isValid() ) {
         qreal sx = d->dateTimeToChartX( st );
@@ -702,7 +702,7 @@ void DateTimeGrid::Private::paintVerticalLines( QPainter* painter,
                 pen.setStyle( gridLinePenStyle( dt, headerType ) );
                 painter->setPen( pen );
                 if ( freeDays.contains( static_cast<Qt::DayOfWeek>( dt.date().dayOfWeek() ) ) ) {
-                    if(freeDaysBrush.style() == Qt::NoBrush)
+                    if (freeDaysBrush.style() == Qt::NoBrush)
                         painter->setBrush( widget?widget->palette().midlight()
                                            :QApplication::palette().midlight() );
                     else
@@ -732,7 +732,7 @@ void DateTimeGrid::Private::paintVerticalUserDefinedLines( QPainter* painter,
         dt = formatter->nextRangeBegin( dt ),x=dateTimeToChartX( dt ) ) {
         if ( freeDays.contains( static_cast<Qt::DayOfWeek>( dt.date().dayOfWeek() ) ) ) {
             QBrush oldBrush = painter->brush();
-            if(freeDaysBrush.style() == Qt::NoBrush)
+            if (freeDaysBrush.style() == Qt::NoBrush)
                 painter->setBrush( widget?widget->palette().midlight()
                                  :QApplication::palette().midlight() );
             else
@@ -776,7 +776,7 @@ void DateTimeGrid::paintGrid( QPainter* painter,
                               QWidget* widget )
 {
     // TODO: Support hours and weeks
-    switch( scale() ) {
+    switch ( scale() ) {
     case ScaleHour:
     case ScaleDay:
     case ScaleWeek:
@@ -877,7 +877,7 @@ void DateTimeGrid::paintHeader( QPainter* painter,  const QRectF& headerRect, co
     QPainterPath clipPath;
     clipPath.addRect( headerRect );
     painter->setClipPath( clipPath, Qt::IntersectClip );
-    switch( scale() )
+    switch ( scale() )
     {
     case ScaleHour:
         paintHourScaleHeader( painter, headerRect, exposedRect, offset, widget );
@@ -933,7 +933,7 @@ void DateTimeGrid::paintUserDefinedHeader( QPainter* painter,
     QDateTime dt = formatter->currentRangeBegin( d->chartXtoDateTime( offset + exposedRect.left() ));
     qreal x = d->dateTimeToChartX( dt );
 
-    while( x < exposedRect.right() + offset ) {
+    while ( x < exposedRect.right() + offset ) {
         const QDateTime next = formatter->nextRangeBegin( dt );
         const qreal nextx = d->dateTimeToChartX( next );
 
@@ -1219,10 +1219,10 @@ void DateTimeGrid::drawBackground(QPainter* paint, const QRectF& rect)
     paint->save();
 
     // Paint the first date column
-    while(1)
+    while (1)
     {
         QDate nextDate = d->chartXtoDateTime(startx+1).date();
-        if(date != nextDate)
+        if (date != nextDate)
         {
             QRectF dayRect(startx-dayWidth(), rect.top(), dayWidth(), rect.height());
             dayRect = dayRect.adjusted(1, 0, 0, 0);
@@ -1234,7 +1234,7 @@ void DateTimeGrid::drawBackground(QPainter* paint, const QRectF& rect)
     }
 
     // Paint the remaining dates
-    for(int i=startx; i<endx; i+=offset)
+    for (int i=startx; i<endx; i+=offset)
     {
         date = d->chartXtoDateTime(i+1).date();
 
@@ -1262,10 +1262,10 @@ void DateTimeGrid::drawForeground(QPainter* paint, const QRectF& rect)
     paint->save();
 
     // Paint the first date column
-    while(1)
+    while (1)
     {
         QDate nextDate = d->chartXtoDateTime(startx+1).date();
-        if(date != nextDate)
+        if (date != nextDate)
         {
             QRectF dayRect(startx-dayWidth(), rect.top(), dayWidth(), rect.height());
             dayRect = dayRect.adjusted(1, 0, 0, 0);
@@ -1277,7 +1277,7 @@ void DateTimeGrid::drawForeground(QPainter* paint, const QRectF& rect)
     }
 
     // Paint the remaining dates
-    for(int i=startx; i<endx; i+=offset)
+    for (int i=startx; i<endx; i+=offset)
     {
         date = d->chartXtoDateTime(i+1).date();
 

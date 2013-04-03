@@ -44,8 +44,8 @@ namespace KDChart {
     class RadarGrid : public AbstractGrid
     {
     public:
-        RadarGrid() : AbstractGrid(){}
-        virtual ~RadarGrid(){}
+        RadarGrid() : AbstractGrid() {}
+        virtual ~RadarGrid() {}
 
         virtual void drawGrid( PaintContext* context );
 

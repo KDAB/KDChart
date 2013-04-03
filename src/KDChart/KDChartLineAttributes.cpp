@@ -65,7 +65,7 @@ LineAttributes::LineAttributes( const LineAttributes& r )
 
 LineAttributes& LineAttributes::operator= ( const LineAttributes& r )
 {
-    if( this == &r )
+    if ( this == &r )
         return *this;
 
     *d = *r.d;

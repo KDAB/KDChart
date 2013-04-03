@@ -101,8 +101,8 @@ QModelIndex ListViewRowController::indexAbove( const QModelIndex& _idx ) const
 QModelIndex ListViewRowController::indexBelow( const QModelIndex& _idx ) const
 {
     const QModelIndex idx = d->proxy->mapToSource( _idx );
-    if( !idx.isValid() || idx.column()!=0 ) return QModelIndex();
-    if( idx.model()->rowCount(idx.parent())<idx.row()+1 ) return QModelIndex();
+    if ( !idx.isValid() || idx.column()!=0 ) return QModelIndex();
+    if ( idx.model()->rowCount(idx.parent())<idx.row()+1 ) return QModelIndex();
     return d->proxy->mapFromSource( idx.sibling( idx.row()+1, idx.column()) );
 }
 

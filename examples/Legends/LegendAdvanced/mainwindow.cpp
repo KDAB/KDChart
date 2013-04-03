@@ -117,7 +117,7 @@ void MainWindow::initAddLegendDialog( DerivedAddLegendDialog& conf,
         ++it;
     }
     const int idx = conf.alignmentCO->findText( alignmentMap[ alignment ] );
-    if( idx > -1 )
+    if ( idx > -1 )
         conf.alignmentCO->setCurrentIndex( idx );
 }
 
@@ -125,7 +125,7 @@ void MainWindow::on_addLegendPB_clicked()
 {
     DerivedAddLegendDialog conf;
     initAddLegendDialog( conf, Qt::AlignCenter );
-    if( conf.exec() == QDialog::Accepted ) {
+    if ( conf.exec() == QDialog::Accepted ) {
         KDChart::Legend* legend = new KDChart::Legend( m_lines, m_chart );
         m_chart->addLegend( legend );
         legend->setPosition(
@@ -134,8 +134,8 @@ void MainWindow::on_addLegendPB_clicked()
         Qt::Alignment alignment = Qt::AlignCenter;
         const QString selectedAlignment( conf.alignmentCO->currentText() );
         QMap<Qt::Alignment, QString>::const_iterator i = alignmentMap.constBegin();
-        while (i != alignmentMap.constEnd()) {
-            if (  i.value() == selectedAlignment ){
+        while ( i != alignmentMap.constEnd() ) {
+            if ( i.value() == selectedAlignment ) {
                 alignment = i.key();
                 break;
             }
@@ -146,7 +146,7 @@ void MainWindow::on_addLegendPB_clicked()
         legend->setTitleText( conf.titleTextED->text() );
         legend->setOrientation( ( conf.orientationCO->currentIndex() == 0 ) ? Qt::Vertical : Qt::Horizontal );
 
-        switch( conf.styleCO->currentIndex() )
+        switch ( conf.styleCO->currentIndex() )
         {
         case 0:
             legend->setLegendStyle( KDChart::Legend::MarkersOnly );
@@ -164,7 +164,7 @@ void MainWindow::on_addLegendPB_clicked()
 
         LegendItem* newItem = new LegendItem( legend, legendsTV );
         newItem->setText( 0, conf.positionCO->currentText() );
-        newItem->setText( 1, conf.showLinesCB->isChecked() ? tr("yes") : tr("no") );
+        newItem->setText( 1, conf.showLinesCB->isChecked() ? tr( "yes" ) : tr( "no" ) );
         newItem->setText( 2, conf.titleTextED->text() );
         newItem->setText( 3, conf.orientationCO->currentText() );
         newItem->setText( 4, selectedAlignment );
@@ -191,10 +191,10 @@ void MainWindow::on_editLegendPB_clicked()
     // the dialog's list, and we need no error checking for findText():
     conf.positionCO->setCurrentIndex(
             conf.positionCO->findText( legend->position().printableName() ) );
-    conf.orientationCO->setCurrentIndex( (legend->orientation()==Qt::Vertical)?0:1 );
+    conf.orientationCO->setCurrentIndex( ( legend->orientation() == Qt::Vertical ) ? 0 : 1 );
     conf.styleCO->setCurrentIndex( legend->legendStyle() );
 
-    if( conf.exec() == QDialog::Accepted ) {
+    if ( conf.exec() == QDialog::Accepted ) {
         //legend->setPosition( (KDChart::Legend::LegendPosition)conf.positionCO->currentIndex() );
         legend->setPosition(
             KDChart::Position::fromName( conf.positionCO->itemData( conf.positionCO->currentIndex() ).toByteArray() ) );
@@ -202,8 +202,8 @@ void MainWindow::on_editLegendPB_clicked()
         Qt::Alignment alignment = Qt::AlignCenter;
         const QString selectedAlignment( conf.alignmentCO->currentText() );
         QMap<Qt::Alignment, QString>::const_iterator i = alignmentMap.constBegin();
-        while (i != alignmentMap.constEnd()) {
-            if (  i.value() == selectedAlignment ){
+        while ( i != alignmentMap.constEnd() ) {
+            if ( i.value() == selectedAlignment ) {
                 alignment = i.key();
                 break;
             }
@@ -214,7 +214,7 @@ void MainWindow::on_editLegendPB_clicked()
         legend->setTitleText( conf.titleTextED->text() );
         legend->setOrientation( ( conf.orientationCO->currentIndex() == 0 ) ? Qt::Vertical : Qt::Horizontal );
 
-        switch( conf.styleCO->currentIndex() )
+        switch ( conf.styleCO->currentIndex() )
         {
         case 0:
             legend->setLegendStyle( KDChart::Legend::MarkersOnly );
@@ -246,7 +246,7 @@ void MainWindow::on_removeLegendPB_clicked()
 {
     if ( legendsTV->selectedItems().size() == 0 ) return;
     QList<QTreeWidgetItem*> items = legendsTV->selectedItems();
-    for( QList<QTreeWidgetItem*>::const_iterator it = items.begin();
+    for ( QList<QTreeWidgetItem*>::const_iterator it = items.begin();
          it != items.end(); ++it )
     {
         KDChart::Legend* legend = static_cast<LegendItem*>( (*it) )->legend();

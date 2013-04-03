@@ -111,7 +111,7 @@ public:
         // here to make sure we are getting the right color, as it would
         // be used by KD Chart's built-in logic too:
         QColor semiTrans( ma.markerColor() );
-        if( ! semiTrans.isValid() )
+        if ( ! semiTrans.isValid() )
             semiTrans = diagram->brush( index ).color();
 
         semiTrans.setAlpha(164);

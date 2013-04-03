@@ -55,8 +55,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_model.insertRows( 0,5, idx1 );
     m_model.insertColumns( 0,5, idx1 );
     
-    for( int i = 0; i < 5; ++i ) {
-      for( int j = 0; j < 5; ++j ) {
+    for ( int i = 0; i < 5; ++i ) {
+      for ( int j = 0; j < 5; ++j ) {
 	m_model.setData( m_model.index( i,j,idx1), (qreal)i*j );
       }
     }
@@ -64,8 +64,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_model.insertRows( 0,2, idx2 );
     m_model.insertColumns( 0,2, idx2 );
     
-    for( int i = 0; i < 2; ++i ) {
-      for( int j = 0; j < 2; ++j ) {
+    for ( int i = 0; i < 2; ++i ) {
+      for ( int j = 0; j < 2; ++j ) {
 	m_model.setData( m_model.index( i,j,idx2), 10.*(i+1.)/(j+1.) );
       }
     }
@@ -74,8 +74,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_model.insertRows( 0,5, idx1 );
     m_model.insertColumns( 0,5, idx1 );
     
-    for( int i = 0; i < 5; ++i ) {
-      for( int j = 0; j < 5; ++j ) {
+    for ( int i = 0; i < 5; ++i ) {
+      for ( int j = 0; j < 5; ++j ) {
 	m_model.setData( m_model.index( i,j,idx1), (qreal)i*j );
       }
     }
@@ -84,8 +84,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_model2.insertRows( 0,2, idx2 );
     m_model2.insertColumns( 0,2, idx2 );
     
-    for( int i = 0; i < 2; ++i ) {
-      for( int j = 0; j < 2; ++j ) {
+    for ( int i = 0; i < 2; ++i ) {
+      for ( int j = 0; j < 2; ++j ) {
 	m_model2.setData( m_model2.index( i,j,idx2), 10.*(i+1.)/(j+1.) );
       }
     }

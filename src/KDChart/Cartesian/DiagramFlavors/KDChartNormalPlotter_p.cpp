@@ -73,9 +73,9 @@ void NormalPlotter::paint( PaintContext* ctx )
                 LineAttributes laCell = diagram()->lineAttributes( sourceIndex );
                 const LineAttributes::MissingValuesPolicy policy = laCell.missingValuesPolicy();
 
-                if( ISNAN( point.key ) || ISNAN( point.value ) )
+                if ( ISNAN( point.key ) || ISNAN( point.value ) )
                 {
-                    switch( policy )
+                    switch ( policy )
                     {
                     case LineAttributes::MissingValuesAreBridged: // we just bridge both values
                         continue;
@@ -90,7 +90,7 @@ void NormalPlotter::paint( PaintContext* ctx )
                 // area corners, a + b are the line ends:
                 const QPointF a( plane->translate( QPointF( lastPoint.key, lastPoint.value ) ) );
                 const QPointF b( plane->translate( QPointF( point.key, point.value ) ) );
-                if( a.toPoint() == b.toPoint() )
+                if ( a.toPoint() == b.toPoint() )
                     continue;
 
                 const QPointF c( plane->translate( QPointF( lastPoint.key, 0.0 ) ) );
@@ -109,7 +109,7 @@ void NormalPlotter::paint( PaintContext* ctx )
                     }
                     m_private->addLabel( &lpc, sourceIndex, 0, pts, Position::NorthWest,
                                          Position::NorthWest, point.value );
-                    if( !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) )
+                    if ( !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) )
                     {
                         PaintingHelpers::paintAreas( m_private, ctx,
                                                      attributesModel()->mapToSource( lastPoint.index ),
@@ -127,16 +127,16 @@ void NormalPlotter::paint( PaintContext* ctx )
     }
     else
     {
-        if( colCount == 0 || rowCount == 0 )
+        if ( colCount == 0 || rowCount == 0 )
             return;
-        for( int column = 0; column < colCount; ++column )
+        for ( int column = 0; column < colCount; ++column )
         {
             LineAttributesInfoList lineList;
             LineAttributes laPreviousCell;
             CartesianDiagramDataCompressor::CachePosition previousCellPosition;
             CartesianDiagramDataCompressor::DataPoint lastPoint;
 
-            for( int row = 0; row < rowCount; ++row )
+            for ( int row = 0; row < rowCount; ++row )
             {
                 const CartesianDiagramDataCompressor::CachePosition position( row, column );
                 const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
@@ -145,9 +145,9 @@ void NormalPlotter::paint( PaintContext* ctx )
                 LineAttributes laCell = diagram()->lineAttributes( sourceIndex );
                 const LineAttributes::MissingValuesPolicy policy = laCell.missingValuesPolicy();
 
-                if( ISNAN( point.key ) || ISNAN( point.value ) )
+                if ( ISNAN( point.key ) || ISNAN( point.value ) )
                 {
-                    switch( policy )
+                    switch ( policy )
                     {
                     case LineAttributes::MissingValuesAreBridged: // we just bridge both values
                         continue;

@@ -47,12 +47,12 @@ void PrintingParameters::resetScaleFactor()
 
 QPen PrintingParameters::scalePen( const QPen& pen )
 {
-    if( instance()->scaleFactor == 1.0 )
+    if ( instance()->scaleFactor == 1.0 )
         return pen;
 
     QPen resultPen = pen;
     resultPen.setWidthF( resultPen.widthF() * instance()->scaleFactor );
-    if( resultPen.widthF() == 0.0 )
+    if ( resultPen.widthF() == 0.0 )
         resultPen.setWidthF( instance()->scaleFactor );
 
     return resultPen;

@@ -67,7 +67,7 @@ Measure::Measure( const Measure& r )
 
 Measure & Measure::operator=( const Measure& r )
 {
-    if( this != &r ){
+    if ( this != &r ) {
         mValue = r.value();
         mMode  = r.calculationMode();
         mArea  = r.referenceArea();
@@ -81,15 +81,15 @@ Measure & Measure::operator=( const Measure& r )
 qreal Measure::calculatedValue( const QSizeF& autoSize,
                                 KDChartEnums::MeasureOrientation autoOrientation) const
 {
-    if( mMode == KDChartEnums::MeasureCalculationModeAbsolute ){
+    if ( mMode == KDChartEnums::MeasureCalculationModeAbsolute ) {
         return mValue;
-    }else{
+    } else {
         qreal value = 0.0;
         const QObject theAutoArea;
         const QObject* autoArea = &theAutoArea;
         const QObject* area = mArea ? mArea : autoArea;
         KDChartEnums::MeasureOrientation orientation = mOrientation;
-        switch( mMode ){
+        switch ( mMode ) {
             case KDChartEnums::MeasureCalculationModeAuto:
                 area = autoArea;
                 orientation = autoOrientation;
@@ -104,15 +104,15 @@ qreal Measure::calculatedValue( const QSizeF& autoSize,
             case KDChartEnums::MeasureCalculationModeRelative:
                 break;
         }
-        if( area ){
+        if ( area ) {
             QSizeF size;
-            if( area == autoArea )
+            if ( area == autoArea )
                 size = autoSize;
             else
                 size = sizeOfArea( area );
             //qDebug() << ( area == autoArea ) << "size" << size;
             qreal referenceValue = 0;
-            switch( orientation ){
+            switch ( orientation ) {
                 case KDChartEnums::MeasureOrientationAuto: // fall through intended
                 case KDChartEnums::MeasureOrientationMinimum:
                     referenceValue = qMin( size.width(), size.height() );
@@ -149,23 +149,23 @@ const QSizeF Measure::sizeOfArea( const QObject* area ) const
         size = plane->visibleDiagramArea().size();
     } else {
         const AbstractArea* kdcArea = dynamic_cast<const AbstractArea*>(area);
-        if( kdcArea ){
+        if ( kdcArea ) {
             size = kdcArea->geometry().size();
             //qDebug() << "Measure::sizeOfArea() found kdcArea with size" << size;
-        }else{
+        } else {
             const QWidget* widget = dynamic_cast<const QWidget*>(area);
-            if( widget ){
+            if ( widget ) {
                 /* ATTENTION: Using the layout does not work: The Legend will never get the right size then!
                 const QLayout * layout = widget->layout();
-                if( layout ){
+                if ( layout ) {
                     size = layout->geometry().size();
                     //qDebug() << "Measure::sizeOfArea() found widget with layout size" << size;
-                }else*/
+                } else*/
                 {
                     size = widget->geometry().size();
                     //qDebug() << "Measure::sizeOfArea() found widget with size" << size;
                 }
-            }else if( mMode != KDChartEnums::MeasureCalculationModeAbsolute ){
+            } else if ( mMode != KDChartEnums::MeasureCalculationModeAbsolute ) {
                 size = QSizeF(1.0, 1.0);
                 //qDebug("Measure::sizeOfArea() got no valid area.");
             }
@@ -211,7 +211,7 @@ void GlobalMeasureScaling::setFactors(qreal factorX, qreal factorY)
 void GlobalMeasureScaling::resetFactors()
 {
     // never remove the initial (1.0. 1.0) setting
-    if( instance()->mFactors.count() > 1 )
+    if ( instance()->mFactors.count() > 1 )
         instance()->mFactors.pop();
 }
 

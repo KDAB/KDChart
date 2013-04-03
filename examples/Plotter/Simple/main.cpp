@@ -57,7 +57,7 @@ int main( int argc, char** argv )
     QStandardItemModel model( points, 6 );
 
     double x = xMin;
-    for( int n = 0; n < points; ++n, x += step) {
+    for ( int n = 0; n < points; ++n, x += step) {
         QModelIndex index = model.index( n, 0 );
         model.setData( index, x );
         index = model.index( n, 1 );

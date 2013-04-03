@@ -50,7 +50,7 @@ ThreeDPieAttributes::ThreeDPieAttributes( const ThreeDPieAttributes& r )
 
 ThreeDPieAttributes& ThreeDPieAttributes::operator= ( const ThreeDPieAttributes& r )
 {
-    if( this == &r )
+    if ( this == &r )
         return *this;
 
     *d = *r.d;

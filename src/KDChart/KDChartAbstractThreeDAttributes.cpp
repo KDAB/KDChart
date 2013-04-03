@@ -53,7 +53,7 @@ AbstractThreeDAttributes::AbstractThreeDAttributes( const AbstractThreeDAttribut
 
 AbstractThreeDAttributes& AbstractThreeDAttributes::operator= ( const AbstractThreeDAttributes& r )
 {
-    if( this == &r )
+    if ( this == &r )
         return *this;
 
     *d = *r.d;
@@ -119,7 +119,7 @@ void AbstractThreeDAttributes::setThreeDBrushEnabled( bool enabled )
 
 QBrush AbstractThreeDAttributes::threeDBrush( const QBrush& brush, const QRectF& rect ) const
 {
-    if( isThreeDBrushEnabled() ) {
+    if ( isThreeDBrushEnabled() ) {
         QLinearGradient gr(rect.topLeft(), rect.bottomRight());
         gr.setColorAt(0.0, brush.color());
         gr.setColorAt(0.5, brush.color().lighter(180));

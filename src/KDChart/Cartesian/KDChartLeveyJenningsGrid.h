@@ -42,8 +42,8 @@ namespace KDChart {
     class LeveyJenningsGrid : public CartesianGrid
     {
     public:
-        LeveyJenningsGrid() : CartesianGrid(){}
-        virtual ~LeveyJenningsGrid(){}
+        LeveyJenningsGrid() : CartesianGrid() {}
+        virtual ~LeveyJenningsGrid() {}
 
         void drawGrid( PaintContext* context );
 

@@ -48,7 +48,7 @@ const QPair< QPointF, QPointF > PercentPlotter::calculateDataBoundaries() const
     const qreal yMin = 0.0;
     const qreal yMax = 100.0;
 
-    for( int column = 0; column < colCount; ++column )
+    for ( int column = 0; column < colCount; ++column )
     {
         for ( int row = 0; row < rowCount; ++row )
         {
@@ -57,7 +57,7 @@ const QPair< QPointF, QPointF > PercentPlotter::calculateDataBoundaries() const
 
             const qreal valueX = ISNAN( point.key ) ? 0.0 : point.key;
 
-            if( ISNAN( xMin ) )
+            if ( ISNAN( xMin ) )
             {
                 xMin = valueX;
                 xMax = valueX;
@@ -108,7 +108,7 @@ void PercentPlotter::paint( PaintContext* ctx )
     const int colCount = compressor().modelDataColumns();
     const int rowCount = compressor().modelDataRows();
 
-    if( colCount == 0 || rowCount == 0 )
+    if ( colCount == 0 || rowCount == 0 )
         return;
 
     LabelPaintCache lpc;
@@ -116,9 +116,9 @@ void PercentPlotter::paint( PaintContext* ctx )
     // this map contains the y-values to each x-value
     QMap< qreal, QVector< QPair< Value, QModelIndex > > > diagramValues;
 
-    for( int col = 0; col < colCount; ++col )
+    for ( int col = 0; col < colCount; ++col )
     {
-        for( int row = 0; row < rowCount; ++row )
+        for ( int row = 0; row < rowCount; ++row )
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
@@ -140,19 +140,19 @@ void PercentPlotter::paint( PaintContext* ctx )
         QVector< QPair< Value, QModelIndex > >& yValues = diagramValues[ xValue ];
         Q_ASSERT( yValues.count() == colCount );
 
-        for( int column = 0; column < colCount; ++column )
+        for ( int column = 0; column < colCount; ++column )
         {
             QPair< Value, QModelIndex >& data = yValues[ column ];
             // if the index is invalid, there was no value. Let's interpolate.
-            if( !data.second.isValid() )
+            if ( !data.second.isValid() )
             {
                 QPair< QPair< qreal, Value >, QModelIndex > left;
                 QPair< QPair< qreal, Value >, QModelIndex > right;
                 int xIndex = 0;
                 // let's find the next lower value
-                for( xIndex = xValues.indexOf( xValue ); xIndex >= 0; --xIndex )
+                for ( xIndex = xValues.indexOf( xValue ); xIndex >= 0; --xIndex )
                 {
-                    if( diagramValues[ xValues[ xIndex ] ][ column ].second.isValid() )
+                    if ( diagramValues[ xValues[ xIndex ] ][ column ].second.isValid() )
                     {
                         left.first.first = xValues[ xIndex ];
                         left.first.second = diagramValues[ left.first.first ][ column ].first;
@@ -161,9 +161,9 @@ void PercentPlotter::paint( PaintContext* ctx )
                     }
                 }
                 // let's find the next higher value
-                for( xIndex = xValues.indexOf( xValue ); xIndex < xValues.count(); ++xIndex )
+                for ( xIndex = xValues.indexOf( xValue ); xIndex < xValues.count(); ++xIndex )
                 {
-                    if( diagramValues[ xValues[ xIndex ] ][ column ].second.isValid() )
+                    if ( diagramValues[ xValues[ xIndex ] ][ column ].second.isValid() )
                     {
                         right.first.first = xValues[ xIndex ];
                         right.first.second = diagramValues[ right.first.first ][ column ].first;
@@ -180,17 +180,17 @@ void PercentPlotter::paint( PaintContext* ctx )
 
                 data.first = leftY + ( rightY - leftY ) * ( xValue - leftX ) / ( rightX - leftX );
                 // if the result is a valid value, let's assign the index, too
-                if( !ISNAN( data.first.operator qreal() ) )
+                if ( !ISNAN( data.first.operator qreal() ) )
                     data.second = left.second;
             }
 
             // sum it up
-            if( !ISNAN( yValues[ column ].first.operator qreal() ) )
+            if ( !ISNAN( yValues[ column ].first.operator qreal() ) )
                 yValueSums[ xValue ] += yValues[ column ].first;
         }
     }
 
-    for( int column = 0; column < colCount; ++column )
+    for ( int column = 0; column < colCount; ++column )
     {
         LineAttributesInfoList lineList;
         LineAttributes laPreviousCell;
@@ -202,7 +202,7 @@ void PercentPlotter::paint( PaintContext* ctx )
         qreal lastValue = 0.0;
 
         QMapIterator< qreal, QVector< QPair< Value, QModelIndex > > >  i( diagramValues );
-        while( i.hasNext() )
+        while ( i.hasNext() )
         {
             i.next();
             CartesianDiagramDataCompressor::DataPoint point;
@@ -211,17 +211,17 @@ void PercentPlotter::paint( PaintContext* ctx )
             point.value = data.first;
             point.index = data.second;
 
-            if( ISNAN( point.key ) || ISNAN( point.value ) )
+            if ( ISNAN( point.key ) || ISNAN( point.value ) )
             {
                 previousCellPosition = CartesianDiagramDataCompressor::CachePosition();
                 continue;
             }
 
             qreal extraY = 0.0;
-            for( int col = column - 1; col >= 0; --col )
+            for ( int col = column - 1; col >= 0; --col )
             {
                 const qreal y = i.value().at( col ).first;
-                if( !ISNAN( y ) )
+                if ( !ISNAN( y ) )
                     extraY += y;
             }
 
@@ -250,7 +250,7 @@ void PercentPlotter::paint( PaintContext* ctx )
             if ( !point.hidden /*&& !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) */) {
                 m_private->addLabel( &lpc, sourceIndex, 0, pts, Position::NorthWest,
                                      Position::NorthWest, value );
-                if( !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) )
+                if ( !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) )
                 {
                     PaintingHelpers::paintAreas( m_private, ctx,
                                                  attributesModel()->mapToSource( lastPoint.index ),

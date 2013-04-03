@@ -70,7 +70,7 @@ void AbstractAreaBase::init()
 
 bool AbstractAreaBase::compare( const AbstractAreaBase* other ) const
 {
-    if( other == this ) return true;
+    if ( other == this ) return true;
     if ( !other ) {
         return false;
     }
@@ -87,7 +87,7 @@ void AbstractAreaBase::alignToReferencePoint( const RelativePosition& position )
 
 void AbstractAreaBase::setFrameAttributes( const FrameAttributes &a )
 {
-    if( d->frameAttributes == a )
+    if ( d->frameAttributes == a )
         return;
 
     d->frameAttributes = a;
@@ -101,7 +101,7 @@ FrameAttributes AbstractAreaBase::frameAttributes() const
 
 void AbstractAreaBase::setBackgroundAttributes( const BackgroundAttributes &a )
 {
-    if( d->backgroundAttributes == a )
+    if ( d->backgroundAttributes == a )
         return;
 
     d->backgroundAttributes = a;
@@ -118,10 +118,10 @@ BackgroundAttributes AbstractAreaBase::backgroundAttributes() const
 void AbstractAreaBase::paintBackgroundAttributes( QPainter& painter, const QRect& rect,
     const KDChart::BackgroundAttributes& attributes )
 {
-    if( !attributes.isVisible() ) return;
+    if ( !attributes.isVisible() ) return;
 
     /* first draw the brush (may contain a pixmap)*/
-    if( Qt::NoBrush != attributes.brush().style() ) {
+    if ( Qt::NoBrush != attributes.brush().style() ) {
         KDChart::PainterSaver painterSaver( &painter );
         painter.setPen( Qt::NoPen );
         const QPointF newTopLeft( painter.deviceMatrix().map( rect.topLeft() ) );
@@ -130,10 +130,10 @@ void AbstractAreaBase::paintBackgroundAttributes( QPainter& painter, const QRect
         painter.drawRect( rect.adjusted( 0, 0, -1, -1 ) );
     }
     /* next draw the backPixmap over the brush */
-    if( !attributes.pixmap().isNull() &&
+    if ( !attributes.pixmap().isNull() &&
         attributes.pixmapMode() != BackgroundAttributes::BackgroundPixmapModeNone ) {
         QPointF ol = rect.topLeft();
-        if( BackgroundAttributes::BackgroundPixmapModeCentered == attributes.pixmapMode() )
+        if ( BackgroundAttributes::BackgroundPixmapModeCentered == attributes.pixmapMode() )
         {
             ol.setX( rect.center().x() - attributes.pixmap().width() / 2 );
             ol.setY( rect.center().y() - attributes.pixmap().height()/ 2 );
@@ -142,7 +142,7 @@ void AbstractAreaBase::paintBackgroundAttributes( QPainter& painter, const QRect
             QMatrix m;
             qreal zW = (qreal)rect.width()  / (qreal)attributes.pixmap().width();
             qreal zH = (qreal)rect.height() / (qreal)attributes.pixmap().height();
-            switch( attributes.pixmapMode() ) {
+            switch ( attributes.pixmapMode() ) {
             case BackgroundAttributes::BackgroundPixmapModeScaled:
             {
                 qreal z;
@@ -169,7 +169,7 @@ void AbstractAreaBase::paintFrameAttributes( QPainter& painter, const QRect& rec
     const KDChart::FrameAttributes& attributes )
 {
 
-    if( !attributes.isVisible() ) return;
+    if ( !attributes.isVisible() ) return;
 
     // Note: We set the brush to NoBrush explicitly here.
     //       Otherwise we might get a filled rectangle, so any

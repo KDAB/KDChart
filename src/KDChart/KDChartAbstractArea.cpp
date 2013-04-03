@@ -75,7 +75,7 @@ int AbstractArea::leftOverlap( bool doNotRecalculate ) const
 {
     // Re-calculate the sizes,
     // so we also get the amountOf..Overlap members set newly:
-    if( ! doNotRecalculate )
+    if ( ! doNotRecalculate )
         sizeHint();
     return d->amountOfLeftOverlap;
 }
@@ -83,7 +83,7 @@ int AbstractArea::rightOverlap( bool doNotRecalculate ) const
 {
     // Re-calculate the sizes,
     // so we also get the amountOf..Overlap members set newly:
-    if( ! doNotRecalculate )
+    if ( ! doNotRecalculate )
         sizeHint();
     return d->amountOfRightOverlap;
 }
@@ -91,7 +91,7 @@ int AbstractArea::topOverlap( bool doNotRecalculate ) const
 {
     // Re-calculate the sizes,
     // so we also get the amountOf..Overlap members set newly:
-    if( ! doNotRecalculate )
+    if ( ! doNotRecalculate )
         sizeHint();
     return d->amountOfTopOverlap;
 }
@@ -99,7 +99,7 @@ int AbstractArea::bottomOverlap( bool doNotRecalculate ) const
 {
     // Re-calculate the sizes,
     // so we also get the amountOf..Overlap members set newly:
-    if( ! doNotRecalculate )
+    if ( ! doNotRecalculate )
         sizeHint();
     return d->amountOfBottomOverlap;
 }
@@ -108,12 +108,12 @@ int AbstractArea::bottomOverlap( bool doNotRecalculate ) const
 void AbstractArea::paintIntoRect( QPainter& painter, const QRect& rect )
 {
     const QRect oldGeometry( geometry() );
-    if( oldGeometry != rect )
+    if ( oldGeometry != rect )
         setGeometry( rect );
     painter.translate( rect.left(), rect.top() );
     paintAll( painter );
     painter.translate( -rect.left(), -rect.top() );
-    if( oldGeometry != rect )
+    if ( oldGeometry != rect )
         setGeometry( oldGeometry );
 }
 

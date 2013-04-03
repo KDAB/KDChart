@@ -94,7 +94,7 @@ QModelIndexList ReverseMapper::indexesAt( const QPointF& point ) const
             ChartGraphicsItem* i = qgraphicsitem_cast<ChartGraphicsItem*>( item );
             if ( i ) {
                 QModelIndex index ( m_diagram->model()->index( i->row(), i->column(), m_diagram->rootIndex() ) ); // checked
-                if( !indexes.contains(index) )
+                if ( !indexes.contains(index) )
                     indexes << index;
             }
         }
@@ -150,7 +150,7 @@ void ReverseMapper::addCircle( int row, int column, const QPointF& location, con
 void ReverseMapper::addLine( int row, int column, const QPointF& from, const QPointF& to )
 {
     // that's no line, dude... make a small circle around that point, instead
-    if( from == to )
+    if ( from == to )
     {
         addCircle( row, column, from, QSizeF( 1.5, 1.5 ) );
         return;

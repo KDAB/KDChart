@@ -322,7 +322,7 @@ void StockDiagram::paint( PaintContext *context )
             }
 
 
-            switch( d->type ) {
+            switch ( d->type ) {
             case HighLowClose:
                 open.hidden = true;
                 // Fall-through intended!

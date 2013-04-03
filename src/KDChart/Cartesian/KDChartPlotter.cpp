@@ -86,9 +86,9 @@ Plotter* Plotter::clone() const
 
 bool Plotter::compare( const Plotter* other ) const
 {
-    if( other == this )
+    if ( other == this )
         return true;
-    if( other == 0 )
+    if ( other == 0 )
         return false;
     return  // compare the base class
             ( static_cast< const AbstractCartesianDiagram* >( this )->compare( other ) ) &&
@@ -266,7 +266,7 @@ LineAttributes Plotter::lineAttributes() const
 LineAttributes Plotter::lineAttributes( int column ) const
 {
     const QVariant attrs( d->datasetAttrs( column, LineAttributesRole ) );
-    if( attrs.isValid() )
+    if ( attrs.isValid() )
         return attrs.value<LineAttributes>();
     return lineAttributes();
 }
@@ -325,7 +325,7 @@ ThreeDLineAttributes Plotter::threeDLineAttributes() const
 ThreeDLineAttributes Plotter::threeDLineAttributes( int column ) const
 {
     const QVariant attrs( d->datasetAttrs( column, ThreeDLineAttributesRole ) );
-    if( attrs.isValid() ) {
+    if ( attrs.isValid() ) {
         return attrs.value<ThreeDLineAttributes>();
     }
     return threeDLineAttributes();
@@ -403,13 +403,13 @@ void Plotter::paint( PaintContext* ctx )
     if ( !checkInvariants( true ) ) return;
 
     AbstractCoordinatePlane* const plane = ctx->coordinatePlane();
-    if( ! plane ) return;
+    if ( ! plane ) return;
     d->setCompressorResolution( size(), plane );
 
     if ( !AbstractGrid::isBoundariesValid(dataBoundaries()) ) return;
 
     const PainterSaver p( ctx->painter() );
-    if( model()->rowCount( rootIndex() ) == 0 || model()->columnCount( rootIndex() ) == 0 )
+    if ( model()->rowCount( rootIndex() ) == 0 || model()->columnCount( rootIndex() ) == 0 )
         return; // nothing to paint for us
 
     ctx->setCoordinatePlane( plane->sharedAxisMasterPlane( ctx->painter() ) );

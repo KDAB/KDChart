@@ -71,7 +71,7 @@ LeveyJenningsGridAttributes::LeveyJenningsGridAttributes( const LeveyJenningsGri
 
 LeveyJenningsGridAttributes & LeveyJenningsGridAttributes::operator=( const LeveyJenningsGridAttributes& r )
 {
-    if( this == &r )
+    if ( this == &r )
         return *this;
 
     *d = *r.d;

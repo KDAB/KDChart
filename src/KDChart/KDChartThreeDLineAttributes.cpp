@@ -51,7 +51,7 @@ ThreeDLineAttributes::ThreeDLineAttributes( const ThreeDLineAttributes& r )
 
 ThreeDLineAttributes& ThreeDLineAttributes::operator= ( const ThreeDLineAttributes& r )
 {
-    if( this == &r )
+    if ( this == &r )
         return *this;
 
     *d = *r.d;

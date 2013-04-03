@@ -44,8 +44,8 @@ namespace KDChart {
     class PolarGrid : public AbstractGrid
     {
     public:
-        PolarGrid() : AbstractGrid(){}
-        virtual ~PolarGrid(){}
+        PolarGrid() : AbstractGrid() {}
+        virtual ~PolarGrid() {}
 
         virtual void drawGrid( PaintContext* context );
 

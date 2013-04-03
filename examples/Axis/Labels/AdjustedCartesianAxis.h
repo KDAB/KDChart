@@ -38,7 +38,7 @@ public:
 
     virtual const QString customizedLabel( const QString& label ) const;
 
-    void setBounds( qreal lower, qreal upper ){
+    void setBounds( qreal lower, qreal upper ) {
         m_lowerBound = lower;
         m_upperBound = upper;
     }

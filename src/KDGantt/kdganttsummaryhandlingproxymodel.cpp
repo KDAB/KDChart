@@ -74,20 +74,20 @@ void SummaryHandlingProxyModel::Private::insertInCache( const SummaryHandlingPro
         /* The probably results in recursive calls here */
 	QVariant tmpsv = model->data( pdIdx, StartTimeRole );
 	QVariant tmpev = model->data( pdIdx, EndTimeRole );
-	if( !tmpsv.canConvert( QVariant::DateTime ) ||
+	if ( !tmpsv.canConvert( QVariant::DateTime ) ||
 	    !tmpev.canConvert( QVariant::DateTime ) ) {
             qDebug() << "Skipping item " << sourceIdx << " because it doesn't contain QDateTime";
             continue;
         }
 
         // check for valid datetimes
-        if( tmpsv.type() == QVariant::DateTime && !tmpsv.value<QDateTime>().isValid()) continue;
-        if( tmpev.type() == QVariant::DateTime && !tmpev.value<QDateTime>().isValid()) continue;
+        if ( tmpsv.type() == QVariant::DateTime && !tmpsv.value<QDateTime>().isValid()) continue;
+        if ( tmpev.type() == QVariant::DateTime && !tmpev.value<QDateTime>().isValid()) continue;
 
 	// We need to test for empty strings to
 	// avoid a stupid Qt warning
-	if( tmpsv.type() == QVariant::String && tmpsv.value<QString>().isEmpty()) continue;
-	if( tmpev.type() == QVariant::String && tmpev.value<QString>().isEmpty()) continue;
+	if ( tmpsv.type() == QVariant::String && tmpsv.value<QString>().isEmpty()) continue;
+	if ( tmpev.type() == QVariant::String && tmpev.value<QString>().isEmpty()) continue;
         QDateTime tmpst = tmpsv.toDateTime();
         QDateTime tmpet = tmpev.toDateTime();
         if ( st.isNull() || st > tmpst ) st = tmpst;
@@ -235,7 +235,7 @@ QVariant SummaryHandlingProxyModel::data( const QModelIndex& proxyIndex, int rol
         QPair<QDateTime,QDateTime> result;
         if ( d->cacheLookup( sidx, &result ) ) {
 	  //qDebug() << "SummaryHandlingProxyModel::data(): Looking up summary for " << proxyIndex << role;
-            switch( role ) {
+            switch ( role ) {
             case StartTimeRole: return result.first;
             case EndTimeRole: return result.second;
             default: /* fall thru */;

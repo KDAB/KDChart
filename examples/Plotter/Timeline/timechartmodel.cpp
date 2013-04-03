@@ -35,7 +35,7 @@ QPair< QDateTime, QDateTime > TimeChartModel::visibleRange() const
 void TimeChartModel::setVisibleRange( const QDateTime& start, const QDateTime& end )
 {
     const QPair< QDateTime, QDateTime > r = qMakePair( start, end );
-    if( r == range )
+    if ( r == range )
         return;
 
     range = r;
@@ -58,7 +58,7 @@ void TimeChartModel::setVisibleEnd( const QDateTime& end )
 QVariant TimeChartModel::data( const QModelIndex& index, int role ) const
 {
     const QVariant v = QSortFilterProxyModel::data( index, role );
-    if( index.column() % 2 != 0 || role != Qt::DisplayRole )
+    if ( index.column() % 2 != 0 || role != Qt::DisplayRole )
         return v;
     else
         return QDateTime::fromTime_t( 0 ).secsTo( v.toDateTime() ) / 3600.0;

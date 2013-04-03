@@ -71,7 +71,7 @@ void KDChart::AbstractLayoutItem::paintAll( QPainter& painter )
   */
 void KDChart::AbstractLayoutItem::paintCtx( PaintContext* context )
 {
-    if( context )
+    if ( context )
         paint( context->painter() );
 }
 
@@ -82,7 +82,7 @@ void KDChart::AbstractLayoutItem::sizeHintChanged() const
 {
     // This is exactly like what QWidget::updateGeometry does.
 //  qDebug("KDChart::AbstractLayoutItem::sizeHintChanged() called");
-    if( mParent ) {
+    if ( mParent ) {
         if ( mParent->layout() )
             mParent->layout()->invalidate();
         else
@@ -246,7 +246,7 @@ void KDChart::TextLayoutItem::setText(const QString & text)
     mText = text;
     cachedSizeHint = QSize();
     sizeHint();
-    if( mParent )
+    if ( mParent )
         mParent->update();
 }
 
@@ -257,10 +257,10 @@ QString KDChart::TextLayoutItem::text() const
 
 void KDChart::TextLayoutItem::setTextAlignment( Qt::Alignment alignment)
 {
-    if( mTextAlignment == alignment )
+    if ( mTextAlignment == alignment )
         return;
     mTextAlignment = alignment;
-    if( mParent )
+    if ( mParent )
         mParent->update();
 }
 
@@ -280,7 +280,7 @@ void KDChart::TextLayoutItem::setTextAttributes( const TextAttributes &a )
     cachedFont = a.font();
     cachedSizeHint = QSize(); // invalidate size hint
     sizeHint();
-    if( mParent )
+    if ( mParent )
         mParent->update();
 }
 
@@ -351,7 +351,7 @@ qreal KDChart::TextLayoutItem::fitFontSizeToGeometry() const
     while ( true ) {
         const QSizeF textSize = rotatedRect( fm.boundingRect( mText ), mAttributes.rotation() ).normalized().size();
 
-        if ( textSize.height() <= mySize.height() && textSize.width() <= mySize.width() ){
+        if ( textSize.height() <= mySize.height() && textSize.width() <= mySize.width() ) {
             return result;
         }
 
@@ -599,7 +599,7 @@ QSize KDChart::HorizontalLineLayoutItem::sizeHint() const
 
 void KDChart::HorizontalLineLayoutItem::paint( QPainter* painter )
 {
-    if( !mRect.isValid() )
+    if ( !mRect.isValid() )
         return;
 
     painter->drawLine( QPointF( mRect.left(), mRect.center().y() ),
@@ -650,7 +650,7 @@ QSize KDChart::VerticalLineLayoutItem::sizeHint() const
 
 void KDChart::VerticalLineLayoutItem::paint( QPainter* painter )
 {
-    if( !mRect.isValid() )
+    if ( !mRect.isValid() )
         return;
 
     painter->drawLine( QPointF( mRect.center().x(), mRect.top() ),
@@ -720,7 +720,7 @@ void KDChart::MarkerLayoutItem::paintIntoRect(
         const QBrush& brush,
         const QPen& pen )
 {
-    if( ! rect.isValid() )
+    if ( ! rect.isValid() )
         return;
 
     // The layout management may assign a larger rect than what we
@@ -804,7 +804,7 @@ QSize KDChart::LineLayoutItem::sizeHint() const
 
 void KDChart::LineLayoutItem::setLegendLineSymbolAlignment(Qt::Alignment legendLineSymbolAlignment)
 {
-    if(mLegendLineSymbolAlignment == legendLineSymbolAlignment)
+    if (mLegendLineSymbolAlignment == legendLineSymbolAlignment)
         return;
 
     mLegendLineSymbolAlignment = legendLineSymbolAlignment;
@@ -826,15 +826,15 @@ void KDChart::LineLayoutItem::paintIntoRect(
         const QPen& pen,
         Qt::Alignment lineAlignment)
 {
-    if( ! rect.isValid() )
+    if ( ! rect.isValid() )
         return;
 
     const QPen oldPen = painter->pen();
     painter->setPen( PrintingParameters::scalePen( pen ) );
     qreal y = 0;
-    if(lineAlignment == Qt::AlignTop)
+    if (lineAlignment == Qt::AlignTop)
         y = rect.top();
-    else if(lineAlignment == Qt::AlignBottom)
+    else if (lineAlignment == Qt::AlignBottom)
         y = rect.bottom();
     else
         y = rect.center().y();
@@ -966,11 +966,11 @@ static void updateCommonBrush( QBrush& commonBrush, bool& bStart, const KDChart:
             ba.isVisible() &&
             ba.pixmapMode() == KDChart::BackgroundAttributes::BackgroundPixmapModeNone &&
             ba.brush().gradient() == 0 );
-    if( bStart ){
+    if ( bStart ) {
         bStart = false;
         commonBrush = hasSimpleBrush ? ba.brush() : QBrush();
-    }else{
-        if( ! hasSimpleBrush || ba.brush() != commonBrush )
+    } else {
+        if ( ! hasSimpleBrush || ba.brush() != commonBrush )
         {
             commonBrush = QBrush();
         }
@@ -983,10 +983,10 @@ QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
     bool bStart=true;
     // calculate the maximal overlap of the top/bottom axes:
     int topBottomOverlap = 0;
-    if( mTopBottomLayout ){
-        for (int i = 0; i < mTopBottomLayout->count(); ++i){
+    if ( mTopBottomLayout ) {
+        for (int i = 0; i < mTopBottomLayout->count(); ++i) {
             AbstractArea* area = dynamic_cast<AbstractArea*>(mTopBottomLayout->itemAt(i));
-            if( area ){
+            if ( area ) {
                 //qDebug() << "AutoSpacerLayoutItem testing" << area;
                 topBottomOverlap = qMax( topBottomOverlap,
                                          mLayoutIsAtLeftPosition ? area->rightOverlap()
@@ -997,10 +997,10 @@ QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
     }
     // calculate the maximal overlap of the left/right axes:
     int leftRightOverlap = 0;
-    if( mRightLeftLayout ){
-        for (int i = 0; i < mRightLeftLayout->count(); ++i){
+    if ( mRightLeftLayout ) {
+        for (int i = 0; i < mRightLeftLayout->count(); ++i) {
             AbstractArea* area = dynamic_cast<AbstractArea*>(mRightLeftLayout->itemAt(i));
-            if( area ){
+            if ( area ) {
                 //qDebug() << "AutoSpacerLayoutItem testing" << area;
                 leftRightOverlap = qMax( leftRightOverlap,
                                          mLayoutIsAtTopPosition ? area->bottomOverlap()
@@ -1009,7 +1009,7 @@ QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
             }
         }
     }
-    if( topBottomOverlap > 0 && leftRightOverlap > 0 )
+    if ( topBottomOverlap > 0 && leftRightOverlap > 0 )
         mCommonBrush = commonBrush;
     else
         mCommonBrush = QBrush();
@@ -1021,19 +1021,19 @@ QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
 
 void KDChart::AutoSpacerLayoutItem::paint( QPainter* painter )
 {
-    if( mParentLayout && mRect.isValid() && mCachedSize.isValid() &&
+    if ( mParentLayout && mRect.isValid() && mCachedSize.isValid() &&
         mCommonBrush.style() != Qt::NoBrush )
     {
         QPoint p1( mRect.topLeft() );
         QPoint p2( mRect.bottomRight() );
-        if( mLayoutIsAtLeftPosition )
+        if ( mLayoutIsAtLeftPosition )
             p1.rx() += mCachedSize.width() - mParentLayout->spacing();
         else
             p2.rx() -= mCachedSize.width() - mParentLayout->spacing();
-        if( mLayoutIsAtTopPosition ){
+        if ( mLayoutIsAtTopPosition ) {
             p1.ry() += mCachedSize.height() - mParentLayout->spacing() - 1;
             p2.ry() -= 1;
-        }else
+        } else
             p2.ry() -= mCachedSize.height() - mParentLayout->spacing() - 1;
         //qDebug() << mLayoutIsAtTopPosition << mLayoutIsAtLeftPosition;
         //qDebug() << mRect;
@@ -1054,7 +1054,7 @@ void KDChart::AutoSpacerLayoutItem::paint( QPainter* painter )
     // debug code:
 #if 0
     //qDebug() << "KDChart::AutoSpacerLayoutItem::paint()";
-    if( !mRect.isValid() )
+    if ( !mRect.isValid() )
         return;
 
     painter->drawRect( mRect );

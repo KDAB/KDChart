@@ -100,7 +100,7 @@ void CartesianCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 void CartesianCoordinatePlane::paint ( QPainter* painter )
 {
     // prevent recursive call:
-    if( d->bPaintIsRunning ){
+    if ( d->bPaintIsRunning ) {
         return;
     }
     d->bPaintIsRunning = true;
@@ -207,7 +207,7 @@ QRectF CartesianCoordinatePlane::adjustedToMaxEmptyInnerPercentage(
             qreal lowerBound = qMin( r.top(), r.bottom() );
             const qreal innerBound = isPositive ? lowerBound : upperBound;
             const qreal outerBound = isPositive ? upperBound : lowerBound;
-            if( innerBound / outerBound * 100 <= percentY ) {
+            if ( innerBound / outerBound * 100 <= percentY ) {
                 if ( isPositive ) {
                     ret.setBottom( 0.0 );
                 } else {
@@ -236,7 +236,7 @@ QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
         dataBoundingRect.setRight( d->horizontalMax );
         dataBoundingRect.setBottom( d->verticalMin );
         dataBoundingRect.setTop( d->verticalMax );
-    }else{
+    } else {
         // determine unit of the rectangles of all involved diagrams:
         dataBoundingRect = getRawDataBoundingRectFromDiagrams();
         if ( bHardHorizontalRange ) {
@@ -252,11 +252,11 @@ QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
     //                         both bounds are at the same side of the zero line
     dataBoundingRect = adjustedToMaxEmptyInnerPercentage(
             dataBoundingRect, d->autoAdjustHorizontalRangeToData, d->autoAdjustVerticalRangeToData );
-    if( bAutoAdjustHorizontalRange ){
+    if ( bAutoAdjustHorizontalRange ) {
         const_cast<CartesianCoordinatePlane::Private *>(d)->horizontalMin = dataBoundingRect.left();
         const_cast<CartesianCoordinatePlane::Private *>(d)->horizontalMax = dataBoundingRect.right();
     }
-    if( bAutoAdjustVerticalRange ){
+    if ( bAutoAdjustVerticalRange ) {
         const_cast<CartesianCoordinatePlane*>(this)->d->verticalMin = dataBoundingRect.bottom();
         const_cast<CartesianCoordinatePlane*>(this)->d->verticalMax = dataBoundingRect.top();
     }
@@ -396,7 +396,7 @@ bool CartesianCoordinatePlane::hasFixedDataCoordinateSpaceRelation() const
 
 void CartesianCoordinatePlane::setXAxisStartAtZero(bool fixedStart)
 {
-    if(d->xAxisStartAtZero == fixedStart)
+    if (d->xAxisStartAtZero == fixedStart)
         return;
 
     d->xAxisStartAtZero = fixedStart;
@@ -573,8 +573,8 @@ CartesianCoordinatePlane::AxesCalcMode CartesianCoordinatePlane::axesCalcModeX()
 
 void CartesianCoordinatePlane::setAxesCalcModes( AxesCalcMode mode )
 {
-    if( d->coordinateTransformation.axesCalcModeY != mode ||
-        d->coordinateTransformation.axesCalcModeX != mode ){
+    if ( d->coordinateTransformation.axesCalcModeY != mode ||
+        d->coordinateTransformation.axesCalcModeX != mode ) {
         d->coordinateTransformation.axesCalcModeY = mode;
         d->coordinateTransformation.axesCalcModeX = mode;
         emit propertiesChanged();
@@ -586,7 +586,7 @@ void CartesianCoordinatePlane::setAxesCalcModes( AxesCalcMode mode )
 
 void CartesianCoordinatePlane::setAxesCalcModeY( AxesCalcMode mode )
 {
-    if( d->coordinateTransformation.axesCalcModeY != mode ){
+    if ( d->coordinateTransformation.axesCalcModeY != mode ) {
         d->coordinateTransformation.axesCalcModeY = mode;
         emit propertiesChanged();
         setGridNeedsRecalculate();
@@ -596,7 +596,7 @@ void CartesianCoordinatePlane::setAxesCalcModeY( AxesCalcMode mode )
 
 void CartesianCoordinatePlane::setAxesCalcModeX( AxesCalcMode mode )
 {
-    if( d->coordinateTransformation.axesCalcModeX != mode ){
+    if ( d->coordinateTransformation.axesCalcModeX != mode ) {
         d->coordinateTransformation.axesCalcModeX = mode;
         emit propertiesChanged();
         emit viewportCoordinateSystemChanged();
@@ -707,7 +707,7 @@ void CartesianCoordinatePlane::setGridAttributes(
     Qt::Orientation orientation,
     const GridAttributes& a )
 {
-    if( orientation == Qt::Horizontal )
+    if ( orientation == Qt::Horizontal )
         d->gridAttributesHorizontal = a;
     else
         d->gridAttributesVertical = a;
@@ -726,12 +726,12 @@ void CartesianCoordinatePlane::resetGridAttributes(
 const GridAttributes CartesianCoordinatePlane::gridAttributes(
     Qt::Orientation orientation ) const
 {
-    if( hasOwnGridAttributes( orientation ) ){
-        if( orientation == Qt::Horizontal )
+    if ( hasOwnGridAttributes( orientation ) ) {
+        if ( orientation == Qt::Horizontal )
             return d->gridAttributesHorizontal;
         else
             return d->gridAttributesVertical;
-    }else{
+    } else {
         return globalGridAttributes();
     }
 }
@@ -739,7 +739,7 @@ const GridAttributes CartesianCoordinatePlane::gridAttributes(
 void CartesianCoordinatePlane::setHasOwnGridAttributes(
     Qt::Orientation orientation, bool on )
 {
-    if( orientation == Qt::Horizontal )
+    if ( orientation == Qt::Horizontal )
         d->hasOwnGridAttributesHorizontal = on;
     else
         d->hasOwnGridAttributesVertical = on;
@@ -757,7 +757,7 @@ bool CartesianCoordinatePlane::hasOwnGridAttributes(
 
 void CartesianCoordinatePlane::setAutoAdjustGridToZoom( bool autoAdjust )
 {
-    if( d->autoAdjustGridToZoom != autoAdjust ){
+    if ( d->autoAdjustGridToZoom != autoAdjust ) {
         d->autoAdjustGridToZoom = autoAdjust;
         d->grid->setNeedRecalculate();
         emit propertiesChanged();
@@ -777,14 +777,14 @@ AbstractCoordinatePlane* CartesianCoordinatePlane::sharedAxisMasterPlane( QPaint
     CartesianCoordinatePlane* plane = this;
     AbstractCartesianDiagram* diag = dynamic_cast< AbstractCartesianDiagram* >( plane->diagram() );
     const CartesianAxis* sharedAxis = 0;
-    if( diag != 0 )
+    if ( diag != 0 )
     {
         const CartesianAxisList axes = diag->axes();
         KDAB_FOREACH( const CartesianAxis* a, axes )
         {
             CartesianCoordinatePlane* p = const_cast< CartesianCoordinatePlane* >(
                                               dynamic_cast< const CartesianCoordinatePlane* >( a->coordinatePlane() ) );
-            if( p != 0 && p != this )
+            if ( p != 0 && p != this )
             {
                 plane = p;
                 sharedAxis = a;
@@ -792,7 +792,7 @@ AbstractCoordinatePlane* CartesianCoordinatePlane::sharedAxisMasterPlane( QPaint
         }
     }
 
-    if( plane == this || painter == 0 )
+    if ( plane == this || painter == 0 )
         return plane;
 
     const QPointF zero = QPointF( 0, 0 );
@@ -800,14 +800,14 @@ AbstractCoordinatePlane* CartesianCoordinatePlane::sharedAxisMasterPlane( QPaint
     const QPointF tenY = QPointF( 0, 10 );
 
 
-    if( sharedAxis->isOrdinate() )
+    if ( sharedAxis->isOrdinate() )
     {
         painter->translate( translate( zero ).x(), 0.0 );
         const qreal factor = (translate( tenX ) - translate( zero ) ).x() / ( plane->translate( tenX ) - plane->translate( zero ) ).x();
         painter->scale( factor, 1.0 );
         painter->translate( -plane->translate( zero ).x(), 0.0 );
     }
-    if( sharedAxis->isAbscissa() )
+    if ( sharedAxis->isAbscissa() )
     {
         painter->translate( 0.0, translate( zero ).y() );
         const qreal factor = (translate( tenY ) - translate( zero ) ).y() / ( plane->translate( tenY ) - plane->translate( zero ) ).y();
@@ -821,7 +821,7 @@ AbstractCoordinatePlane* CartesianCoordinatePlane::sharedAxisMasterPlane( QPaint
 
 void CartesianCoordinatePlane::setHorizontalRangeReversed( bool reverse )
 {
-    if( d->reverseHorizontalPlane == reverse )
+    if ( d->reverseHorizontalPlane == reverse )
         return;
 
     d->reverseHorizontalPlane = reverse;
@@ -836,7 +836,7 @@ bool CartesianCoordinatePlane::isHorizontalRangeReversed() const
 
 void CartesianCoordinatePlane::setVerticalRangeReversed( bool reverse )
 {
-    if( d->reverseVerticalPlane == reverse )
+    if ( d->reverseVerticalPlane == reverse )
         return;
 
     d->reverseVerticalPlane = reverse;

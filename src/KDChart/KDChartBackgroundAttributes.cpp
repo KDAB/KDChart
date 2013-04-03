@@ -61,7 +61,7 @@ BackgroundAttributes::BackgroundAttributes( const BackgroundAttributes& r )
 
 BackgroundAttributes & BackgroundAttributes::operator=( const BackgroundAttributes& r )
 {
-    if( this == &r )
+    if ( this == &r )
         return *this;
 
     *d = *r.d;

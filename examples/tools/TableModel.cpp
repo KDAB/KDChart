@@ -83,7 +83,7 @@ QVariant TableModel::headerData( int section, Qt::Orientation orientation, int r
     switch ( role ) {
     case Qt::DisplayRole:
     case Qt::EditRole:
-        if ( m_supplyHeaderData ){
+        if ( m_supplyHeaderData ) {
             if ( orientation == Qt::Horizontal ) {
                 // column header data
                 if ( !m_horizontalHeaderData.isEmpty() )

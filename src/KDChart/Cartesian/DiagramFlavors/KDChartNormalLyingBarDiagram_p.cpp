@@ -161,7 +161,7 @@ void NormalLyingBarDiagram::paint( PaintContext* ctx )
             }
         }
 
-        for( int column = 0; column < colCount; column++ ) {
+        for ( int column = 0; column < colCount; column++ ) {
             // paint one group
             const CartesianDiagramDataCompressor::CachePosition position( row,  column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );

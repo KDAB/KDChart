@@ -106,7 +106,7 @@ DataValueAttributes::DataValueAttributes( const DataValueAttributes& r )
 
 DataValueAttributes & DataValueAttributes::operator=( const DataValueAttributes& r )
 {
-    if( this == &r )
+    if ( this == &r )
         return *this;
 
     *d = *r.d;

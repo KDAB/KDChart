@@ -39,24 +39,24 @@ EntryDelegate::EntryDelegate( KDGantt::ConstraintModel* constraintModel, QObject
 
 bool EntryDelegate::editorEvent( QEvent* event, QAbstractItemModel *model, const QStyleOptionViewItem& option, const QModelIndex& index )
 {
-    if( event->type() != QEvent::MouseButtonDblClick )
+    if ( event->type() != QEvent::MouseButtonDblClick )
         return false;
 
-    if( !index.isValid() )
+    if ( !index.isValid() )
         return QItemDelegate::editorEvent( event, model, option, index );
 
     QPointer<EntryDialog> dialog = new EntryDialog( model );
     dialog->initFrom( index, constraintModel );
     dialog->setWindowTitle( tr( "Edit Entry" ) );
     dialog->exec();  
-    if( !dialog )
+    if ( !dialog )
         return false;
     
     int row = index.row();
     const QModelIndex parent = index.parent();
     model->setData( model->index( row, 0, parent ), dialog->name() );
     model->setData( model->index( row, 1, parent ), dialog->type() );
-    if( dialog->type() != KDGantt::TypeSummary ) {
+    if ( dialog->type() != KDGantt::TypeSummary ) {
         model->setData( model->index( row, 2, parent ), dialog->startDate(), KDGantt::StartTimeRole );
         model->setData( model->index( row, 3, parent ), dialog->endDate(), KDGantt::EndTimeRole );
     }
@@ -76,7 +76,7 @@ void EntryDelegate::setReadOnly(const QModelIndex & index, bool readOnly)
     QModelIndex parent = index.parent();
     QStandardItem* item;
     const QStandardItemModel* model = qobject_cast<const QStandardItemModel*>( index.model() );
-    if( !model )
+    if ( !model )
         return;
     
     item = model->itemFromIndex( model->index( row, 0, parent ) );
@@ -97,7 +97,7 @@ void EntryDelegate::setReadOnly(const QModelIndex & index, bool readOnly)
 
 void EntryDelegate::addConstraint(const QModelIndex & index1, const QModelIndex & index2)
 {
-    if( !index1.isValid() || !index2.isValid() )
+    if ( !index1.isValid() || !index2.isValid() )
         return;
 
     KDGantt::Constraint c( index1, index2 );

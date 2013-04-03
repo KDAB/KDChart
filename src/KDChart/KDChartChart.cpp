@@ -232,7 +232,7 @@ void checkExistingAxes( LayoutGraphNode* node )
         {
             Q_FOREACH( const CartesianAxis* axis, diag->axes() )
             {
-                switch( axis->position() )
+                switch ( axis->position() )
                 {
                 case( CartesianAxis::Top ):
                     node->topAxesLayout = true;
@@ -531,7 +531,7 @@ void Chart::Private::slotLayoutPlanes()
         gridPlaneLayout = new QGridLayout;
         planesLayout->addLayout( gridPlaneLayout );
 
-        if(hadPlanesLayout)
+        if (hadPlanesLayout)
             planesLayout->setContentsMargins(left, top, right, bottom);
         planesLayout->setObjectName( QString::fromLatin1( "planesLayout" ) );
 
@@ -589,7 +589,7 @@ void Chart::Private::slotLayoutPlanes()
                                     continue;
         //                        if ( axis->diagram() != diagram )
         //                            continue;
-                                switch( axis->position() )
+                                switch ( axis->position() )
                                 {
                                 case( CartesianAxis::Top ):
                                     if ( !topLayout )

@@ -71,7 +71,7 @@ public:
             const QModelIndex & index,
             const CartesianDiagramDataCompressor::CachePosition * position ) const
     {
-        if( position )
+        if ( position )
             return compressor.aggregatedAttrs( diagram, index, *position );
         CartesianDiagramDataCompressor::AggregatedDataValueAttributes allAttrs;
         allAttrs[index] = diagram->dataValueAttributes( index );

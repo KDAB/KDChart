@@ -92,12 +92,12 @@ void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 /*virtual*/
 void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, AbstractDiagram* oldDiagram_ )
 {
-    if( diagram && oldDiagram_ != diagram ){
+    if ( diagram && oldDiagram_ != diagram ) {
         AbstractDiagram* oldDiagram = oldDiagram_;
-        if( d->diagrams.count() ){
-            if( ! oldDiagram ){
+        if ( d->diagrams.count() ) {
+            if ( ! oldDiagram ) {
                 oldDiagram = d->diagrams.first();
-                if( oldDiagram == diagram )
+                if ( oldDiagram == diagram )
                     return;
             }
             takeDiagram( oldDiagram );
@@ -114,7 +114,7 @@ void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, Abstrac
 void AbstractCoordinatePlane::takeDiagram ( AbstractDiagram* diagram )
 {
     const int idx = d->diagrams.indexOf( diagram );
-    if( idx != -1 ){
+    if ( idx != -1 ) {
         d->diagrams.removeAt( idx );
         diagram->setParent( 0 );
         diagram->setCoordinatePlane( 0 );
@@ -272,7 +272,7 @@ void KDChart::AbstractCoordinatePlane::setRubberBandZoomingEnabled( bool enable 
 {
     d->enableRubberBandZooming = enable;
 
-    if( !enable && d->rubberBand != 0 )
+    if ( !enable && d->rubberBand != 0 )
     {
         delete d->rubberBand;
         d->rubberBand = 0;
@@ -299,12 +299,12 @@ bool KDChart::AbstractCoordinatePlane::isCornerSpacersEnabled() const
 
 void KDChart::AbstractCoordinatePlane::mousePressEvent( QMouseEvent* event )
 {
-    if( event->button() == Qt::LeftButton )
+    if ( event->button() == Qt::LeftButton )
     {
-        if( d->enableRubberBandZooming && d->rubberBand == 0 )
+        if ( d->enableRubberBandZooming && d->rubberBand == 0 )
             d->rubberBand = new QRubberBand( QRubberBand::Rectangle, qobject_cast< QWidget* >( parent() ) );
 
-        if( d->rubberBand != 0 )
+        if ( d->rubberBand != 0 )
         {
             d->rubberBandOrigin = event->pos();
             d->rubberBand->setGeometry( QRect( event->pos(), QSize() ) );
@@ -313,9 +313,9 @@ void KDChart::AbstractCoordinatePlane::mousePressEvent( QMouseEvent* event )
             event->accept();
         }
     }
-    else if( event->button() == Qt::RightButton )
+    else if ( event->button() == Qt::RightButton )
     {
-        if( d->enableRubberBandZooming && !d->rubberBandZoomConfigHistory.isEmpty() )
+        if ( d->enableRubberBandZooming && !d->rubberBandZoomConfigHistory.isEmpty() )
         {
             // restore the last config from the stack
             ZoomParameters config = d->rubberBandZoomConfigHistory.pop();
@@ -324,7 +324,7 @@ void KDChart::AbstractCoordinatePlane::mousePressEvent( QMouseEvent* event )
             setZoomCenter( config.center() );
 
             QWidget* const p = qobject_cast< QWidget* >( parent() );
-            if( p != 0 )
+            if ( p != 0 )
                 p->update();
 
             event->accept();
@@ -339,7 +339,7 @@ void KDChart::AbstractCoordinatePlane::mousePressEvent( QMouseEvent* event )
 
 void KDChart::AbstractCoordinatePlane::mouseDoubleClickEvent( QMouseEvent* event )
 {
-    if( event->button() == Qt::RightButton )
+    if ( event->button() == Qt::RightButton )
     {
         // othewise the second click gets lost
         // which is pretty annoying when zooming out fast
@@ -353,7 +353,7 @@ void KDChart::AbstractCoordinatePlane::mouseDoubleClickEvent( QMouseEvent* event
 
 void KDChart::AbstractCoordinatePlane::mouseReleaseEvent( QMouseEvent* event )
 {
-    if( d->rubberBand != 0 )
+    if ( d->rubberBand != 0 )
     {
         // save the old config on the stack
         d->rubberBandZoomConfigHistory.push( ZoomParameters( zoomFactorX(), zoomFactorY(), zoomCenter() ) );
@@ -362,7 +362,7 @@ void KDChart::AbstractCoordinatePlane::mouseReleaseEvent( QMouseEvent* event )
         const qreal rubberWidth = static_cast< qreal >( d->rubberBand->width() );
         const qreal rubberHeight = static_cast< qreal >( d->rubberBand->height() );
 
-        if( rubberWidth > 0.0 && rubberHeight > 0.0 )
+        if ( rubberWidth > 0.0 && rubberHeight > 0.0 )
         {
             // this is the center of the rubber band in pixel space
             const qreal centerX = qFloor( d->rubberBand->geometry().width() / 2.0 + d->rubberBand->geometry().x() );
@@ -406,7 +406,7 @@ void KDChart::AbstractCoordinatePlane::mouseReleaseEvent( QMouseEvent* event )
 
 void KDChart::AbstractCoordinatePlane::mouseMoveEvent( QMouseEvent* event )
 {
-    if( d->rubberBand != 0 )
+    if ( d->rubberBand != 0 )
     {
         const QRect normalized = QRect( d->rubberBandOrigin, event->pos() ).normalized();
         d->rubberBand->setGeometry( normalized &  geometry() );

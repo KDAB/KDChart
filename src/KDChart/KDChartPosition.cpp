@@ -205,7 +205,7 @@ QList<QByteArray> Position::names( Options options )
     QList<QByteArray> list;
     const int start = ( options & IncludeCenter ) ? 1 : 2;
     const int end   = ( options & IncludeFloating ) ? maxPositionValue : maxPositionValue-1;
-    for( int i=start; i<=end; ++i)
+    for ( int i=start; i<=end; ++i)
         list.append( staticPositionNames[i] );
     return list;
 }
@@ -222,14 +222,14 @@ QStringList Position::printableNames( Options options )
     QStringList list;
     const int start = ( options & IncludeCenter ) ? 1 : 2;
     const int end   = ( options & IncludeFloating ) ? maxPositionValue : maxPositionValue-1;
-    for( int i=start; i<=end; ++i)
+    for ( int i=start; i<=end; ++i)
         list.append( Position(i).printableName() );
     return list;
 }
 
 Position Position::fromName(const char * name)
 {
-    for( int i=1; i<=maxPositionValue; ++i)
+    for ( int i=1; i<=maxPositionValue; ++i)
         if ( !qstricmp( name, staticPositionNames[i] ) )
             return Position(i);
     return Position(0);

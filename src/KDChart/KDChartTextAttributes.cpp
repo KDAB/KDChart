@@ -82,7 +82,7 @@ TextAttributes::TextAttributes( const TextAttributes& r )
 
 TextAttributes & TextAttributes::operator=( const TextAttributes& r )
 {
-    if( this == &r )
+    if ( this == &r )
         return *this;
 
     *d = *r.d;

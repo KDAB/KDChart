@@ -89,7 +89,7 @@ void MainWindow::on_addHeaderPB_clicked()
     setupAddHeaderDialog( &dlg, conf );
     conf.typeCO->setCurrentIndex( 0 ); // let us start with "Header"
     conf.positionCO->setCurrentIndex( 0 );
-    if( dlg.exec() ) {
+    if ( dlg.exec() ) {
         KDChart::HeaderFooter* headerFooter
                 = new KDChart::HeaderFooter( m_chart );
         m_chart->addHeaderFooter( headerFooter );
@@ -132,7 +132,7 @@ void MainWindow::on_editHeaderPB_clicked()
             ? 0 : 1 );
     conf.positionCO->setCurrentIndex(
         conf.positionCO->findText(headerFooter->position().printableName()));
-    if( dlg.exec() ) {
+    if ( dlg.exec() ) {
         headerFooter->setText( conf.textED->text() );
         headerFooter->setType(
             conf.typeCO->currentText() == "Header"
@@ -158,7 +158,7 @@ void MainWindow::on_removeHeaderPB_clicked()
 {
     if ( headersTV->selectedItems().size() == 0 ) return;
     QList<QTreeWidgetItem*> items = headersTV->selectedItems();
-    for( QList<QTreeWidgetItem*>::const_iterator it = items.begin();
+    for ( QList<QTreeWidgetItem*>::const_iterator it = items.begin();
          it != items.end(); ++it )
     {
         KDChart::HeaderFooter* headerFooter

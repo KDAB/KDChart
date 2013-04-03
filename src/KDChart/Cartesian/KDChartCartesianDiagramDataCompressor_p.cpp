@@ -122,7 +122,7 @@ void CartesianDiagramDataCompressor::slotRowsAboutToBeInserted( const QModelInde
     if ( !prepareDataChange( parent, true, &start, &end ) ) {
         return;
     }
-    for( int i = 0; i < m_data.size(); ++i )
+    for ( int i = 0; i < m_data.size(); ++i )
     {
         Q_ASSERT( start >= 0 && start <= m_data[ i ].size() );
         m_data[ i ].insert( start, end - start + 1, DataPoint() );
@@ -134,9 +134,9 @@ void CartesianDiagramDataCompressor::slotRowsInserted( const QModelIndex& parent
     if ( !prepareDataChange( parent, true, &start, &end ) ) {
         return;
     }
-    for( int i = 0; i < m_data.size(); ++i )
+    for ( int i = 0; i < m_data.size(); ++i )
     {
-        for( int j = start; j < m_data[i].size(); ++j ) {
+        for ( int j = start; j < m_data[i].size(); ++j ) {
             retrieveModelData( CachePosition( j, i ) );
         }
     }
@@ -157,9 +157,9 @@ void CartesianDiagramDataCompressor::slotColumnsInserted( const QModelIndex& par
     if ( !prepareDataChange( parent, false, &start, &end ) ) {
         return;
     }
-    for( int i = start; i < m_data.size(); ++i )
+    for ( int i = start; i < m_data.size(); ++i )
     {
-        for(int j = 0; j < m_data[i].size(); ++j ) {
+        for (int j = 0; j < m_data[i].size(); ++j ) {
             retrieveModelData( CachePosition( j, i ) );
         }
     }
@@ -230,7 +230,7 @@ void CartesianDiagramDataCompressor::slotColumnsRemoved( const QModelIndex& pare
 
 void CartesianDiagramDataCompressor::slotModelHeaderDataChanged( Qt::Orientation orientation, int first, int last )
 {
-    if( orientation != Qt::Vertical )
+    if ( orientation != Qt::Vertical )
         return;
 
     if ( m_model->rowCount( m_rootIndex ) > 0 ) {
@@ -279,7 +279,7 @@ int CartesianDiagramDataCompressor::modelDataColumns() const
     if ( m_model ) {
         const int columns = m_model->columnCount( m_rootIndex ) / m_datasetDimension;
 
-//        if( columns != m_data.size() )
+//        if ( columns != m_data.size() )
 //        {
 //            rebuildCache();
 //        }
@@ -447,19 +447,19 @@ QPair< QPointF, QPointF > CartesianDiagramDataCompressor::dataBoundaries() const
     qreal yMin = std::numeric_limits< qreal >::quiet_NaN();
     qreal yMax = std::numeric_limits< qreal >::quiet_NaN();
 
-    for( int column = 0; column < colCount; ++column )
+    for ( int column = 0; column < colCount; ++column )
     {
         const DataPointVector& data = m_data[ column ];
         int row = 0;
-        for( DataPointVector::const_iterator it = data.begin(); it != data.end(); ++it, ++row )
+        for ( DataPointVector::const_iterator it = data.begin(); it != data.end(); ++it, ++row )
         {
             const DataPoint& p = *it;
-            if( !p.index.isValid() )
+            if ( !p.index.isValid() )
                 retrieveModelData( CachePosition( row, column ) );
 
             const qreal valueX = ISNAN( p.key ) ? 0.0 : p.key;
             const qreal valueY = ISNAN( p.value ) ? 0.0 : p.value;
-            if( ISNAN( xMin ) )
+            if ( ISNAN( xMin ) )
             {
                 xMin = valueX;
                 xMax = valueX;

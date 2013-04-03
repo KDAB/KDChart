@@ -36,9 +36,9 @@ FrameWidget::FrameWidget( QWidget* parent, Qt::WFlags f )
 
 void FrameWidget::paintEvent( QPaintEvent* e )
 {
-    if( !mChart ){
+    if ( !mChart ) {
         QWidget::paintEvent( e );
-    }else{
+    } else {
         QPainter painter( this );
 
         const int wid=64;

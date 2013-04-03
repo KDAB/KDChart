@@ -70,7 +70,7 @@ void ProxyModel::init()
 QModelIndex ProxyModel::mapFromSource( const QModelIndex& sourceIdx ) const
 {
 #if 0
-    if( sourceIdx.isValid() ) {
+    if ( sourceIdx.isValid() ) {
         if ( calendarMode() ) {
             const QAbstractItemModel* model = sourceIdx.model();
             if ( model->hasChildren( sourceIdx ) ) {
@@ -92,7 +92,7 @@ QModelIndex ProxyModel::mapFromSource( const QModelIndex& sourceIdx ) const
 QModelIndex ProxyModel::mapToSource( const QModelIndex& proxyIdx ) const
 {
 #if 0
-    if( proxyIdx.isValid() ) {
+    if ( proxyIdx.isValid() ) {
         if ( calendarMode() && proxyIdx.column() > 0 ) {
             return BASE::mapToSource( proxyIdx.model()->index( proxyIdx.column(), 0, proxyIdx ) );
         }

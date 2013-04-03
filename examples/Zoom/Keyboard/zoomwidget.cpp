@@ -34,7 +34,7 @@ ZoomWidget::ZoomWidget( QWidget* parent ) :
 
 QPointF ZoomWidget::findNewZoomCenter( const QPoint & pos )
 {
-    if( ! height() || ! width() ) return coordinatePlane()->zoomCenter();
+    if ( ! height() || ! width() ) return coordinatePlane()->zoomCenter();
 
     const qreal coordWidth = 1.0;
     const qreal coordHeight = 1.0;
@@ -55,7 +55,7 @@ QPointF ZoomWidget::findNewZoomCenter( const QPoint & pos )
 void ZoomWidget::mousePressEvent( QMouseEvent * e )
 {
     const QPointF zoomCenter( findNewZoomCenter( e->pos() ) );
-    if( zoomCenter != coordinatePlane()->zoomCenter() ){
+    if ( zoomCenter != coordinatePlane()->zoomCenter() ) {
 //        qDebug() << "zoom center = " << zoomCenter;
         coordinatePlane()->setZoomCenter( zoomCenter );
         update();
@@ -70,7 +70,7 @@ void ZoomWidget::wheelEvent( QWheelEvent* e )
     coordinatePlane()->setZoomFactorY( coordinatePlane()->zoomFactorY() + delta );
 /* new:
     const QPointF zoomCenter( findNewZoomCenter( e->pos() ) );
-    if( zoomCenter != coordinatePlane()->zoomCenter() ){
+    if ( zoomCenter != coordinatePlane()->zoomCenter() ) {
         qDebug() << "zoom center = " << zoomCenter;
         coordinatePlane()->setZoomCenter( zoomCenter );
     }
@@ -89,7 +89,7 @@ void ZoomWidget::keyPressEvent( QKeyEvent* e )
     int dZoom = 0;
     qreal dX = 0;
     qreal dY = 0;
-    switch ( e->key() ){
+    switch ( e->key() ) {
         case Qt::Key_PageDown:
             dZoom = 1;
             break;
@@ -111,7 +111,7 @@ void ZoomWidget::keyPressEvent( QKeyEvent* e )
         default:
             e->ignore();
     }
-    if( dZoom || dX || dY ){
+    if ( dZoom || dX || dY ) {
         const double factor = qMax( double(1.0), coordinatePlane()->zoomFactorX() + dZoom );
         const qreal x = coordinatePlane()->zoomCenter().x() + dX;
         const qreal y = coordinatePlane()->zoomCenter().y() + dY;

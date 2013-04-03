@@ -81,8 +81,8 @@ namespace KDChart {
         }
         void removeFromParentLayout()
         {
-            if( mParentLayout ){
-                if( widget() )
+            if ( mParentLayout ) {
+                if ( widget() )
                     mParentLayout->removeWidget( widget() );
                 else
                     mParentLayout->removeItem( this );

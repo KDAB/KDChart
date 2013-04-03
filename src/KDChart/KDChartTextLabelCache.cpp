@@ -296,7 +296,7 @@ QPointF PrerenderedLabel::referencePointLocation( KDChartEnums::PositionValue po
         INC_HIT_COUNT;
     }
 
-    switch( position ) {
+    switch ( position ) {
     case KDChartEnums::PositionCenter:
         return m_referenceBottomLeft + 0.5 * m_textBaseLineVector + 0.5 * m_textAscendVector;
     case KDChartEnums::PositionNorthWest:

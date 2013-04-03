@@ -69,7 +69,7 @@
 #endif
 
 
-// We wrap every for() by extra { } to work around
+// We wrap every for () by extra { } to work around
 // the scope bug for loop counters in MS Visual C++ v6
 #if defined(Q_CC_MSVC) && !defined(Q_CC_MSVC_NET)
 /* This is done in Qt41 qglobal.h but not Qt42*/

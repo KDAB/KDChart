@@ -66,7 +66,7 @@ do {                           \
   }                            \
 } while ( false )
 
-#define assertThrowsException( x, E ) assertThrowsExceptionWithCode( x, E, do{}while(0) )
+#define assertThrowsException( x, E ) assertThrowsExceptionWithCode( x, E, do{}while (0) )
 
 #define assertDoesNotThrowException( x, E ) \
 do {                           \
@@ -192,7 +192,7 @@ namespace UnitTest {
     namespace Namespace {                                       \
         class Class##Test : public KDAB::UnitTest::Test {  \
         public:                                                 \
-            Class##Test() : Test( #Namespace "::" #Class ){}    \
+            Class##Test() : Test( #Namespace "::" #Class ) {}    \
             void run();                                         \
         };                                                      \
     }                                                           \

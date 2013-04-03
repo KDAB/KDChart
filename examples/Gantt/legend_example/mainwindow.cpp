@@ -195,7 +195,7 @@ void MainWindow::initGrid()
 
 void MainWindow::showContextMenu( const QPoint& pos )
 {
-    if( !ui->ganttView->leftView()->indexAt( pos ).isValid() )
+    if ( !ui->ganttView->leftView()->indexAt( pos ).isValid() )
         ui->ganttView->selectionModel()->clearSelection();
 
     QMenu menu( ui->ganttView->leftView() );
@@ -206,7 +206,7 @@ void MainWindow::showContextMenu( const QPoint& pos )
 
 void MainWindow::enableActions(const QItemSelection & selected)
 {
-    if( selected.indexes().isEmpty() ) {
+    if ( selected.indexes().isEmpty() ) {
         newEntryAction->setEnabled( true );
         removeEntryAction->setEnabled( false );
         return;
@@ -214,7 +214,7 @@ void MainWindow::enableActions(const QItemSelection & selected)
 
     QModelIndex selectedIndex = selected.indexes()[0];
 
-    if( model->data( model->index( selectedIndex.row(), 1 ) ) == KDGantt::TypeEvent ||
+    if ( model->data( model->index( selectedIndex.row(), 1 ) ) == KDGantt::TypeEvent ||
         model->data( model->index( selectedIndex.row(), 1 ) ) == KDGantt::TypeTask ) {
         newEntryAction->setEnabled( false );
         removeEntryAction->setEnabled( true );
@@ -229,7 +229,7 @@ void MainWindow::addNewEntry()
 {
     QPointer<EntryDialog> dialog = new EntryDialog( model );
     dialog->setWindowTitle( tr( "New Entry") );
-    if( dialog->exec() == QDialog::Rejected || !dialog ) {
+    if ( dialog->exec() == QDialog::Rejected || !dialog ) {
         delete dialog;
         return;
     }
@@ -237,22 +237,22 @@ void MainWindow::addNewEntry()
     QModelIndexList selectedIndexes = ui->ganttView->selectionModel()->selectedIndexes();
     const QModelIndex parent = selectedIndexes.value( 0 );
 
-    if( !model->insertRow( model->rowCount( parent ), parent ) )
+    if ( !model->insertRow( model->rowCount( parent ), parent ) )
         return;
 
     int row = model->rowCount( parent ) - 1;
-    if( row == 0 && parent.isValid() )
+    if ( row == 0 && parent.isValid() )
         model->insertColumns( model->columnCount( parent ), 5, parent );
 
     model->setData( model->index( row, 0, parent ), dialog->name() );
     model->setData( model->index( row, 1, parent ), dialog->type() );
-    if( dialog->type() != KDGantt::TypeSummary ) {
+    if ( dialog->type() != KDGantt::TypeSummary ) {
         model->setData( model->index( row, 2, parent ), dialog->startDate(), KDGantt::StartTimeRole );
         model->setData( model->index( row, 3, parent ), dialog->endDate(), KDGantt::EndTimeRole );
     }
     model->setData( model->index( row, 4, parent ), dialog->completion() );
     const QString legend( dialog->legend() );
-    if( ! legend.isEmpty() )
+    if ( ! legend.isEmpty() )
         model->setData( model->index( row, 5, parent ), legend );
 
     addConstraint( dialog->depends(), model->index( row, 0, parent ) );
@@ -285,7 +285,7 @@ void MainWindow::setReadOnly(const QModelIndex & index, bool readOnly)
 
 void MainWindow::addConstraint(const QModelIndex & index1, const QModelIndex & index2)
 {
-    if( !index1.isValid() || !index2.isValid() )
+    if ( !index1.isValid() || !index2.isValid() )
         return;
 
     KDGantt::Constraint c( index1, index2 );
@@ -297,7 +297,7 @@ void MainWindow::removeEntry()
     QModelIndexList selectedIndexes = ui->ganttView->selectionModel()->selectedIndexes();
     QModelIndex index = selectedIndexes.value( 0 );
 
-    if( !index.isValid() )
+    if ( !index.isValid() )
         return;
 
     model->removeRow( index.row(), index.parent() );
@@ -306,7 +306,7 @@ void MainWindow::removeEntry()
 void MainWindow::zoomIn()
 {
     qreal dayWidth = grid->dayWidth() + 10;
-    if( dayWidth > 400 )
+    if ( dayWidth > 400 )
         grid->setScale( KDGantt::DateTimeGrid::ScaleHour );
 
     grid->setDayWidth( dayWidth );
@@ -315,10 +315,10 @@ void MainWindow::zoomIn()
 void MainWindow::zoomOut()
 {
     qreal dayWidth = grid->dayWidth() - 10;
-    if( dayWidth < 10 )
+    if ( dayWidth < 10 )
         dayWidth = 10;
 
-    if( dayWidth <= 400 )
+    if ( dayWidth <= 400 )
         grid->setScale( KDGantt::DateTimeGrid::ScaleDay );
 
     grid->setDayWidth( dayWidth );

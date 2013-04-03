@@ -68,12 +68,12 @@ void TextArea::init()
 void TextArea::paintIntoRect( QPainter& painter, const QRect& rect )
 {
     const QRect oldGeometry( geometry() );
-    if( oldGeometry != rect )
+    if ( oldGeometry != rect )
         setGeometry( rect );
     painter.translate( rect.left(), rect.top() );
     paintAll( painter );
     painter.translate( -rect.left(), -rect.top() );
-    if( oldGeometry != rect )
+    if ( oldGeometry != rect )
         setGeometry( oldGeometry );
 }
 
@@ -91,10 +91,10 @@ void TextArea::paintAll( QPainter& painter )
         oldGeometry.left() + inner.left(),
         oldGeometry.top()  + inner.top() );
     const bool needAdjustGeometry = oldGeometry != inner;
-    if( needAdjustGeometry )
+    if ( needAdjustGeometry )
         setGeometry( inner );
     paint( &painter );
-    if( needAdjustGeometry )
+    if ( needAdjustGeometry )
         setGeometry( oldGeometry );
     //qDebug() << "TextAreaWidget::paintAll() done.";
 }

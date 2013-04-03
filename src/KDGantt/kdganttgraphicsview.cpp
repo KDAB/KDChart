@@ -95,7 +95,7 @@ void HeaderWidget::contextMenuEvent( QContextMenuEvent* event )
     QAction* actionScaleHour = 0;
     QAction* actionZoomIn = 0;
     QAction* actionZoomOut = 0;
-    if( grid != 0 )
+    if ( grid != 0 )
     {
         QMenu* menuScale = new QMenu( tr( "Scale" ), &contextMenu );
         QActionGroup* scaleGroup = new QActionGroup( &contextMenu );
@@ -142,45 +142,45 @@ void HeaderWidget::contextMenuEvent( QContextMenuEvent* event )
         contextMenu.addAction( actionZoomOut );
     }
 
-    if( contextMenu.isEmpty() )
+    if ( contextMenu.isEmpty() )
     {
         event->ignore();
         return;
     }
 
     const QAction* const action = contextMenu.exec( event->globalPos() );
-    if( action == 0 ) {}
-    else if( action == actionScaleAuto )
+    if ( action == 0 ) {}
+    else if ( action == actionScaleAuto )
     {
         assert( grid != 0 );
         grid->setScale( DateTimeGrid::ScaleAuto );
     }
-    else if( action == actionScaleMonth )
+    else if ( action == actionScaleMonth )
     {
         assert( grid != 0 );
         grid->setScale( DateTimeGrid::ScaleMonth );
     }
-    else if( action == actionScaleWeek )
+    else if ( action == actionScaleWeek )
     {
         assert( grid != 0 );
         grid->setScale( DateTimeGrid::ScaleWeek );
     }
-    else if( action == actionScaleDay )
+    else if ( action == actionScaleDay )
     {
         assert( grid != 0 );
         grid->setScale( DateTimeGrid::ScaleDay );
     }
-    else if( action == actionScaleHour )
+    else if ( action == actionScaleHour )
     {
         assert( grid != 0 );
         grid->setScale( DateTimeGrid::ScaleHour );
     }
-    else if( action == actionZoomIn )
+    else if ( action == actionZoomIn )
     {
         assert( grid != 0 );
         grid->setDayWidth( grid->dayWidth() + 10.0 );
     }
-    else if( action == actionZoomOut )
+    else if ( action == actionZoomOut )
     {
         assert( grid != 0 );
         grid->setDayWidth( grid->dayWidth() - 10.0 );
@@ -689,8 +689,8 @@ void GraphicsView::updateSceneRect()
 void GraphicsView::updateScene()
 {
     clearItems();
-    if( !model()) return;
-    if( !rowController()) return;
+    if ( !model()) return;
+    if ( !rowController()) return;
     QModelIndex idx = model()->index( 0, 0, rootIndex() );
     do {
         updateRow( idx );

@@ -71,8 +71,8 @@ RingDiagram * RingDiagram::clone() const
 
 bool RingDiagram::compare( const RingDiagram* other ) const
 {
-    if( other == this ) return true;
-    if( ! other ){
+    if ( other == this ) return true;
+    if ( ! other ) {
         return false;
     }
     return  // compare the base class
@@ -166,7 +166,7 @@ void RingDiagram::paint( PaintContext* ctx )
 
     QRectF contentsRect = PolarCoordinatePlane::Private::contentsRect( polarCoordinatePlane() );
     contentsRect = ctx->rectangle();
-    if( contentsRect.isEmpty() )
+    if ( contentsRect.isEmpty() )
         return;
 
     d->startAngles = QVector< QVector<qreal> >( rCount, QVector<qreal>( colCount ) );
@@ -213,7 +213,7 @@ void RingDiagram::paint( PaintContext* ctx )
     d->forgetAlreadyPaintedDataValues();
     for ( int iRow = 0; iRow < rCount; ++iRow ) {
         const qreal sum = valueTotals( iRow );
-        if( sum == 0.0 ) //nothing to draw
+        if ( sum == 0.0 ) //nothing to draw
             continue;
         qreal currentValue = plane ? plane->startPosition() : 0.0;
         const qreal sectorsPerValue = 360.0 / sum;
@@ -224,7 +224,7 @@ void RingDiagram::paint( PaintContext* ctx )
             const qreal cellValue = qAbs( model()->data( model()->index( iRow, iColumn, rootIndex() ) ) // checked
                                     .toReal( &bOK ) );
 
-            if( bOK ){
+            if ( bOK ) {
                 d->startAngles[ iRow ][ iColumn ] = currentValue;
                 d->angleLens[ iRow ][ iColumn ] = cellValue * sectorsPerValue;
             } else { // mark as non-existent
@@ -294,7 +294,7 @@ void RingDiagram::drawPieSurface( QPainter* painter, uint dataset, uint slice, q
         painter->setRenderHint ( QPainter::Antialiasing );
 
         QBrush br = brush( index );
-        if( threeDAttrs.isEnabled() ) {
+        if ( threeDAttrs.isEnabled() ) {
             br = threeDAttrs.threeDBrush( br, drawPosition );
         }
         painter->setBrush( br );
@@ -358,7 +358,7 @@ void RingDiagram::drawPieSurface( QPainter* painter, uint dataset, uint slice, q
                 degree += granularity;
                 iPoint++;
             }
-            if( ! perfectMatch ){
+            if ( ! perfectMatch ) {
                 poly.append( pointOnEllipse( drawPosition, dataset, slice, false, actualStartAngle + actualAngleLen,
                                              totalRadialGap, totalRadialExplode ) );
                 iPoint++;
@@ -401,7 +401,7 @@ void RingDiagram::drawPieSurface( QPainter* painter, uint dataset, uint slice, q
 
             const PainterSaver ps( painter );
             const TextAttributes ta = dataValueAttributes( index ).textAttributes();
-            if( !ta.hasRotation() && autoRotateLabels() )
+            if ( !ta.hasRotation() && autoRotateLabels() )
             {
                 const QPointF& p1 = poly.last();
                 const QPointF& p2 = poly[ lastInnerBrinkPoint ];

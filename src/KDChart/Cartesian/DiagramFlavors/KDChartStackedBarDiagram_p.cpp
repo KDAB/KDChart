@@ -51,7 +51,7 @@ const QPair<QPointF, QPointF> StackedBarDiagram::calculateDataBoundaries() const
     qreal yMax = 0.0;
 
     bool isFirst = true;
-    for( int row = 0; row < rowCount; ++row ) {
+    for ( int row = 0; row < rowCount; ++row ) {
         // calculate sum of values per column - Find out stacked Min/Max
         qreal stackedValues = 0.0;
         qreal negativeStackedValues = 0.0;
@@ -147,16 +147,16 @@ void StackedBarDiagram::paint( PaintContext* ctx )
                                 barWidth, spaceBetweenBars, spaceBetweenGroups );
 
     LabelPaintCache lpc;
-    for( int col = 0; col < colCount; ++col )
+    for ( int col = 0; col < colCount; ++col )
     {
         qreal offset = spaceBetweenGroups;
-        if( ba.useFixedBarWidth() )
+        if ( ba.useFixedBarWidth() )
             offset -= ba.fixedBarWidth();
         
-        if( offset < 0 )
+        if ( offset < 0 )
             offset = 0;
 
-        for( int row = 0; row < rowCount; ++row )
+        for ( int row = 0; row < rowCount; ++row )
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint p = compressor().data( position );
@@ -182,7 +182,7 @@ void StackedBarDiagram::paint( PaintContext* ctx )
             {
                 const CartesianDiagramDataCompressor::CachePosition position( row, k );
                 const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-                if( !ISNAN( point.value ) && (( p.value >= 0.0 && point.value >= 0.0 ) || ( p.value < 0.0 && point.value < 0.0 )) )
+                if ( !ISNAN( point.value ) && (( p.value >= 0.0 && point.value >= 0.0 ) || ( p.value < 0.0 && point.value < 0.0 )) )
                     stackedValues += point.value;
                 key = point.key;
             }

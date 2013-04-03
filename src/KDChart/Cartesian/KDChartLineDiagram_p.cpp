@@ -81,25 +81,25 @@ qreal LineDiagram::LineDiagramType::interpolateMissingValue( const CartesianDiag
     const int rowCount = compressor().modelDataRows();
 
     // iterate back and forth to find valid values
-    for( int r1 = row - 1; r1 > 0; --r1 )
+    for ( int r1 = row - 1; r1 > 0; --r1 )
     {
         const CartesianDiagramDataCompressor::CachePosition position( r1, column );
         const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
         leftValue = point.value;
-        if( !ISNAN( point.value ) )
+        if ( !ISNAN( point.value ) )
             break;
         ++missingCount;
     }
-    for( int r2 = row + 1; r2 < rowCount; ++r2 )
+    for ( int r2 = row + 1; r2 < rowCount; ++r2 )
     {
         const CartesianDiagramDataCompressor::CachePosition position( r2, column );
         const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
         rightValue = point.value;
-        if( !ISNAN( point.value ) )
+        if ( !ISNAN( point.value ) )
             break;
         ++missingCount;
     }
-    if( !ISNAN( leftValue ) && !ISNAN( rightValue ) )
+    if ( !ISNAN( leftValue ) && !ISNAN( rightValue ) )
         return leftValue + ( rightValue - leftValue ) / ( missingCount + 1 );
     else
         return std::numeric_limits< qreal >::quiet_NaN();

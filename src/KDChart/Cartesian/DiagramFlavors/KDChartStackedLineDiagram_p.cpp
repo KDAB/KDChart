@@ -55,29 +55,29 @@ const QPair<QPointF, QPointF> StackedLineDiagram::calculateDataBoundaries() cons
     qreal yMin = 0, yMax = 0;
 
     bool bStarting = true;
-    for( int row = 0; row < rowCount; ++row )
+    for ( int row = 0; row < rowCount; ++row )
     {
         // calculate sum of values per column - Find out stacked Min/Max
         qreal stackedValues = 0.0;
         qreal negativeStackedValues = 0.0;
-        for( int col = datasetDimension() - 1; col < colCount; col += datasetDimension() ) {
+        for ( int col = datasetDimension() - 1; col < colCount; col += datasetDimension() ) {
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
 
-            if( ISNAN( point.value ) )
+            if ( ISNAN( point.value ) )
                 continue;
 
-            if( point.value >= 0.0 )
+            if ( point.value >= 0.0 )
                 stackedValues += point.value;
             else
                 negativeStackedValues += point.value;
         }
 
-        if( bStarting ){
+        if ( bStarting ) {
             yMin = stackedValues;
             yMax = stackedValues;
             bStarting = false;
-        }else{
+        } else {
             // take in account all stacked values
             yMin = qMin( qMin( yMin, negativeStackedValues ), stackedValues );
             yMax = qMax( qMax( yMax, negativeStackedValues ), stackedValues );
@@ -100,10 +100,10 @@ void StackedLineDiagram::paint( PaintContext* ctx )
 // FIXME integrate column index retrieval to compressor:
 //    int maxFound = 0;
 //    {   // find the last column number that is not hidden
-//        for( int iColumn =  datasetDimension() - 1;
+//        for ( int iColumn =  datasetDimension() - 1;
 //             iColumn <  columnCount;
 //             iColumn += datasetDimension() )
-//            if( ! diagram()->isHidden( iColumn ) )
+//            if ( ! diagram()->isHidden( iColumn ) )
 //                maxFound = iColumn;
 //    }
     //maxFound = columnCount;
@@ -117,7 +117,7 @@ void StackedLineDiagram::paint( PaintContext* ctx )
     QList<QPointF> bottomPoints;
     bool bFirstDataset = true;
 
-    for( int column = 0; column < columnCount; ++column )
+    for ( int column = 0; column < columnCount; ++column )
     {
         CartesianDiagramDataCompressor::CachePosition previousCellPosition;
 
@@ -137,7 +137,7 @@ void StackedLineDiagram::paint( PaintContext* ctx )
 
             const LineAttributes::MissingValuesPolicy policy = laCell.missingValuesPolicy();
 
-            if( ISNAN( point.value ) && policy == LineAttributes::MissingValuesShownAsZero )
+            if ( ISNAN( point.value ) && policy == LineAttributes::MissingValuesShownAsZero )
                 point.value = 0.0;
 
             qreal stackedValues = 0, nextValues = 0, nextKey = 0;
@@ -145,29 +145,29 @@ void StackedLineDiagram::paint( PaintContext* ctx )
             {
                 const CartesianDiagramDataCompressor::CachePosition position( row, column2 );
                 const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-                if( !ISNAN( point.value ) )
+                if ( !ISNAN( point.value ) )
                 {
                     stackedValues += point.value;
                 }
-                else if( policy == LineAttributes::MissingValuesAreBridged )
+                else if ( policy == LineAttributes::MissingValuesAreBridged )
                 {
                     const qreal interpolation = interpolateMissingValue( position );
-                    if( !ISNAN( interpolation ) )
+                    if ( !ISNAN( interpolation ) )
                         stackedValues += interpolation;
                 }
 
                 //qDebug() << valueForCell( iRow, iColumn2 );
-                if ( row + 1 < rowCount ){
+                if ( row + 1 < rowCount ) {
                     const CartesianDiagramDataCompressor::CachePosition position( row + 1, column2 );
                     const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-                    if( !ISNAN( point.value ) )
+                    if ( !ISNAN( point.value ) )
                     {
                         nextValues += point.value;
                     }
-                    else if( policy == LineAttributes::MissingValuesAreBridged )
+                    else if ( policy == LineAttributes::MissingValuesAreBridged )
                     {
                         const qreal interpolation = interpolateMissingValue( position );
-                        if( !ISNAN( interpolation ) )
+                        if ( !ISNAN( interpolation ) )
                             nextValues += interpolation;
                     }
                     nextKey = point.key;
@@ -188,7 +188,7 @@ void StackedLineDiagram::paint( PaintContext* ctx )
             QPointF ptNorthEast;
             QPointF ptSouthEast;
 
-            if ( row + 1 < rowCount ){
+            if ( row + 1 < rowCount ) {
                 QPointF toPoint = ctx->coordinatePlane()->translate( QPointF( diagram()->centerDataPoints() ? nextKey + 0.5 : nextKey, nextValues ) );
                 lineList.append( LineAttributesInfo( sourceIndex, nextPoint, toPoint ) );
                 ptNorthEast = toPoint;
@@ -203,22 +203,22 @@ void StackedLineDiagram::paint( PaintContext* ctx )
                     PaintingHelpers::paintAreas( m_private, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
                     areas.clear();
                 }
-                if( bDisplayCellArea ){
+                if ( bDisplayCellArea ) {
                     QPolygonF poly;
                     poly << ptNorthWest << ptNorthEast << ptSouthEast << ptSouthWest;
                     areas << poly;
                     laPreviousCell = laCell;
                     indexPreviousCell = sourceIndex;
-                }else{
+                } else {
                     //qDebug() << "no area shown for row"<<iRow<<"  column"<<iColumn;
                 }
-            }else{
+            } else {
                 ptNorthEast = ptNorthWest;
                 ptSouthEast = ptSouthWest;
             }
 
             const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
-            if( !ISNAN( point.value ) )
+            if ( !ISNAN( point.value ) )
                 m_private->addLabel( &lpc, sourceIndex, &position, pts, Position::NorthWest,
                                      Position::NorthWest, point.value );
         }

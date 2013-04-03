@@ -91,7 +91,7 @@ RelativePosition::~RelativePosition()
 
 void RelativePosition::setReferenceArea( QObject * area ) {
     d->area = area;
-    if( area )
+    if ( area )
         setReferencePoints( PositionPoints() );
 }
 
@@ -99,9 +99,9 @@ QObject * RelativePosition::referenceArea() const {
     return d->area;
 }
 
-void RelativePosition::setReferencePoints( const PositionPoints& points ){
+void RelativePosition::setReferencePoints( const PositionPoints& points ) {
     d->points = points;
-    if( !points.isNull() )
+    if ( !points.isNull() )
         setReferenceArea( 0 );
 }
 const PositionPoints RelativePosition::referencePoints() const{
@@ -170,7 +170,7 @@ const QPointF RelativePosition::referencePoint( qreal* polarDegrees ) const
 
     QPointF pt;
     qreal angle = 0.0;
-    if ( useRect ){
+    if ( useRect ) {
         pt = PositionPoints( rect ).point( d->position );
     } else {
         pt = d->points.point( d->position );

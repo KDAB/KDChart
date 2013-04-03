@@ -56,7 +56,7 @@ const QPair< QPointF, QPointF > NormalLineDiagram::calculateDataBoundaries() con
     qreal yMin = std::numeric_limits< qreal >::quiet_NaN();
     qreal yMax = std::numeric_limits< qreal >::quiet_NaN();
 
-    for( int column = 0; column < colCount; ++column )
+    for ( int column = 0; column < colCount; ++column )
     {
         for ( int row = 0; row < rowCount; ++row )
         {
@@ -95,10 +95,10 @@ void NormalLineDiagram::paint( PaintContext* ctx )
 // the compressor should only pass through visiblel columns
 //    int maxFound = 0;
 //     {   // find the last column number that is not hidden
-//         for( int column =  datasetDimension() - 1;
+//         for ( int column =  datasetDimension() - 1;
 //              column <  columnCount;
 //              column += datasetDimension() )
-//             if( ! diagram()->isHidden( column ) )
+//             if ( ! diagram()->isHidden( column ) )
 //                 maxFound = column;
 //     }
 //   maxFound = columnCount;
@@ -108,7 +108,7 @@ void NormalLineDiagram::paint( PaintContext* ctx )
     bool rev = diagram()->reverseDatasetOrder();
     LabelPaintCache lpc;
     LineAttributesInfoList lineList;
-    for( int column = rev ? columnCount - 1 : 0;
+    for ( int column = rev ? columnCount - 1 : 0;
          rev ? (column >= 0) : (column < columnCount);
          rev ? --column : ++column ) {
         LineAttributes laPreviousCell;
@@ -142,9 +142,9 @@ void NormalLineDiagram::paint( PaintContext* ctx )
                 areaBoundingValue = minYValue;
             }
 
-            if( ISNAN( point.value ) )
+            if ( ISNAN( point.value ) )
             {
-                switch( policy )
+                switch ( policy )
                 {
                 case LineAttributes::MissingValuesAreBridged:
                     // we just bridge both values

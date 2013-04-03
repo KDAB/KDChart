@@ -66,7 +66,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 void MainWindow::on_scopeOneBarRB_toggled(  bool checked )
 {
-    if( checked ){
+    if ( checked ) {
         scopeBarDatasetSB->setDisabled( false );
         scopeBarItemSB->setDisabled(    false );
         scopeDatasetSB->setDisabled(    true );
@@ -85,7 +85,7 @@ void MainWindow::on_scopeBarItemSB_valueChanged(    int i )
 }
 void MainWindow::on_scopeDatasetRB_toggled( bool checked )
 {
-    if( checked ){
+    if ( checked ) {
         scopeBarDatasetSB->setDisabled( true );
         scopeBarItemSB->setDisabled(    true );
         scopeDatasetSB->setDisabled(    false );
@@ -99,7 +99,7 @@ void MainWindow::on_scopeDatasetSB_valueChanged( int i )
 }
 void MainWindow::on_scopeCommonRB_toggled( bool checked )
 {
-    if( checked ){
+    if ( checked ) {
         scopeBarDatasetSB->setDisabled( true );
         scopeBarItemSB->setDisabled(    true );
         scopeDatasetSB->setDisabled(    true );
@@ -297,11 +297,11 @@ const QModelIndex MainWindow::currentIndex() const
 
 const KDChart::DataValueAttributes MainWindow::attributes() const
 {
-    if( scopeOneBarRB->isChecked() ){
+    if ( scopeOneBarRB->isChecked() ) {
         //qDebug() << "attributes() returns settings for one single bar";
         return m_bars->dataValueAttributes( currentIndex() );
     }
-    if( scopeDatasetRB->isChecked() ){
+    if ( scopeDatasetRB->isChecked() ) {
         //qDebug() << "attributes() returns settings for a dataset";
         return m_bars->dataValueAttributes( scopeDatasetSB->value() );
     }
@@ -311,9 +311,9 @@ const KDChart::DataValueAttributes MainWindow::attributes() const
 
 void MainWindow::setAttributes( const KDChart::DataValueAttributes& da )
 {
-    if( scopeOneBarRB->isChecked() )
+    if ( scopeOneBarRB->isChecked() )
         m_bars->setDataValueAttributes( currentIndex(), da );
-    else if( scopeDatasetRB->isChecked() )
+    else if ( scopeDatasetRB->isChecked() )
         m_bars->setDataValueAttributes( scopeDatasetSB->value(), da );
     else
         m_bars->setDataValueAttributes( da );
@@ -326,36 +326,36 @@ void MainWindow::setAttributes( const KDChart::DataValueAttributes& da )
 const char* MainWindow::positionToScreenName( const Position& pos ) const
 {
     static const char* defaultPositionName = "( Default Value )";
-    if( pos.isUnknown() )
+    if ( pos.isUnknown() )
         return defaultPositionName;
     return pos.name();
 }
 
 const Qt::Alignment MainWindow::alignmentFromScreeName( const QString& name ) const
 {
-    if( name == "Center" )      return Qt::AlignCenter;
-    if( name == "BottomLeft" )  return Qt::AlignLeft    | Qt::AlignBottom;
-    if( name == "Bottom" )      return Qt::AlignHCenter | Qt::AlignBottom;
-    if( name == "BottomRight" ) return Qt::AlignRight   | Qt::AlignBottom;
-    if( name == "Right" )       return Qt::AlignRight   | Qt::AlignVCenter;
-    if( name == "TopRight" )    return Qt::AlignRight   | Qt::AlignTop;
-    if( name == "Top" )         return Qt::AlignHCenter | Qt::AlignTop;
-    if( name == "TopLeft" )     return Qt::AlignLeft    | Qt::AlignTop;
-    if( name == "Left" )        return Qt::AlignLeft    | Qt::AlignVCenter;
+    if ( name == "Center" )      return Qt::AlignCenter;
+    if ( name == "BottomLeft" )  return Qt::AlignLeft    | Qt::AlignBottom;
+    if ( name == "Bottom" )      return Qt::AlignHCenter | Qt::AlignBottom;
+    if ( name == "BottomRight" ) return Qt::AlignRight   | Qt::AlignBottom;
+    if ( name == "Right" )       return Qt::AlignRight   | Qt::AlignVCenter;
+    if ( name == "TopRight" )    return Qt::AlignRight   | Qt::AlignTop;
+    if ( name == "Top" )         return Qt::AlignHCenter | Qt::AlignTop;
+    if ( name == "TopLeft" )     return Qt::AlignLeft    | Qt::AlignTop;
+    if ( name == "Left" )        return Qt::AlignLeft    | Qt::AlignVCenter;
     return Qt::AlignCenter;
 }
 
 const QString MainWindow::alignmentToScreenName( const Qt::Alignment& align ) const
 {
-    if( align == Qt::AlignCenter )                       return "Center";
-    if( align == (Qt::AlignLeft    | Qt::AlignBottom) )  return "BottomLeft";
-    if( align == (Qt::AlignHCenter | Qt::AlignBottom) )  return "Bottom";
-    if( align == (Qt::AlignRight   | Qt::AlignBottom) )  return "BottomRight";
-    if( align == (Qt::AlignRight   | Qt::AlignVCenter) ) return "Right";
-    if( align == (Qt::AlignRight   | Qt::AlignTop) )     return "TopRight";
-    if( align == (Qt::AlignHCenter | Qt::AlignTop) )     return "Top";
-    if( align == (Qt::AlignLeft    | Qt::AlignTop) )     return "TopLeft";
-    if( align == (Qt::AlignLeft    | Qt::AlignVCenter) ) return "Left";
+    if ( align == Qt::AlignCenter )                       return "Center";
+    if ( align == (Qt::AlignLeft    | Qt::AlignBottom) )  return "BottomLeft";
+    if ( align == (Qt::AlignHCenter | Qt::AlignBottom) )  return "Bottom";
+    if ( align == (Qt::AlignRight   | Qt::AlignBottom) )  return "BottomRight";
+    if ( align == (Qt::AlignRight   | Qt::AlignVCenter) ) return "Right";
+    if ( align == (Qt::AlignRight   | Qt::AlignTop) )     return "TopRight";
+    if ( align == (Qt::AlignHCenter | Qt::AlignTop) )     return "Top";
+    if ( align == (Qt::AlignLeft    | Qt::AlignTop) )     return "TopLeft";
+    if ( align == (Qt::AlignLeft    | Qt::AlignVCenter) ) return "Left";
     return "Center";
 }
 

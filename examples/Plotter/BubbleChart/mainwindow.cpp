@@ -108,7 +108,7 @@ void MainWindow::initializeDataModel()
 {
     m_model = new QStandardItemModel( nBubbles, 2 );
     m_model->setHeaderData(0, Qt::Horizontal, tr("Some Bubbles"));
-    for( int i=0;  i < nBubbles;  ++i ){
+    for ( int i=0;  i < nBubbles;  ++i ) {
         const QModelIndex indexX = m_model->index(i, 0);
         const QModelIndex indexY = m_model->index(i, 1);
 

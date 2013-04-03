@@ -155,7 +155,7 @@ void PolarDiagram::paint( PaintContext* ctx,
     const int rowCount = model()->rowCount( rootIndex() );
     const int colCount = model()->columnCount( rootIndex() );
 
-    if( calculateListAndReturnScale ){
+    if ( calculateListAndReturnScale ) {
         // Check if all of the data value texts / data comments fit into the available space...
         d->labelPaintCache.clear();
 

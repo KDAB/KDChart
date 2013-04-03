@@ -51,7 +51,7 @@ ThreeDBarAttributes::ThreeDBarAttributes( const ThreeDBarAttributes& r )
 
 ThreeDBarAttributes& ThreeDBarAttributes::operator= ( const ThreeDBarAttributes& r )
 {
-    if( this == &r )
+    if ( this == &r )
         return *this;
 
     *d = *r.d;

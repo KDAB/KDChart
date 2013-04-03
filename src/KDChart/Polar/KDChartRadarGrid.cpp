@@ -52,20 +52,20 @@ static qreal fitFontSizeToGeometry( const QString& text, const QFont& font, cons
     const qreal origResult = f.pointSizeF();
     qreal result = origResult;
     const QSizeF mySize = geometry.size();
-    if( mySize.isNull() )
+    if ( mySize.isNull() )
         return result;
 
     const QString t = text;
     QFontMetrics fm( f );
-    while( true )
+    while ( true )
     {
         const QSizeF textSize = rotatedRect( fm.boundingRect( t ), ta.rotation() ).normalized().size();
 
-        if( textSize.height() <= mySize.height() && textSize.width() <= mySize.width() )
+        if ( textSize.height() <= mySize.height() && textSize.width() <= mySize.width() )
             return result;
 
         result -= 0.5;
-        if( result <= 0.0 )
+        if ( result <= 0.0 )
             return origResult;
         f.setPointSizeF( result );
         fm = QFontMetrics( f );
@@ -116,7 +116,7 @@ void RadarGrid::drawGrid( PaintContext* context )
 
 
     // Do not draw a grid for pie diagrams
-    if( dynamic_cast<PieDiagram*> (plane->diagrams().first() ) ) return;
+    if ( dynamic_cast<PieDiagram*> (plane->diagrams().first() ) ) return;
 
 
     context->painter()->setPen ( PrintingParameters::scalePen( QColor ( Qt::lightGray ) ) );

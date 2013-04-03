@@ -72,7 +72,7 @@ void DiagramObserver::init()
     Q_UNUSED( con )
     connect( m_diagram, SIGNAL(dataHidden()), SLOT(slotDataHidden()) );
 
-    if( m_diagram->model() ){
+    if ( m_diagram->model() ) {
         connect( m_diagram->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex)),
                  SLOT(slotDataChanged(QModelIndex,QModelIndex)));
         connect( m_diagram->model(), SIGNAL(rowsInserted(QModelIndex,int,int)),
@@ -89,7 +89,7 @@ void DiagramObserver::init()
                  SLOT(slotHeaderDataChanged(Qt::Orientation,int,int)));
     }
 
-    if( m_diagram->attributesModel() )
+    if ( m_diagram->attributesModel() )
         connect( m_diagram->attributesModel(), SIGNAL(attributesChanged(QModelIndex,QModelIndex)),
                  SLOT(slotAttributesChanged(QModelIndex,QModelIndex)));
     m_model = m_diagram->model();

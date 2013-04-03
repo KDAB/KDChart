@@ -102,7 +102,7 @@ void Widget::setDataset( int column, const QVector< qreal > & data, const QStrin
 
     justifyModelSize( data.size(), column + 1 );
 
-    for( int i = 0; i < data.size(); ++i )
+    for ( int i = 0; i < data.size(); ++i )
     {
         const QModelIndex index = model.index( i, column );
         model.setData( index, QVariant( data[i] ), Qt::DisplayRole );
@@ -120,7 +120,7 @@ void Widget::setDataset( int column, const QVector< QPair< qreal, qreal > > & da
 
     justifyModelSize( data.size(), (column + 1) * 2 );
 
-    for( int i = 0; i < data.size(); ++i )
+    for ( int i = 0; i < data.size(); ++i )
     {
         QModelIndex index = model.index( i, column * 2 );
         model.setData( index, QVariant( data[i].first ), Qt::DisplayRole );
@@ -128,7 +128,7 @@ void Widget::setDataset( int column, const QVector< QPair< qreal, qreal > > & da
         index = model.index( i, column * 2 + 1 );
         model.setData( index, QVariant( data[i].second ), Qt::DisplayRole );
     }
-    if ( ! title.isEmpty() ){
+    if ( ! title.isEmpty() ) {
         model.setHeaderData( column,   Qt::Horizontal, QVariant( title ) );
     }
 }
@@ -396,28 +396,28 @@ void Widget::setType( ChartType chartType, SubType chartSubType )
     AbstractDiagram* diag = 0;
     const ChartType oldType = type();
 
-    if ( chartType != oldType ){
-        if( chartType != NoType ){
+    if ( chartType != oldType ) {
+        if ( chartType != NoType ) {
             if ( isCartesian( chartType ) && ! isCartesian( oldType ) )
             {
-                if( coordinatePlane() == &d->m_polPlane ){
+                if ( coordinatePlane() == &d->m_polPlane ) {
                     d->m_chart.takeCoordinatePlane( &d->m_polPlane );
                     d->m_chart.addCoordinatePlane( &d->m_cartPlane );
-                }else{
+                } else {
                     d->m_chart.replaceCoordinatePlane( &d->m_cartPlane );
                 }
             }
             else if ( isPolar( chartType ) && ! isPolar( oldType ) )
             {
-                if( coordinatePlane() == &d->m_cartPlane ){
+                if ( coordinatePlane() == &d->m_cartPlane ) {
                     d->m_chart.takeCoordinatePlane( &d->m_cartPlane );
                     d->m_chart.addCoordinatePlane( &d->m_polPlane );
-                }else{
+                } else {
                     d->m_chart.replaceCoordinatePlane( &d->m_polPlane );
                 }
             }
         }
-        switch ( chartType ){
+        switch ( chartType ) {
             case Bar:
                 diag = new BarDiagram( &d->m_chart, &d->m_cartPlane );
                 break;
@@ -439,8 +439,8 @@ void Widget::setType( ChartType chartType, SubType chartSubType )
             case NoType:
                 break;
         }
-        if ( diag != NULL ){
-            if ( isCartesian( oldType ) && isCartesian( chartType ) ){
+        if ( diag != NULL ) {
+            if ( isCartesian( oldType ) && isCartesian( chartType ) ) {
                 AbstractCartesianDiagram *oldDiag =
                         qobject_cast<AbstractCartesianDiagram*>( coordinatePlane()->diagram() );
                 AbstractCartesianDiagram *newDiag =
@@ -461,7 +461,7 @@ void Widget::setType( ChartType chartType, SubType chartSubType )
         //coordinatePlane()->setGridNeedsRecalculate();
     }
 
-    if ( chartType != NoType ){
+    if ( chartType != NoType ) {
         if ( chartType != oldType || chartSubType != subType() )
             setSubType( chartSubType );
         d->m_chart.resize( size() ); // triggering immediate update
@@ -481,7 +481,7 @@ void Widget::setSubType( SubType subType )
 
 #define SET_SUB_TYPE(DIAGRAM, SUBTYPE) \
 { \
-    if( DIAGRAM ) \
+    if ( DIAGRAM ) \
         DIAGRAM->setType( SUBTYPE ); \
 }
     switch ( subType )
@@ -525,11 +525,11 @@ Widget::ChartType Widget::type() const
         return Line;
     else if ( qobject_cast< Plotter* >( dia ) )
         return Plot;
-    else if( qobject_cast< PieDiagram* >( dia ) )
+    else if ( qobject_cast< PieDiagram* >( dia ) )
         return Pie;
-    else if( qobject_cast< PolarDiagram* >( dia ) )
+    else if ( qobject_cast< PolarDiagram* >( dia ) )
         return Polar;
-    else if( qobject_cast< RingDiagram* >( dia ) )
+    else if ( qobject_cast< RingDiagram* >( dia ) )
         return Ring;
     else
         return NoType;
@@ -552,7 +552,7 @@ Widget::SubType Widget::subType() const
 
 #define TEST_SUB_TYPE(DIAGRAM, INTERNALSUBTYPE, SUBTYPE) \
 { \
-    if( DIAGRAM && DIAGRAM->type() == INTERNALSUBTYPE ) \
+    if ( DIAGRAM && DIAGRAM->type() == INTERNALSUBTYPE ) \
         retVal = SUBTYPE; \
 }
     const Widget::ChartType mainType = type();
@@ -596,7 +596,7 @@ Widget::SubType Widget::subType() const
  */
 bool Widget::checkDatasetWidth( int width )
 {
-    if( width == diagram()->datasetDimension() )
+    if ( width == diagram()->datasetDimension() )
     {
         d->usedDatasetWidth = width;
         return true;

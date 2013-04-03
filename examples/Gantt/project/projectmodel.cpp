@@ -207,7 +207,7 @@ QModelIndex ProjectModel::parent( const QModelIndex& idx ) const
 QVariant ProjectModel::headerData( int section, Qt::Orientation orientation, int role ) const
 {
     if ( orientation != Qt::Horizontal || role != Qt::DisplayRole ) return QVariant();
-    switch( section ) {
+    switch ( section ) {
     case 0: return tr( "Name" );
     case 1: return tr( "Type" );
     case 2: return tr( "Start" );
@@ -224,7 +224,7 @@ QVariant ProjectModel::data( const QModelIndex& idx, int role ) const
     Node* n = static_cast<Node*>( idx.internalPointer() );
     assert( n );
     if ( idx.column() == 0 ) {
-        switch( role ) {
+        switch ( role ) {
         case Qt::DisplayRole:
         case Qt::EditRole:
 			return n->label();
@@ -232,13 +232,13 @@ QVariant ProjectModel::data( const QModelIndex& idx, int role ) const
             return n->position();
         }
     } else if ( idx.column() == 1 ) {
-        switch( role ) {
+        switch ( role ) {
         case Qt::DisplayRole:
         case Qt::EditRole:
             return qVariantFromValue<int>( n->type() );
         }
     } else if ( idx.column() == 2 ) {
-        switch( role ) {
+        switch ( role ) {
         case Qt::DisplayRole:
             return n->start().date().toString("dd-MM-yyyy");
         case Qt::EditRole:
@@ -246,7 +246,7 @@ QVariant ProjectModel::data( const QModelIndex& idx, int role ) const
             return n->start();
         }
     } else if ( idx.column() == 3 ) {
-        switch( role ) {
+        switch ( role ) {
         case Qt::DisplayRole:
             return n->end().date().toString("dd-MM-yyyy");
         case Qt::EditRole:
@@ -254,13 +254,13 @@ QVariant ProjectModel::data( const QModelIndex& idx, int role ) const
             return n->end();
         }
     } else if ( idx.column() == 4 && n->completion() >= 0 ) {
-        switch( role ) {
+        switch ( role ) {
         case Qt::DisplayRole:
         case Qt::EditRole:
             return n->completion();
         }
     } else if ( idx.column() == 5 ) {
-        switch( role ) {
+        switch ( role ) {
         case Qt::DisplayRole:
         case Qt::EditRole:
             return n->label();
@@ -289,7 +289,7 @@ bool ProjectModel::setData( const QModelIndex& idx,  const QVariant& value,
     assert( n );
 
     if ( idx.column() == 0 ) {
-        switch( role ) {
+        switch ( role ) {
         case Qt::DisplayRole:
         case Qt::EditRole:
             n->setLabel( value.toString() );
@@ -301,7 +301,7 @@ bool ProjectModel::setData( const QModelIndex& idx,  const QVariant& value,
             break;
         }
     } else if ( idx.column() == 1 ) {
-        switch( role ) {
+        switch ( role ) {
         case Qt::DisplayRole:
         case Qt::EditRole:
             n->setType( value.toInt() );
@@ -309,7 +309,7 @@ bool ProjectModel::setData( const QModelIndex& idx,  const QVariant& value,
             break;
         }
     } else if ( idx.column() == 2 ) {
-        switch( role ) {
+        switch ( role ) {
         case Qt::DisplayRole:
         case Qt::EditRole:
         case KDGantt::StartTimeRole:
@@ -318,7 +318,7 @@ bool ProjectModel::setData( const QModelIndex& idx,  const QVariant& value,
             break;
         }
     } else if ( idx.column() == 3 ) {
-        switch( role ) {
+        switch ( role ) {
         case Qt::DisplayRole:
         case Qt::EditRole:
         case KDGantt::EndTimeRole:
@@ -327,7 +327,7 @@ bool ProjectModel::setData( const QModelIndex& idx,  const QVariant& value,
             break;
         }
     } else if ( idx.column() == 4 ) {
-        switch( role ) {
+        switch ( role ) {
         case Qt::DisplayRole:
         case Qt::EditRole:
             n->setCompletion(value.toInt());

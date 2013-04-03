@@ -58,10 +58,10 @@ public:
     Measure( const Measure& );
     Measure &operator= ( const Measure& );
 
-    void setValue( qreal val ){ mValue = val; }
+    void setValue( qreal val ) { mValue = val; }
     qreal value() const { return mValue; }
 
-    void setCalculationMode( KDChartEnums::MeasureCalculationMode mode ){ mMode = mode; }
+    void setCalculationMode( KDChartEnums::MeasureCalculationMode mode ) { mMode = mode; }
     KDChartEnums::MeasureCalculationMode calculationMode() const { return mMode; }
 
     /**
@@ -96,14 +96,14 @@ public:
       * The reference area must either be derived from AbstractArea
       * or from QWidget, so it can also be derived from AbstractAreaWidget.
       */
-    void setReferenceArea( const QObject * area ){ mArea = area; }
+    void setReferenceArea( const QObject * area ) { mArea = area; }
     /**
       * The returned reference area will be derived from AbstractArea
       * or QWidget or both.
       */
     const QObject * referenceArea() const { return mArea; }
 
-    void setReferenceOrientation( KDChartEnums::MeasureOrientation orientation ){ mOrientation = orientation; }
+    void setReferenceOrientation( KDChartEnums::MeasureOrientation orientation ) { mOrientation = orientation; }
     KDChartEnums::MeasureOrientation referenceOrientation() const { return mOrientation; }
 
     /**

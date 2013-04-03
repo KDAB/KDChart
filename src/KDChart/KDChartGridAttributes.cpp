@@ -82,7 +82,7 @@ GridAttributes::GridAttributes( const GridAttributes& r )
 
 GridAttributes & GridAttributes::operator=( const GridAttributes& r )
 {
-    if( this == &r )
+    if ( this == &r )
         return *this;
 
     *d = *r.d;

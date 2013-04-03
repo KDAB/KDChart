@@ -60,8 +60,8 @@ void AbstractPieDiagram::init()
 
 bool AbstractPieDiagram::compare( const AbstractPieDiagram* other ) const
 {
-    if( other == this ) return true;
-    if( ! other ){
+    if ( other == this ) return true;
+    if ( ! other ) {
         //qDebug() << "AbstractPieDiagram::compare() cannot compare to Null pointer";
         return false;
     }
@@ -149,7 +149,7 @@ PieAttributes AbstractPieDiagram::pieAttributes() const
 PieAttributes AbstractPieDiagram::pieAttributes( int column ) const
 {
     const QVariant attrs( d->datasetAttrs( column, PieAttributesRole ) );
-    if( attrs.isValid() )
+    if ( attrs.isValid() )
         return attrs.value< PieAttributes >();
     return pieAttributes();
 }
@@ -194,7 +194,7 @@ ThreeDPieAttributes AbstractPieDiagram::threeDPieAttributes() const
 ThreeDPieAttributes AbstractPieDiagram::threeDPieAttributes( int column ) const
 {
     const QVariant attrs( d->datasetAttrs( column, ThreeDPieAttributesRole ) );
-    if( attrs.isValid() )
+    if ( attrs.isValid() )
         return attrs.value< ThreeDPieAttributes >();
     return threeDPieAttributes();
 }

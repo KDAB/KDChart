@@ -38,9 +38,9 @@ public:
     m_model.insertRows( 0,5, QModelIndex() );
     m_model.insertColumns( 0,5, QModelIndex() );
     qreal increase = 1.15;
-    for( int i = 0; i < 5; ++i ) {
+    for ( int i = 0; i < 5; ++i ) {
         increase += 0.06;
-        for( int j = 0; j < 5; ++j ) {
+        for ( int j = 0; j < 5; ++j ) {
             m_model.setData( m_model.index( i,j,QModelIndex() ),
                              ( increase + i ) * j * (1.0 + 0.1 * (rand() % 10)) );
         }
@@ -83,7 +83,7 @@ public:
     diagram->setDataValueAttributes( dva );
 
     // Set thick line widths for all datasets
-    for( int i=0; i<m_model.rowCount(); ++i ){
+    for ( int i = 0; i < m_model.rowCount(); ++i ) {
         QPen pen( diagram->pen( i ) );
         pen.setWidth( 17 );
         diagram->setPen( i, pen );
@@ -93,7 +93,7 @@ public:
     // 1 - Retrieve the pen for the dataset and change
     //    its style.
     //    This allow us to keep the line original color.
-    QPen linePen(  diagram->pen( 1 ) );
+    QPen linePen( diagram->pen( 1 ) );
     linePen.setColor( Qt::yellow );
     linePen.setWidth( 7 );
     linePen.setStyle( Qt::DashLine );
@@ -102,7 +102,7 @@ public:
     diagram->setPen( m_model.index( 1, 1, QModelIndex() ), linePen );
     // 3 - Assign to the chart
     m_chart.coordinatePlane()->replaceDiagram(diagram);
-    m_chart.setGlobalLeadingRight(  50 );
+    m_chart.setGlobalLeadingRight( 50 );
 
     QVBoxLayout* l = new QVBoxLayout(this);
     l->addWidget(&m_chart);
@@ -114,7 +114,8 @@ private:
   QStandardItemModel m_model;
 };
 
-int main( int argc, char** argv ) {
+int main( int argc, char** argv )
+{
     QApplication app( argc, argv );
 
     ChartWidget w;

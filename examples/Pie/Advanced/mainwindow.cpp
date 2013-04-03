@@ -103,7 +103,7 @@ void MainWindow::setExplodeFactor( int column, qreal value )
 
 void MainWindow::on_animateExplosionCB_toggled( bool toggle )
 {
-    if( toggle )
+    if ( toggle )
         m_timer->start( 100 );
     else
         m_timer->stop();
@@ -112,13 +112,13 @@ void MainWindow::on_animateExplosionCB_toggled( bool toggle )
 void MainWindow::slotNextFrame()
 {
     m_currentFactor += ( 1 * m_currentDirection );
-    if( m_currentFactor == 0 || m_currentFactor == 5 )
+    if ( m_currentFactor == 0 || m_currentFactor == 5 )
         m_currentDirection = -m_currentDirection;
 
-    if( m_currentFactor == 0 ) {
+    if ( m_currentFactor == 0 ) {
         setExplodeFactor( m_currentSlice, 0.0 );
         m_currentSlice++;
-        if( m_currentSlice >= m_model.columnCount() )
+        if ( m_currentSlice >= m_model.columnCount() )
             m_currentSlice = 0;
     }
 

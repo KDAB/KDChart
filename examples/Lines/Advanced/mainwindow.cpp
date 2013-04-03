@@ -277,8 +277,8 @@ void MainWindow::setTrackedArea( int column, bool checked, bool doUpdate )
 {
     const int rowCount = m_model.rowCount( m_lines->rootIndex() );
     const int columnCount = m_model.columnCount( m_lines->rootIndex() );
-    for( int i = 0; i < rowCount; ++i ) {
-        for( int j = 0; j < columnCount; ++j ) {
+    for ( int i = 0; i < rowCount; ++i ) {
+        for ( int j = 0; j < columnCount; ++j ) {
             QModelIndex cellIndex( m_model.index( i, j,
                                    m_lines->rootIndex() ) );
             ValueTrackerAttributes va( m_lines->valueTrackerAttributes( cellIndex ) );

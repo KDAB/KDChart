@@ -185,8 +185,8 @@ bool AttributesModel::compare( const AttributesModel* other ) const
 bool AttributesModel::compareAttributes(
         int role, const QVariant& a, const QVariant& b ) const
 {
-    if( isKnownAttributesRole( role ) ){
-        switch( role ) {
+    if ( isKnownAttributesRole( role ) ) {
+        switch ( role ) {
             case DataValueLabelAttributesRole:
                 return (a.value<DataValueAttributes>() ==
                         b.value<DataValueAttributes>());
@@ -237,7 +237,7 @@ bool AttributesModel::compareAttributes(
                 Q_ASSERT( false ); // all of our own roles need to be handled
                 break;
         }
-    }else{
+    } else {
         return (a == b);
     }
     return true;
@@ -334,7 +334,7 @@ QVariant AttributesModel::data( int column, int role ) const
 
 QVariant AttributesModel::data( const QModelIndex& index, int role ) const
 {
-    if( index.isValid() ) {
+    if ( index.isValid() ) {
         Q_ASSERT( index.model() == this );
     }
     if ( !sourceModel() ) {
@@ -420,7 +420,7 @@ bool AttributesModel::resetData ( const QModelIndex & index, int role )
 bool AttributesModel::setHeaderData ( int section, Qt::Orientation orientation,
                                       const QVariant & value, int role )
 {
-    if( sourceModel() && headerData( section, orientation, role ) == value ) {
+    if ( sourceModel() && headerData( section, orientation, role ) == value ) {
         return true;
     }
 
@@ -523,7 +523,7 @@ int AttributesModel::columnCount( const QModelIndex& index ) const
 
 void AttributesModel::setSourceModel( QAbstractItemModel* sourceModel )
 {
-    if( this->sourceModel() != 0 )
+    if ( this->sourceModel() != 0 )
     {
         disconnect( this->sourceModel(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)),
                                    this, SLOT( slotDataChanged( const QModelIndex&, const QModelIndex&)));
@@ -549,7 +549,7 @@ void AttributesModel::setSourceModel( QAbstractItemModel* sourceModel )
                                    this, SIGNAL( layoutChanged() ) );
     }
     QAbstractProxyModel::setSourceModel( sourceModel );
-    if( this->sourceModel() != NULL )
+    if ( this->sourceModel() != NULL )
     {
         connect( this->sourceModel(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)),
                                 this, SLOT( slotDataChanged( const QModelIndex&, const QModelIndex&)));

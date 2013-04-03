@@ -68,10 +68,10 @@ void PercentLineDiagram::paint( PaintContext* ctx )
 // FIXME integrade column index retrieval to compressor:
     int maxFound = 0;
 //    {   // find the last column number that is not hidden
-//        for( int iColumn =  datasetDimension() - 1;
+//        for ( int iColumn =  datasetDimension() - 1;
 //             iColumn <  columnCount;
 //             iColumn += datasetDimension() )
-//            if( ! diagram()->isHidden( iColumn ) )
+//            if ( ! diagram()->isHidden( iColumn ) )
 //                maxFound = iColumn;
 //    }
     maxFound = columnCount;
@@ -90,14 +90,14 @@ void PercentLineDiagram::paint( PaintContext* ctx )
     //calculate sum of values for each column and store
     for ( int row = 0; row < rowCount; ++row )
     {
-        for( int col = 0; col < columnCount; ++col )
+        for ( int col = 0; col < columnCount; ++col )
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
             CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
             const LineAttributes laCell = diagram()->lineAttributes( sourceIndex );
             const LineAttributes::MissingValuesPolicy policy = laCell.missingValuesPolicy();
-            if( ISNAN( point.value ) && policy == LineAttributes::MissingValuesAreBridged )
+            if ( ISNAN( point.value ) && policy == LineAttributes::MissingValuesAreBridged )
                 point.value = interpolateMissingValue( position );
             if ( point.value > 0 )
                 sumValues += point.value;
@@ -112,7 +112,7 @@ void PercentLineDiagram::paint( PaintContext* ctx )
     QList<QPointF> bottomPoints;
     bool bFirstDataset = true;
 
-    for( int column = 0; column < columnCount; ++column )
+    for ( int column = 0; column < columnCount; ++column )
     {
         //display area can be set by dataset ( == column) and/or by cell
         LineAttributes laPreviousCell; // by default no area is drawn
@@ -120,7 +120,7 @@ void PercentLineDiagram::paint( PaintContext* ctx )
         QList<QPolygonF> areas;
         QList<QPointF> points;
 
-        for( int row = 0; row < rowCount; ++row )
+        for ( int row = 0; row < rowCount; ++row )
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
             CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
@@ -137,23 +137,23 @@ void PercentLineDiagram::paint( PaintContext* ctx )
                 CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
 
                 const LineAttributes::MissingValuesPolicy policy = laCell.missingValuesPolicy();
-                if( ISNAN( point.value ) && policy == LineAttributes::MissingValuesAreBridged )
+                if ( ISNAN( point.value ) && policy == LineAttributes::MissingValuesAreBridged )
                     point.value = interpolateMissingValue( position );
 
                 const qreal val = point.value;
-                if( val > 0 )
+                if ( val > 0 )
                     stackedValues += val;
                 //qDebug() << valueForCell( iRow, iColumn2 );
-                if ( row + 1 < rowCount ){
+                if ( row + 1 < rowCount ) {
                     const CartesianDiagramDataCompressor::CachePosition position( row + 1, column2 );
                     CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
 
                     const LineAttributes::MissingValuesPolicy policy = laCell.missingValuesPolicy();
-                    if( ISNAN( point.value ) && policy == LineAttributes::MissingValuesAreBridged )
+                    if ( ISNAN( point.value ) && policy == LineAttributes::MissingValuesAreBridged )
                         point.value = interpolateMissingValue( position );
 
                     const qreal val = point.value;
-                    if( val > 0 )
+                    if ( val > 0 )
                         nextValues += val;
                     nextKey = point.key;
                 }
@@ -177,7 +177,7 @@ void PercentLineDiagram::paint( PaintContext* ctx )
             QPointF ptNorthEast;
             QPointF ptSouthEast;
 
-            if ( row + 1 < rowCount ){
+            if ( row + 1 < rowCount ) {
                  if ( percentSumValues.at( row + 1 ) != 0 )
                      nextValues = nextValues / percentSumValues.at( row + 1 ) * maxValue;
                  else
@@ -192,32 +192,32 @@ void PercentLineDiagram::paint( PaintContext* ctx )
                         : bottomPoints.at( row + 1 )
                         )
                     : toPoint;
-                if( areas.count() && laCell != laPreviousCell ){
+                if ( areas.count() && laCell != laPreviousCell ) {
                     PaintingHelpers::paintAreas( m_private, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
                     areas.clear();
                 }
-                if( bDisplayCellArea ){
+                if ( bDisplayCellArea ) {
                     QPolygonF poly;
                     poly << ptNorthWest << ptNorthEast << ptSouthEast << ptSouthWest;
                     areas << poly;
                     laPreviousCell = laCell;
                     indexPreviousCell = sourceIndex;
-                }else{
+                } else {
                     //qDebug() << "no area shown for row"<<iRow<<"  column"<<iColumn;
                 }
-            }else{
+            } else {
                 ptNorthEast = ptNorthWest;
                 ptSouthEast = ptSouthWest;
             }
 
-            if( !ISNAN( point.value ) )
+            if ( !ISNAN( point.value ) )
             {
                 const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
                 m_private->addLabel( &lpc, sourceIndex, &position, pts, Position::NorthWest,
                                      Position::NorthWest, point.value );
             }
         }
-        if( areas.count() ){
+        if ( areas.count() ) {
             PaintingHelpers::paintAreas( m_private, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
             areas.clear();
         }

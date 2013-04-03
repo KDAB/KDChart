@@ -35,10 +35,10 @@ const QString AdjustedCartesianAxis::customizedLabel( const QString& label ) con
 {
     bool bOK;
     qreal val = label.toDouble( & bOK );
-    if( bOK ){
-        if( val < m_lowerBound )
+    if ( bOK ) {
+        if ( val < m_lowerBound )
             return tr("LOW");
-        else if( val > m_upperBound )
+        else if ( val > m_upperBound )
             return tr("HIGH");
     }
     return label;

@@ -68,11 +68,11 @@ KDGanttTreeView::~KDGanttTreeView()
 
 void KDGanttTreeView::expandAll(QModelIndex index)
 {
-    for(int i = 0; i < model()->rowCount(index); i++) {
+    for (int i = 0; i < model()->rowCount(index); i++) {
         QModelIndex indexAt = model()->index(i, 0, index);
-        if(model()->hasChildren(indexAt))
+        if (model()->hasChildren(indexAt))
             expandAll(indexAt);
-        if(isExpanded(indexAt))
+        if (isExpanded(indexAt))
             continue;
         expand(indexAt);
     }
@@ -80,11 +80,11 @@ void KDGanttTreeView::expandAll(QModelIndex index)
 
 void KDGanttTreeView::collapseAll(QModelIndex index)
 {
-    for(int i = 0; i < model()->rowCount(index); i++) {
+    for (int i = 0; i < model()->rowCount(index); i++) {
         QModelIndex indexAt = model()->index(i, 0, index);
-        if(model()->hasChildren(indexAt))
+        if (model()->hasChildren(indexAt))
             collapseAll(indexAt);
-        if(!isExpanded(indexAt))
+        if (!isExpanded(indexAt))
             continue;
         collapse(indexAt);
     }
@@ -143,9 +143,9 @@ void View::Private::setupGraphicsView()
 void View::Private::updateScene()
 {
     gfxview->clearItems();
-    if( !model) return;
+    if ( !model) return;
 
-    if( QTreeView* tw = qobject_cast<QTreeView*>(leftWidget)) {
+    if ( QTreeView* tw = qobject_cast<QTreeView*>(leftWidget)) {
       QModelIndex idx = ganttProxyModel.mapFromSource( model->index( 0, 0, leftWidget->rootIndex() ) );
       do {
         gfxview->updateRow( idx );
@@ -154,7 +154,7 @@ void View::Private::updateScene()
       gfxview->updateSceneRect();
     } else {
       const QModelIndex rootidx = ganttProxyModel.mapFromSource( leftWidget->rootIndex() );
-      for( int r = 0; r < ganttProxyModel.rowCount(rootidx); ++r ) {
+      for ( int r = 0; r < ganttProxyModel.rowCount(rootidx); ++r ) {
 	gfxview->updateRow( ganttProxyModel.index( r, 0, rootidx ) );
       }
     }
@@ -163,7 +163,7 @@ void View::Private::updateScene()
 void View::Private::slotCollapsed(const QModelIndex& _idx)
 {
     QTreeView* tw = qobject_cast<QTreeView*>(leftWidget);
-    if(!tw) return;
+    if (!tw) return;
 
     bool blocked = gfxview->blockSignals( true );
 
@@ -171,7 +171,7 @@ void View::Private::slotCollapsed(const QModelIndex& _idx)
     const QAbstractItemModel* model = leftWidget->model();
     const QModelIndex pidx = ganttProxyModel.mapFromSource(idx);
     bool isMulti = false;
-    for( QModelIndex treewalkidx = pidx; treewalkidx.isValid(); treewalkidx = treewalkidx.parent() ) {
+    for ( QModelIndex treewalkidx = pidx; treewalkidx.isValid(); treewalkidx = treewalkidx.parent() ) {
         if ( treewalkidx.data( ItemTypeRole ).toInt() == TypeMulti
              && !gfxview->rowController()->isRowExpanded( treewalkidx ) ) {
             isMulti = true;
@@ -202,7 +202,7 @@ void View::Private::slotExpanded(const QModelIndex& _idx)
     do {
         //qDebug() << "Updating row" << idx << idx.data( Qt::DisplayRole ).toString();
         gfxview->updateRow(idx);
-    } while( ( idx=gfxview->rowController()->indexBelow( idx ) ) != QModelIndex()
+    } while ( ( idx=gfxview->rowController()->indexBelow( idx ) ) != QModelIndex()
              && gfxview->rowController()->isRowVisible( idx ) );
     gfxview->updateSceneRect();
 }
@@ -284,7 +284,7 @@ void View::setLeftView( QAbstractItemView* aiv )
     d->leftWidget = aiv;
     d->splitter.insertWidget( 0, d->leftWidget );
 
-    if( qobject_cast<QTreeView*>(d->leftWidget) ) {
+    if ( qobject_cast<QTreeView*>(d->leftWidget) ) {
       connect( d->leftWidget,  SIGNAL( collapsed( const QModelIndex& ) ),
 	       this, SLOT( slotCollapsed( const QModelIndex& ) ) );
       connect( d->leftWidget,  SIGNAL( expanded( const QModelIndex& ) ),
@@ -521,7 +521,7 @@ void View::ensureVisible(const QModelIndex& index)
 {
     QGraphicsView* view = graphicsView();
     KDGantt::GraphicsScene* scene = static_cast<KDGantt::GraphicsScene*>(view->scene());
-    if(!scene)
+    if (!scene)
         return;
 
     KDGantt::SummaryHandlingProxyModel* model = static_cast<KDGantt::SummaryHandlingProxyModel*>(scene->summaryHandlingModel());

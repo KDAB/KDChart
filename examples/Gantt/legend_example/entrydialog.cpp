@@ -49,7 +49,7 @@ void EntryDialog::init()
     ui->type->addItem( tr( "Summary" ), KDGantt::TypeSummary );
     ui->type->addItem( tr( "Multi" ), KDGantt::TypeMulti );
     
-    for(int row = 0; row < model->rowCount(); ++row )
+    for (int row = 0; row < model->rowCount(); ++row )
         addDependItem( model, model->index( row, 0 ) );
     
     connect( ui->startDate, SIGNAL( dateTimeChanged( const QDateTime& ) ), this, SLOT( updateEndDate( const QDateTime& ) ) );
@@ -75,19 +75,19 @@ void EntryDialog::initFrom( const QModelIndex & index, const KDGantt::Constraint
     ui->readOnly->setChecked( !(model->flags( model->index( row, 0, parent ) ) & Qt::ItemIsEditable) );
     
     QList<KDGantt::Constraint> constraints = constraintModel->constraintsForIndex( model->index( row, 0, parent ) );
-    if( constraints.isEmpty() )
+    if ( constraints.isEmpty() )
         return;
     
     QModelIndex constraintIndex;
-    for( int i = 0; i < constraints.size(); ++i ) {
+    for ( int i = 0; i < constraints.size(); ++i ) {
         KDGantt::Constraint constraint = constraints[i];
-        if( constraint.endIndex() == index ) {
+        if ( constraint.endIndex() == index ) {
             constraintIndex = constraint.startIndex();
             break;
         }
     }
     
-    if( !constraintIndex.isValid() )
+    if ( !constraintIndex.isValid() )
         return;
     
     ui->depends->setCurrentIndex( indexList.indexOf( constraintIndex ) + 1 );
@@ -99,7 +99,7 @@ void EntryDialog::addDependItem( const QAbstractItemModel* model, const QModelIn
     QString str = QString( "%1%2" ).arg( QString().fill( ' ', indent ) ).arg( model->data( index ).toString() );
     ui->depends->addItem( str );
     
-    for(int row = 0; row < model->rowCount( index ); ++row )
+    for (int row = 0; row < model->rowCount( index ); ++row )
         addDependItem( model, model->index( row, 0, index ), indent + 2 );
 }
 
@@ -141,11 +141,11 @@ bool EntryDialog::readOnly() const
 
 QModelIndex EntryDialog::depends() const
 {
-    if( ui->depends->currentIndex() == 0 )
+    if ( ui->depends->currentIndex() == 0 )
         return QModelIndex();
 
     QPersistentModelIndex index = indexList[ ui->depends->currentIndex() - 1 ];
-    if( index.isValid() )
+    if ( index.isValid() )
         return index;
     
     return QModelIndex();
@@ -168,10 +168,10 @@ void EntryDialog::disableEditing(bool disable)
 
 void EntryDialog::typeChanged(int index)
 {
-    if( ! index ){
+    if ( ! index ) {
         ui->label_EndDate->hide();
         ui->endDate->hide();
-    }else{
+    } else {
         ui->label_EndDate->show();
         ui->endDate->show();
     }

@@ -62,7 +62,7 @@ StyleOptionGanttItem& StyleOptionGanttItem::operator=( const StyleOptionGanttIte
 #ifndef QT_NO_DEBUG_STREAM
 QDebug operator<<( QDebug dbg, KDGantt::StyleOptionGanttItem::Position p)
 {
-    switch( p ) {
+    switch ( p ) {
     case KDGantt::StyleOptionGanttItem::Left:   dbg << "KDGantt::StyleOptionGanttItem::Left"; break;
     case KDGantt::StyleOptionGanttItem::Right:  dbg << "KDGantt::StyleOptionGanttItem::Right"; break;
     case KDGantt::StyleOptionGanttItem::Center: dbg << "KDGantt::StyleOptionGanttItem::Center"; break;

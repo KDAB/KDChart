@@ -47,11 +47,11 @@ DataDimensionsList LeveyJenningsGrid::calculateGrid( const DataDimensionsList& r
     DataDimensionsList l( rawDataDimensions );
     // rule:  Returned list is either empty, or it is providing two
     //        valid dimensions, complete with two non-Zero step widths.
-    if( isBoundariesValid( l ) ) {
+    if ( isBoundariesValid( l ) ) {
         const QPointF translatedBottomLeft( plane->translateBack( plane->geometry().bottomLeft() ) );
         const QPointF translatedTopRight( plane->translateBack( plane->geometry().topRight() ) );
 
-        if( l.first().isCalculated
+        if ( l.first().isCalculated
             && plane->autoAdjustGridToZoom()
             && plane->axesCalcModeX() == CartesianCoordinatePlane::Linear
             && plane->zoomFactorX() > 1.0 )
@@ -62,12 +62,12 @@ DataDimensionsList LeveyJenningsGrid::calculateGrid( const DataDimensionsList& r
 
         const DataDimension dimX
                 = calculateGridXY( l.first(), Qt::Horizontal, false, false );
-        if( dimX.stepWidth ){
+        if ( dimX.stepWidth ) {
             // one time for the min/max value
             const DataDimension minMaxY
                     = calculateGridXY( l.last(), Qt::Vertical, false, false );
 
-            if( plane->autoAdjustGridToZoom()
+            if ( plane->autoAdjustGridToZoom()
                 && plane->axesCalcModeY() == CartesianCoordinatePlane::Linear
                 && plane->zoomFactorY() > 1.0 )
             {
@@ -77,7 +77,7 @@ DataDimensionsList LeveyJenningsGrid::calculateGrid( const DataDimensionsList& r
             // and one other time for the step width
             const DataDimension dimY
                     = calculateGridXY( l.last(), Qt::Vertical, false, false );
-            if( dimY.stepWidth ){
+            if ( dimY.stepWidth ) {
                 l.first().start        = dimX.start;
                 l.first().end          = dimX.end;
                 l.first().stepWidth    = dimX.stepWidth;
@@ -112,11 +112,11 @@ DataDimension LeveyJenningsGrid::calculateGridXY(
     bool adjustLower, bool adjustUpper ) const
 {
     DataDimension dim( rawDataDimension );
-    if( dim.isCalculated && dim.start != dim.end ){
+    if ( dim.isCalculated && dim.start != dim.end ) {
         // linear ( == not-logarithmic) calculation
-        if( dim.stepWidth == 0.0 ){
+        if ( dim.stepWidth == 0.0 ) {
             QList<qreal> granularities;
-            switch( dim.sequence ){
+            switch ( dim.sequence ) {
                 case KDChartEnums::GranularitySequence_10_20:
                     granularities << 1.0 << 2.0;
                     break;
@@ -139,7 +139,7 @@ DataDimension LeveyJenningsGrid::calculateGridXY(
                 dim.stepWidth, dim.subStepWidth,
                 adjustLower, adjustUpper );
             }
-    }else{
+    } else {
         //qDebug() << "CartesianGrid::calculateGridXY() returns stepWidth 1.0  !!";
         // Do not ignore the user configuration
         dim.stepWidth = dim.stepWidth ? dim.stepWidth : 1.0;
@@ -160,7 +160,7 @@ static void calculateSteps(
     steps = 0.0;
 
     const int lastIdx = list.count()-1;
-    for( int i = 0;  i <= lastIdx;  ++i ){
+    for ( int i = 0;  i <= lastIdx;  ++i ) {
         const qreal testStepWidth = list.at(lastIdx - i) * fastPow10( power );
         //qDebug( "testing step width: %f", testStepWidth);
         qreal start = qMin( start_, end_ );
@@ -173,8 +173,8 @@ static void calculateSteps(
         const qreal testSteps    = testDistance / testStepWidth;
 
         //qDebug() << "testDistance:" << testDistance << "  distance:" << distance;
-        if( (minSteps <= testSteps) && (testSteps <= maxSteps)
-              && ( (steps == 0.0) || (testDistance <= distance) ) ){
+        if ( (minSteps <= testSteps) && (testSteps <= maxSteps)
+              && ( (steps == 0.0) || (testDistance <= distance) ) ) {
             steps     = testSteps;
             stepWidth = testStepWidth;
             distance  = testDistance;
@@ -208,14 +208,14 @@ void LeveyJenningsGrid::calculateStepWidth(
 
     qreal steps;
     int power = 0;
-    while( list.last() * fastPow10( power ) < distance ){
+    while ( list.last() * fastPow10( power ) < distance ) {
         ++power;
     };
     // We have the sequence *two* times in the calculation test list,
     // so we will be sure to find the best match:
     const int count = list.count();
     QList<qreal> testList;
-    for( int i = 0;  i < count;  ++i )
+    for ( int i = 0;  i < count;  ++i )
         testList << list.at(i) * 0.1;
     testList << list;
     do{
@@ -225,7 +225,7 @@ void LeveyJenningsGrid::calculateStepWidth(
                         steps, stepWidth,
                         adjustLower, adjustUpper );
         --power;
-    }while( steps == 0.0 );
+    }while ( steps == 0.0 );
     ++power;
     //qDebug( "steps calculated:  stepWidth: %f   steps: %f", stepWidth, steps);
 
@@ -233,20 +233,20 @@ void LeveyJenningsGrid::calculateStepWidth(
     // not set by the user
 
     if ( subStepWidth == 0.0 ) {
-        if( stepWidth == list.first() * fastPow10( power ) ){
+        if ( stepWidth == list.first() * fastPow10( power ) ) {
             subStepWidth = list.last() * fastPow10( power-1 );
             //qDebug("A");
-        }else if( stepWidth == list.first() * fastPow10( power-1 ) ){
+        } else if ( stepWidth == list.first() * fastPow10( power-1 ) ) {
             subStepWidth = list.last() * fastPow10( power-2 );
             //qDebug("B");
-        }else{
+        } else {
             qreal smallerStepWidth = list.first();
-            for( int i = 1;  i < list.count();  ++i ){
-                if( stepWidth == list.at( i ) * fastPow10( power ) ){
+            for ( int i = 1;  i < list.count();  ++i ) {
+                if ( stepWidth == list.at( i ) * fastPow10( power ) ) {
                     subStepWidth = smallerStepWidth * fastPow10( power );
                     break;
                 }
-                if( stepWidth == list.at( i ) * fastPow10( power-1 ) ){
+                if ( stepWidth == list.at( i ) * fastPow10( power-1 ) ) {
                     subStepWidth = smallerStepWidth * fastPow10( power-1 );
                     break;
                 }
@@ -290,7 +290,7 @@ void LeveyJenningsGrid::drawGrid( PaintContext* context )
 
     DataDimension dimX = mDataDimensions.first();
     // this happens if there's only one data point
-    if( dimX.start == 0.0 && dimX.end == 0.0 )
+    if ( dimX.start == 0.0 && dimX.end == 0.0 )
         dimX.end += plane->geometry().width();
 
     // first we draw the expected lines
@@ -332,7 +332,7 @@ void LeveyJenningsGrid::drawGrid( PaintContext* context )
                                   gridAttrs.rangeBrush( LeveyJenningsGridAttributes::OutOfRange ) );
 
     // the "expected" grid
-    if( gridAttrs.isGridVisible( LeveyJenningsGridAttributes::Expected ) )
+    if ( gridAttrs.isGridVisible( LeveyJenningsGridAttributes::Expected ) )
     {
         context->painter()->setPen( gridAttrs.gridPen( LeveyJenningsGridAttributes::Expected ) );
         context->painter()->drawLine( plane->translate( QPointF( dimX.start, meanValue ) ), 
@@ -352,7 +352,7 @@ void LeveyJenningsGrid::drawGrid( PaintContext* context )
     }
     
     // the "calculated" grid
-    if( gridAttrs.isGridVisible( LeveyJenningsGridAttributes::Calculated ) )
+    if ( gridAttrs.isGridVisible( LeveyJenningsGridAttributes::Calculated ) )
     {
         context->painter()->setPen( gridAttrs.gridPen( LeveyJenningsGridAttributes::Calculated ) );
         context->painter()->drawLine( plane->translate( QPointF( dimX.start, calcMeanValue ) ), 

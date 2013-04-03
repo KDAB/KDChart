@@ -99,7 +99,7 @@ public:
     {
         for (int i = 0; i < observers.size(); ++i) {
             DiagramObserver * obs = observers.at(i);
-            if( obs->diagram() == diagram )
+            if ( obs->diagram() == diagram )
                 return obs;
         }
         return 0;

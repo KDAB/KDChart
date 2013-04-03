@@ -144,7 +144,7 @@ void  TernaryAxis::setPosition (Position p)
     }
 
     if ( m_title.isEmpty() )
-        switch( p.value() ) {
+        switch ( p.value() ) {
         case KDChartEnums::PositionSouth:
             m_label->setText( tr( "A" ) );
             break;
@@ -206,7 +206,7 @@ void TernaryAxis::updatePrerenderedLabels()
     QPointF fiftyMarkPosition;
     KDChartEnums::PositionValue fiftyMarkReferencePoint = KDChartEnums::PositionUnknown;
 
-    switch( position().value() ) {
+    switch ( position().value() ) {
     case KDChartEnums::PositionSouth:
         // this is the axis on the other side of A
         axisLabelAngle = 0.0;
@@ -255,7 +255,7 @@ QPair<QSizeF, QSizeF> TernaryAxis::requiredMargins() const
     QSizeF topleft( 0.0, 0.0 );
     QSizeF bottomRight( 0.0, 0.0 );
 
-    switch( position().value() ) {
+    switch ( position().value() ) {
     case KDChartEnums::PositionSouth:
         // the label of the south axis is, in fact, up north.
         topleft.setHeight( m_label->pixmap().height() );

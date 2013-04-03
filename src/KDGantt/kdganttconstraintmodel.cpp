@@ -145,9 +145,9 @@ bool ConstraintModel::removeConstraint( const Constraint& c )
 {
     bool rc = false;
 
-    for(int i = 0; i < d->constraints.count(); i++)
+    for (int i = 0; i < d->constraints.count(); i++)
     {
-        if(c.compareIndexes(d->constraints.at(i)))
+        if (c.compareIndexes(d->constraints.at(i)))
         {
             d->constraints.removeAt(i);
             rc = true;
@@ -236,8 +236,8 @@ bool ConstraintModel::hasConstraint( const Constraint& c ) const
     */
     bool hc = false;
 
-    for(int i = 0; i < d->constraints.count(); i++)
-        if(c.compareIndexes(d->constraints.at(i)))
+    for (int i = 0; i < d->constraints.count(); i++)
+        if (c.compareIndexes(d->constraints.at(i)))
             hc = true;
 
     return hc;

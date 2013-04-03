@@ -58,10 +58,10 @@ namespace KDChart {
  * which then will be used to layout your chart at runtime,
  * e.g. for specifying the location of a floating Legend box.
  *
- * For comparing a Position's value with a switch() statement,
+ * For comparing a Position's value with a switch () statement,
  * you can use numeric values defined in KDChartEnums, like this:
 \verbatim
-switch( yourPosition().value() ) {
+switch ( yourPosition().value() ) {
     case KDChartEnums::PositionNorthWest:
         // your code ...
         break;
@@ -145,7 +145,7 @@ inline bool Position::operator!=( int other ) const { return !operator==( other 
 class KDCHART_EXPORT PositionPoints
 {
   public:
-    PositionPoints(){} // all points get initialized with the default automatically
+    PositionPoints() {} // all points get initialized with the default automatically
 
     PositionPoints(
         QPointF center,
@@ -220,7 +220,7 @@ class KDCHART_EXPORT PositionPoints
     qreal degrees( KDChartEnums::PositionValue pos ) const
 #endif
     {
-        if( mapOfDegrees.contains(pos) )
+        if ( mapOfDegrees.contains(pos) )
             return mapOfDegrees[pos];
         return 0.0;
     }
@@ -232,23 +232,23 @@ class KDCHART_EXPORT PositionPoints
 #endif
     {
       //qDebug() << "point( " << position.name() << " )";
-      if( position ==  Position::Center)
+      if ( position ==  Position::Center)
         return mPositionCenter;
-      if( position ==  Position::NorthWest)
+      if ( position ==  Position::NorthWest)
         return mPositionNorthWest;
-      if( position ==  Position::North)
+      if ( position ==  Position::North)
         return mPositionNorth;
-      if( position ==  Position::NorthEast)
+      if ( position ==  Position::NorthEast)
         return mPositionNorthEast;
-      if( position ==  Position::East)
+      if ( position ==  Position::East)
         return mPositionEast;
-      if( position ==  Position::SouthEast)
+      if ( position ==  Position::SouthEast)
         return mPositionSouthEast;
-      if( position ==  Position::South)
+      if ( position ==  Position::South)
         return mPositionSouth;
-      if( position ==  Position::SouthWest)
+      if ( position ==  Position::SouthWest)
         return mPositionSouthWest;
-      if( position ==  Position::West)
+      if ( position ==  Position::West)
         return mPositionWest;
       return mPositionUnknown;
     }

@@ -49,9 +49,9 @@ const QPair<QPointF, QPointF> PercentLyingBarDiagram::calculateDataBoundaries() 
     const qreal xMin = 0;
     const qreal xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
     qreal yMin = 0.0, yMax = 100.0;
-    /*for( int col = 0; col < colCount; ++col )
+    /*for ( int col = 0; col < colCount; ++col )
     {
-        for( int row = 0; row < rowCount; ++row )
+        for ( int row = 0; row < rowCount; ++row )
         {
             // Ordinate should begin at 0 the max value being the 100% pos
             const QModelIndex idx = diagram()->model()->index( row, col, diagram()->rootIndex() );
@@ -133,9 +133,9 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
     QVector <qreal > sumValuesVector;
 
     //calculate sum of values for each column and store
-    for( int row = 0; row < rowCount; ++row )
+    for ( int row = 0; row < rowCount; ++row )
     {
-        for( int col = 0; col < colCount; ++col )
+        for ( int col = 0; col < colCount; ++col )
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
@@ -149,16 +149,16 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
     }
 
     // calculate stacked percent value
-    for( int curRow = rowCount - 1; curRow >= 0; --curRow )
+    for ( int curRow = rowCount - 1; curRow >= 0; --curRow )
     {
         qreal offset = spaceBetweenGroups;
-        if( ba.useFixedBarWidth() )
+        if ( ba.useFixedBarWidth() )
             offset -= ba.fixedBarWidth();
         
-        if( offset < 0 )
+        if ( offset < 0 )
             offset = 0;
 
-        for( int col = 0; col < colCount ; ++col )
+        for ( int col = 0; col < colCount ; ++col )
         {
             qreal threeDOffset = 0.0;
             const CartesianDiagramDataCompressor::CachePosition position( curRow, col );
@@ -166,7 +166,7 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
             QModelIndex sourceIndex = attributesModel()->mapToSource( p.index );
             ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( sourceIndex );
 
-            if ( threeDAttrs.isEnabled() ){
+            if ( threeDAttrs.isEnabled() ) {
                 if ( barWidth > 0 ) {
                     barWidth =  (width - ((offset+(threeDAttrs.depth()))*rowCount))/ rowCount;
                 	threeDOffset = threeDAttrs.depth();
@@ -175,7 +175,7 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
                     barWidth = 0.1;
                     threeDOffset = (width - (offset*rowCount))/ rowCount;
                 }
-            }else{
+            } else {
                 barWidth = (width - (offset*rowCount))/ rowCount;
             }
 
@@ -185,7 +185,7 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
             
             // calculate stacked percent value
             // we only take in account positives values for now.
-            for( int k = col; k >= 0 ; --k )
+            for ( int k = col; k >= 0 ; --k )
             {
                 const CartesianDiagramDataCompressor::CachePosition position( curRow, k );
                 const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );

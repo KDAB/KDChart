@@ -69,7 +69,7 @@ public:
     /*reimp*/QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const
     {
         if ( index.isValid() && index.row() < rowCount() && index.column() < columnCount() ) {
-            switch( index.column() ) {
+            switch ( index.column() ) {
             case 0: return ( role == Qt::DisplayRole )
                     ?QVariant::fromValue( m_tasks[index.row()].title )
                     :QVariant();

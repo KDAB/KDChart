@@ -43,7 +43,7 @@ AbstractAreaWidget::Private::~Private()
 void AbstractAreaWidget::Private::resizeLayout(
     AbstractAreaWidget* widget, const QSize& size )
 {
-    if( size == currentLayoutSize ) return;
+    if ( size == currentLayoutSize ) return;
 
     currentLayoutSize = size;
 
@@ -97,7 +97,7 @@ void AbstractAreaWidget::paintEvent( QPaintEvent* event )
 {
     Q_UNUSED( event );
     QPainter painter( this );
-    if( size() != d->currentLayoutSize ){
+    if ( size() != d->currentLayoutSize ) {
         d->resizeLayout( this, size() );
     }
     paintAll( painter );
@@ -105,7 +105,7 @@ void AbstractAreaWidget::paintEvent( QPaintEvent* event )
 
 void AbstractAreaWidget::paintIntoRect( QPainter& painter, const QRect& rect )
 {
-    if( rect.isEmpty() ) return;
+    if ( rect.isEmpty() ) return;
 
     d->resizeLayout( this, rect.size() );
 
@@ -122,12 +122,12 @@ void AbstractAreaWidget::paintIntoRect( QPainter& painter, const QRect& rect )
     const QRect oldGeometry( layout()->geometry() );
     const QRect newGeo( QPoint(0,0), rect.size() );
     const bool mustChangeGeo = layout() && oldGeometry != newGeo;
-    if( mustChangeGeo )
+    if ( mustChangeGeo )
         layout()->setGeometry( newGeo );
     painter.translate( rect.left(), rect.top() );
     paintAll( painter );
     painter.translate( -rect.left(), -rect.top() );
-    if( mustChangeGeo )
+    if ( mustChangeGeo )
         layout()->setGeometry( oldGeometry );
 */
 }
@@ -154,7 +154,7 @@ void AbstractAreaWidget::paintAll( QPainter& painter )
     const QRect inner( innerRect() );
     //qDebug() << "areaGeometry():" << oldGeometry
     //         << "  contentsRect():" << contentsRect() << "  inner:" << inner;
-    if( contentsRect() != inner ){
+    if ( contentsRect() != inner ) {
         //qDebug() << "old contentsRect():" << contentsRect() << "  new innerRect:" << inner;
         setContentsMargins(
             inner.left(),

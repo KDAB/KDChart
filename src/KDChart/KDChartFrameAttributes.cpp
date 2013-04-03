@@ -60,7 +60,7 @@ FrameAttributes::FrameAttributes( const FrameAttributes& r )
 
 FrameAttributes & FrameAttributes::operator=( const FrameAttributes& r )
 {
-    if( this == &r )
+    if ( this == &r )
         return *this;
 
     *d = *r.d;

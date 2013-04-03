@@ -75,7 +75,7 @@ void PolarGrid::drawGrid( PaintContext* context )
 
 
     // Do not draw a grid for pie diagrams
-    if( dynamic_cast<PieDiagram*> (plane->diagrams().first() ) ) return;
+    if ( dynamic_cast<PieDiagram*> (plane->diagrams().first() ) ) return;
 
 
     context->painter()->setPen ( PrintingParameters::scalePen( QColor ( Qt::lightGray ) ) );
@@ -85,7 +85,7 @@ void PolarGrid::drawGrid( PaintContext* context )
 
     const qreal r = qAbs( min ) + dgr->dataBoundaries().second.y(); // use the full extents
 
-    if ( gridAttrsSagittal.isGridVisible() ){
+    if ( gridAttrsSagittal.isGridVisible() ) {
         const int numberOfSpokes = ( int ) ( 360 / plane->angleUnit() );
         for ( int i = 0; i < numberOfSpokes ; ++i ) {
             context->painter()->drawLine( origin, plane->translate( QPointF( r - qAbs( min ), i ) ) + context->rectangle().topLeft() );

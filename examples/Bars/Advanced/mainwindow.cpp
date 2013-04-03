@@ -206,9 +206,9 @@ void MainWindow::on_widthSB_valueChanged( int value )
 
 void MainWindow::on_widthCB_toggled( bool checked )
 {
-    if (  checked ){
+    if (  checked ) {
         on_widthSB_valueChanged( widthSB->value() );
-    }else{
+    } else {
         BarAttributes ba( m_bars->barAttributes() );
         ba.setUseFixedBarWidth( false );
         m_bars->setBarAttributes( ba );
@@ -220,13 +220,13 @@ void MainWindow::on_fixPlaneSizeCB_toggled( bool checked )
 {
     CartesianCoordinatePlane* plane =
         qobject_cast<CartesianCoordinatePlane*>( m_chart->coordinatePlane() );
-    if( plane == 0 )
+    if ( plane == 0 )
         return;
     plane->setFixedDataCoordinateSpaceRelation( checked );
     // just a little adjustment:
     // Reset the zoom settings to their initial values
     // when the releation-adjust checkbox is unchecked:
-    if( ! checked ){
+    if ( ! checked ) {
         m_chart->coordinatePlane()->setZoomFactorX( 1.0 );
         m_chart->coordinatePlane()->setZoomFactorY( 1.0 );
         m_chart->coordinatePlane()->setZoomCenter( QPointF(0.5, 0.5) );

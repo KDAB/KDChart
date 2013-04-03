@@ -59,7 +59,7 @@ class AbstractCoordinatePlane::Private : public AbstractArea::Private
     friend class AbstractCoordinatePlane;
 protected:
     explicit Private();
-    virtual ~Private(){
+    virtual ~Private() {
         delete grid;
     };
 
@@ -98,7 +98,7 @@ protected:
 inline AbstractCoordinatePlane::AbstractCoordinatePlane( Private * p, KDChart::Chart* parent )
     : AbstractArea( p )
 {
-    if( p )
+    if ( p )
         p->parent = parent;
     init();
 }

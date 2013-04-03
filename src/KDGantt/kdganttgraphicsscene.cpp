@@ -136,7 +136,7 @@ ConstraintGraphicsItem* GraphicsScene::Private::findConstraintItem( const Constr
     if ( item ) {
         const QList<ConstraintGraphicsItem*> clst = item->startConstraints();
         QList<ConstraintGraphicsItem*>::const_iterator it = clst.begin();
-        for( ; it != clst.end() ; ++it ) {
+        for ( ; it != clst.end() ; ++it ) {
             if ( c.compareIndexes((*it)->constraint()) )
                 break;
         }
@@ -148,7 +148,7 @@ ConstraintGraphicsItem* GraphicsScene::Private::findConstraintItem( const Constr
     if ( item ) {
         const QList<ConstraintGraphicsItem*> clst = item->endConstraints();
         QList<ConstraintGraphicsItem*>::const_iterator it = clst.begin();
-        for( ; it != clst.end() ; ++it ) {
+        for ( ; it != clst.end() ; ++it ) {
             if ( c.compareIndexes( (*it)->constraint() ) )
                 break;
         }
@@ -344,7 +344,7 @@ QModelIndex GraphicsScene::dataIndex( const QModelIndex& idx )
 GraphicsItem* GraphicsScene::createItem( ItemType type ) const
 {
 #if 0
-    switch( type ) {
+    switch ( type ) {
     case TypeEvent:   return 0;
     case TypeTask:    return new TaskItem;
     case TypeSummary: return new SummaryItem;

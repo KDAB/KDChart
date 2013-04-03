@@ -51,7 +51,7 @@ const QPair<QPointF, QPointF> StackedLyingBarDiagram::calculateDataBoundaries() 
     qreal yMax = 0;
 
     bool isFirst = true;
-    for( int row = 0; row < rowCount; ++row ) {
+    for ( int row = 0; row < rowCount; ++row ) {
         // calculate sum of values per column - Find out stacked Min/Max
         qreal stackedValues = 0.0;
         qreal negativeStackedValues = 0.0;
@@ -59,7 +59,7 @@ const QPair<QPointF, QPointF> StackedLyingBarDiagram::calculateDataBoundaries() 
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
 
-            if( point.value > 0.0 )
+            if ( point.value > 0.0 )
                 stackedValues += point.value;
             else
                 negativeStackedValues += point.value;
@@ -145,16 +145,16 @@ void StackedLyingBarDiagram::paint( PaintContext* ctx )
                                 barWidth, spaceBetweenBars, spaceBetweenGroups );
 
     LabelPaintCache lpc;
-    for( int row = rowCount - 1; row >= 0; --row )
+    for ( int row = rowCount - 1; row >= 0; --row )
     {
         qreal offset = spaceBetweenGroups;
-        if( ba.useFixedBarWidth() )
+        if ( ba.useFixedBarWidth() )
             offset -= ba.fixedBarWidth();
         
-        if( offset < 0 )
+        if ( offset < 0 )
             offset = 0;
 
-        for( int col = 0; col < colCount; ++col )
+        for ( int col = 0; col < colCount; ++col )
         {
         	qreal threeDOffset = 0.0;
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
@@ -166,7 +166,7 @@ void StackedLyingBarDiagram::paint( PaintContext* ctx )
             qreal stackedValues = 0.0;
             qreal key = 0.0;
 
-            if ( threeDAttrs.isEnabled() ){
+            if ( threeDAttrs.isEnabled() ) {
                 if ( barWidth > 0 ) {
                     barWidth =  (width - ((offset+(threeDAttrs.depth()))*rowCount))/ rowCount;
                 	threeDOffset = threeDAttrs.depth();
@@ -175,7 +175,7 @@ void StackedLyingBarDiagram::paint( PaintContext* ctx )
                     barWidth = 0.1;
                     threeDOffset = (width - (offset*rowCount))/ rowCount;
                 }
-            }else{
+            } else {
                 barWidth = (width - (offset*rowCount))/ rowCount;
             }
 
@@ -183,7 +183,7 @@ void StackedLyingBarDiagram::paint( PaintContext* ctx )
             {
                 const CartesianDiagramDataCompressor::CachePosition position( row, k );
                 const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-                if( ( p.value >= 0.0 && point.value >= 0.0 ) || ( p.value < 0.0 && point.value < 0.0 ) )
+                if ( ( p.value >= 0.0 && point.value >= 0.0 ) || ( p.value < 0.0 && point.value < 0.0 ) )
                     stackedValues += point.value;
                 key = point.key;
             }

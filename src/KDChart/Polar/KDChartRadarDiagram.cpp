@@ -113,20 +113,20 @@ static qreal fitFontSizeToGeometry( const QString& text, const QFont& font, cons
     const qreal origResult = f.pointSizeF();
     qreal result = origResult;
     const QSizeF mySize = geometry.size();
-    if( mySize.isNull() )
+    if ( mySize.isNull() )
         return result;
 
     const QString t = text;
     QFontMetrics fm( f );
-    while( true )
+    while ( true )
     {
         const QSizeF textSize = rotatedRect( fm.boundingRect( t ), ta.rotation() ).normalized().size();
 
-        if( textSize.height() <= mySize.height() && textSize.width() <= mySize.width() )
+        if ( textSize.height() <= mySize.height() && textSize.width() <= mySize.width() )
             return result;
 
         result -= 0.5;
-        if( result <= 0.0 )
+        if ( result <= 0.0 )
             return origResult;
         f.setPointSizeF( result );
         fm = QFontMetrics( f );
@@ -197,7 +197,7 @@ void RadarDiagram::paint( PaintContext* ctx,
         destRect.setHeight( destRect.height() - 4 * labelHeight );
     }
     
-    if( calculateListAndReturnScale ){
+    if ( calculateListAndReturnScale ) {
         ctx->painter()->save();
         // Check if all of the data value texts / data comments will fit
         // into the available space:
@@ -217,7 +217,7 @@ void RadarDiagram::paint( PaintContext* ctx,
         const qreal oldZoomY = coordinatePlane()->zoomFactorY();
         newZoomX = oldZoomX;
         newZoomY = oldZoomY;
-        if( d->labelPaintCache.paintReplay.count() ) {
+        if ( d->labelPaintCache.paintReplay.count() ) {
             QRectF txtRectF;
             d->paintDataValueTextsAndMarkers( ctx, d->labelPaintCache, true, true, &txtRectF );
             const QRect txtRect = txtRectF.toRect();
@@ -226,14 +226,14 @@ void RadarDiagram::paint( PaintContext* ctx,
             const qreal gapY = qMin( txtRect.top()  - curRect.top(),  curRect.bottom() - txtRect.bottom() );
             newZoomX = oldZoomX;
             newZoomY = oldZoomY;
-            if( gapX < 0.0 )
+            if ( gapX < 0.0 )
                 newZoomX *= 1.0 + (gapX-1.0) / curRect.width();
-            if( gapY < 0.0 )
+            if ( gapY < 0.0 )
                 newZoomY *= 1.0 + (gapY-1.0) / curRect.height();
         }
         ctx->painter()->restore();
 
-    }else{
+    } else {
         // Iterate through data sets and create a list of polygons out of them.
         QList<Polygon> polygons;
         for ( iCol=0; iCol < colCount; ++iCol ) {
@@ -248,10 +248,10 @@ void RadarDiagram::paint( PaintContext* ctx,
                 const qreal value = model()->data( index ).toReal();
                 QPointF point = scaleToRealPosition( QPointF( value, d->reverseData ? ( rowCount - iRow ) : iRow ), ctx->rectangle(), destRect, *ctx->coordinatePlane() );
                 polygon.append( point );
-                if( ! iRow )
+                if ( ! iRow )
                     point0= point;
             }
-            if( closeDatasets() && rowCount )
+            if ( closeDatasets() && rowCount )
                 polygon.append( point0 );
 
             QBrush brush = d->datasetAttrs( iCol, KDChart::DatasetBrushRole ).value<QBrush>();

@@ -41,7 +41,7 @@ namespace KDGantt
         /*reimp*/ QModelIndex indexAt( const QPoint& point ) const;
         /*reimp*/ QRect visualRect( const QModelIndex& index ) const;
 
-        /*reimp*/ void scrollTo( const QModelIndex&, ScrollHint = EnsureVisible ){}
+        /*reimp*/ void scrollTo( const QModelIndex&, ScrollHint = EnsureVisible ) {}
 
         /*reimp*/ QSize sizeHint() const;
         /*reimp*/ QSize minimumSizeHint() const;
@@ -58,7 +58,7 @@ namespace KDGantt
         /*reimp*/ int horizontalOffset() const { return 0; }
         /*reimp*/ bool isIndexHidden( const QModelIndex& ) const { return false; }
         /*reimp*/ QModelIndex moveCursor( CursorAction, Qt::KeyboardModifiers ) { return QModelIndex(); }
-        /*reimp*/ void setSelection( const QRect&, QItemSelectionModel::SelectionFlags ){}
+        /*reimp*/ void setSelection( const QRect&, QItemSelectionModel::SelectionFlags ) {}
         /*reimp*/ int verticalOffset() const { return 0; }
         /*reimp*/ QRegion visualRegionForSelection( const QItemSelection& ) const { return QRegion(); }
 

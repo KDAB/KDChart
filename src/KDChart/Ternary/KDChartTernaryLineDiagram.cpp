@@ -100,14 +100,14 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
 
     int columnCount = model()->columnCount( rootIndex() );
     QPointF start;
-    for(int column=0; column<columnCount; column+=datasetDimension() )
+    for (int column=0; column<columnCount; column+=datasetDimension() )
     {
         int numrows = model()->rowCount( rootIndex() );
-        for( int row = 0; row < numrows; row++ )
+        for ( int row = 0; row < numrows; row++ )
         {
             // see if there is data otherwise skip
             QModelIndex base = model()->index( row, column ); // checked
-            if( ! model()->data( base ).isNull() )
+            if ( ! model()->data( base ).isNull() )
             {
                 p->setPen( PrintingParameters::scalePen( pen( base ) ) );
                 p->setBrush( brush( base ) );

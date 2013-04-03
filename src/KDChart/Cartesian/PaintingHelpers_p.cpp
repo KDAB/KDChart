@@ -94,7 +94,7 @@ void paintThreeDLines( PaintContext* ctx, AbstractDiagram *diagram, const QModel
 void paintValueTracker( PaintContext* ctx, const ValueTrackerAttributes& vt, const QPointF& at )
 {
     CartesianCoordinatePlane* plane = qobject_cast<CartesianCoordinatePlane*>( ctx->coordinatePlane() );
-    if( !plane )
+    if ( !plane )
         return;
 
     DataDimensionsList gridDimensions = ctx->coordinatePlane()->gridDimensionsList();
@@ -225,7 +225,7 @@ void paintElements( AbstractDiagram::Private *diagramPrivate, PaintContext* ctx,
         } else {
             const QBrush br( diagram->brush( index ) );
             const QPen pn( diagram->pen( index ) );
-            if( points.count() && points.last() == lineInfo.value && curBrush == br && curPen == pn ) {
+            if ( points.count() && points.last() == lineInfo.value && curBrush == br && curPen == pn ) {
                 // line goes from last value in points to lineInfo.nextValue
                 diagramPrivate->reverseMapper.addLine( lineInfo.index.row(), lineInfo.index.column(),
                                                        points.last(), lineInfo.nextValue );
@@ -265,7 +265,7 @@ void paintAreas( AbstractDiagram::Private* diagramPrivate, PaintContext* ctx, co
 {
     AbstractDiagram* diagram = diagramPrivate->diagram;
     QPainterPath path;
-    for( int i = 0; i < areas.count(); ++i )
+    for ( int i = 0; i < areas.count(); ++i )
     {
         const QPolygonF& p = areas[ i ];
         path.addPolygon( p );
@@ -275,7 +275,7 @@ void paintAreas( AbstractDiagram::Private* diagramPrivate, PaintContext* ctx, co
 
     ThreeDLineAttributes threeDAttrs = threeDLineAttributes( diagram, index );
     QBrush trans = diagram->brush( index );
-    if( threeDAttrs.isEnabled() ) {
+    if ( threeDAttrs.isEnabled() ) {
         trans = threeDAttrs.threeDBrush( trans, path.boundingRect() );
     }
     QColor transColor = trans.color();

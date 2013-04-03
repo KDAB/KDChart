@@ -67,7 +67,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->addAxis( xAxis );
     m_lines->addAxis( yAxis );
     // Make the lines thicker
-    for( int iColumn = 0; iColumn < columnCount; ++iColumn ){
+    for ( int iColumn = 0; iColumn < columnCount; ++iColumn ) {
         QPen linePen( m_lines->pen( iColumn ) );
         linePen.setWidth( 3 );
         m_lines->setPen( iColumn, linePen );

@@ -55,7 +55,7 @@ KDTextDocument::~KDTextDocument() {}
 
 QSize KDTextDocument::sizeHint()
 {
-    if( !mHintValid )
+    if ( !mHintValid )
         (void)minimumSizeHint();
     return mSizeHint;
 }
@@ -64,7 +64,7 @@ QSize KDTextDocument::minimumSizeHint()
 {
     /*
     QTextCursor cursor( this );
-    if( ! cursor.atEnd() )
+    if ( ! cursor.atEnd() )
         cursor.movePosition( QTextCursor::NextBlock );
     qDebug() << "KDTextDocument::minimumSizeHint() found:" << cursor.block().text();
     QSizeF s( documentLayout()->blockBoundingRect( cursor.block() ).size() );
@@ -73,7 +73,7 @@ QSize KDTextDocument::minimumSizeHint()
                   static_cast<int>(s.height()) );
     */
 
-    if( mHintValid )
+    if ( mHintValid )
         return mMinimumSizeHint;
 
     mHintValid = true;
@@ -83,7 +83,7 @@ QSize KDTextDocument::minimumSizeHint()
     // PENDING(kalle) Cache
     sz.rwidth() = sizeForWidth( 0 ).width();
     sz.rheight() = sizeForWidth( 32000 ).height();
-    if( mSizeHint.height() < sz.height())
+    if ( mSizeHint.height() < sz.height())
         sz.rheight() = mSizeHint.height();
 
     mMinimumSizeHint = sz;

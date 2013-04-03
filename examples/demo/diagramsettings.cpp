@@ -144,7 +144,7 @@ void DiagramSettings::Private::changeBackgroundColor()
             palette.setBrush( QPalette::Button, color );
             ui->diagramBackground->setPalette( palette );
         }
-        else if( ui->textureBtn->isChecked() )
+        else if ( ui->textureBtn->isChecked() )
         {
             //QBrush setBrush = m_chart->coordinatePlane()->diagram()->brush( index );
             QImage texture;

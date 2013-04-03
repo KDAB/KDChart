@@ -93,8 +93,8 @@ LineDiagram * LeveyJenningsDiagram::clone() const
 
 bool LeveyJenningsDiagram::compare( const LeveyJenningsDiagram* other ) const
 {
-    if( other == this ) return true;
-    if( ! other ){
+    if ( other == this ) return true;
+    if ( ! other ) {
         return false;
     }
     /*
@@ -112,7 +112,7 @@ bool LeveyJenningsDiagram::compare( const LeveyJenningsDiagram* other ) const
  */
 void LeveyJenningsDiagram::setLotChangedSymbolPosition( Qt::Alignment pos )
 {
-    if( d->lotChangedPosition == pos )
+    if ( d->lotChangedPosition == pos )
         return;
 
     d->lotChangedPosition = pos;
@@ -133,7 +133,7 @@ Qt::Alignment LeveyJenningsDiagram::lotChangedSymbolPosition() const
  */
 void LeveyJenningsDiagram::setFluidicsPackChangedSymbolPosition( Qt::Alignment pos )
 {
-    if( d->fluidicsPackChangedPosition == pos )
+    if ( d->fluidicsPackChangedPosition == pos )
         return;
 
     d->fluidicsPackChangedPosition = pos;
@@ -154,7 +154,7 @@ Qt::Alignment LeveyJenningsDiagram::fluidicsPackChangedSymbolPosition() const
  */
 void LeveyJenningsDiagram::setSensorChangedSymbolPosition( Qt::Alignment pos )
 {
-    if( d->sensorChangedPosition == pos )
+    if ( d->sensorChangedPosition == pos )
         return;
 
     d->sensorChangedPosition = pos;
@@ -174,7 +174,7 @@ Qt::Alignment LeveyJenningsDiagram::sensorChangedSymbolPosition() const
  */
 void LeveyJenningsDiagram::setFluidicsPackChanges( const QVector< QDateTime >& changes )
 {
-    if( d->fluidicsPackChanges == changes )
+    if ( d->fluidicsPackChanges == changes )
         return;
 
     d->fluidicsPackChanges = changes;
@@ -194,7 +194,7 @@ QVector< QDateTime > LeveyJenningsDiagram::fluidicsPackChanges() const
  */
 void LeveyJenningsDiagram::setSensorChanges( const QVector< QDateTime >& changes )
 {
-    if( d->sensorChanges == changes )
+    if ( d->sensorChanges == changes )
         return;
 
     d->sensorChanges = changes;
@@ -206,7 +206,7 @@ void LeveyJenningsDiagram::setSensorChanges( const QVector< QDateTime >& changes
  */
 void LeveyJenningsDiagram::setScanLinePen( const QPen& pen )
 {
-    if( d->scanLinePen == pen )
+    if ( d->scanLinePen == pen )
         return;
 
     d->scanLinePen = pen;
@@ -234,7 +234,7 @@ QString LeveyJenningsDiagram::symbol( Symbol symbol ) const
  */
 void LeveyJenningsDiagram::setSymbol( Symbol symbol, const QString& filename )
 {
-    if( d->icons[ symbol ] == filename )
+    if ( d->icons[ symbol ] == filename )
         return;
 
     delete d->iconRenderer[ symbol ];
@@ -258,7 +258,7 @@ QVector< QDateTime > LeveyJenningsDiagram::sensorChanges() const
  */
 void LeveyJenningsDiagram::setExpectedMeanValue( float meanValue )
 {
-    if( d->expectedMeanValue == meanValue )
+    if ( d->expectedMeanValue == meanValue )
         return;
 
     d->expectedMeanValue = meanValue;
@@ -279,7 +279,7 @@ float LeveyJenningsDiagram::expectedMeanValue() const
  */
 void LeveyJenningsDiagram::setExpectedStandardDeviation( float sd )
 {
-    if( d->expectedStandardDeviation == sd )
+    if ( d->expectedStandardDeviation == sd )
         return;
 
     d->expectedStandardDeviation = sd;
@@ -313,7 +313,7 @@ float LeveyJenningsDiagram::calculatedStandardDeviation() const
 
 void LeveyJenningsDiagram::setModel( QAbstractItemModel* model )
 {
-    if( this->model() != 0 )
+    if ( this->model() != 0 )
     {
         disconnect( this->model(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex& ) ),
                                    this, SLOT( calculateMeanAndStandardDeviation() ) );
@@ -331,7 +331,7 @@ void LeveyJenningsDiagram::setModel( QAbstractItemModel* model )
                                    this, SLOT( calculateMeanAndStandardDeviation() ) );
     }
     LineDiagram::setModel( model );
-    if( this->model() != 0 )
+    if ( this->model() != 0 )
     {
         connect( this->model(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex& ) ),
                                 this, SLOT( calculateMeanAndStandardDeviation() ) );
@@ -361,13 +361,13 @@ void LeveyJenningsDiagram::calculateMeanAndStandardDeviation() const
     const QAbstractItemModel& m = *model();
     const int rowCount = m.rowCount( rootIndex() );
 
-    for( int row = 0; row < rowCount; ++row )
+    for ( int row = 0; row < rowCount; ++row )
     {
         const QVariant var = m.data( m.index( row, 1, rootIndex() ) );
-        if( !var.isValid() )
+        if ( !var.isValid() )
             continue;
         const qreal value = var.toReal();
-        if( ISNAN( value ) )
+        if ( ISNAN( value ) )
             continue;
         values << value;
     }
@@ -397,7 +397,7 @@ static QDate ceilDay( const QDateTime& dt )
 {
     QDate result = dt.date();
 
-    if( QDateTime( result, QTime() ) < dt )
+    if ( QDateTime( result, QTime() ) < dt )
         result = result.addDays( 1 );
 
     return result;
@@ -414,7 +414,7 @@ static QDateTime ceilHour( const QDateTime& dt )
 {
     QDateTime result( dt.date(), QTime( dt.time().hour(), 0 ) );
 
-    if( result < dt )
+    if ( result < dt )
         result = result.addSecs( 3600 );
 
     return result;
@@ -447,7 +447,7 @@ const QPair<QPointF, QPointF> LeveyJenningsDiagram::calculateDataBoundaries() co
  */
 QPair< QDateTime, QDateTime > LeveyJenningsDiagram::timeRange() const
 {
-    if( d->timeRange != QPair< QDateTime, QDateTime >() )
+    if ( d->timeRange != QPair< QDateTime, QDateTime >() )
         return d->timeRange;
 
     const QAbstractItemModel& m = *model();
@@ -456,7 +456,7 @@ QPair< QDateTime, QDateTime > LeveyJenningsDiagram::timeRange() const
     const QDateTime begin = m.data( m.index( 0, 3, rootIndex() ) ).toDateTime();
     const QDateTime end = m.data( m.index( rowCount - 1, 3, rootIndex() ) ).toDateTime();
 
-    if( begin.secsTo( end ) > 86400 )
+    if ( begin.secsTo( end ) > 86400 )
     {
         // if begin to end is more than 24h
         // round down/up to the prev/next midnight
@@ -464,7 +464,7 @@ QPair< QDateTime, QDateTime > LeveyJenningsDiagram::timeRange() const
         const QDate max = ceilDay( end );
         return QPair< QDateTime, QDateTime >( QDateTime( min ), QDateTime( max ) );
     }
-    else if( begin.secsTo( end ) > 3600 )
+    else if ( begin.secsTo( end ) > 3600 )
     {
         // more than 1h: rond down up to the prex/next hour
         // if begin to end is more than 24h
@@ -481,7 +481,7 @@ QPair< QDateTime, QDateTime > LeveyJenningsDiagram::timeRange() const
  */
 void LeveyJenningsDiagram::setTimeRange( const QPair< QDateTime, QDateTime >& timeRange )
 {
-    if( d->timeRange == timeRange )
+    if ( d->timeRange == timeRange )
         return;
 
     d->timeRange = timeRange;
@@ -522,7 +522,7 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
 
     QPainter* const painter = ctx->painter();
     const PainterSaver p( painter );
-    if( model()->rowCount( rootIndex() ) == 0 || model()->columnCount( rootIndex() ) < 4 )
+    if ( model()->rowCount( rootIndex() ) == 0 || model()->columnCount( rootIndex() ) < 4 )
         return; // nothing to paint for us
 
     AbstractCoordinatePlane* const plane = ctx->coordinatePlane();
@@ -539,7 +539,7 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
     QPointF prevPoint;
     bool hadMissingValue = false;
 
-    for( int row = 0; row < rowCount; ++row )
+    for ( int row = 0; row < rowCount; ++row )
     {
         const QModelIndex lotIndex = m.index( row, 0, rootIndex() );
         const QModelIndex valueIndex = m.index( row, 1, rootIndex() );
@@ -564,13 +564,13 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
 
         QPointF point = ctx->coordinatePlane()->translate( QPointF( xValue, value ) );
 
-        if( vValue.isNull() )
+        if ( vValue.isNull() )
         {
             hadMissingValue = true;
         }
         else
         {
-            if( !vExpectedMean.isNull() && !vExpectedSD.isNull() )
+            if ( !vExpectedMean.isNull() && !vExpectedSD.isNull() )
             {
                 // this calculates the 'logical' value relative to the expected mean and SD of this point
                 value -= expectedMean;
@@ -580,12 +580,12 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
                 point = ctx->coordinatePlane()->translate( QPointF( xValue, value ) );
             }
 
-            if( prevLot == lot )
+            if ( prevLot == lot )
             {
                 const QPen pen = painter->pen();
                 QPen newPen = pen;
 
-                if( hadMissingValue )
+                if ( hadMissingValue )
                 {
                     newPen.setDashPattern( QVector< qreal >() << 4.0 << 4.0 );
                 }
@@ -595,12 +595,12 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
                 painter->setPen( pen );
                 // d->reverseMapper.addLine( valueIndex.row(), valueIndex.column(), prevPoint, point );
             }
-            else if( row > 0 )
+            else if ( row > 0 )
             {
                 drawLotChangeSymbol( ctx, QPointF( xValue, value ) );
             }
 
-            if( value <= d->expectedMeanValue + 4 * d->expectedStandardDeviation &&
+            if ( value <= d->expectedMeanValue + 4 * d->expectedStandardDeviation &&
                 value >= d->expectedMeanValue - 4 * d->expectedStandardDeviation )
             {
                 const QPointF location( xValue, value );
@@ -616,7 +616,7 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
         }
 
         const QModelIndex current = selectionModel()->currentIndex();
-        if( selectionModel()->rowIntersectsSelection( lotIndex.row(), lotIndex.parent() ) || current.sibling( current.row(), 0 ) == lotIndex )
+        if ( selectionModel()->rowIntersectsSelection( lotIndex.row(), lotIndex.parent() ) || current.sibling( current.row(), 0 ) == lotIndex )
         {
             const QPen pen = ctx->painter()->pen();
             painter->setPen( d->scanLinePen );
@@ -730,7 +730,7 @@ QRectF LeveyJenningsDiagram::iconRect() const
  */
 QSvgRenderer* LeveyJenningsDiagram::iconRenderer( Symbol symbol )
 {
-    if( d->iconRenderer[ symbol ] == 0 )
+    if ( d->iconRenderer[ symbol ] == 0 )
         d->iconRenderer[ symbol ] = new QSvgRenderer( d->icons[ symbol ], this );
 
     return d->iconRenderer[ symbol ];

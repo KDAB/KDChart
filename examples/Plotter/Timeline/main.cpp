@@ -60,7 +60,7 @@ public:
         m_chart = new KDChart::Chart( splitter );
         
         m_model = new QStandardItemModel( 365, 2, this );
-        for( int i = 0; i < 365; ++i ) {
+        for ( int i = 0; i < 365; ++i ) {
             const QDateTime dt = QDateTime( QDate( 2010, 1, 1 ), QTime() );
             m_model->setData( m_model->index( i, 0 ), dt.addDays( i ) );
             m_model->setData( m_model->index( i, 1 ), sin( i / 10.0 ) * 10 );
@@ -94,13 +94,13 @@ public:
 private slots:
     void slotTimeout() {
         QVariant v1, v2;
-        for( int i = 0; i < 365; ++i ) {
+        for ( int i = 0; i < 365; ++i ) {
             m_model->setData( m_model->index( i, 1 ), sin( i / 10.0+m_counter ) * 10 );
         }
         m_counter += 0.02;
     }
     void buttonToggled(bool checked) {
-        if(checked)
+        if (checked)
             m_timer->start( 200 );
         else
             m_timer->stop();

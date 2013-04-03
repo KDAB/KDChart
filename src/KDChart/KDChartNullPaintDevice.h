@@ -61,7 +61,7 @@ namespace KDChart
 
         int metric(PaintDeviceMetric metric) const
         {
-            switch(metric)
+            switch (metric)
             {
             case QPaintDevice::PdmWidth:
                 return m_size.width();

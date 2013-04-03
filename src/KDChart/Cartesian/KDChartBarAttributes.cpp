@@ -75,7 +75,7 @@ BarAttributes::BarAttributes( const BarAttributes& r )
 
 BarAttributes& BarAttributes::operator= ( const BarAttributes& r )
 {
-    if( this == &r )
+    if ( this == &r )
         return *this;
 
     *d = *r.d;
@@ -91,7 +91,7 @@ BarAttributes::~BarAttributes()
 
 bool BarAttributes::operator==( const BarAttributes& r ) const
 {
-    if( fixedDataValueGap() == r.fixedDataValueGap() &&
+    if ( fixedDataValueGap() == r.fixedDataValueGap() &&
         useFixedDataValueGap() == r.useFixedDataValueGap() &&
         fixedValueBlockGap() == r.fixedValueBlockGap() &&
         useFixedValueBlockGap() == r.useFixedValueBlockGap() &&

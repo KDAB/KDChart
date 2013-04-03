@@ -76,7 +76,7 @@ void BarDiagram::Private::setOrientationAndType( Qt::Orientation o, BarDiagram::
     orientation = o;
 
     if ( orientation == Qt::Vertical ) {
-        switch( type ) {
+        switch ( type ) {
         case Normal:
             implementor = normalDiagram;
             break;
@@ -90,7 +90,7 @@ void BarDiagram::Private::setOrientationAndType( Qt::Orientation o, BarDiagram::
             Q_ASSERT_X( false, "BarDiagram::setType", "unknown diagram subtype" );
         }
     } else {
-        switch( type ) {
+        switch ( type ) {
         case Normal:
             implementor = normalLyingDiagram;
             break;
@@ -152,8 +152,8 @@ BarDiagram * BarDiagram::clone() const
 
 bool BarDiagram::compare( const BarDiagram* other ) const
 {
-    if( other == this ) return true;
-    if( ! other ){
+    if ( other == this ) return true;
+    if ( ! other ) {
         return false;
     }
 
@@ -240,7 +240,7 @@ BarAttributes BarDiagram::barAttributes() const
 BarAttributes BarDiagram::barAttributes( int column ) const
 {
     const QVariant attrs( d->datasetAttrs( column, KDChart::BarAttributesRole ) );
-    if( attrs.isValid() )
+    if ( attrs.isValid() )
         return attrs.value<BarAttributes>();
     return barAttributes();
 }
@@ -305,7 +305,7 @@ ThreeDBarAttributes BarDiagram::threeDBarAttributes() const
 ThreeDBarAttributes BarDiagram::threeDBarAttributes( int column ) const
 {
     const QVariant attrs( d->datasetAttrs( column, KDChart::ThreeDBarAttributesRole ) );
-    if( attrs.isValid() )
+    if ( attrs.isValid() )
         return attrs.value<ThreeDBarAttributes>();
     return threeDBarAttributes();
 }
@@ -365,7 +365,7 @@ void BarDiagram::paint( PaintContext* ctx )
     if ( !checkInvariants( true ) ) return;
     if ( !AbstractGrid::isBoundariesValid(dataBoundaries()) ) return;
     const PainterSaver p( ctx->painter() );
-    if( model()->rowCount( rootIndex() ) == 0 || model()->columnCount( rootIndex() ) == 0 )
+    if ( model()->rowCount( rootIndex() ) == 0 || model()->columnCount( rootIndex() ) == 0 )
         return; // nothing to paint for us
 
     AbstractCoordinatePlane* const plane = ctx->coordinatePlane();

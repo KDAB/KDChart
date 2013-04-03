@@ -75,11 +75,11 @@ void MainWindow::addDataset()
     QVector< qreal > vec;
     foreach ( const QString &str, parts ) {
         const qreal val = str.toDouble( &ok );
-        if(ok)
+        if (ok)
             vec.append( val );
     }
     const int rows = widget->diagram()->model()->rowCount();
-    if( vec.count() != rows )
+    if ( vec.count() != rows )
         QMessageBox::warning( this, "Wrong number of values entered!",
                               QString("You have entered %1 values,<br>but the data model needs %2 ones.<br><br>Note: Use <b>;</b> to separate the values!")
                                       .arg( vec.count() )

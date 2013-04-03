@@ -40,7 +40,7 @@
 
 QDebug operator<<( QDebug dbg, KDGantt::ItemDelegate::InteractionState state )
 {
-    switch( state ) {
+    switch ( state ) {
         PRINT_INTERACTIONSTATE( KDGantt::ItemDelegate::State_None );
         PRINT_INTERACTIONSTATE( KDGantt::ItemDelegate::State_Move );
         PRINT_INTERACTIONSTATE( KDGantt::ItemDelegate::State_ExtendLeft );
@@ -112,7 +112,7 @@ QPen ItemDelegate::Private::constraintPen( const QPointF& start, const QPointF& 
     }
 
     // ... unless constraint.data() returned a valid pen for this case
-    if( dataPen.canConvert( QVariant::Pen ) ) {
+    if ( dataPen.canConvert( QVariant::Pen ) ) {
         pen = dataPen.value< QPen >();
     }
 
@@ -259,9 +259,9 @@ ItemDelegate::InteractionState ItemDelegate::interactionStateFor( const QPointF&
 
     qreal delta = 5.;
     if ( itemRect.width() < 15 ) delta = 1.;
-    if( pos.x() >= itemRect.left() && pos.x() < itemRect.left()+delta ) {
+    if ( pos.x() >= itemRect.left() && pos.x() < itemRect.left()+delta ) {
         return State_ExtendLeft;
-    } else   if( pos.x() <= itemRect.right() && pos.x() > itemRect.right()-delta ) {
+    } else   if ( pos.x() <= itemRect.right() && pos.x() > itemRect.right()-delta ) {
         return State_ExtendRight;
     } else {
         return State_Move;
@@ -294,7 +294,7 @@ void ItemDelegate::paintGanttItem( QPainter* painter,
 
     bool drawText = true;
     qreal pw = painter->pen().width()/2.;
-    switch( typ ) {
+    switch ( typ ) {
     case TypeTask:
         if ( itemRect.isValid() ) {
             // TODO
@@ -377,7 +377,7 @@ void ItemDelegate::paintGanttItem( QPainter* painter,
     }
 
     Qt::Alignment ta;
-    switch( opt.displayPosition ) {
+    switch ( opt.displayPosition ) {
         case StyleOptionGanttItem::Left: ta = Qt::AlignLeft; break;
         case StyleOptionGanttItem::Right: ta = Qt::AlignRight; break;
         case StyleOptionGanttItem::Center: ta = Qt::AlignCenter; break;

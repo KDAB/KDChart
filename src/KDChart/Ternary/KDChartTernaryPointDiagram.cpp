@@ -88,14 +88,14 @@ void  TernaryPointDiagram::paint (PaintContext *paintContext)
     d->forgetAlreadyPaintedDataValues();
 
     int columnCount = model()->columnCount( rootIndex() );
-    for(int column=0; column<columnCount; column+=datasetDimension() )
+    for (int column=0; column<columnCount; column+=datasetDimension() )
     {
         int numrows = model()->rowCount( rootIndex() );
-        for( int row = 0; row < numrows; row++ )
+        for ( int row = 0; row < numrows; row++ )
         {
             QModelIndex base = model()->index( row, column, rootIndex() ); // checked
             // see if there is data otherwise skip
-            if( ! model()->data( base ).isNull() )
+            if ( ! model()->data( base ).isNull() )
             {
                 p->setPen( PrintingParameters::scalePen( pen( base ) ) );
                 p->setBrush( brush( base ) );

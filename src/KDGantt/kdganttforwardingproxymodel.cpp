@@ -95,7 +95,7 @@ void ForwardingProxyModel::setSourceModel( QAbstractItemModel* model )
     if ( sourceModel() ) sourceModel()->disconnect( this );
     BASE::setSourceModel( model );
 
-    if(!model) return;
+    if (!model) return;
 
     connect( model, SIGNAL(modelAboutToBeReset()), this, SLOT(sourceModelAboutToBeReset()) );
     connect( model, SIGNAL(modelReset()), this, SLOT(sourceModelReset()) );

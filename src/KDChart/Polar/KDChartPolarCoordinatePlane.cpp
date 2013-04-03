@@ -229,7 +229,7 @@ void PolarCoordinatePlane::setStartPosition( qreal degrees )
 {
     Q_ASSERT_X ( diagram(), "PolarCoordinatePlane::setStartPosition",
                  "setStartPosition() needs a diagram to be associated to the plane." );
-    for( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin();
+    for ( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin();
                                                 it != d->coordinateTransformations.end();
                                                 ++it )
     {
@@ -267,7 +267,7 @@ void PolarCoordinatePlane::setZoomFactors( qreal factorX, qreal factorY )
 
 void PolarCoordinatePlane::setZoomFactorX( qreal factor )
 {
-    for( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin();
+    for ( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin();
                                                 it != d->coordinateTransformations.end();
                                                 ++it )
     {
@@ -278,7 +278,7 @@ void PolarCoordinatePlane::setZoomFactorX( qreal factor )
 
 void PolarCoordinatePlane::setZoomFactorY( qreal factor )
 {
-    for( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin();
+    for ( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin();
                                                 it != d->coordinateTransformations.end();
                                                 ++it )
     {
@@ -296,7 +296,7 @@ QPointF PolarCoordinatePlane::zoomCenter() const
 
 void PolarCoordinatePlane::setZoomCenter( const QPointF& center )
 {
-    for( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin();
+    for ( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin();
                                                 it != d->coordinateTransformations.end();
                                                 ++it )
     {
@@ -319,7 +319,7 @@ void KDChart::PolarCoordinatePlane::setGridAttributes(
     bool circular,
     const GridAttributes& a )
 {
-    if( circular )
+    if ( circular )
         d->gridAttributesCircular = a;
     else
         d->gridAttributesSagittal = a;
@@ -338,12 +338,12 @@ void KDChart::PolarCoordinatePlane::resetGridAttributes(
 const GridAttributes KDChart::PolarCoordinatePlane::gridAttributes(
     bool circular ) const
 {
-    if( hasOwnGridAttributes( circular ) ){
-        if( circular )
+    if ( hasOwnGridAttributes( circular ) ) {
+        if ( circular )
             return d->gridAttributesCircular;
         else
             return d->gridAttributesSagittal;
-    }else{
+    } else {
         return globalGridAttributes();
     }
 }
@@ -363,7 +363,7 @@ QRectF KDChart::PolarCoordinatePlane::Private::contentsRect( const KDChart::Pola
 void KDChart::PolarCoordinatePlane::setHasOwnGridAttributes(
     bool circular, bool on )
 {
-    if( circular )
+    if ( circular )
         d->hasOwnGridAttributesCircular = on;
     else
         d->hasOwnGridAttributesSagittal = on;

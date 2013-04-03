@@ -53,8 +53,8 @@ const QPair<QPointF, QPointF> PercentBarDiagram::calculateDataBoundaries() const
 
     qreal usedDepth = 0;
 
-    for( int row = 0; row < rowCount ; ++row ) {
-        for( int col = 0; col < colCount; ++col ) {
+    for ( int row = 0; row < rowCount ; ++row ) {
+        for ( int col = 0; col < colCount; ++col ) {
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint p = compressor().data( position );
             QModelIndex sourceIndex = attributesModel()->mapToSource( p.index );
@@ -127,9 +127,9 @@ void PercentBarDiagram::paint( PaintContext* ctx )
     QVector <qreal > sumValuesVector;
 
     //calculate sum of values for each column and store
-    for( int row = 0; row < rowCount; ++row )
+    for ( int row = 0; row < rowCount; ++row )
     {
-        for( int col = 0; col < colCount; ++col )
+        for ( int col = 0; col < colCount; ++col )
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
@@ -143,30 +143,30 @@ void PercentBarDiagram::paint( PaintContext* ctx )
     }
 
     // calculate stacked percent value
-    for( int col = 0; col < colCount; ++col )
+    for ( int col = 0; col < colCount; ++col )
     {
         qreal offset = spaceBetweenGroups;
-        if( ba.useFixedBarWidth() )
+        if ( ba.useFixedBarWidth() )
             offset -= ba.fixedBarWidth();
         
-        if( offset < 0 )
+        if ( offset < 0 )
             offset = 0;
 
-        for( int row = 0; row < rowCount ; ++row )
+        for ( int row = 0; row < rowCount ; ++row )
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint p = compressor().data( position );
             QModelIndex sourceIndex = attributesModel()->mapToSource( p.index );
             ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( sourceIndex );
 
-            if ( threeDAttrs.isEnabled() ){
+            if ( threeDAttrs.isEnabled() ) {
                 if ( barWidth > 0 )
                     barWidth =  (width - ((offset+(threeDAttrs.depth()))*rowCount))/ rowCount;
                 if ( barWidth <= 0 ) {
                     barWidth = 0;
                     maxDepth = offset - ( width/rowCount);
                 }
-            }else{
+            } else {
                 barWidth = (width - (offset*rowCount))/ rowCount;
             }
 
@@ -176,7 +176,7 @@ void PercentBarDiagram::paint( PaintContext* ctx )
             
             // calculate stacked percent value
             // we only take in account positives values for now.
-            for( int k = col; k >= 0 ; --k )
+            for ( int k = col; k >= 0 ; --k )
             {
                 const CartesianDiagramDataCompressor::CachePosition position( row, k );
                 const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
@@ -185,7 +185,7 @@ void PercentBarDiagram::paint( PaintContext* ctx )
             }
 
             QPointF point, previousPoint;
-            if( sumValuesVector.at( row ) != 0 && value > 0 ) {
+            if ( sumValuesVector.at( row ) != 0 && value > 0 ) {
                 point = ctx->coordinatePlane()->translate( QPointF( key,  stackedValues / sumValuesVector.at( row ) * maxValue ) );
                 point.rx() += offset / 2;
 

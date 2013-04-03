@@ -66,7 +66,7 @@ void HeaderFooter::setParent( QObject* parent )
 {
     QObject::setParent( parent );
     setParentWidget( qobject_cast<QWidget*>( parent ) );
-    if( parent && ! autoReferenceArea() )
+    if ( parent && ! autoReferenceArea() )
         setAutoReferenceArea( parent );
 }
 

@@ -150,43 +150,48 @@ void DataValueSettings::refresh()
 
 void DataValueSettings::Private::on_scopeOneBarRB_toggled(  bool checked )
 {
-    if( checked ){
+    if ( checked ) {
         ui->scopeBarDatasetSB->setDisabled( false );
-        ui->scopeBarItemSB->setDisabled(    false );
-        ui->scopeDatasetSB->setDisabled(    true );
+        ui->scopeBarItemSB->setDisabled( false );
+        ui->scopeDatasetSB->setDisabled( true );
         populateWidgets();
     }
 }
+
 void DataValueSettings::Private::on_scopeBarDatasetSB_valueChanged( int i )
 {
     Q_UNUSED(i)
     populateWidgets();
 }
-void DataValueSettings::Private::on_scopeBarItemSB_valueChanged(    int i )
+
+void DataValueSettings::Private::on_scopeBarItemSB_valueChanged( int i )
 {
     Q_UNUSED(i)
     populateWidgets();
 }
+
 void DataValueSettings::Private::on_scopeDatasetRB_toggled( bool checked )
 {
-    if( checked ){
+    if ( checked ) {
         ui->scopeBarDatasetSB->setDisabled( true );
-        ui->scopeBarItemSB->setDisabled(    true );
-        ui->scopeDatasetSB->setDisabled(    false );
+        ui->scopeBarItemSB->setDisabled( true );
+        ui->scopeDatasetSB->setDisabled( false );
         populateWidgets();
     }
 }
+
 void DataValueSettings::Private::on_scopeDatasetSB_valueChanged( int i )
 {
     Q_UNUSED(i)
     populateWidgets();
 }
+
 void DataValueSettings::Private::on_scopeCommonRB_toggled( bool checked )
 {
-    if( checked ){
+    if ( checked ) {
         ui->scopeBarDatasetSB->setDisabled( true );
-        ui->scopeBarItemSB->setDisabled(    true );
-        ui->scopeDatasetSB->setDisabled(    true );
+        ui->scopeBarItemSB->setDisabled( true );
+        ui->scopeDatasetSB->setDisabled( true );
         populateWidgets();
     }
 }
@@ -225,7 +230,7 @@ void DataValueSettings::Private::on_relativeSizeSB_valueChanged( int i )
     m_chart->update();
 }
 
-void DataValueSettings::Private::on_minimumSizeSB_valueChanged(  int i )
+void DataValueSettings::Private::on_minimumSizeSB_valueChanged( int i )
 {
     DataValueAttributes da( attributes() );
     TextAttributes ta( da.textAttributes() );
@@ -249,7 +254,7 @@ void DataValueSettings::Private::on_rotationSB_valueChanged( int i )
     m_chart->update();
 }
 
-void DataValueSettings::Private::on_posPosCombo_currentIndexChanged(   const QString & text )
+void DataValueSettings::Private::on_posPosCombo_currentIndexChanged( const QString & text )
 {
     DataValueAttributes da( attributes() );
     RelativePosition relPos( da.positivePosition() );
@@ -297,7 +302,7 @@ void DataValueSettings::Private::on_posPadVertSB_valueChanged( int i )
     m_chart->update();
 }
 
-void DataValueSettings::Private::on_negPosCombo_currentIndexChanged(   const QString & text )
+void DataValueSettings::Private::on_negPosCombo_currentIndexChanged( const QString & text )
 {
     DataValueAttributes da( attributes() );
     RelativePosition relPos( da.negativePosition() );
@@ -345,7 +350,7 @@ void DataValueSettings::Private::on_negPadVertSB_valueChanged( int i )
     m_chart->update();
 }
 
-void DataValueSettings::Private::on_labelLE_textEdited(  const QString & text )
+void DataValueSettings::Private::on_labelLE_textEdited( const QString & text )
 {
     DataValueAttributes da( attributes() );
     da.setDataLabel( text.isEmpty() ? QString() : text );
@@ -387,11 +392,11 @@ const KDChart::DataValueAttributes DataValueSettings::Private::attributes() cons
     Q_ASSERT( m_chart );
     Q_ASSERT( m_chart->coordinatePlane() );
     AbstractDiagram *diag = m_chart->coordinatePlane()->diagram();
-    if( ui->scopeOneBarRB->isChecked() ){
+    if ( ui->scopeOneBarRB->isChecked() ) {
         //qDebug() << "attributes() returns settings for one single bar";
         return diag->dataValueAttributes( currentIndex() );
     }
-    if( ui->scopeDatasetRB->isChecked() ){
+    if ( ui->scopeDatasetRB->isChecked() ) {
         //qDebug() << "attributes() returns settings for a dataset";
         return diag->dataValueAttributes( ui->scopeDatasetSB->value() );
     }
@@ -404,9 +409,9 @@ void DataValueSettings::Private::setAttributes( const KDChart::DataValueAttribut
     Q_ASSERT( m_chart );
     Q_ASSERT( m_chart->coordinatePlane() );
     AbstractDiagram *diag = m_chart->coordinatePlane()->diagram();
-    if( ui->scopeOneBarRB->isChecked() )
+    if ( ui->scopeOneBarRB->isChecked() )
         diag->setDataValueAttributes( currentIndex(), da );
-    else if( ui->scopeDatasetRB->isChecked() )
+    else if ( ui->scopeDatasetRB->isChecked() )
         diag->setDataValueAttributes( ui->scopeDatasetSB->value(), da );
     else
         diag->setDataValueAttributes( da );
@@ -419,36 +424,36 @@ void DataValueSettings::Private::setAttributes( const KDChart::DataValueAttribut
 const char* DataValueSettings::Private::positionToScreenName( const Position& pos ) const
 {
     static const char* defaultPositionName = "( Default Value )";
-    if( pos.isUnknown() )
+    if ( pos.isUnknown() )
         return defaultPositionName;
     return pos.name();
 }
 
 const Qt::Alignment DataValueSettings::Private::alignmentFromScreeName( const QString& name ) const
 {
-    if( name == "Center" )      return Qt::AlignCenter;
-    if( name == "BottomLeft" )  return Qt::AlignLeft    | Qt::AlignBottom;
-    if( name == "Bottom" )      return Qt::AlignHCenter | Qt::AlignBottom;
-    if( name == "BottomRight" ) return Qt::AlignRight   | Qt::AlignBottom;
-    if( name == "Right" )       return Qt::AlignRight   | Qt::AlignVCenter;
-    if( name == "TopRight" )    return Qt::AlignRight   | Qt::AlignTop;
-    if( name == "Top" )         return Qt::AlignHCenter | Qt::AlignTop;
-    if( name == "TopLeft" )     return Qt::AlignLeft    | Qt::AlignTop;
-    if( name == "Left" )        return Qt::AlignLeft    | Qt::AlignVCenter;
+    if ( name == "Center" )      return Qt::AlignCenter;
+    if ( name == "BottomLeft" )  return Qt::AlignLeft    | Qt::AlignBottom;
+    if ( name == "Bottom" )      return Qt::AlignHCenter | Qt::AlignBottom;
+    if ( name == "BottomRight" ) return Qt::AlignRight   | Qt::AlignBottom;
+    if ( name == "Right" )       return Qt::AlignRight   | Qt::AlignVCenter;
+    if ( name == "TopRight" )    return Qt::AlignRight   | Qt::AlignTop;
+    if ( name == "Top" )         return Qt::AlignHCenter | Qt::AlignTop;
+    if ( name == "TopLeft" )     return Qt::AlignLeft    | Qt::AlignTop;
+    if ( name == "Left" )        return Qt::AlignLeft    | Qt::AlignVCenter;
     return Qt::AlignCenter;
 }
 
 const QString DataValueSettings::Private::alignmentToScreenName( const Qt::Alignment& align ) const
 {
-    if( align == Qt::AlignCenter )                       return "Center";
-    if( align == (Qt::AlignLeft    | Qt::AlignBottom) )  return "BottomLeft";
-    if( align == (Qt::AlignHCenter | Qt::AlignBottom) )  return "Bottom";
-    if( align == (Qt::AlignRight   | Qt::AlignBottom) )  return "BottomRight";
-    if( align == (Qt::AlignRight   | Qt::AlignVCenter) ) return "Right";
-    if( align == (Qt::AlignRight   | Qt::AlignTop) )     return "TopRight";
-    if( align == (Qt::AlignHCenter | Qt::AlignTop) )     return "Top";
-    if( align == (Qt::AlignLeft    | Qt::AlignTop) )     return "TopLeft";
-    if( align == (Qt::AlignLeft    | Qt::AlignVCenter) ) return "Left";
+    if ( align == Qt::AlignCenter )                       return "Center";
+    if ( align == (Qt::AlignLeft    | Qt::AlignBottom) )  return "BottomLeft";
+    if ( align == (Qt::AlignHCenter | Qt::AlignBottom) )  return "Bottom";
+    if ( align == (Qt::AlignRight   | Qt::AlignBottom) )  return "BottomRight";
+    if ( align == (Qt::AlignRight   | Qt::AlignVCenter) ) return "Right";
+    if ( align == (Qt::AlignRight   | Qt::AlignTop) )     return "TopRight";
+    if ( align == (Qt::AlignHCenter | Qt::AlignTop) )     return "Top";
+    if ( align == (Qt::AlignLeft    | Qt::AlignTop) )     return "TopLeft";
+    if ( align == (Qt::AlignLeft    | Qt::AlignVCenter) ) return "Left";
     return "Center";
 }
 
@@ -462,7 +467,7 @@ void DataValueSettings::Private::populateWidgets()
     ui->paintValuesCB->setChecked( da.isVisible() && ta.isVisible() );
     ui->fontCombo->setCurrentFont( ta.font() );
     ui->relativeSizeSB->setValue( static_cast<int>(ta.fontSize().value()) );
-    ui->minimumSizeSB->setValue(  static_cast<int>(ta.minimalFontSize().value()) );
+    ui->minimumSizeSB->setValue( static_cast<int>(ta.minimalFontSize().value()) );
     ui->rotationSB->setValue( static_cast<int>(ta.rotation()) );
 
     ui->posPosCombo->setCurrentIndex( ui->posPosCombo->findText(
@@ -479,7 +484,7 @@ void DataValueSettings::Private::populateWidgets()
     ui->negPadHoriSB->setValue( static_cast<int>(negPos.horizontalPadding().value()) );
     ui->negPadVertSB->setValue( static_cast<int>(negPos.verticalPadding().value()) );
 
-    ui->labelLE->setText(  da.dataLabel() );
+    ui->labelLE->setText( da.dataLabel() );
     ui->prefixLE->setText( da.prefix() );
     ui->suffixLE->setText( da.suffix() );
 }

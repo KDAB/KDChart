@@ -170,7 +170,7 @@ void Legend::resizeLayout( const QSize& size )
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "Legend::resizeLayout started";
 #endif
-    if( d->layout ){
+    if ( d->layout ) {
         d->layout->setGeometry( QRect(QPoint(0,0), size) );
         activateTheLayout();
     }
@@ -181,14 +181,14 @@ void Legend::resizeLayout( const QSize& size )
 
 void Legend::activateTheLayout()
 {
-    if( d->layout && d->layout->parent() )
+    if ( d->layout && d->layout->parent() )
         d->layout->activate();
 }
 
 
 void Legend::setLegendStyle( LegendStyle style )
 {
-    if( d->legendStyle == style ) return;
+    if ( d->legendStyle == style ) return;
     d->legendStyle = style;
     setNeedRebuild();
 }
@@ -218,7 +218,7 @@ Legend* Legend::clone() const
 
 bool Legend::compare( const Legend* other ) const
 {
-    if( other == this ) return true;
+    if ( other == this ) return true;
     if ( !other ) {
         return false;
     }
@@ -281,7 +281,7 @@ uint Legend::datasetCount() const
 
 void Legend::setReferenceArea( const QWidget* area )
 {
-    if( area == d->referenceArea ) return;
+    if ( area == d->referenceArea ) return;
     d->referenceArea = area;
     setNeedRebuild();
 }
@@ -294,7 +294,7 @@ const QWidget* Legend::referenceArea() const
 
 AbstractDiagram* Legend::diagram() const
 {
-    if( d->observers.isEmpty() )
+    if ( d->observers.isEmpty() )
         return 0;
     return d->observers.first()->diagram();
 }
@@ -322,10 +322,10 @@ void Legend::addDiagram( AbstractDiagram* newDiagram )
         DiagramObserver* observer = new DiagramObserver( newDiagram, this );
 
         DiagramObserver* oldObs = d->findObserverForDiagram( newDiagram );
-        if( oldObs ){
+        if ( oldObs ) {
             delete oldObs;
             d->observers[ d->observers.indexOf( oldObs ) ] = observer;
-        }else{
+        } else {
             d->observers.append( observer );
         }
         connect( observer, SIGNAL( diagramAboutToBeDestroyed(AbstractDiagram*) ),
@@ -344,15 +344,15 @@ void Legend::removeDiagram( AbstractDiagram* oldDiagram )
 {
     int datasetBrushOffset = 0;
     QList<AbstractDiagram*> diagrams = this->diagrams();
-    for(int i =0; i <diagrams.count(); i++)
+    for (int i =0; i <diagrams.count(); i++)
     {
-        if(diagrams.at(i) == oldDiagram)
+        if (diagrams.at(i) == oldDiagram)
         {
-            for( int i = 0; i < oldDiagram->datasetBrushes().count(); i++ ){
+            for ( int i = 0; i < oldDiagram->datasetBrushes().count(); i++ ) {
                 d->brushes.remove(datasetBrushOffset + i);
                 d->texts.remove(datasetBrushOffset + i);
             }
-            for( int i = 0; i < oldDiagram->datasetPens().count(); i++ ){
+            for ( int i = 0; i < oldDiagram->datasetPens().count(); i++ ) {
                 d->pens.remove(datasetBrushOffset + i);
             }
             break;
@@ -360,9 +360,9 @@ void Legend::removeDiagram( AbstractDiagram* oldDiagram )
         datasetBrushOffset += diagrams.at(i)->datasetBrushes().count();
     }
 
-    if( oldDiagram ){
+    if ( oldDiagram ) {
         DiagramObserver* oldObs = d->findObserverForDiagram( oldDiagram );
-        if( oldObs ){
+        if ( oldObs ) {
             delete oldObs;
             d->observers.removeAt( d->observers.indexOf( oldObs ) );
         }
@@ -385,14 +385,14 @@ void Legend::replaceDiagram( AbstractDiagram* newDiagram,
                              AbstractDiagram* oldDiagram )
 {
     KDChart::AbstractDiagram* old = oldDiagram;
-    if( ! d->observers.isEmpty() && ! old ){
+    if ( ! d->observers.isEmpty() && ! old ) {
         old = d->observers.first()->diagram();
-        if( ! old )
+        if ( ! old )
             d->observers.removeFirst(); // first entry had a 0 diagram
     }
-    if( old )
+    if ( old )
         removeDiagram( old );
-    if( newDiagram )
+    if ( newDiagram )
         addDiagram( newDiagram );
 }
 
@@ -402,11 +402,11 @@ uint Legend::dataSetOffset(KDChart::AbstractDiagram* diagram)
 
     for (int i = 0; i < d->observers.count(); ++i)
     {
-        if(d->observers.at(i)->diagram() == diagram)
+        if (d->observers.at(i)->diagram() == diagram)
             return offset;
 
         KDChart::AbstractDiagram* diagram = d->observers.at(i)->diagram();
-        if(!diagram->model())
+        if (!diagram->model())
             continue;
 
         offset = offset + diagram->model()->columnCount();
@@ -441,7 +441,7 @@ void Legend::setNeedRebuild()
 
 void Legend::setPosition( Position position )
 {
-    if( d->position == position )
+    if ( d->position == position )
         return;
     d->position = position;
     emitPositionChanged();
@@ -461,7 +461,7 @@ Position Legend::position() const
 
 void Legend::setAlignment( Qt::Alignment alignment )
 {
-    if( d->alignment == alignment )
+    if ( d->alignment == alignment )
         return;
     d->alignment = alignment;
     emitPositionChanged();
@@ -474,7 +474,7 @@ Qt::Alignment Legend::alignment() const
 
 void Legend::setTextAlignment( Qt::Alignment alignment )
 {
-    if( d->textAlignment == alignment )
+    if ( d->textAlignment == alignment )
         return;
     d->textAlignment = alignment;
     emitPositionChanged();
@@ -487,7 +487,7 @@ Qt::Alignment Legend::textAlignment() const
 
 void Legend::setLegendSymbolAlignment(Qt::Alignment alignment)
 {
-    if(d->legendLineSymbolAlignment == alignment)
+    if (d->legendLineSymbolAlignment == alignment)
         return;
 
     d->legendLineSymbolAlignment = alignment;
@@ -502,7 +502,7 @@ Qt::Alignment Legend::legendSymbolAlignment() const
 void Legend::setFloatingPosition( const RelativePosition& relativePosition )
 {
     d->position = Position::Floating;
-    if( d->relativePosition != relativePosition ){
+    if ( d->relativePosition != relativePosition ) {
         d->relativePosition  = relativePosition;
         emitPositionChanged();
     }
@@ -515,7 +515,7 @@ const RelativePosition Legend::floatingPosition() const
 
 void Legend::setOrientation( Qt::Orientation orientation )
 {
-    if( d->orientation == orientation ) return;
+    if ( d->orientation == orientation ) return;
     d->orientation = orientation;
     setNeedRebuild();
     emitPositionChanged();
@@ -528,7 +528,7 @@ Qt::Orientation Legend::orientation() const
 
 void Legend::setSortOrder( Qt::SortOrder order )
 {
-    if( d->order == order )
+    if ( d->order == order )
         return;
     d->order = order;
     setNeedRebuild();
@@ -542,7 +542,7 @@ Qt::SortOrder Legend::sortOrder() const
 
 void Legend::setShowLines( bool legendShowLines )
 {
-    if( d->showLines == legendShowLines ) return;
+    if ( d->showLines == legendShowLines ) return;
     d->showLines = legendShowLines;
     setNeedRebuild();
     emitPositionChanged();
@@ -572,23 +572,23 @@ bool Legend::useAutomaticMarkerSize() const
 */
 void Legend::resetTexts()
 {
-    if( ! d->texts.count() ) return;
+    if ( ! d->texts.count() ) return;
     d->texts.clear();
     setNeedRebuild();
 }
 
 void Legend::setText( uint dataset, const QString& text )
 {
-    if( d->texts[ dataset ] == text ) return;
+    if ( d->texts[ dataset ] == text ) return;
     d->texts[ dataset ] = text;
     setNeedRebuild();
 }
 
 QString Legend::text( uint dataset ) const
 {
-    if( d->texts.find( dataset ) != d->texts.end() ){
+    if ( d->texts.find( dataset ) != d->texts.end() ) {
         return d->texts[ dataset ];
-    }else{
+    } else {
         return d->modelLabels[ dataset ];
     }
 }
@@ -618,7 +618,7 @@ void Legend::setBrush( uint dataset, const QBrush& brush )
 
 QBrush Legend::brush( uint dataset ) const
 {
-    if( d->brushes.contains( dataset ) ) {
+    if ( d->brushes.contains( dataset ) ) {
         return d->brushes[ dataset ];
     } else {
         return d->modelBrushes[ dataset ];
@@ -635,13 +635,13 @@ void Legend::setBrushesFromDiagram( KDChart::AbstractDiagram* diagram )
 {
     bool bChangesDone = false;
     QList<QBrush> datasetBrushes = diagram->datasetBrushes();
-    for( int i = 0; i < datasetBrushes.count(); i++ ){
-        if( d->brushes[ i ] != datasetBrushes[ i ] ){
+    for ( int i = 0; i < datasetBrushes.count(); i++ ) {
+        if ( d->brushes[ i ] != datasetBrushes[ i ] ) {
             d->brushes[ i ]  = datasetBrushes[ i ];
             bChangesDone = true;
         }
     }
-    if( bChangesDone ) {
+    if ( bChangesDone ) {
         setNeedRebuild();
         update();
     }
@@ -650,7 +650,7 @@ void Legend::setBrushesFromDiagram( KDChart::AbstractDiagram* diagram )
 
 void Legend::setPen( uint dataset, const QPen& pen )
 {
-    if( d->pens[dataset] == pen ) return;
+    if ( d->pens[dataset] == pen ) return;
     d->pens[dataset] = pen;
     setNeedRebuild();
     update();
@@ -658,7 +658,7 @@ void Legend::setPen( uint dataset, const QPen& pen )
 
 QPen Legend::pen( uint dataset ) const
 {
-    if( d->pens.find( dataset ) != d->pens.end() )
+    if ( d->pens.find( dataset ) != d->pens.end() )
         return d->pens[dataset];
     else
         return d->modelPens[ dataset ];
@@ -672,7 +672,7 @@ const QMap<uint,QPen> Legend::pens() const
 
 void Legend::setMarkerAttributes( uint dataset, const MarkerAttributes& markerAttributes )
 {
-    if( d->markerAttributes[dataset] == markerAttributes ) return;
+    if ( d->markerAttributes[dataset] == markerAttributes ) return;
     d->markerAttributes[ dataset ] = markerAttributes;
     setNeedRebuild();
     update();
@@ -680,7 +680,7 @@ void Legend::setMarkerAttributes( uint dataset, const MarkerAttributes& markerAt
 
 MarkerAttributes Legend::markerAttributes( uint dataset ) const
 {
-    if( d->markerAttributes.find( dataset ) != d->markerAttributes.end() )
+    if ( d->markerAttributes.find( dataset ) != d->markerAttributes.end() )
         return d->markerAttributes[ dataset ];
     else if ( static_cast<uint>( d->modelMarkers.count() ) > dataset )
         return d->modelMarkers[ dataset ];
@@ -695,7 +695,7 @@ const QMap<uint, MarkerAttributes> Legend::markerAttributes() const
 
 void Legend::setTextAttributes( const TextAttributes &a )
 {
-    if( d->textAttributes == a ) return;
+    if ( d->textAttributes == a ) return;
     d->textAttributes = a;
     setNeedRebuild();
 }
@@ -707,7 +707,7 @@ TextAttributes Legend::textAttributes() const
 
 void Legend::setTitleText( const QString& text )
 {
-    if( d->titleText == text ) return;
+    if ( d->titleText == text ) return;
     d->titleText = text;
     setNeedRebuild();
 }
@@ -719,7 +719,7 @@ QString Legend::titleText() const
 
 void Legend::setTitleTextAttributes( const TextAttributes &a )
 {
-    if( d->titleTextAttributes == a ) return;
+    if ( d->titleTextAttributes == a ) return;
     d->titleTextAttributes = a;
     setNeedRebuild();
 }
@@ -743,7 +743,7 @@ void Legend::forceRebuild()
 
 void Legend::setSpacing( uint space )
 {
-    if( d->spacing == space && d->layout->spacing() == static_cast<int>(space) ) return;
+    if ( d->spacing == space && d->layout->spacing() == static_cast<int>(space) ) return;
     d->spacing = space;
     d->layout->setSpacing( space );
     setNeedRebuild();
@@ -809,7 +809,7 @@ void Legend::buildLegend()
     qDeleteAll( d->layoutItems );
     d->layoutItems.clear();
 
-    if( orientation() == Qt::Vertical ) {
+    if ( orientation() == Qt::Vertical ) {
         d->layout->setColumnStretch( 6, 1 );
     } else {
         d->layout->setColumnStretch( 6, 0 );
@@ -845,7 +845,7 @@ void Legend::buildLegend()
     Q_ASSERT( d->modelLabels.count() == d->modelBrushes.count() );
 
     // legend caption
-    if( !titleText().isEmpty() && titleTextAttributes().isVisible() ) {
+    if ( !titleText().isEmpty() && titleTextAttributes().isVisible() ) {
         // PENDING(kalle) Other properties!
         KDChart::TextLayoutItem* titleItem =
             new KDChart::TextLayoutItem( titleText(), titleTextAttributes(), referenceArea(),
@@ -855,18 +855,18 @@ void Legend::buildLegend()
         titleItem->setParentWidget( this );
 
         d->layoutItems << titleItem;
-        if( orientation() == Qt::Vertical )
+        if ( orientation() == Qt::Vertical )
             d->layout->addItem( titleItem, 0, 0, 1, 5, Qt::AlignCenter );
         else
             d->layout->addItem( titleItem, 0, 0, 1, d->modelLabels.count() ? (d->modelLabels.count()*4) : 1, Qt::AlignCenter );
 
         // The line between the title and the legend items, if any.
-        if( showLines() && d->modelLabels.count() ) {
+        if ( showLines() && d->modelLabels.count() ) {
             KDChart::HorizontalLineLayoutItem* lineItem = new KDChart::HorizontalLineLayoutItem();
             d->layoutItems << lineItem;
-            if( orientation() == Qt::Vertical ){
+            if ( orientation() == Qt::Vertical ) {
                 d->layout->addItem( lineItem, 1, 0, 1, 5, Qt::AlignCenter );
-            }else{
+            } else {
                 // we have 1+count*4 columns, because we have both, a leading and a trailing spacer
                 d->layout->addItem( lineItem, 1, 0, 1, 1+d->modelLabels.count()*4, Qt::AlignCenter );
             }
@@ -898,16 +898,16 @@ void Legend::buildLegend()
 
     QSizeF maxMarkersSize(1.0, 1.0);
     QVector <MarkerAttributes> markerAttrs( d->modelLabels.count() );
-    if( bShowMarkers ){
+    if ( bShowMarkers ) {
         for ( int dataset = 0; dataset < d->modelLabels.count(); ++dataset ) {
             markerAttrs[dataset] = markerAttributes( dataset );
             QSizeF siz;
-            if( useAutomaticMarkerSize() ||
+            if ( useAutomaticMarkerSize() ||
                 ! markerAttrs[dataset].markerSize().isValid() )
             {
                 siz = QSizeF(fontHeight, fontHeight);
                 markerAttrs[dataset].setMarkerSize( siz );
-            }else{
+            } else {
                 siz = markerAttrs[dataset].markerSize();
             }
             maxMarkersSize =
@@ -926,16 +926,16 @@ void Legend::buildLegend()
     int maxLineLength = 18;
     {
         bool hasComplexPenStyle = false;
-        for ( int dataset = 0; dataset < d->modelLabels.count(); ++dataset ){
+        for ( int dataset = 0; dataset < d->modelLabels.count(); ++dataset ) {
             const QPen pn = pen(dataset);
             const Qt::PenStyle ps = pn.style();
-            if( ps != Qt::NoPen ){
+            if ( ps != Qt::NoPen ) {
                 maxLineLength = qMax( pn.width() * 18, maxLineLength );
-                if( ps != Qt::SolidLine )
+                if ( ps != Qt::SolidLine )
                     hasComplexPenStyle = true;
             }
         }
-        if( hasComplexPenStyle && bShowMarkers )
+        if ( hasComplexPenStyle && bShowMarkers )
             maxLineLength =
                     maxLineLength + markerOffsOnLine +
                     static_cast<int>(maxMarkersSize.width());
@@ -954,7 +954,7 @@ void Legend::buildLegend()
         // MarkerAttributes are preferred.
         const QBrush markerBrush = markerAttrs[dataset].markerColor().isValid() ?
                                    QBrush(markerAttrs[dataset].markerColor()) : brush( dataset );
-        switch( style ) {
+        switch ( style ) {
             case( MarkersOnly ):
                 markerLineItem = new KDChart::MarkerLayoutItem(
                         diagram(),
@@ -985,9 +985,9 @@ void Legend::buildLegend()
             default:
                 Q_ASSERT( false ); // all styles need to be handled
         }
-        if( markerLineItem ){
+        if ( markerLineItem ) {
             d->layoutItems << markerLineItem;
-            if( orientation() == Qt::Vertical )
+            if ( orientation() == Qt::Vertical )
                 d->layout->addItem( markerLineItem,
                                     dataset*2+2, // first row is title, second is line
                                     1,
@@ -1007,7 +1007,7 @@ void Legend::buildLegend()
         labelItem->setParentWidget( this );
 
         d->layoutItems << labelItem;
-        if( orientation() == Qt::Vertical )
+        if ( orientation() == Qt::Vertical )
             d->layout->addItem( labelItem,
                                 dataset*2+2, // first row is title, second is line
                                 3 );
@@ -1017,7 +1017,7 @@ void Legend::buildLegend()
                                 dataset*4+2 );
 
         // horizontal lines (only in vertical mode, and not after the last item)
-        if( orientation() == Qt::Vertical && showLines() && dataset != d->modelLabels.count()-1 ) {
+        if ( orientation() == Qt::Vertical && showLines() && dataset != d->modelLabels.count()-1 ) {
             KDChart::HorizontalLineLayoutItem* lineItem = new KDChart::HorizontalLineLayoutItem();
             d->layoutItems << lineItem;
             d->layout->addItem( lineItem,
@@ -1027,7 +1027,7 @@ void Legend::buildLegend()
         }
 
         // vertical lines (only in horizontal mode, and not after the last item)
-        if( orientation() == Qt::Horizontal && showLines() && dataset != d->modelLabels.count()-1 ) {
+        if ( orientation() == Qt::Horizontal && showLines() && dataset != d->modelLabels.count()-1 ) {
             KDChart::VerticalLineLayoutItem* lineItem = new KDChart::VerticalLineLayoutItem();
             d->layoutItems << lineItem;
             d->layout->addItem( lineItem,
@@ -1043,7 +1043,7 @@ void Legend::buildLegend()
     }
 
     // vertical line (only in vertical mode)
-    if( orientation() == Qt::Vertical && showLines() && d->modelLabels.count() ) {
+    if ( orientation() == Qt::Vertical && showLines() && d->modelLabels.count() ) {
         KDChart::VerticalLineLayoutItem* lineItem = new KDChart::VerticalLineLayoutItem();
         d->layoutItems << lineItem;
         d->layout->addItem( lineItem, 2, 2, d->modelLabels.count()*2, 1 );
@@ -1070,9 +1070,9 @@ const QList<uint> Legend::hiddenDatasets() const
 
 void Legend::setDatasetHidden( uint dataset, bool hidden )
 {
-    if( hidden && !d->hiddenDatasets.contains( dataset ) )
+    if ( hidden && !d->hiddenDatasets.contains( dataset ) )
         d->hiddenDatasets.append( dataset );
-    else if( !hidden && d->hiddenDatasets.contains( dataset ) )
+    else if ( !hidden && d->hiddenDatasets.contains( dataset ) )
         d->hiddenDatasets.removeAll( dataset );
 }
 

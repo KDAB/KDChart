@@ -53,7 +53,7 @@ bool AbstractAxis::Private::setDiagram(
     bool delayedInit )
 {
     AbstractDiagram* diagram = delayedInit ? mDiagram : diagram_;
-    if( delayedInit ){
+    if ( delayedInit ) {
         mDiagram = 0;
     }
 
@@ -73,7 +73,7 @@ bool AbstractAxis::Private::setDiagram(
             Q_UNUSED( con )
             Q_ASSERT( con );
             bNewDiagramStored = true;
-        }else{
+        } else {
             observer = 0;
         }
     } else {
@@ -92,7 +92,7 @@ void AbstractAxis::Private::unsetDiagram( AbstractDiagram* diagram )
     } else {
         secondaryDiagrams.removeAll( diagram );
     }
-    if( !secondaryDiagrams.isEmpty() ) {
+    if ( !secondaryDiagrams.isEmpty() ) {
         AbstractDiagram *nextDiagram = secondaryDiagrams.dequeue();
         setDiagram( nextDiagram );
     }
@@ -132,7 +132,7 @@ void AbstractAxis::delayedInit()
 {
     // We call setDiagram() here, because the c'tor of Private
     // only has stored the pointers, but it did not call setDiagram().
-    if( d )
+    if ( d )
         d->setDiagram( 0, true /* delayedInit */ );
 }
 
@@ -170,7 +170,7 @@ void AbstractAxis::deleteObserver( AbstractDiagram* diagram )
 
 void AbstractAxis::connectSignals()
 {
-    if( d->observer ){
+    if ( d->observer ) {
         const bool con = connect( d->observer, SIGNAL( diagramDataChanged( AbstractDiagram *) ),
                 this, SIGNAL( coordinateSystemChanged() ) );
         Q_UNUSED( con );
@@ -180,7 +180,7 @@ void AbstractAxis::connectSignals()
 
 void AbstractAxis::setTextAttributes( const TextAttributes &a )
 {
-    if( d->textAttributes == a )
+    if ( d->textAttributes == a )
         return;
 
     d->textAttributes = a;
@@ -206,7 +206,7 @@ RulerAttributes AbstractAxis::rulerAttributes() const
 
 void AbstractAxis::setLabels( const QStringList& list )
 {
-    if( d->hardLabels == list )
+    if ( d->hardLabels == list )
         return;
 
     d->hardLabels = list;
@@ -220,7 +220,7 @@ QStringList AbstractAxis::labels() const
 
 void AbstractAxis::setShortLabels( const QStringList& list )
 {
-    if( d->hardShortLabels == list )
+    if ( d->hardShortLabels == list )
         return;
 
     d->hardShortLabels = list;
@@ -234,7 +234,7 @@ QStringList AbstractAxis::shortLabels() const
 
 const AbstractCoordinatePlane* AbstractAxis::coordinatePlane() const
 {
-    if( d->diagram() )
+    if ( d->diagram() )
         return d->diagram()->coordinatePlane();
     return 0;
 }
@@ -251,6 +251,6 @@ bool KDChart::AbstractAxis::observedBy( AbstractDiagram * diagram ) const
 
 void KDChart::AbstractAxis::update()
 {
-    if( d->diagram() )
+    if ( d->diagram() )
         d->diagram()->update();
 }

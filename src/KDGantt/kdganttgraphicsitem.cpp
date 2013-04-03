@@ -129,7 +129,7 @@ StyleOptionGanttItem GraphicsItem::getStyleOption() const
     opt.itemRect = rect();
     opt.boundingRect = boundingRect();
     QVariant tp = m_index.model()->data( m_index, TextPositionRole );
-    if(tp.isValid()) {
+    if (tp.isValid()) {
         opt.displayPosition = static_cast<StyleOptionGanttItem::Position>(tp.toInt());
     } else {
 #if 0
@@ -145,7 +145,7 @@ StyleOptionGanttItem GraphicsItem::getStyleOption() const
     if ( da.isValid() ) {
         opt.displayAlignment = static_cast< Qt::Alignment >( da.toInt() );
     } else {
-        switch( opt.displayPosition ) {
+        switch ( opt.displayPosition ) {
         case StyleOptionGanttItem::Left: opt.displayAlignment = Qt::AlignLeft|Qt::AlignVCenter; break;
         case StyleOptionGanttItem::Right: opt.displayAlignment = Qt::AlignRight|Qt::AlignVCenter; break;
         case StyleOptionGanttItem::Hidden: // fall through
@@ -378,11 +378,11 @@ void GraphicsItem::updateModel()
             //ItemType typ = static_cast<ItemType>( model->data( index(),
             //                                                   ItemTypeRole ).toInt() );
             QList<Constraint> constraints;
-            for( QList<ConstraintGraphicsItem*>::iterator it1 = m_startConstraints.begin() ;
+            for ( QList<ConstraintGraphicsItem*>::iterator it1 = m_startConstraints.begin() ;
                  it1 != m_startConstraints.end() ;
                  ++it1 )
                 constraints.push_back((*it1)->proxyConstraint());
-            for( QList<ConstraintGraphicsItem*>::iterator it2 = m_endConstraints.begin() ;
+            for ( QList<ConstraintGraphicsItem*>::iterator it2 = m_endConstraints.begin() ;
                  it2 != m_endConstraints.end() ;
                  ++it2 )
                 constraints.push_back((*it2)->proxyConstraint());
@@ -400,7 +400,7 @@ void GraphicsItem::hoverMoveEvent( QGraphicsSceneHoverEvent* event )
     if ( !isEditable() ) return;
     StyleOptionGanttItem opt = getStyleOption();
     ItemDelegate::InteractionState istate = scene()->itemDelegate()->interactionStateFor( event->pos(), opt, index() );
-    switch( istate ) {
+    switch ( istate ) {
     case ItemDelegate::State_ExtendLeft:
 #ifndef QT_NO_CURSOR
         setCursor( Qt::SizeHorCursor );
@@ -448,7 +448,7 @@ void GraphicsItem::mousePressEvent( QGraphicsSceneMouseEvent* event )
         m_pressscenepos = event->scenePos();
         scene()->itemPressed( index() );
 
-        switch( m_istate ) {
+        switch ( m_istate ) {
         case ItemDelegate::State_ExtendLeft:
         case ItemDelegate::State_ExtendRight:
         default: /* State_Move */
@@ -537,7 +537,7 @@ void GraphicsItem::updateItemFromMouse( const QPointF& scenepos )
     const QPointF p = scenepos - m_presspos;
     QRectF r = rect();
     QRectF br = boundingRect();
-    switch( m_istate ) {
+    switch ( m_istate ) {
     case ItemDelegate::State_Move:
         setPos( p.x(), pos().y() );
         break;
@@ -568,7 +568,7 @@ void GraphicsItem::mouseMoveEvent( QGraphicsSceneMouseEvent* event )
     if ( m_presspos.isNull() ) return;
 
     //qDebug() << "GraphicsItem::mouseMoveEvent("<<event<<"), m_istate="<< static_cast<ItemDelegate::InteractionState>( m_istate );
-    switch( m_istate ) {
+    switch ( m_istate ) {
     case ItemDelegate::State_ExtendLeft:
     case ItemDelegate::State_ExtendRight:
     case ItemDelegate::State_Move:

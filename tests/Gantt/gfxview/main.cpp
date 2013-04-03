@@ -91,7 +91,7 @@ public:
 static Qt::Alignment random_alignment()
 {
     int r = (int) (3.0*rand()/(RAND_MAX+1.0));
-    switch( r ) {
+    switch ( r ) {
     case 0: return Qt::AlignTop;
     case 1: return Qt::AlignBottom;
     case 2: return Qt::AlignCenter;
@@ -102,7 +102,7 @@ static Qt::Alignment random_alignment()
 static KDGantt::StyleOptionGanttItem::Position random_position()
 {
     int r = (int) (3.0*rand()/(RAND_MAX+1.0));
-    switch( r ) {
+    switch ( r ) {
     case 0: return KDGantt::StyleOptionGanttItem::Left;
     case 1: return KDGantt::StyleOptionGanttItem::Right;
     case 2:

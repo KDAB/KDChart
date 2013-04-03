@@ -39,8 +39,8 @@ AbstractCartesianDiagram::Private::~Private()
 
 bool AbstractCartesianDiagram::compare( const AbstractCartesianDiagram* other ) const
 {
-    if( other == this ) return true;
-    if( ! other ){
+    if ( other == this ) return true;
+    if ( ! other ) {
         return false;
     }
     return  // compare the base class
@@ -93,7 +93,7 @@ void AbstractCartesianDiagram::addAxis( CartesianAxis *axis )
 void AbstractCartesianDiagram::takeAxis( CartesianAxis *axis )
 {
     const int idx = d->axesList.indexOf( axis );
-    if( idx != -1 )
+    if ( idx != -1 )
         d->axesList.takeAt( idx );
     axis->deleteObserver( this );
     axis->setParentWidget( 0 );
@@ -115,7 +115,7 @@ void KDChart::AbstractCartesianDiagram::layoutPlanes()
 
 void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePlane* plane )
 {
-    if( coordinatePlane() ) {
+    if ( coordinatePlane() ) {
         disconnect( attributesModel(), SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ),
                     coordinatePlane(), SLOT( relayout() ) );
         disconnect( attributesModel(), SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),

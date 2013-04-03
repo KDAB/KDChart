@@ -184,7 +184,7 @@ bool PlotterDiagramCompressor::Iterator::isValid() const
 //                m_index = -1;
 //            else
 //            {
-//                switch( parent->d->m_mode )
+//                switch ( parent->d->m_mode )
 //                {
 //                case( PlotterDiagramCompressor::DISTANCE ):
 //                    {
@@ -362,7 +362,7 @@ PlotterDiagramCompressor::Iterator PlotterDiagramCompressor::Iterator::operator+
 
 PlotterDiagramCompressor::Iterator& PlotterDiagramCompressor::Iterator::operator += ( int value )
 {    
-    for ( int index = m_index; index + value != m_index; ++( *this ) ){};
+    for ( int index = m_index; index + value != m_index; ++( *this ) ) {};
     return *this;
 }
 
@@ -453,7 +453,7 @@ bool PlotterDiagramCompressor::Private::inBoundaries( Qt::Orientation orient, co
 //void PlotterDiagramCompressor::Private::rowsInserted( const QModelIndex& /*parent*/, int start, int end )
 //{
 
-//    if( m_bufferlist.count() > 0 && !m_bufferlist[ 0 ].isEmpty() && start < m_bufferlist[ 0 ].count() )
+//    if ( m_bufferlist.count() > 0 && !m_bufferlist[ 0 ].isEmpty() && start < m_bufferlist[ 0 ].count() )
 //    {
 //        calculateDataBoundaries();
 //        clearBuffer();
@@ -485,7 +485,7 @@ bool PlotterDiagramCompressor::Private::inBoundaries( Qt::Orientation orient, co
 //            const bool checkcur = inBoundaries( Qt::Vertical, curdp ) && inBoundaries( Qt::Horizontal, curdp );
 //            const bool checkpred = inBoundaries( Qt::Vertical, predecessor ) && inBoundaries( Qt::Horizontal, predecessor );
 //            const bool check = checkcur || checkpred;
-//            switch( m_mode )
+//            switch ( m_mode )
 //            {
 //            case( PlotterDiagramCompressor::BOTH ):
 //                {
@@ -495,7 +495,7 @@ bool PlotterDiagramCompressor::Private::inBoundaries( Qt::Orientation orient, co
 //                        {
 //                            m_bufferlist[ dataset ].append( curdp );
 //                        }
-//                        else if( !m_bufferlist[ dataset ].isEmpty() )
+//                        else if ( !m_bufferlist[ dataset ].isEmpty() )
 //                        {
 //                            m_bufferlist[ dataset ].insert( row, curdp );
 //                        }
@@ -515,7 +515,7 @@ bool PlotterDiagramCompressor::Private::inBoundaries( Qt::Orientation orient, co
 //                        {
 //                            m_bufferlist[ dataset ].append( curdp );
 //                        }
-//                        else if( !m_bufferlist[ dataset ].isEmpty() )
+//                        else if ( !m_bufferlist[ dataset ].isEmpty() )
 //                        {
 //                            m_bufferlist[ dataset ].insert( row, curdp );
 //                        }
@@ -536,7 +536,7 @@ bool PlotterDiagramCompressor::Private::inBoundaries( Qt::Orientation orient, co
 //                            m_bufferlist[ dataset ].append( curdp );
 //                            oldSlope = newSlope;
 //                        }
-//                        else if( !m_bufferlist[ dataset ].isEmpty() )
+//                        else if ( !m_bufferlist[ dataset ].isEmpty() )
 //                        {
 //                            m_bufferlist[ dataset ].insert( row, curdp );
 //                            oldSlope = newSlope;
@@ -574,7 +574,7 @@ void PlotterDiagramCompressor::Private::rowsInserted( const QModelIndex& /*paren
     //Q_ASSERT( std::numeric_limits<qreal>::quiet_NaN() < 5 || std::numeric_limits<qreal>::quiet_NaN() > 5 );
     //Q_ASSERT( 5 == qMin( std::numeric_limits<qreal>::quiet_NaN(),  5.0 ) );
     //Q_ASSERT( 5 == qMax( 5.0, std::numeric_limits<qreal>::quiet_NaN() ) );
-    if( m_bufferlist.count() > 0 && !m_bufferlist[ 0 ].isEmpty() && start < m_bufferlist[ 0 ].count() )
+    if ( m_bufferlist.count() > 0 && !m_bufferlist[ 0 ].isEmpty() && start < m_bufferlist[ 0 ].count() )
     {
         calculateDataBoundaries();
         clearBuffer();
@@ -632,7 +632,7 @@ void PlotterDiagramCompressor::Private::rowsInserted( const QModelIndex& /*paren
                     {
                         m_bufferlist[ dataset ].append( curdp );
                     }
-                    else if( !m_bufferlist[ dataset ].isEmpty() )
+                    else if ( !m_bufferlist[ dataset ].isEmpty() )
                     {
                         m_bufferlist[ dataset ].insert( row, curdp );
                     }
@@ -678,7 +678,7 @@ void PlotterDiagramCompressor::Private::rowsInserted( const QModelIndex& /*paren
                 {
                     m_bufferlist[ dataset ].append( curdp );
                 }
-                else if( !m_bufferlist[ dataset ].isEmpty() )
+                else if ( !m_bufferlist[ dataset ].isEmpty() )
                 {
                     m_bufferlist[ dataset ].insert( row, curdp );
                 }

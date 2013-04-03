@@ -53,7 +53,7 @@ PieAttributes::PieAttributes( const PieAttributes& r )
 
 PieAttributes& PieAttributes::operator= ( const PieAttributes& r )
 {
-    if( this == &r )
+    if ( this == &r )
         return *this;
 
     *d = *r.d;

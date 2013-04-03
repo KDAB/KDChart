@@ -66,7 +66,7 @@ QModelIndex AbstractProxyModel::mapToSource( const QModelIndex &proxyIndex ) con
 {
   if ( !proxyIndex.isValid() )
     return QModelIndex();
-  if( proxyIndex.model() != this )
+  if ( proxyIndex.model() != this )
     qDebug() << proxyIndex.model() << this;
   Q_ASSERT( proxyIndex.model() == this );
   // So here we need to create a source index which holds that internal pointer.

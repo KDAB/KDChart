@@ -46,7 +46,7 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
     PainterSaver painterSaver( ctx->painter() );
 
     ctx->painter()->setRenderHint( QPainter::Antialiasing, diagram()->antiAliasing() );
-    if( threeDAttrs.isEnabled() )
+    if ( threeDAttrs.isEnabled() )
         indexBrush = threeDAttrs.threeDBrush( indexBrush, bar );
     ctx->painter()->setBrush( indexBrush );
     ctx->painter()->setPen( PrintingParameters::scalePen( indexPen ) );
@@ -105,22 +105,22 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
             paintTop = false;
 
         bool needToSetClippingOffForTop = false;
-        if ( paintTop ){
+        if ( paintTop ) {
             // Draw the top, if at least one of the top's points is
             // either inside or near at the edge of the coordinate plane:
             bool drawIt = false;
             bool hasPointOutside = false;
             const QRectF r( ctx->rectangle().adjusted(0,-1,1,0) );
             KDAB_FOREACH( QPointF pt, topPoints ) {
-                if( r.contains( pt ) )
+                if ( r.contains( pt ) )
                     drawIt = true;
                 else
                     hasPointOutside = true;
             }
-            if( drawIt ){
+            if ( drawIt ) {
                 const PainterSaver p( ctx->painter() );
                 needToSetClippingOffForTop = hasPointOutside && ctx->painter()->hasClipping();
-                if( needToSetClippingOffForTop )
+                if ( needToSetClippingOffForTop )
                     ctx->painter()->setClipping( false );
                 reverseMapper().addPolygon( index.row(), index.column(), topPoints );
                 ctx->painter()->drawPolygon( topPoints );
@@ -130,16 +130,16 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
 
 
         sidePoints << bar.topRight() << isoRect.topRight() << isoRect.bottomRight() << bar.bottomRight();
-        if ( bar.height() != 0 ){
+        if ( bar.height() != 0 ) {
             const PainterSaver p( ctx->painter() );
-            if( needToSetClippingOffForTop )
+            if ( needToSetClippingOffForTop )
                 ctx->painter()->setClipping( false );
             reverseMapper().addPolygon( index.row(), index.column(), sidePoints );
             ctx->painter()->drawPolygon( sidePoints );
         }
     }
 
-    if( bar.height() != 0 )
+    if ( bar.height() != 0 )
     {
         reverseMapper().addRect( index.row(), index.column(), bar );
         ctx->painter()->drawRect( bar );
@@ -182,7 +182,7 @@ void BarDiagram::BarDiagramType::calculateValueAndGapWidths( int rowCount,int co
      * also one unit, by default. */
 
     qreal units;
-    if( type() == Normal )
+    if ( type() == Normal )
         units = colCount // number of bars in group * 1.0
                 + (colCount-1) * ba.barGapFactor() // number of bar gaps
                 + 1 * ba.groupGapFactor(); // number of group gaps

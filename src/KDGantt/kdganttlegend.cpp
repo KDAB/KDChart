@@ -82,7 +82,7 @@ QSize Legend::minimumSizeHint() const
 
 void Legend::setModel( QAbstractItemModel* model )
 {
-    if( this->model() != 0 )
+    if ( this->model() != 0 )
     {
         disconnect( this->model(), SIGNAL( dataChanged( QModelIndex, QModelIndex ) ), this, SLOT( modelDataChanged() ) );
         disconnect( this->model(), SIGNAL( rowsRemoved( QModelIndex, int, int ) ), this, SLOT( modelDataChanged() ) );
@@ -92,7 +92,7 @@ void Legend::setModel( QAbstractItemModel* model )
     QAbstractItemView::setModel( model );
     d->proxyModel.setSourceModel( model );
 
-    if( this->model() != 0 )
+    if ( this->model() != 0 )
     {
         connect( this->model(), SIGNAL( dataChanged( QModelIndex, QModelIndex ) ), this, SLOT( modelDataChanged() ) );
         connect( this->model(), SIGNAL( rowsRemoved( QModelIndex, int, int ) ), this, SLOT( modelDataChanged() ) );
@@ -113,7 +113,7 @@ void Legend::paintEvent( QPaintEvent* event )
 {
     Q_UNUSED( event );
     // no model, no legend...
-    if( model() == 0 )
+    if ( model() == 0 )
         return;
 
     QPainter p( viewport() );
@@ -144,7 +144,7 @@ QRect Legend::drawItem( QPainter* painter, const QModelIndex& index, const QPoin
     int xPos = pos.x();
     int yPos = pos.y();
 
-    if( index.isValid() && index.model() == &d->proxyModel )
+    if ( index.isValid() && index.model() == &d->proxyModel )
     {
         ItemDelegate* const delegate = qobject_cast< ItemDelegate* >( itemDelegate( index ) );
         assert( delegate != 0 );
@@ -159,7 +159,7 @@ QRect Legend::drawItem( QPainter* painter, const QModelIndex& index, const QPoin
         opt.itemRect = opt.rect.adjusted(dx,0,dx,0);
         opt.boundingRect = r;
         opt.boundingRect.setWidth( r.width() + r.height() );
-        if( !opt.text.isNull() )
+        if ( !opt.text.isNull() )
             delegate->paintGanttItem( painter, opt, index );
 
         xPos = r.right();
@@ -168,7 +168,7 @@ QRect Legend::drawItem( QPainter* painter, const QModelIndex& index, const QPoin
 
     
     const int rowCount = d->proxyModel.rowCount( index );
-    for( int row = 0; row < rowCount; ++row )
+    for ( int row = 0; row < rowCount; ++row )
     {
         const QRect r = drawItem( painter, d->proxyModel.index( row, 0, index ), QPoint( pos.x(), yPos ) );
         xPos = qMax( xPos, r.right() );
@@ -183,25 +183,25 @@ QRect Legend::drawItem( QPainter* painter, const QModelIndex& index, const QPoin
  */
 QSize Legend::measureItem( const QModelIndex& index, bool recursive ) const
 {
-    if( model() == 0 )
+    if ( model() == 0 )
         return QSize();
 
     QSize baseSize;
-    if( index.model() != 0 )
+    if ( index.model() != 0 )
     {
         QFontMetrics fm( ( index.model()->data( index, Qt::FontRole ) ).value< QFont >() );
         const QString text = index.model()->data( index, LegendRole ).toString();
-        if( !text.isEmpty() )
+        if ( !text.isEmpty() )
             baseSize += QSize( fm.width( text ) + fm.height() + 2, fm.height() + 2 );
     }
 
-    if( !recursive )
+    if ( !recursive )
         return baseSize;
 
     QSize childrenSize;
 
     const int rowCount = d->proxyModel.rowCount( index );
-    for( int row = 0; row < rowCount; ++row )
+    for ( int row = 0; row < rowCount; ++row )
     {
         const QSize childSize = measureItem( d->proxyModel.index( row, 0, index ) );
         childrenSize.setWidth( qMax( childrenSize.width(), childSize.width() ) );

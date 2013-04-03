@@ -91,12 +91,12 @@ LeveyJenningsGridAttributes::GridType LeveyJenningsAxis::type() const
   */
 void LeveyJenningsAxis::setType( LeveyJenningsGridAttributes::GridType type )
 {
-    if( type != d->type )
+    if ( type != d->type )
     {
         TextAttributes ta = textAttributes();
         QPen pen = ta.pen();
         QColor color = type == LeveyJenningsGridAttributes::Expected ? Qt::black : Qt::blue;
-        if( qobject_cast< const LeveyJenningsDiagram* >( d->diagram() ) && 
+        if ( qobject_cast< const LeveyJenningsDiagram* >( d->diagram() ) && 
             qobject_cast< const LeveyJenningsCoordinatePlane* >( d->diagram()->coordinatePlane() ) )
         {
             color = qobject_cast< const LeveyJenningsCoordinatePlane* >( d->diagram()->coordinatePlane() )->gridAttributes().gridPen( type ).color();
@@ -120,8 +120,8 @@ void LeveyJenningsAxis::setDateFormat(Qt::DateFormat format)
 
 bool LeveyJenningsAxis::compare( const LeveyJenningsAxis* other ) const
 {
-    if( other == this ) return true;
-    if( ! other ){
+    if ( other == this ) return true;
+    if ( ! other ) {
         //qDebug() << "CartesianAxis::compare() cannot compare to Null pointer";
         return false;
     }
@@ -141,10 +141,10 @@ void LeveyJenningsAxis::paintCtx( PaintContext* context )
     Q_UNUSED(plane);
     // note: Not having any data model assigned is no bug
     //       but we can not draw an axis then either.
-    if( ! d->diagram()->model() )
+    if ( ! d->diagram()->model() )
         return;
 
-    if( isOrdinate() )
+    if ( isOrdinate() )
         paintAsOrdinate( context );
     else
         paintAsAbscissa( context );
@@ -165,7 +165,7 @@ void LeveyJenningsAxis::paintAsOrdinate( PaintContext* context )
     const bool drawLabels = labelTA.isVisible();
 
     // nothing to draw, since we've no ticks
-    if( !drawLabels )
+    if ( !drawLabels )
         return;
     
     const QObject* referenceArea = plane->parent();
@@ -191,7 +191,7 @@ void LeveyJenningsAxis::paintAsOrdinate( PaintContext* context )
     
     painter->setPen ( PrintingParameters::scalePen( labelTA.pen() ) ); // perhaps we want to add a setter method later?
 
-    for( int i = 0; i < values.count(); ++i )
+    for ( int i = 0; i < values.count(); ++i )
     {
         const QPointF labelPos = plane->translate( QPointF( 0.0, values.at( i ) ) );
         const QString label = customizedLabel( labels().at( i ) );
@@ -201,10 +201,10 @@ void LeveyJenningsAxis::paintAsOrdinate( PaintContext* context )
         labelItem.setGeometry( QRectF( QPointF( xPos, labelPos.y() - size.height() / 2.0 ), size ).toRect() );
 
         // don't draw labels which aren't in the valid range (might happen for calculated SDs)
-        if( values.at( i ) > diag->expectedMeanValue() + 4 * diag->expectedStandardDeviation() )
+        if ( values.at( i ) > diag->expectedMeanValue() + 4 * diag->expectedStandardDeviation() )
             continue;
 
-        if( values.at( i ) < diag->expectedMeanValue() - 4 * diag->expectedStandardDeviation() )
+        if ( values.at( i ) < diag->expectedMeanValue() - 4 * diag->expectedStandardDeviation() )
             continue;
 
         labelItem.paint( painter );
@@ -227,7 +227,7 @@ void LeveyJenningsAxis::paintAsAbscissa( PaintContext* context )
     
     const bool drawLabels = labelTA.isVisible();
 
-    if( !drawLabels )
+    if ( !drawLabels )
         return;
 
 
@@ -245,7 +245,7 @@ void LeveyJenningsAxis::paintAsAbscissa( PaintContext* context )
                               KDChartEnums::MeasureOrientationMinimum,
                               Qt::AlignLeft );
     QSize origSize = labelItem.sizeHint();
-    if( range.first.secsTo( range.second ) < 86400 )
+    if ( range.first.secsTo( range.second ) < 86400 )
         labelItem = TextLayoutItem( range.first.toString( dateFormat() ), 
                                   labelTA,
                                   referenceArea,
@@ -264,7 +264,7 @@ void LeveyJenningsAxis::paintAsAbscissa( PaintContext* context )
                               KDChartEnums::MeasureOrientationMinimum,
                               Qt::AlignLeft );
     origSize = labelItem2.sizeHint();
-    if( range.first.secsTo( range.second ) < 86400 )
+    if ( range.first.secsTo( range.second ) < 86400 )
         labelItem2 = TextLayoutItem( range.second.toString( dateFormat() ), 
                                      labelTA,
                                      referenceArea,

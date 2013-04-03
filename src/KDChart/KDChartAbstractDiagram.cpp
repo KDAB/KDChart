@@ -68,7 +68,7 @@ void AbstractDiagram::init()
 
 bool AbstractDiagram::compare( const AbstractDiagram* other ) const
 {
-    if( other == this ) return true;
+    if ( other == this ) return true;
     if ( !other ) {
         return false;
     }
@@ -117,7 +117,7 @@ AbstractCoordinatePlane* AbstractDiagram::coordinatePlane() const
 
 const QPair<QPointF, QPointF> AbstractDiagram::dataBoundaries () const
 {
-    if( d->databoundariesDirty ){
+    if ( d->databoundariesDirty ) {
         d->databoundaries = calculateDataBoundaries ();
         d->databoundariesDirty = false;
     }
@@ -132,7 +132,7 @@ void AbstractDiagram::setDataBoundariesDirty() const
 
 void AbstractDiagram::setModel( QAbstractItemModel * newModel )
 {
-    if( model() )
+    if ( model() )
     {
         disconnect( model(), SIGNAL( rowsInserted( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
         disconnect( model(), SIGNAL( columnsInserted( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
@@ -148,7 +148,7 @@ void AbstractDiagram::setModel( QAbstractItemModel * newModel )
     d->setAttributesModel(amodel);
     scheduleDelayedItemsLayout();
     setDataBoundariesDirty();
-    if( model() )
+    if ( model() )
     {
         connect( model(), SIGNAL( rowsInserted( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
         connect( model(), SIGNAL( columnsInserted( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
@@ -163,13 +163,13 @@ void AbstractDiagram::setModel( QAbstractItemModel * newModel )
 
 void AbstractDiagram::setSelectionModel( QItemSelectionModel* newSelectionModel )
 {
-    if( selectionModel() )
+    if ( selectionModel() )
     {
         disconnect( selectionModel(), SIGNAL( currentChanged( QModelIndex, QModelIndex ) ), this, SIGNAL( modelsChanged() ) );
         disconnect( selectionModel(), SIGNAL( selectionChanged( QItemSelection, QItemSelection ) ), this, SIGNAL( modelsChanged() ) );
     }
     QAbstractItemView::setSelectionModel( newSelectionModel );
-    if( selectionModel() )
+    if ( selectionModel() )
     {
         connect( selectionModel(), SIGNAL( currentChanged( QModelIndex, QModelIndex ) ), this, SIGNAL( modelsChanged() ) );
         connect( selectionModel(), SIGNAL( selectionChanged( QItemSelection, QItemSelection ) ), this, SIGNAL( modelsChanged() ) );
@@ -186,13 +186,13 @@ void AbstractDiagram::setSelectionModel( QItemSelectionModel* newSelectionModel 
 */
 void AbstractDiagram::setAttributesModel( AttributesModel* amodel )
 {
-    if( amodel->sourceModel() != model() ) {
+    if ( amodel->sourceModel() != model() ) {
         qWarning("KDChart::AbstractDiagram::setAttributesModel() failed: "
                  "Trying to set an attributesmodel which works on a different "
                  "model than the diagram.");
         return;
     }
-    if( qobject_cast<PrivateAttributesModel*>(amodel) ) {
+    if ( qobject_cast<PrivateAttributesModel*>(amodel) ) {
         qWarning("KDChart::AbstractDiagram::setAttributesModel() failed: "
                  "Trying to set an attributesmodel that is private to another diagram.");
         return;
@@ -303,7 +303,7 @@ bool AbstractDiagram::isHidden() const
 bool AbstractDiagram::isHidden( int dataset ) const
 {
     const QVariant boolFlag( d->datasetAttrs( dataset, DataHiddenRole ) );
-    if( boolFlag.isValid() )
+    if ( boolFlag.isValid() )
         return boolFlag.value< bool >();
     return isHidden();
 }
@@ -355,7 +355,7 @@ DataValueAttributes AbstractDiagram::dataValueAttributes( int dataset ) const
 
     const QVariant headerAttrs(
         d->datasetAttrs( dataset, KDChart::DataValueLabelAttributesRole ) );
-    if( headerAttrs.isValid() )
+    if ( headerAttrs.isValid() )
         return headerAttrs.value< DataValueAttributes >();
     return dataValueAttributes();
 }
@@ -493,10 +493,10 @@ void AbstractDiagram::paintMarker( QPainter* painter,
     // Pen is used to paint 4Pixels - 1 Pixel - Ring and FastCross types.
     // make sure to use the brush color - see above in those cases.
     const bool isFourPixels = (markerAttributes.markerStyle() == MarkerAttributes::Marker4Pixels);
-    if( isFourPixels || (markerAttributes.markerStyle() == MarkerAttributes::Marker1Pixel) ){
+    if ( isFourPixels || (markerAttributes.markerStyle() == MarkerAttributes::Marker1Pixel) ) {
         // for high-performance point charts with tiny point markers:
         painter->setPen( PrintingParameters::scalePen( QPen( brush.color().light() ) ) );
-        if( isFourPixels ){
+        if ( isFourPixels ) {
             const qreal x = pos.x();
             const qreal y = pos.y();
             painter->drawLine( QPointF(x-1.0,y-1.0),
@@ -507,7 +507,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                                QPointF(x+1.0,y+1.0) );
         }
         painter->drawPoint( pos );
-    }else{
+    } else {
         const PainterSaver painterSaver( painter );
         QPen painterPen( pen );
         painter->setPen( PrintingParameters::scalePen( painterPen ) );
@@ -591,7 +591,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                     p[ 9] = QPointF( -w05,  h02 );
                     p[10] = QPointF( -w05, -h02 );
                     p[11] = QPointF( -w02, -h02 );
-                    for( int i=0; i<12; ++i )
+                    for ( int i=0; i<12; ++i )
                         crossPoints << p[i];
                     crossPoints << p[0];
                     painter->drawPolygon( crossPoints );
@@ -686,7 +686,7 @@ QPen AbstractDiagram::pen() const
 QPen AbstractDiagram::pen( int dataset ) const
 {
     const QVariant penSettings( d->datasetAttrs( dataset, DatasetPenRole ) );
-    if( penSettings.isValid() )
+    if ( penSettings.isValid() )
         return penSettings.value< QPen >();
     return pen();
 }
@@ -727,7 +727,7 @@ QBrush AbstractDiagram::brush() const
 QBrush AbstractDiagram::brush( int dataset ) const
 {
     const QVariant brushSettings( d->datasetAttrs( dataset, DatasetBrushRole ) );
-    if( brushSettings.isValid() )
+    if ( brushSettings.isValid() )
         return brushSettings.value< QBrush >();
     return brush();
 }
@@ -789,7 +789,7 @@ void AbstractDiagram::setUnitSuffix( const QString& suffix, Qt::Orientation orie
   */
 QString AbstractDiagram::unitPrefix( int column, Qt::Orientation orientation, bool fallback ) const
 {
-    if( !fallback || d->unitPrefixMap[ column ].contains( orientation ) )
+    if ( !fallback || d->unitPrefixMap[ column ].contains( orientation ) )
         return d->unitPrefixMap[ column ][ orientation ];
     return d->unitPrefix[ orientation ];
 }
@@ -812,7 +812,7 @@ QString AbstractDiagram::unitPrefix( Qt::Orientation orientation ) const
   */
 QString AbstractDiagram::unitSuffix( int column, Qt::Orientation orientation, bool fallback ) const
 {
-    if( !fallback || d->unitSuffixMap[ column ].contains( orientation ) )
+    if ( !fallback || d->unitSuffixMap[ column ].contains( orientation ) )
         return d->unitSuffixMap[ column ][ orientation ];
     return d->unitSuffix[ orientation ];
 }
@@ -894,10 +894,10 @@ void KDChart::AbstractDiagram::useRainbowColors( )
 QStringList AbstractDiagram::itemRowLabels() const
 {
     QStringList ret;
-    if( model() ){
+    if ( model() ) {
         //qDebug() << "AbstractDiagram::itemRowLabels(): " << attributesModel()->rowCount(attributesModelRootIndex()) << "entries";
         const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
-        for( int i = 0; i < rowCount; ++i ){
+        for ( int i = 0; i < rowCount; ++i ) {
             //qDebug() << "item row label: " << attributesModel()->headerData( i, Qt::Vertical, Qt::DisplayRole ).toString();
             ret << unitPrefix( i, Qt::Horizontal, true ) +
                    attributesModel()->headerData( i, Qt::Vertical, Qt::DisplayRole ).toString() +
@@ -961,7 +961,7 @@ QList<MarkerAttributes> AbstractDiagram::datasetMarkers() const
 
 bool AbstractDiagram::checkInvariants( bool justReturnTheStatus ) const
 {
-    if( ! justReturnTheStatus ){
+    if ( ! justReturnTheStatus ) {
         Q_ASSERT_X ( model(), "AbstractDiagram::checkInvariants()",
                     "There is no usable model set, for the diagram." );
 

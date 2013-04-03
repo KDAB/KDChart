@@ -120,7 +120,7 @@ bool DateTimeSpan::equals( const DateTimeSpan& other ) const
 
 QDebug operator<<( QDebug dbg, KDGantt::ItemDataRole r)
 {
-  switch(r){
+  switch (r) {
   case KDGantt::StartTimeRole:      dbg << "KDGantt::StartTimeRole"; break;
   case KDGantt::EndTimeRole:        dbg << "KDGantt::EndTimeRole"; break;
   case KDGantt::TaskCompletionRole: dbg << "KDGantt::TaskCompletionRole"; break;
@@ -133,7 +133,7 @@ QDebug operator<<( QDebug dbg, KDGantt::ItemDataRole r)
 
 QDebug operator<<( QDebug dbg, KDGantt::ItemType t)
 {
-    switch( t ) {
+    switch ( t ) {
     case KDGantt::TypeNone:        dbg << "KDGantt::TypeNone"; break;
     case KDGantt::TypeEvent:       dbg << "KDGantt::TypeEvent"; break;
     case KDGantt::TypeTask:        dbg << "KDGantt::TypeTask"; break;

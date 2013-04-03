@@ -146,7 +146,7 @@ void RulerAttributes::setTickMarkPen( qreal value, const QPen& pen )
 QPen RulerAttributes::tickMarkPen( qreal value ) const
 {
 	QMapIterator<qreal, QPen> it( d->customTickMarkPens );
-	while( it.hasNext() ) {
+	while ( it.hasNext() ) {
 		it.next();
 		if ( qAbs( value - it.key() ) < std::numeric_limits< float >::epsilon() )
 			return it.value();
@@ -162,7 +162,7 @@ RulerAttributes::TickMarkerPensMap RulerAttributes::tickMarkPens() const
 bool RulerAttributes::hasTickMarkPenAt( qreal value ) const
 {
 	QMapIterator<qreal, QPen> it( d->customTickMarkPens );
-	while( it.hasNext() ) {
+	while ( it.hasNext() ) {
 		it.next();
 		if ( qAbs( value - it.key() ) < std::numeric_limits< float >::epsilon() )
 			return true;
@@ -254,7 +254,7 @@ bool RulerAttributes::showFirstTick() const
 
 RulerAttributes & RulerAttributes::operator=( const RulerAttributes& r )
 {
-    if( this == &r )
+    if ( this == &r )
         return *this;
 
     *d = *r.d;
@@ -313,7 +313,7 @@ QDebug operator << ( QDebug dbg, const KDChart::RulerAttributes& a )
             << "minorTickMarkPen=" << a.minorTickMarkPen();
     const RulerAttributes::TickMarkerPensMap pens( a.tickMarkPens() );
     QMapIterator<qreal, QPen> it( pens );
-    while( it.hasNext() ) {
+    while ( it.hasNext() ) {
         it.next();
         dbg << "customTickMarkPen=(" << it.value() << " : " << it.key() << ")";
     }
