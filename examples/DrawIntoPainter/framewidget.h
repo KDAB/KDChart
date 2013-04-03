@@ -42,9 +42,7 @@ public:
 
     virtual void paintEvent( QPaintEvent* );
 
-    void setChart( KDChart::Chart* chart ){
-        mChart = chart;
-    }
+    void setChart( KDChart::Chart* chart );
 
 private:
     KDChart::Chart* mChart;

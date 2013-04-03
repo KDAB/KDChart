@@ -1375,6 +1375,7 @@ void Chart::Private::slotLegendPositionChanged( AbstractAreaWidget* aw )
 void Chart::addLegend( Legend* legend )
 {
     addLegendInternal( legend, true );
+    emit propertiesChanged();
 }
 
 void Chart::addLegendInternal( Legend* legend, bool setMeasures )
@@ -1503,6 +1504,7 @@ void Chart::takeLegend( Legend* legend )
     legend->setParent( 0 );
 
     d->slotResizePlanes();
+    emit propertiesChanged();
 }
 
 Legend* Chart::legend()
