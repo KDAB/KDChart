@@ -217,40 +217,40 @@ void paintElements( AbstractDiagram::Private *diagramPrivate, PaintContext* ctx,
     KDAB_FOREACH ( const LineAttributesInfo& lineInfo, lineList ) {
         const QModelIndex& index = lineInfo.index;
         const ThreeDLineAttributes td = threeDLineAttributes( diagram, index );
-        const ValueTrackerAttributes vt = valueTrackerAttributes( diagram, index );
 
         if ( td.isEnabled() ) {
             PaintingHelpers::paintThreeDLines( ctx, diagram, index, lineInfo.value,
                                                lineInfo.nextValue, td, &diagramPrivate->reverseMapper );
         } else {
-            const QBrush br( diagram->brush( index ) );
-            const QPen pn( diagram->pen( index ) );
-            if ( points.count() && points.last() == lineInfo.value && curBrush == br && curPen == pn ) {
-                // line goes from last value in points to lineInfo.nextValue
-                diagramPrivate->reverseMapper.addLine( lineInfo.index.row(), lineInfo.index.column(),
-                                                       points.last(), lineInfo.nextValue );
-                points << lineInfo.nextValue;
+            const QBrush brush( diagram->brush( index ) );
+            const QPen pen( diagram->pen( index ) );
+
+            // line goes from lineInfo.value to lineInfo.nextValue
+            diagramPrivate->reverseMapper.addLine( lineInfo.index.row(), lineInfo.index.column(),
+                                                   lineInfo.value, lineInfo.nextValue );
+
+            if ( points.count() && points.last() == lineInfo.value && curBrush == brush && curPen == pen ) {
+                // continue the current run of lines
             } else {
+                // different painter settings or discontinuous line: start a new run of lines
                 if ( points.count() ) {
                     PaintingHelpers::paintPolyline( ctx, curBrush, curPen, points );
                 }
-                curBrush = br;
-                curPen = pn;
+                curBrush = brush;
+                curPen = pen;
                 points.clear();
-                // line goes from lineInfo.value to lineInfo,nextValue
-                diagramPrivate->reverseMapper.addLine( lineInfo.index.row(), lineInfo.index.column(),
-                                                       lineInfo.value, lineInfo.nextValue );
-                points << lineInfo.value << lineInfo.nextValue;
+                points << lineInfo.value;
             }
+            points << lineInfo.nextValue;
         }
     }
     if ( points.count() ) {
+        // the last run of lines is yet to be painted - do it now
         PaintingHelpers::paintPolyline( ctx, curBrush, curPen, points );
     }
 
     KDAB_FOREACH ( const LineAttributesInfo& lineInfo, lineList ) {
-        const QModelIndex& index = lineInfo.index;
-        const ValueTrackerAttributes vt = valueTrackerAttributes( diagram, index );
+        const ValueTrackerAttributes vt = valueTrackerAttributes( diagram, lineInfo.index );
         if ( vt.isEnabled() ) {
             PaintingHelpers::paintValueTracker( ctx, vt, lineInfo.nextValue );
         }
