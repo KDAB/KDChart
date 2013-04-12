@@ -868,10 +868,18 @@ void CartesianCoordinatePlane::setGeometry( const QRect& rectangle )
     }
 
     d->geometry = rectangle;
-    if ( d->isometricScaling && rectangle.width() != d->geometry.width() ) {
+    if ( d->isometricScaling ) {
+        const int hfw = heightForWidth( rectangle.width() );
         // same scaling for x and y means a fixed aspect ratio, which is enforced here
-        d->geometry.setHeight( heightForWidth( rectangle.width() ) );
+        // always shrink the too large dimension
+        if ( hfw < rectangle.height() ) {
+            d->geometry.setHeight( hfw );
+        } else {
+            d->geometry.setWidth( qRound( qreal( rectangle.width() ) *
+                                          qreal( rectangle.height() ) / qreal( hfw ) ) );
+        }
     }
+
     AbstractCoordinatePlane::setGeometry( d->geometry );
 
     Q_FOREACH( AbstractDiagram* diagram, diagrams() ) {
@@ -879,22 +887,9 @@ void CartesianCoordinatePlane::setGeometry( const QRect& rectangle )
     }
 }
 
-QSize CartesianCoordinatePlane::minimumSize() const
-{
-    if ( d->isometricScaling ) {
-        // HACK(?): we use the fact that minimumSize() is considered quite late in
-        // the layout process (cf. "Layout Management" documentation) to enforce our
-        // height-for-width requirement without interference from other constraints.
-        return QSize( AbstractCoordinatePlane::minimumSize().width(),
-                      heightForWidth( geometry().width() ) );
-    } else {
-        return AbstractCoordinatePlane::minimumSize();
-    }
-}
-
 Qt::Orientations CartesianCoordinatePlane::expandingDirections() const
 {
-    // this works together with the hack in minimumSize()
+    // not completely sure why this is required for isometric scaling...
     return d->isometricScaling ? Qt::Horizontal : ( Qt::Horizontal | Qt::Vertical );
 }
 
@@ -909,5 +904,16 @@ int CartesianCoordinatePlane::heightForWidth( int w ) const
     //     prevents the geometry from stabilizing. specifically, visibleDataRange() depends on
     //     drawingArea(), and no good will come out of using it here.
     QRectF dataRect = logicalArea();
-    return qRound( qreal( w ) * qAbs( dataRect.height() / dataRect.width() ) );
+    return qRound( qreal( w ) * qAbs( qreal( dataRect.height() ) / qreal( dataRect.width() ) ) );
+}
+
+QSize CartesianCoordinatePlane::sizeHint() const
+{
+    QSize sh = AbstractCoordinatePlane::sizeHint();
+    if ( d->isometricScaling ) {
+        // not sure why the next line doesn't cause an infinite loop, but it improves initial size allocation
+        sh = d->geometry.size();
+        sh.setHeight( heightForWidth( sh.width() ) );
+    }
+    return sh;
 }

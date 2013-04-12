@@ -431,10 +431,9 @@ namespace KDChart {
          */
         void setGeometry( const QRect& r );
 
-        // reimp
-        QSize minimumSize() const;
-        // reimp
+        // reimplemented
         Qt::Orientations expandingDirections() const;
+
 
     public Q_SLOTS:
         /**
@@ -458,7 +457,6 @@ namespace KDChart {
          * \sa adjustRangesToData
          */
         void adjustVerticalRangeToData();
-
 
     protected:
         QRectF getRawDataBoundingRectFromDiagrams() const;
@@ -484,6 +482,7 @@ namespace KDChart {
         // reimplemented from QLayoutItem, via AbstractLayoutItem, AbstractArea, AbstractCoordinatePlane
         bool hasHeightForWidth() const;
         int heightForWidth( int w ) const;
+        QSize sizeHint() const;
 
     protected Q_SLOTS:
         void slotLayoutChanged( AbstractDiagram* );
