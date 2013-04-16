@@ -951,9 +951,13 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                                                                    geoXy( 1.0, drawPos ) ) );
                 highestLabelPosition = geoXy( labelPosition.x(), labelPosition.y() );
 
-                tickLabel.setText( it.text() );
-                QSize sz = tickLabel.sizeHint();
+                QString text = it.text();
+                if ( it.type() == TickIterator::MajorTick ) {
+                    text = customizedLabelText( text, geoXy( Qt::Horizontal, Qt::Vertical ), it.position() );
+                }
+                tickLabel.setText( text );
 
+                QSize sz = tickLabel.sizeHint();
                 highestLabelLongitudinalSize = geoXy( sz.width(), sz.height() );
                 if ( ISNAN( lowestLabelLongitudinalSize ) ) {
                     lowestLabelLongitudinalSize = highestLabelLongitudinalSize;
@@ -963,11 +967,9 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                 labelSizeTransverse = geoXy( sz.height(), sz.width() );
                 labelMargin = rulerAttr.labelMargin();
                 if ( labelMargin < 0 ) {
-                    // HACK not height() * 0.5 like in paintCtx because ???, the size would be too small that way.
-                    labelMargin = QFontMetricsF( tickLabel.realFont() ).height();
+                    labelMargin = QFontMetricsF( tickLabel.realFont() ).height() * 0.5;
                 }
-                // HACK #2: leaving this out unlike in paintCtx, this would make the size too small
-                // labelMargin -= tickLabel.marginWidth(); // make up for the margin that's already there
+                labelMargin -= tickLabel.marginWidth(); // make up for the margin that's already there
             }
             qreal tickLength = it.type() == TickIterator::CustomTick ?
                                customTickLength : axis()->tickLength( it.type() == TickIterator::MinorTick );
