@@ -87,7 +87,6 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
         // convenient for grid painting. Here we have to manually exclude it to avoid overpainting.
         m_dimension.end -= m_dimension.stepWidth;
     }
-    m_decimalPlaces = numSignificantDecimalPlaces( m_dimension.stepWidth );
 
     m_annotations = m_axis->d_func()->annotations;
     m_customTicks = m_axis->d_func()->customTicksPositions;
@@ -172,6 +171,7 @@ void TickIterator::init( bool isY, bool hasMajorTicks, bool hasMinorTicks,
                                                              gridAttributes.adjustLowerBoundToGrid(),
                                                              gridAttributes.adjustUpperBoundToGrid() );
     }
+    m_decimalPlaces = numSignificantDecimalPlaces( m_dimension.stepWidth );
 
     const qreal inf = std::numeric_limits< qreal >::infinity();
 
