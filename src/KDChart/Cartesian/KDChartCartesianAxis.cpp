@@ -170,8 +170,11 @@ void TickIterator::init( bool isY, bool hasMajorTicks, bool hasMinorTicks,
         m_dimension = AbstractGrid::adjustedLowerUpperRange( m_dimension,
                                                              gridAttributes.adjustLowerBoundToGrid(),
                                                              gridAttributes.adjustUpperBoundToGrid() );
+        m_decimalPlaces = numSignificantDecimalPlaces( m_dimension.stepWidth );
+    } else {
+        // the number of significant decimal places for each label naturally varies with logarithmic scaling
+        m_decimalPlaces = -1;
     }
-    m_decimalPlaces = numSignificantDecimalPlaces( m_dimension.stepWidth );
 
     const qreal inf = std::numeric_limits< qreal >::infinity();
 
@@ -220,7 +223,7 @@ bool TickIterator::isHigherPrecedence( qreal importantTick, qreal unimportantTic
            ( importantTick <= unimportantTick || areAlmostEqual( importantTick, unimportantTick ) );
 }
 
-void TickIterator::computeMajorTickLabel()
+void TickIterator::computeMajorTickLabel( int decimalPlaces )
 {
     if ( m_manualLabelIndex >= 0 ) {
         m_text = m_manualLabelTexts[ m_manualLabelIndex++ ];
@@ -240,7 +243,10 @@ void TickIterator::computeMajorTickLabel()
                 m_type = MajorTickHeaderDataLabel;
             } else {
                 // 'f' to avoid exponential notation for large numbers, consistent with data value text
-                m_text = QString::number( m_position, 'f', m_decimalPlaces );
+                if ( decimalPlaces < 0 ) {
+                    decimalPlaces = numSignificantDecimalPlaces( m_position );
+                }
+                m_text = QString::number( m_position, 'f', decimalPlaces );
                 m_type = MajorTick;
             }
         } else {
@@ -299,7 +305,7 @@ void TickIterator::operator++()
         // now see which kind of tick we'll have
         if ( isHigherPrecedence( m_customTick, m_majorTick ) && isHigherPrecedence( m_customTick, m_minorTick )  ) {
             m_position = m_customTick;
-            computeMajorTickLabel();
+            computeMajorTickLabel( -1 );
             // override the MajorTick type here because those tick's labels are collision-tested, which we don't want
             // for custom ticks. they may be arbitrarily close to other ticks, causing excessive label thinning.
             if ( m_type == MajorTick ) {
@@ -311,7 +317,7 @@ void TickIterator::operator++()
                 // realign minor to major
                 m_minorTick = m_majorTick;
             }
-            computeMajorTickLabel();
+            computeMajorTickLabel( m_decimalPlaces );
        } else if ( m_minorTick != inf ) {
             m_position = m_minorTick;
             m_text.clear();

@@ -150,7 +150,7 @@ private:
     void init( bool isY, bool hasMajorTicks, bool hasMinorTicks, CartesianCoordinatePlane* plane );
 
     bool isHigherPrecedence( qreal importantLabelValue, qreal unimportantLabelValue ) const;
-    void computeMajorTickLabel();
+    void computeMajorTickLabel( int decimalPlaces );
 
     // these are generally set once in the constructor
     CartesianAxis* m_axis;
