@@ -140,5 +140,4 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_legend->setPosition( KDChart::Position::East );
     m_legend->setAlignment( Qt::AlignTop );
     m_chart->addLegend( m_legend );
-    m_legend->hide();
 }
