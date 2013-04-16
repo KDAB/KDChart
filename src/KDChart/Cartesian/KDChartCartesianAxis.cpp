@@ -60,10 +60,11 @@ static qreal slightlyLessThan( qreal r )
     return r - diff;
 }
 
-static int numSignificantDecimalPlaces(qreal floatNumber)
+static int numSignificantDecimalPlaces( qreal floatNumber )
 {
-    QString sample = QString::number( floatNumber, 'f', 12 ).section( QLatin1Char('.'), 1,  2 );
-    int ret = 12;
+    static const int maxPlaces = 15;
+    QString sample = QString::number( floatNumber, 'f', maxPlaces ).section( QLatin1Char('.'), 1,  2 );
+    int ret = maxPlaces;
     for ( ; ret > 0; ret-- ) {
         if ( sample[ ret - 1 ] != QLatin1Char( '0' ) ) {
             break;
