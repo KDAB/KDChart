@@ -44,7 +44,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     setupUi( this );
 
     QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
-    m_chart = new KDChart::Chart();
+    m_chart = new KDChart::Chart;
     chartLayout->addWidget( m_chart );
     hSBar->setVisible( false );
     vSBar->setVisible( false );
@@ -59,24 +59,24 @@ MainWindow::MainWindow( QWidget* parent ) :
     KDChart::TextAttributes ta( xAxis->textAttributes() );
 
     AdjustedCartesianAxis *yAxis = new AdjustedCartesianAxis( m_lines );
-    yAxis->setBounds(3, 6);
+    yAxis->setBounds( 3, 6 );
     xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
 
 /*
-// set the following to 0, to have only one of the axes with background
+// set the following to 0 to have only one of the axes with background
 #if 1
     // colourize the axes' backgrounds
     KDChart::BackgroundAttributes ba = yAxis->backgroundAttributes();
     ba.setVisible( true );
-    ba.setBrush( QBrush( QColor(0xff,0xff,0x40) ) );
+    ba.setBrush( QBrush( QColor( 0xff, 0xff, 0x40 ) ) );
     yAxis->setBackgroundAttributes( ba );
     xAxis->setBackgroundAttributes( ba );
 #else
     // colourize the Ordinate axis' background
-    QLinearGradient linearGrad(QPointF(0, 100), QPointF(0, 400));
-    linearGrad.setColorAt(0.0, QColor(0xff,0xff,0xc0));
-    linearGrad.setColorAt(1.0, QColor(0xa0,0xc0,0xff));
+    QLinearGradient linearGrad( QPointF( 0, 100 ), QPointF( 0, 400 ) );
+    linearGrad.setColorAt( 0.0, QColor( 0xff, 0xff, 0xc0 ) );
+    linearGrad.setColorAt( 1.0, QColor( 0xa0, 0xc0, 0xff ) );
     ba = yAxis->backgroundAttributes();
     ba.setVisible( true );
     ba.setBrush( linearGrad );
@@ -85,7 +85,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 */
     // add 1 pixel space at the left and at the top edge, because the
     // axis area would otherwise overwrite the left/top borders
-    m_chart->setGlobalLeading(1,1,0,0);
+    m_chart->setGlobalLeading( 1, 1, 0, 0 );
 
 // set the following to 0, to see the default Abscissa labels (== X headers, as read from the data file)
 #if 1
@@ -110,10 +110,10 @@ MainWindow::MainWindow( QWidget* parent ) :
 // set custom axis labels at custom positions
 #if 0
     QMap< qreal, QString > annotations;
-    annotations[0.5] = "Left";
-    annotations[3.5] = "Center";
-    annotations[4.2] = "After Center";
-    annotations[6.5] = "Right";
+    annotations[ 0.5 ] = "Left";
+    annotations[ 3.5 ] = "Center";
+    annotations[ 4.2 ] = "After Center";
+    annotations[ 6.5 ] = "Right";
     xAxis->setAnnotations(annotations);
 #endif
 
@@ -134,8 +134,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->addAxis( yAxis );
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     // Set up the legend
-    xAxis->setCustomTickLength(11);
-    yAxis->setCustomTickLength(11);
+    xAxis->setCustomTickLength( 11 );
+    yAxis->setCustomTickLength( 11 );
     m_legend = new KDChart::Legend( m_lines, m_chart );
     m_legend->setPosition( KDChart::Position::East );
     m_legend->setAlignment( Qt::AlignTop );
