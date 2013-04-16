@@ -715,7 +715,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
             // paint the tick mark
 
             QPointF tickEnd = onAxis;
-            qreal tickLen = tickLength( it.type() == TickIterator::MinorTick );
+            qreal tickLen = it.type() == TickIterator::CustomTick ?
+                            d->customTickLength : tickLength( it.type() == TickIterator::MinorTick );
             geoXy.lvalue( tickEnd.ry(), tickEnd.rx() ) += isOutwardsPositive ? tickLen : -tickLen;
 
             // those adjustments are required to paint the ticks exactly on the axis and of the right length
@@ -968,7 +969,8 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                 // HACK #2: leaving this out unlike in paintCtx, this would make the size too small
                 // labelMargin -= tickLabel.marginWidth(); // make up for the margin that's already there
             }
-            qreal tickLength = axis()->tickLength( it.type() == TickIterator::MinorTick );
+            qreal tickLength = it.type() == TickIterator::CustomTick ?
+                               customTickLength : axis()->tickLength( it.type() == TickIterator::MinorTick );
             size = qMax( size, tickLength + labelMargin + labelSizeTransverse );
         }
 
