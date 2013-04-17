@@ -84,9 +84,9 @@ public:
 
         QObject::connect( proxy, SIGNAL( rowsInserted( QModelIndex, int, int ) ), m_chart->coordinatePlane(), SLOT( adjustRangesToData() ), Qt::QueuedConnection );
         QObject::connect( proxy, SIGNAL( rowsRemoved( QModelIndex, int, int ) ), m_chart->coordinatePlane(), SLOT( adjustRangesToData() ), Qt::QueuedConnection );
-        
-        dynamic_cast< KDChart::CartesianCoordinatePlane* >( m_chart->coordinatePlane() )->setHorizontalRange( qMakePair< qreal, qreal >( 1264978800, 1269986400 ) );
+
         proxy->setVisibleRange( QDateTime( QDate( 2010, 3, 15 ), QTime() ), QDateTime( QDate( 2010, 5, 18 ), QTime() ) );
+        qobject_cast< KDChart::CartesianCoordinatePlane* >( m_chart->coordinatePlane() )->adjustRangesToData();
 
         m_timer = new QTimer(this);
         connect( m_timer, SIGNAL( timeout() ), this, SLOT( slotTimeout() ) );
