@@ -168,9 +168,13 @@ void TickIterator::init( bool isY, bool hasMajorTicks, bool hasMinorTicks,
     if ( !m_isLogarithmic ) {
         // adjustedLowerUpperRange() is intended for use with linear scaling; specifically it would
         // round lower bounds < 1 to 0.
-        m_dimension = AbstractGrid::adjustedLowerUpperRange( m_dimension,
-                                                             gridAttributes.adjustLowerBoundToGrid(),
-                                                             gridAttributes.adjustUpperBoundToGrid() );
+
+        const bool fixedRange = xy( plane->autoAdjustHorizontalRangeToData(),
+                                    plane->autoAdjustVerticalRangeToData() ) >= 100;
+        const bool adjustLower = gridAttributes.adjustLowerBoundToGrid() && !fixedRange;
+        const bool adjustUpper = gridAttributes.adjustUpperBoundToGrid() && !fixedRange;
+        m_dimension = AbstractGrid::adjustedLowerUpperRange( m_dimension, adjustLower, adjustUpper );
+
         m_decimalPlaces = numSignificantDecimalPlaces( m_dimension.stepWidth );
     } else {
         // the number of significant decimal places for each label naturally varies with logarithmic scaling
