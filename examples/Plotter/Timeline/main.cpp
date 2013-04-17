@@ -84,9 +84,9 @@ public:
         plotter->setModel( proxy );
 
         connect( proxy, SIGNAL( rowsInserted( QModelIndex, int, int ) ),
-                 m_chart->coordinatePlane(), SLOT( adjustRangesToData() ), Qt::QueuedConnection );
+                 m_chart->coordinatePlane(), SLOT( adjustRangesToData() ) );
         connect( proxy, SIGNAL( rowsRemoved( QModelIndex, int, int ) ),
-                 m_chart->coordinatePlane(), SLOT( adjustRangesToData() ), Qt::QueuedConnection );
+                 m_chart->coordinatePlane(), SLOT( adjustRangesToData() ) );
 
         proxy->setVisibleRange( QDateTime( QDate( 2010, 3, 15 ), QTime() ),
                                 QDateTime( QDate( 2010, 5, 18 ), QTime() ) );
