@@ -257,7 +257,6 @@ void RingDiagram::drawOneSlice( QPainter* painter, uint dataset, uint slice, qre
     // Is there anything to draw at all?
     const qreal angleLen = d->angleLens[ dataset ][ slice ];
     if ( angleLen ) {
-        const QModelIndex index( model()->index( dataset, slice, rootIndex() ) ); // checked
         drawPieSurface( painter, dataset, slice, granularity );
     }
 }
@@ -428,7 +427,6 @@ QPointF RingDiagram::pointOnEllipse( const QRectF& rect, int dataset, int slice,
 {
     qreal angleLen = d->angleLens[ dataset ][ slice ];
     qreal startAngle = d->startAngles[ dataset ][ slice ];
-    QModelIndex index( model()->index( dataset, slice, rootIndex() ) ); // checked
 
     const int rCount = rowCount() * 2;
 
