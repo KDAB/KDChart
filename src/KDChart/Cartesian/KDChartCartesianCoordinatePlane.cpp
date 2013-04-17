@@ -50,18 +50,18 @@ using namespace KDChart;
 CartesianCoordinatePlane::Private::Private()
     : AbstractCoordinatePlane::Private()
     , bPaintIsRunning( false )
-    , hasOwnGridAttributesHorizontal ( false )
-    , hasOwnGridAttributesVertical ( false )
-    , isometricScaling ( false )
-    , horizontalMin(0)
-    , horizontalMax(0)
-    , verticalMin(0)
-    , verticalMax(0)
-    , autoAdjustHorizontalRangeToData(67)
-    , autoAdjustVerticalRangeToData( 67)
+    , hasOwnGridAttributesHorizontal( false )
+    , hasOwnGridAttributesVertical( false )
+    , isometricScaling( false )
+    , horizontalMin( 0 )
+    , horizontalMax( 0 )
+    , verticalMin( 0 )
+    , verticalMax( 0 )
+    , autoAdjustHorizontalRangeToData( 67 )
+    , autoAdjustVerticalRangeToData( 67 )
     , autoAdjustGridToZoom( true )
     , fixedDataCoordinateSpaceRelation( false )
-    , xAxisStartAtZero(true)
+    , xAxisStartAtZero( true )
     , reverseVerticalPlane( false )
     , reverseHorizontalPlane( false )
 {
@@ -173,8 +173,8 @@ QRectF CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams() const
     }
     //qDebug() << "CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams()\nreturns data boundaries: " << QRectF( QPointF(minX, minY), QSizeF(maxX - minX, maxY - minY) );
     QRectF dataBoundingRect;
-    dataBoundingRect.setBottomLeft( QPointF(minX, minY) );
-    dataBoundingRect.setTopRight( QPointF(maxX, maxY) );
+    dataBoundingRect.setBottomLeft( QPointF( minX, minY ) );
+    dataBoundingRect.setTopRight( QPointF( maxX, maxY ) );
     return dataBoundingRect;
 }
 
@@ -223,11 +223,11 @@ QRectF CartesianCoordinatePlane::adjustedToMaxEmptyInnerPercentage(
 QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
 {
     // are manually set ranges to be applied?
-    const bool bAutoAdjustHorizontalRange = (d->autoAdjustHorizontalRangeToData < 100);
-    const bool bAutoAdjustVerticalRange   = (d->autoAdjustVerticalRangeToData   < 100);
+    const bool bAutoAdjustHorizontalRange = d->autoAdjustHorizontalRangeToData < 100;
+    const bool bAutoAdjustVerticalRange = d->autoAdjustVerticalRangeToData < 100;
 
-    const bool bHardHorizontalRange = (d->horizontalMin != d->horizontalMax) && ! bAutoAdjustHorizontalRange;
-    const bool bHardVerticalRange   = (d->verticalMin   != d->verticalMax)   && ! bAutoAdjustVerticalRange;
+    const bool bHardHorizontalRange = d->horizontalMin != d->horizontalMax && !bAutoAdjustHorizontalRange;
+    const bool bHardVerticalRange = d->verticalMin != d->verticalMax && !bAutoAdjustVerticalRange;
     QRectF dataBoundingRect;
 
     // if custom boundaries are set on the plane, use them
@@ -253,12 +253,12 @@ QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
     dataBoundingRect = adjustedToMaxEmptyInnerPercentage(
             dataBoundingRect, d->autoAdjustHorizontalRangeToData, d->autoAdjustVerticalRangeToData );
     if ( bAutoAdjustHorizontalRange ) {
-        const_cast<CartesianCoordinatePlane::Private *>(d)->horizontalMin = dataBoundingRect.left();
-        const_cast<CartesianCoordinatePlane::Private *>(d)->horizontalMax = dataBoundingRect.right();
+        const_cast<CartesianCoordinatePlane*>( this )->d->horizontalMin = dataBoundingRect.left();
+        const_cast<CartesianCoordinatePlane*>( this )->d->horizontalMax = dataBoundingRect.right();
     }
     if ( bAutoAdjustVerticalRange ) {
-        const_cast<CartesianCoordinatePlane*>(this)->d->verticalMin = dataBoundingRect.bottom();
-        const_cast<CartesianCoordinatePlane*>(this)->d->verticalMax = dataBoundingRect.top();
+        const_cast<CartesianCoordinatePlane*>( this )->d->verticalMin = dataBoundingRect.bottom();
+        const_cast<CartesianCoordinatePlane*>( this )->d->verticalMax = dataBoundingRect.top();
     }
     // qDebug() << Q_FUNC_INFO << dataBoundingRect;
     return dataBoundingRect;

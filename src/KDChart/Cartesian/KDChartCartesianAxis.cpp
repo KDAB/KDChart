@@ -425,7 +425,7 @@ bool CartesianAxis::hasDefaultTitleTextAttributes() const
 }
 
 
-void CartesianAxis::setPosition ( Position p )
+void CartesianAxis::setPosition( Position p )
 {
     d->position = p;
     layoutPlanes();
