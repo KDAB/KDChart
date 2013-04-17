@@ -68,7 +68,8 @@ public:
 
         TimeChartModel* proxy = new TimeChartModel( this );
         proxy->setSourceModel( m_model );
-        proxy->setVisibleRange( QDateTime( QDate( 2010, 2, 1 ), QTime() ), QDateTime( QDate( 2010, 3, 31 ), QTime() ) );
+        proxy->setVisibleRange( QDateTime( QDate( 2010, 2, 1 ), QTime() ),
+                                QDateTime( QDate( 2010, 3, 31 ), QTime() ) );
 
         KDChart::Plotter* plotter = new KDChart::Plotter;
         m_chart->coordinatePlane()->replaceDiagram( plotter );
@@ -82,10 +83,13 @@ public:
 
         plotter->setModel( proxy );
 
-        QObject::connect( proxy, SIGNAL( rowsInserted( QModelIndex, int, int ) ), m_chart->coordinatePlane(), SLOT( adjustRangesToData() ), Qt::QueuedConnection );
-        QObject::connect( proxy, SIGNAL( rowsRemoved( QModelIndex, int, int ) ), m_chart->coordinatePlane(), SLOT( adjustRangesToData() ), Qt::QueuedConnection );
+        connect( proxy, SIGNAL( rowsInserted( QModelIndex, int, int ) ),
+                 m_chart->coordinatePlane(), SLOT( adjustRangesToData() ), Qt::QueuedConnection );
+        connect( proxy, SIGNAL( rowsRemoved( QModelIndex, int, int ) ),
+                 m_chart->coordinatePlane(), SLOT( adjustRangesToData() ), Qt::QueuedConnection );
 
-        proxy->setVisibleRange( QDateTime( QDate( 2010, 3, 15 ), QTime() ), QDateTime( QDate( 2010, 5, 18 ), QTime() ) );
+        proxy->setVisibleRange( QDateTime( QDate( 2010, 3, 15 ), QTime() ),
+                                QDateTime( QDate( 2010, 5, 18 ), QTime() ) );
         qobject_cast< KDChart::CartesianCoordinatePlane* >( m_chart->coordinatePlane() )->adjustRangesToData();
 
         m_timer = new QTimer(this);
@@ -95,7 +99,7 @@ private slots:
     void slotTimeout() {
         QVariant v1, v2;
         for ( int i = 0; i < 365; ++i ) {
-            m_model->setData( m_model->index( i, 1 ), sin( i / 10.0+m_counter ) * 10 );
+            m_model->setData( m_model->index( i, 1 ), sin( i / 10.0 + m_counter ) * 10 );
         }
         m_counter += 0.02;
     }
