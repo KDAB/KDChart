@@ -950,6 +950,14 @@ void Chart::Private::updateDirtyLayouts()
     isFloatingLegendsLayoutDirty = false;
 }
 
+void Chart::Private::reapplyInternalLayouts()
+{
+    QRect geo = layout->geometry();
+    layout->invalidate();
+    layout->setGeometry( geo );
+    slotResizePlanes();
+}
+
 void Chart::Private::paintAll( QPainter* painter )
 {
     updateDirtyLayouts();
@@ -1127,7 +1135,7 @@ void Chart::setGlobalLeadingLeft( int leading )
 {
     d->globalLeadingLeft = leading;
     d->leftOuterSpacer->changeSize( leading, 0, QSizePolicy::Fixed, QSizePolicy::Minimum );
-    d->layout->invalidate();
+    d->reapplyInternalLayouts();
 }
 
 int Chart::globalLeadingLeft() const
@@ -1139,7 +1147,7 @@ void Chart::setGlobalLeadingTop( int leading )
 {
     d->globalLeadingTop = leading;
     d->topOuterSpacer->changeSize( 0, leading, QSizePolicy::Minimum, QSizePolicy::Fixed );
-    d->layout->invalidate();
+    d->reapplyInternalLayouts();
 }
 
 int Chart::globalLeadingTop() const
@@ -1151,7 +1159,7 @@ void Chart::setGlobalLeadingRight( int leading )
 {
     d->globalLeadingRight = leading;
     d->rightOuterSpacer->changeSize( leading, 0, QSizePolicy::Fixed, QSizePolicy::Minimum );
-    d->layout->invalidate();
+    d->reapplyInternalLayouts();
 }
 
 int Chart::globalLeadingRight() const
@@ -1163,7 +1171,7 @@ void Chart::setGlobalLeadingBottom( int leading )
 {
     d->globalLeadingBottom = leading;
     d->bottomOuterSpacer->changeSize( 0, leading, QSizePolicy::Minimum, QSizePolicy::Fixed );
-    d->layout->invalidate();
+    d->reapplyInternalLayouts();
 }
 
 int Chart::globalLeadingBottom() const

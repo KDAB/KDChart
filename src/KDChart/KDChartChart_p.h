@@ -172,6 +172,7 @@ class Chart::Private : public QObject
 
         void createLayouts();
         void updateDirtyLayouts();
+        void reapplyInternalLayouts(); // TODO: see if this can be merged with updateDirtyLayouts()
         void paintAll( QPainter* painter );
 
         struct AxisInfo {
