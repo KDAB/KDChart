@@ -91,19 +91,6 @@ void NormalLineDiagram::paint( PaintContext* ctx )
     const int rowCount = compressor().modelDataRows();
     if ( columnCount == 0 || rowCount == 0 ) return; // maybe blank out the area?
 
-// FIXME integrate column index retrieval to compressor:
-// the compressor should only pass through visiblel columns
-//    int maxFound = 0;
-//     {   // find the last column number that is not hidden
-//         for ( int column =  datasetDimension() - 1;
-//              column <  columnCount;
-//              column += datasetDimension() )
-//             if ( ! diagram()->isHidden( column ) )
-//                 maxFound = column;
-//     }
-//   maxFound = columnCount;
-    // ^^^ temp
-
     // Reverse order of data sets?
     bool rev = diagram()->reverseDatasetOrder();
     LabelPaintCache lpc;
