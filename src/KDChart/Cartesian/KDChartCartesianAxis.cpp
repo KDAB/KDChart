@@ -279,6 +279,11 @@ void TickIterator::operator++()
         } else {
             m_position = inf;
         }
+    } else if (m_dimension.start == m_dimension.end) {
+        // bail out to avoid KDCH-967 and possibly other problems: an empty range is not necessarily easy to
+        // iterate over, so don't try to "properly" determine the next tick which is certain to be out of the
+        // given range - just trivially skip to the end.
+        m_position = inf;
     } else {
         // advance the calculated ticks
         if ( m_isLogarithmic ) {
