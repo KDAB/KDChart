@@ -27,7 +27,7 @@ unix:!macx {
 }
 unix:macx {
     LIB_PATH=$${TOP_BUILD_DIR}/lib:\$\$DYLD_LIBRARY_PATH
-    test.commands=for d in $${SUBDIRS}; do ( cd "\$$d" && export DYLD_FRAMEWORK_PATH=$$LIB_PATH && $(MAKE) test ) || TEST_FAIL=1; done; if [ -n \"\$$TEST_FAIL\" ]; then exit 1; fi
+    test.commands=for d in $${SUBDIRS}; do ( cd "\$$d" && export DYLD_LIBRARY_PATH=$$LIB_PATH && $(MAKE) test ) || TEST_FAIL=1; done; if [ -n \"\$$TEST_FAIL\" ]; then exit 1; fi
 }
 
 win32 {
