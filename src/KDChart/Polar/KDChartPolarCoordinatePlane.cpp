@@ -190,6 +190,7 @@ void PolarCoordinatePlane::layoutDiagrams()
             diagramTransposition.minValue = dataBoundariesPair.first.y() < 0 ? dataBoundariesPair.first.y() : 0.0;
             d->coordinateTransformations.append( diagramTransposition );
         }
+    update();
 }
 
 const QPointF PolarCoordinatePlane::translate( const QPointF& diagramPoint ) const
