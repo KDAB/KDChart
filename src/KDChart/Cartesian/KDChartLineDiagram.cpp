@@ -148,7 +148,16 @@ LineDiagram::LineType LineDiagram::type() const
 
 void LineDiagram::setCenterDataPoints( bool center )
 {
+    if ( d->centerDataPoints == center ) {
+        return;
+    }
+
     d->centerDataPoints = center;
+    // The actual data boundaries haven't changed, but the axis will have one more or less tick
+    //  A      B    =\        A      B
+    //  1......2    =/    1......2......3
+    setDataBoundariesDirty();
+    emit layoutChanged( this );
     emit propertiesChanged();
 }
 
