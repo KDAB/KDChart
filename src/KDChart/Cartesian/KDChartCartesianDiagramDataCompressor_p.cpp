@@ -277,13 +277,8 @@ int CartesianDiagramDataCompressor::modelDataColumns() const
     Q_ASSERT( m_datasetDimension != 0 );
     // only operational if there is a model and a resolution
     if ( m_model ) {
-        const int columns = m_model->columnCount( m_rootIndex ) / m_datasetDimension;
-
-//        if ( columns != m_data.size() )
-//        {
-//            rebuildCache();
-//        }
-
+        const int effectiveDimension = m_datasetDimension == 2 ? 2 : 1;
+        const int columns = m_model->columnCount( m_rootIndex ) / effectiveDimension;
         Q_ASSERT( columns == m_data.size() );
         return columns;
     } else {
@@ -569,12 +564,14 @@ QModelIndexList CartesianDiagramDataCompressor::mapToModel( const CachePosition&
         return indexes;
     }
 
-    Q_ASSERT( position.column < modelDataColumns() );
     if ( m_datasetDimension == 2 ) {
+        Q_ASSERT( ( position.column + 1 ) * m_datasetDimension <= modelDataColumns() );
         indexes << m_model->index( position.row, position.column * 2, m_rootIndex ); // checked
         indexes << m_model->index( position.row, position.column * 2 + 1, m_rootIndex ); // checked
     } else {
-        Q_ASSERT( m_datasetDimension == 1 );
+        // here, indexes per column is usually but not always 1 (e.g. stock diagrams can have three
+        // or four dimensions: High-Low-Close or Open-High-Low-Close)
+        Q_ASSERT( position.column < modelDataColumns() );
         const qreal ipp = indexesPerPixel();
         const int baseRow = floor( position.row * ipp );
         // the following line needs to work for the last row(s), too...
