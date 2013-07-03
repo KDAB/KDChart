@@ -416,7 +416,7 @@ void CartesianDiagramDataCompressor::rebuildCache()
 
     m_data.clear();
     setResolutionInternal( m_xResolution, m_yResolution );
-    const int columnDivisor = m_datasetDimension != 2 ? 1 : m_datasetDimension;
+    const int columnDivisor = m_datasetDimension == 2 ? 2 : 1;
     const int columnCount = m_model ? m_model->columnCount( m_rootIndex ) / columnDivisor : 0;
     const int rowCount = qMin( m_model ? m_model->rowCount( m_rootIndex ) : 0, m_xResolution );
     m_data.resize( columnCount );
