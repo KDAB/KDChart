@@ -90,8 +90,11 @@ void NormalPlotter::paint( PaintContext* ctx )
                 // area corners, a + b are the line ends:
                 const QPointF a( plane->translate( QPointF( lastPoint.key, lastPoint.value ) ) );
                 const QPointF b( plane->translate( QPointF( point.key, point.value ) ) );
-                if ( a.toPoint() == b.toPoint() )
+                if ( a.toPoint() == b.toPoint() || !PaintingHelpers::isFinite( a )
+                                                || !PaintingHelpers::isFinite( b ) ) {
+                    lastPoint = point;
                     continue;
+                }
 
                 const QPointF c( plane->translate( QPointF( lastPoint.key, 0.0 ) ) );
                 const QPointF d( plane->translate( QPointF( point.key, 0.0 ) ) );
@@ -163,8 +166,8 @@ void NormalPlotter::paint( PaintContext* ctx )
                 // area corners, a + b are the line ends:
                 const QPointF a( plane->translate( QPointF( lastPoint.key, lastPoint.value ) ) );
                 const QPointF b( plane->translate( QPointF( point.key, point.value ) ) );
-                if ( a.toPoint() == b.toPoint() || ISNAN( a.x() ) || ISNAN( a.y() )
-                                                || ISNAN( b.x() ) || ISNAN( b.y() ) ) {
+                if ( a.toPoint() == b.toPoint() || !PaintingHelpers::isFinite( a )
+                                                || !PaintingHelpers::isFinite( b ) ) {
                     lastPoint = point;
                     continue;
                 }
