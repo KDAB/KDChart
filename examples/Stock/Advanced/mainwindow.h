@@ -46,6 +46,7 @@ private slots:
 
 private:
     void initValues();
+    void applyColor(const QColor &color);
 
     KDChart::Chart *m_chart;
     TableModel m_HLCModel;

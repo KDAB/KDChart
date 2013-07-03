@@ -62,9 +62,7 @@ MainWindow::MainWindow( QWidget *parent )
     m_diagram.addAxis( leftAxis );
     m_diagram.addAxis( bottomAxis );
     m_diagram.addAxis( bottomAxis );
-    QPalette pal = colorChooser->palette();
-    pal.setBrush( QPalette::Button, QBrush( m_diagram.pen( 0 ).color() ) );
-    colorChooser->setPalette( pal );
+    applyColor( QColor( "chartreuse" ) );
     const bool connected = connect( colorChooser, SIGNAL( clicked() ), SLOT( chooseColor() ) );
     Q_ASSERT( connected );
     Q_UNUSED( connected );
@@ -75,23 +73,28 @@ MainWindow::MainWindow( QWidget *parent )
 
 void MainWindow::chooseColor()
 {
-    QColor col = QColorDialog::getColor( Qt::red, this );
-    if ( col.isValid() )
-    {
-        m_diagram.setPen( 0, QPen( col ) );
-        m_diagram.setBrush( 0, QBrush( col ) );
-        QColor inverse( 255 - col.red(), 255 - col.green(), 255 - col.blue() );
-        m_diagram.setPen( 1, QPen( inverse ) );
+    applyColor( QColorDialog::getColor( m_diagram.brush().color(), this ) );
+}
+
+void MainWindow::applyColor(const QColor &color)
+{
+    if ( color.isValid() ) {
+        m_diagram.setPen( 0, QPen( color.darker( 130 ) ) );
+        m_diagram.setBrush( 0, QBrush( color ) );
+        QColor inverse( 255 - color.red(), 255 - color.green(), 255 - color.blue() );
+        m_diagram.setPen( 1, QPen( inverse.darker( 130 ) ) );
         m_diagram.setBrush( 1, QBrush( inverse ) );
         QPalette pal = colorChooser->palette();
-        pal.setBrush( QPalette::Button, QBrush( col ) );
+        pal.setBrush( QPalette::Button, QBrush( color ) );
         colorChooser->setPalette( pal );
     }
 }
 
-void MainWindow::initValues() {
+void MainWindow::initValues()
+{
     m_threeDBarAttributes = m_diagram.threeDBarAttributes();
     m_threeDBarAttributes.setDepth( 10.0 );
+    m_threeDBarAttributes.setUseShadowColors( false );
     threeDProperties->setChecked( m_threeDBarAttributes.isEnabled() );
     perspectiveAngle->setValue( m_threeDBarAttributes.angle() );
     perspectiveDepth->setValue( (int)m_threeDBarAttributes.depth() );
