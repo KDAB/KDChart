@@ -337,7 +337,7 @@ void TickIterator::operator++()
         }
     }
 
-    if ( m_position > m_dimension.end ) {
+    if ( m_position > m_dimension.end || ISNAN( m_position ) ) {
         m_position = inf; // make isAtEnd() return true
         m_text.clear();
         m_type = NoTick;
