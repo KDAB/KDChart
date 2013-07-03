@@ -1300,7 +1300,8 @@ void Chart::addHeaderFooter( HeaderFooter* hf )
     d->textLayoutItems.append( hf );
     connect( hf, SIGNAL( destroyedHeaderFooter( HeaderFooter* ) ),
              d, SLOT( slotUnregisterDestroyedHeaderFooter( HeaderFooter* ) ) );
-    connect( hf, SIGNAL( positionChanged( HeaderFooter* ) ), d, SLOT( slotResizePlanes() ) );
+    connect( hf, SIGNAL( positionChanged( HeaderFooter* ) ),
+             d, SLOT( slotHeaderFooterPositionChanged( HeaderFooter* ) ) );
 
     // set the text attributes (why?)
 
@@ -1356,6 +1357,12 @@ void Chart::takeHeaderFooter( HeaderFooter* headerFooter )
     d->textLayoutItems.remove( d->textLayoutItems.indexOf( headerFooter ) );
 
     d->slotResizePlanes();
+}
+
+void Chart::Private::slotHeaderFooterPositionChanged( HeaderFooter* hf )
+{
+    chart->takeHeaderFooter( hf );
+    chart->addHeaderFooter( hf );
 }
 
 HeaderFooter* Chart::headerFooter()

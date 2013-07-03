@@ -188,6 +188,7 @@ class Chart::Private : public QObject
         void slotLayoutPlanes();
         void slotResizePlanes();
         void slotLegendPositionChanged( AbstractAreaWidget* legend );
+        void slotHeaderFooterPositionChanged( HeaderFooter* hf );
         void slotUnregisterDestroyedLegend( Legend * legend );
         void slotUnregisterDestroyedHeaderFooter( HeaderFooter* headerFooter );
         void slotUnregisterDestroyedPlane( AbstractCoordinatePlane* plane );
