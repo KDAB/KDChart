@@ -145,7 +145,6 @@ INSTALLHEADERS_SRC = \
            KDChartTextLabelCache.h \
            KDChartValueTrackerAttributes.h \
            KDChartPrintingParameters.h \
-# unused so far: KDChartSignalCompressor.h \
            Cartesian/CartesianCoordinateTransformation.h \
            Cartesian/KDChartAbstractCartesianDiagram.h \
            Cartesian/KDChartCartesianCoordinatePlane.h \
@@ -271,7 +270,6 @@ HEADERS += KDChart/KDChartGlobal.h \
            KDChart/KDChartThreeDLineAttributes.h \
            KDChart/KDChartThreeDLineAttributes_p.h \
            KDChart/KDChartTextLabelCache.h \
-           # unused so far: KDChartSignalCompressor.h \
            KDChart/ChartGraphicsItem.h \
            KDChart/ReverseMapper.h \
            KDChart/KDChartValueTrackerAttributes.h \
@@ -426,7 +424,6 @@ SOURCES += \
            KDChart/KDChartAbstractThreeDAttributes.cpp \
            KDChart/KDChartThreeDLineAttributes.cpp \
            KDChart/KDChartTextLabelCache.cpp \
-           # unused so far: KDChart/KDChartSignalCompressor.cpp \
            KDChart/ChartGraphicsItem.cpp \
            KDChart/ReverseMapper.cpp \
            KDChart/KDChartValueTrackerAttributes.cpp \
@@ -561,4 +558,3 @@ qsa{
 #*g++*{
 #  QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 #}
-
