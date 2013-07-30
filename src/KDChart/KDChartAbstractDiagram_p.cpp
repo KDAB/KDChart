@@ -109,10 +109,42 @@ bool AbstractDiagram::Private::usesExternalAttributesModel() const
 
 void AbstractDiagram::Private::setAttributesModel( AttributesModel* amodel )
 {
-    if ( !attributesModel.isNull() &&
-        qobject_cast<PrivateAttributesModel*>(attributesModel) ) {
-        delete attributesModel;
+    if ( !attributesModel.isNull() ) {
+        if ( qobject_cast< PrivateAttributesModel* >( attributesModel ) ) {
+            delete attributesModel;
+        } else {
+            disconnect( attributesModel, SIGNAL( rowsInserted( QModelIndex, int, int ) ),
+                        diagram, SLOT( setDataBoundariesDirty() ) );
+            disconnect( attributesModel, SIGNAL( columnsInserted( QModelIndex, int, int ) ),
+                        diagram, SLOT( setDataBoundariesDirty() ) );
+            disconnect( attributesModel, SIGNAL( rowsRemoved( QModelIndex, int, int ) ),
+                        diagram, SLOT( setDataBoundariesDirty() ) );
+            disconnect( attributesModel, SIGNAL( columnsRemoved( QModelIndex, int, int ) ),
+                        diagram, SLOT( setDataBoundariesDirty() ) );
+            disconnect( attributesModel, SIGNAL( modelReset() ),
+                        diagram, SLOT( setDataBoundariesDirty() ) );
+            disconnect( attributesModel, SIGNAL( layoutChanged() ),
+                        diagram, SLOT( setDataBoundariesDirty() ) );
+            disconnect( attributesModel, SIGNAL( dataChanged( QModelIndex, QModelIndex ) ),
+                        diagram, SIGNAL( modelDataChanged() ));
+        }
     }
+
+    connect( amodel, SIGNAL( rowsInserted( QModelIndex, int, int ) ),
+             diagram, SLOT( setDataBoundariesDirty() ) );
+    connect( amodel, SIGNAL( columnsInserted( QModelIndex, int, int ) ),
+             diagram, SLOT( setDataBoundariesDirty() ) );
+    connect( amodel, SIGNAL( rowsRemoved( QModelIndex, int, int ) ),
+             diagram, SLOT( setDataBoundariesDirty() ) );
+    connect( amodel, SIGNAL( columnsRemoved( QModelIndex, int, int ) ),
+             diagram, SLOT( setDataBoundariesDirty() ) );
+    connect( amodel, SIGNAL( modelReset() ),
+             diagram, SLOT( setDataBoundariesDirty() ) );
+    connect( amodel, SIGNAL( layoutChanged() ),
+             diagram, SLOT( setDataBoundariesDirty() ) );
+    connect( amodel, SIGNAL( dataChanged( QModelIndex, QModelIndex ) ),
+             diagram, SIGNAL( modelDataChanged() ));
+
     attributesModel = amodel;
 }
 

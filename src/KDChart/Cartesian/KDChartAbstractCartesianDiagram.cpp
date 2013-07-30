@@ -123,18 +123,18 @@ void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePl
                     coordinatePlane(), SLOT( relayout() ) );
         disconnect( coordinatePlane() );
     }
-    
+
     AbstractDiagram::setCoordinatePlane(plane);
     if ( plane ) {
         // Readjust the layout when the dataset count changes
         connect( attributesModel(), SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ),
-                 plane, SLOT( relayout() ), Qt::QueuedConnection );
+                 plane, SLOT( relayout() ) );
         connect( attributesModel(), SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
-                 plane, SLOT( relayout() ), Qt::QueuedConnection );
+                 plane, SLOT( relayout() ) );
         connect( attributesModel(), SIGNAL( columnsRemoved( const QModelIndex&, int, int ) ),
-                 plane, SLOT( relayout() ), Qt::QueuedConnection );
+                 plane, SLOT( relayout() ) );
         connect( attributesModel(), SIGNAL( columnsInserted( const QModelIndex&, int, int ) ),
-                 plane, SLOT( relayout() ), Qt::QueuedConnection );
+                 plane, SLOT( relayout() ) );
         connect( plane, SIGNAL( viewportCoordinateSystemChanged() ),
                  this, SIGNAL( viewportCoordinateSystemChanged() ) );
         connect( plane, SIGNAL( viewportCoordinateSystemChanged() ), this, SLOT( update() ) );
