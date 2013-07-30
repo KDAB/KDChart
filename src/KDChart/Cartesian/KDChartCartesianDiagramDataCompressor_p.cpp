@@ -471,9 +471,6 @@ QPair< QPointF, QPointF > CartesianDiagramDataCompressor::dataBoundaries() const
         }
     }
 
-    // NOTE: calculateDataBoundaries must return the *real* data boundaries!
-    //       i.e. we may NOT fake yMin to be qMin( 0.0, yMin )
-    //       (khz, 2008-01-24)
     const QPointF bottomLeft( xMin, yMin );
     const QPointF topRight( xMax, yMax );
     return qMakePair( bottomLeft, topRight );
