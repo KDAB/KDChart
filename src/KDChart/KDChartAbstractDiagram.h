@@ -700,8 +700,12 @@ namespace KDChart {
          */
         void aboutToBeDestroyed();
 
-        /** This signal is emitted, when either the model or the AttributesModel is replaced. */
+        /** This signal is emitted when either the model or the AttributesModel is replaced. */
         void modelsChanged();
+
+        /** This signal is emitted just before the new attributes model is connected internally.
+            It gives you a chance to connect to its signals first or perform other setup work. */
+        void attributesModelAboutToChange( AttributesModel* newModel, AttributesModel* oldModel );
 
         /** This signal is emitted, when the model data is changed. */
         void modelDataChanged();

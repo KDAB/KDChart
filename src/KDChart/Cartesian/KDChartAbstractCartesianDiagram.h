@@ -118,6 +118,9 @@ namespace KDChart {
         /* reimpl */
         void setAttributesModel( AttributesModel* model );
 
+    protected Q_SLOTS:
+        void connectAttributesModel( AttributesModel* );
+
     protected:
         /** @return the 3D item depth of the model index \a index */
         virtual qreal threeDItemDepth( const QModelIndex& index ) const = 0;

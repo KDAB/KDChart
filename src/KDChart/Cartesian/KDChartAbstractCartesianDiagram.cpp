@@ -71,7 +71,10 @@ void AbstractCartesianDiagram::init()
 {
     d->compressor.setModel( attributesModel() );
     connect( this, SIGNAL( layoutChanged( AbstractDiagram* ) ),
-             &( d->compressor ), SLOT( slotDiagramLayoutChanged( AbstractDiagram* ) ) );
+             &d->compressor, SLOT( slotDiagramLayoutChanged( AbstractDiagram* ) ) );
+    connect( this, SIGNAL( attributesModelAboutToChange( AttributesModel*, AttributesModel* ) ),
+             this, SLOT( connectAttributesModel( AttributesModel* ) ) );
+
     if ( d->plane ) {
         connect( d->plane, SIGNAL( viewportCoordinateSystemChanged() ),
                                    this, SIGNAL( viewportCoordinateSystemChanged() ) );
@@ -159,18 +162,38 @@ QPointF AbstractCartesianDiagram::referenceDiagramOffset() const
 
 void AbstractCartesianDiagram::setRootIndex( const QModelIndex& index )
 {
-    AbstractDiagram::setRootIndex( index );
     d->compressor.setRootIndex( attributesModel()->mapFromSource( index ) );
+    AbstractDiagram::setRootIndex( index );
 }
 
-void AbstractCartesianDiagram::setModel( QAbstractItemModel* model )
+void AbstractCartesianDiagram::setModel( QAbstractItemModel* m )
 {
-    AbstractDiagram::setModel( model );
-    d->compressor.setModel( attributesModel() );
+    if ( m == model() ) {
+        return;
+    }
+    AbstractDiagram::setModel( m );
 }
 
 void AbstractCartesianDiagram::setAttributesModel( AttributesModel* model )
 {
+    if ( model == attributesModel() ) {
+        return;
+    }
     AbstractDiagram::setAttributesModel( model );
-    d->compressor.setModel( attributesModel() );
+}
+
+void AbstractCartesianDiagram::connectAttributesModel( AttributesModel* newModel )
+{
+    // The compressor must receive model signals before the diagram because the diagram will ask the
+    // compressor for data upon receiving dataChanged() et al. from the model, at which point the
+    // compressor must be up to date already.
+    // Starting from Qt 4.6, the invocation order of slots is guaranteed to be equal to connection
+    // order (and probably was before).
+    // This is our opportunity to connect to the AttributesModel before the AbstractDiagram does.
+
+    // ### A better design would be to properly recognize that the compressor is the real data interface
+    // for Cartesian diagrams and make diagrams listen to updates from the *compressor*, not the model.
+    // However, this would change the outside interface of AbstractCartesianDiagram which would be bad.
+    // So we're stuck with the complication of this slot and the corresponding signal.
+    d->compressor.setModel( newModel );
 }

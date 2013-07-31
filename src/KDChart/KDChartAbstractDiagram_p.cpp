@@ -109,6 +109,10 @@ bool AbstractDiagram::Private::usesExternalAttributesModel() const
 
 void AbstractDiagram::Private::setAttributesModel( AttributesModel* amodel )
 {
+    if ( attributesModel == amodel ) {
+        return;
+    }
+
     if ( !attributesModel.isNull() ) {
         if ( qobject_cast< PrivateAttributesModel* >( attributesModel ) ) {
             delete attributesModel;
@@ -129,6 +133,8 @@ void AbstractDiagram::Private::setAttributesModel( AttributesModel* amodel )
                         diagram, SIGNAL( modelDataChanged() ));
         }
     }
+
+    emit diagram->attributesModelAboutToChange( amodel, attributesModel );
 
     connect( amodel, SIGNAL( rowsInserted( QModelIndex, int, int ) ),
              diagram, SLOT( setDataBoundariesDirty() ) );

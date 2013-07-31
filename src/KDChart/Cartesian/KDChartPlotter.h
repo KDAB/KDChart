@@ -97,8 +97,6 @@ public:
                                     const ValueTrackerAttributes & a );
     ValueTrackerAttributes valueTrackerAttributes( const QModelIndex & index ) const;
 
-    void setModel( QAbstractItemModel *model );
-
     CompressionMode useDataCompression() const;
     void setUseDataCompression( CompressionMode value );
 
@@ -121,6 +119,9 @@ public:
     /* reimpl */
     int numberOfOrdinateSegments () const;
 #endif
+
+protected Q_SLOTS:
+    void connectAttributesModel( AttributesModel* );
 
 protected:
     void paint ( PaintContext* paintContext );

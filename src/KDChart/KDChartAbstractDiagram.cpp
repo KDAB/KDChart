@@ -132,11 +132,15 @@ void AbstractDiagram::setDataBoundariesDirty() const
 
 void AbstractDiagram::setModel( QAbstractItemModel * newModel )
 {
-    QAbstractItemView::setModel( newModel );
+    if ( newModel == model() ) {
+        return;
+    }
 
     AttributesModel* amodel = new PrivateAttributesModel( newModel, this );
     amodel->initFrom( d->attributesModel );
     d->setAttributesModel(amodel);
+
+    QAbstractItemView::setModel( newModel );
 
     scheduleDelayedItemsLayout();
     setDataBoundariesDirty();
@@ -179,7 +183,8 @@ void AbstractDiagram::setAttributesModel( AttributesModel* amodel )
                  "Trying to set an attributesmodel that is private to another diagram.");
         return;
     }
-    d->setAttributesModel(amodel);
+
+    d->setAttributesModel( amodel );
     scheduleDelayedItemsLayout();
     setDataBoundariesDirty();
     emit modelsChanged();

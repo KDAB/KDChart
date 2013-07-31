@@ -298,7 +298,11 @@ int CartesianDiagramDataCompressor::modelDataRows() const
 
 void CartesianDiagramDataCompressor::setModel( QAbstractItemModel* model )
 {
-    if ( m_model != 0 && m_model != model ) {
+    if ( model == m_model ) {
+        return;
+    }
+
+    if ( m_model != 0 ) {
         disconnect( m_model, SIGNAL( headerDataChanged( Qt::Orientation, int, int ) ),
                  this, SLOT( slotModelHeaderDataChanged( Qt::Orientation, int, int ) ) );
         disconnect( m_model, SIGNAL( dataChanged( QModelIndex, QModelIndex ) ),
@@ -352,8 +356,7 @@ void CartesianDiagramDataCompressor::setModel( QAbstractItemModel* model )
                  SLOT( slotColumnsRemoved( QModelIndex, int, int ) ) );
         connect( m_model, SIGNAL( columnsAboutToBeRemoved( QModelIndex, int, int ) ),
                  SLOT( slotColumnsAboutToBeRemoved( QModelIndex, int, int ) ) );
-        connect( m_model, SIGNAL( modelReset() ),
-                    this, SLOT( rebuildCache() ) );
+        connect( m_model, SIGNAL( modelReset() ), SLOT( rebuildCache() ) );
     }
     rebuildCache();
     calculateSampleStepWidth();
