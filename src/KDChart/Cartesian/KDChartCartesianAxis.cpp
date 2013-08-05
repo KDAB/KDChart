@@ -763,7 +763,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
             // paint the label
 
             QString text = it.text();
-            if ( it.type() == TickIterator::MajorTick ) {
+            if ( it.type() == TickIterator::MajorTick ||
+                 it.type() == TickIterator::MajorTickHeaderDataLabel ) {
                 text = d->customizedLabelText( text, geoXy( Qt::Horizontal, Qt::Vertical ), it.position() );
             }
             tickLabel->setText( text );
