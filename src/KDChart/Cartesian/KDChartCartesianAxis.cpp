@@ -285,7 +285,8 @@ void TickIterator::operator++()
         } else {
             m_position = inf;
         }
-    } else if ( !m_isLogarithmic && m_dimension.stepWidth * 1e6 < m_dimension.start ) {
+    } else if ( !m_isLogarithmic && m_dimension.stepWidth * 1e6 <
+                                       qMax( qAbs( m_dimension.start ), qAbs( m_dimension.end ) ) {
         // If the step width is too small to increase m_position at all, we get an infinite loop.
         // This usually happens when m_dimension.start == m_dimension.end and both are very large.
         // When start == end, the step width defaults to 1, and it doesn't scale with start or end.
