@@ -286,10 +286,10 @@ void TickIterator::operator++()
             m_position = inf;
         }
     } else if ( !m_isLogarithmic && m_dimension.stepWidth * 1e6 < m_dimension.start ) {
-        // Bail out to avoid KDCH-967 and possibly other problems: if the step width is too small
-        // to increase m_position at all, we get an infinite loop. This usually happens when
-        // m_dimension.start == m_dimension.end and both are very large.
-        // When start == end, the step width defaults to 1, no matter how large start and end are.
+        // If the step width is too small to increase m_position at all, we get an infinite loop.
+        // This usually happens when m_dimension.start == m_dimension.end and both are very large.
+        // When start == end, the step width defaults to 1, and it doesn't scale with start or end.
+        // So currently, we bail and show no tick at all for empty ranges > 10^6, but at least we don't hang.
         m_position = inf;
     } else {
         // advance the calculated ticks
