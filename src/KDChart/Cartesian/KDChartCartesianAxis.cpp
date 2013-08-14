@@ -216,7 +216,13 @@ void TickIterator::init( bool isY, bool hasMajorTicks, bool hasMinorTicks,
 bool TickIterator::areAlmostEqual( qreal r1, qreal r2 ) const
 {
     if ( !m_isLogarithmic ) {
-        return qAbs( r2 - r1 ) < ( m_dimension.end - m_dimension.start ) * 1e-6;
+        qreal span = m_dimension.end - m_dimension.start;
+        if (span == 0) {
+            // When start == end, we still want to show one tick if possible,
+            // which needs this function to perform a reasonable comparison.
+            span = qFuzzyIsNull(m_dimension.start) ? 1 : qAbs(m_dimension.start);
+        }
+        return qAbs( r2 - r1 ) < ( span ) * 1e-6;
     } else {
         return qAbs( r2 - r1 ) < qMax( qAbs( r1 ), qAbs( r2 ) ) * 0.01;
     }
