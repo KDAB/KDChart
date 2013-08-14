@@ -279,10 +279,11 @@ void TickIterator::operator++()
         } else {
             m_position = inf;
         }
-    } else if (m_dimension.start == m_dimension.end) {
-        // bail out to avoid KDCH-967 and possibly other problems: an empty range is not necessarily easy to
-        // iterate over, so don't try to "properly" determine the next tick which is certain to be out of the
-        // given range - just trivially skip to the end.
+    } else if ( !m_isLogarithmic && m_dimension.stepWidth * 1e6 < m_dimension.start ) {
+        // Bail out to avoid KDCH-967 and possibly other problems: if the step width is too small
+        // to increase m_position at all, we get an infinite loop. This usually happens when
+        // m_dimension.start == m_dimension.end and both are very large.
+        // When start == end, the step width defaults to 1, no matter how large start and end are.
         m_position = inf;
     } else {
         // advance the calculated ticks
