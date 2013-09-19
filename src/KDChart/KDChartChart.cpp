@@ -107,6 +107,23 @@ public:
     }
 };
 
+// When "abusing" QLayouts to lay out items with different geometry from the backing QWidgets,
+// some manual work is required to correctly update all the sublayouts.
+// This is because all the convenient ways to deal with QLayouts assume QWidgets somewhere.
+// What this does is somewhat similar to QLayout::activate(), but it never refers to the parent
+// QWidget which has the wrong geometry.
+static void invalidateLayoutTree( QLayoutItem *item )
+{
+    item->invalidate();
+    QLayout *layout = item->layout();
+    if ( layout ) {
+        const int count = layout->count();
+        for ( int i = 0; i < count; i++ ) {
+            invalidateLayoutTree( layout->itemAt( i ) );
+        }
+    }
+}
+
 using namespace KDChart;
 
 void Chart::Private::slotUnregisterDestroyedLegend( Legend *l )
@@ -953,7 +970,8 @@ void Chart::Private::updateDirtyLayouts()
 void Chart::Private::reapplyInternalLayouts()
 {
     QRect geo = layout->geometry();
-    layout->invalidate();
+
+    invalidateLayoutTree( layout );
     layout->setGeometry( geo );
     slotResizePlanes();
 }
@@ -1215,6 +1233,7 @@ void Chart::paint( QPainter* painter, const QRect& target )
         oldGeometry = geometry();
         d->isPlanesLayoutDirty = true;
         d->isFloatingLegendsLayoutDirty = true;
+        invalidateLayoutTree( d->dataAndLegendLayout );
         d->dataAndLegendLayout->setGeometry( QRect( QPoint(), target.size() ) );
     }
 
@@ -1223,6 +1242,7 @@ void Chart::paint( QPainter* painter, const QRect& target )
     d->overrideSize = QSize();
 
     if ( differentSize ) {
+        invalidateLayoutTree( d->dataAndLegendLayout );
         d->dataAndLegendLayout->setGeometry( oldGeometry );
         d->isPlanesLayoutDirty = true;
         d->isFloatingLegendsLayoutDirty = true;
