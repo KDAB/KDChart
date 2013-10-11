@@ -886,19 +886,19 @@ void Chart::Private::createLayouts()
     layout->addSpacing( globalLeadingRight );
     rightOuterSpacer = layout->itemAt( layout->count() - 1 )->spacerItem();
 
-    // 1. the gap above the top edge of the headers area
+    // 1. the spacing above the header area
     vLayout->addSpacing( globalLeadingTop );
     topOuterSpacer = vLayout->itemAt( vLayout->count() - 1 )->spacerItem();
-    // 2. the header(s) area
+    // 2. the header area
     headerLayout = new QGridLayout();
     headerLayout->setMargin( 0 );
     vLayout->addLayout( headerLayout );
-    // 3. the area containing coordinate plane(s), axes, legend(s)
+    // 3. the area containing coordinate planes, axes, and legends
     dataAndLegendLayout = new QGridLayout();
     dataAndLegendLayout->setMargin( 0 );
     dataAndLegendLayout->setObjectName( QString::fromLatin1( "dataAndLegendLayout" ) );
     vLayout->addLayout( dataAndLegendLayout, 1000 );
-    // 4. the footer(s) area
+    // 4. the footer area
     footerLayout = new QGridLayout();
     footerLayout->setMargin( 0 );
     footerLayout->setObjectName( QString::fromLatin1( "footerLayout" ) );
@@ -923,7 +923,7 @@ void Chart::Private::createLayouts()
         }
     }
 
-    // 6. the gap below the bottom edge of the headers area
+    // 6. the spacing below the footer area
     vLayout->addSpacing( globalLeadingBottom );
     bottomOuterSpacer = vLayout->itemAt( vLayout->count() - 1 )->spacerItem();
 
