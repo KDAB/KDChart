@@ -455,21 +455,20 @@ QPair< QPointF, QPointF > CartesianDiagramDataCompressor::dataBoundaries() const
             if ( !p.index.isValid() )
                 retrieveModelData( CachePosition( row, column ) );
 
-            const qreal valueX = ISNAN( p.key ) ? 0.0 : p.key;
-            const qreal valueY = ISNAN( p.value ) ? 0.0 : p.value;
-            if ( ISNAN( xMin ) )
-            {
-                xMin = valueX;
-                xMax = valueX;
-                yMin = valueY;
-                yMax = valueY;
+            if ( ISNAN( p.key ) || ISNAN( p.value ) ) {
+                continue;
             }
-            else
-            {
-                xMin = qMin( xMin, valueX );
-                xMax = qMax( xMax, valueX );
-                yMin = qMin( yMin, valueY );
-                yMax = qMax( yMax, valueY );
+
+            if ( ISNAN( xMin ) ) {
+                xMin = p.key;
+                xMax = p.key;
+                yMin = p.value;
+                yMax = p.value;
+            } else {
+                xMin = qMin( xMin, p.key );
+                xMax = qMax( xMax, p.key );
+                yMin = qMin( yMin, p.value );
+                yMax = qMax( yMax, p.value );
             }
         }
     }
