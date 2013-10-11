@@ -630,14 +630,12 @@ void CartesianCoordinatePlane::setVerticalRange( const QPair< qreal, qreal > & r
 
 QPair< qreal, qreal > CartesianCoordinatePlane::horizontalRange( ) const
 {
-    QRectF visibleRange = visibleDataRange();
-    return QPair<qreal, qreal>( visibleRange.left(), visibleRange.right() );
+    return QPair<qreal, qreal>( d->horizontalMin, d->horizontalMax );
 }
 
 QPair< qreal, qreal > CartesianCoordinatePlane::verticalRange( ) const
 {
-    QRectF visibleRange = visibleDataRange();
-    return QPair<qreal, qreal>( visibleRange.bottom(), visibleRange.top() );
+    return QPair<qreal, qreal>( d->verticalMin, d->verticalMax );
 }
 
 void CartesianCoordinatePlane::adjustRangesToData()
