@@ -140,14 +140,6 @@ public:
     void resize ( const QSizeF& area );
 
 protected:
-    // FIXME what does that mean?
-    qreal valueForCellTesting( int row, int column,
-                                bool& bOK,
-                                bool showHiddenCellsAsInvalid = false ) const;
-    LineAttributes::MissingValuesPolicy getCellValues(
-        int row, int column,
-        bool shiftCountedXValuesByHalfSection,
-        qreal& valueX, qreal& valueY ) const;
 
     virtual qreal threeDItemDepth( const QModelIndex & index ) const;
     virtual qreal threeDItemDepth( int column ) const;

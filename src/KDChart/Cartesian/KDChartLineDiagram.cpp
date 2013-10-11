@@ -392,47 +392,6 @@ void LineDiagram::paintEvent ( QPaintEvent*)
     paint ( &ctx );
 }
 
-
-qreal LineDiagram::valueForCellTesting( int row, int column,
-                                         bool& bOK,
-                                         bool showHiddenCellsAsInvalid ) const
-{
-    if ( !model()->hasIndex( row, column, rootIndex() ) ) {
-        bOK = false;
-        return 0.0;
-    }
-    qreal value;
-    if ( showHiddenCellsAsInvalid && isHidden( model()->index( row, column, rootIndex() ) ) ) // checked
-        bOK = false;
-    else
-        value = d->attributesModel->data(
-                    d->attributesModel->index( row, column, attributesModelRootIndex() ) // checked
-                ).toReal( &bOK );
-    return bOK ? value : 0.0;
-}
-
-LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
-      int row, int column,
-      bool shiftCountedXValuesByHalfSection,
-      qreal& valueX, qreal& valueY ) const
-{
-    LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesPolicyIgnored;
-
-    bool bOK = true;
-    valueX = ( datasetDimension() > 1 && column > 0 )
-             ? valueForCellTesting( row, column-1, bOK, true )
-             : ((shiftCountedXValuesByHalfSection ? 0.5 : 0.0) + row);
-    if ( bOK )
-        valueY = valueForCellTesting( row, column, bOK, true );
-    else if ( model()->hasIndex( row, column, rootIndex() ) ) {
-        // missing value: find out the policy
-        QModelIndex index = model()->index( row, column, rootIndex() ); // checked
-        LineAttributes la = lineAttributes( index );
-        policy = la.missingValuesPolicy();
-    }
-    return policy;
-}
-
 void LineDiagram::paint( PaintContext* ctx )
 {
     // note: Not having any data model assigned is no bug
