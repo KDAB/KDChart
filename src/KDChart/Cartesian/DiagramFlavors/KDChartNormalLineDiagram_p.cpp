@@ -47,36 +47,7 @@ LineDiagram::LineType NormalLineDiagram::type() const
 
 const QPair< QPointF, QPointF > NormalLineDiagram::calculateDataBoundaries() const
 {
-    const int rowCount = compressor().modelDataRows();
-    const int colCount = compressor().modelDataColumns();
-    const qreal xMin = 0.0;
-    qreal xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
-    if ( !diagram()->centerDataPoints() && diagram()->model() )
-        xMax -= 1;
-    qreal yMin = std::numeric_limits< qreal >::quiet_NaN();
-    qreal yMax = std::numeric_limits< qreal >::quiet_NaN();
-
-    for ( int column = 0; column < colCount; ++column )
-    {
-        for ( int row = 0; row < rowCount; ++row )
-        {
-            const CartesianDiagramDataCompressor::CachePosition position( row, column );
-            const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-            const qreal value = ISNAN( point.value ) ? 0.0 : point.value;
-
-            if ( ISNAN( yMin ) ) {
-                yMin = value;
-                yMax = value;
-            } else {
-                yMin = qMin( yMin, value );
-                yMax = qMax( yMax, value );
-            }
-        }
-    }
-
-    const QPointF bottomLeft( QPointF( xMin, yMin ) );
-    const QPointF topRight( QPointF( xMax, yMax ) );
-    return QPair< QPointF, QPointF >( bottomLeft, topRight );
+    return compressor().dataBoundaries();
 }
 
 void NormalLineDiagram::paint( PaintContext* ctx )
