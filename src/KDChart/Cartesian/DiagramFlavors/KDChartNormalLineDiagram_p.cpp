@@ -63,9 +63,10 @@ void NormalLineDiagram::paint( PaintContext* ctx )
     bool rev = diagram()->reverseDatasetOrder();
     LabelPaintCache lpc;
     LineAttributesInfoList lineList;
-    for ( int column = rev ? columnCount - 1 : 0;
-         rev ? (column >= 0) : (column < columnCount);
-         rev ? --column : ++column ) {
+
+    const int step = rev ? -1 : 1;
+    const int end = rev ? -1 : columnCount;
+    for ( int column = rev ? columnCount - 1 : 0; column != end; column += step ) {
         LineAttributes laPreviousCell;
         CartesianDiagramDataCompressor::DataPoint lastPoint;
         qreal lastAreaBoundingValue = 0;
