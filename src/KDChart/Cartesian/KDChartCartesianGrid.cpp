@@ -267,7 +267,6 @@ DataDimensionsList CartesianGrid::calculateGrid(
     return l;
 }
 
-
 qreal fastPow10( int x )
 {
     qreal res = 1.0;
@@ -276,7 +275,7 @@ qreal fastPow10( int x )
             res *= 10.0;
     } else {
         for ( int i = -1; i >= x; --i )
-            res /= 10.0;
+            res *= 0.1;
     }
     return res;
 }
