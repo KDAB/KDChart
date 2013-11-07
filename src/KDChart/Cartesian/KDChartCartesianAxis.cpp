@@ -81,7 +81,8 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
      m_type( NoTick )
 {
     // deal with the things that are specfic to axes (like annotations), before the generic init().
-    XySwitch xy( m_axis->d_func()->isVertical() );
+    const CartesianAxis::Private *axisPriv = CartesianAxis::Private::get( a );
+    XySwitch xy( axisPriv->isVertical() );
     m_dimension = xy( plane->gridDimensionsList().first(), plane->gridDimensionsList().last() );
     if ( omitLastTick ) {
         // In bar and stock charts the last X tick is a fencepost with no associated value, which is
@@ -89,8 +90,8 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
         m_dimension.end -= m_dimension.stepWidth;
     }
 
-    m_annotations = m_axis->d_func()->annotations;
-    m_customTicks = m_axis->d_func()->customTicksPositions;
+    m_annotations = axisPriv->annotations;
+    m_customTicks = axisPriv->customTicksPositions;
 
     const qreal inf = std::numeric_limits< qreal >::infinity();
 
@@ -137,11 +138,11 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
     init( xy.isY, hasMajorTicks, hasMinorTicks, plane );
 }
 
-TickIterator::TickIterator( bool isY, const DataDimension& dimension, bool hasMajorTicks, bool hasMinorTicks,
-                            CartesianCoordinatePlane* plane, uint majorThinningFactor )
+TickIterator::TickIterator( bool isY, const DataDimension& dimension,
+                            bool hasMajorTicks, bool hasMinorTicks, CartesianCoordinatePlane* plane )
    : m_axis( 0 ),
      m_dimension( dimension ),
-     m_majorThinningFactor( majorThinningFactor ),
+     m_majorThinningFactor( 1 ),
      m_majorLabelCount( 0 ),
      m_customTickIndex( -1 ),
      m_manualLabelIndex( -1 ),
