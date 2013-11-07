@@ -181,8 +181,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
 }
 
 
-DataDimensionsList CartesianGrid::calculateGrid(
-    const DataDimensionsList& rawDataDimensions ) const
+DataDimensionsList CartesianGrid::calculateGrid( const DataDimensionsList& rawDataDimensions ) const
 {
     Q_ASSERT_X ( rawDataDimensions.count() == 2, "CartesianGrid::calculateGrid",
                  "Error: calculateGrid() expects a list with exactly two entries." );
@@ -280,7 +279,7 @@ qreal fastPow10( int x )
     return res;
 }
 
-#if defined ( Q_OS_WIN)
+#ifdef Q_OS_WIN
 #define trunc(x) ((int)(x))
 #endif
 

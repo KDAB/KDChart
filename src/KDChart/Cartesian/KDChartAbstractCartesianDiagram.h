@@ -45,7 +45,7 @@ namespace KDChart {
         KDCHART_DECLARE_DERIVED_DIAGRAM( AbstractCartesianDiagram, CartesianCoordinatePlane )
 
     public:
-        explicit AbstractCartesianDiagram ( QWidget* parent = 0, CartesianCoordinatePlane* plane = 0 );
+        explicit AbstractCartesianDiagram( QWidget* parent = 0, CartesianCoordinatePlane* plane = 0 );
         virtual ~AbstractCartesianDiagram();
 
         /**
@@ -54,11 +54,11 @@ namespace KDChart {
         bool compare( const AbstractCartesianDiagram* other ) const;
 
 #if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-        virtual const int numberOfAbscissaSegments () const = 0;
-        virtual const int numberOfOrdinateSegments () const = 0;
+        virtual const int numberOfAbscissaSegments() const = 0;
+        virtual const int numberOfOrdinateSegments() const = 0;
 #else
-        virtual int numberOfAbscissaSegments () const = 0;
-        virtual int numberOfOrdinateSegments () const = 0;
+        virtual int numberOfAbscissaSegments() const = 0;
+        virtual int numberOfOrdinateSegments() const = 0;
 #endif
         /**
          * Add the axis to the diagram. The diagram takes ownership of the axis
@@ -82,7 +82,7 @@ namespace KDChart {
         /**
          * @return a list of all axes added to the diagram
         */
-        virtual KDChart::CartesianAxisList axes () const;
+        virtual KDChart::CartesianAxisList axes() const;
 
         /**
           * Triggers layouting of all coordinate planes on the current chart.
@@ -127,7 +127,6 @@ namespace KDChart {
         /** @return the 3D item depth of the data set \a column */
         virtual qreal threeDItemDepth( int column ) const = 0;
     };
-
 }
 
 #endif
