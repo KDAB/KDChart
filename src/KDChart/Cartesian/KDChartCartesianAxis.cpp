@@ -138,7 +138,25 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
     init( xy.isY, hasMajorTicks, hasMinorTicks, plane );
 }
 
-TickIterator::TickIterator( bool isY, const DataDimension& dimension,
+static QMap< qreal, QString > allAxisAnnotations( const AbstractCoordinatePlane *plane, bool isY )
+{
+    QMap< qreal, QString > annotations;
+    Q_FOREACH( const AbstractDiagram *diagram, plane->diagrams() ) {
+        const AbstractCartesianDiagram *cd = qobject_cast< const AbstractCartesianDiagram* >( diagram );
+        if ( !cd ) {
+            continue;
+        }
+        Q_FOREACH( const CartesianAxis *axis, cd->axes() ) {
+            const CartesianAxis::Private *axisPriv = CartesianAxis::Private::get( axis );
+            if ( axisPriv->isVertical() == isY ) {
+                annotations.unite( axisPriv->annotations );
+            }
+        }
+    }
+    return annotations;
+}
+
+TickIterator::TickIterator( bool isY, const DataDimension& dimension, bool useAnnotationsForTicks,
                             bool hasMajorTicks, bool hasMinorTicks, CartesianCoordinatePlane* plane )
    : m_axis( 0 ),
      m_dimension( dimension ),
@@ -149,6 +167,9 @@ TickIterator::TickIterator( bool isY, const DataDimension& dimension,
      m_type( NoTick ),
      m_customTick( std::numeric_limits< qreal >::infinity() )
 {
+    if ( useAnnotationsForTicks ) {
+        m_annotations = allAxisAnnotations( plane, isY );
+    }
     init( isY, hasMajorTicks, hasMinorTicks, plane );
 }
 

@@ -149,7 +149,8 @@ void CartesianGrid::drawGrid( PaintContext* context )
         QPointF lineStart = QPointF( minValueX, minValueY ); // still need transformation to screen space
         QPointF lineEnd = QPointF( maxValueX, maxValueY );
 
-        TickIterator it( xy.isY, dimension, hasMajorLines, hasMinorLines, plane );
+        TickIterator it( xy.isY, dimension, gridAttrs.linesOnAnnotations(),
+                         hasMajorLines, hasMinorLines, plane );
         for ( ; !it.isAtEnd(); ++it ) {
             if ( !gridAttrs.isOuterLinesVisible() &&
                  ( it.areAlmostEqual( it.position(), xy( minValueX, minValueY ) ) ||

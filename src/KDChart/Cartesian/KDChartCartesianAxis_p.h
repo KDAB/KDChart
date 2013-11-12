@@ -137,7 +137,7 @@ public:
     TickIterator( CartesianAxis *a, CartesianCoordinatePlane* plane, uint majorThinningFactor,
                   bool omitLastTick /* sorry about that */ );
     // this constructor is for use in CartesianGrid
-    TickIterator( bool isY, const DataDimension& dimension,
+    TickIterator( bool isY, const DataDimension& dimension, bool useAnnotationsForTicks,
                   bool hasMajorTicks, bool hasMinorTicks, CartesianCoordinatePlane* plane );
 
     qreal position() const { return m_position; }
