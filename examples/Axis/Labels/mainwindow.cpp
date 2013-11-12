@@ -23,18 +23,14 @@
 #include "mainwindow.h"
 #include "AdjustedCartesianAxis.h"
 
-#include <KDChartAbstractCoordinatePlane>
-#include <KDChartBackgroundAttributes>
+#include <KDChartCartesianCoordinatePlane>
 #include <KDChartChart>
+#include <KDChartGridAttributes>
 #include <KDChartLegend>
 #include <KDChartLineDiagram>
-#include <KDChartLineAttributes>
 #include <KDChartTextAttributes>
-#include <KDChartThreeDLineAttributes>
-#include <KDChartMarkerAttributes>
 
 #include <QDebug>
-#include <QPainter>
 #include <QLinearGradient>
 #include <QTextDocument>
 
@@ -43,11 +39,9 @@ MainWindow::MainWindow( QWidget* parent ) :
 {
     setupUi( this );
 
-    QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+    QHBoxLayout* chartLayout = new QHBoxLayout( m_chartFrame );
     m_chart = new KDChart::Chart;
     chartLayout->addWidget( m_chart );
-    hSBar->setVisible( false );
-    vSBar->setVisible( false );
 
     m_model.loadFromCSV( ":/data" );
 
@@ -55,66 +49,31 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines = new KDChart::LineDiagram();
     m_lines->setModel( &m_model );
 
-    KDChart::CartesianAxis *xAxis = new KDChart::CartesianAxis( m_lines );
-    KDChart::TextAttributes ta( xAxis->textAttributes() );
+    m_xAxis = new KDChart::CartesianAxis( m_lines );
+    KDChart::TextAttributes ta( m_xAxis->textAttributes() );
 
     AdjustedCartesianAxis *yAxis = new AdjustedCartesianAxis( m_lines );
     yAxis->setBounds( 3, 6 );
-    xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
-    yAxis->setPosition ( KDChart::CartesianAxis::Left );
-
-/*
-// set the following to 0 to have only one of the axes with background
-#if 1
-    // colourize the axes' backgrounds
-    KDChart::BackgroundAttributes ba = yAxis->backgroundAttributes();
-    ba.setVisible( true );
-    ba.setBrush( QBrush( QColor( 0xff, 0xff, 0x40 ) ) );
-    yAxis->setBackgroundAttributes( ba );
-    xAxis->setBackgroundAttributes( ba );
-#else
-    // colourize the Ordinate axis' background
-    QLinearGradient linearGrad( QPointF( 0, 100 ), QPointF( 0, 400 ) );
-    linearGrad.setColorAt( 0.0, QColor( 0xff, 0xff, 0xc0 ) );
-    linearGrad.setColorAt( 1.0, QColor( 0xa0, 0xc0, 0xff ) );
-    ba = yAxis->backgroundAttributes();
-    ba.setVisible( true );
-    ba.setBrush( linearGrad );
-    yAxis->setBackgroundAttributes( ba );
-#endif
-*/
-    // add 1 pixel space at the left and at the top edge, because the
-    // axis area would otherwise overwrite the left/top borders
-    m_chart->setGlobalLeading( 1, 1, 0, 0 );
+    m_xAxis->setPosition( KDChart::CartesianAxis::Bottom );
+    yAxis->setPosition( KDChart::CartesianAxis::Left );
 
 // set the following to 0, to see the default Abscissa labels (== X headers, as read from the data file)
 #if 1
     QStringList daysOfWeek;
     daysOfWeek << "Monday" << "Tuesday" << "Wednesday" << "Thursday" << "Friday" << "Saturday" << "Sunday";
-    xAxis->setLabels( daysOfWeek );
+    m_xAxis->setLabels( daysOfWeek );
 
     //QStringList shortDays;
     //shortDays << "Mon" << "Tue" << "Wed" << "Thu" << "Fri" << "Sat" << "Sun";
-    //xAxis->setShortLabels( shortDays );
+    //m_xAxis->setShortLabels( shortDays );
 #endif
 
 // Use HTML for drawing the text in the axis labels.
 #if 0
     QStringList htmlStyles;
     htmlStyles << "<b>Bold</b>" << "<i>Italic</i>" << "<u>Underline</u>" << "<font color='red'>Red</font>";
-    xAxis->setLabels( htmlStyles );
+    m_xAxis->setLabels( htmlStyles );
     ta.setTextDocument(new QTextDocument);
-#endif
-
-
-// set custom axis labels at custom positions
-#if 0
-    QMap< qreal, QString > annotations;
-    annotations[ 0.5 ] = "Left";
-    annotations[ 3.5 ] = "Center";
-    annotations[ 4.2 ] = "After Center";
-    annotations[ 6.5 ] = "Right";
-    xAxis->setAnnotations(annotations);
 #endif
 
     // Illustration of custom ticks
@@ -123,21 +82,49 @@ MainWindow::MainWindow( QWidget* parent ) :
     ticks.append( 3.5 );
     ticks.append( 4.2 );
     ticks.append( 6.5 );
-    xAxis->setCustomTicks(ticks);
+    m_xAxis->setCustomTicks(ticks);
     yAxis->setCustomTicks(ticks);
 
     // rotate abscissa labels by -60 degrees:
     ta.setRotation( -60 );
 
-    xAxis->setTextAttributes( ta );
-    m_lines->addAxis( xAxis );
+    m_xAxis->setTextAttributes( ta );
+    m_lines->addAxis( m_xAxis );
     m_lines->addAxis( yAxis );
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     // Set up the legend
-    xAxis->setCustomTickLength( 11 );
+    m_xAxis->setCustomTickLength( 11 );
     yAxis->setCustomTickLength( 11 );
     m_legend = new KDChart::Legend( m_lines, m_chart );
     m_legend->setPosition( KDChart::Position::East );
     m_legend->setAlignment( Qt::AlignTop );
     m_chart->addLegend( m_legend );
+
+    connect( m_annotations, SIGNAL( toggled( bool ) ), SLOT( annotationsToggled( bool ) ) );
+    connect( m_linesOnAnnotations, SIGNAL( toggled( bool ) ), SLOT( gridLinesOnAnnotationsToggled( bool ) ) );
+}
+
+void MainWindow::annotationsToggled( bool showAnnotations )
+{
+    QMap< qreal, QString > annotations;
+    if ( showAnnotations ) {
+        // set custom axis labels at custom positions
+        annotations[ 0.5 ] = "Left";
+        annotations[ 3.5 ] = "Center";
+        annotations[ 4.2 ] = "Off Center";
+        annotations[ 6.5 ] = "Right";
+    }
+    m_xAxis->setAnnotations( annotations );
+    m_chart->update();
+}
+
+void MainWindow::gridLinesOnAnnotationsToggled( bool onAnnotations )
+{
+        // Draw grid lines where the annotations are
+    KDChart::CartesianCoordinatePlane* plane =
+        static_cast< KDChart::CartesianCoordinatePlane* >( m_chart->coordinatePlane() );
+    KDChart::GridAttributes ga = plane->gridAttributes( Qt::Horizontal );
+    ga.setLinesOnAnnotations( onAnnotations );
+    plane->setGridAttributes( Qt::Horizontal, ga );
+    m_chart->update();
 }
