@@ -45,8 +45,6 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_chart->setGlobalLeadingLeft( 5 );
     m_chart->setGlobalLeadingRight( 5 );
     chartLayout->addWidget( m_chart );
-    hSBar->setVisible( false );
-    vSBar->setVisible( false );
 
     m_model.loadFromCSV( ":/data" );
     explodeDatasetSB->setMaximum( m_model.columnCount() - 1 );
