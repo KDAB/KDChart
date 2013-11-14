@@ -431,6 +431,9 @@ void AbstractDiagram::Private::paintDataValueTextsAndMarkers(
             item.paint( ctx->painter() );
         }
     }
+    if ( cumulatedBoundingRect ) {
+        *cumulatedBoundingRect = ctx->painter()->transform().inverted().mapRect( *cumulatedBoundingRect );
+    }
 }
 
 QString AbstractDiagram::Private::formatDataValueText( const DataValueAttributes &dva,
