@@ -392,16 +392,15 @@ const KDChart::DataValueAttributes DataValueSettings::Private::attributes() cons
     Q_ASSERT( m_chart );
     Q_ASSERT( m_chart->coordinatePlane() );
     AbstractDiagram *diag = m_chart->coordinatePlane()->diagram();
+    DataValueAttributes attr = diag->dataValueAttributes();
     if ( ui->scopeOneBarRB->isChecked() ) {
-        //qDebug() << "attributes() returns settings for one single bar";
-        return diag->dataValueAttributes( currentIndex() );
+        attr = diag->dataValueAttributes( currentIndex() );
     }
-    if ( ui->scopeDatasetRB->isChecked() ) {
-        //qDebug() << "attributes() returns settings for a dataset";
-        return diag->dataValueAttributes( ui->scopeDatasetSB->value() );
+    else if ( ui->scopeDatasetRB->isChecked() ) {
+        attr = diag->dataValueAttributes( ui->scopeDatasetSB->value() );
     }
-    //qDebug() << "attributes() returns common settings";
-    return diag->dataValueAttributes();
+    attr.setShowRepetitiveDataLabels( true );
+    return attr;
 }
 
 void DataValueSettings::Private::setAttributes( const KDChart::DataValueAttributes& da )
