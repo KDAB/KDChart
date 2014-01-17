@@ -1058,7 +1058,16 @@ BackgroundAttributes Chart::backgroundAttributes() const
 //TODO KDChart 3.0; change QLayout into QBoxLayout::Direction
 void Chart::setCoordinatePlaneLayout( QLayout * layout )
 {
-    delete d->planesLayout;
+    if (layout == d->planesLayout)
+        return;
+    if (d->planesLayout) {
+        // detach all QLayoutItem's the previous planesLayout has cause
+        // otherwise deleting the planesLayout would delete them too.
+        for(int i = d->planesLayout->count() - 1; i >= 0; --i) {
+            d->planesLayout->takeAt(i);
+        }
+        delete d->planesLayout;
+    }
     d->planesLayout = qobject_cast<QBoxLayout*>( layout );
     d->slotLayoutPlanes();
 }
