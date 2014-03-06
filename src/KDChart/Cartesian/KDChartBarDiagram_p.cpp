@@ -190,7 +190,10 @@ void BarDiagram::BarDiagramType::calculateValueAndGapWidths( int rowCount,int co
         units = 1 + 1 * ba.groupGapFactor();
 
     qreal unitWidth = groupWidth / units;
-    outBarWidth = unitWidth;
+
+    if (!ba.useFixedBarWidth())
+        outBarWidth = unitWidth;
+
     outSpaceBetweenBars += unitWidth * ba.barGapFactor();
 
     // Pending Michel - minLimit: allow space between bars to be reduced until the bars are displayed next to each other.
