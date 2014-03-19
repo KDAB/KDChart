@@ -94,15 +94,15 @@ void NormalPlotter::paint( PaintContext* ctx )
                     const QPointF c( plane->translate( QPointF( lastPoint.key, 0.0 ) ) );
                     const QPointF d( plane->translate( QPointF( point.key, 0.0 ) ) );
 
+                    // data point label
+                    const PositionPoints pts = PositionPoints( b, a, d, c );
+                    m_private->addLabel( &lpc, sourceIndex, 0, pts, Position::NorthWest,
+                                         Position::NorthWest, point.value );
+
                     const bool lineValid = a.toPoint() != b.toPoint() && PaintingHelpers::isFinite( a );
                     if ( lineValid ) {
                         // data line
                         lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
-
-                        // data point label
-                        const PositionPoints pts = PositionPoints( b, a, d, c );
-                        m_private->addLabel( &lpc, sourceIndex, 0, pts, Position::NorthWest,
-                                             Position::NorthWest, point.value );
 
                         if ( laCell.displayArea() ) {
                             // data area
@@ -162,15 +162,15 @@ void NormalPlotter::paint( PaintContext* ctx )
                     const QPointF c( plane->translate( QPointF( lastPoint.key, 0.0 ) ) );
                     const QPointF d( plane->translate( QPointF( point.key, 0.0 ) ) );
 
+                    // data point label
+                    const PositionPoints pts = PositionPoints( b, a, d, c );
+                    m_private->addLabel( &lpc, sourceIndex, 0, pts, Position::NorthWest,
+                                         Position::NorthWest, point.value );
+
                     const bool lineValid = a.toPoint() != b.toPoint() && PaintingHelpers::isFinite( a );
                     if ( lineValid ) {
                         // data line
                         lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
-
-                        // data point label
-                        const PositionPoints pts = PositionPoints( b, a, d, c );
-                        m_private->addLabel( &lpc, sourceIndex, 0, pts, Position::NorthWest,
-                                             Position::NorthWest, point.value );
 
                         if ( laCell.displayArea() ) {
                             // data area
