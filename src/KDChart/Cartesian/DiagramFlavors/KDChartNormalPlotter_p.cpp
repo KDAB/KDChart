@@ -63,7 +63,6 @@ void NormalPlotter::paint( PaintContext* ctx )
         for ( int dataset = 0; dataset < plotterCompressor().datasetCount(); ++dataset )
         {
             LineAttributesInfoList lineList;
-            LineAttributes laPreviousCell;
             PlotterDiagramCompressor::DataPoint lastPoint;
             for ( PlotterDiagramCompressor::Iterator it = plotterCompressor().begin( dataset ); it != plotterCompressor().end( dataset ); ++ it )
             {
@@ -121,8 +120,6 @@ void NormalPlotter::paint( PaintContext* ctx )
                     }
                 }
 
-                // wrap it up:
-                laPreviousCell = laCell;
                 lastPoint = point;
             }
             PaintingHelpers::paintElements( m_private, ctx, lpc, lineList );
@@ -135,7 +132,6 @@ void NormalPlotter::paint( PaintContext* ctx )
         for ( int column = 0; column < colCount; ++column )
         {
             LineAttributesInfoList lineList;
-            LineAttributes laPreviousCell;
             CartesianDiagramDataCompressor::DataPoint lastPoint;
 
             for ( int row = 0; row < rowCount; ++row )
@@ -192,8 +188,6 @@ void NormalPlotter::paint( PaintContext* ctx )
                     lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
                 }
 
-                // wrap it up:
-                laPreviousCell = laCell;
                 lastPoint = point;
             }
             PaintingHelpers::paintElements( m_private, ctx, lpc, lineList );
