@@ -136,7 +136,6 @@ void NormalPlotter::paint( PaintContext* ctx )
         {
             LineAttributesInfoList lineList;
             LineAttributes laPreviousCell;
-            CartesianDiagramDataCompressor::CachePosition previousCellPosition;
             CartesianDiagramDataCompressor::DataPoint lastPoint;
 
             for ( int row = 0; row < rowCount; ++row )
@@ -157,7 +156,6 @@ void NormalPlotter::paint( PaintContext* ctx )
                     case LineAttributes::MissingValuesShownAsZero: // fall-through since that attribute makes no sense for the plotter
                     case LineAttributes::MissingValuesHideSegments: // fall-through since they're just hidden
                     default:
-                        previousCellPosition = CartesianDiagramDataCompressor::CachePosition();
                         lastPoint = CartesianDiagramDataCompressor::DataPoint();
                         continue;
                     }
@@ -195,7 +193,6 @@ void NormalPlotter::paint( PaintContext* ctx )
                 }
 
                 // wrap it up:
-                previousCellPosition = position;
                 laPreviousCell = laCell;
                 lastPoint = point;
             }
