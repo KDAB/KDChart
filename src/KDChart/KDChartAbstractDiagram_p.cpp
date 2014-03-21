@@ -325,8 +325,13 @@ void AbstractDiagram::Private::addLabel(
         }
 
         QPainterPath labelArea;
-        labelArea.addPolygon( transform.mapToPolygon( plainRect.toRect() ) );
-        labelArea.closeSubpath();
+        //labelArea.addPolygon( transform.mapToPolygon( plainRect.toRect() ) );
+        //labelArea.closeSubpath();
+        // Not doing that because QTransform has a special case for 180° that gives a different than
+        // usual ordering of the points in the polygon returned by mapToPolygon( const QRect & ).
+        // We expect a particular ordering in paintDataValueTextsAndMarkers() by using elementAt( 0 ),
+        // and similar things might happen elsewhere.
+        labelArea.addPolygon( transform.map( QPolygon( plainRect.toRect(), true ) ) );
 
         // store the label geometry and auxiliary data
         cache->paintReplay.append( LabelPaintInfo( it.key(), dva, labelArea,
