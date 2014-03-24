@@ -793,10 +793,14 @@ void CartesianAxis::paintCtx( PaintContext* context )
             // paint the label
 
             QString text = it.text();
-            if ( it.type() == TickIterator::MajorTick ||
-                 it.type() == TickIterator::MajorTickHeaderDataLabel ) {
+            if ( it.type() == TickIterator::MajorTick ) {
+                // add unit prefixes and suffixes, then customize
                 text = d->customizedLabelText( text, geoXy( Qt::Horizontal, Qt::Vertical ), it.position() );
+            } else if ( it.type() == TickIterator::MajorTickHeaderDataLabel ) {
+                // unit prefixes and suffixes have already been added in this case - only customize
+                text = customizedLabel( text );
             }
+
             tickLabel->setText( text );
             QSizeF size = QSizeF( tickLabel->sizeHint() );
             QPolygon labelPoly = tickLabel->boundingPolygon();
@@ -993,14 +997,18 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
 
             qreal labelSizeTransverse = 0.0;
             qreal labelMargin = 0.0;
-            if ( !it.text().isEmpty() ) {
+            QString text = it.text();
+            if ( !text.isEmpty() ) {
                 QPointF labelPosition = plane->translate( QPointF( geoXy( drawPos, 1.0 ),
                                                                    geoXy( 1.0, drawPos ) ) );
                 highestLabelPosition = geoXy( labelPosition.x(), labelPosition.y() );
 
-                QString text = it.text();
                 if ( it.type() == TickIterator::MajorTick ) {
+                    // add unit prefixes and suffixes, then customize
                     text = customizedLabelText( text, geoXy( Qt::Horizontal, Qt::Vertical ), it.position() );
+                } else if ( it.type() == TickIterator::MajorTickHeaderDataLabel ) {
+                    // unit prefixes and suffixes have already been added in this case - only customize
+                    text = axis()->customizedLabel( text );
                 }
                 tickLabel.setText( text );
 
