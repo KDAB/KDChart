@@ -73,6 +73,10 @@ static int numSignificantDecimalPlaces( qreal floatNumber )
     return ret;
 }
 
+// Feature idea: In case of numeric labels, consider limiting the possible values of majorThinningFactor
+// to something like {1, 2, 5} * 10^n. Or even better, something that achieves round values in the
+// remaining labels.
+
 TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, uint majorThinningFactor,
                             bool omitLastTick )
    : m_axis( a ),
@@ -604,8 +608,6 @@ void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordina
                                   Qt::AlignHCenter | Qt::AlignVCenter );
         QPointF point;
         QSize size = titleItem.sizeHint();
-        //FIXME(khz): We definitely need to provide a way that users can decide
-        //            the position of an axis title.
         switch ( position ) {
         case Top:
             point.setX( geoRect.left() + geoRect.width() / 2 );
