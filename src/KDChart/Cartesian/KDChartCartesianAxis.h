@@ -93,10 +93,9 @@ namespace KDChart {
         /// \deprecated
         qreal titleSpace() const;
 
-        /**
-         * Sets the size of the title.
-         */
+        /// \deprecated \brief use setTitleTextAttributes() instead
         void setTitleSize(qreal value);
+        /// \deprecated
         qreal titleSize() const;
 
         void setTitleTextAttributes( const TextAttributes &a );

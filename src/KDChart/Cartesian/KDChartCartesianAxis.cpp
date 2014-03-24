@@ -591,12 +591,13 @@ qreal CartesianAxis::titleSpace() const
 
 void CartesianAxis::setTitleSize( qreal value )
 {
-    d->axisSize = value;
+    // ### remove me
 }
 
 qreal CartesianAxis::titleSize() const
 {
-    return d->axisSize;
+    // ### remove me
+    return 1.0;
 }
 
 void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordinatePlane* plane,
