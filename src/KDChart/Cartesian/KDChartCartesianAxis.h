@@ -82,13 +82,15 @@ namespace KDChart {
          */
         void setTitleText( const QString& text );
         QString titleText() const;
-        
+
         /**
+         * \deprecated
          * Sets the spacing between the title and the diagram.
          * Be aware that setting this value can lead to
          * collisions between axis labels and the title
          */
         void setTitleSpace( qreal value );
+        /// \deprecated
         qreal titleSpace() const;
 
         /**
