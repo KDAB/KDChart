@@ -26,7 +26,8 @@
 #include "ui_mainwindow.h"
 #include <TableModel.h>
 
-namespace KDChart {
+namespace KDChart
+{
     class Chart;
     class BarDiagram;
 }
@@ -47,4 +48,3 @@ private:
 
 
 #endif /* MAINWINDOW_H */
-

@@ -37,7 +37,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
     m_chart = new Chart();
-    m_chart->setGlobalLeading( 10,  10,  10,  10 );
+    m_chart->setGlobalLeading( 10, 10, 10, 10 );
     chartLayout->addWidget( m_chart );
     hSBar->setVisible( false );
     vSBar->setVisible( false );
@@ -50,7 +50,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     // create and position axis
     CartesianAxis *topAxis = new CartesianAxis( m_lines );
-    CartesianAxis *leftAxis = new CartesianAxis ( m_lines );
+    CartesianAxis *leftAxis = new CartesianAxis( m_lines );
     RulerAttributes rulerAttr = topAxis->rulerAttributes();
     rulerAttr.setTickMarkPen( 0.9999999, QPen( Qt::red ) );
     rulerAttr.setTickMarkPen( 2.0, QPen( Qt::green ) );
@@ -58,40 +58,40 @@ MainWindow::MainWindow( QWidget* parent ) :
     rulerAttr.setShowMinorTickMarks(true);
     //rulerAttr.setShowMajorTickMarks(false);
     topAxis->setRulerAttributes( rulerAttr );
-    CartesianAxis *rightAxis = new CartesianAxis ( m_lines );
-    CartesianAxis *bottomAxis = new CartesianAxis ( m_lines );
-    topAxis->setPosition ( CartesianAxis::Top );
-    leftAxis->setPosition ( CartesianAxis::Left );
-    rightAxis->setPosition ( CartesianAxis::Right );
-    bottomAxis->setPosition ( CartesianAxis::Bottom );
+    CartesianAxis *rightAxis = new CartesianAxis( m_lines );
+    CartesianAxis *bottomAxis = new CartesianAxis( m_lines );
+    topAxis->setPosition( CartesianAxis::Top );
+    leftAxis->setPosition( CartesianAxis::Left );
+    rightAxis->setPosition( CartesianAxis::Right );
+    bottomAxis->setPosition( CartesianAxis::Bottom );
 
 // set the margin that should be used between the displayed labels and the ticks to zero
 #if 0
     RulerAttributes ra = bottomAxis->rulerAttributes();
-    ra.setLabelMargin(0);
+    ra.setLabelMargin( 0 );
     bottomAxis->setRulerAttributes( ra );
 #endif
 
 // show a red frame around the bottom axis
 #if 0
     FrameAttributes fa( bottomAxis->frameAttributes() );
-    fa.setPen( QPen(QBrush(QColor("#ff0000")),1.0) );
+    fa.setPen( QPen( QBrush( QColor( "#ff0000" ) ), 1.0 ) );
     fa.setVisible( true );
     bottomAxis->setFrameAttributes( fa );
 #endif
     
     // set axis titles
-    topAxis->setTitleText ( "Abscissa color configured top position" );
-    leftAxis->setTitleText ( "left Ordinate: fonts configured" );
-    rightAxis->setTitleText ( "right Ordinate: default settings" );
-    bottomAxis->setTitleText ( "Abscissa Bottom" );
+    topAxis->setTitleText( "Abscissa Top configured size and color" );
+    leftAxis->setTitleText( "left Ordinate: fonts configured" );
+    rightAxis->setTitleText( "right Ordinate: default settings" );
+    bottomAxis->setTitleText( "Abscissa Bottom" );
 
     // configure titles text attributes
-    TextAttributes taTop ( topAxis->titleTextAttributes () );
+    TextAttributes taTop( topAxis->titleTextAttributes() );
     taTop.setPen( QPen( Qt::red ) );
     topAxis->setTitleTextAttributes ( taTop );
 
-    TextAttributes taLeft ( leftAxis->titleTextAttributes () );
+    TextAttributes taLeft( leftAxis->titleTextAttributes() );
     taLeft.setRotation( 180 );
     Measure me( taLeft.fontSize() );
     me.setValue( me.value() * 0.8 );
@@ -102,15 +102,15 @@ MainWindow::MainWindow( QWidget* parent ) :
 #if 0
     taLeft.setVisible( false );
 #endif
-    leftAxis->setTitleTextAttributes ( taLeft );
+    leftAxis->setTitleTextAttributes( taLeft );
 
-    TextAttributes taBottom ( bottomAxis->titleTextAttributes () );
-    taBottom.setPen(  QPen( Qt::blue ) );
-    bottomAxis->setTitleTextAttributes ( taBottom );
+    TextAttributes taBottom( bottomAxis->titleTextAttributes () );
+    taBottom.setPen( QPen( Qt::blue ) );
+    bottomAxis->setTitleTextAttributes( taBottom );
 
     // configure labels text attributes
     TextAttributes taLabels( topAxis->textAttributes() );
-    taLabels.setPen(  QPen( Qt::darkGreen ) );
+    taLabels.setPen( QPen( Qt::darkGreen ) );
     taLabels.setRotation( 90 );
     topAxis->setTextAttributes( taLabels );
     leftAxis->setTextAttributes( taLabels );
