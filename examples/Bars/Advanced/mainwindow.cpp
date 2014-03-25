@@ -161,13 +161,12 @@ void MainWindow::on_markColumnCB_toggled( bool checked )
         pen.setColor( Qt::yellow );
         pen.setStyle( Qt::DashLine );
         pen.setWidth( 3 );
-        m_bars->setPen( column, pen );
     }  else {
-        pen.setColor( Qt::darkGray );
+        pen.setColor( Qt::black );
         pen.setStyle( Qt::SolidLine );
         pen.setWidth( 1 );
-        m_bars->setPen( column, pen );
     }
+    m_bars->setPen( column, pen );
     m_chart->update();
 }
 
