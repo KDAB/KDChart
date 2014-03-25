@@ -48,8 +48,8 @@ const QPair<QPointF, QPointF> NormalLyingBarDiagram::calculateDataBoundaries() c
     const int rowCount = compressor().modelDataRows();
     const int colCount = compressor().modelDataColumns();
 
-    qreal xMin = 0.0;
-    qreal xMax = rowCount;
+    const qreal xMin = 0.0;
+    const qreal xMax = rowCount;
     qreal yMin = 0.0;
     qreal yMax = 0.0;
 
