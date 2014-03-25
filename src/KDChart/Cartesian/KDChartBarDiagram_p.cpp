@@ -33,7 +33,7 @@ BarDiagram::Private::Private( const Private& rhs )
 {
 }
 
-void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, qreal& maxDepth )
+void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, qreal maxDepth )
 {
     QRectF isoRect;
     QPolygonF topPoints, sidePoints;
@@ -144,8 +144,6 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
         reverseMapper().addRect( index.row(), index.column(), bar );
         ctx->painter()->drawRect( bar );
     }
-    // reset
-    //diagram()->maxDepth = threeDAttrs.depth();
 }
 
 AttributesModel* BarDiagram::BarDiagramType::attributesModel() const
