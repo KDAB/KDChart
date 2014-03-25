@@ -632,6 +632,7 @@ void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordina
             break;
         }
         const PainterSaver painterSaver( painter );
+        painter->setClipping( false );
         painter->translate( point );
         titleItem.setGeometry( QRect( QPoint( -size.width() / 2, -size.height() / 2 ), size ) );
         titleItem.paint( painter );
