@@ -49,7 +49,6 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
     ctx->painter()->setPen( PrintingParameters::scalePen( indexPen ) );
 
     if ( threeDAttrs.isEnabled() ) {
-        bool paintTop = true;
         if ( maxDepth )
             threeDAttrs.setDepth( -maxDepth );
 
@@ -59,31 +58,23 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
         const QRectF isoRect = bar.translated( usedDepth, -usedDepth );
         // we need to find out if the height is negative
         // and in this case paint it up and down
-        //qDebug() << isoRect.height();
         QPolygonF topPoints;
         if ( isoRect.height() < 0 ) {
-          topPoints << isoRect.bottomLeft() << isoRect.bottomRight()
-                    << bar.bottomRight() << bar.bottomLeft();
-          if ( type() == BarDiagram::Stacked ) {
-              // fix it when several negative stacked values
-              if ( index.column() == 0 ) {
-                  paintTop = true;
-              }
-              else
-                  paintTop = false;
-          }
-
+            if ( !( type() == BarDiagram::Stacked && index.column() != 0 ) ) {
+                // fix it when several negative stacked values
+                topPoints << isoRect.bottomLeft() << isoRect.bottomRight()
+                          << bar.bottomRight() << bar.bottomLeft();
+            }
         } else {
             reverseMapper().addRect( index.row(), index.column(), isoRect );
             ctx->painter()->drawRect( isoRect );
-            topPoints << bar.topLeft() << bar.topRight() << isoRect.topRight() << isoRect.topLeft();
+            if ( !( type() == BarDiagram::Percent && isoRect.height() == 0 ) ) {
+                topPoints << bar.topLeft() << bar.topRight() << isoRect.topRight() << isoRect.topLeft();
+            }
         }
 
-        if ( type() == BarDiagram::Percent && isoRect.height() == 0 )
-            paintTop = false;
-
         bool needToSetClippingOffForTop = false;
-        if ( paintTop ) {
+        if ( !topPoints.isEmpty() ) {
             // Draw the top, if at least one of the top's points is
             // either inside or near at the edge of the coordinate plane:
             bool drawIt = false;
