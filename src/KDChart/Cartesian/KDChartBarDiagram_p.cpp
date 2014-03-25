@@ -43,15 +43,16 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
 
     ctx->painter()->setRenderHint( QPainter::Antialiasing, diagram()->antiAliasing() );
     ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( index );
-    if ( threeDAttrs.isEnabled() )
+    if ( threeDAttrs.isEnabled() ) {
         indexBrush = threeDAttrs.threeDBrush( indexBrush, bar );
+    }
     ctx->painter()->setBrush( indexBrush );
     ctx->painter()->setPen( PrintingParameters::scalePen( indexPen ) );
 
     if ( threeDAttrs.isEnabled() ) {
-        if ( maxDepth )
+        if ( maxDepth ) {
             threeDAttrs.setDepth( -maxDepth );
-
+        }
         //fixme adjust the painting to reasonable depth value
         const qreal usedDepth = threeDAttrs.depth() * ( type() == BarDiagram::Normal ? 0.25 : 1.0 );
 
@@ -73,24 +74,26 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
             }
         }
 
-        bool needToSetClippingOffForTop = false;
+        bool noClippingForTop = false;
         if ( !topPoints.isEmpty() ) {
             // Draw the top, if at least one of the top's points is
             // either inside or near at the edge of the coordinate plane:
             bool drawIt = false;
             bool hasPointOutside = false;
-            const QRectF r( ctx->rectangle().adjusted(0,-1,1,0) );
+            const QRectF r( ctx->rectangle().adjusted( 0, -1, 1, 0 ) );
             KDAB_FOREACH( QPointF pt, topPoints ) {
-                if ( r.contains( pt ) )
+                if ( r.contains( pt ) ) {
                     drawIt = true;
-                else
+                } else {
                     hasPointOutside = true;
+                }
             }
             if ( drawIt ) {
                 const PainterSaver p( ctx->painter() );
-                needToSetClippingOffForTop = hasPointOutside && ctx->painter()->hasClipping();
-                if ( needToSetClippingOffForTop )
+                noClippingForTop = hasPointOutside && ctx->painter()->hasClipping();
+                if ( noClippingForTop ) {
                     ctx->painter()->setClipping( false );
+                }
                 reverseMapper().addPolygon( index.row(), index.column(), topPoints );
                 ctx->painter()->drawPolygon( topPoints );
             }
@@ -98,9 +101,9 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
 
         if ( bar.height() != 0 ) {
             const PainterSaver p( ctx->painter() );
-            if ( needToSetClippingOffForTop )
+            if ( noClippingForTop ) {
                 ctx->painter()->setClipping( false );
-
+            }
             QPolygonF sidePoints;
             sidePoints << bar.topRight() << isoRect.topRight()
                        << isoRect.bottomRight() << bar.bottomRight();
@@ -109,8 +112,7 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
         }
     }
 
-    if ( bar.height() != 0 )
-    {
+    if ( bar.height() != 0 ) {
         reverseMapper().addRect( index.row(), index.column(), bar );
         ctx->painter()->drawRect( bar );
     }
@@ -131,7 +133,7 @@ BarDiagram* BarDiagram::BarDiagramType::diagram() const
     return static_cast< BarDiagram* >( m_private->diagram );
 }
 
-void BarDiagram::BarDiagramType::calculateValueAndGapWidths( int rowCount,int colCount,
+void BarDiagram::BarDiagramType::calculateValueAndGapWidths( int rowCount, int colCount,
                                              qreal groupWidth,
                                              qreal& outBarWidth,
                                              qreal& outSpaceBetweenBars,
@@ -139,7 +141,6 @@ void BarDiagram::BarDiagramType::calculateValueAndGapWidths( int rowCount,int co
 {
 
     Q_UNUSED( rowCount );
-
     BarAttributes ba = diagram()->barAttributes();
 
     // Pending Michel Fixme
@@ -150,17 +151,19 @@ void BarDiagram::BarDiagramType::calculateValueAndGapWidths( int rowCount,int co
      * also one unit, by default. */
 
     qreal units;
-    if ( type() == Normal )
+    if ( type() == Normal ) {
         units = colCount // number of bars in group * 1.0
                 + (colCount-1) * ba.barGapFactor() // number of bar gaps
                 + 1 * ba.groupGapFactor(); // number of group gaps
-    else
+    } else {
         units = 1 + 1 * ba.groupGapFactor();
+    }
 
     qreal unitWidth = groupWidth / units;
 
-    if (!ba.useFixedBarWidth())
+    if ( !ba.useFixedBarWidth() ) {
         outBarWidth = unitWidth;
+    }
 
     outSpaceBetweenBars += unitWidth * ba.barGapFactor();
 
