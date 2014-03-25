@@ -35,23 +35,21 @@ BarDiagram::Private::Private( const Private& rhs )
 
 void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, qreal maxDepth )
 {
-    QRectF isoRect;
-    QPolygonF topPoints, sidePoints;
-    ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( index );
-    qreal usedDepth = 0;
+    PainterSaver painterSaver( ctx->painter() );
 
     //Pending Michel: configure threeDBrush settings - shadowColor etc...
     QBrush indexBrush( diagram()->brush( index ) );
     QPen indexPen( diagram()->pen( index ) );
-    PainterSaver painterSaver( ctx->painter() );
 
     ctx->painter()->setRenderHint( QPainter::Antialiasing, diagram()->antiAliasing() );
+    ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( index );
     if ( threeDAttrs.isEnabled() )
         indexBrush = threeDAttrs.threeDBrush( indexBrush, bar );
     ctx->painter()->setBrush( indexBrush );
     ctx->painter()->setPen( PrintingParameters::scalePen( indexPen ) );
 
     if ( threeDAttrs.isEnabled() ) {
+        qreal usedDepth = 0;
         bool stackedMode = false;
         bool percentMode = false;
         bool paintTop = true;
@@ -79,10 +77,11 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
             Q_ASSERT_X ( false, "dataBoundaries()",
                          "Type item does not match a defined bar chart Type." );
         }
-        isoRect = bar.translated( usedDepth, -usedDepth );
+        const QRectF isoRect = bar.translated( usedDepth, -usedDepth );
         // we need to find out if the height is negative
         // and in this case paint it up and down
         //qDebug() << isoRect.height();
+        QPolygonF topPoints;
         if ( isoRect.height() < 0 ) {
           topPoints << isoRect.bottomLeft() << isoRect.bottomRight()
                     << bar.bottomRight() << bar.bottomLeft();
@@ -127,13 +126,14 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
             }
         }
 
-
-
-        sidePoints << bar.topRight() << isoRect.topRight() << isoRect.bottomRight() << bar.bottomRight();
         if ( bar.height() != 0 ) {
             const PainterSaver p( ctx->painter() );
             if ( needToSetClippingOffForTop )
                 ctx->painter()->setClipping( false );
+
+            QPolygonF sidePoints;
+            sidePoints << bar.topRight() << isoRect.topRight()
+                       << isoRect.bottomRight() << bar.bottomRight();
             reverseMapper().addPolygon( index.row(), index.column(), sidePoints );
             ctx->painter()->drawPolygon( sidePoints );
         }
