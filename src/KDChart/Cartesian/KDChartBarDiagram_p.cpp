@@ -49,26 +49,13 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
     ctx->painter()->setPen( PrintingParameters::scalePen( indexPen ) );
 
     if ( threeDAttrs.isEnabled() ) {
-        qreal usedDepth = 0;
         bool paintTop = true;
         if ( maxDepth )
             threeDAttrs.setDepth( -maxDepth );
+
         //fixme adjust the painting to reasonable depth value
-        switch ( type() )
-        {
-        case BarDiagram::Normal:
-            usedDepth = threeDAttrs.depth()/4;
-            break;
-        case BarDiagram::Stacked:
-            usedDepth = threeDAttrs.depth();
-            break;
-        case BarDiagram::Percent:
-            usedDepth = threeDAttrs.depth();
-            break;
-        default:
-            Q_ASSERT_X ( false, "dataBoundaries()",
-                         "Type item does not match a defined bar chart Type." );
-        }
+        const qreal usedDepth = threeDAttrs.depth() * ( type() == BarDiagram::Normal ? 0.25 : 1.0 );
+
         const QRectF isoRect = bar.translated( usedDepth, -usedDepth );
         // we need to find out if the height is negative
         // and in this case paint it up and down
