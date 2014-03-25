@@ -50,8 +50,6 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
 
     if ( threeDAttrs.isEnabled() ) {
         qreal usedDepth = 0;
-        bool stackedMode = false;
-        bool percentMode = false;
         bool paintTop = true;
         if ( maxDepth )
             threeDAttrs.setDepth( -maxDepth );
@@ -60,18 +58,12 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
         {
         case BarDiagram::Normal:
             usedDepth = threeDAttrs.depth()/4;
-            stackedMode = false;
-            percentMode = false;
             break;
         case BarDiagram::Stacked:
             usedDepth = threeDAttrs.depth();
-            stackedMode = true;
-            percentMode = false;
             break;
         case BarDiagram::Percent:
             usedDepth = threeDAttrs.depth();
-            stackedMode = false;
-            percentMode = true;
             break;
         default:
             Q_ASSERT_X ( false, "dataBoundaries()",
@@ -85,7 +77,7 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
         if ( isoRect.height() < 0 ) {
           topPoints << isoRect.bottomLeft() << isoRect.bottomRight()
                     << bar.bottomRight() << bar.bottomLeft();
-          if ( stackedMode ) {
+          if ( type() == BarDiagram::Stacked ) {
               // fix it when several negative stacked values
               if ( index.column() == 0 ) {
                   paintTop = true;
@@ -100,7 +92,7 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
             topPoints << bar.topLeft() << bar.topRight() << isoRect.topRight() << isoRect.topLeft();
         }
 
-        if ( percentMode && isoRect.height() == 0 )
+        if ( type() == BarDiagram::Percent && isoRect.height() == 0 )
             paintTop = false;
 
         bool needToSetClippingOffForTop = false;
