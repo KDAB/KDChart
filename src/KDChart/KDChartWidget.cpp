@@ -450,12 +450,14 @@ void Widget::setType( ChartType chartType, SubType chartSubType )
                     newDiag->addAxis ( axis );
                 }
             }
+
+            Q_FOREACH( Legend* l, d->m_chart.legends() ) {
+                l->setDiagram( diag );
+            }
+
             diag->setModel( &d->m_model );
             coordinatePlane()->replaceDiagram( diag );
 
-            LegendList legends = d->m_chart.legends();
-            Q_FOREACH(Legend* l, legends)
-                l->setDiagram( diag );
             //checkDatasetWidth( d->usedDatasetWidth );
         }
         //coordinatePlane()->setGridNeedsRecalculate();
