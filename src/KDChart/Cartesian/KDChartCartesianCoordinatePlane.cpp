@@ -226,8 +226,8 @@ QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
     const bool bAutoAdjustHorizontalRange = d->autoAdjustHorizontalRangeToData < 100;
     const bool bAutoAdjustVerticalRange = d->autoAdjustVerticalRangeToData < 100;
 
-    const bool bHardHorizontalRange = d->horizontalMin != d->horizontalMax && !bAutoAdjustHorizontalRange;
-    const bool bHardVerticalRange = d->verticalMin != d->verticalMax && !bAutoAdjustVerticalRange;
+    const bool bHardHorizontalRange = (!bAutoAdjustHorizontalRange) && (d->horizontalMin != d->horizontalMax || (ISNAN(d->horizontalMin) != ISNAN(d->horizontalMax)));
+    const bool bHardVerticalRange = (!bAutoAdjustVerticalRange) && (d->verticalMin != d->verticalMax || (ISNAN(d->verticalMin) != ISNAN(d->verticalMax)));
     QRectF dataBoundingRect;
 
     // if custom boundaries are set on the plane, use them
@@ -240,12 +240,16 @@ QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
         // determine unit of the rectangles of all involved diagrams:
         dataBoundingRect = getRawDataBoundingRectFromDiagrams();
         if ( bHardHorizontalRange ) {
-            dataBoundingRect.setLeft( d->horizontalMin );
-            dataBoundingRect.setRight( d->horizontalMax );
+            if (!ISNAN(d->horizontalMin))
+                dataBoundingRect.setLeft( d->horizontalMin );
+            if (!ISNAN(d->horizontalMax))
+                dataBoundingRect.setRight( d->horizontalMax );
         }
         if ( bHardVerticalRange ) {
-            dataBoundingRect.setBottom( d->verticalMin );
-            dataBoundingRect.setTop( d->verticalMax );
+            if (!ISNAN(d->verticalMin))
+                dataBoundingRect.setBottom( d->verticalMin );
+            if (!ISNAN(d->verticalMax))
+                dataBoundingRect.setTop( d->verticalMax );
         }
     }
     // recalculate the bounds, if automatic adjusting of ranges is desired AND
@@ -603,9 +607,20 @@ void CartesianCoordinatePlane::setAxesCalcModeX( AxesCalcMode mode )
     }
 }
 
+namespace {
+    inline bool fuzzyCompare( qreal a, qreal b )
+    {
+        if ( ISNAN(a) && ISNAN(b) )
+            return true;
+        if ( qFuzzyIsNull(a) && qFuzzyIsNull(b) )
+            return true;
+        return qFuzzyCompare( a, b );
+    }
+}
+
 void CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, qreal > & range )
 {
-    if ( d->horizontalMin != range.first || d->horizontalMax != range.second ) {
+    if ( !fuzzyCompare(d->horizontalMin, range.first) || !fuzzyCompare(d->horizontalMax, range.second) ) {
         d->autoAdjustHorizontalRangeToData = 100;
         d->horizontalMin = range.first;
         d->horizontalMax = range.second;
@@ -617,8 +632,7 @@ void CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, qreal > &
 
 void CartesianCoordinatePlane::setVerticalRange( const QPair< qreal, qreal > & range )
 {
-
-    if ( d->verticalMin != range.first || d->verticalMax != range.second ) {
+    if ( !fuzzyCompare(d->verticalMin, range.first) || !fuzzyCompare(d->verticalMax, range.second) ) {
         d->autoAdjustVerticalRangeToData = 100;
         d->verticalMin = range.first;
         d->verticalMax = range.second;

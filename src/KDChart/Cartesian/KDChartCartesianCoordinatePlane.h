@@ -139,6 +139,9 @@ namespace KDChart {
          * GridAttributes::setAdjustBoundsToGrid() for either the global grid-attributes
          * or for the horizontal/vertical attrs separately.
          *
+         * \note To set only one of the two values to a fixed range while keeping the other
+         * dynamic adjusted use std::numeric_limits< qreal >::quiet_NaN() for the dynamic value.
+         *
          * \note If you use user defined vertical ranges together with logarithmic scale, only
          * positive values are supported. If you set it to negative values, the result is undefined.
          *
@@ -171,6 +174,9 @@ namespace KDChart {
          * You can turn this feature off for any of the four bounds by calling
          * GridAttributes::setAdjustBoundsToGrid() for either the global grid-attributes
          * or for the horizontal/vertical attrs separately.
+         *
+         * \note To set only one of the two values to a fixed range while keeping the other
+         * dynamic adjusted use std::numeric_limits< qreal >::quiet_NaN() for the dynamic value.
          *
          * \note If you use user defined vertical ranges together with logarithmic scale, only
          * positive values are supported. If you set it to negative values, the result is undefined.
