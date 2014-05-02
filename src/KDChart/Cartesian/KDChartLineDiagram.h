@@ -108,9 +108,6 @@ public:
     void setThreeDLineAttributes( const QModelIndex & index,
                                   const ThreeDLineAttributes & a );
 
-    //FIXME(khz): big TODO(khz): add a lot of reset...Attributes() methods to all
-    // appropriate places, for 2.1 (that is: after we have release 2.0.2)  :-)
-
     ThreeDLineAttributes threeDLineAttributes() const;
     ThreeDLineAttributes threeDLineAttributes( int column ) const;
     ThreeDLineAttributes threeDLineAttributes( const QModelIndex & index ) const;
