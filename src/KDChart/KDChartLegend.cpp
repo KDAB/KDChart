@@ -827,16 +827,18 @@ void Legend::buildLegend()
             const QList<QBrush>           diagramBrushes( diagram->datasetBrushes() );
             const QList<QPen>             diagramPens( diagram->datasetPens() );
             const QList<MarkerAttributes> diagramMarkers( diagram->datasetMarkers() );
-            const int begin = sortOrder() == Qt::AscendingOrder ? 0 : diagramLabels.count() - 1;
-            const int end = sortOrder() == Qt::AscendingOrder ? diagramLabels.count() : -1;
-            for ( int dataset = begin; dataset != end; dataset += begin < end ? 1 : -1 ) {
-                // only show the label if the diagrams is NOT having the dataset set to hidden
+
+            const bool ascend = sortOrder() == Qt::AscendingOrder;
+            int dataset = ascend ? 0 : diagramLabels.count() - 1;
+            const int end = ascend ? diagramLabels.count() : -1;
+            for ( ; dataset != end; dataset += ascend ? 1 : -1 ) {
+                // only show the label if the dataset is NOT set to hidden in the diagram
                 // and the dataset is not hidden in this legend either
                 if ( !diagram->isHidden( dataset ) && !datasetIsHidden( dataset ) ) {
-                    d->modelLabels  += diagramLabels[   dataset ];
-                    d->modelBrushes += diagramBrushes[  dataset ];
-                    d->modelPens    += diagramPens[     dataset ];
-                    d->modelMarkers += diagramMarkers[  dataset ];
+                    d->modelLabels += diagramLabels[ dataset ];
+                    d->modelBrushes += diagramBrushes[ dataset ];
+                    d->modelPens += diagramPens[ dataset ];
+                    d->modelMarkers += diagramMarkers[ dataset ];
                 }
             }
         }
@@ -858,7 +860,8 @@ void Legend::buildLegend()
         if ( orientation() == Qt::Vertical )
             d->layout->addItem( titleItem, 0, 0, 1, 5, Qt::AlignCenter );
         else
-            d->layout->addItem( titleItem, 0, 0, 1, d->modelLabels.count() ? (d->modelLabels.count()*4) : 1, Qt::AlignCenter );
+            d->layout->addItem( titleItem, 0, 0, 1, d->modelLabels.count() ? ( d->modelLabels.count() * 4 ) : 1,
+                                Qt::AlignCenter );
 
         // The line between the title and the legend items, if any.
         if ( showLines() && d->modelLabels.count() ) {
@@ -867,8 +870,8 @@ void Legend::buildLegend()
             if ( orientation() == Qt::Vertical ) {
                 d->layout->addItem( lineItem, 1, 0, 1, 5, Qt::AlignCenter );
             } else {
-                // we have 1+count*4 columns, because we have both, a leading and a trailing spacer
-                d->layout->addItem( lineItem, 1, 0, 1, 1+d->modelLabels.count()*4, Qt::AlignCenter );
+                // we have 1 + count * 4 columns, because we have both a leading and a trailing spacer
+                d->layout->addItem( lineItem, 1, 0, 1, 1 + d->modelLabels.count() * 4, Qt::AlignCenter );
             }
         }
     }
@@ -882,37 +885,29 @@ void Legend::buildLegend()
     QFont tmpFont = labelAttrs.font();
     tmpFont.setPointSizeF( fontHeight );
 
-    if ( GlobalMeasureScaling::paintDevice() )
-    {
-        QFontMetricsF metr( tmpFont, GlobalMeasureScaling::paintDevice() );
-        fontHeight = metr.height();
-    }
-    else
-    {
-        QFontMetricsF metr( tmpFont );
-        fontHeight = metr.height();
+    if ( GlobalMeasureScaling::paintDevice() ) {
+        fontHeight = QFontMetricsF( tmpFont, GlobalMeasureScaling::paintDevice() ).height();
+    } else {
+        fontHeight = QFontMetricsF( tmpFont ).height();
     }
 
 
-    const bool bShowMarkers = (style != LinesOnly);
+    const bool bShowMarkers = style != LinesOnly;
 
-    QSizeF maxMarkersSize(1.0, 1.0);
-    QVector <MarkerAttributes> markerAttrs( d->modelLabels.count() );
+    QSizeF maxMarkersSize( 1.0, 1.0 );
+    QVector< MarkerAttributes > markerAttrs( d->modelLabels.count() );
     if ( bShowMarkers ) {
         for ( int dataset = 0; dataset < d->modelLabels.count(); ++dataset ) {
             markerAttrs[dataset] = markerAttributes( dataset );
             QSizeF siz;
-            if ( useAutomaticMarkerSize() ||
-                ! markerAttrs[dataset].markerSize().isValid() )
-            {
-                siz = QSizeF(fontHeight, fontHeight);
-                markerAttrs[dataset].setMarkerSize( siz );
+            if ( useAutomaticMarkerSize() || !markerAttrs[dataset].markerSize().isValid() ) {
+                siz = QSizeF( fontHeight, fontHeight );
+                markerAttrs[ dataset ].setMarkerSize( siz );
             } else {
-                siz = markerAttrs[dataset].markerSize();
+                siz = markerAttrs[ dataset ].markerSize();
             }
-            maxMarkersSize =
-                    QSizeF(qMax(maxMarkersSize.width(),  siz.width()),
-                           qMax(maxMarkersSize.height(), siz.height()));
+            maxMarkersSize = QSizeF( qMax( maxMarkersSize.width(), siz.width() ),
+                                     qMax( maxMarkersSize.height(), siz.height() ) );
         }
     }
 
@@ -927,7 +922,7 @@ void Legend::buildLegend()
     {
         bool hasComplexPenStyle = false;
         for ( int dataset = 0; dataset < d->modelLabels.count(); ++dataset ) {
-            const QPen pn = pen(dataset);
+            const QPen pn = pen( dataset );
             const Qt::PenStyle ps = pn.style();
             if ( ps != Qt::NoPen ) {
                 maxLineLength = qMax( pn.width() * 18, maxLineLength );
@@ -936,9 +931,7 @@ void Legend::buildLegend()
             }
         }
         if ( hasComplexPenStyle && bShowMarkers )
-            maxLineLength =
-                    maxLineLength + markerOffsOnLine +
-                    static_cast<int>(maxMarkersSize.width());
+            maxLineLength = maxLineLength + markerOffsOnLine + int( maxMarkersSize.width() );
     }
 
     // Horizontal needs a leading spacer
@@ -955,7 +948,7 @@ void Legend::buildLegend()
         const QBrush markerBrush = markerAttrs[dataset].markerColor().isValid() ?
                                    QBrush(markerAttrs[dataset].markerColor()) : brush( dataset );
         switch ( style ) {
-            case( MarkersOnly ):
+            case MarkersOnly:
                 markerLineItem = new KDChart::MarkerLayoutItem(
                         diagram(),
                         markerAttrs[dataset],
@@ -963,7 +956,7 @@ void Legend::buildLegend()
                         markerAttrs[dataset].pen(),
                         Qt::AlignLeft );
                 break;
-            case( LinesOnly ):
+            case LinesOnly:
                 markerLineItem = new KDChart::LineLayoutItem(
                         diagram(),
                         maxLineLength,
@@ -971,7 +964,7 @@ void Legend::buildLegend()
                         d->legendLineSymbolAlignment,
                         Qt::AlignCenter );
                 break;
-            case( MarkersAndLines ):
+            case MarkersAndLines:
                 markerLineItem = new KDChart::LineWithMarkerLayoutItem(
                         diagram(),
                         maxLineLength,
@@ -987,52 +980,40 @@ void Legend::buildLegend()
         }
         if ( markerLineItem ) {
             d->layoutItems << markerLineItem;
-            if ( orientation() == Qt::Vertical )
-                d->layout->addItem( markerLineItem,
-                                    dataset*2+2, // first row is title, second is line
-                                    1,
-                                    1, 1, Qt::AlignCenter );
-            else
-                d->layout->addItem( markerLineItem,
-                                    2, // all in row two
-                                    dataset*4+1 );
+            if ( orientation() == Qt::Vertical ) {
+                d->layout->addItem( markerLineItem, /* first row is title, second is line */ dataset * 2 + 2,
+                                    1, 1, 1, Qt::AlignCenter );
+            } else {
+                d->layout->addItem( markerLineItem, /* all in row two */ 2, dataset * 4 + 1 );
+            }
         }
 
         // PENDING(kalle) Other properties!
         KDChart::TextLayoutItem* labelItem =
-            new KDChart::TextLayoutItem( text( dataset ),
-                labelAttrs,
-                referenceArea(), orient,
-                d->textAlignment );
+            new KDChart::TextLayoutItem( text( dataset ), labelAttrs, referenceArea(),
+                                         orient, d->textAlignment );
         labelItem->setParentWidget( this );
 
         d->layoutItems << labelItem;
-        if ( orientation() == Qt::Vertical )
-            d->layout->addItem( labelItem,
-                                dataset*2+2, // first row is title, second is line
-                                3 );
-        else
-            d->layout->addItem( labelItem,
-                                2, // all in row two
-                                dataset*4+2 );
+        if ( orientation() == Qt::Vertical ) {
+            d->layout->addItem( labelItem, /* first row is title, second is line */ dataset * 2 + 2, 3 );
+        } else {
+            d->layout->addItem( labelItem, /* all in row two */ 2, dataset * 4 + 2 );
+        }
 
         // horizontal lines (only in vertical mode, and not after the last item)
-        if ( orientation() == Qt::Vertical && showLines() && dataset != d->modelLabels.count()-1 ) {
+        if ( orientation() == Qt::Vertical && showLines() && dataset != d->modelLabels.count() - 1 ) {
             KDChart::HorizontalLineLayoutItem* lineItem = new KDChart::HorizontalLineLayoutItem();
             d->layoutItems << lineItem;
-            d->layout->addItem( lineItem,
-                                dataset*2+1+2,
-                                0,
-                                1, 5, Qt::AlignCenter );
+            d->layout->addItem( lineItem, dataset * 2 + 1 + 2, 0, 1, 5, Qt::AlignCenter );
         }
 
         // vertical lines (only in horizontal mode, and not after the last item)
-        if ( orientation() == Qt::Horizontal && showLines() && dataset != d->modelLabels.count()-1 ) {
+        if ( orientation() == Qt::Horizontal && showLines() && dataset != d->modelLabels.count() - 1 ) {
             KDChart::VerticalLineLayoutItem* lineItem = new KDChart::VerticalLineLayoutItem();
             d->layoutItems << lineItem;
-            d->layout->addItem( lineItem,
-                                2, // all in row two
-                                style == MarkersAndLines ? dataset*4+4 : dataset*4+3 ,
+            d->layout->addItem( lineItem, 2, // all in row two
+                                dataset * 4 + ( style == MarkersAndLines ? 4 : 3 ),
                                 1, 1, Qt::AlignCenter );
         }
 
@@ -1046,7 +1027,7 @@ void Legend::buildLegend()
     if ( orientation() == Qt::Vertical && showLines() && d->modelLabels.count() ) {
         KDChart::VerticalLineLayoutItem* lineItem = new KDChart::VerticalLineLayoutItem();
         d->layoutItems << lineItem;
-        d->layout->addItem( lineItem, 2, 2, d->modelLabels.count()*2, 1 );
+        d->layout->addItem( lineItem, 2, 2, d->modelLabels.count() * 2, 1 );
     }
 
     // This line is absolutely necessary, otherwise: #2516.
