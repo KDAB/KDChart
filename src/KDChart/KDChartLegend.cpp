@@ -427,7 +427,7 @@ void Legend::resetDiagram( AbstractDiagram* oldDiagram )
 
 void Legend::setVisible( bool visible )
 {
-    // do NOT bail out if visible != isVisible(), because the return value of isVisible() also depends
+    // do NOT bail out if visible == isVisible(), because the return value of isVisible() also depends
     // on the visibility of the parent.
     QWidget::setVisible( visible );
     emitPositionChanged();
