@@ -956,7 +956,7 @@ void Legend::buildLegend()
     // at the right side of the marker without the line needing to
     // be too long.
     // (having the marker in the middle of the line would require longer lines)
-    const int markerOffsOnLine = 8;
+    const int lineLengthLeftOfMarker = 8;
 
     int maxLineLength = 18;
     {
@@ -972,7 +972,7 @@ void Legend::buildLegend()
             }
         }
         if ( hasComplexPenStyle && bShowMarkers ) {
-            maxLineLength += markerOffsOnLine + int( maxMarkersSize.width() );
+            maxLineLength += lineLengthLeftOfMarker + int( maxMarkersSize.width() );
         }
     }
 
@@ -1011,7 +1011,7 @@ void Legend::buildLegend()
                         diagram(),
                         maxLineLength,
                         pen( dataset ),
-                        markerOffsOnLine,
+                        lineLengthLeftOfMarker,
                         markerAttrs[dataset],
                         markerBrush,
                         markerAttrs[dataset].pen(),
