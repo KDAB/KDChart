@@ -159,23 +159,7 @@ QSize Legend::sizeHint() const
 
 void Legend::needSizeHint()
 {
-    // Re-build the Legend's content, if it has not been build yet,
-    // or if the Legend's geometry has changed, resp.
     buildLegend();
-}
-
-void Legend::resizeLayout( const QSize& size )
-{
-#ifdef DEBUG_LEGEND_PAINT
-    qDebug() << "Legend::resizeLayout started";
-#endif
-    if ( d->layout ) {
-        d->layout->setGeometry( QRect(QPoint(0,0), size) );
-        activateTheLayout();
-    }
-#ifdef DEBUG_LEGEND_PAINT
-    qDebug() << "Legend::resizeLayout done";
-#endif
 }
 
 void Legend::activateTheLayout()
@@ -256,14 +240,12 @@ void Legend::paint( QPainter* painter )
         return;
     }
 
-    // re-calculate/adjust the Legend's internal layout and contents, if needed:
-    //buildLegend();
-
-    // PENDING(kalle) Support palette
+    activateTheLayout();
 
     Q_FOREACH( KDChart::AbstractLayoutItem* paintItem, d->paintItems ) {
         paintItem->paint( painter );
     }
+
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "leaving Legend::paint( QPainter* painter )";
 #endif

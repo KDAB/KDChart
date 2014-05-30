@@ -1418,6 +1418,7 @@ void Chart::Private::slotLegendPositionChanged( AbstractAreaWidget* aw )
 
 void Chart::addLegend( Legend* legend )
 {
+    legend->show();
     addLegendInternal( legend, true );
     emit propertiesChanged();
 }
