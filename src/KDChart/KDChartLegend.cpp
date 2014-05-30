@@ -655,15 +655,15 @@ const QMap<uint,QBrush> Legend::brushes() const
 
 void Legend::setBrushesFromDiagram( KDChart::AbstractDiagram* diagram )
 {
-    bool bChangesDone = false;
+    bool changed = false;
     QList<QBrush> datasetBrushes = diagram->datasetBrushes();
     for ( int i = 0; i < datasetBrushes.count(); i++ ) {
         if ( d->brushes[ i ] != datasetBrushes[ i ] ) {
             d->brushes[ i ]  = datasetBrushes[ i ];
-            bChangesDone = true;
+            changed = true;
         }
     }
-    if ( bChangesDone ) {
+    if ( changed ) {
         setNeedRebuild();
         update();
     }
