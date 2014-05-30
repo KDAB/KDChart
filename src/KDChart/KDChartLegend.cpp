@@ -990,35 +990,35 @@ void Legend::buildLegend()
         const QBrush markerBrush = markerAttrs[dataset].markerColor().isValid() ?
                                    QBrush(markerAttrs[dataset].markerColor()) : brush( dataset );
         switch ( style ) {
-            case MarkersOnly:
-                markerLineItem = new KDChart::MarkerLayoutItem(
-                        diagram(),
-                        markerAttrs[dataset],
-                        markerBrush,
-                        markerAttrs[dataset].pen(),
-                        Qt::AlignLeft );
-                break;
-            case LinesOnly:
-                markerLineItem = new KDChart::LineLayoutItem(
-                        diagram(),
-                        maxLineLength,
-                        pen( dataset ),
-                        d->legendLineSymbolAlignment,
-                        Qt::AlignCenter );
-                break;
-            case MarkersAndLines:
-                markerLineItem = new KDChart::LineWithMarkerLayoutItem(
-                        diagram(),
-                        maxLineLength,
-                        pen( dataset ),
-                        lineLengthLeftOfMarker,
-                        markerAttrs[dataset],
-                        markerBrush,
-                        markerAttrs[dataset].pen(),
-                        Qt::AlignCenter );
-                break;
-            default:
-                Q_ASSERT( false ); // all styles need to be handled
+        case MarkersOnly:
+            markerLineItem = new KDChart::MarkerLayoutItem(
+                    diagram(),
+                    markerAttrs[dataset],
+                    markerBrush,
+                    markerAttrs[dataset].pen(),
+                    Qt::AlignLeft );
+            break;
+        case LinesOnly:
+            markerLineItem = new KDChart::LineLayoutItem(
+                    diagram(),
+                    maxLineLength,
+                    pen( dataset ),
+                    d->legendLineSymbolAlignment,
+                    Qt::AlignCenter );
+            break;
+        case MarkersAndLines:
+            markerLineItem = new KDChart::LineWithMarkerLayoutItem(
+                    diagram(),
+                    maxLineLength,
+                    pen( dataset ),
+                    lineLengthLeftOfMarker,
+                    markerAttrs[dataset],
+                    markerBrush,
+                    markerAttrs[dataset].pen(),
+                    Qt::AlignCenter );
+            break;
+        default:
+            Q_ASSERT( false ); // all styles need to be handled
         }
         if ( markerLineItem ) {
             d->paintItems << markerLineItem;
