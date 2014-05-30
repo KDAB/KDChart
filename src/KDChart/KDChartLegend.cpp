@@ -181,14 +181,16 @@ void Legend::resizeLayout( const QSize& size )
 
 void Legend::activateTheLayout()
 {
-    if ( d->layout && d->layout->parent() )
+    if ( d->layout && d->layout->parent() ) {
         d->layout->activate();
+    }
 }
-
 
 void Legend::setLegendStyle( LegendStyle style )
 {
-    if ( d->legendStyle == style ) return;
+    if ( d->legendStyle == style ) {
+        return;
+    }
     d->legendStyle = style;
     setNeedRebuild();
 }
@@ -218,7 +220,9 @@ Legend* Legend::clone() const
 
 bool Legend::compare( const Legend* other ) const
 {
-    if ( other == this ) return true;
+    if ( other == this ) {
+        return true;
+    }
     if ( !other ) {
         return false;
     }
@@ -249,7 +253,7 @@ void Legend::paint( QPainter* painter )
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "entering Legend::paint( QPainter* painter )";
 #endif
-    if ( ! diagram() ) {
+    if ( !diagram() ) {
         return;
     }
 
@@ -281,7 +285,9 @@ uint Legend::datasetCount() const
 
 void Legend::setReferenceArea( const QWidget* area )
 {
-    if ( area == d->referenceArea ) return;
+    if ( area == d->referenceArea ) {
+        return;
+    }
     d->referenceArea = area;
     setNeedRebuild();
 }
@@ -294,31 +300,33 @@ const QWidget* Legend::referenceArea() const
 
 AbstractDiagram* Legend::diagram() const
 {
-    if ( d->observers.isEmpty() )
+    if ( d->observers.isEmpty() ) {
         return 0;
+    }
     return d->observers.first()->diagram();
 }
 
 DiagramList Legend::diagrams() const
 {
     DiagramList list;
-    for (int i = 0; i < d->observers.size(); ++i)
+    for ( int i = 0; i < d->observers.size(); ++i ) {
         list << d->observers.at(i)->diagram();
+    }
     return list;
 }
 
 ConstDiagramList Legend::constDiagrams() const
 {
     ConstDiagramList list;
-    for (int i = 0; i < d->observers.size(); ++i)
+    for ( int i = 0; i < d->observers.size(); ++i ) {
         list << d->observers.at(i)->diagram();
+    }
     return list;
 }
 
 void Legend::addDiagram( AbstractDiagram* newDiagram )
 {
-    if ( newDiagram )
-    {
+    if ( newDiagram ) {
         DiagramObserver* observer = new DiagramObserver( newDiagram, this );
 
         DiagramObserver* oldObs = d->findObserverForDiagram( newDiagram );
@@ -329,13 +337,13 @@ void Legend::addDiagram( AbstractDiagram* newDiagram )
             d->observers.append( observer );
         }
         connect( observer, SIGNAL( diagramAboutToBeDestroyed(AbstractDiagram*) ),
-                           SLOT( resetDiagram(AbstractDiagram*) ));
+                 SLOT( resetDiagram(AbstractDiagram*) ));
         connect( observer, SIGNAL( diagramDataChanged(AbstractDiagram*) ),
                  SLOT( setNeedRebuild() ));
         connect( observer, SIGNAL( diagramDataHidden(AbstractDiagram*) ),
                  SLOT( setNeedRebuild() ));
         connect( observer, SIGNAL( diagramAttributesChanged(AbstractDiagram*) ),
-                        SLOT( setNeedRebuild() ));
+                 SLOT( setNeedRebuild() ));
         setNeedRebuild();
     }
 }
@@ -343,11 +351,9 @@ void Legend::addDiagram( AbstractDiagram* newDiagram )
 void Legend::removeDiagram( AbstractDiagram* oldDiagram )
 {
     int datasetBrushOffset = 0;
-    QList<AbstractDiagram*> diagrams = this->diagrams();
-    for (int i =0; i <diagrams.count(); i++)
-    {
-        if (diagrams.at(i) == oldDiagram)
-        {
+    QList< AbstractDiagram * > diagrams = this->diagrams();
+    for ( int i = 0; i <diagrams.count(); i++ ) {
+        if ( diagrams.at( i ) == oldDiagram ) {
             for ( int i = 0; i < oldDiagram->datasetBrushes().count(); i++ ) {
                 d->brushes.remove(datasetBrushOffset + i);
                 d->texts.remove(datasetBrushOffset + i);
@@ -361,7 +367,7 @@ void Legend::removeDiagram( AbstractDiagram* oldDiagram )
     }
 
     if ( oldDiagram ) {
-        DiagramObserver* oldObs = d->findObserverForDiagram( oldDiagram );
+        DiagramObserver *oldObs = d->findObserverForDiagram( oldDiagram );
         if ( oldObs ) {
             delete oldObs;
             d->observers.removeAt( d->observers.indexOf( oldObs ) );
@@ -374,41 +380,45 @@ void Legend::removeDiagrams()
 {
     // removeDiagram() may change the d->observers list. So, build up the list of
     // diagrams to remove first and then remove them one by one.
-    QList<AbstractDiagram*> diagrams;
-    for (int i = 0; i < d->observers.size(); ++i)
-        diagrams.append( d->observers.at(i)->diagram() );
-    for (int i = 0; i < diagrams.count(); ++i)
-        removeDiagram( diagrams[i] );
+    QList< AbstractDiagram * > diagrams;
+    for ( int i = 0; i < d->observers.size(); ++i ) {
+        diagrams.append( d->observers.at( i )->diagram() );
+    }
+    for ( int i = 0; i < diagrams.count(); ++i ) {
+        removeDiagram( diagrams[ i ] );
+    }
 }
 
 void Legend::replaceDiagram( AbstractDiagram* newDiagram,
                              AbstractDiagram* oldDiagram )
 {
     KDChart::AbstractDiagram* old = oldDiagram;
-    if ( ! d->observers.isEmpty() && ! old ) {
+    if ( !d->observers.isEmpty() && !old ) {
         old = d->observers.first()->diagram();
-        if ( ! old )
+        if ( !old ) {
             d->observers.removeFirst(); // first entry had a 0 diagram
+        }
     }
-    if ( old )
+    if ( old ) {
         removeDiagram( old );
-    if ( newDiagram )
+    }
+    if ( newDiagram ) {
         addDiagram( newDiagram );
+    }
 }
 
 uint Legend::dataSetOffset(KDChart::AbstractDiagram* diagram)
 {
     uint offset = 0;
 
-    for (int i = 0; i < d->observers.count(); ++i)
-    {
-        if (d->observers.at(i)->diagram() == diagram)
+    for ( int i = 0; i < d->observers.count(); ++i ) {
+        if ( d->observers.at(i)->diagram() == diagram ) {
             return offset;
-
+        }
         KDChart::AbstractDiagram* diagram = d->observers.at(i)->diagram();
-        if (!diagram->model())
+        if ( !diagram->model() ) {
             continue;
-
+        }
         offset = offset + diagram->model()->columnCount();
     }
 
@@ -441,8 +451,9 @@ void Legend::setNeedRebuild()
 
 void Legend::setPosition( Position position )
 {
-    if ( d->position == position )
+    if ( d->position == position ) {
         return;
+    }
     d->position = position;
     emitPositionChanged();
 }
@@ -461,8 +472,9 @@ Position Legend::position() const
 
 void Legend::setAlignment( Qt::Alignment alignment )
 {
-    if ( d->alignment == alignment )
+    if ( d->alignment == alignment ) {
         return;
+    }
     d->alignment = alignment;
     emitPositionChanged();
 }
@@ -474,8 +486,9 @@ Qt::Alignment Legend::alignment() const
 
 void Legend::setTextAlignment( Qt::Alignment alignment )
 {
-    if ( d->textAlignment == alignment )
+    if ( d->textAlignment == alignment ) {
         return;
+    }
     d->textAlignment = alignment;
     emitPositionChanged();
 }
@@ -485,11 +498,11 @@ Qt::Alignment Legend::textAlignment() const
     return d->textAlignment;
 }
 
-void Legend::setLegendSymbolAlignment(Qt::Alignment alignment)
+void Legend::setLegendSymbolAlignment( Qt::Alignment alignment )
 {
-    if (d->legendLineSymbolAlignment == alignment)
+    if ( d->legendLineSymbolAlignment == alignment ) {
         return;
-
+    }
     d->legendLineSymbolAlignment = alignment;
     emitPositionChanged();
 }
@@ -515,7 +528,9 @@ const RelativePosition Legend::floatingPosition() const
 
 void Legend::setOrientation( Qt::Orientation orientation )
 {
-    if ( d->orientation == orientation ) return;
+    if ( d->orientation == orientation ) {
+        return;
+    }
     d->orientation = orientation;
     setNeedRebuild();
     emitPositionChanged();
@@ -528,8 +543,9 @@ Qt::Orientation Legend::orientation() const
 
 void Legend::setSortOrder( Qt::SortOrder order )
 {
-    if ( d->order == order )
+    if ( d->order == order ) {
         return;
+    }
     d->order = order;
     setNeedRebuild();
     emitPositionChanged();
@@ -542,7 +558,9 @@ Qt::SortOrder Legend::sortOrder() const
 
 void Legend::setShowLines( bool legendShowLines )
 {
-    if ( d->showLines == legendShowLines ) return;
+    if ( d->showLines == legendShowLines ) {
+        return;
+    }
     d->showLines = legendShowLines;
     setNeedRebuild();
     emitPositionChanged();
@@ -572,14 +590,18 @@ bool Legend::useAutomaticMarkerSize() const
 */
 void Legend::resetTexts()
 {
-    if ( ! d->texts.count() ) return;
+    if ( !d->texts.count() ) {
+        return;
+    }
     d->texts.clear();
     setNeedRebuild();
 }
 
 void Legend::setText( uint dataset, const QString& text )
 {
-    if ( d->texts[ dataset ] == text ) return;
+    if ( d->texts[ dataset ] == text ) {
+        return;
+    }
     d->texts[ dataset ] = text;
     setNeedRebuild();
 }
@@ -658,10 +680,11 @@ void Legend::setPen( uint dataset, const QPen& pen )
 
 QPen Legend::pen( uint dataset ) const
 {
-    if ( d->pens.find( dataset ) != d->pens.end() )
-        return d->pens[dataset];
-    else
+    if ( d->pens.find( dataset ) != d->pens.end() ) {
+        return d->pens[ dataset ];
+    } else {
         return d->modelPens[ dataset ];
+    }
 }
 
 const QMap<uint,QPen> Legend::pens() const
@@ -672,7 +695,9 @@ const QMap<uint,QPen> Legend::pens() const
 
 void Legend::setMarkerAttributes( uint dataset, const MarkerAttributes& markerAttributes )
 {
-    if ( d->markerAttributes[dataset] == markerAttributes ) return;
+    if ( d->markerAttributes[dataset] == markerAttributes ) {
+        return;
+    }
     d->markerAttributes[ dataset ] = markerAttributes;
     setNeedRebuild();
     update();
@@ -680,11 +705,13 @@ void Legend::setMarkerAttributes( uint dataset, const MarkerAttributes& markerAt
 
 MarkerAttributes Legend::markerAttributes( uint dataset ) const
 {
-    if ( d->markerAttributes.find( dataset ) != d->markerAttributes.end() )
+    if ( d->markerAttributes.find( dataset ) != d->markerAttributes.end() ) {
         return d->markerAttributes[ dataset ];
-    else if ( static_cast<uint>( d->modelMarkers.count() ) > dataset )
+    } else if ( static_cast<uint>( d->modelMarkers.count() ) > dataset ) {
         return d->modelMarkers[ dataset ];
-    return MarkerAttributes();
+    } else {
+        return MarkerAttributes();
+    }
 }
 
 const QMap<uint, MarkerAttributes> Legend::markerAttributes() const
@@ -695,7 +722,9 @@ const QMap<uint, MarkerAttributes> Legend::markerAttributes() const
 
 void Legend::setTextAttributes( const TextAttributes &a )
 {
-    if ( d->textAttributes == a ) return;
+    if ( d->textAttributes == a ) {
+        return;
+    }
     d->textAttributes = a;
     setNeedRebuild();
 }
@@ -707,7 +736,9 @@ TextAttributes Legend::textAttributes() const
 
 void Legend::setTitleText( const QString& text )
 {
-    if ( d->titleText == text ) return;
+    if ( d->titleText == text ) {
+        return;
+    }
     d->titleText = text;
     setNeedRebuild();
 }
@@ -719,7 +750,9 @@ QString Legend::titleText() const
 
 void Legend::setTitleTextAttributes( const TextAttributes &a )
 {
-    if ( d->titleTextAttributes == a ) return;
+    if ( d->titleTextAttributes == a ) {
+        return;
+    }
     d->titleTextAttributes = a;
     setNeedRebuild();
 }
@@ -743,7 +776,9 @@ void Legend::forceRebuild()
 
 void Legend::setSpacing( uint space )
 {
-    if ( d->spacing == space && d->layout->spacing() == static_cast<int>(space) ) return;
+    if ( d->spacing == space && d->layout->spacing() == int( space ) ) {
+        return;
+    }
     d->spacing = space;
     d->layout->setSpacing( space );
     setNeedRebuild();
@@ -790,7 +825,7 @@ void Legend::setSubduedColors( bool ordered )
     }
 }
 
-void Legend::resizeEvent ( QResizeEvent * event )
+void Legend::resizeEvent( QResizeEvent * event )
 {
     Q_UNUSED( event );
 #ifdef DEBUG_LEGEND_PAINT
@@ -798,7 +833,7 @@ void Legend::resizeEvent ( QResizeEvent * event )
 #endif
     forceRebuild();
     sizeHint();
-    QTimer::singleShot(0, this, SLOT(emitPositionChanged()));
+    QTimer::singleShot( 0, this, SLOT(emitPositionChanged()) );
 }
 
 void Legend::buildLegend()
@@ -903,7 +938,7 @@ void Legend::buildLegend()
     QVector< MarkerAttributes > markerAttrs( d->modelLabels.count() );
     if ( bShowMarkers ) {
         for ( int dataset = 0; dataset < d->modelLabels.count(); ++dataset ) {
-            markerAttrs[dataset] = markerAttributes( dataset );
+            markerAttrs[ dataset ] = markerAttributes( dataset );
             QSizeF siz;
             if ( useAutomaticMarkerSize() || !markerAttrs[dataset].markerSize().isValid() ) {
                 siz = QSizeF( fontHeight, fontHeight );
@@ -931,12 +966,14 @@ void Legend::buildLegend()
             const Qt::PenStyle ps = pn.style();
             if ( ps != Qt::NoPen ) {
                 maxLineLength = qMax( pn.width() * 18, maxLineLength );
-                if ( ps != Qt::SolidLine )
+                if ( ps != Qt::SolidLine ) {
                     hasComplexPenStyle = true;
+                }
             }
         }
-        if ( hasComplexPenStyle && bShowMarkers )
-            maxLineLength = maxLineLength + markerOffsOnLine + int( maxMarkersSize.width() );
+        if ( hasComplexPenStyle && bShowMarkers ) {
+            maxLineLength += markerOffsOnLine + int( maxMarkersSize.width() );
+        }
     }
 
     // Horizontal needs a leading spacer
@@ -1056,10 +1093,11 @@ const QList<uint> Legend::hiddenDatasets() const
 
 void Legend::setDatasetHidden( uint dataset, bool hidden )
 {
-    if ( hidden && !d->hiddenDatasets.contains( dataset ) )
+    if ( hidden && !d->hiddenDatasets.contains( dataset ) ) {
         d->hiddenDatasets.append( dataset );
-    else if ( !hidden && d->hiddenDatasets.contains( dataset ) )
+    } else if ( !hidden && d->hiddenDatasets.contains( dataset ) ) {
         d->hiddenDatasets.removeAll( dataset );
+    }
 }
 
 bool Legend::datasetIsHidden( uint dataset ) const
