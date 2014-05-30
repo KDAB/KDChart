@@ -223,7 +223,7 @@ bool Legend::compare( const Legend* other ) const
         return false;
     }
 
-    return  ( static_cast<const AbstractAreaBase*>(this)->compare( other ) ) &&
+    return  ( AbstractAreaBase::compare( other ) ) &&
             (isVisible()              == other->isVisible()) &&
             (position()               == other->position()) &&
             (alignment()              == other->alignment())&&
