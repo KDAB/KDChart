@@ -109,7 +109,6 @@ void Legend::init()
     d->layout = new QGridLayout( this );
     d->layout->setMargin( 2 );
     d->layout->setSpacing( d->spacing );
-    //setLayout( d->layout );
 
     const Measure normalFontSizeTitle( 12, KDChartEnums::MeasureCalculationModeAbsolute );
     const Measure normalFontSizeLabels( 10, KDChartEnums::MeasureCalculationModeAbsolute );
@@ -672,7 +671,9 @@ void Legend::setBrushesFromDiagram( KDChart::AbstractDiagram* diagram )
 
 void Legend::setPen( uint dataset, const QPen& pen )
 {
-    if ( d->pens[dataset] == pen ) return;
+    if ( d->pens[dataset] == pen ) {
+        return;
+    }
     d->pens[dataset] = pen;
     setNeedRebuild();
     update();
@@ -838,6 +839,11 @@ void Legend::resizeEvent( QResizeEvent * event )
 
 void Legend::buildLegend()
 {
+    /* Grid layout partitioning (horizontal orientation): row zero is the title, row one the divider
+       line between title and dataset items, row two for each item: line, marker, text label and separator
+       line in that order.
+       In a vertically oriented legend, row pairs (2, 3), ... contain a possible separator line (first row)
+       and (second row) line, marker, text label each. */
     Q_FOREACH( QLayoutItem* paintItem, d->paintItems ) {
         d->layout->removeItem( paintItem );
     }
@@ -977,7 +983,7 @@ void Legend::buildLegend()
     }
 
     // Horizontal needs a leading spacer
-    if ( orientation() != Qt::Vertical ) {
+    if ( orientation() == Qt::Horizontal ) {
         d->layout->addItem( new QSpacerItem( spacing(), 1 ), 2, 0 );
     }
 
@@ -1018,15 +1024,14 @@ void Legend::buildLegend()
                     Qt::AlignCenter );
             break;
         default:
-            Q_ASSERT( false ); // all styles need to be handled
+            Q_ASSERT( false );
         }
         if ( markerLineItem ) {
             d->paintItems << markerLineItem;
             if ( orientation() == Qt::Vertical ) {
-                d->layout->addItem( markerLineItem, /* first row is title, second is line */ dataset * 2 + 2,
-                                    1, 1, 1, Qt::AlignCenter );
+                d->layout->addItem( markerLineItem, dataset * 2 + 2, 1, 1, 1, Qt::AlignCenter );
             } else {
-                d->layout->addItem( markerLineItem, /* all in row two */ 2, dataset * 4 + 1 );
+                d->layout->addItem( markerLineItem, 2, dataset * 4 + 1 );
             }
         }
 
@@ -1038,9 +1043,9 @@ void Legend::buildLegend()
 
         d->paintItems << labelItem;
         if ( orientation() == Qt::Vertical ) {
-            d->layout->addItem( labelItem, /* first row is title, second is line */ dataset * 2 + 2, 3 );
+            d->layout->addItem( labelItem, dataset * 2 + 2, 3 );
         } else {
-            d->layout->addItem( labelItem, /* all in row two */ 2, dataset * 4 + 2 );
+            d->layout->addItem( labelItem, 2, dataset * 4 + 2 );
         }
 
         // horizontal lines (only in vertical mode, and not after the last item)
@@ -1054,13 +1059,13 @@ void Legend::buildLegend()
         if ( orientation() == Qt::Horizontal && showLines() && dataset != d->modelLabels.count() - 1 ) {
             KDChart::VerticalLineLayoutItem* lineItem = new KDChart::VerticalLineLayoutItem();
             d->paintItems << lineItem;
-            d->layout->addItem( lineItem, 2, // all in row two
+            d->layout->addItem( lineItem, 2,
                                 dataset * 4 + ( style == MarkersAndLines ? 4 : 3 ),
                                 1, 1, Qt::AlignCenter );
         }
 
         // Horizontal needs a spacer
-        if ( orientation() != Qt::Vertical ) {
+        if ( orientation() == Qt::Horizontal ) {
             d->layout->addItem( new QSpacerItem( spacing(), 1 ), 2, dataset * 4 + 4 );
         }
     }
