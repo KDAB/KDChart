@@ -152,8 +152,8 @@ QSize Legend::sizeHint() const
 #ifdef DEBUG_LEGEND_PAINT
     qDebug()  << "Legend::sizeHint() started";
 #endif
-    Q_FOREACH( KDChart::AbstractLayoutItem* layoutItem, d->layoutItems ) {
-        layoutItem->sizeHint();
+    Q_FOREACH( KDChart::AbstractLayoutItem* paintItem, d->paintItems ) {
+        paintItem->sizeHint();
     }
     return AbstractAreaWidget::sizeHint();
 }
@@ -258,8 +258,8 @@ void Legend::paint( QPainter* painter )
 
     // PENDING(kalle) Support palette
 
-    Q_FOREACH( KDChart::AbstractLayoutItem* layoutItem, d->layoutItems ) {
-        layoutItem->paint( painter );
+    Q_FOREACH( KDChart::AbstractLayoutItem* paintItem, d->paintItems ) {
+        paintItem->paint( painter );
     }
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "leaving Legend::paint( QPainter* painter )";
@@ -803,11 +803,11 @@ void Legend::resizeEvent ( QResizeEvent * event )
 
 void Legend::buildLegend()
 {
-    Q_FOREACH( QLayoutItem* layoutItem, d->layoutItems ) {
-        d->layout->removeItem( layoutItem );
+    Q_FOREACH( QLayoutItem* paintItem, d->paintItems ) {
+        d->layout->removeItem( paintItem );
     }
-    qDeleteAll( d->layoutItems );
-    d->layoutItems.clear();
+    qDeleteAll( d->paintItems );
+    d->paintItems.clear();
 
     if ( orientation() == Qt::Vertical ) {
         d->layout->setColumnStretch( 6, 1 );
@@ -856,7 +856,7 @@ void Legend::buildLegend()
                                          d->textAlignment );
         titleItem->setParentWidget( this );
 
-        d->layoutItems << titleItem;
+        d->paintItems << titleItem;
         if ( orientation() == Qt::Vertical )
             d->layout->addItem( titleItem, 0, 0, 1, 5, Qt::AlignCenter );
         else
@@ -866,7 +866,7 @@ void Legend::buildLegend()
         // The line between the title and the legend items, if any.
         if ( showLines() && d->modelLabels.count() ) {
             KDChart::HorizontalLineLayoutItem* lineItem = new KDChart::HorizontalLineLayoutItem();
-            d->layoutItems << lineItem;
+            d->paintItems << lineItem;
             if ( orientation() == Qt::Vertical ) {
                 d->layout->addItem( lineItem, 1, 0, 1, 5, Qt::AlignCenter );
             } else {
@@ -979,7 +979,7 @@ void Legend::buildLegend()
                 Q_ASSERT( false ); // all styles need to be handled
         }
         if ( markerLineItem ) {
-            d->layoutItems << markerLineItem;
+            d->paintItems << markerLineItem;
             if ( orientation() == Qt::Vertical ) {
                 d->layout->addItem( markerLineItem, /* first row is title, second is line */ dataset * 2 + 2,
                                     1, 1, 1, Qt::AlignCenter );
@@ -994,7 +994,7 @@ void Legend::buildLegend()
                                          orient, d->textAlignment );
         labelItem->setParentWidget( this );
 
-        d->layoutItems << labelItem;
+        d->paintItems << labelItem;
         if ( orientation() == Qt::Vertical ) {
             d->layout->addItem( labelItem, /* first row is title, second is line */ dataset * 2 + 2, 3 );
         } else {
@@ -1004,14 +1004,14 @@ void Legend::buildLegend()
         // horizontal lines (only in vertical mode, and not after the last item)
         if ( orientation() == Qt::Vertical && showLines() && dataset != d->modelLabels.count() - 1 ) {
             KDChart::HorizontalLineLayoutItem* lineItem = new KDChart::HorizontalLineLayoutItem();
-            d->layoutItems << lineItem;
+            d->paintItems << lineItem;
             d->layout->addItem( lineItem, dataset * 2 + 1 + 2, 0, 1, 5, Qt::AlignCenter );
         }
 
         // vertical lines (only in horizontal mode, and not after the last item)
         if ( orientation() == Qt::Horizontal && showLines() && dataset != d->modelLabels.count() - 1 ) {
             KDChart::VerticalLineLayoutItem* lineItem = new KDChart::VerticalLineLayoutItem();
-            d->layoutItems << lineItem;
+            d->paintItems << lineItem;
             d->layout->addItem( lineItem, 2, // all in row two
                                 dataset * 4 + ( style == MarkersAndLines ? 4 : 3 ),
                                 1, 1, Qt::AlignCenter );
@@ -1026,7 +1026,7 @@ void Legend::buildLegend()
     // vertical line (only in vertical mode)
     if ( orientation() == Qt::Vertical && showLines() && d->modelLabels.count() ) {
         KDChart::VerticalLineLayoutItem* lineItem = new KDChart::VerticalLineLayoutItem();
-        d->layoutItems << lineItem;
+        d->paintItems << lineItem;
         d->layout->addItem( lineItem, 2, 2, d->modelLabels.count() * 2, 1 );
     }
 
