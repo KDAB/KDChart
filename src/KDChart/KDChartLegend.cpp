@@ -862,25 +862,25 @@ void Legend::buildLegend()
     // retrieve the diagrams' settings for all non-hidden datasets
     for ( int i = 0; i < d->observers.size(); ++i ) {
         const AbstractDiagram* diagram = d->observers.at( i )->diagram();
-        if ( diagram ) {
-            const QStringList             diagramLabels( diagram->datasetLabels() );
-            const QList<QBrush>           diagramBrushes( diagram->datasetBrushes() );
-            const QList<QPen>             diagramPens( diagram->datasetPens() );
-            const QList<MarkerAttributes> diagramMarkers( diagram->datasetMarkers() );
+        if ( !diagram ) {
+            continue;
+        }
+        const QStringList diagramLabels = diagram->datasetLabels();
+        const QList<QBrush> diagramBrushes = diagram->datasetBrushes();
+        const QList<QPen> diagramPens = diagram->datasetPens();
+        const QList<MarkerAttributes> diagramMarkers = diagram->datasetMarkers();
 
-            const bool ascend = sortOrder() == Qt::AscendingOrder;
-            int dataset = ascend ? 0 : diagramLabels.count() - 1;
-            const int end = ascend ? diagramLabels.count() : -1;
-            for ( ; dataset != end; dataset += ascend ? 1 : -1 ) {
-                // only show the label if the dataset is NOT set to hidden in the diagram
-                // and the dataset is not hidden in this legend either
-                if ( !diagram->isHidden( dataset ) && !datasetIsHidden( dataset ) ) {
-                    d->modelLabels += diagramLabels[ dataset ];
-                    d->modelBrushes += diagramBrushes[ dataset ];
-                    d->modelPens += diagramPens[ dataset ];
-                    d->modelMarkers += diagramMarkers[ dataset ];
-                }
+        const bool ascend = sortOrder() == Qt::AscendingOrder;
+        int dataset = ascend ? 0 : diagramLabels.count() - 1;
+        const int end = ascend ? diagramLabels.count() : -1;
+        for ( ; dataset != end; dataset += ascend ? 1 : -1 ) {
+            if ( diagram->isHidden( dataset ) || datasetIsHidden( dataset ) ) {
+                continue;
             }
+            d->modelLabels += diagramLabels[ dataset ];
+            d->modelBrushes += diagramBrushes[ dataset ];
+            d->modelPens += diagramPens[ dataset ];
+            d->modelMarkers += diagramMarkers[ dataset ];
         }
     }
 
