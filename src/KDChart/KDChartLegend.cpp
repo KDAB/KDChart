@@ -808,6 +808,11 @@ void Legend::buildLegend()
     }
     qDeleteAll( d->paintItems );
     d->paintItems.clear();
+    // remove items that aren't painted - like spacers
+    for ( int i = d->layout->count() - 1; i >= 0; i-- ) {
+        delete d->layout->takeAt( i );
+    }
+    Q_ASSERT(!d->layout->count());
 
     if ( orientation() == Qt::Vertical ) {
         d->layout->setColumnStretch( 6, 1 );
