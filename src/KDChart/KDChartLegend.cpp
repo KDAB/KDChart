@@ -934,8 +934,7 @@ void Legend::buildLegend()
             } else {
                 siz = markerAttrs[ dataset ].markerSize();
             }
-            maxMarkersSize = QSizeF( qMax( maxMarkersSize.width(), siz.width() ),
-                                     qMax( maxMarkersSize.height(), siz.height() ) );
+            maxMarkersSize = maxMarkersSize.expandedTo( siz );
         }
     }
 

@@ -865,10 +865,8 @@ void KDChart::LineWithMarkerLayoutItem::setGeometry( const QRect& r )
 
 QSize KDChart::LineWithMarkerLayoutItem::sizeHint() const
 {
-    const QSize sizeM = mMarker.markerSize().toSize();
-    const QSize sizeL = QSize( mLineLength, mLinePen.width()+2 );
-    return QSize( qMax(sizeM.width(),  sizeL.width()),
-                  qMax(sizeM.height(), sizeL.height()) );
+    const QSize lineSize( mLineLength, mLinePen.width() + 2 );
+    return lineSize.expandedTo( mMarker.markerSize().toSize() );
 }
 
 void KDChart::LineWithMarkerLayoutItem::paint( QPainter* painter )
