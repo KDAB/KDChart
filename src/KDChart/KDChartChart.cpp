@@ -604,7 +604,7 @@ void Chart::Private::slotLayoutPlanes()
         //qDebug() << Q_FUNC_INFO << "SubGraphs" << connectedComponents.size();
         int row = 0;
         int col = 0;
-        QHash< CartesianAxis*, bool > layoutedAxes;
+        QSet< CartesianAxis* > laidOutAxes;
         for ( int i = 0; i < connectedComponents.size(); ++i )
         {
             LayoutGraphNode *curComponent = connectedComponents[ i ];
@@ -644,7 +644,7 @@ void Chart::Private::slotLayoutPlanes()
                                     if ( curColComponent->bottomSuccesor )
                                         continue;
                                 }
-                                if ( layoutedAxes.contains( axis ) )
+                                if ( laidOutAxes.contains( axis ) )
                                     continue;
         //                        if ( axis->diagram() != diagram )
         //                            continue;
@@ -678,7 +678,7 @@ void Chart::Private::slotLayoutPlanes()
                                     break;
                                 }
                                 planeLayoutItems << axis;
-                                layoutedAxes[ axis ] = true;
+                                laidOutAxes.insert( axis );
                             }
                             if ( leftLayout )
                                 gridPlaneLayout->addLayout( leftLayout, row + planeRowOffset, col, 2, 1, Qt::AlignRight );
