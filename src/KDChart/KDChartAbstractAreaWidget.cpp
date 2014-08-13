@@ -57,8 +57,7 @@ void AbstractAreaWidget::Private::resizeLayout(
                            size.height() - top - bottom );
     // With this adjusted size we call the real resizeLayout method,
     // which normally will call resizeLayout( size ) in the derived class
-    // - which in turn is the place to resize the layout member variable
-    // of that class.
+    // - which in turn is the place to resize the layout of that class.
     widget->resizeLayout( innerSize );
 }
 
@@ -115,8 +114,9 @@ void AbstractAreaWidget::paintIntoRect( QPainter& painter, const QRect& rect )
     painter.translate( -translation.x(), -translation.y() );
 
 /*
-    // make sure, the contents of the widget have been set up,
-    // so we get a useful geometry:
+    // guide for subclassing
+
+    // set up the contents of the widget so we get a useful geometry
     needSizeHint();
 
     const QRect oldGeometry( layout()->geometry() );
@@ -139,13 +139,14 @@ void AbstractAreaWidget::forceRebuild()
 
 void AbstractAreaWidget::paintAll( QPainter& painter )
 {
-    // Paint the background and frame
     paintBackground( painter, QRect(QPoint(0, 0), size() ) );
     paintFrame( painter, QRect(QPoint(0, 0), size() ) );
 
 /*
-    we do not call setContentsMargins() now,
-    but we call resizeLayout() whenever the size or the frame has changed
+    // guide for subclassing
+
+    // we do not call setContentsMargins() now,
+    // but we call resizeLayout() whenever the size or the frame has changed
 
     // adjust the widget's content margins,
     // to be sure all content gets calculated
@@ -159,8 +160,8 @@ void AbstractAreaWidget::paintAll( QPainter& painter )
         setContentsMargins(
             inner.left(),
             inner.top(),
-            oldGeometry.width() -inner.width()-1,
-            oldGeometry.height()-inner.height()-1 );
+            oldGeometry.width() - inner.width() - 1,
+            oldGeometry.height() - inner.height() - 1 );
         //forceRebuild();
     }
 */
