@@ -162,6 +162,20 @@ void Legend::needSizeHint()
     buildLegend();
 }
 
+void Legend::resizeLayout( const QSize& size )
+{
+#ifdef DEBUG_LEGEND_PAINT
+    qDebug() << "Legend::resizeLayout started";
+#endif
+    if ( d->layout ) {
+        d->layout->setGeometry( QRect(QPoint( 0,0 ), size) );
+        activateTheLayout();
+    }
+#ifdef DEBUG_LEGEND_PAINT
+    qDebug() << "Legend::resizeLayout done";
+#endif
+}
+
 void Legend::activateTheLayout()
 {
     if ( d->layout && d->layout->parent() ) {
