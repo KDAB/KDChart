@@ -55,6 +55,48 @@
 
 #include <KDABLibFakes>
 
+#if 0
+// dumpLayoutTree dumps a QLayout tree in a hopefully easy to read format to stderr - feel free to
+// use, improve and extend; it is very useful for looking at any layout problem.
+
+#include <typeinfo>
+
+static bool zeroArea(const QRect &r)
+{
+    return !r.width() || !r.height();
+}
+
+static void dumpLayoutTree(QLayout *l, int depth)
+{
+    const QLatin1String colorOn(zeroArea(l->geometry()) ? "\033[0m" : "\033[32m");
+    const QLatin1String colorOff("\033[0m");
+
+    QString indent(depth * 4, QLatin1Char(' '));
+    qDebug() << colorOn << indent << l->metaObject()->className() << l->geometry()
+             << "hint" << l->sizeHint()
+             << l->hasHeightForWidth() << "min" << l->minimumSize()
+             << "max" << l->maximumSize()
+             << l->expandingDirections() << l->alignment()
+             << colorOff;
+    for (int i = 0; i < l->count(); i++) {
+        QLayoutItem *child = l->itemAt(i);
+        if (QLayout *childL = child->layout()) {
+            dumpLayoutTree(childL, depth + 1);
+        } else {
+            if (!zeroArea(child->geometry())) {
+                indent += QString(4, QLatin1Char(' '));
+                qDebug() << colorOn << indent << typeid(*child).name() << child->geometry()
+                         << "hint" << child->sizeHint()
+                         << child->hasHeightForWidth() << "min" << child->minimumSize()
+                         << "max" << child->maximumSize()
+                         << child->expandingDirections() << child->alignment()
+                         << colorOff;
+            }
+        }
+    }
+}
+#endif
+
 static const Qt::Alignment s_gridAlignments[ 3 ][ 3 ] = { // [ row ][ column ]
     { Qt::AlignTop | Qt::AlignLeft,     Qt::AlignTop | Qt::AlignHCenter,     Qt::AlignTop | Qt::AlignRight },
     { Qt::AlignVCenter | Qt::AlignLeft, Qt::AlignVCenter | Qt::AlignHCenter, Qt::AlignVCenter | Qt::AlignRight },
