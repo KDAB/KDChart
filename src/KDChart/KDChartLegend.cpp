@@ -47,7 +47,7 @@
 using namespace KDChart;
 
 Legend::Private::Private() :
-    referenceArea(0),
+    referenceArea( 0 ),
     position( Position::East ),
     alignment( Qt::AlignCenter ),
     textAlignment( Qt::AlignCenter ),
@@ -55,14 +55,10 @@ Legend::Private::Private() :
     orientation( Qt::Vertical ),
     order( Qt::AscendingOrder ),
     showLines( false ),
-    texts(),
-    textAttributes(),
     titleText( QObject::tr( "Legend" ) ),
-    titleTextAttributes(),
     spacing( 1 ),
     useAutomaticMarkerSize( true ),
     legendStyle( MarkersOnly )
-    //needRebuild( true )
 {
     // By default we specify a simple, hard point as the 'relative' position's ref. point,
     // since we can not be sure that there will be any parent specified for the legend.
