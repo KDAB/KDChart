@@ -639,13 +639,14 @@ void Chart::Private::slotLayoutPlanes()
                                 layoutedAxes[ axis ] = true;
                             }
                             if ( leftLayout )
-                                gridPlaneLayout->addLayout( leftLayout, row + planeRowOffset, col, 2, 1 );
+                                gridPlaneLayout->addLayout( leftLayout, row + planeRowOffset, col, 2, 1, Qt::AlignRight );
                             if ( rightLayout )
-                                gridPlaneLayout->addLayout( rightLayout, row, col + planeColOffset + 2, 2, 1 );
+                                gridPlaneLayout->addLayout( rightLayout, row, col + planeColOffset + 2, 2, 1, Qt::AlignLeft );
                             if ( topLayout )
-                                gridPlaneLayout->addLayout( topLayout, row, col + planeColOffset, 1, 2 );
+                                gridPlaneLayout->addLayout( topLayout, row, col + planeColOffset, 1, 2, Qt::AlignBottom );
                             if ( bottomLayout )
-                                gridPlaneLayout->addLayout( bottomLayout, row + planeRowOffset + 2, col + planeColOffset, 1, 2 );
+                                gridPlaneLayout->addLayout( bottomLayout, row + planeRowOffset + 2,
+                                                            col + planeColOffset, 1, 2, Qt::AlignTop );
                         }
                         else
                         {
