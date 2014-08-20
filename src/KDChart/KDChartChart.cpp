@@ -61,7 +61,9 @@
 
 #include <typeinfo>
 
-static bool zeroArea(const QRect &r)
+// this is this different from both QRect::isEmpty() and QRect::isNull() for "wrong" QRects,
+// i.e. those where topLeft() is actually below and / or right of bottomRight().
+static bool isZeroArea(const QRect &r)
 {
     return !r.width() || !r.height();
 }
@@ -75,7 +77,7 @@ static QString lineProlog(int nestingDepth, int lineno)
 
 static void dumpLayoutTreeRecurse(QLayout *l, int *counter, int depth)
 {
-    const QLatin1String colorOn(zeroArea(l->geometry()) ? "\033[0m" : "\033[32m");
+    const QLatin1String colorOn(isZeroArea(l->geometry()) ? "\033[0m" : "\033[32m");
     const QLatin1String colorOff("\033[0m");
 
     QString prolog = lineProlog(depth, *counter);
@@ -92,9 +94,9 @@ static void dumpLayoutTreeRecurse(QLayout *l, int *counter, int depth)
         if (QLayout *childL = child->layout()) {
             dumpLayoutTreeRecurse(childL, counter, depth + 1);
         } else {
-            // The zeroArea check culls usually largely useless output - you might want to remove it in
+            // The isZeroArea check culls usually largely useless output - you might want to remove it in
             // some debugging situations. Add a boolean parameter to this and dumpLayoutTree() if you do.
-            if (!zeroArea(child->geometry())) {
+            if (!isZeroArea(child->geometry())) {
                 prolog = lineProlog(depth + 1, *counter);
                 (*counter)++;
                 qDebug() << colorOn + prolog << typeid(*child).name() << child->geometry()
