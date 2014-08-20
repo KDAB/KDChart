@@ -591,6 +591,7 @@ qreal CartesianAxis::titleSpace() const
 
 void CartesianAxis::setTitleSize( qreal value )
 {
+    Q_UNUSED( value )
     // ### remove me
 }
 
