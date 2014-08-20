@@ -467,10 +467,16 @@ bool CartesianAxis::hasDefaultTitleTextAttributes() const
     return d->useDefaultTextAttributes;
 }
 
-
 void CartesianAxis::setPosition( Position p )
 {
+    if ( d->position == p ) {
+        return;
+    }
     d->position = p;
+    // Invalidating size is not always necessary if both old and new positions are horizontal or both
+    // vertical, but in practice there could be small differences due to who-knows-what, so always adapt
+    // to the possibly new size. Changing position is expensive anyway.
+    setCachedSizeDirty();
     layoutPlanes();
 }
 
@@ -1099,7 +1105,12 @@ QRect CartesianAxis::geometry() const
 
 void CartesianAxis::setCustomTickLength( int value )
 {
+    if ( d->customTickLength == value ) {
+        return;
+    }
     d->customTickLength = value;
+    setCachedSizeDirty();
+    update();
 }
 
 int CartesianAxis::customTickLength() const
@@ -1124,6 +1135,7 @@ void CartesianAxis::setAnnotations( const QMap< qreal, QString >& annotations )
         return;
 
     d->annotations = annotations;
+    setCachedSizeDirty();
     update();
 }
 
@@ -1138,5 +1150,6 @@ void CartesianAxis::setCustomTicks( const QList< qreal >& customTicksPositions )
         return;
 
     d->customTicksPositions = customTicksPositions;
+    setCachedSizeDirty();
     update();
 }
