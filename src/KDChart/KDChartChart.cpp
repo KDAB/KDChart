@@ -66,13 +66,22 @@ static bool zeroArea(const QRect &r)
     return !r.width() || !r.height();
 }
 
-static void dumpLayoutTree(QLayout *l, int depth)
+static QString lineProlog(int nestingDepth, int lineno)
+{
+    QString numbering(QString::number(lineno).rightJustified(5).append(QChar::fromAscii(':')));
+    QString indent(nestingDepth * 4, QLatin1Char(' '));
+    return numbering + indent;
+}
+
+static void dumpLayoutTreeRecurse(QLayout *l, int *counter, int depth)
 {
     const QLatin1String colorOn(zeroArea(l->geometry()) ? "\033[0m" : "\033[32m");
     const QLatin1String colorOff("\033[0m");
 
-    QString indent(depth * 4, QLatin1Char(' '));
-    qDebug() << colorOn << indent << l->metaObject()->className() << l->geometry()
+    QString prolog = lineProlog(depth, *counter);
+    (*counter)++;
+
+    qDebug() << colorOn + prolog << l->metaObject()->className() << l->geometry()
              << "hint" << l->sizeHint()
              << l->hasHeightForWidth() << "min" << l->minimumSize()
              << "max" << l->maximumSize()
@@ -81,11 +90,14 @@ static void dumpLayoutTree(QLayout *l, int depth)
     for (int i = 0; i < l->count(); i++) {
         QLayoutItem *child = l->itemAt(i);
         if (QLayout *childL = child->layout()) {
-            dumpLayoutTree(childL, depth + 1);
+            dumpLayoutTreeRecurse(childL, counter, depth + 1);
         } else {
+            // The zeroArea check culls usually largely useless output - you might want to remove it in
+            // some debugging situations. Add a boolean parameter to this and dumpLayoutTree() if you do.
             if (!zeroArea(child->geometry())) {
-                indent += QString(4, QLatin1Char(' '));
-                qDebug() << colorOn << indent << typeid(*child).name() << child->geometry()
+                prolog = lineProlog(depth + 1, *counter);
+                (*counter)++;
+                qDebug() << colorOn + prolog << typeid(*child).name() << child->geometry()
                          << "hint" << child->sizeHint()
                          << child->hasHeightForWidth() << "min" << child->minimumSize()
                          << "max" << child->maximumSize()
@@ -94,6 +106,12 @@ static void dumpLayoutTree(QLayout *l, int depth)
             }
         }
     }
+}
+
+static void dumpLayoutTree(QLayout *l)
+{
+    int counter = 0;
+    dumpLayoutTreeRecurse(l, &counter, 0);
 }
 #endif
 
