@@ -31,9 +31,9 @@ class QTextTable;
 
 namespace KDChart {
 
-    class AbstractDiagram;
-    typedef QList<AbstractDiagram*> DiagramList;
-    typedef QList<const AbstractDiagram*> ConstDiagramList;
+class AbstractDiagram;
+typedef QList<AbstractDiagram*> DiagramList;
+typedef QList<const AbstractDiagram*> ConstDiagramList;
 
 /**
   * @brief Legend defines the interface for the legend drawing class.
