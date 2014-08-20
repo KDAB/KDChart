@@ -76,7 +76,7 @@ namespace KDChart {
 	//virtual void paintEvent( QPaintEvent* event) = 0;
 
         /**
-         * \brief Implement this method if you want to adjust axis labels
+         * \brief Reimplement this method if you want to adjust axis labels
          * before they are printed.
          *
          * KD Chart is calling this method immediately before drawing the
@@ -86,6 +86,12 @@ namespace KDChart {
          * \param label The text of the label as KD Chart has calculated it
          * automatically (or as it was taken from a QStringList provided
          * by you, resp.)
+         *
+         * \note If you reimplement this method in a subclass of KDChartCartesianAxis,
+         * and your reimplementation's return value depends on external data other
+         * than @p label, make sure to call KDChartCartesianAxis::setCachedSizeDirty()
+         * after that external data changes. This will recalculate the axis size for
+         * layout purposes, adapting overall chart layout to the new axis size.
          *
          * \return The text to be drawn. By default this is the same as \c label.
          */
