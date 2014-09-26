@@ -701,14 +701,17 @@ void Chart::Private::slotLayoutPlanes()
                                 laidOutAxes.insert( axis );
                             }
                             if ( leftLayout )
-                                gridPlaneLayout->addLayout( leftLayout, row + planeRowOffset, col, 2, 1, Qt::AlignRight );
+                                gridPlaneLayout->addLayout( leftLayout, row + planeRowOffset, col, 2, 1,
+                                                            Qt::AlignRight | Qt::AlignVCenter );
                             if ( rightLayout )
-                                gridPlaneLayout->addLayout( rightLayout, row, col + planeColOffset + 2, 2, 1, Qt::AlignLeft );
+                                gridPlaneLayout->addLayout( rightLayout, row, col + planeColOffset + 2, 2, 1,
+                                                            Qt::AlignLeft | Qt::AlignVCenter );
                             if ( topLayout )
-                                gridPlaneLayout->addLayout( topLayout, row, col + planeColOffset, 1, 2, Qt::AlignBottom );
+                                gridPlaneLayout->addLayout( topLayout, row, col + planeColOffset, 1, 2,
+                                                            Qt::AlignBottom | Qt::AlignHCenter );
                             if ( bottomLayout )
                                 gridPlaneLayout->addLayout( bottomLayout, row + planeRowOffset + 2,
-                                                            col + planeColOffset, 1, 2, Qt::AlignTop );
+                                                            col + planeColOffset, 1, 2, Qt::AlignTop | Qt::AlignHCenter );
                         }
                         else
                         {
