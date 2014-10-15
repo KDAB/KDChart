@@ -1072,17 +1072,24 @@ void Legend::Private::reflowHDatasetItems( Legend *q )
     if (hLayoutDatasets.isEmpty()) {
         return;
     }
+
     paintItems.clear();
-    // this is supposed to remove exactly the QHBoxLayout created as "currentLine" - ATM it probably
-    // also removes the caption item or so.
+    // Dissolve exactly the QHBoxLayout(s) created as "currentLine" in flowHDatasetItems - don't remove the
+    // caption and line under the caption! Those are easily identified because they aren't QLayouts.
     for ( int i = layout->count() - 1; i >= 0; i-- ) {
-        QLayout *hbox = layout->takeAt( i )->layout();
+        QLayoutItem *const item = layout->itemAt( i );
+        QLayout *const hbox = item->layout();
         if ( !hbox ) {
+            AbstractLayoutItem *alItem = dynamic_cast< AbstractLayoutItem * >( item );
+            Q_ASSERT( alItem );
+            paintItems << alItem;
             continue;
         }
-        // remove children so they aren't deleted
+        Q_ASSERT( dynamic_cast< QHBoxLayout * >( hbox ) );
+        layout->takeAt( i );
+        // detach children so they aren't deleted with the parent
         for ( int j = hbox->count() - 1; j >= 0; j-- ) {
-            hbox->takeAt(j);
+            hbox->takeAt( j );
         }
         delete hbox;
     }
@@ -1173,6 +1180,12 @@ int Legend::heightForWidth( int width ) const
     }
 
     int ret = 0;
+    // space for caption and line under caption (if any)
+    for (int i = 0; i < 2; i++) {
+        if ( QLayoutItem *item = d->layout->itemAtPosition( i, 0 ) ) {
+            ret += item->sizeHint().height();
+        }
+    }
     const int separatorLineWidth = 3; // ### hardcoded in VerticalLineLayoutItem::sizeHint()
 
     int currentLineWidth = 0;
