@@ -65,8 +65,8 @@ Legend::Private::Private() :
     relativePosition.setReferencePoints( PositionPoints( QPointF( 0.0, 0.0 ) ) );
     relativePosition.setReferencePosition( Position::NorthWest );
     relativePosition.setAlignment( Qt::AlignTop | Qt::AlignLeft );
-    relativePosition.setHorizontalPadding( KDChart::Measure( 4.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
-    relativePosition.setVerticalPadding( KDChart::Measure( 4.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
+    relativePosition.setHorizontalPadding( Measure( 4.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
+    relativePosition.setVerticalPadding( Measure( 4.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
 }
 
 Legend::Private::~Private()
@@ -85,7 +85,7 @@ Legend::Legend( QWidget* parent ) :
     init();
 }
 
-Legend::Legend( KDChart::AbstractDiagram* diagram, QWidget* parent ) :
+Legend::Legend( AbstractDiagram* diagram, QWidget* parent ) :
     AbstractAreaWidget( new Private(), parent )
 {
     d->referenceArea = parent;
@@ -147,7 +147,7 @@ QSize Legend::sizeHint() const
 #ifdef DEBUG_LEGEND_PAINT
     qDebug()  << "Legend::sizeHint() started";
 #endif
-    Q_FOREACH( KDChart::AbstractLayoutItem* paintItem, d->paintItems ) {
+    Q_FOREACH( AbstractLayoutItem* paintItem, d->paintItems ) {
         paintItem->sizeHint();
     }
     return AbstractAreaWidget::sizeHint();
@@ -253,7 +253,7 @@ void Legend::paint( QPainter* painter )
 
     activateTheLayout();
 
-    Q_FOREACH( KDChart::AbstractLayoutItem* paintItem, d->paintItems ) {
+    Q_FOREACH( AbstractLayoutItem* paintItem, d->paintItems ) {
         paintItem->paint( painter );
     }
 
@@ -384,7 +384,7 @@ void Legend::removeDiagrams()
 void Legend::replaceDiagram( AbstractDiagram* newDiagram,
                              AbstractDiagram* oldDiagram )
 {
-    KDChart::AbstractDiagram* old = oldDiagram;
+    AbstractDiagram* old = oldDiagram;
     if ( !d->observers.isEmpty() && !old ) {
         old = d->observers.first()->diagram();
         if ( !old ) {
@@ -399,7 +399,7 @@ void Legend::replaceDiagram( AbstractDiagram* newDiagram,
     }
 }
 
-uint Legend::dataSetOffset(KDChart::AbstractDiagram* diagram)
+uint Legend::dataSetOffset( AbstractDiagram* diagram )
 {
     uint offset = 0;
 
@@ -407,7 +407,7 @@ uint Legend::dataSetOffset(KDChart::AbstractDiagram* diagram)
         if ( d->observers.at(i)->diagram() == diagram ) {
             return offset;
         }
-        KDChart::AbstractDiagram* diagram = d->observers.at(i)->diagram();
+        AbstractDiagram* diagram = d->observers.at(i)->diagram();
         if ( !diagram->model() ) {
             continue;
         }
@@ -417,7 +417,7 @@ uint Legend::dataSetOffset(KDChart::AbstractDiagram* diagram)
     return offset;
 }
 
-void Legend::setDiagram( KDChart::AbstractDiagram* newDiagram )
+void Legend::setDiagram( AbstractDiagram* newDiagram )
 {
     replaceDiagram( newDiagram );
 }
@@ -645,7 +645,7 @@ const QMap<uint,QBrush> Legend::brushes() const
 }
 
 
-void Legend::setBrushesFromDiagram( KDChart::AbstractDiagram* diagram )
+void Legend::setBrushesFromDiagram( AbstractDiagram* diagram )
 {
     bool changed = false;
     QList<QBrush> datasetBrushes = diagram->datasetBrushes();
@@ -930,8 +930,8 @@ void Legend::buildLegend()
 
     // legend caption
     if ( !titleText().isEmpty() && titleTextAttributes().isVisible() ) {
-        KDChart::TextLayoutItem* titleItem =
-            new KDChart::TextLayoutItem( titleText(), titleTextAttributes(), referenceArea(),
+        TextLayoutItem* titleItem =
+            new TextLayoutItem( titleText(), titleTextAttributes(), referenceArea(),
                                          measureOrientation, d->textAlignment );
         titleItem->setParentWidget( this );
 
@@ -940,7 +940,7 @@ void Legend::buildLegend()
 
         // The line between the title and the legend items, if any.
         if ( showLines() && d->modelLabels.count() ) {
-            KDChart::HorizontalLineLayoutItem* lineItem = new KDChart::HorizontalLineLayoutItem;
+            HorizontalLineLayoutItem* lineItem = new HorizontalLineLayoutItem;
             d->paintItems << lineItem;
             d->layout->addItem( lineItem, 1, 0, 1, 5, Qt::AlignCenter );
         }
@@ -1015,7 +1015,7 @@ void Legend::buildLegend()
             Q_ASSERT( false );
         }
 
-        dsItem.label = new KDChart::TextLayoutItem( text( dataset ), textAttributes(), referenceArea(),
+        dsItem.label = new TextLayoutItem( text( dataset ), textAttributes(), referenceArea(),
                                                     measureOrientation, d->textAlignment );
         dsItem.label->setParentWidget( this );
 
@@ -1037,7 +1037,7 @@ void Legend::buildLegend()
 
         // horizontal separator line, only between items
         if ( showLines() && dataset != d->modelLabels.count() - 1 ) {
-            KDChart::HorizontalLineLayoutItem* lineItem = new KDChart::HorizontalLineLayoutItem;
+            HorizontalLineLayoutItem* lineItem = new HorizontalLineLayoutItem;
             d->layout->addItem( lineItem, vLayoutRow + 1, 0, 1, 5, Qt::AlignCenter );
             d->paintItems << lineItem;
         }
@@ -1049,7 +1049,7 @@ void Legend::buildLegend()
 
     // vertical line (only in vertical mode)
     if ( orientation() == Qt::Vertical && showLines() && d->modelLabels.count() ) {
-        KDChart::VerticalLineLayoutItem* lineItem = new KDChart::VerticalLineLayoutItem;
+        VerticalLineLayoutItem* lineItem = new VerticalLineLayoutItem;
         d->paintItems << lineItem;
         d->layout->addItem( lineItem, 2, 2, d->modelLabels.count() * 2, 1 );
     }

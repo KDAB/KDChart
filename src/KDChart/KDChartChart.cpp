@@ -149,6 +149,8 @@ static void getRowAndColumnForPosition(KDChartEnums::PositionValue pos, int* row
     }
 }
 
+using namespace KDChart;
+
 // Layout widgets even if they are not visible (that's why isEmpty() is overridden) - at least that
 // was the original reason...
 class MyWidgetItem : public QWidgetItem
@@ -188,7 +190,7 @@ public:
     Qt::Orientations expandingDirections() const
     {
         QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
-        if (isEmpty()) {
+        if ( isEmpty() ) {
             return Qt::Orientations(0);
         }
         Qt::Orientations e = w->sizePolicy().expandingDirections();
@@ -211,7 +213,7 @@ public:
     {
         QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
         bool ret = !isEmpty() &&
-        qobject_cast<KDChart::Legend*>(w)->hasHeightForWidth();
+        qobject_cast< Legend* >( w )->hasHeightForWidth();
         return ret;
     }
 
@@ -247,8 +249,6 @@ static void invalidateLayoutTree( QLayoutItem *item )
     }
     item->invalidate();
 }
-
-using namespace KDChart;
 
 void Chart::Private::slotUnregisterDestroyedLegend( Legend *l )
 {
@@ -650,12 +650,12 @@ void Chart::Private::slotLayoutPlanes()
     if ( hadPlanesLayout )
         planesLayout->getContentsMargins(&left, &top, &right, &bottom);
 
-    KDAB_FOREACH( KDChart::AbstractLayoutItem* plane, planeLayoutItems ) {
+    KDAB_FOREACH( AbstractLayoutItem* plane, planeLayoutItems ) {
         plane->removeFromParentLayout();
     }
     //TODO they should get a correct parent, but for now it works
-    KDAB_FOREACH( KDChart::AbstractLayoutItem* plane, planeLayoutItems ) {
-        if ( dynamic_cast< KDChart::AutoSpacerLayoutItem* >( plane ) )
+    KDAB_FOREACH( AbstractLayoutItem* plane, planeLayoutItems ) {
+        if ( dynamic_cast< AutoSpacerLayoutItem* >( plane ) )
             delete plane;
     }
 
@@ -1113,16 +1113,16 @@ void Chart::Private::paintAll( QPainter* painter )
     //qDebug() << this<<"::paintAll() uses layout size" << currentLayoutSize;
 
     // Paint the background (if any)
-    KDChart::AbstractAreaBase::paintBackgroundAttributes( *painter, rect, backgroundAttributes );
+    AbstractAreaBase::paintBackgroundAttributes( *painter, rect, backgroundAttributes );
     // Paint the frame (if any)
-    KDChart::AbstractAreaBase::paintFrameAttributes( *painter, rect, frameAttributes );
+    AbstractAreaBase::paintFrameAttributes( *painter, rect, frameAttributes );
 
     chart->reLayoutFloatingLegends();
 
-    KDAB_FOREACH( KDChart::AbstractLayoutItem* planeLayoutItem, planeLayoutItems ) {
+    KDAB_FOREACH( AbstractLayoutItem* planeLayoutItem, planeLayoutItems ) {
         planeLayoutItem->paintAll( *painter );
     }
-    KDAB_FOREACH( KDChart::TextArea* textLayoutItem, textLayoutItems ) {
+    KDAB_FOREACH( TextArea* textLayoutItem, textLayoutItems ) {
         textLayoutItem->paintAll( *painter );
     }
     KDAB_FOREACH( Legend *legend, legends ) {
@@ -1463,7 +1463,7 @@ void Chart::addHeaderFooter( HeaderFooter* hf )
     // set the text attributes (why?)
 
     TextAttributes textAttrs( hf->textAttributes() );
-    KDChart::Measure measure( textAttrs.fontSize() );
+    Measure measure( textAttrs.fontSize() );
     measure.setRelativeMode( this, KDChartEnums::MeasureOrientationMinimum );
     measure.setValue( 20 );
     textAttrs.setFontSize( measure );
@@ -1577,7 +1577,7 @@ void Chart::addLegendInternal( Legend* legend, bool setMeasures )
 
     if ( setMeasures ) {
         TextAttributes textAttrs( legend->textAttributes() );
-        KDChart::Measure measure( textAttrs.fontSize() );
+        Measure measure( textAttrs.fontSize() );
         measure.setRelativeMode( this, KDChartEnums::MeasureOrientationMinimum );
         measure.setValue( 20 );
         textAttrs.setFontSize( measure );

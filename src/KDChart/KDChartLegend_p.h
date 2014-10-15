@@ -58,8 +58,6 @@ struct DatasetItem;
 class DiagramObserver;
 class AbstractLayoutItem;
 
-class DiagramsObserversList : public QList<DiagramObserver*> {};
-
 struct HDatasetItem
 {
     HDatasetItem();
@@ -71,14 +69,14 @@ struct HDatasetItem
     QSpacerItem *spacer;
 };
 
-}
+class DiagramsObserversList : public QList<DiagramObserver*> {};
 
 /**
  * \internal
  */
-class KDChart::Legend::Private : public KDChart::AbstractAreaWidget::Private
+class Legend::Private : public AbstractAreaWidget::Private
 {
-    friend class KDChart::Legend;
+    friend class Legend;
 public:
     Private();
     ~Private();
@@ -127,22 +125,23 @@ private:
     mutable QStringList modelLabels;
     mutable QList<QBrush> modelBrushes;
     mutable QList<QPen> modelPens;
-    mutable QList<MarkerAttributes> modelMarkers;
+    mutable QList< MarkerAttributes > modelMarkers;
     mutable QSize cachedSizeHint;
-    QVector<KDChart::AbstractLayoutItem*> paintItems;
+    QVector< AbstractLayoutItem* > paintItems;
     QGridLayout* layout;
+    QList< HDatasetItem > hLayoutDatasets;
     DiagramsObserversList observers;
 };
 
-inline KDChart::Legend::Legend( Private* p, QWidget* parent )
+inline Legend::Legend( Private* p, QWidget* parent )
     : AbstractAreaWidget( p, parent ) { init(); }
-inline KDChart::Legend::Private * KDChart::Legend::d_func()
+
+inline Legend::Private * Legend::d_func()
 { return static_cast<Private*>( AbstractAreaWidget::d_func() ); }
-inline const KDChart::Legend::Private * KDChart::Legend::d_func() const
+
+inline const Legend::Private * Legend::d_func() const
 { return static_cast<const Private*>( AbstractAreaWidget::d_func() ); }
 
-
-
+}
 
 #endif /* KDCHARTLEGEND_P_H */
-
