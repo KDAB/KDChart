@@ -1000,7 +1000,7 @@ void Legend::buildLegend()
         switch ( legendStyle() ) {
         case MarkersOnly:
             dsItem.markerLine = new MarkerLayoutItem( diagram(), markerAttrs, markerBrush,
-                                                      markerAttrs.pen(), Qt::AlignLeft );
+                                                      markerAttrs.pen(), Qt::AlignLeft | Qt::AlignVCenter );
             break;
         case LinesOnly:
             dsItem.markerLine = new LineLayoutItem( diagram(), maxLineLength, pen( dataset ),
@@ -1009,14 +1009,14 @@ void Legend::buildLegend()
         case MarkersAndLines:
             dsItem.markerLine = new LineWithMarkerLayoutItem(
                 diagram(), maxLineLength, pen( dataset ), lineLengthLeftOfMarker, markerAttrs,
-                markerBrush, markerAttrs.pen(),  Qt::AlignCenter );
+                markerBrush, markerAttrs.pen(), Qt::AlignCenter );
             break;
         default:
             Q_ASSERT( false );
         }
 
         dsItem.label = new TextLayoutItem( text( dataset ), textAttributes(), referenceArea(),
-                                                    measureOrientation, d->textAlignment );
+                                           measureOrientation, d->textAlignment );
         dsItem.label->setParentWidget( this );
 
         // horizontal layout is deferred to flowDatasetItems()
@@ -1032,7 +1032,7 @@ void Legend::buildLegend()
             d->layout->addItem( dsItem.markerLine, vLayoutRow, 1, 1, 1, Qt::AlignCenter );
             d->paintItems << dsItem.markerLine;
         }
-        d->layout->addItem( dsItem.label, vLayoutRow, 3, 1, 1, Qt::AlignLeft );
+        d->layout->addItem( dsItem.label, vLayoutRow, 3, 1, 1, Qt::AlignLeft | Qt::AlignVCenter );
         d->paintItems << dsItem.label;
 
         // horizontal separator line, only between items
@@ -1108,7 +1108,7 @@ void Legend::Private::flowHDatasetItems( Legend *q )
     QHBoxLayout *currentLine = new QHBoxLayout;
     int mainLayoutRow = 1;
     layout->addItem( currentLine, mainLayoutRow++, /*column*/0,
-                                    /*rowSpan*/1 , /*columnSpan*/5, Qt::AlignLeft );
+                     /*rowSpan*/1 , /*columnSpan*/5, Qt::AlignLeft | Qt::AlignVCenter );
 
     for ( int dataset = 0; dataset < hLayoutDatasets.size(); dataset++ ) {
         HDatasetItem *hdsItem = &hLayoutDatasets[ dataset ];
@@ -1129,7 +1129,7 @@ void Legend::Private::flowHDatasetItems( Legend *q )
 #endif
                 currentLine = new QHBoxLayout;
                 layout->addItem( currentLine, mainLayoutRow++, /*column*/0,
-                                                /*rowSpan*/1 , /*columnSpan*/5, Qt::AlignLeft );
+                                 /*rowSpan*/1 , /*columnSpan*/5, Qt::AlignLeft | Qt::AlignVCenter );
             } else {
                 // > 1 dataset item in line, put spacing and maybe a separator between them
                 if ( !hdsItem->spacer ) {
