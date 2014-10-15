@@ -164,6 +164,7 @@ void Legend::resizeLayout( const QSize& size )
     qDebug() << "Legend::resizeLayout started";
 #endif
     if ( d->layout ) {
+        d->reflowHDatasetItems( this );
         d->layout->setGeometry( QRect(QPoint( 0,0 ), size) );
         activateTheLayout();
     }
@@ -760,7 +761,6 @@ void Legend::forceRebuild()
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "entering Legend::forceRebuild()";
 #endif
-    //setSpacing(d->layout->spacing());
     buildLegend();
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "leaving Legend::forceRebuild()";
@@ -829,37 +829,15 @@ void Legend::resizeEvent( QResizeEvent * event )
     QTimer::singleShot( 0, this, SLOT(emitPositionChanged()) );
 }
 
-void Legend::buildLegend()
+void Legend::Private::fetchPaintOptions( Legend *q )
 {
-    /* Grid layout partitioning (horizontal orientation): row zero is the title, row one the divider
-       line between title and dataset items, row two for each item: line, marker, text label and separator
-       line in that order.
-       In a vertically oriented legend, row pairs (2, 3), ... contain a possible separator line (first row)
-       and (second row) line, marker, text label each. */
-    Q_FOREACH( QLayoutItem* paintItem, d->paintItems ) {
-        d->layout->removeItem( paintItem );
-    }
-    qDeleteAll( d->paintItems );
-    d->paintItems.clear();
-    // remove items that aren't painted - like spacers
-    for ( int i = d->layout->count() - 1; i >= 0; i-- ) {
-        delete d->layout->takeAt( i );
-    }
-    Q_ASSERT(!d->layout->count());
-
-    if ( orientation() == Qt::Vertical ) {
-        d->layout->setColumnStretch( 6, 1 );
-    } else {
-        d->layout->setColumnStretch( 6, 0 );
-    }
-
-    d->modelLabels.clear();
-    d->modelBrushes.clear();
-    d->modelPens.clear();
-    d->modelMarkers.clear();
+    modelLabels.clear();
+    modelBrushes.clear();
+    modelPens.clear();
+    modelMarkers.clear();
     // retrieve the diagrams' settings for all non-hidden datasets
-    for ( int i = 0; i < d->observers.size(); ++i ) {
-        const AbstractDiagram* diagram = d->observers.at( i )->diagram();
+    for ( int i = 0; i < observers.size(); ++i ) {
+        const AbstractDiagram* diagram = observers.at( i )->diagram();
         if ( !diagram ) {
             continue;
         }
@@ -868,85 +846,118 @@ void Legend::buildLegend()
         const QList<QPen> diagramPens = diagram->datasetPens();
         const QList<MarkerAttributes> diagramMarkers = diagram->datasetMarkers();
 
-        const bool ascend = sortOrder() == Qt::AscendingOrder;
+        const bool ascend = q->sortOrder() == Qt::AscendingOrder;
         int dataset = ascend ? 0 : diagramLabels.count() - 1;
         const int end = ascend ? diagramLabels.count() : -1;
         for ( ; dataset != end; dataset += ascend ? 1 : -1 ) {
-            if ( diagram->isHidden( dataset ) || datasetIsHidden( dataset ) ) {
+            if ( diagram->isHidden( dataset ) || q->datasetIsHidden( dataset ) ) {
                 continue;
             }
-            d->modelLabels += diagramLabels[ dataset ];
-            d->modelBrushes += diagramBrushes[ dataset ];
-            d->modelPens += diagramPens[ dataset ];
-            d->modelMarkers += diagramMarkers[ dataset ];
+            modelLabels += diagramLabels[ dataset ];
+            modelBrushes += diagramBrushes[ dataset ];
+            modelPens += diagramPens[ dataset ];
+            modelMarkers += diagramMarkers[ dataset ];
         }
     }
 
-    Q_ASSERT( d->modelLabels.count() == d->modelBrushes.count() );
+    Q_ASSERT( modelLabels.count() == modelBrushes.count() );
+}
+
+QSizeF Legend::Private::markerSize( Legend *q, int dataset, qreal fontHeight ) const
+{
+    QSizeF suppliedSize = q->markerAttributes( dataset ).markerSize();
+    if ( q->useAutomaticMarkerSize() || !suppliedSize.isValid() ) {
+        return QSizeF( fontHeight, fontHeight );
+    } else {
+        return suppliedSize;
+    }
+}
+
+QSizeF Legend::Private::maxMarkerSize( Legend *q, qreal fontHeight ) const
+{
+    QSizeF ret( 1.0, 1.0 );
+    if ( q->legendStyle() != LinesOnly ) {
+        for ( int dataset = 0; dataset < modelLabels.count(); ++dataset ) {
+            ret = ret.expandedTo( markerSize( q, dataset, fontHeight ) );
+        }
+    }
+    return ret;
+}
+
+HDatasetItem::HDatasetItem()
+   : markerLine(0),
+     label(0),
+     separatorLine(0),
+     spacer(0)
+{}
+
+static void updateToplevelLayout(QWidget *w)
+{
+    while ( w ) {
+        if ( w->isTopLevel() ) {
+            // The null check has proved necessary during destruction of the Legend / Chart
+            if ( w->layout() ) {
+                w->layout()->update();
+            }
+            break;
+        } else {
+            w = qobject_cast< QWidget * >( w->parent() );
+            Q_ASSERT( w );
+        }
+    }
+}
+
+void Legend::buildLegend()
+{
+    /* Grid layout partitioning (horizontal orientation): row zero is the title, row one the divider
+       line between title and dataset items, row two for each item: line, marker, text label and separator
+       line in that order.
+       In a vertically oriented legend, row pairs (2, 3), ... contain a possible separator line (first row)
+       and (second row) line, marker, text label each. */
+    d->destroyOldLayout();
+
+    if ( orientation() == Qt::Vertical ) {
+        d->layout->setColumnStretch( 6, 1 );
+    } else {
+        d->layout->setColumnStretch( 6, 0 );
+    }
+
+    d->fetchPaintOptions( this );
+
+    const KDChartEnums::MeasureOrientation measureOrientation =
+        orientation() == Qt::Vertical ? KDChartEnums::MeasureOrientationMinimum
+                                      : KDChartEnums::MeasureOrientationHorizontal;
 
     // legend caption
     if ( !titleText().isEmpty() && titleTextAttributes().isVisible() ) {
-        // PENDING(kalle) Other properties!
         KDChart::TextLayoutItem* titleItem =
             new KDChart::TextLayoutItem( titleText(), titleTextAttributes(), referenceArea(),
-                                         orientation() == Qt::Vertical ? KDChartEnums::MeasureOrientationMinimum
-                                                                       : KDChartEnums::MeasureOrientationHorizontal,
-                                         d->textAlignment );
+                                         measureOrientation, d->textAlignment );
         titleItem->setParentWidget( this );
 
         d->paintItems << titleItem;
-        if ( orientation() == Qt::Vertical )
-            d->layout->addItem( titleItem, 0, 0, 1, 5, Qt::AlignCenter );
-        else
-            d->layout->addItem( titleItem, 0, 0, 1, d->modelLabels.count() ? ( d->modelLabels.count() * 4 ) : 1,
-                                Qt::AlignCenter );
+        d->layout->addItem( titleItem, 0, 0, 1, 5, Qt::AlignCenter );
 
         // The line between the title and the legend items, if any.
         if ( showLines() && d->modelLabels.count() ) {
-            KDChart::HorizontalLineLayoutItem* lineItem = new KDChart::HorizontalLineLayoutItem();
+            KDChart::HorizontalLineLayoutItem* lineItem = new KDChart::HorizontalLineLayoutItem;
             d->paintItems << lineItem;
-            if ( orientation() == Qt::Vertical ) {
-                d->layout->addItem( lineItem, 1, 0, 1, 5, Qt::AlignCenter );
-            } else {
-                // we have 1 + count * 4 columns, because we have both a leading and a trailing spacer
-                d->layout->addItem( lineItem, 1, 0, 1, 1 + d->modelLabels.count() * 4, Qt::AlignCenter );
-            }
+            d->layout->addItem( lineItem, 1, 0, 1, 5, Qt::AlignCenter );
         }
     }
 
-    const KDChartEnums::MeasureOrientation orient = orientation() == Qt::Vertical ?
-                                                    KDChartEnums::MeasureOrientationMinimum :
-                                                    KDChartEnums::MeasureOrientationHorizontal;
-    const TextAttributes labelAttrs( textAttributes() );
-    qreal fontHeight = labelAttrs.calculatedFontSize( referenceArea(), orient );
-    const LegendStyle style = legendStyle();
-    QFont tmpFont = labelAttrs.font();
-    tmpFont.setPointSizeF( fontHeight );
-
-    if ( GlobalMeasureScaling::paintDevice() ) {
-        fontHeight = QFontMetricsF( tmpFont, GlobalMeasureScaling::paintDevice() ).height();
-    } else {
-        fontHeight = QFontMetricsF( tmpFont ).height();
-    }
-
-
-    const bool bShowMarkers = style != LinesOnly;
-
-    QSizeF maxMarkersSize( 1.0, 1.0 );
-    QVector< MarkerAttributes > markerAttrs( d->modelLabels.count() );
-    if ( bShowMarkers ) {
-        for ( int dataset = 0; dataset < d->modelLabels.count(); ++dataset ) {
-            markerAttrs[ dataset ] = markerAttributes( dataset );
-            QSizeF siz;
-            if ( useAutomaticMarkerSize() || !markerAttrs[dataset].markerSize().isValid() ) {
-                siz = QSizeF( fontHeight, fontHeight );
-                markerAttrs[ dataset ].setMarkerSize( siz );
-            } else {
-                siz = markerAttrs[ dataset ].markerSize();
-            }
-            maxMarkersSize = maxMarkersSize.expandedTo( siz );
+    qreal fontHeight = textAttributes().calculatedFontSize( referenceArea(), measureOrientation );
+    {
+        QFont tmpFont = textAttributes().font();
+        tmpFont.setPointSizeF( fontHeight );
+        if ( GlobalMeasureScaling::paintDevice() ) {
+            fontHeight = QFontMetricsF( tmpFont, GlobalMeasureScaling::paintDevice() ).height();
+        } else {
+            fontHeight = QFontMetricsF( tmpFont ).height();
         }
     }
+
+    const QSizeF maxMarkerSize = d->maxMarkerSize( this, fontHeight );
 
     // If we show a marker on a line, we paint it after 8 pixels
     // of the line have been painted. This allows to see the line style
@@ -968,113 +979,241 @@ void Legend::buildLegend()
                 }
             }
         }
-        if ( hasComplexPenStyle && bShowMarkers ) {
-            maxLineLength += lineLengthLeftOfMarker + int( maxMarkersSize.width() );
+        if ( hasComplexPenStyle && legendStyle() != LinesOnly ) {
+            maxLineLength += lineLengthLeftOfMarker + int( maxMarkerSize.width() );
         }
     }
 
-    // Horizontal needs a leading spacer
-    if ( orientation() == Qt::Horizontal ) {
-        d->layout->addItem( new QSpacerItem( spacing(), 1 ), 2, 0 );
-    }
-
-    // for all datasets: add (line)marker items and text items to the layout
+    // for all datasets: add (line)marker items and text items to the layout;
+    // actual layout happens in flowHDatasetItems() for horizontal layout, here for vertical
     for ( int dataset = 0; dataset < d->modelLabels.count(); ++dataset ) {
-        KDChart::AbstractLayoutItem* markerLineItem = 0;
-        // It is possible to set the marker brush both through the MarkerAttributes,
-        // as well as through the dataset brush set in the diagram, whereas the
-        // MarkerAttributes are preferred.
-        const QBrush markerBrush = markerAttrs[dataset].markerColor().isValid() ?
-                                   QBrush(markerAttrs[dataset].markerColor()) : brush( dataset );
-        switch ( style ) {
+        const int vLayoutRow = 2 + dataset * 2;
+        HDatasetItem dsItem;
+
+        // It is possible to set the marker brush through markerAttributes as well as
+        // the dataset brush set in the diagram - the markerAttributes have higher precedence.
+        MarkerAttributes markerAttrs = markerAttributes( dataset );
+        markerAttrs.setMarkerSize( d->markerSize( this, dataset, fontHeight ) );
+        const QBrush markerBrush = markerAttrs.markerColor().isValid() ?
+                                   QBrush( markerAttrs.markerColor() ) : brush( dataset );
+
+        switch ( legendStyle() ) {
         case MarkersOnly:
-            markerLineItem = new KDChart::MarkerLayoutItem(
-                    diagram(),
-                    markerAttrs[dataset],
-                    markerBrush,
-                    markerAttrs[dataset].pen(),
-                    Qt::AlignLeft );
+            dsItem.markerLine = new MarkerLayoutItem( diagram(), markerAttrs, markerBrush,
+                                                      markerAttrs.pen(), Qt::AlignLeft );
             break;
         case LinesOnly:
-            markerLineItem = new KDChart::LineLayoutItem(
-                    diagram(),
-                    maxLineLength,
-                    pen( dataset ),
-                    d->legendLineSymbolAlignment,
-                    Qt::AlignCenter );
+            dsItem.markerLine = new LineLayoutItem( diagram(), maxLineLength, pen( dataset ),
+                                                    d->legendLineSymbolAlignment, Qt::AlignCenter );
             break;
         case MarkersAndLines:
-            markerLineItem = new KDChart::LineWithMarkerLayoutItem(
-                    diagram(),
-                    maxLineLength,
-                    pen( dataset ),
-                    lineLengthLeftOfMarker,
-                    markerAttrs[dataset],
-                    markerBrush,
-                    markerAttrs[dataset].pen(),
-                    Qt::AlignCenter );
+            dsItem.markerLine = new LineWithMarkerLayoutItem(
+                diagram(), maxLineLength, pen( dataset ), lineLengthLeftOfMarker, markerAttrs,
+                markerBrush, markerAttrs.pen(),  Qt::AlignCenter );
             break;
         default:
             Q_ASSERT( false );
         }
-        if ( markerLineItem ) {
-            d->paintItems << markerLineItem;
-            if ( orientation() == Qt::Vertical ) {
-                d->layout->addItem( markerLineItem, dataset * 2 + 2, 1, 1, 1, Qt::AlignCenter );
-            } else {
-                d->layout->addItem( markerLineItem, 2, dataset * 4 + 1 );
-            }
-        }
 
-        // PENDING(kalle) Other properties!
-        KDChart::TextLayoutItem* labelItem =
-            new KDChart::TextLayoutItem( text( dataset ), labelAttrs, referenceArea(),
-                                         orient, d->textAlignment );
-        labelItem->setParentWidget( this );
+        dsItem.label = new KDChart::TextLayoutItem( text( dataset ), textAttributes(), referenceArea(),
+                                                    measureOrientation, d->textAlignment );
+        dsItem.label->setParentWidget( this );
 
-        d->paintItems << labelItem;
-        if ( orientation() == Qt::Vertical ) {
-            d->layout->addItem( labelItem, dataset * 2 + 2, 3 );
-        } else {
-            d->layout->addItem( labelItem, 2, dataset * 4 + 2 );
-        }
+        // horizontal layout is deferred to flowDatasetItems()
 
-        // horizontal lines (only in vertical mode, and not after the last item)
-        if ( orientation() == Qt::Vertical && showLines() && dataset != d->modelLabels.count() - 1 ) {
-            KDChart::HorizontalLineLayoutItem* lineItem = new KDChart::HorizontalLineLayoutItem();
-            d->paintItems << lineItem;
-            d->layout->addItem( lineItem, dataset * 2 + 1 + 2, 0, 1, 5, Qt::AlignCenter );
-        }
-
-        // vertical lines (only in horizontal mode, and not after the last item)
-        if ( orientation() == Qt::Horizontal && showLines() && dataset != d->modelLabels.count() - 1 ) {
-            KDChart::VerticalLineLayoutItem* lineItem = new KDChart::VerticalLineLayoutItem();
-            d->paintItems << lineItem;
-            d->layout->addItem( lineItem, 2,
-                                dataset * 4 + ( style == MarkersAndLines ? 4 : 3 ),
-                                1, 1, Qt::AlignCenter );
-        }
-
-        // Horizontal needs a spacer
         if ( orientation() == Qt::Horizontal ) {
-            d->layout->addItem( new QSpacerItem( spacing(), 1 ), 2, dataset * 4 + 4 );
+            d->hLayoutDatasets << dsItem;
+            continue;
         }
+
+        // (actual) vertical layout here
+
+        if ( dsItem.markerLine ) {
+            d->layout->addItem( dsItem.markerLine, vLayoutRow, 1, 1, 1, Qt::AlignCenter );
+            d->paintItems << dsItem.markerLine;
+        }
+        d->layout->addItem( dsItem.label, vLayoutRow, 3, 1, 1, Qt::AlignLeft );
+        d->paintItems << dsItem.label;
+
+        // horizontal separator line, only between items
+        if ( showLines() && dataset != d->modelLabels.count() - 1 ) {
+            KDChart::HorizontalLineLayoutItem* lineItem = new KDChart::HorizontalLineLayoutItem;
+            d->layout->addItem( lineItem, vLayoutRow + 1, 0, 1, 5, Qt::AlignCenter );
+            d->paintItems << lineItem;
+        }
+    }
+
+    if ( orientation() == Qt::Horizontal ) {
+        d->flowHDatasetItems( this );
     }
 
     // vertical line (only in vertical mode)
     if ( orientation() == Qt::Vertical && showLines() && d->modelLabels.count() ) {
-        KDChart::VerticalLineLayoutItem* lineItem = new KDChart::VerticalLineLayoutItem();
+        KDChart::VerticalLineLayoutItem* lineItem = new KDChart::VerticalLineLayoutItem;
         d->paintItems << lineItem;
         d->layout->addItem( lineItem, 2, 2, d->modelLabels.count() * 2, 1 );
     }
 
-    // This line is absolutely necessary, otherwise: #2516.
-    activateTheLayout();
+    updateToplevelLayout( this );
 
     emit propertiesChanged();
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "leaving Legend::buildLegend()";
 #endif
+}
+
+int HDatasetItem::height() const
+{
+    return qMax( markerLine->sizeHint().height(), label->sizeHint().height() );
+}
+
+void Legend::Private::reflowHDatasetItems( Legend *q )
+{
+    if (hLayoutDatasets.isEmpty()) {
+        return;
+    }
+    paintItems.clear();
+    // this is supposed to remove exactly the QHBoxLayout created as "currentLine" - ATM it probably
+    // also removes the caption item or so.
+    for ( int i = layout->count() - 1; i >= 0; i-- ) {
+        QLayout *hbox = layout->takeAt( i )->layout();
+        if ( !hbox ) {
+            continue;
+        }
+        // remove children so they aren't deleted
+        for ( int j = hbox->count() - 1; j >= 0; j-- ) {
+            hbox->takeAt(j);
+        }
+        delete hbox;
+    }
+
+    flowHDatasetItems( q );
+}
+
+// this works pretty much like flow layout for text, and it is only applicable to dataset items
+// laid out horizontally
+void Legend::Private::flowHDatasetItems( Legend *q )
+{
+    const int separatorLineWidth = 3; // hardcoded in VerticalLineLayoutItem::sizeHint()
+
+    const int allowedWidth = q->areaGeometry().width();
+
+    QHBoxLayout *currentLine = new QHBoxLayout;
+    int mainLayoutRow = 1;
+    layout->addItem( currentLine, mainLayoutRow++, /*column*/0,
+                                    /*rowSpan*/1 , /*columnSpan*/5, Qt::AlignLeft );
+
+    for ( int dataset = 0; dataset < hLayoutDatasets.size(); dataset++ ) {
+        HDatasetItem *hdsItem = &hLayoutDatasets[ dataset ];
+
+        bool spacerUsed = false;
+        bool separatorUsed = false;
+        if ( !currentLine->isEmpty() ) {
+            const int separatorWidth = ( q->showLines() ? separatorLineWidth : 0 ) + q->spacing();
+            const int payloadWidth = hdsItem->markerLine->sizeHint().width() +
+                                     hdsItem->label->sizeHint().width();
+            if ( currentLine->sizeHint().width() + separatorWidth + payloadWidth > allowedWidth ) {
+                // too wide, "line break"
+#ifdef DEBUG_LEGEND_PAINT
+                qDebug() << Q_FUNC_INFO << "break" << mainLayoutRow
+                         << currentLine->sizeHint().width()
+                         << currentLine->sizeHint().width() + separatorWidth + payloadWidth
+                         << allowedWidth;
+#endif
+                currentLine = new QHBoxLayout;
+                layout->addItem( currentLine, mainLayoutRow++, /*column*/0,
+                                                /*rowSpan*/1 , /*columnSpan*/5, Qt::AlignLeft );
+            } else {
+                // > 1 dataset item in line, put spacing and maybe a separator between them
+                if ( !hdsItem->spacer ) {
+                    hdsItem->spacer = new QSpacerItem( q->spacing(), 1 );
+                }
+                currentLine->addItem( hdsItem->spacer );
+                spacerUsed = true;
+
+                if ( q->showLines() ) {
+                    if ( !hdsItem->separatorLine ) {
+                        hdsItem->separatorLine = new VerticalLineLayoutItem;
+                    }
+                    paintItems << hdsItem->separatorLine;
+                    currentLine->addItem( hdsItem->separatorLine );
+                    separatorUsed = true;
+                }
+            }
+        }
+        // those have no parents in the current layout, so they wouldn't get cleaned up otherwise
+        if ( !spacerUsed ) {
+            delete hdsItem->spacer;
+            hdsItem->spacer = 0;
+        }
+        if ( !separatorUsed ) {
+            delete hdsItem->separatorLine;
+            hdsItem->separatorLine = 0;
+        }
+
+        currentLine->addItem( hdsItem->markerLine );
+        paintItems << hdsItem->markerLine;
+        currentLine->addItem( hdsItem->label );
+        paintItems << hdsItem->label;
+    }
+}
+
+bool Legend::hasHeightForWidth() const
+{
+    // this is better than using orientation() because, for layout purposes, we're not height-for-width
+    // *yet* before buildLegend() has been called, and the layout logic might get upset if we say
+    // something that will only be true in the future
+    return !d->hLayoutDatasets.isEmpty();
+}
+
+int Legend::heightForWidth( int width ) const
+{
+    if ( d->hLayoutDatasets.isEmpty() ) {
+        return -1;
+    }
+
+    int ret = 0;
+    const int separatorLineWidth = 3; // ### hardcoded in VerticalLineLayoutItem::sizeHint()
+
+    int currentLineWidth = 0;
+    int currentLineHeight = 0;
+    Q_FOREACH( const HDatasetItem &hdsItem, d->hLayoutDatasets ) {
+        const int payloadWidth = hdsItem.markerLine->sizeHint().width() +
+                                 hdsItem.label->sizeHint().width();
+        if ( !currentLineWidth ) {
+            // first iteration
+            currentLineWidth = payloadWidth;
+        } else {
+            const int separatorWidth = ( showLines() ? separatorLineWidth : 0 ) + spacing();
+            currentLineWidth += separatorWidth + payloadWidth;
+            if ( currentLineWidth > width ) {
+                // too wide, "line break"
+#ifdef DEBUG_LEGEND_PAINT
+                qDebug() << Q_FUNC_INFO << "heightForWidth break" << currentLineWidth
+                         << currentLineWidth + separatorWidth + payloadWidth
+                         << width;
+#endif
+                ret += currentLineHeight + spacing();
+                currentLineWidth = payloadWidth;
+                currentLineHeight = 0;
+            }
+        }
+        currentLineHeight = qMax( currentLineHeight, hdsItem.height() );
+    }
+    ret += currentLineHeight; // one less spacings than lines
+    return ret;
+}
+
+void Legend::Private::destroyOldLayout()
+{
+    // in the horizontal layout case, the QHBoxLayout destructor also deletes child layout items
+    // (it isn't documented that QLayoutItems delete their children)
+    for ( int i = layout->count() - 1; i >= 0; i-- ) {
+        delete layout->takeAt( i );
+    }
+    Q_ASSERT( !layout->count() );
+    hLayoutDatasets.clear();
+    paintItems.clear();
 }
 
 void Legend::setHiddenDatasets( const QList<uint> hiddenDatasets )

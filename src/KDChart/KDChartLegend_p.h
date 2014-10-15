@@ -53,11 +53,24 @@ class QTextDocument;
 QT_END_NAMESPACE
 
 namespace KDChart {
-    class AbstractDiagram;
-    class DiagramObserver;
-    class AbstractLayoutItem;
+class AbstractDiagram;
+struct DatasetItem;
+class DiagramObserver;
+class AbstractLayoutItem;
 
-    class DiagramsObserversList : public QList<DiagramObserver*> {};
+class DiagramsObserversList : public QList<DiagramObserver*> {};
+
+struct HDatasetItem
+{
+    HDatasetItem();
+    int height() const;
+
+    AbstractLayoutItem *markerLine;
+    TextLayoutItem *label;
+    VerticalLineLayoutItem *separatorLine;
+    QSpacerItem *spacer;
+};
+
 }
 
 /**
@@ -79,6 +92,13 @@ public:
         }
         return 0;
     }
+
+    void fetchPaintOptions( Legend *q );
+    QSizeF markerSize( Legend *q, int dataset, qreal fontHeight ) const;
+    QSizeF maxMarkerSize( Legend *q, qreal fontHeight ) const;
+    void reflowHDatasetItems( Legend *q );
+    void flowHDatasetItems( Legend *q );
+    void destroyOldLayout();
 
 private:
     // user-settable

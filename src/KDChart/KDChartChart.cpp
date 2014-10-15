@@ -149,7 +149,8 @@ static void getRowAndColumnForPosition(KDChartEnums::PositionValue pos, int* row
     }
 }
 
-// Layout widgets even if they are not visible
+// Layout widgets even if they are not visible (that's why isEmpty() is overridden) - at least that
+// was the original reason...
 class MyWidgetItem : public QWidgetItem
 {
 public:
@@ -159,7 +160,68 @@ public:
         setAlignment( alignment );
     }
 
-    /*reimp*/
+    // All of the methods are reimplemented from QWidgetItem, and work around some oddity in QLayout and / or
+    // KD Chart - I forgot the details between writing this code as an experiment and committing it, very
+    // sorry about that!
+    // Feel free to comment out any of them and then try the line-breaking feature in horizontal legends in
+    // the Legends/Advanced example. It will not work well in various ways - won't get enough space and look
+    // very broken, will inhibit resizing the window etc.
+
+    QSize sizeHint() const
+    {
+        QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
+        return w->sizeHint();
+    }
+
+    QSize minimumSize() const
+    {
+        QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
+        return w->minimumSize();
+    }
+
+    QSize maximumSize() const
+    {
+        QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
+        return w->maximumSize();
+    }
+
+    Qt::Orientations expandingDirections() const
+    {
+        QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
+        if (isEmpty()) {
+            return Qt::Orientations(0);
+        }
+        Qt::Orientations e = w->sizePolicy().expandingDirections();
+        return e;
+    }
+
+    void setGeometry(const QRect &g)
+    {
+        QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
+        w->setGeometry(g);
+    }
+
+    QRect geometry() const
+    {
+        QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
+        return w->geometry();
+    }
+
+    bool hasHeightForWidth() const
+    {
+        QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
+        bool ret = !isEmpty() &&
+        qobject_cast<KDChart::Legend*>(w)->hasHeightForWidth();
+        return ret;
+    }
+
+    int heightForWidth( int width ) const
+    {
+        QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
+        int ret = w->heightForWidth( width );
+        return ret;
+    }
+
     bool isEmpty() const {
         QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
         // legend->hide() should indeed hide the legend,
