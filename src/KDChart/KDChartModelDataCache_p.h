@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2013 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2014 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
