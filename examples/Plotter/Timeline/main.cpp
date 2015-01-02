@@ -97,10 +97,27 @@ public:
     }
 private slots:
     void slotTimeout() {
+
+        // An ugly hack to prevent the QAbstractItemModel from emitting dataChanged
+        // for every single call to setData which would result in a full relayout
+        // everytime. Thats horrible for performance and what we do is to prevent
+        // QAbstractItemModel to emit dataChanged, collect what data changed and
+        // emit the signal at the end ourself.
+        m_model->blockSignals(true);
+        QModelIndexList indexes;
+
         QVariant v1, v2;
         for ( int i = 0; i < 365; ++i ) {
-            m_model->setData( m_model->index( i, 1 ), sin( i / 10.0 + m_counter ) * 10 );
+            QModelIndex idx = m_model->index( i, 1 );
+            indexes.append(idx);
+            m_model->setData( idx, sin( i / 10.0 + m_counter ) * 10 );
         }
+
+        m_model->blockSignals(false);
+        if (!indexes.isEmpty()) {
+            m_model->metaObject()->invokeMethod(m_model, "dataChanged", Qt::DirectConnection, Q_ARG(QModelIndex,indexes.first()), Q_ARG(QModelIndex,indexes.last()));
+        }
+
         m_counter += 0.02;
     }
     void buttonToggled(bool checked) {
