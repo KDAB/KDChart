@@ -48,9 +48,8 @@ public:
     diagram->setModel(&m_model);
 
     BarAttributes ba( diagram->barAttributes() );
-    //set the bar width and
-    //implicitely enable it
-    ba.setFixedBarWidth( 500 );
+    //set the bar width and enable it
+    ba.setFixedBarWidth( 140 );
     ba.setUseFixedBarWidth( true );
     //configure gab between values
     //and blocks
