@@ -28,36 +28,43 @@
 
 using namespace KDChart;
 
-class ChartWidget : public QWidget {
+class ChartWidget : public QWidget
+{
   Q_OBJECT
 public:
-  explicit ChartWidget(QWidget* parent=0)
-    : QWidget(parent)
-  {
+    explicit ChartWidget( QWidget *parent = 0 );
 
+private:
+  Chart m_chart;
+  QStandardItemModel m_model;
+};
+
+ChartWidget::ChartWidget( QWidget *parent )
+   : QWidget( parent )
+{
     m_model.insertRows( 0, 2, QModelIndex() );
-    m_model.insertColumns(  0,  3,  QModelIndex() );
-    for (int row = 0; row < 3; ++row) {
-            for (int column = 0; column < 3; ++column) {
-                QModelIndex index = m_model.index(row, column, QModelIndex());
-                m_model.setData(index, QVariant(row+1 * column) );
-            }
+    m_model.insertColumns( 0, 3, QModelIndex() );
+    for ( int row = 0; row < 3; ++row ) {
+        for ( int column = 0; column < 3; ++column ) {
+            QModelIndex index = m_model.index( row, column, QModelIndex() );
+            m_model.setData(index, row * 3 + column );
+        }
     }
 
     BarDiagram* diagram = new KDChart::BarDiagram;
-    diagram->setModel(&m_model);
+    diagram->setModel( &m_model );
 
     BarAttributes ba( diagram->barAttributes() );
     //set the bar width and enable it
     ba.setFixedBarWidth( 140 );
     ba.setUseFixedBarWidth( true );
-    //configure gab between values
+    //configure gap between values
     //and blocks
     ba.setGroupGapFactor( 0.50 );
     ba.setBarGapFactor( 0.125 );
 
     //assign to the diagram
-    diagram->setBarAttributes(  ba );
+    diagram->setBarAttributes( ba );
 
     // display the values
     DataValueAttributes dva( diagram->dataValueAttributes() );
@@ -79,22 +86,19 @@ public:
     //draw only around a dataset
     //to draw around all the bars
     // call setPen( myPen );
-    diagram->setPen( 1,  linePen );
+    diagram->setPen( 1, linePen );
 
-    m_chart.coordinatePlane()->replaceDiagram(diagram);
+    m_chart.coordinatePlane()->replaceDiagram( diagram );
     m_chart.setGlobalLeadingTop( 40 );
 
-    QVBoxLayout* l = new QVBoxLayout(this);
-    l->addWidget(&m_chart);
-    setLayout(l);
-  }
+    QVBoxLayout *l = new QVBoxLayout( this );
+    l->addWidget( &m_chart );
+    setLayout( l );
+}
 
-private:
-  Chart m_chart;
-  QStandardItemModel m_model;
-};
 
-int main( int argc, char** argv ) {
+int main( int argc, char** argv )
+{
     QApplication app( argc, argv );
 
     ChartWidget w;
