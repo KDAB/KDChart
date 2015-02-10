@@ -48,9 +48,7 @@ AbstractAxis::Private::~Private()
     observer = 0;
 }
 
-bool AbstractAxis::Private::setDiagram(
-    AbstractDiagram* diagram_,
-    bool delayedInit )
+bool AbstractAxis::Private::setDiagram( AbstractDiagram* diagram_, bool delayedInit )
 {
     AbstractDiagram* diagram = delayedInit ? mDiagram : diagram_;
     if ( delayedInit ) {
@@ -195,13 +193,13 @@ TextAttributes AbstractAxis::textAttributes() const
 
 void AbstractAxis::setRulerAttributes( const RulerAttributes &a )
 {
-	d->rulerAttributes = a;
-	update();
+    d->rulerAttributes = a;
+    update();
 }
 
 RulerAttributes AbstractAxis::rulerAttributes() const
 {
-	return d->rulerAttributes;
+    return d->rulerAttributes;
 }
 
 void AbstractAxis::setLabels( const QStringList& list )
