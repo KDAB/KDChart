@@ -101,6 +101,15 @@ bool AbstractAxis::Private::hasDiagram( AbstractDiagram* diagram ) const
     return diagram == mDiagram || secondaryDiagrams.contains( diagram );
 }
 
+void AbstractAxis::Private::updateLayouts()
+{
+    if ( CartesianAxis* cartesianAxis = qobject_cast< CartesianAxis* >( mAxis ) ) {
+        cartesianAxis->layoutPlanes();
+    } else {
+        mAxis->update();
+    }
+}
+
 AbstractAxis::AbstractAxis ( AbstractDiagram* diagram )
     : AbstractArea( new Private( diagram, this ) )
 {
@@ -182,7 +191,7 @@ void AbstractAxis::setTextAttributes( const TextAttributes &a )
         return;
 
     d->textAttributes = a;
-    update();
+    d->updateLayouts();
 }
 
 TextAttributes AbstractAxis::textAttributes() const
@@ -194,7 +203,7 @@ TextAttributes AbstractAxis::textAttributes() const
 void AbstractAxis::setRulerAttributes( const RulerAttributes &a )
 {
     d->rulerAttributes = a;
-    update();
+    d->updateLayouts();
 }
 
 RulerAttributes AbstractAxis::rulerAttributes() const
@@ -208,7 +217,7 @@ void AbstractAxis::setLabels( const QStringList& list )
         return;
 
     d->hardLabels = list;
-    update();
+    d->updateLayouts();
 }
 
 QStringList AbstractAxis::labels() const
@@ -222,7 +231,7 @@ void AbstractAxis::setShortLabels( const QStringList& list )
         return;
 
     d->hardShortLabels = list;
-    update();
+    d->updateLayouts();
 }
 
 QStringList AbstractAxis::shortLabels() const

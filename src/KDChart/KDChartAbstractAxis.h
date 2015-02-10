@@ -88,10 +88,12 @@ namespace KDChart {
          * by you, resp.)
          *
          * \note If you reimplement this method in a subclass of KDChartCartesianAxis,
-         * and your reimplementation's return value depends on external data other
-         * than @p label, make sure to call KDChartCartesianAxis::setCachedSizeDirty()
-         * after that external data changes. This will recalculate the axis size for
-         * layout purposes, adapting overall chart layout to the new axis size.
+         * and your reimplementation's return value depends on data other than @p label
+         * (so KDChart will not know when it changes), you must manually ensure that
+         * layouts are adapted to any changed sizes of the axis labels. To do that,
+         * call KDChartCartesianAxis::layoutPlanes() from your reimplementation when
+         * you know that the external data changed and it will change label sizes -
+         * or when you cannot exclude that.
          *
          * \return The text to be drawn. By default this is the same as \c label.
          */
