@@ -84,7 +84,7 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
      m_majorLabelCount( 0 ),
      m_type( NoTick )
 {
-    // deal with the things that are specfic to axes (like annotations), before the generic init().
+    // deal with the things that are specific to axes (like annotations), before the generic init().
     const CartesianAxis::Private *axisPriv = CartesianAxis::Private::get( a );
     XySwitch xy( axisPriv->isVertical() );
     m_dimension = xy( plane->gridDimensionsList().first(), plane->gridDimensionsList().last() );

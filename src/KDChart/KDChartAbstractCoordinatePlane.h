@@ -340,7 +340,7 @@ namespace KDChart {
         /** Emitted after the geometry of the Coordinate Plane has been changed.
          *  and control has returned to the event loop.
          *
-         * Parameters are the the old geometry, the new geometry.
+         * Parameters are the old geometry, the new geometry.
         */
         void geometryChanged( QRect, QRect );
 
