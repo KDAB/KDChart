@@ -307,7 +307,7 @@ void GraphicsItem::updateItem( const Span& rowGeometry, const QPersistentModelIn
         return;
     }
 
-    const Span s = scene()->grid()->mapToChart( idx );
+    const Span s = scene()->grid()->mapToChart( (const QModelIndex&)idx );
     setPos( QPointF( s.start(), rowGeometry.start() ) );
     setRect( QRectF( 0., 0., s.length(), rowGeometry.length() ) );
     setIndex( idx );
