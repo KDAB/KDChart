@@ -22,7 +22,7 @@ isEmpty(QT_VERSION) {
 
 
 unix:DEFAULT_INSTALL_PREFIX = /usr/local/KDAB/KDChart-$$VERSION
-win32:DEFAULT_INSTALL_PREFIX = "C:\\KDAB\\KDChart"-$$VERSION
+win32:DEFAULT_INSTALL_PREFIX = "C:\KDAB\KDChart"-$$VERSION
 
 
 # for backw. compat. we still allow manual invocation of qmake using PREFIX:
@@ -68,7 +68,7 @@ system('echo TOP_SOURCE_DIR=$${TMP_SOURCE_DIR} >> $${QMAKE_CACHE}')
 system('echo TOP_BUILD_DIR=$${TMP_BUILD_DIR} >> $${QMAKE_CACHE}')
 
 # store PREFIX:
-windows:INSTALL_PREFIX=$$replace($$INSTALL_PREFIX, \\\\, /)
+windows:INSTALL_PREFIX=$$replace(INSTALL_PREFIX, \\\\, /)
 system('echo INSTALL_PREFIX=$$INSTALL_PREFIX >> $${QMAKE_CACHE}')
 system('echo VERSION=$$VERSION >> $${QMAKE_CACHE}')
 system('echo KDCHARTLIB=$$KDCHARTLIB >> $${QMAKE_CACHE}')
@@ -76,16 +76,18 @@ system('echo TESTTOOLSLIB=$$TESTTOOLSLIB >> $${QMAKE_CACHE}')
 system('echo KDCHARTUITOOLSLIB=$$KDCHARTUITOOLSLIB >> $${QMAKE_CACHE}')
 system('echo KDCHARTPLUGINLIBLIB=$$KDCHARTPLUGINLIBLIB >> $${QMAKE_CACHE}')
 
+INSTALL_DOC_DIR = $$INSTALL_PREFIX/share/doc/KDChart
+
 # install license(s):
 exists( LICENSE.txt ):     licenses.files  = LICENSE.txt
 exists( LICENSE.US.txt ):  licenses.files += LICENSE.US.txt
 exists( LICENSE.GPL.txt ): licenses.files += LICENSE.GPL.txt
-licenses.path = $$INSTALL_PREFIX
+licenses.path = $$INSTALL_DOC_DIR
 INSTALLS += licenses
 
 exists( README.txt ) {
     readme.files = README.txt
-    readme.path = $$INSTALL_PREFIX
+    readme.path = $$INSTALL_DOC_DIR
     INSTALLS += readme
 }
 
@@ -94,4 +96,3 @@ test.target=test
 test.commands=(cd qtests && $(MAKE) test)
 test.depends = $(TARGET)
 QMAKE_EXTRA_TARGETS += test
-
