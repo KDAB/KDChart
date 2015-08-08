@@ -15,9 +15,6 @@
   <property name="windowTitle" >
    <string>Shared Abscissa </string>
   </property>
-  <property name="windowIcon" >
-   <iconset/>
-  </property>
   <layout class="QGridLayout" >
    <property name="margin" >
     <number>9</number>

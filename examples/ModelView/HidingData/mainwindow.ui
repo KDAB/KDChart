@@ -12,9 +12,6 @@
   <property name="windowTitle" >
    <string>Hiding data without removing them from the model</string>
   </property>
-  <property name="windowIcon" >
-   <iconset/>
-  </property>
   <layout class="QGridLayout" >
    <property name="margin" >
     <number>9</number>

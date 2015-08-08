@@ -15,9 +15,6 @@
   <property name="windowTitle" >
    <string>KD Chart 2 example: Headers and Footers</string>
   </property>
-  <property name="windowIcon" >
-   <iconset/>
-  </property>
   <layout class="QVBoxLayout" >
    <property name="margin" >
     <number>9</number>
