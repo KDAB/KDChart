@@ -109,11 +109,10 @@ namespace KDGantt {
         QPointF m_presspos;
         QPointF m_pressscenepos;
         QGraphicsLineItem* m_dragline;
-        GraphicsItem* m_dragtarget;
+        GraphicsItem* m_dragtarget; //TODO: not used. remove it
         QList<ConstraintGraphicsItem*> m_startConstraints;
         QList<ConstraintGraphicsItem*> m_endConstraints;
     };
 }
 
 #endif /* KDGANTTGRAPHICSITEM_H */
-

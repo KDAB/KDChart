@@ -285,7 +285,7 @@ namespace KDChart {
                     Qt::Alignment lineAlignment);
 
         private:
-            AbstractDiagram* mDiagram;
+            AbstractDiagram* mDiagram;  //TODO: not used. remove it
             int mLength;
             QPen mPen;
             QRect mRect;
