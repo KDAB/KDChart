@@ -4,7 +4,7 @@
   NORMAL_CXXFLAGS = \
 	-Wnon-virtual-dtor -Wundef -Wcast-align \
 	-Wchar-subscripts -Wpointer-arith \
-	-Wwrite-strings -Wpacked -Wformat-security \
+	-Wwrite-strings -Wformat-security \
         -Wmissing-format-attribute -Woverloaded-virtual
 
   # -Wconversion gives too many warnings from Qt-4.4.3 with gcc-4.3.2 (was fine with gcc-4.2.4), so removing it
@@ -27,10 +27,10 @@
   QMAKE_CXXFLAGS += $$NORMAL_CFLAGS $$NORMAL_CXXFLAGS
 
   # Mirko: removed that during development in trunk, should be
-  # reenabled once going towards a release: -Werror 
+  # reenabled once going towards a release: -Werror
   QMAKE_CFLAGS_WARN_ON   += $$NORMAL_CFLAGS
   # Mirko: removed that during development in trunk, should be
-  # reenabled once going towards a release: -Werror 
+  # reenabled once going towards a release: -Werror
   QMAKE_CXXFLAGS_WARN_ON += $$NORMAL_CFLAGS $$NORMAL_CXXFLAGS
 
   #QMAKE_CXXFLAGS_WARN_ON += $$USABLE_CXXFLAGS
