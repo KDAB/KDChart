@@ -61,9 +61,6 @@ QDebug operator<<( QDebug dbg, KDGantt::DateTimeScaleFormatter::Range range )
  * and shows days and week numbers in the header
  */
 
-// TODO: I think maybe this class should be responsible
-// for unit-transformation of the scene...
-
 qreal DateTimeGrid::Private::dateTimeToChartX( const QDateTime& dt ) const
 {
     assert( startDateTime.isValid() );
@@ -1159,8 +1156,7 @@ void DateTimeGrid::paintMonthScaleHeader( QPainter* painter,  const QRectF& head
                     Private::HeaderYear, new YearFormatter ); // Custom parameters
 }
 
-/*!
-\todo document this function
+/*! Draw the background for a day.
 */
 void DateTimeGrid::drawDayBackground(QPainter* painter, const QRectF& rect, const QDate& date)
 {
@@ -1169,8 +1165,7 @@ void DateTimeGrid::drawDayBackground(QPainter* painter, const QRectF& rect, cons
     Q_UNUSED(date);
 }
 
-/*!
-\todo document this function
+/*! Draw the foreground for a day.
 */
 void DateTimeGrid::drawDayForeground(QPainter* painter, const QRectF& rect, const QDate& date)
 {
@@ -1179,8 +1174,7 @@ void DateTimeGrid::drawDayForeground(QPainter* painter, const QRectF& rect, cons
     Q_UNUSED(date);
 }
 
-/**
-\todo document this function
+/** Return the rectangle that represents the date-range.
 */
 QRectF DateTimeGrid::computeRect(const QDateTime& from, const QDateTime& to, const QRectF& rect) const
 {
@@ -1190,8 +1184,7 @@ QRectF DateTimeGrid::computeRect(const QDateTime& from, const QDateTime& to, con
     return QRectF(topLeft, rect.top(), topRight - topLeft, rect.height());
 }
 
-/**
-\todo document this function
+/** Return a date-range represented by the rectangle.
 */
 QPair<QDateTime, QDateTime> DateTimeGrid::dateTimeRange(const QRectF& rect) const
 {
