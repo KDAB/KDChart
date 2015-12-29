@@ -109,8 +109,10 @@ public:
                 int row1, int row2 )
         : QObject( model ),
           m_model( model ),
+#if 0
           m_constraints( constraints ),
           m_view( view ),
+#endif
           m_row1( row1 ),
           m_row2( row2 )
     {
@@ -138,8 +140,10 @@ public:
 
 private:
     MyTaskModel* m_model;
+#if 0
     KDGantt::ConstraintModel* m_constraints;
     KDGantt::View* m_view;
+#endif
     int m_row1, m_row2;
 };
 

@@ -75,7 +75,7 @@ namespace KDGantt {
 #include <QDebug>
 
 QDebug KDCHART_EXPORT operator<<( QDebug dbg, const KDGantt::ConstraintModel& model );
-inline QDebug KDCHART_EXPORT operator<<( QDebug dbg, KDGantt::ConstraintModel* model )
+inline QDebug operator<<( QDebug dbg, KDGantt::ConstraintModel* model )
 {
     return operator<<(dbg,*model);
 }
@@ -83,4 +83,3 @@ inline QDebug KDCHART_EXPORT operator<<( QDebug dbg, KDGantt::ConstraintModel* m
 #endif /* QT_NO_DEBUG_STREAM */
 
 #endif /* KDGANTTCONSTRAINTMODEL_H */
-

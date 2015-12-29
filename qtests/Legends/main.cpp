@@ -144,7 +144,6 @@ private:
     Chart *m_chart;
     BarDiagram *m_bars;
     LineDiagram *m_lines;
-    Legend* m_legend;
     TableModel *m_tableModel;
 
 };

@@ -93,12 +93,10 @@ public:
                                      const QModelIndex& idx ) const;
     /*reimp*/ void setEditorData( QWidget* editor, const QModelIndex& index ) const;
     /*reimp*/ void setModelData( QWidget* editor, QAbstractItemModel* model,
-				  const QModelIndex & index ) const;
+                                  const QModelIndex & index ) const;
 protected:
     /*reimp*/void drawDisplay( QPainter* painter, const QStyleOptionViewItem & option,
-			       const QRect& rect, const QString& text ) const;
-private:
-    bool m_isitemtype; // Nasty!
+                               const QRect& rect, const QString& text ) const;
 };
 
 MyItemDelegate::MyItemDelegate( QObject* parent )
@@ -127,7 +125,7 @@ void MyItemDelegate::setEditorData ( QWidget* editor, const QModelIndex& index )
 }
 
 void MyItemDelegate::setModelData ( QWidget* editor, QAbstractItemModel* model,
-				  const QModelIndex & index ) const
+                                  const QModelIndex & index ) const
 {
   ItemTypeComboBox* c;
   if ( (c = qobject_cast<ItemTypeComboBox*>(editor)) && index.isValid() ) {
@@ -138,7 +136,7 @@ void MyItemDelegate::setModelData ( QWidget* editor, QAbstractItemModel* model,
 }
 
 void MyItemDelegate::drawDisplay( QPainter* painter, const QStyleOptionViewItem& option,
-				  const QRect& rect, const QString& text ) const
+                                  const QRect& rect, const QString& text ) const
 {
   //qDebug() << "MyItemDelegate::drawDisplay(" <<painter<<rect<<text<<")";
   KDGantt::ItemType typ = static_cast<KDGantt::ItemType>(text.toInt());
@@ -159,7 +157,7 @@ void MyItemDelegate::drawDisplay( QPainter* painter, const QStyleOptionViewItem&
 class DateTimeGrid : public KDGantt::DateTimeGrid
 {
 public:
-    DateTimeGrid(QObject* parent=0) { 
+    DateTimeGrid(QObject* parent=0) {
         setParent(parent);
         setFreeDays( QSet<Qt::DayOfWeek>() );
         setFreeDaysBrush( QBrush( Qt::NoBrush ) );
@@ -191,7 +189,7 @@ void DateTimeGrid::drawBackground(QPainter* painter, const QRectF& rect)
     //brush.setColor(Qt::lightGray);
 
     QRectF r = computeRect(QDateTime::currentDateTime(),
-                           QDateTime::currentDateTime().addDays(2), 
+                           QDateTime::currentDateTime().addDays(2),
                            rect);
     painter->fillRect(r, brush);
 }
@@ -201,7 +199,7 @@ void DateTimeGrid::drawForeground(QPainter* painter, const QRectF& rect)
     painter->save();
 
     QRectF r = computeRect(QDateTime::currentDateTime(),
-                           QDateTime::currentDateTime().addDays(2), 
+                           QDateTime::currentDateTime().addDays(2),
                            rect);
 
     static QString text("Holiday");
@@ -298,9 +296,9 @@ MainWindow::MainWindow( QWidget* parent )
     toolsMenu->addSeparator();
     toolsMenu->addAction( tr( "&Collapse All" ), this, SLOT( slotCollapseAll() ) );
     toolsMenu->addAction( tr( "&Expand All" ), this, SLOT( slotExpandAll() ) );
-    
+
     mb->addMenu( toolsMenu );
-    
+
     /*
     slotToolsNewItem();
     slotToolsNewItem();
@@ -365,7 +363,7 @@ void MainWindow::slotFileSavePdf()
     SavePdfDialog dialog(this);
     if (dialog.exec() != QDialog::Accepted)
         return;
-    
+
     const QString file = dialog.m_fileEdit->text();
     if (file.isEmpty())
         return;
@@ -379,7 +377,7 @@ void MainWindow::slotFileSavePdf()
     printer.setPageMargins(0.2, 0.2, 0.2, 0.2, QPrinter::Point);
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(file);
-    m_view->print(&printer, drawRowLabels, drawColumnLabels); 
+    m_view->print(&printer, drawRowLabels, drawColumnLabels);
 #endif
 }
 
@@ -392,7 +390,7 @@ void MainWindow::slotFilePrint()
     QPrintDialog dialog(&printer, this);
     if (dialog.exec() != QDialog::Accepted)
         return;
-    m_view->print(&printer); 
+    m_view->print(&printer);
 #endif
 }
 
@@ -430,7 +428,7 @@ void MainWindow::slotCollapseAll()
     // view cause that one will take care to update everyt6hing as needed.
     //QTreeView* view = qobject_cast<QTreeView*>( m_view->leftView() );
     //view->collapseAll();
-    
+
     QModelIndex idx = m_view->selectionModel()->currentIndex();
     if ( idx.isValid() )
         m_view->collapseAll();
@@ -442,7 +440,7 @@ void MainWindow::slotExpandAll()
     // view cause that one will take care to update everyt6hing as needed.
     //QTreeView* view = qobject_cast<QTreeView*>( m_view->leftView() );
     //view->expandAll();
-    
+
     QModelIndex idx = m_view->selectionModel()->currentIndex();
     if ( idx.isValid() )
         m_view->expandAll();
@@ -479,5 +477,5 @@ void MainWindow::slotAlignHidden()
         m_model->setData( idx, KDGantt::StyleOptionGanttItem::Hidden, KDGantt::TextPositionRole );
     }
 }
-    
+
 #include "mainwindow.moc"

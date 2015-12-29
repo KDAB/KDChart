@@ -303,7 +303,7 @@ void GraphicsItem::updateItem( const Span& rowGeometry, const QPersistentModelIn
     Updater updater( &m_isupdating );
     if ( !idx.isValid() || idx.data( ItemTypeRole )==TypeMulti ) {
         setRect( QRectF() );
-	hide();
+        hide();
         return;
     }
 
@@ -372,7 +372,9 @@ void GraphicsItem::updateModel()
     //qDebug() << "GraphicsItem::updateModel()";
     if ( isEditable() ) {
         QAbstractItemModel* model = const_cast<QAbstractItemModel*>( index().model() );
+#if !defined(NDEBUG)
         ConstraintModel* cmodel = scene()->constraintModel();
+#endif
         assert( model );
         assert( cmodel );
         if ( model ) {
@@ -575,7 +577,7 @@ void GraphicsItem::mouseMoveEvent( QGraphicsSceneMouseEvent* event )
     case ItemDelegate::State_Move:
         // Check for constraint drag
       if ( qAbs( m_pressscenepos.x()-event->scenePos().x() ) < 10.
-	   && qAbs( m_pressscenepos.y()-event->scenePos().y() ) > 5. ) {
+           && qAbs( m_pressscenepos.y()-event->scenePos().y() ) > 5. ) {
             m_istate = ItemDelegate::State_DragConstraint;
             m_dragline = new QGraphicsLineItem( this );
             m_dragline->setPen( QPen( Qt::DashLine ) );
