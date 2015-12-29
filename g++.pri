@@ -1,12 +1,16 @@
 *-g++* {
   NORMAL_CFLAGS = -Wno-long-long -ansi
+  win32-g++ {
+    NORMAL_CFLAGS += -U__STRICT_ANSI__
+  }
+
   NORMAL_CXXFLAGS = \
         -Wnon-virtual-dtor -Wundef -Wcast-align \
         -Wchar-subscripts -Wpointer-arith \
-        -Wwrite-strings -Wformat-security \
+        -Wwrite-strings -Wformat -Wformat-security \
         -Wmissing-format-attribute -Woverloaded-virtual
 
-  # -Wconversion gives too many warnings from Qt-4.4.3 with gcc-4.3.2 (was fine with gcc-4.2.4), so removing it
+# -Wconversion gives too many warnings from Qt-4.4.3 with gcc-4.3.2 (was fine with gcc-4.2.4), so removing it
 
   # Qt-4.2 has tools/designer/src/lib/uilib/ui4_p.h:263: error: comma at end of enumerator list
   !contains($$list($$[QT_VERSION]), 4.2.*) {
