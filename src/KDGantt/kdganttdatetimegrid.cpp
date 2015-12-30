@@ -135,6 +135,9 @@ DateTimeScaleFormatter::~DateTimeScaleFormatter()
 
 DateTimeScaleFormatter& DateTimeScaleFormatter::operator=( const DateTimeScaleFormatter& other )
 {
+    if ( this == &other )
+        return *this;
+
     delete _d;
     _d = new Private( other.range(), other.format(), other.d->templ, other.alignment() );
     return *this;
