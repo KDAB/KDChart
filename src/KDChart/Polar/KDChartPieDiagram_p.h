@@ -52,7 +52,12 @@ public:
     ~Private();
 
     Private( const Private& rhs ) :
-        AbstractPieDiagram::Private( rhs )
+        AbstractPieDiagram::Private( rhs ),
+        startAngles(),
+        angleLens(),
+        size( 0 ),
+        labelDecorations( NoDecoration ),
+        isCollisionAvoidanceEnabled( false )
         {
             // just for consistency
         }

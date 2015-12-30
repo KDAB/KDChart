@@ -34,6 +34,7 @@ typedef QStyleOptionViewItem BASE;
 /*! Constructor. Sets grid to 0. */
 StyleOptionGanttItem::StyleOptionGanttItem()
     : BASE(),
+      displayPosition( Left ),
       grid( 0 )
 {
     type = QStyleOption::SO_CustomBase+89;

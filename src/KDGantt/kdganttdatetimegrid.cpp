@@ -355,7 +355,7 @@ void DateTimeGrid::setDayWidth( qreal w )
  * DateTimeScaleFormatter* formatter = new DateTimeScaleFormatter(DateTimeScaleFormatter::Day, QString::fromLatin1("yyyy-MMMM-dddd"));
  * grid->setUserDefinedUpperScale( formatter );
  * grid->setUserDefinedLowerScale( formatter );
- * grid->setScale( DateTimeGrid::ScaleUserDefined ); 
+ * grid->setScale( DateTimeGrid::ScaleUserDefined );
  * \endcode
  */
 void DateTimeGrid::setScale( Scale s )
@@ -763,7 +763,7 @@ DateTimeGrid::Private::HeaderType DateTimeGrid::Private::headerTypeForScale( Dat
             assert( false );
             break;
     }
-	return Private::HeaderDay;
+        return Private::HeaderDay;
 }
 
 void DateTimeGrid::paintGrid( QPainter* painter,

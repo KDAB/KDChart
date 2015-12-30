@@ -62,7 +62,8 @@ public:
         AbstractDiagram::Private( rhs ),
         // Do not copy axes and reference diagrams.
         axesList(),
-        referenceDiagram( 0 )
+        referenceDiagram( 0 ),
+        referenceDiagramOffset()
         {
         }
 
@@ -90,4 +91,3 @@ KDCHART_IMPL_DERIVED_DIAGRAM( AbstractCartesianDiagram, AbstractDiagram, Cartesi
 
 }
 #endif /* KDCHARTABSTRACTCARTESIANDIAGRAM_P_H */
-

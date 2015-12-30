@@ -55,7 +55,8 @@ public:
     ~Private();
 
     Private( const Private& rhs ) :
-        AbstractDiagram::Private( rhs )
+        AbstractDiagram::Private( rhs ),
+        granularity( 0 )
         {
             // just for consistency
         }
@@ -92,4 +93,3 @@ inline const AbstractPolarDiagram::Private * AbstractPolarDiagram::d_func() cons
 
 }
 #endif /* KDCHARTABSTRACTCARTESIANDIAGRAM_P_H */
-

@@ -46,7 +46,8 @@
 
 using namespace KDChart;
 
-LabelPaintInfo::LabelPaintInfo()
+LabelPaintInfo::LabelPaintInfo() :
+    isValuePositive( false )
 {
 }
 

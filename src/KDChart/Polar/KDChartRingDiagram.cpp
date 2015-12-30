@@ -94,12 +94,12 @@ bool RingDiagram::relativeThickness() const
 
 void RingDiagram::setExpandWhenExploded( bool expand )
 {
-	d->expandWhenExploded = expand;
+        d->expandWhenExploded = expand;
 }
 
 bool RingDiagram::expandWhenExploded() const
 {
-	return d->expandWhenExploded;
+        return d->expandWhenExploded;
 }
 
 const QPair<QPointF, QPointF> RingDiagram::calculateDataBoundaries () const
@@ -192,12 +192,12 @@ void RingDiagram::paint( PaintContext* ctx )
         totalOffset += qMax( maxOffsetInThisRow, 0.0 );
         // FIXME: What if explode factor of inner ring is > 1.0 ?
         //if ( !d->expandWhenExploded )
-        //	break;
+        //      break;
     }
 
     // explode factor is relative to width (outer r - inner r) of one ring
     if ( rCount > 0 )
-    	totalOffset /= ( rCount + 1 );
+        totalOffset /= ( rCount + 1 );
     d->size /= ( 1.0 + totalOffset );
 
 

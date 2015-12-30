@@ -60,9 +60,10 @@ namespace KDChart {
 
         Private( const Private& rhs ) :
             AbstractDiagram::Private( rhs ),
-        // Do not copy axes and reference diagrams.
-        axesList(),
-        referenceDiagram( 0 )
+            // Do not copy axes and reference diagrams.
+            axesList(),
+            referenceDiagram( 0 ),
+            referenceDiagramOffset()
         {
         }
 
@@ -102,4 +103,3 @@ namespace KDChart {
 }
 
 #endif /* KDCHARTABSTRACTTERNARYDIAGRAM_P_H */
-
