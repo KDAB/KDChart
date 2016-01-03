@@ -5,7 +5,7 @@
 # KDChart_LIBRARIES	- Path to KDChart libraries.
 # KDChart_INCLUDE_DIR	- Path to the KDChart include directory.
 #
-# Copyright (C) 2011-2015 Klaralvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
+# Copyright (C) 2011-2016 Klaralvdalens Datakonsult AB, a KDAB Group company, info@kdab.com
 
 # Redistribution and use is allowed according to the terms of the BSD license
 
