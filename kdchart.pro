@@ -85,11 +85,11 @@ exists( LICENSE.GPL.txt ): licenses.files += LICENSE.GPL.txt
 licenses.path = $$INSTALL_DOC_DIR
 INSTALLS += licenses
 
-exists( README.txt ) {
-    readme.files = README.txt
-    readme.path = $$INSTALL_DOC_DIR
-    INSTALLS += readme
-}
+# install readme(s):
+exists ( README.txt ):            readme.files  = README.txt
+exists ( README-commercial.txt ): readme.files += README-commercial.txt
+readme.path = $$INSTALL_DOC_DIR
+INSTALLS += readme
 
 # forward make test calls to qtests:
 test.target=test

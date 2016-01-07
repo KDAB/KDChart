@@ -29,6 +29,9 @@ Contact
 * Join our mailing list: https://mail.kdab.com/mailman/listinfo/kdchart-interest
 * See our official home page: http://www.kdab.com/products/kd-chart
 
+In case of additional questions during evaluation or use of
+KD Chart please contact our technical support via customers.kdab.com.
+
 Get Involved
 ============
 KDAB will happily accept external contributions, but substantial
@@ -37,13 +40,15 @@ Contact support@kdab.com for more information.
 
 License
 =======
-The KD Chart Software is (C) 2001-2016 Klarälvdalens Datakonsult AB (KDAB),
-and is available under the terms of:
-* the GPL (see LICENSE.GPL.txt for details)
-* the KDAB commercial license, provided that you buy a license.
-  please contact info@kdab.com if you are interested in buying commercial licenses.
+Copyright (C) 2001-2016 Klarälvdalens Datakonsult AB (KDAB), a KDAB Group company, <info@kdab.com>
 
-Commercial use is described in README-commercial.txt.
+Commercial licensing terms are available in the included file
+        LICENSE.txt (for non-US customers)
+or
+        LICENSE.US.txt (for US customers)
+, respectively.
+
+For terms of redistribution, refer to the license agreement.
 
 About KDAB
 ==========
