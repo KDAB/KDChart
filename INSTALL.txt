@@ -1,0 +1,128 @@
+KD Chart 2.5.0 supports Qt version 4.x.
+KD Chart 2.5.1 and later supports both Qt 4 and Qt 5.
+
+================== UNIX ==========================
+     
+0) From the top directory of your KD Chart installation run the "configure" scripts.
+
+   Use depending on the kind of build on one of the following;
+     ./configure.sh -shared -debug
+     ./configure.sh -shared -release
+     ./configure.sh -static -debug
+     ./configure.sh -static -release
+
+   To define the install-location use for example;
+     ./configure.sh -shared -debug -prefix /opt/kdchart
+ 
+   NOTE: Don't use releative paths for the prefix, they will not work.
+
+   If you want to install the libraries under the "lib64" folder then
+   set the QMAKE_ARGS environment variable to "LIB_SUFFIX=64" like so:
+   QMAKE_ARGS="LIB_SUFFIX=64"
+   export QMAKE_ARGS
+
+1) set your LD_LIBRARY_PATH to point to your KD Chart installation lib directory.
+
+   If you do not have LD_LIBRARY_PATH set already then use this line:
+LD_LIBRARY_PATH=/path/to/kdchart/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH
+
+   The above has to be added into your .bashrc or similar to make it permanent. It may also,
+   of course, be run from a shell just before building KD Chart, but in this case your settings
+   will only be available for this shell.
+
+2) Build everything by typing:
+
+make
+
+3) (optionally:) Install KD Chart:
+
+   From your top-level KD Chart directory just type
+
+make install
+
+   NOTE: Admin rights are needed for installing it to /usr/local.
+         Run "sudo make install", to install with admin rights.
+
+   This will copy the necessary files into the sub-directories of
+   your installation path: /usr/local/KDAB/KDChart-VERSION/
+
+4) Have a look at the example applications to get you started with the KD Chart 2.x API.
+
+
+================ WINDOWS =======================
+
+0) From the top directory of your KD Chart installation run the "configure" scripts.
+
+    Use depending on the kind of build on one of the following;
+     configure.bat -shared -debug
+     configure.bat -shared -release
+     configure.bat -static -debug
+     configure.bat -static -release
+     
+    To define the install-location use for example;
+     configure.bat -shared -debug -prefix c:/kdchart
+
+    NOTE: Don't use releative paths for the prefix, they will not work.
+
+1) Add the path to KD Chart lib into your LIB environment variable and the path 
+   to KD Chart bin into your PATH environment variable.
+
+   Or run:
+set PATH=\path\to\kdchart\bin;%PATH%
+set LIB=\path\to\kdchart\lib;%LIB%
+
+2) Build everything by typing:
+
+    nmake
+
+3) (optionally:) Install KD Chart:
+
+   From your top-level KD Chart directory just type
+   
+   nmake install
+   
+   This will copy the necessary files into the sub-directories of
+   your installation path: C:\KDAB\KDChart-VERSION\
+   
+4) Have a look at the example applications to get you started with the KD Chart 2.x API.
+   
+================== MAC ==========================
+   
+0) From the top directory of your KD Chart installation run the "configure" scripts.
+
+   Use depending on the kind of build on one of the following;
+     ./configure.sh -shared -debug
+     ./configure.sh -shared -release
+     ./configure.sh -static -debug
+     ./configure.sh -static -release
+
+   To define the install-location use for example;
+     ./configure.sh -shared -debug -prefix /opt/kdchart
+
+   NOTE: Don't use releative paths for the prefix, they will not work.
+
+1) Set your DYLD_LIBRARY_PATH to point to your KD Chart installation lib directory.
+   
+   If you do not have DYLD_LIBRARY_PATH set already then use these lines:
+DYLD_LIBRARY_PATH=/path/to/kdchart/lib:$DYLD_LIBRARY_PATH
+export DYLD_LIBRARY_PATH
+
+   The above has to be added into your .bashrc or similar to make it permanent. It may also,
+   of course, be run from a shell just before building KD Chart, but in this case your settings
+   will only be available for this shell.
+
+2) Build everything by typing:
+
+  make
+
+3) (optionally:) Install KD Chart:
+
+   From your top-level KD Chart directory just type
+
+make install
+
+   This will copy the necessary files into the sub-directories of
+   your installation path: /usr/local/KDAB/KDChart-VERSION/
+
+4) Have a look at the example applications to get you started with the KD Chart 2.x API.

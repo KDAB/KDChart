@@ -1,0 +1,340 @@
+#!/bin/bash
+PRODUCT=@PRODUCT_UPPERCASE@
+Product=@PRODUCT_MIXEDCASE@
+product=@PRODUCT_LOWERCASE@
+ProductSpace="@PRODUCT_MIXEDCASE_SPACED@"
+
+VERSION=@VERSION@
+
+STATIC_BUILD_SUPPORTED=@STATIC_BUILD_SUPPORTED@
+
+SOURCE_DIR=`dirname "$0"`
+PACKSCRIPTS_DIR="$SOURCE_DIR"/../admin/packscripts
+
+hide_symbols=yes
+shared=yes
+debug=no
+release=yes
+prefix=
+unittests=no
+hostqmake=
+targetqmake=
+
+[ -d "$PACKSCRIPTS_DIR" ] && unittests=yes
+
+function die {
+    echo "$1" 1>&2
+    exit 1
+}
+
+function check_license {
+
+    [ -d "$PACKSCRIPTS_DIR" ] && return 0 
+    [ -f .license.accepted ] && return 0
+
+    if [ -f "$SOURCE_DIR"/LICENSE.GPL.txt -a -f "$SOURCE_DIR"/LICENSE.US.txt -a -f "$SOURCE_DIR"/LICENSE.txt ] ; then
+        echo
+        echo "Please choose your license."
+        echo
+        echo "Type 1 for the GNU General Public License (GPL)."
+        echo "Type 2 for the $ProductSpace Commercial License for USA/Canada."
+        echo "Type 3 for the $ProductSpace Commercial License for anywhere outside USA/Canada."
+        echo "Anything else cancels."
+        echo
+        echo -n "Select: "
+        read license
+
+    elif [ -f "$SOURCE_DIR"/LICENSE.GPL.txt ] ; then
+        license="1"
+
+    elif [ -f "$SOURCE_DIR"/LICENSE.US.txt ] ; then
+        license="2"
+
+    elif [ -f "$SOURCE_DIR"/LICENSE.txt ] ; then
+        license="3"
+    else
+        die "Couldn't find license file, aborting"
+    fi
+
+    if [ "$license" = "1" ]; then
+        license_name="GNU General Public License (GPL)"
+        license_file="$SOURCE_DIR"/LICENSE.GPL.txt
+    elif [ "$license" = "2" ]; then
+        license_name="$ProductSpace USA/Canada Commercial License"
+        license_file="$SOURCE_DIR"/LICENSE.US.txt
+    elif [ "$license" = "3" ]; then
+        license_name="$ProductSpace Commercial License"
+        license_file="$SOURCE_DIR"/LICENSE.txt
+    else
+        return 1
+    fi
+
+    while true ; do
+	cat <<EOF
+
+License Agreement
+
+You are licensed to use this software under the terms of
+the $license_name.
+
+Type '?' to view the $license_name
+Type 'yes' to accept this license offer.
+Type 'no' to decline this license offer.
+
+Do you accept the terms of this license?
+EOF
+        read answer
+
+	[ "$answer" = "no" ]  && return 1
+	[ "$answer" = "yes" ] && touch .license.accepted && return 0
+	[ "$answer" = "?" ]   && more $license_file
+    done
+}
+
+if ! check_license ; then
+    die "You are not licensed to use this software."
+fi
+
+function usage {
+    [ -z "$1" ] || echo "$0: unknown option \"$1\"" 1>&2
+    echo "usage: $0 [options]" 1>&2
+    cat <<EOF 1>&2
+where options include:
+
+EOF
+cat <<EOF 1>&2
+  -prefix <path>
+      install $ProductSpace into <path>
+EOF
+cat <<EOF 1>&2
+
+  -release / -debug
+      build in debug/release mode
+EOF
+if [ "$STATIC_BUILD_SUPPORTED" = "true" ]; then
+  cat <<EOF 1>&2
+
+  -static / -shared
+      build static/shared libraries
+EOF
+fi
+cat <<EOF 1>&2
+
+  -[no-]hide-symbols (Unix only)
+      reduce the number of exported symbols
+
+  -[no-]unittests
+      enable/disable compiled-in unittests
+
+  -qmake </qt/bin/qmake>
+      explicitly sets the qmake location, instead of using the
+      qmake in the path.
+
+  -hostqmake </host/qt/bin/qmake>
+      when cross-compiling, the qmake in the path will be used for
+      compiling the product's code, but the host qmake will be used
+      to compile the host tools (code generators).
+
+  -spec <mkspec>
+      compile $ProductSpace for specific Qt-supported target <mkspec>
+
+EOF
+    exit 1
+}
+
+
+while [ $# -ne 0 ] ; do
+    case "$1" in
+	-prefix)
+	    shift
+            if [ $# -eq 0 ] ; then
+		    echo "-prefix needs an argument" 2>&1
+		    usage
+	    fi
+            prefix="$1"
+	    ;;
+        -no-hide-symbols)
+            hide_symbols=no
+            ;;
+        -hide-symbols)
+            hide_symbols=yes
+            ;;
+        -override-version) # undocumented by design
+            shift
+            if [ $# -eq 0 ] ; then
+                    echo "-override-version needs an argument" 2>&1
+                    usage
+            fi
+            VERSION="$1"
+            ;;
+	-no-unittests)
+	    unittests=no
+	    ;;
+	-unittests)
+	    unittests=yes
+	    ;;
+        -shared)
+            shared=yes
+            ;;
+        -static)
+            if [ "$STATIC_BUILD_SUPPORTED" != "true" ]; then
+                echo "Static build not supported, -static option not allowed" 2>&1
+                usage
+            fi
+            shared=no
+            ;;
+        -debug)
+            debug=yes
+            release=no
+            ;;
+        -release)
+            debug=no
+            release=yes
+            ;;
+        -spec)
+            shift
+            if [ $# -eq 0 ] ; then
+                echo "-spec needs an argument" 2>&1
+                usage
+            fi
+            SPEC="-spec $1"
+            ;;
+        -hostqmake)
+            shift
+            if [ $# -eq 0 ] ; then
+                echo "-hostqmake needs an argument" 2>&1
+                usage
+            fi
+            hostqmake="$1"
+            ;;
+        -qmake)
+            shift
+            if [ $# -eq 0 ] ; then
+                echo "-make needs an argument" 2>&1
+                usage
+            fi
+            targetqmake="$1"
+            ;;
+        *)
+            usage "$1"
+            ;;
+    esac
+    shift
+done
+
+if [ -n "$targetqmake" ] ; then
+    if [ -z "$QTDIR" ] ;  then
+        QTDIR="$($targetqmake -query QT_INSTALL_PREFIX)"
+        if [ $? -ne 0 ] ; then
+            die "$targetqmake -query QT_INSTALL_PREFIX gave an error"
+        fi
+    fi
+else
+    for qmk in qmake qmake-qt5 qmake-qt4
+    do
+        which "$qmk" >/dev/null 2>&1
+        if [ $? -eq 0 -a -z "$targetqmake" ] ; then
+            QTDIR="$($qmk -query QT_INSTALL_PREFIX)"
+            if [ $? -eq 0 ] ; then
+                targetqmake=$qmk
+                break
+            fi
+        fi
+    done
+    [ -z "$targetqmake" ] && die "You need qmake or qmake-qt5 or qmake-qt4 in the PATH"
+fi
+
+
+find . -name debug -o -name release -o -name Makefile\* | xargs rm -rf
+
+if [ -f src/src.pro ] ; then
+    rm -rf lib bin
+fi
+
+default_prefix=/usr/local/KDAB/$Product-$VERSION
+if [ -z "$prefix" ] ; then
+    prefix="$default_prefix"
+fi
+
+QMAKE_ARGS="$QMAKE_ARGS VERSION=$VERSION"
+QMAKE_ARGS="$QMAKE_ARGS CONFIG+=${product}_target"
+
+if [ "$debug" = "yes" ]; then
+    QMAKE_ARGS="$QMAKE_ARGS CONFIG-=release CONFIG+=debug CONFIG-=debug_and_release"
+fi
+
+if [ "$release" = "yes" ]; then
+    QMAKE_ARGS="$QMAKE_ARGS CONFIG+=release CONFIG-=debug CONFIG-=debug_and_release"
+fi
+
+[ "$hide_symbols" = "yes" ] && QMAKE_ARGS="$QMAKE_ARGS CONFIG+=hide_symbols"
+
+[ "$unittests" = "yes" ] && QMAKE_ARGS="$QMAKE_ARGS CONFIG+=unittests"
+
+if [ "$shared" = "yes" ]; then
+    QMAKE_ARGS="$QMAKE_ARGS CONFIG-=static CONFIG-=staticlib CONFIG+=shared"
+else
+    QMAKE_ARGS="$QMAKE_ARGS CONFIG+=static CONFIG+=staticlib CONFIG-=shared"
+fi
+
+if [ -d "$QTDIR/include/Qt/private" ] ; then
+    QMAKE_ARGS="$QMAKE_ARGS CONFIG+=have_private_qt_headers"
+    QMAKE_ARGS="$QMAKE_ARGS INCLUDEPATH+=$QTDIR/include/Qt/private"
+#else
+    #echo "QTDIR must point to an installation that has private headers installed."
+    #echo "Some features will not be available."
+fi
+
+QMAKE_ARGS="$QMAKE_ARGS ${PRODUCT}_INSTALL_PREFIX=$prefix"
+
+# This must be the last line that touches QMAKE_ARGS
+if [ "$hostqmake" != "" ] ; then
+    HOST_QMAKE_ARGS="$QMAKE_ARGS"
+    QMAKE_ARGS="$QMAKE_ARGS CONFIG+=crosscompiling"
+fi
+
+
+cat <<EOF 1>&2
+$ProductSpace v$VERSION configuration:
+EOF
+
+cat <<EOF 1>&2
+  Install Prefix.............: $prefix
+    (default: $default_prefix)
+EOF
+
+cat <<EOF 1>&2
+  Debug......................: $debug (default: no)
+  Release....................: $release (default: yes)
+EOF
+if [ "$STATIC_BUILD_SUPPORTED" = "true" ]; then
+  cat <<EOF 1>&2
+  Shared build...............: $shared (default: yes)
+EOF
+fi
+if [ "$SPEC" != "" ]; then
+  cat <<EOF 1>&2
+  Spec.......................: ${SPEC#-spec }
+EOF
+fi
+if [ "$hostqmake" != "" ]; then
+  cat <<EOF 1>&2
+  Host qmake................: ${hostqmake}
+EOF
+fi
+cat <<EOF 1>&2
+  Compiled-In Unit Tests.....: $unittests (default: no)
+  Restricted symbol export
+    (shared build only)......: $hide_symbols (default: yes)
+
+EOF
+
+"$targetqmake" ${SPEC} "$SOURCE_DIR"/$product.pro -recursive $QMAKE_ARGS "${PRODUCT}_BASE=`pwd`" || die "qmake failed"
+
+if [ "$hostqmake" != "" -a -d "$SOURCE_DIR"/kdwsdl2cpp ]; then
+   [ -d kdwsdl2cpp ] || mkdir kdwsdl2cpp
+   cd kdwsdl2cpp
+   $hostqmake "$SOURCE_DIR"/kdwsdl2cpp -recursive $HOST_QMAKE_ARGS || die "host qmake failed"
+fi
+
+echo "Ok, now run make, then make install to install into $prefix"

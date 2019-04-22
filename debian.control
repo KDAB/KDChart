@@ -1,0 +1,13 @@
+Source: kdchart
+Section: Miscellaneous
+Priority: optional
+Maintainer: Allen Winter <allen.winter@kdab.com>
+Build-Depends: debhelper (>=9), cdbs, cmake
+Standards-Version: 3.9.6
+Homepage: https://github.com/KDAB/KDChart
+
+Package: kdchart
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: KDAB's KD Chart a tool for creating business and scientific charts. It provides developers with a sophisticated way to customize layouts and to design and manage large numbers of axes.
+

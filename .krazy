@@ -1,0 +1,15 @@
+CHECKSETS qt4,c++,foss
+
+#KDAB-specific checks
+EXTRA kdabcopyright
+
+#exclude invasive checks
+EXCLUDE style,includes,normalize,explicit,qminmax,cpp
+
+#skip autogen buildsystem
+SKIP /autogen/|/autogen.py|/genignore.py
+#nor examples
+SKIP /examples/
+#if you have a build subdir, skip it
+SKIP /build-
+

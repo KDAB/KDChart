@@ -1,0 +1,38 @@
+KDCHART_MAJOR_VERSION = 2
+
+# copy from environment
+isEmpty(KDCHARTDIR) {
+    KDCHARTDIR = $$(KDCHARTDIR)
+    KDCHARTDIR_BUILD = $$(KDCHARTDIR)
+}
+# If no KDCHARTDIR was specified, assume it is the current [build/source] directory
+isEmpty(KDCHARTDIR) {
+    KDCHARTDIR = $${TOP_SOURCE_DIR}
+    KDCHARTDIR_BUILD = $${TOP_BUILD_DIR}
+}
+
+!isEmpty(KDCHARTDIR) {
+    KDCHART_LIB_TYPE_SUFFIX=""
+    KDCHART_LIB_VERSION_SUFFIX = ""
+    win32 {
+        CONFIG(debug, debug|release) {
+            KDCHART_LIB_TYPE_SUFFIX = "d"
+        }
+        KDCHART_LIB_VERSION_SUFFIX = $$KDCHART_MAJOR_VERSION
+    }
+    LIBS += -L$${KDCHARTDIR}/lib
+    LIBS += -lkdchart$$KDCHART_LIB_TYPE_SUFFIX$$KDCHART_LIB_VERSION_SUFFIX
+
+    unix {
+        !isEmpty(QMAKE_LFLAGS_RPATH): LIBS += $$QMAKE_LFLAGS_RPATH$${KDCHARTDIR}/lib
+    }
+
+    INCLUDEPATH += $$KDCHARTDIR/include $$KDCHARTDIR/include/KDChart $$KDCHARTDIR/include/KDGantt
+    DEPENDPATH += $$KDCHARTDIR/include $$KDCHARTDIR/include/KDChart $$KDCHARTDIR/include/KDGantt
+
+    CONFIG += have_kdchart
+    DEFINES += HAVE_KDCHART
+
+} else: equals(builddir, $$top_builddir) {
+    error("WARNING: KD Chart not found. Please set KDCHARTDIR either as an environment variable or on the qmake command line if you want KD Chart support.")
+}

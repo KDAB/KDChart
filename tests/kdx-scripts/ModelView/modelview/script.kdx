@@ -1,0 +1,1187 @@
+// Ensure to edit this file with an editor supporting UTF8 encoding
+KDX.setScriptVersion(5);
+KDX.wait(148); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(26,92), new Size(125,381) )
+KDX.wait(19); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(27,93), new Size(125,381) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(28,93), new Size(125,381) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(29,94), new Size(125,381) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(31,94), new Size(125,381) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(33,94), new Size(125,381) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(36,94), new Size(125,381) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(39,94), new Size(125,381) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(41,94), new Size(125,381) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(43,94), new Size(125,381) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(45,94), new Size(125,381) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(46,94), new Size(125,381) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(48,94), new Size(125,381) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(49,94), new Size(125,381) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(50,94), new Size(125,381) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(51,94), new Size(125,381) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(52,94), new Size(125,381) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(53,94), new Size(125,381) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(55,94), new Size(125,381) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(57,94), new Size(125,381) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(63,92), new Size(125,381) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(65,92), new Size(125,381) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(67,92), new Size(125,381) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(68,91), new Size(125,381) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(69,91), new Size(125,381) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(70,91), new Size(125,381) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(73,91), new Size(125,381) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(79,89), new Size(125,381) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(87,87), new Size(125,381) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(99,85), new Size(125,381) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(109,83), new Size(125,381) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(121,79), new Size(125,381) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(131,75), new Size(125,381) )
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QWidget_3/QScrollBar", NoButton, NoButton, NoButton, new Point(6,101), new Size(16,407) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QWidget_3/QScrollBar", NoButton, NoButton, NoButton, new Point(18,97), new Size(16,407) )
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, NoButton, NoButton, new Point(0,99), new Size(6,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, NoButton, NoButton, new Point(8,93), new Size(6,427) )
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(2,93), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(12,87), new Size(714,427) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(22,79), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(28,73), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(34,67), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(40,61), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(48,55), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(54,49), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(60,43), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(68,37), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(72,31), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(78,27), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(82,21), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(88,17), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(94,11), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(98,5), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(104,-1), new Size(714,427) )
+KDX.wait(1);
+var menuBarAdapter = new MenuBarAdapter( "/MainWindow/QMenuBar" );
+menuBarAdapter.setItem( "", -1 );
+menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+
+KDX.wait(9);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(9);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(9);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(11);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(9);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(21);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(9);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(863); KDX.moveEvent( "/MainWindow", new Point( 387, 397 ) )
+KDX.wait(20); KDX.moveEvent( "/MainWindow", new Point( 387, 385 ) )
+KDX.wait(10); KDX.moveEvent( "/MainWindow", new Point( 375, 377 ) )
+KDX.wait(8); KDX.moveEvent( "/MainWindow", new Point( 369, 369 ) )
+KDX.wait(11); KDX.moveEvent( "/MainWindow", new Point( 361, 357 ) )
+KDX.wait(10); KDX.moveEvent( "/MainWindow", new Point( 353, 345 ) )
+KDX.wait(11); KDX.moveEvent( "/MainWindow", new Point( 343, 331 ) )
+KDX.wait(7); KDX.moveEvent( "/MainWindow", new Point( 331, 315 ) )
+KDX.wait(8); KDX.moveEvent( "/MainWindow", new Point( 319, 297 ) )
+KDX.wait(10); KDX.moveEvent( "/MainWindow", new Point( 305, 279 ) )
+KDX.wait(9); KDX.moveEvent( "/MainWindow", new Point( 289, 259 ) )
+KDX.wait(16); KDX.moveEvent( "/MainWindow", new Point( 271, 241 ) )
+KDX.wait(6); KDX.moveEvent( "/MainWindow", new Point( 255, 225 ) )
+KDX.wait(9); KDX.moveEvent( "/MainWindow", new Point( 233, 211 ) )
+KDX.wait(10); KDX.moveEvent( "/MainWindow", new Point( 233, 197 ) )
+KDX.wait(9); KDX.moveEvent( "/MainWindow", new Point( 213, 185 ) )
+KDX.wait(12); KDX.moveEvent( "/MainWindow", new Point( 203, 173 ) )
+KDX.wait(9); KDX.moveEvent( "/MainWindow", new Point( 195, 165 ) )
+KDX.wait(9); KDX.moveEvent( "/MainWindow", new Point( 191, 159 ) )
+KDX.wait(9); KDX.moveEvent( "/MainWindow", new Point( 187, 153 ) )
+KDX.wait(11); KDX.moveEvent( "/MainWindow", new Point( 183, 149 ) )
+KDX.wait(11); KDX.moveEvent( "/MainWindow", new Point( 182, 147 ) )
+KDX.wait(9); KDX.moveEvent( "/MainWindow", new Point( 181, 145 ) )
+KDX.wait(11); KDX.moveEvent( "/MainWindow", new Point( 179, 144 ) )
+KDX.wait(9); KDX.moveEvent( "/MainWindow", new Point( 178, 142 ) )
+KDX.wait(10); KDX.moveEvent( "/MainWindow", new Point( 174, 138 ) )
+KDX.wait(11); KDX.moveEvent( "/MainWindow", new Point( 173, 136 ) )
+KDX.wait(9); KDX.moveEvent( "/MainWindow", new Point( 172, 134 ) )
+KDX.wait(10); KDX.moveEvent( "/MainWindow", new Point( 170, 133 ) )
+KDX.wait(9); KDX.moveEvent( "/MainWindow", new Point( 169, 131 ) )
+KDX.wait(10); KDX.moveEvent( "/MainWindow", new Point( 168, 129 ) )
+KDX.wait(10); KDX.moveEvent( "/MainWindow", new Point( 167, 127 ) )
+KDX.wait(9); KDX.moveEvent( "/MainWindow", new Point( 166, 125 ) )
+KDX.wait(9); KDX.moveEvent( "/MainWindow", new Point( 165, 123 ) )
+KDX.wait(10); KDX.moveEvent( "/MainWindow", new Point( 164, 122 ) )
+KDX.wait(9); KDX.moveEvent( "/MainWindow", new Point( 164, 120 ) )
+KDX.wait(12); KDX.moveEvent( "/MainWindow", new Point( 163, 118 ) )
+KDX.wait(9); KDX.moveEvent( "/MainWindow", new Point( 162, 117 ) )
+KDX.wait(8); KDX.moveEvent( "/MainWindow", new Point( 162, 116 ) )
+KDX.wait(10); KDX.moveEvent( "/MainWindow", new Point( 161, 115 ) )
+KDX.wait(9); KDX.moveEvent( "/MainWindow", new Point( 161, 114 ) )
+KDX.wait(21); KDX.moveEvent( "/MainWindow", new Point( 161, 113 ) )
+KDX.wait(150); KDX.moveEvent( "/MainWindow", new Point( 161, 114 ) )
+KDX.wait(75);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(11);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(8);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(9);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(188,4), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(208,10), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(230,16), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(252,24), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(276,36), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(302,46), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(330,52), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(360,54), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(394,56), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(436,62), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(478,66), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(516,76), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(544,86), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(560,98), new Size(714,427) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(570,106), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(578,114), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(586,120), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(596,128), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(606,136), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(614,142), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(620,148), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(626,152), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(632,158), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(638,162), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(646,168), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(654,174), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(660,180), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(666,184), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(672,188), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(674,189), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(676,189), new Size(714,427) )
+KDX.wait(21); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(678,190), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(679,190), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(680,190), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(681,190), new Size(714,427) )
+KDX.wait(149); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(679,190), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(673,194), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(665,196), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(653,198), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(637,202), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(619,206), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(599,208), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(581,212), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(561,216), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(541,220), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(521,224), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(501,228), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(477,230), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(453,232), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(425,234), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(391,234), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(353,236), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(317,238), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(285,240), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(255,240), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(227,242), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(203,242), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(183,242), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(165,238), new Size(714,427) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(149,236), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(133,232), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(119,228), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(107,226), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(97,224), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(91,222), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(83,222), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(80,222), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(77,222), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(75,221), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(72,221), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(69,221), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(67,220), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(59,220), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(53,218), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(47,216), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(39,214), new Size(714,427) )
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(33,212), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(27,210), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(25,209), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(23,209), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(21,208), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(20,208), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(18,208), new Size(714,427) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(17,208), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(16,207), new Size(714,427) )
+KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(7,194), new Size(714,427) )
+KDX.wait(2); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(7,193), new Size(714,427) )
+KDX.wait(40); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(7,192), new Size(714,427) )
+KDX.wait(29); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(7,191), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(6,190), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(5,189), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(3,188), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(2,187), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(0,187), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(-1,186), new Size(714,427) )
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, NoButton, NoButton, new Point(5,186), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, NoButton, NoButton, new Point(4,186), new Size(6,427) )
+KDX.wait(377); KDX.mousePressEvent( "/MainWindow/QSplitter/qt_splithandle__2", LeftButton, LeftButton, NoButton, new Point(4,186), new Size(6,427) )
+KDX.wait(71); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(5,186), new Size(6,427) )
+KDX.wait(28); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(8,187), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(10,187), new Size(6,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(16,189), new Size(6,427) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(26,191), new Size(6,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(36,191), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(48,191), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(62,191), new Size(6,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(74,191), new Size(6,427) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(88,191), new Size(6,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(104,191), new Size(6,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(118,191), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(132,191), new Size(6,427) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(146,191), new Size(6,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(160,191), new Size(6,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(174,189), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(184,189), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(192,189), new Size(6,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(200,189), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(203,189), new Size(6,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(206,189), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(209,189), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(210,189), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(211,189), new Size(6,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(212,189), new Size(6,427) )
+KDX.wait(288); KDX.mouseReleaseEvent( "/MainWindow/QSplitter/qt_splithandle__2", LeftButton, NoButton, NoButton, new Point(212,189), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(207,189), new Size(714,427) )
+KDX.wait(18); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(208,189), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(210,189), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(218,189), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(230,191), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(248,193), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(266,195), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(286,199), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(308,203), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(330,203), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(356,207), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(380,207), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(404,209), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(428,209), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(452,209), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(476,211), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(504,211), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(530,211), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(558,213), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(582,213), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(604,217), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(622,219), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(636,223), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(648,225), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(656,227), new Size(714,427) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(664,229), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(672,229), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(680,231), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(688,233), new Size(714,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(696,235), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(704,235), new Size(714,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(712,237), new Size(714,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(714,237), new Size(714,427) )
+KDX.wait(609); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(713,237), new Size(714,427) )
+KDX.wait(427); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(714,237), new Size(714,427) )
+KDX.wait(520); KDX.resizeEvent( "/MainWindow", new Size( 893, 480 ) )
+KDX.wait(25); KDX.resizeEvent( "/MainWindow", new Size( 895, 480 ) )
+KDX.wait(25); KDX.resizeEvent( "/MainWindow", new Size( 903, 480 ) )
+KDX.wait(27); KDX.resizeEvent( "/MainWindow", new Size( 947, 480 ) )
+KDX.wait(32); KDX.resizeEvent( "/MainWindow", new Size( 975, 480 ) )
+KDX.wait(29); KDX.resizeEvent( "/MainWindow", new Size( 1049, 480 ) )
+KDX.wait(35); KDX.resizeEvent( "/MainWindow", new Size( 1115, 480 ) )
+KDX.wait(352); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(939,259), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(936,259), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(928,259), new Size(940,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(916,259), new Size(940,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(902,259), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(882,259), new Size(940,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(858,257), new Size(940,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(830,255), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(802,253), new Size(940,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(772,249), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(740,243), new Size(940,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(706,237), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(674,231), new Size(940,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(644,227), new Size(940,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(612,223), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(582,221), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(550,219), new Size(940,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(516,217), new Size(940,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(482,215), new Size(940,427) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(446,213), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(408,209), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(366,207), new Size(940,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(324,203), new Size(940,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(284,199), new Size(940,427) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(244,195), new Size(940,427) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(206,191), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(178,187), new Size(940,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(152,183), new Size(940,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(134,181), new Size(940,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(118,179), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(106,179), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(96,179), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(88,179), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(82,181), new Size(940,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(76,183), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(74,184), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(72,185), new Size(940,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(70,185), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(69,185), new Size(940,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(67,186), new Size(940,427) )
+KDX.wait(29); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(66,186), new Size(940,427) )
+KDX.wait(22); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(65,186), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(62,186), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(59,186), new Size(940,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(49,186), new Size(940,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(39,186), new Size(940,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(29,186), new Size(940,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(26,186), new Size(940,427) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(24,186), new Size(940,427) )
+KDX.wait(59); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(23,186), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(21,186), new Size(940,427) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(18,186), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(10,186), new Size(940,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(2,184), new Size(940,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(-1,184), new Size(940,427) )
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, NoButton, NoButton, new Point(5,184), new Size(6,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, NoButton, NoButton, new Point(3,184), new Size(6,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, NoButton, NoButton, new Point(2,184), new Size(6,427) )
+KDX.wait(138); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, NoButton, NoButton, new Point(2,183), new Size(6,427) )
+KDX.wait(29); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, NoButton, NoButton, new Point(1,183), new Size(6,427) )
+KDX.wait(19); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, NoButton, NoButton, new Point(0,183), new Size(6,427) )
+KDX.wait(239); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, NoButton, NoButton, new Point(1,183), new Size(6,427) )
+KDX.wait(20); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, NoButton, NoButton, new Point(2,183), new Size(6,427) )
+KDX.wait(19); KDX.mousePressEvent( "/MainWindow/QSplitter/qt_splithandle__2", LeftButton, LeftButton, NoButton, new Point(2,183), new Size(6,427) )
+KDX.wait(20); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(3,183), new Size(6,427) )
+KDX.wait(26); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(3,183), new Size(6,427) )
+KDX.wait(25); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(4,184), new Size(6,427) )
+KDX.wait(20); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(4,184), new Size(6,427) )
+KDX.wait(30); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(12,186), new Size(6,427) )
+KDX.wait(37); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(11,186), new Size(6,427) )
+KDX.wait(21); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(28,186), new Size(6,427) )
+KDX.wait(37); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(32,186), new Size(6,427) )
+KDX.wait(36); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(12,186), new Size(6,427) )
+KDX.wait(40); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(20,188), new Size(6,427) )
+KDX.wait(38); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(52,192), new Size(6,427) )
+KDX.wait(38); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(54,194), new Size(6,427) )
+KDX.wait(55); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(40,196), new Size(6,427) )
+KDX.wait(19); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(74,196), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(63,196), new Size(6,427) )
+KDX.wait(4); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(64,196), new Size(6,427) )
+KDX.wait(147); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(64,197), new Size(6,427) )
+KDX.wait(249); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(63,197), new Size(6,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(62,197), new Size(6,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(60,198), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(58,199), new Size(6,427) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(55,199), new Size(6,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(53,200), new Size(6,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(52,200), new Size(6,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(50,200), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(48,200), new Size(6,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(46,201), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(43,201), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(37,203), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(27,203), new Size(6,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(17,205), new Size(6,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(9,207), new Size(6,427) )
+KDX.wait(32); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(-7,209), new Size(6,427) )
+KDX.wait(135); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(1,209), new Size(6,427) )
+KDX.wait(30); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(0,210), new Size(6,427) )
+KDX.wait(25); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(-5,211), new Size(6,427) )
+KDX.wait(28); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(1,212), new Size(6,427) )
+KDX.wait(125); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(1,212), new Size(6,427) )
+KDX.wait(27); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(1,212), new Size(6,427) )
+KDX.wait(161); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(-2,212), new Size(6,427) )
+KDX.wait(24); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(0,212), new Size(6,427) )
+KDX.wait(28); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(0,212), new Size(6,427) )
+KDX.wait(156); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(1,212), new Size(6,427) )
+KDX.wait(26); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(1,212), new Size(6,427) )
+KDX.wait(26); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(0,212), new Size(6,427) )
+KDX.wait(20); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(1,212), new Size(6,427) )
+KDX.wait(31); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(0,212), new Size(6,427) )
+KDX.wait(133); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(2,211), new Size(6,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, LeftButton, NoButton, new Point(1,211), new Size(6,427) )
+KDX.wait(50); KDX.mouseReleaseEvent( "/MainWindow/QSplitter/qt_splithandle__2", LeftButton, NoButton, NoButton, new Point(2,211), new Size(6,427) )
+KDX.wait(30); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, NoButton, NoButton, new Point(2,210), new Size(6,427) )
+KDX.wait(49); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, NoButton, NoButton, new Point(1,210), new Size(6,427) )
+KDX.wait(59); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, NoButton, NoButton, new Point(0,209), new Size(6,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/qt_splithandle__2", NoButton, NoButton, NoButton, new Point(-4,205), new Size(6,427) )
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QWidget_3/QScrollBar", NoButton, NoButton, NoButton, new Point(14,203), new Size(16,423) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QWidget_3/QScrollBar", NoButton, NoButton, NoButton, new Point(6,197), new Size(16,423) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QWidget_3/QScrollBar", NoButton, NoButton, NoButton, new Point(-4,191), new Size(16,423) )
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(310,165), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(300,157), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(288,147), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(274,137), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(258,125), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(244,115), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(232,103), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(224,95), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(218,87), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(217,85), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(216,84), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(215,83), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(215,81), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(214,79), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(210,75), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(206,71), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(202,65), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(198,59), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(192,53), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(184,45), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(176,39), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(170,35), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(166,31), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(165,30), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(165,29), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(164,28), new Size(314,397) )
+KDX.wait(29); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(164,27), new Size(314,397) )
+KDX.wait(40); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(163,26), new Size(314,397) )
+KDX.wait(19); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(162,25), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(161,24), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(161,23), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(160,22), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(159,21), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(158,19), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(157,19), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(157,18), new Size(314,397) )
+KDX.wait(169); KDX.mousePressEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", LeftButton, LeftButton, NoButton, new Point(157,18), new Size(314,397) )
+KDX.wait(139); KDX.mouseReleaseEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", LeftButton, NoButton, NoButton, new Point(157,18), new Size(314,397) )
+typeText( "/MainWindow/QSplitter/QTableView", "2" )
+typeText( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", "2" )
+KDX.focusOutEvent( "/MainWindow/QSplitter/QTableView", OtherFocusReason)
+KDX.focusInEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", OtherFocusReason)
+KDX.wait(7); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(157,18), new Size(314,397) )
+KDX.wait(6); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(57,18), new Size(99,29) )
+typeText( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", "1" )
+KDX.keyPressEvent("/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", "backspace", NoButton, "\x08" )
+KDX.keyReleaseEvent("/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", "backspace", NoButton, "\x08" )
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(57,19), new Size(99,29) )
+KDX.wait(17); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(56,20), new Size(99,29) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(56,21), new Size(99,29) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(55,23), new Size(99,29) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(55,25), new Size(99,29) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(54,26), new Size(99,29) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(53,28), new Size(99,29) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(53,29), new Size(99,29) )
+KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(153,29), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(153,30), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(152,31), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(152,32), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(152,33), new Size(314,397) )
+KDX.wait(29); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(151,34), new Size(314,397) )
+KDX.wait(50); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(151,35), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(151,36), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(151,37), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(151,38), new Size(314,397) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(151,39), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(151,41), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(150,42), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(150,44), new Size(314,397) )
+KDX.wait(159); KDX.focusOutEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", MouseFocusReason)
+KDX.wait(3); KDX.focusInEvent( "/MainWindow/QSplitter/QTableView", MouseFocusReason)
+KDX.mousePressEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", LeftButton, LeftButton, NoButton, new Point(150,44), new Size(314,397) )
+KDX.wait(126); KDX.mouseReleaseEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", LeftButton, NoButton, NoButton, new Point(150,44), new Size(314,397) )
+KDX.wait(1244); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(151,43), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(153,43), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(155,43), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(157,43), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(158,43), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(160,43), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(161,43), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(163,42), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(165,42), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(171,44), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(173,44), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(175,45), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(176,45), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(178,46), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(179,46), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(180,46), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(181,47), new Size(314,397) )
+KDX.wait(20); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(182,47), new Size(314,397) )
+KDX.wait(41); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(183,47), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(184,47), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(184,48), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(185,48), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(186,49), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(187,50), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(188,52), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(189,52), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(190,53), new Size(314,397) )
+KDX.wait(30); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(191,53), new Size(314,397) )
+KDX.wait(20); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(192,53), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(194,53), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(195,52), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(197,52), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(198,52), new Size(314,397) )
+KDX.wait(20); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(200,52), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(202,52), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(204,52), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(205,52), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(207,51), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(209,51), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(210,50), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(211,50), new Size(314,397) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(212,49), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(213,48), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(214,48), new Size(314,397) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(214,47), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(216,46), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(218,46), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(219,45), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(225,43), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(227,43), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(229,43), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(230,43), new Size(314,397) )
+KDX.wait(40); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(231,43), new Size(314,397) )
+KDX.wait(109); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(232,43), new Size(314,397) )
+KDX.wait(10); KDX.mousePressEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", LeftButton, LeftButton, NoButton, new Point(232,43), new Size(314,397) )
+KDX.wait(109); KDX.mouseReleaseEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", LeftButton, NoButton, NoButton, new Point(232,43), new Size(314,397) )
+KDX.wait(408); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(232,44), new Size(314,397) )
+typeText( "/MainWindow/QSplitter/QTableView", "1" )
+typeText( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", "1" )
+KDX.focusOutEvent( "/MainWindow/QSplitter/QTableView", OtherFocusReason)
+KDX.focusInEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", OtherFocusReason)
+KDX.wait(14); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(232,44), new Size(314,397) )
+KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(32,14), new Size(99,29) )
+typeText( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", "0" )
+KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(32,15), new Size(99,29) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(31,16), new Size(99,29) )
+KDX.wait(19); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(31,17), new Size(99,29) )
+KDX.wait(21); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(31,18), new Size(99,29) )
+KDX.wait(18); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(31,19), new Size(99,29) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(31,20), new Size(99,29) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(30,20), new Size(99,29) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(30,21), new Size(99,29) )
+KDX.wait(19); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(29,22), new Size(99,29) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(28,23), new Size(99,29) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(27,24), new Size(99,29) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(26,25), new Size(99,29) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", NoButton, NoButton, NoButton, new Point(22,29), new Size(99,29) )
+KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(222,59), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(220,60), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(214,66), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(212,67), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(206,71), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(200,75), new Size(314,397) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(194,79), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(186,83), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(180,85), new Size(314,397) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(172,89), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(166,91), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(158,95), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(152,97), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(146,101), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(138,105), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(130,109), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(120,115), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(112,119), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(104,123), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(96,125), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(94,126), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(91,126), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(88,126), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(87,126), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(86,126), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(85,126), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(84,125), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(84,124), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(83,123), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(83,121), new Size(314,397) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(83,119), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(83,117), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(83,114), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(83,106), new Size(314,397) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(83,96), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(83,86), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(83,76), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(81,66), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(77,54), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(73,42), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(67,30), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(59,20), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(53,14), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(45,8), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(39,2), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(33,-4), new Size(314,397) )
+KDX.wait(1);
+var headerViewAdapter = new HeaderViewAdapter( "/MainWindow/QSplitter/QTableView/QHeaderView_2/qt_scrollarea_viewport" );
+headerViewAdapter.setItem( 0, 1 );
+headerViewAdapter.mouseMove( new Point( 33, 22 ) );
+
+KDX.wait(8);headerViewAdapter.mouseMove( new Point( 29, 18 ) );
+KDX.wait(10);headerViewAdapter.mouseMove( new Point( 28, 16 ) );
+KDX.wait(10);headerViewAdapter.mouseMove( new Point( 27, 14 ) );
+KDX.wait(12);headerViewAdapter.mouseMove( new Point( 23, 8 ) );
+KDX.wait(9);headerViewAdapter.mouseMove( new Point( 22, 6 ) );
+KDX.wait(9);headerViewAdapter.mouseMove( new Point( 21, 4 ) );
+KDX.wait(10);headerViewAdapter.mouseMove( new Point( 17, 0 ) );
+KDX.wait(10);headerViewAdapter.mouseMove( new Point( 16, -1 ) );
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView", NoButton, NoButton, NoButton, new Point(42,1), new Size(358,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView", NoButton, NoButton, NoButton, new Point(38,-3), new Size(358,427) )
+KDX.wait(1);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(8);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(10);
+menuBarAdapter.setItem( "&File", 0 );
+menuBarAdapter.mouseMove( new Point( 33, 26 ) );
+
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 32, 26 ) );
+KDX.wait(12);menuBarAdapter.mouseMove( new Point( 31, 26 ) );
+KDX.wait(9);menuBarAdapter.mouseMove( new Point( 29, 26 ) );
+KDX.wait(9);menuBarAdapter.mouseMove( new Point( 28, 26 ) );
+KDX.wait(19);menuBarAdapter.mouseMove( new Point( 27, 26 ) );
+KDX.wait(40);menuBarAdapter.mouseMove( new Point( 27, 25 ) );
+KDX.wait(30);menuBarAdapter.mouseMove( new Point( 27, 24 ) );
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 27, 23 ) );
+KDX.wait(31);menuBarAdapter.mouseMove( new Point( 27, 22 ) );
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 26, 21 ) );
+KDX.wait(19);menuBarAdapter.mouseMove( new Point( 25, 21 ) );
+KDX.wait(170);menuBarAdapter.mousePress( new Point( 25, 21 ), LeftButton, LeftButton );
+KDX.wait(4); KDX.focusOutEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", PopupFocusReason)
+KDX.wait(96);
+menuBarAdapter.setItem( "&File", 0, "/MainWindow/QMenu" );
+menuBarAdapter.mouseRelease( new Point( 25, 21 ), LeftButton );
+
+KDX.wait(1); KDX.mouseReleaseEvent( "/MainWindow/QMenuBar", LeftButton, NoButton, NoButton, new Point(25,21), new Size(1115,30) )
+KDX.wait(18);menuBarAdapter.mouseMove( new Point( 26, 21 ) );
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(26,21), new Size(1115,30) )
+KDX.wait(159);menuBarAdapter.mouseMove( new Point( 26, 22 ) );
+KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(26,22), new Size(1115,30) )
+KDX.wait(20);menuBarAdapter.mouseMove( new Point( 26, 23 ) );
+KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(26,23), new Size(1115,30) )
+KDX.wait(18);menuBarAdapter.mouseMove( new Point( 26, 24 ) );
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(26,24), new Size(1115,30) )
+KDX.wait(19);menuBarAdapter.mouseMove( new Point( 27, 25 ) );
+KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(27,25), new Size(1115,30) )
+KDX.wait(20);menuBarAdapter.mouseMove( new Point( 27, 26 ) );
+KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(27,26), new Size(1115,30) )
+KDX.wait(39);
+var menuAdapter = new MenuAdapter( "/MainWindow/QMenu" );
+menuAdapter.setItem( 0, "&Open..." );
+menuAdapter.mouseMove( new Point( 23, 1 ) );
+
+KDX.wait(11);menuAdapter.mouseMove( new Point( 23, 2 ) );
+KDX.wait(9);menuAdapter.mouseMove( new Point( 23, 4 ) );
+KDX.wait(9);menuAdapter.mouseMove( new Point( 23, 5 ) );
+KDX.wait(11);menuAdapter.mouseMove( new Point( 23, 6 ) );
+KDX.wait(9);menuAdapter.mouseMove( new Point( 24, 7 ) );
+KDX.wait(11);menuAdapter.mouseMove( new Point( 24, 9 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 24, 10 ) );
+KDX.wait(9);menuAdapter.mouseMove( new Point( 24, 12 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 24, 13 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 24, 14 ) );
+KDX.wait(11);menuAdapter.mouseMove( new Point( 24, 15 ) );
+KDX.wait(39);menuAdapter.mouseMove( new Point( 25, 15 ) );
+KDX.wait(20);menuAdapter.mouseMove( new Point( 25, 16 ) );
+KDX.wait(41);menuAdapter.mouseMove( new Point( 26, 17 ) );
+KDX.wait(9);menuAdapter.mouseMove( new Point( 26, 18 ) );
+KDX.wait(9);menuAdapter.mouseMove( new Point( 26, 19 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 26, 22 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 26, 24 ) );
+KDX.wait(12);
+menuAdapter.setItem( 1, "&Save As..." );
+menuAdapter.mouseMove( new Point( 26, 2 ) );
+
+KDX.wait(8);menuAdapter.mouseMove( new Point( 26, 5 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 26, 7 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 26, 8 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 27, 9 ) );
+KDX.wait(11);menuAdapter.mouseMove( new Point( 27, 10 ) );
+KDX.wait(299);menuAdapter.mousePress( new Point( 27, 10 ), LeftButton, LeftButton );
+KDX.wait(128);menuAdapter.mouseRelease( new Point( 27, 10 ), LeftButton );
+KDX.wait(1); KDX.focusInEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", PopupFocusReason)
+KDX.wait(310); KDX.focusInEvent( "/MainWindow/QFileDialog/QLineEdit", TabFocusReason)
+KDX.wait(63); KDX.moveEvent( "/MainWindow/QFileDialog", new Point( 413, 184 ) )
+KDX.wait(1); KDX.focusOutEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", ActiveWindowFocusReason)
+KDX.wait(1); KDX.focusInEvent( "/MainWindow/QFileDialog/QLineEdit", ActiveWindowFocusReason)
+KDX.wait(677); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(7,200), new Size(611,340) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(19,212), new Size(611,340) )
+KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QListView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(6,165), new Size(585,213) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QListView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(20,177), new Size(585,213) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QListView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(34,189), new Size(585,213) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QListView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(48,201), new Size(585,213) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QListView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(62,213), new Size(585,213) )
+KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QListView", NoButton, NoButton, NoButton, new Point(64,215), new Size(589,217) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QListView", NoButton, NoButton, NoButton, new Point(76,223), new Size(589,217) )
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QLabel_2", NoButton, NoButton, NoButton, new Point(76,0), new Size(81,30) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QLabel_2", NoButton, NoButton, NoButton, new Point(88,8), new Size(81,30) )
+KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QLineEdit", NoButton, NoButton, NoButton, new Point(1,5), new Size(368,24) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QLineEdit", NoButton, NoButton, NoButton, new Point(11,11), new Size(368,24) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QLineEdit", NoButton, NoButton, NoButton, new Point(19,15), new Size(368,24) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QLineEdit", NoButton, NoButton, NoButton, new Point(27,17), new Size(368,24) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QLineEdit", NoButton, NoButton, NoButton, new Point(35,21), new Size(368,24) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QLineEdit", NoButton, NoButton, NoButton, new Point(41,23), new Size(368,24) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QLineEdit", NoButton, NoButton, NoButton, new Point(47,27), new Size(368,24) )
+KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(145,298), new Size(611,340) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(153,302), new Size(611,340) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(159,306), new Size(611,340) )
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(61,2), new Size(368,24) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(69,6), new Size(368,24) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(75,8), new Size(368,24) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(81,10), new Size(368,24) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(83,11), new Size(368,24) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(85,11), new Size(368,24) )
+KDX.wait(170); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(85,10), new Size(368,24) )
+KDX.wait(39); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(85,9), new Size(368,24) )
+KDX.wait(19); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(85,8), new Size(368,24) )
+KDX.wait(30); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(85,7), new Size(368,24) )
+KDX.wait(30); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(86,6), new Size(368,24) )
+KDX.wait(20); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(87,5), new Size(368,24) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(88,4), new Size(368,24) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(89,3), new Size(368,24) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(90,2), new Size(368,24) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(92,1), new Size(368,24) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(93,0), new Size(368,24) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(94,-1), new Size(368,24) )
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(192,303), new Size(611,340) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(193,303), new Size(611,340) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(194,303), new Size(611,340) )
+KDX.wait(19); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(194,302), new Size(611,340) )
+KDX.wait(558); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(194,301), new Size(611,340) )
+KDX.wait(49); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(194,300), new Size(611,340) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(195,300), new Size(611,340) )
+KDX.wait(29); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(196,300), new Size(611,340) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(196,299), new Size(611,340) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(197,299), new Size(611,340) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(198,299), new Size(611,340) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(199,299), new Size(611,340) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(205,297), new Size(611,340) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(208,297), new Size(611,340) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(218,297), new Size(611,340) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(232,297), new Size(611,340) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(246,299), new Size(611,340) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(264,299), new Size(611,340) )
+KDX.wait(20); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(306,305), new Size(611,340) )
+KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(208,1), new Size(368,24) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(232,7), new Size(368,24) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(258,13), new Size(368,24) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(284,23), new Size(368,24) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QComboBox_2", NoButton, NoButton, NoButton, new Point(312,31), new Size(368,24) )
+KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(410,335), new Size(611,340) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(438,345), new Size(611,340) )
+KDX.wait(307); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(553,339), new Size(611,340) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(553,336), new Size(611,340) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(554,334), new Size(611,340) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QFileDialog", NoButton, NoButton, NoButton, new Point(556,328), new Size(611,340) )
+KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QDialogButtonBox/QPushButton_2", NoButton, NoButton, NoButton, new Point(31,27), new Size(75,28) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QDialogButtonBox/QPushButton_2", NoButton, NoButton, NoButton, new Point(31,26), new Size(75,28) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QDialogButtonBox/QPushButton_2", NoButton, NoButton, NoButton, new Point(32,25), new Size(75,28) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QDialogButtonBox/QPushButton_2", NoButton, NoButton, NoButton, new Point(33,24), new Size(75,28) )
+KDX.wait(20); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QDialogButtonBox/QPushButton_2", NoButton, NoButton, NoButton, new Point(33,23), new Size(75,28) )
+KDX.wait(49); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QDialogButtonBox/QPushButton_2", NoButton, NoButton, NoButton, new Point(33,22), new Size(75,28) )
+KDX.wait(19); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QDialogButtonBox/QPushButton_2", NoButton, NoButton, NoButton, new Point(34,21), new Size(75,28) )
+KDX.wait(20); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QDialogButtonBox/QPushButton_2", NoButton, NoButton, NoButton, new Point(34,20), new Size(75,28) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QDialogButtonBox/QPushButton_2", NoButton, NoButton, NoButton, new Point(35,19), new Size(75,28) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QDialogButtonBox/QPushButton_2", NoButton, NoButton, NoButton, new Point(35,18), new Size(75,28) )
+KDX.wait(19); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QDialogButtonBox/QPushButton_2", NoButton, NoButton, NoButton, new Point(35,17), new Size(75,28) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QFileDialog/QDialogButtonBox/QPushButton_2", NoButton, NoButton, NoButton, new Point(36,17), new Size(75,28) )
+KDX.wait(90); KDX.focusOutEvent( "/MainWindow/QFileDialog/QLineEdit", MouseFocusReason)
+KDX.focusInEvent( "/MainWindow/QFileDialog/QDialogButtonBox/QPushButton_2", MouseFocusReason)
+KDX.wait(1); KDX.mousePressEvent( "/MainWindow/QFileDialog/QDialogButtonBox/QPushButton_2", LeftButton, LeftButton, NoButton, new Point(36,17), new Size(75,28) )
+KDX.wait(98); KDX.mouseReleaseEvent( "/MainWindow/QFileDialog/QDialogButtonBox/QPushButton_2", LeftButton, NoButton, NoButton, new Point(36,17), new Size(75,28) )
+KDX.wait(12); KDX.focusOutEvent( "/MainWindow/QFileDialog/QDialogButtonBox/QPushButton_2", ActiveWindowFocusReason)
+KDX.wait(13); KDX.focusInEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", ActiveWindowFocusReason)
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(449,358), new Size(751,427) )
+KDX.wait(43); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(448,358), new Size(751,427) )
+KDX.wait(39); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(446,358), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(444,358), new Size(751,427) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(438,356), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(430,354), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(420,352), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(412,348), new Size(751,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(402,346), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(392,342), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(384,338), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(374,332), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(364,326), new Size(751,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(352,320), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(338,312), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(324,302), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(310,294), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(292,282), new Size(751,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(274,272), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(256,262), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(238,252), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(218,242), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(198,232), new Size(751,427) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(178,222), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(156,214), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(136,202), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(116,192), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(96,182), new Size(751,427) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(76,172), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(54,162), new Size(751,427) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(30,154), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(8,146), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(-14,140), new Size(751,427) )
+KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QWidget_3/QScrollBar", NoButton, NoButton, NoButton, new Point(10,138), new Size(16,423) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QWidget_3/QScrollBar", NoButton, NoButton, NoButton, new Point(-8,132), new Size(16,423) )
+KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(306,106), new Size(314,397) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(288,102), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(270,98), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(254,94), new Size(314,397) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(236,88), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(218,84), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(196,78), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(174,70), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(152,64), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(132,58), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(116,50), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(98,44), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(80,38), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(62,30), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(44,24), new Size(314,397) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(26,18), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(12,14), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(0,10), new Size(314,397) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(-10,8), new Size(314,397) )
+KDX.wait(1);
+var headerViewAdapter = new HeaderViewAdapter( "/MainWindow/QSplitter/QTableView/QHeaderView/qt_scrollarea_viewport" );
+headerViewAdapter.setItem( 0, 2 );
+headerViewAdapter.mouseMove( new Point( 14, 8 ) );
+
+KDX.wait(9);headerViewAdapter.mouseMove( new Point( 11, 8 ) );
+KDX.wait(12);headerViewAdapter.mouseMove( new Point( 5, 6 ) );
+KDX.wait(10);headerViewAdapter.mouseMove( new Point( 4, 6 ) );
+KDX.wait(9);headerViewAdapter.mouseMove( new Point( 2, 6 ) );
+KDX.wait(19);headerViewAdapter.mouseMove( new Point( 1, 6 ) );
+KDX.wait(11);headerViewAdapter.mouseMove( new Point( 0, 5 ) );
+KDX.wait(18);headerViewAdapter.mouseMove( new Point( 0, 4 ) );
+KDX.wait(11);headerViewAdapter.mouseMove( new Point( -1, 3 ) );
+KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView", NoButton, NoButton, NoButton, new Point(1,31), new Size(358,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView", NoButton, NoButton, NoButton, new Point(1,30), new Size(358,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView", NoButton, NoButton, NoButton, new Point(1,29), new Size(358,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView", NoButton, NoButton, NoButton, new Point(1,28), new Size(358,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView", NoButton, NoButton, NoButton, new Point(1,26), new Size(358,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView", NoButton, NoButton, NoButton, new Point(2,24), new Size(358,427) )
+KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QAbstractButton", NoButton, NoButton, NoButton, new Point(0,22), new Size(24,26) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QAbstractButton", NoButton, NoButton, NoButton, new Point(1,21), new Size(24,26) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QAbstractButton", NoButton, NoButton, NoButton, new Point(2,19), new Size(24,26) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QAbstractButton", NoButton, NoButton, NoButton, new Point(3,17), new Size(24,26) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QAbstractButton", NoButton, NoButton, NoButton, new Point(3,15), new Size(24,26) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QAbstractButton", NoButton, NoButton, NoButton, new Point(4,14), new Size(24,26) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QAbstractButton", NoButton, NoButton, NoButton, new Point(4,12), new Size(24,26) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QAbstractButton", NoButton, NoButton, NoButton, new Point(5,10), new Size(24,26) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QAbstractButton", NoButton, NoButton, NoButton, new Point(5,9), new Size(24,26) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QAbstractButton", NoButton, NoButton, NoButton, new Point(6,7), new Size(24,26) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QAbstractButton", NoButton, NoButton, NoButton, new Point(7,5), new Size(24,26) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QAbstractButton", NoButton, NoButton, NoButton, new Point(7,3), new Size(24,26) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QAbstractButton", NoButton, NoButton, NoButton, new Point(11,-1), new Size(24,26) )
+KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView", NoButton, NoButton, NoButton, new Point(13,1), new Size(358,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView", NoButton, NoButton, NoButton, new Point(14,-1), new Size(358,427) )
+
+menuBarAdapter.setItem( "", -1 );
+menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+
+KDX.wait(9);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(10);
+menuBarAdapter.setItem( "&File", 0 );
+menuBarAdapter.mouseMove( new Point( 16, 24 ) );
+
+KDX.wait(11);menuBarAdapter.mouseMove( new Point( 17, 22 ) );
+KDX.wait(9);menuBarAdapter.mouseMove( new Point( 17, 21 ) );
+KDX.wait(9);menuBarAdapter.mouseMove( new Point( 17, 20 ) );
+KDX.wait(20);menuBarAdapter.mouseMove( new Point( 17, 19 ) );
+KDX.wait(12);menuBarAdapter.mouseMove( new Point( 17, 18 ) );
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 17, 17 ) );
+KDX.wait(18);menuBarAdapter.mouseMove( new Point( 17, 16 ) );
+KDX.wait(100);menuBarAdapter.mousePress( new Point( 17, 16 ), LeftButton, LeftButton );
+KDX.wait(2); KDX.focusOutEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", PopupFocusReason)
+KDX.wait(119);
+menuBarAdapter.setItem( "&File", 0, "/MainWindow/QMenu" );
+menuBarAdapter.mouseRelease( new Point( 17, 16 ), LeftButton );
+
+KDX.wait(1); KDX.mouseReleaseEvent( "/MainWindow/QMenuBar", LeftButton, NoButton, NoButton, new Point(17,16), new Size(1115,30) )
+KDX.wait(28);menuBarAdapter.mouseMove( new Point( 17, 17 ) );
+KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(17,17), new Size(1115,30) )
+KDX.wait(21);menuBarAdapter.mouseMove( new Point( 17, 18 ) );
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(17,18), new Size(1115,30) )
+KDX.wait(9);menuBarAdapter.mouseMove( new Point( 18, 18 ) );
+KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(18,18), new Size(1115,30) )
+KDX.wait(9);menuBarAdapter.mouseMove( new Point( 18, 19 ) );
+KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(18,19), new Size(1115,30) )
+KDX.wait(19);menuBarAdapter.mouseMove( new Point( 18, 20 ) );
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(18,20), new Size(1115,30) )
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 18, 21 ) );
+KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(18,21), new Size(1115,30) )
+KDX.wait(9);menuBarAdapter.mouseMove( new Point( 18, 22 ) );
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(18,22), new Size(1115,30) )
+KDX.wait(8);menuBarAdapter.mouseMove( new Point( 18, 23 ) );
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(18,23), new Size(1115,30) )
+KDX.wait(9);menuBarAdapter.mouseMove( new Point( 18, 25 ) );
+KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(18,25), new Size(1115,30) )
+KDX.wait(31);
+menuAdapter.setItem( 0, "&Open..." );
+menuAdapter.mouseMove( new Point( 14, 4 ) );
+
+KDX.wait(9);menuAdapter.mouseMove( new Point( 16, 12 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 16, 15 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 18, 21 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 20, 27 ) );
+KDX.wait(10);
+menuAdapter.setItem( 1, "&Save As..." );
+menuAdapter.mouseMove( new Point( 21, 5 ) );
+
+KDX.wait(9);menuAdapter.mouseMove( new Point( 21, 8 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 22, 10 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 24, 16 ) );
+KDX.wait(11);menuAdapter.mouseMove( new Point( 24, 18 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 25, 19 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 25, 21 ) );
+KDX.wait(9);menuAdapter.mouseMove( new Point( 26, 21 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 26, 22 ) );
+KDX.wait(21);menuAdapter.mouseMove( new Point( 26, 23 ) );
+KDX.wait(9);menuAdapter.mouseMove( new Point( 27, 23 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 27, 24 ) );
+KDX.wait(10);
+menuAdapter.setItem( 2, "E&xit" );
+menuAdapter.mouseMove( new Point( 27, 1 ) );
+
+KDX.wait(21);menuAdapter.mouseMove( new Point( 27, 2 ) );
+KDX.wait(9);menuAdapter.mouseMove( new Point( 27, 3 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 27, 4 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 28, 5 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 28, 7 ) );
+KDX.wait(11);menuAdapter.mouseMove( new Point( 28, 8 ) );
+KDX.wait(9);menuAdapter.mouseMove( new Point( 29, 8 ) );
+KDX.wait(9);menuAdapter.mouseMove( new Point( 29, 9 ) );
+KDX.wait(21);menuAdapter.mouseMove( new Point( 29, 10 ) );
+KDX.wait(29);menuAdapter.mouseMove( new Point( 29, 11 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 29, 12 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 29, 13 ) );
+KDX.wait(12);menuAdapter.mouseMove( new Point( 30, 13 ) );
+KDX.wait(9);menuAdapter.mouseMove( new Point( 30, 14 ) );
+KDX.wait(915);menuAdapter.mouseMove( new Point( 31, 14 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 32, 15 ) );
+KDX.wait(11);menuAdapter.mouseMove( new Point( 36, 21 ) );
+KDX.wait(11);menuAdapter.mouseMove( new Point( 42, 33 ) );
+KDX.wait(2825); KDX.focusInEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", PopupFocusReason)
+KDX.wait(1024); KDX.mouseMoveEvent( "/MainWindow/QStatusBar", NoButton, NoButton, NoButton, new Point(448,22), new Size(1115,23) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QStatusBar", NoButton, NoButton, NoButton, new Point(470,14), new Size(1115,23) )
+KDX.wait(7); KDX.mouseMoveEvent( "/MainWindow/QStatusBar", NoButton, NoButton, NoButton, new Point(492,10), new Size(1115,23) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QStatusBar", NoButton, NoButton, NoButton, new Point(516,6), new Size(1115,23) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QStatusBar", NoButton, NoButton, NoButton, new Point(542,4), new Size(1115,23) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QStatusBar", NoButton, NoButton, NoButton, new Point(566,0), new Size(1115,23) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QStatusBar", NoButton, NoButton, NoButton, new Point(594,-4), new Size(1115,23) )
+KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(230,423), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(256,417), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(286,409), new Size(751,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(316,399), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(348,389), new Size(751,427) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(380,381), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(412,369), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(444,361), new Size(751,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(476,351), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(504,343), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(532,335), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(560,327), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(586,317), new Size(751,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(614,303), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(642,291), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(664,281), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(680,273), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(692,265), new Size(751,427) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(698,261), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(704,257), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(708,253), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(709,252), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(710,251), new Size(751,427) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(711,249), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(712,248), new Size(751,427) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(714,247), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(715,246), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(716,245), new Size(751,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(720,241), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(721,240), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(722,239), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(724,238), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(725,237), new Size(751,427) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(726,236), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(726,235), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(727,234), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(728,233), new Size(751,427) )
+KDX.wait(22); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(728,232), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(729,231), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(731,231), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(735,227), new Size(751,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(737,226), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(739,225), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(740,224), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(742,223), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(743,223), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(744,222), new Size(751,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(746,222), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(747,221), new Size(751,427) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(748,221), new Size(751,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(750,221), new Size(751,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(751,221), new Size(751,427) )
+KDX.wait(681); KDX.resizeEvent( "/MainWindow", new Size( 1100, 480 ) )
+KDX.wait(33); KDX.resizeEvent( "/MainWindow", new Size( 1062, 480 ) )
+KDX.wait(61); KDX.resizeEvent( "/MainWindow", new Size( 974, 480 ) )
+KDX.wait(30); KDX.resizeEvent( "/MainWindow", new Size( 944, 480 ) )
+KDX.wait(46); KDX.resizeEvent( "/MainWindow", new Size( 824, 480 ) )
+KDX.wait(32); KDX.resizeEvent( "/MainWindow", new Size( 808, 480 ) )
+KDX.wait(620); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(578,268), new Size(708,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(577,268), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(576,268), new Size(708,427) )
+KDX.wait(48); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(575,268), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(574,268), new Size(708,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(572,268), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(570,268), new Size(708,427) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(569,268), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(563,266), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(555,264), new Size(708,427) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(543,260), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(531,256), new Size(708,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(515,250), new Size(708,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(499,246), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(483,240), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(463,234), new Size(708,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(441,228), new Size(708,427) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(423,222), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(405,216), new Size(708,427) )
+KDX.wait(8); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(389,208), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(375,202), new Size(708,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(361,194), new Size(708,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(349,186), new Size(708,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(337,176), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(321,164), new Size(708,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(305,154), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(289,142), new Size(708,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(275,132), new Size(708,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(259,124), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(245,116), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(229,110), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(211,102), new Size(708,427) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(193,94), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(173,88), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(153,82), new Size(708,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(131,76), new Size(708,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(109,72), new Size(708,427) )
+KDX.wait(12); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(87,70), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(65,66), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(47,62), new Size(708,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(29,60), new Size(708,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(15,56), new Size(708,427) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(1,50), new Size(708,427) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/KDChart::Chart", NoButton, NoButton, NoButton, new Point(-9,46), new Size(708,427) )
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QWidget_3/QScrollBar", NoButton, NoButton, NoButton, new Point(15,44), new Size(16,407) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QWidget_3/QScrollBar", NoButton, NoButton, NoButton, new Point(9,38), new Size(16,407) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QWidget_3/QScrollBar", NoButton, NoButton, NoButton, new Point(5,34), new Size(16,407) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QWidget_3/QScrollBar", NoButton, NoButton, NoButton, new Point(4,33), new Size(16,407) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QWidget_3/QScrollBar", NoButton, NoButton, NoButton, new Point(3,32), new Size(16,407) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QWidget_3/QScrollBar", NoButton, NoButton, NoButton, new Point(2,31), new Size(16,407) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QWidget_3/QScrollBar", NoButton, NoButton, NoButton, new Point(0,30), new Size(16,407) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/QWidget_3/QScrollBar", NoButton, NoButton, NoButton, new Point(-2,30), new Size(16,407) )
+KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(48,4), new Size(50,381) )
+KDX.wait(9); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(42,2), new Size(50,381) )
+KDX.wait(11); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(36,0), new Size(50,381) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport", NoButton, NoButton, NoButton, new Point(34,-1), new Size(50,381) )
+KDX.wait(1);
+var headerViewAdapter = new HeaderViewAdapter( "/MainWindow/QSplitter/QTableView/QHeaderView_2/qt_scrollarea_viewport" );
+headerViewAdapter.setItem( 0, 1 );
+headerViewAdapter.mouseMove( new Point( 34, 25 ) );
+
+KDX.wait(9);headerViewAdapter.mouseMove( new Point( 32, 24 ) );
+KDX.wait(9);headerViewAdapter.mouseMove( new Point( 30, 23 ) );
+KDX.wait(10);headerViewAdapter.mouseMove( new Point( 29, 21 ) );
+KDX.wait(11);headerViewAdapter.mouseMove( new Point( 29, 20 ) );
+KDX.wait(10);headerViewAdapter.mouseMove( new Point( 28, 19 ) );
+KDX.wait(9);headerViewAdapter.mouseMove( new Point( 28, 18 ) );
+KDX.wait(10);headerViewAdapter.mouseMove( new Point( 27, 17 ) );
+KDX.wait(10);headerViewAdapter.mouseMove( new Point( 27, 16 ) );
+KDX.wait(11);headerViewAdapter.mouseMove( new Point( 26, 15 ) );
+KDX.wait(9);headerViewAdapter.mouseMove( new Point( 26, 14 ) );
+KDX.wait(10);headerViewAdapter.mouseMove( new Point( 25, 14 ) );
+KDX.wait(10);headerViewAdapter.mouseMove( new Point( 24, 13 ) );
+KDX.wait(10);headerViewAdapter.mouseMove( new Point( 23, 12 ) );
+KDX.wait(11);headerViewAdapter.mouseMove( new Point( 22, 11 ) );
+KDX.wait(10);headerViewAdapter.mouseMove( new Point( 20, 10 ) );
+KDX.wait(9);headerViewAdapter.mouseMove( new Point( 19, 9 ) );
+KDX.wait(10);headerViewAdapter.mouseMove( new Point( 13, 7 ) );
+KDX.wait(9);headerViewAdapter.mouseMove( new Point( 9, 3 ) );
+KDX.wait(10);headerViewAdapter.mouseMove( new Point( 7, 2 ) );
+KDX.wait(11);headerViewAdapter.mouseMove( new Point( 1, 0 ) );
+KDX.wait(10);headerViewAdapter.mouseMove( new Point( 0, -1 ) );
+KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView", NoButton, NoButton, NoButton, new Point(26,1), new Size(94,427) )
+KDX.wait(19); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView", NoButton, NoButton, NoButton, new Point(26,0), new Size(94,427) )
+KDX.wait(10); KDX.mouseMoveEvent( "/MainWindow/QSplitter/QTableView", NoButton, NoButton, NoButton, new Point(26,-1), new Size(94,427) )
+KDX.wait(1);
+menuBarAdapter.setItem( "", -1 );
+menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(9);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 0, 0 ) );
+KDX.wait(10);
+menuBarAdapter.setItem( "&File", 0 );
+menuBarAdapter.mouseMove( new Point( 26, 25 ) );
+
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 27, 25 ) );
+KDX.wait(11);menuBarAdapter.mouseMove( new Point( 27, 24 ) );
+KDX.wait(29);menuBarAdapter.mouseMove( new Point( 27, 23 ) );
+KDX.wait(40);menuBarAdapter.mouseMove( new Point( 27, 22 ) );
+KDX.wait(19);menuBarAdapter.mouseMove( new Point( 27, 21 ) );
+KDX.wait(30);menuBarAdapter.mouseMove( new Point( 27, 20 ) );
+KDX.wait(21);menuBarAdapter.mouseMove( new Point( 27, 19 ) );
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 27, 18 ) );
+KDX.wait(9);menuBarAdapter.mouseMove( new Point( 27, 17 ) );
+KDX.wait(20);menuBarAdapter.mouseMove( new Point( 27, 16 ) );
+KDX.wait(21);menuBarAdapter.mouseMove( new Point( 27, 15 ) );
+KDX.wait(29);menuBarAdapter.mousePress( new Point( 27, 15 ), LeftButton, LeftButton );
+KDX.wait(2); KDX.focusOutEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", PopupFocusReason)
+KDX.wait(128);
+menuBarAdapter.setItem( "&File", 0, "/MainWindow/QMenu" );
+menuBarAdapter.mouseMove( new Point( 27, 16 ) );
+
+KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, LeftButton, NoButton, new Point(27,16), new Size(808,30) )
+KDX.wait(9);menuBarAdapter.mouseRelease( new Point( 27, 16 ), LeftButton );
+KDX.wait(1); KDX.mouseReleaseEvent( "/MainWindow/QMenuBar", LeftButton, NoButton, NoButton, new Point(27,16), new Size(808,30) )
+KDX.wait(19);menuBarAdapter.mouseMove( new Point( 27, 17 ) );
+KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(27,17), new Size(808,30) )
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 27, 18 ) );
+KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(27,18), new Size(808,30) )
+KDX.wait(19);menuBarAdapter.mouseMove( new Point( 27, 19 ) );
+KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(27,19), new Size(808,30) )
+KDX.wait(10);menuBarAdapter.mouseMove( new Point( 27, 20 ) );
+KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(27,20), new Size(808,30) )
+KDX.wait(9);menuBarAdapter.mouseMove( new Point( 27, 21 ) );
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(27,21), new Size(808,30) )
+KDX.wait(11);menuBarAdapter.mouseMove( new Point( 27, 22 ) );
+KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(27,22), new Size(808,30) )
+KDX.wait(8);menuBarAdapter.mouseMove( new Point( 27, 23 ) );
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(27,23), new Size(808,30) )
+KDX.wait(8);menuBarAdapter.mouseMove( new Point( 27, 25 ) );
+KDX.wait(1); KDX.mouseMoveEvent( "/MainWindow/QMenuBar", NoButton, NoButton, NoButton, new Point(27,25), new Size(808,30) )
+KDX.wait(31);
+menuAdapter.setItem( 0, "&Open..." );
+menuAdapter.mouseMove( new Point( 22, 4 ) );
+
+KDX.wait(9);menuAdapter.mouseMove( new Point( 22, 6 ) );
+KDX.wait(9);menuAdapter.mouseMove( new Point( 22, 8 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 22, 11 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 22, 13 ) );
+KDX.wait(11);menuAdapter.mouseMove( new Point( 24, 19 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 24, 27 ) );
+KDX.wait(9);
+menuAdapter.setItem( 1, "&Save As..." );
+menuAdapter.mouseMove( new Point( 26, 9 ) );
+
+KDX.wait(10);menuAdapter.mouseMove( new Point( 28, 15 ) );
+KDX.wait(9);menuAdapter.mouseMove( new Point( 30, 21 ) );
+KDX.wait(12);menuAdapter.mouseMove( new Point( 32, 27 ) );
+KDX.wait(10);
+menuAdapter.setItem( 2, "E&xit" );
+menuAdapter.mouseMove( new Point( 36, 9 ) );
+
+KDX.wait(8);menuAdapter.mouseMove( new Point( 40, 13 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 41, 15 ) );
+KDX.wait(10);menuAdapter.mouseMove( new Point( 41, 16 ) );
+KDX.wait(11);menuAdapter.mouseMove( new Point( 42, 16 ) );
+KDX.wait(29);menuAdapter.mouseMove( new Point( 42, 17 ) );
+KDX.wait(110);menuAdapter.mouseMove( new Point( 42, 18 ) );
+KDX.wait(39);menuAdapter.mouseMove( new Point( 43, 18 ) );
+KDX.wait(339);menuAdapter.mousePress( new Point( 43, 18 ), LeftButton, LeftButton );
+KDX.wait(130);menuAdapter.mouseRelease( new Point( 43, 18 ), LeftButton );
+KDX.wait(1); KDX.focusInEvent( "/MainWindow/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", PopupFocusReason)
+KDX.wait(3); KDX.focusOutEvent( "/QWidget/QSplitter/QTableView/qt_scrollarea_viewport/QExpandingLineEdit", ActiveWindowFocusReason)

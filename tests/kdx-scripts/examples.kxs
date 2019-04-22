@@ -1,0 +1,2335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<KDXSetup xmlns:xsi="http://www.w3.org/2000/10/XMLSchema-instance" xmlns="http://www.klaralvdalens-datakonsult.se/kdexecutor" xsi:schemaLocation="http://www.klaralvdalens-datakonsult.se/kdexecutor" >
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Axis/Chart/AxisChart</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>AxisChart</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/AxisChart-qSf6e.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/AxisChart/axischart/script.kdx</Value>
+   </Script>
+   <Name>axischart</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/AxisChart/axischart/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/AxisChart/axischart/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Axis/Labels/AxisLabels</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>AxisLabels</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/AxisLabels-8FFWq.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/AxisLabels/axislabels/script.kdx</Value>
+   </Script>
+   <Name>axislabels</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/AxisLabels/axislabels/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/AxisLabels/axislabels/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Axis/Parameters/AxisParameters</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>AxisParameters</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/AxisParameters-3sV1n.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/AxisParameters/axisparameters/script.kdx</Value>
+   </Script>
+   <Name>axisparameters</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/AxisParameters/axisparameters/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/AxisParameters/axisparameters/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Background/Background</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>Background</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Background-5wn9a.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Background/background/script.kdx</Value>
+   </Script>
+   <Name>background</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Background/background/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Background/background/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Bars/Advanced/BarAdvanced</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>BarAdvanced</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/BarAdvanced-5NWCE.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/BarAdvanced/baradvanced/script.kdx</Value>
+   </Script>
+   <Name>baradvanced</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/BarAdvanced/baradvanced/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/BarAdvanced/baradvanced/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Bars/Parameters/Parameters</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>BarParameters</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Parameters-551gd.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Parameters/barparameters/script.kdx</Value>
+   </Script>
+   <Name>barparameters</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Parameters/barparameters/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Parameters/barparameters/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Bars/Simple/Simple</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>BarSimple</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Simple-Hlxh6.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Simple/barsimple/script.kdx</Value>
+   </Script>
+   <Name>barsimple</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Simple/barsimple/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Simple/barsimple/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Charts/simple/simple</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>ChartSimple</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Simple-JNN0L.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/chartSimple/chartsimple/script.kdx</Value>
+   </Script>
+   <Name>chartsimple</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/chartSimple/chartsimple/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/chartSimple/chartsimple/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/DrawIntoPainter/DrawIntoPainter</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>DrawIntoPainter</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/DrawIntoPainter-3fEGU.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/DrawIntoPainter/drawintopainter/script.kdx</Value>
+   </Script>
+   <Name>drawintopainter</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/DrawIntoPainter/drawintopainter/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/DrawIntoPainter/drawintopainter/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/EmptyValues/EmptyValues</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>EmptyValues</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/EmptyValues-tHdtR.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/EmptyValues/emptyvalues/script.kdx</Value>
+   </Script>
+   <Name>emptyvalues</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/EmptyValues/emptyvalues/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/EmptyValues/emptyvalues/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Grids/CartesianGrid/CartesianGrid</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>CartesianGrid</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/CartesianGrid-HlbhG.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/CartesianGrid/cartesiangrid/script.kdx</Value>
+   </Script>
+   <Name>cartesiangrid</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/CartesianGrid/cartesiangrid/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/CartesianGrid/cartesiangrid/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Grids/PolarGrid/PolarGrid</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>PolarGrid</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/PolarGrid-r2ljI.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarGrid/polargrid/script.kdx</Value>
+   </Script>
+   <Name>polargrid</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarGrid/polargrid/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarGrid/polargrid/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/HeadersFooters/Advanced/Advanced</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>HeadersAdvanced</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Advanced-l5tb0.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Advanced/headerfootersadvanced/script.kdx</Value>
+   </Script>
+   <Name>headerfootersadvanced</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Advanced/headerfootersadvanced/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Advanced/headerfootersadvanced/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/HeadersFooters/HeadersFootersParameters/HeadersFootersParameters</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>HeadersFootersParameters</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" ></Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/HeadersFootersParameters/headersfootersparameters/script.kdx</Value>
+   </Script>
+   <Name>headersfootersparameters</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/HeadersFootersParameters/headersfootersparameters/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/HeadersFootersParameters/headersfootersparameters/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/HeadersFooters/HeadersFootersSimple/HeadersFootersSimple</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>HeadersFootersSimple</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/HeadersFootersSimple-gwIdD.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/HeadersFootersSimple/headersfooterssimple/script.kdx</Value>
+   </Script>
+   <Name>headersfooterssimple</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/HeadersFootersSimple/headersfooterssimple/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/HeadersFootersSimple/headersfooterssimple/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Legends/LegendAdvanced/LegendAdvanced</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>LegendAdvanced</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" ></Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/LegendAdvanced/legendadvanced/script.kdx</Value>
+   </Script>
+   <Name>legendadvanced</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/LegendAdvanced/legendadvanced/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/LegendAdvanced/legendadvanced/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+   <RunResult>
+    <Run>
+     <StartTime>
+      <Date Day="25" Year="2006" Month="10" />
+      <Time Hour="15" Minute="55" Second="8" Millisecond="268" />
+     </StartTime>
+     <EndTime>
+      <Date Day="25" Year="2006" Month="10" />
+      <Time Hour="15" Minute="57" Second="11" Millisecond="350" />
+     </EndTime>
+    </Run>
+    <Result>
+     <NormalExit>true</NormalExit>
+     <ExitCode>0</ExitCode>
+     <PropsOK>true</PropsOK>
+     <AssertionsOK>true</AssertionsOK>
+     <PropertyCollection/>
+     <ScreenshotCollection>
+      <Status>2</Status>
+     </ScreenshotCollection>
+     <PostTestCheckResult>true</PostTestCheckResult>
+     <PostTestCheckExitCode>0</PostTestCheckExitCode>
+     <Error></Error>
+    </Result>
+   </RunResult>
+   <RunResult>
+    <Run>
+     <StartTime>
+      <Date Day="25" Year="2006" Month="10" />
+      <Time Hour="12" Minute="57" Second="54" Millisecond="986" />
+     </StartTime>
+     <EndTime>
+      <Date Day="25" Year="2006" Month="10" />
+      <Time Hour="12" Minute="59" Second="58" Millisecond="327" />
+     </EndTime>
+    </Run>
+    <Result>
+     <NormalExit>true</NormalExit>
+     <ExitCode>0</ExitCode>
+     <PropsOK>true</PropsOK>
+     <AssertionsOK>true</AssertionsOK>
+     <PropertyCollection/>
+     <ScreenshotCollection>
+      <Status>2</Status>
+     </ScreenshotCollection>
+     <PostTestCheckResult>true</PostTestCheckResult>
+     <PostTestCheckExitCode>0</PostTestCheckExitCode>
+     <Error></Error>
+    </Result>
+   </RunResult>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Legends/LegendParameters/LegendParameters</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>LegendParameters</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/LegendParameters-T1CIR.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/LegendParameters/legendparameters/script.kdx</Value>
+   </Script>
+   <Name>legendparameters</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/LegendParameters/legendparameters/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/LegendParameters/legendparameters/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Legends/LegendSimple/LegendSimple</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>LegendSimple</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/LegendSimple-VI95S.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/LegendSimple/legendsimple/script.kdx</Value>
+   </Script>
+   <Name>legendsimple</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/LegendSimple/legendsimple/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/LegendSimple/legendsimple/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Lines/Advanced/Advanced</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>LineAdvanced</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Advanced-NsShu.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Advanced/linesadvanced/script.kdx</Value>
+   </Script>
+   <Name>linesadvanced</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Advanced/linesadvanced/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Advanced/linesadvanced/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Lines/Parameters/Parameters</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>LineParameters</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Parameters-cRlDu.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Parameters/linesparameters/script.kdx</Value>
+   </Script>
+   <Name>linesparameters</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Parameters/linesparameters/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Parameters/linesparameters/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Lines/PointChart/PointChart</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>PointChart</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/PointChart-0PCNX.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PointChart/pointchart/script.kdx</Value>
+   </Script>
+   <Name>pointchart</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PointChart/pointchart/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PointChart/pointchart/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Lines/PointWidget/PointWidget</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>PointWidget</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/PointWidget-jKHTw.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PointWidget/pointwidget/script.kdx</Value>
+   </Script>
+   <Name>pointwidget</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PointWidget/pointwidget/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PointWidget/pointwidget/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Lines/SimpleLineWidget/SimpleLineWidget</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>SimpleLineWidget</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/SimpleLineWidget-XL6a1.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/SimpleLineWidget/simplelinewidget/script.kdx</Value>
+   </Script>
+   <Name>simplelinewidget</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/SimpleLineWidget/simplelinewidget/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/SimpleLineWidget/simplelinewidget/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/ModelView/ModelView</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>ModelView</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/ModelView-BuBK8.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/ModelView/modelview/script.kdx</Value>
+   </Script>
+   <Name>modelview</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/ModelView/modelview/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/ModelView/modelview/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/MultidimensionalData/MultidimensionalData</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>MultidimensionalData</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/MultidimensionalData-mmFv7.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/MultidimensionalData/multidimensionaldata/script.kdx</Value>
+   </Script>
+   <Name>multidimensionaldata</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/MultidimensionalData/multidimensionaldata/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/MultidimensionalData/multidimensionaldata/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Pie/Advanced/Advanced</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>PieAdvanced</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Advanced-p3tWE.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Advanced/pieadvanced/script.kdx</Value>
+   </Script>
+   <Name>pieadvanced</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Advanced/pieadvanced/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Advanced/pieadvanced/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Pie/Parameters/Parameters</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>PieParameters</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Parameters-dLQKA.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Parameters/pieparameters/script.kdx</Value>
+   </Script>
+   <Name>pieparameters</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Parameters/pieparameters/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Parameters/pieparameters/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Pie/Simple/Simple</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>PieSimple</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/simple-p49mE.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PieSimple/piesimple/script.kdx</Value>
+   </Script>
+   <Name>piesimple</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PieSimple/piesimple/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PieSimple/piesimple/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Polar/Advanced/Advanced</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>PolarAdvanced</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Advanced-p3tWE.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarAdvanced/polaradvanced/script.kdx</Value>
+   </Script>
+   <Name>polaradvanced</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarAdvanced/polaradvanced/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarAdvanced/polaradvanced/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Polar/Parameters/Parameters</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>PolarParameters</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Parameters-Fr6cN.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarParameters/polarparameters/script.kdx</Value>
+   </Script>
+   <Name>polarparameters</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarParameters/polarparameters/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarParameters/polarparameters/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Polar/Simple/Simple</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>PolarSimple</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Simple-tAFHy.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarSimple/polarsimple/script.kdx</Value>
+   </Script>
+   <Name>polarsimple</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarSimple/polarsimple/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarSimple/polarsimple/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/RealTime/RealTime</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>RealTime</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/RealTime-aNHWN.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/RealTime/realtime/script.kdx</Value>
+   </Script>
+   <Name>realtime</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/RealTime/realtime/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/RealTime/realtime/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/SharedAbscissa/SharedAbscissa</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>SharedAbscissa</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/SharedAbscissa-GvesT.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/SharedAbscissa/sharedabscissa/script.kdx</Value>
+   </Script>
+   <Name>sharedabscissa</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/SharedAbscissa/sharedabscissa/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/SharedAbscissa/sharedabscissa/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Widget/Advanced/WidgetAdvanced</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>WidgetAdvanced</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/WidgetAdvanced-nWNZj.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/WidgetAdvanced/widgetadvanced/script.kdx</Value>
+   </Script>
+   <Name>widgetadvanced</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/WidgetAdvanced/widgetadvanced/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/WidgetAdvanced/widgetadvanced/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Widget/Parameters/WidgetParameters</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>WidgetParameters</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/WidgetParameters-KpPdH.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/WidgetParameters/widgetparameters/script.kdx</Value>
+   </Script>
+   <Name>widgetparameters</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/WidgetParameters/widgetparameters/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/WidgetParameters/widgetparameters/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Widget/Simple/WidgetSimple</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>WidgetSimple</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/WidgetSimple-Tf4UU.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/WidgetSimple/widgetsimple/script.kdx</Value>
+   </Script>
+   <Name>widgetsimple</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/WidgetSimple/widgetsimple/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/WidgetSimple/widgetsimple/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+  </Test>
+ </TestSuite>
+ <TestSuite>
+  <AppPath>
+   <Value Key="LINUX" >../../examples/Zoom/Zoom</Value>
+  </AppPath>
+  <UseExitCodes>false</UseExitCodes>
+  <MinSuccessExitCode>0</MinSuccessExitCode>
+  <MaxSuccessExitCode>0</MaxSuccessExitCode>
+  <Params></Params>
+  <WorkingDir>
+   <Value Key="LINUX" ></Value>
+  </WorkingDir>
+  <DisplayName>Zoom</DisplayName>
+  <DefaultSetup>
+   <Value Key="LINUX" ></Value>
+  </DefaultSetup>
+  <DefaultShutdown>
+   <Value Key="LINUX" ></Value>
+  </DefaultShutdown>
+  <DefaultPostTestCheck>
+   <Value Key="LINUX" ></Value>
+  </DefaultPostTestCheck>
+  <OverrideParentConfig>true</OverrideParentConfig>
+  <ConfigFile>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Zoom-VIJHe.conf</Value>
+  </ConfigFile>
+  <WaitForSetupCommand>true</WaitForSetupCommand>
+  <Selected>0</Selected>
+  <Test>
+   <Script>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Zoom/zoom/script.kdx</Value>
+   </Script>
+   <Name>zoom</Name>
+   <Description></Description>
+   <Type>Recorded</Type>
+   <UseDir>true</UseDir>
+   <UseProperties>true</UseProperties>
+   <BaselineFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Zoom/zoom/props.kdx</Value>
+   </BaselineFile>
+   <UseScreenshots>true</UseScreenshots>
+   <ScreenshotFile>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Zoom/zoom/shots.kdx</Value>
+   </ScreenshotFile>
+   <ScreenshotManualComparison>false</ScreenshotManualComparison>
+   <WaitForSetupCommand>true</WaitForSetupCommand>
+   <SetupCommand>
+    <Value Key="LINUX" ></Value>
+   </SetupCommand>
+   <ShutdownCommand>
+    <Value Key="LINUX" ></Value>
+   </ShutdownCommand>
+   <PostTestCheck>
+    <Value Key="LINUX" ></Value>
+   </PostTestCheck>
+   <PostTestCheckMinSuccess>0</PostTestCheckMinSuccess>
+   <PostTestCheckMaxSuccess>0</PostTestCheckMaxSuccess>
+   <Selected>false</Selected>
+   <OverrideSuiteConfig>false</OverrideSuiteConfig>
+   <ConfigFile/>
+   <RunResult>
+    <Run>
+     <StartTime>
+      <Date Day="25" Year="2006" Month="10" />
+      <Time Hour="15" Minute="54" Second="31" Millisecond="503" />
+     </StartTime>
+     <EndTime>
+      <Date Day="25" Year="2006" Month="10" />
+      <Time Hour="15" Minute="54" Second="58" Millisecond="832" />
+     </EndTime>
+    </Run>
+    <Result>
+     <NormalExit>true</NormalExit>
+     <ExitCode>0</ExitCode>
+     <PropsOK>true</PropsOK>
+     <AssertionsOK>true</AssertionsOK>
+     <PropertyCollection/>
+     <ScreenshotCollection>
+      <Status>2</Status>
+     </ScreenshotCollection>
+     <PostTestCheckResult>true</PostTestCheckResult>
+     <PostTestCheckExitCode>0</PostTestCheckExitCode>
+     <Error></Error>
+    </Result>
+   </RunResult>
+  </Test>
+ </TestSuite>
+</KDXSetup>

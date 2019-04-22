@@ -1,0 +1,34 @@
+Release Highlights
+==================
+
+Version 2.6.1:
+-------------
+ * Keep it building with modern Qt versions, at least up to Qt5.10
+ * Improve tooltip handling
+ * Fix horizontal bar chart
+ * Use @rpath for OSX dynamic libraries
+ * Fix build on Qt4/ARM
+
+Version 2.6.0:
+--------------
+Features:
+ * Code updated to compile with Qt 5.6
+ * Optional line breaking for horizontal legends added
+ * Included examples and demos were extended
+ * Diagram display ranges can be made dynamic on one end and fixed
+   on the other end
+ * Grid lines can now be drawn only on axis annotations; this allows
+   entirely custom grid lines.
+Bug fixes:
+ * Fixed several problems with layouts not updating when they should
+ * Fixed several layout problems with axis labels
+ * Many minor visual and logic bugs fixed in the included examples and demos
+ * BarDiagram::setFixedBarWidth() now works as documented; previously it changed
+   the width, but the result was not exactly the intended width
+ * Fixed first data point not shown when markers were set to visible in Plotter
+ * Fixed several issues when painting a chart using an external QPainter
+ * Fixed invalid memory access in Chart::setCoordinatePlaneLayout()
+ * Fixed painting off by one pixel in bar diagrams with horizontal bars
+ * Fixed data boundaries reflecting the previous instead of current state of
+   the data model under certain conditions
+ * Data points with value NaN are now skipped instead of treated as zero
