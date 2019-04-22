@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QWidget" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>899</width>
+    <height>698</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Setting up Data Value Texts</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff/>
+   </iconset>
+  </property>
+  <layout class="QGridLayout">
+   <item row="0" column="0" colspan="6">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Scope of settings</string>
+     </property>
+     <layout class="QGridLayout">
+      <item row="0" column="1">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>dataset</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>item</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="scopeOneBarRB">
+        <property name="text">
+         <string>One Bar</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="scopeBarDatasetSB">
+        <property name="maximum">
+         <number>3</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QSpinBox" name="scopeBarItemSB">
+        <property name="maximum">
+         <number>3</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QRadioButton" name="scopeDatasetRB">
+        <property name="text">
+         <string>A Series</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="scopeDatasetSB">
+        <property name="maximum">
+         <number>3</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QRadioButton" name="scopeCommonRB">
+        <property name="text">
+         <string>Common</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="6" rowspan="18">
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QFrame" name="chartFrame">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+        <horstretch>2</horstretch>
+        <verstretch>2</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>400</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="2">
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>54</width>
+       <height>16</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="0" colspan="6">
+    <widget class="QCheckBox" name="paintValuesCB">
+     <property name="text">
+      <string>Display Data Values</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="6">
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="6">
+    <layout class="QHBoxLayout">
+     <item>
+      <widget class="QLabel" name="barTypeLB">
+       <property name="text">
+        <string>Font</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFontComboBox" name="fontCombo"/>
+     </item>
+    </layout>
+   </item>
+   <item row="5" column="0" colspan="2">
+    <widget class="QLabel" name="barOrientationLB_4">
+     <property name="text">
+      <string>Relative Size</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="2" colspan="4">
+    <widget class="QSpinBox" name="relativeSizeSB"/>
+   </item>
+   <item row="6" column="0" colspan="2">
+    <widget class="QLabel" name="barOrientationLB_3">
+     <property name="text">
+      <string>Minimum Size</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="2" colspan="4">
+    <widget class="QSpinBox" name="minimumSizeSB"/>
+   </item>
+   <item row="7" column="0">
+    <widget class="QLabel" name="barOrientationLB_2">
+     <property name="text">
+      <string>Rotation</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="2" colspan="4">
+    <widget class="QSpinBox" name="rotationSB">
+     <property name="minimum">
+      <number>-359</number>
+     </property>
+     <property name="maximum">
+      <number>359</number>
+     </property>
+     <property name="singleStep">
+      <number>15</number>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1" colspan="2">
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>54</width>
+       <height>16</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="9" column="0" colspan="2">
+    <widget class="QLabel" name="barOrientationLB">
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <italic>true</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Positive Pos.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="2" colspan="4">
+    <widget class="QComboBox" name="posPosCombo">
+     <item>
+      <property name="text">
+       <string>( Default Value )</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Center</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>NorthEast</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>North</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>NorthWest</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>West</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>SouthWest</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>South</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>SouthEast</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>East</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="10" column="0" colspan="2">
+    <widget class="QLabel" name="barOrientationLB_7">
+     <property name="text">
+      <string>Alignment</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="2" colspan="4">
+    <widget class="QComboBox" name="posAlignCombo">
+     <item>
+      <property name="text">
+       <string>Center</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>BottomLeft</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Bottom</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>BottomRight</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Right</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>TopRight</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Top</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>TopLeft</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Left</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="11" column="0" colspan="2">
+    <widget class="QLabel" name="barOrientationLB_6">
+     <property name="text">
+      <string>Padding</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="2">
+    <widget class="QLabel" name="barOrientationLB_9">
+     <property name="text">
+      <string>H.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="3">
+    <widget class="QSpinBox" name="posPadHoriSB">
+     <property name="minimum">
+      <number>-1000</number>
+     </property>
+     <property name="maximum">
+      <number>1000</number>
+     </property>
+     <property name="singleStep">
+      <number>100</number>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="4">
+    <widget class="QLabel" name="barOrientationLB_10">
+     <property name="text">
+      <string>V.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="5">
+    <widget class="QSpinBox" name="posPadVertSB">
+     <property name="minimum">
+      <number>-1000</number>
+     </property>
+     <property name="maximum">
+      <number>1000</number>
+     </property>
+     <property name="singleStep">
+      <number>100</number>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="0" colspan="2">
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>54</width>
+       <height>16</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="13" column="0" colspan="2">
+    <widget class="QLabel" name="barOrientationLB_5">
+     <property name="font">
+      <font>
+       <italic>true</italic>
+      </font>
+     </property>
+     <property name="text">
+      <string>Negative Pos.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="2" colspan="4">
+    <widget class="QComboBox" name="negPosCombo">
+     <item>
+      <property name="text">
+       <string>( Default Value )</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Center</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>NorthEast</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>North</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>NorthWest</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>West</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>SouthWest</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>South</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>SouthEast</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>East</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="14" column="0" colspan="2">
+    <widget class="QLabel" name="barOrientationLB_8">
+     <property name="text">
+      <string>Alignment</string>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="2" colspan="4">
+    <widget class="QComboBox" name="negAlignCombo">
+     <item>
+      <property name="text">
+       <string>Center</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>BottomLeft</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Bottom</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>BottomRight</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Right</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>TopRight</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Top</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>TopLeft</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Left</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="15" column="0" colspan="2">
+    <widget class="QLabel" name="barOrientationLB_11">
+     <property name="text">
+      <string>Padding</string>
+     </property>
+    </widget>
+   </item>
+   <item row="15" column="2">
+    <widget class="QLabel" name="barOrientationLB_12">
+     <property name="text">
+      <string>H.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="15" column="3">
+    <widget class="QSpinBox" name="negPadHoriSB">
+     <property name="minimum">
+      <number>-1000</number>
+     </property>
+     <property name="maximum">
+      <number>1000</number>
+     </property>
+     <property name="singleStep">
+      <number>100</number>
+     </property>
+    </widget>
+   </item>
+   <item row="15" column="4">
+    <widget class="QLabel" name="barOrientationLB_13">
+     <property name="text">
+      <string>V.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="15" column="5">
+    <widget class="QSpinBox" name="negPadVertSB">
+     <property name="minimum">
+      <number>-1000</number>
+     </property>
+     <property name="maximum">
+      <number>1000</number>
+     </property>
+     <property name="singleStep">
+      <number>100</number>
+     </property>
+    </widget>
+   </item>
+   <item row="16" column="1" colspan="2">
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>52</width>
+       <height>16</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="17" column="0" colspan="6">
+    <layout class="QGridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Custom Label</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="labelLE"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Prefix</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="prefixLE"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Suffix</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="suffixLE"/>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

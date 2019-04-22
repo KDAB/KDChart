@@ -5,7 +5,6 @@ build-*
 
 *.moc
 *.obj
-*.ui
 *.o
 *.app
 *.user
