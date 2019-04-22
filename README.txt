@@ -29,6 +29,7 @@ Contact
 =======
 * Join our mailing list: https://mail.kdab.com/mailman/listinfo/kdchart-interest
 * See our official home page: http://www.kdab.com/products/kd-chart
+* Visit us on GitHub: https://github.com/KDAB/KDChart
 
 Get Involved
 ============
