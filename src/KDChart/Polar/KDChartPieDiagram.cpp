@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2019 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2016 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
@@ -283,7 +283,7 @@ void PieDiagram::placeLabels( PaintContext* paintContext )
             if ( maxOverhang > 0.0 ) {
                 // subtract 2x as much because every side only gets half of the total diameter reduction
                 // and we have to make up for the overhang on one particular side.
-                d->size -= qMin( d->size, maxOverhang * (qreal)2.0 );
+                d->size -= qMin( d->size, maxOverhang * 2.0 );
                 tryAgain = true;
             }
         }

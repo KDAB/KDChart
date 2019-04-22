@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2019 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2016 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
@@ -226,12 +226,8 @@ void paintElements( AbstractDiagram::Private *diagramPrivate, PaintContext* ctx,
             const QPen pen( diagram->pen( index ) );
 
             // line goes from lineInfo.value to lineInfo.nextValue
-            // We don't want it added if we're not drawing it, since the reverse mapper is used
-            // for lookup when trying to find e.g. tooltips. Having the line added when invisible gives
-            // us tooltips in empty areas.
-            if (pen.style() != Qt::NoPen)
-                diagramPrivate->reverseMapper.addLine( lineInfo.index.row(), lineInfo.index.column(),
-                                                       lineInfo.value, lineInfo.nextValue );
+            diagramPrivate->reverseMapper.addLine( lineInfo.index.row(), lineInfo.index.column(),
+                                                   lineInfo.value, lineInfo.nextValue );
 
             if ( points.count() && points.last() == lineInfo.value && curBrush == brush && curPen == pen ) {
                 // continue the current run of lines

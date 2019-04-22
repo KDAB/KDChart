@@ -4,7 +4,7 @@ CHECKSETS qt4,c++,foss
 EXTRA kdabcopyright
 
 #exclude invasive checks
-EXCLUDE style,includes,normalize,explicit,qminmax,cpp
+EXCLUDE includes,normalize,explicit,qminmax,cpp
 
 #skip autogen buildsystem
 SKIP /autogen/|/autogen.py|/genignore.py

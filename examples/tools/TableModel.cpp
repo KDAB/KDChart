@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2019 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2016 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
@@ -125,15 +125,15 @@ bool TableModel::setData( const QModelIndex& index, const QVariant& value, int r
 
 static QStringList splitLine( const QString& line )
 {
-    QStringList sl = line.split( QLatin1Char( ',' ) );
+    QStringList sl = line.split( QChar( ',' ) );
     QStringList ret;
     for ( int i = 0; i < sl.size(); i++ ) {
         // get rid of leading and trailing whitespace and quotes
         QString s = sl.at( i ).simplified();
-        if ( s.startsWith( QLatin1Char( '\"' ) ) ) {
+        if ( s.startsWith( '\"') ) {
             s.remove( 0, 1 );
         }
-        if ( s.endsWith( QLatin1Char( '\"' ) ) ) {
+        if ( s.endsWith( '\"') ) {
               s.remove( s.length() - 1, 1 );
         }
         ret.append( s );

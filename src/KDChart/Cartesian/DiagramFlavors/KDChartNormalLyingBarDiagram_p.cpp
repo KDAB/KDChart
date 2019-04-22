@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2019 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2016 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
@@ -91,6 +91,8 @@ const QPair<QPointF, QPointF> NormalLyingBarDiagram::calculateDataBoundaries() c
 
 void NormalLyingBarDiagram::paint( PaintContext* ctx )
 {
+    // FIXME: in all LyingBarDiagram types, the datasets are rendered top to bottom, but the abscissa
+    // (in that case Y axis) ticks are still bottom to top. So tick labels are in reverse order.
     reverseMapper().clear();
 
     const QPair<QPointF,QPointF> boundaries = diagram()->dataBoundaries(); // cached
@@ -165,7 +167,7 @@ void NormalLyingBarDiagram::paint( PaintContext* ctx )
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
 
-            QPointF dataPoint( 0, ( point.key + 0.5 ) );
+            QPointF dataPoint( 0, rowCount - ( point.key + 0.5 ) );
             const QPointF topLeft = ctx->coordinatePlane()->translate( dataPoint );
             dataPoint.rx() += point.value;
             const QPointF bottomRight = ctx->coordinatePlane()->translate( dataPoint ) +

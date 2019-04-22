@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2019 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2016 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
@@ -189,7 +189,7 @@ void RingDiagram::paint( PaintContext* ctx )
         if ( !d->expandWhenExploded ) {
             maxOffsetInThisRow -= qreal( i );
         }
-        totalOffset += qMax( maxOffsetInThisRow, (qreal)0.0 );
+        totalOffset += qMax( maxOffsetInThisRow, 0.0 );
         // FIXME: What if explode factor of inner ring is > 1.0 ?
         //if ( !d->expandWhenExploded )
         //      break;

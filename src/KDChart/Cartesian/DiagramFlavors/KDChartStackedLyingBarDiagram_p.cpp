@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2019 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2016 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
@@ -145,7 +145,7 @@ void StackedLyingBarDiagram::paint( PaintContext* ctx )
                                 barWidth, spaceBetweenBars, spaceBetweenGroups );
 
     LabelPaintCache lpc;
-    for ( int row = 0; row < rowCount; ++row )
+    for ( int row = rowCount - 1; row >= 0; --row )
     {
         qreal offset = spaceBetweenGroups;
         if ( ba.useFixedBarWidth() )
@@ -187,9 +187,9 @@ void StackedLyingBarDiagram::paint( PaintContext* ctx )
                     stackedValues += point.value;
                 key = point.key;
             }
-            QPointF point = ctx->coordinatePlane()->translate( QPointF( stackedValues, key ) );
-            point.ry() -= offset + threeDOffset;
-            const QPointF previousPoint = ctx->coordinatePlane()->translate( QPointF( stackedValues - value, key ) );
+            QPointF point = ctx->coordinatePlane()->translate( QPointF( stackedValues, rowCount - key ) );
+            point.ry() += offset / 2 + threeDOffset;
+            const QPointF previousPoint = ctx->coordinatePlane()->translate( QPointF( stackedValues - value, rowCount - key ) );
             const qreal barHeight = point.x() - previousPoint.x();
             point.rx() -= barHeight;
 

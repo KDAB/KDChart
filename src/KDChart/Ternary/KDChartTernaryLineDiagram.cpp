@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2019 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2016 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
@@ -114,11 +114,11 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
 
                 // retrieve data
                 x = qMax( model()->data( model()->index( row, column, rootIndex() ) ).toReal(), // checked
-                          (qreal)0.0 );
+                          0.0 );
                 y = qMax( model()->data( model()->index( row, column+1, rootIndex() ) ).toReal(), // checked
-                          (qreal)0.0 );
+                          0.0 );
                 z = qMax( model()->data( model()->index( row, column+2, rootIndex() ) ).toReal(), // checked
-                          (qreal)0.0 );
+                          0.0 );
 
                 qreal total = x + y + z;
                 if ( fabs( total ) > 3 * std::numeric_limits<qreal>::epsilon() ) {

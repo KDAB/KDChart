@@ -36,11 +36,11 @@ Get Involved
 ============
 KDAB will happily accept external contributions, but substantial
 contributions will require a signed Copyright Assignment Agreement.
-Contact info@kdab.com for more information.
+Contact support@kdab.com for more information.
 
 License
 =======
-Copyright (C) 2001-2019 Klarälvdalens Datakonsult AB (KDAB), a KDAB Group company, <info@kdab.com>
+Copyright (C) 2001-2016 Klarälvdalens Datakonsult AB (KDAB), a KDAB Group company, <info@kdab.com>
 
 Commercial licensing terms are available in the included file
         LICENSE.txt (for non-US customers)
@@ -62,7 +62,4 @@ standard trainings anywhere around the globe.
 
 Please visit http://www.kdab.com to meet the people who write code like this.
 
-
-KD CHART and the KD CHART logo are registered trademarks of Klaralvdalens Datakonsult AB
-in the European Union, the United States, and/or other countries.  Other product and
-company names and logos may be trademarks or registered trademarks of their respective companies.
+KD CHART and the KD CHART logo are trademarks of Klarälvdalens Datakonsult AB

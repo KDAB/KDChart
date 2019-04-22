@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2019 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2016 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
@@ -1012,8 +1012,8 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
             qreal labelMargin = 0.0;
             QString text = it.text();
             if ( !text.isEmpty() ) {
-                QPointF labelPosition = plane->translate( QPointF( geoXy( drawPos, (qreal)1.0 ),
-                                                                   geoXy( (qreal)1.0, drawPos ) ) );
+                QPointF labelPosition = plane->translate( QPointF( geoXy( drawPos, 1.0 ),
+                                                                   geoXy( 1.0, drawPos ) ) );
                 highestLabelPosition = geoXy( labelPosition.x(), labelPosition.y() );
 
                 if ( it.type() == TickIterator::MajorTick ) {
@@ -1059,10 +1059,10 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                                    highestLabelLongitudinalSize * 0.5 );
     }
 
-    amountOfLeftOverlap = geoXy( startOverhang, (qreal)0.0 );
-    amountOfRightOverlap = geoXy( endOverhang, (qreal)0.0 );
-    amountOfBottomOverlap = geoXy( (qreal)0.0, startOverhang );
-    amountOfTopOverlap = geoXy( (qreal)0.0, endOverhang );
+    amountOfLeftOverlap = geoXy( startOverhang, 0.0 );
+    amountOfRightOverlap = geoXy( endOverhang, 0.0 );
+    amountOfBottomOverlap = geoXy( 0.0, startOverhang );
+    amountOfTopOverlap = geoXy( 0.0, endOverhang );
 
     const TextAttributes titleTA = titleTextAttributesWithAdjustedRotation();
     if ( titleTA.isVisible() && !axis()->titleText().isEmpty() ) {

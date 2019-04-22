@@ -18,7 +18,7 @@ RESOURCES += KDChart/KDAB_kdchart_LeveyJennings_resources.qrc
 
 QT += svg
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += printsupport
+contains(QT_VERSION, ^5\\.[0-9]\\..*): QT += printsupport
 
 FORMS += KDChart/KDChartDatasetSelector.ui
 
@@ -214,8 +214,10 @@ headers_gantt_src.files = $$INSTALLHEADERS_GANTT_SRC
 headers_gantt_src.path = $$INSTALL_PREFIX/src/Gantt
 #INSTALLS += headers_include headers_src headers_gantt_src
 
-target.path = $$INSTALL_PREFIX/lib$$LIB_SUFFIX
-INSTALLS += target
+# install target to install the src code for license holders:
+lib.files = $${DESTDIR}
+lib.path = $$INSTALL_PREFIX/
+INSTALLS += lib
 
 
 

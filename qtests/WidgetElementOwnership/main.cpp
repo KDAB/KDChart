@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2019 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2016 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
@@ -140,17 +140,17 @@ private slots:
       //set Cartesian type
       m_widget->setType( Widget::Line );
       QCOMPARE( m_widget->type(), Widget::Line );
-      QVERIFY( !m_widget->barDiagram() );
-      QVERIFY( !m_widget->pieDiagram() );
-      QVERIFY( !m_widget->ringDiagram() );
-      QVERIFY( !m_widget->polarDiagram() );
+      QVERIFY( m_widget->barDiagram() == false );
+      QVERIFY( m_widget->pieDiagram() == false );
+      QVERIFY( m_widget->ringDiagram() == false );
+      QVERIFY( m_widget->polarDiagram() == false );
       // set Polar type
       m_widget->setType( Widget::Polar );
       QCOMPARE( m_widget->type(), Widget::Polar );
-      QVERIFY( !m_widget->barDiagram() );
-      QVERIFY( !m_widget->lineDiagram() );
-      QVERIFY( !m_widget->ringDiagram() );
-      QVERIFY( !m_widget->pieDiagram() );
+      QVERIFY( m_widget->barDiagram() == false );
+      QVERIFY( m_widget->lineDiagram() == false );
+      QVERIFY( m_widget->ringDiagram() == false );
+      QVERIFY( m_widget->pieDiagram() == false );
       // reset default
       m_widget->setType( Widget::Line );
   }

@@ -1,5 +1,5 @@
 *-g++* {
-  NORMAL_CFLAGS = -Wno-long-long
+  NORMAL_CFLAGS = -Wno-long-long -ansi
   win32-g++ {
     NORMAL_CFLAGS += -U__STRICT_ANSI__
   }

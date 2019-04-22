@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2019 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2016 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
@@ -328,7 +328,7 @@ void ItemDelegate::paintGanttItem( QPainter* painter,
             QPainterPath path;
             const qreal deltaY = r.height()/2.;
             const qreal deltaXBezierControl = .25*qMin( r.width(), r.height() );
-            const qreal deltaX = qMin( r.width()/(qreal)2., r.height() );
+            const qreal deltaX = qMin( r.width()/2., r.height() );
             path.moveTo( r.topLeft() );
             path.lineTo( r.topRight() );
             path.lineTo( QPointF( r.right(), r.top() + 2.*deltaY ) );

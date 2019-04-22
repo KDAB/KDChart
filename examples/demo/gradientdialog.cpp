@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2019 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2016 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
@@ -60,8 +60,8 @@ GradientDialog::Private::Private( GradientDialog *qq )
     , ui( new Ui::GradientDialog )
     , q( qq )
 {
-    m_gradient << qMakePair( (qreal)0.0, QColor( Qt::red ) );
-    m_gradient << qMakePair( (qreal)1.0, QColor( Qt::blue ) );
+    m_gradient << qMakePair( 0.0, QColor( Qt::red ) );
+    m_gradient << qMakePair( 1.0, QColor( Qt::blue ) );
 }
 
 GradientDialog::Private::~Private()

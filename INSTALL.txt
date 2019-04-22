@@ -16,10 +16,6 @@ KD Chart 2.5.1 and later supports both Qt 4 and Qt 5.
  
    NOTE: Don't use releative paths for the prefix, they will not work.
 
-   If you want to install the libraries under the "lib64" folder then
-   set the QMAKE_ARGS environment variable to "LIB_SUFFIX=64" like so:
-   QMAKE_ARGS="LIB_SUFFIX=64"
-   export QMAKE_ARGS
 
 1) set your LD_LIBRARY_PATH to point to your KD Chart installation lib directory.
 

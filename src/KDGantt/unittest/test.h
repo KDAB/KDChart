@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2019 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2016 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
@@ -107,7 +107,7 @@ do {                           \
     void _assertFalse( bool x, const char * expression, const char * file, unsigned int line );
 
     void _assertEqualWithEpsilons( float x1, float x2, int prec, const char * expr1, const char * expr2, const char * exprPrec, const char * file, unsigned int line );
-    void _assertEqualWithEpsilons( double x1, double x2, int prec, const char * expr1, const char * expr2, const char * exprPrec, const char * file, unsigned int line );
+    void _assertEqualWithEpsilons( qreal x1, qreal x2, int prec, const char * expr1, const char * expr2, const char * exprPrec, const char * file, unsigned int line );
     void _assertEqualWithEpsilons( long double x1, long double x2, int prec, const char * expr1, const char * expr2, const char * exprPrec, const char * file, unsigned int line );
 
     template <typename T, typename S>

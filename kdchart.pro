@@ -11,7 +11,7 @@ unittests: SUBDIRS +=qtests
 SUBDIRS +=tests
 
 
-VERSION  = 2.6.2
+VERSION  = 2.6.0
 
 MAJOR_VERSION = 2
 
@@ -85,11 +85,11 @@ exists( LICENSE.GPL.txt ): licenses.files += LICENSE.GPL.txt
 licenses.path = $$INSTALL_DOC_DIR
 INSTALLS += licenses
 
-# install readme(s):
-exists ( README.txt ):            readme.files  = README.txt
-exists ( README-commercial.txt ): readme.files += README-commercial.txt
-readme.path = $$INSTALL_DOC_DIR
-INSTALLS += readme
+exists( README.txt ) {
+    readme.files = README.txt
+    readme.path = $$INSTALL_DOC_DIR
+    INSTALLS += readme
+}
 
 # forward make test calls to qtests:
 test.target=test

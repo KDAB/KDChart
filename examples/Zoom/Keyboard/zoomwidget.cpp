@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2019 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2016 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
@@ -112,7 +112,7 @@ void ZoomWidget::keyPressEvent( QKeyEvent* e )
             e->ignore();
     }
     if ( dZoom || dX || dY ) {
-        const double factor = qMax( qreal(1.0), coordinatePlane()->zoomFactorX() + dZoom );
+        const double factor = qMax( double(1.0), coordinatePlane()->zoomFactorX() + dZoom );
         const qreal x = coordinatePlane()->zoomCenter().x() + dX;
         const qreal y = coordinatePlane()->zoomCenter().y() + dY;
         coordinatePlane()->setZoomFactorX( factor );

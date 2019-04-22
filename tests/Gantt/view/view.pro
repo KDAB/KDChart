@@ -6,7 +6,7 @@ DEPENDPATH += . $${TOP_SOURCE_DIR}/include $${TOP_SOURCE_DIR}/src $${TOP_SOURCE_
 INCLUDEPATH += . $${TOP_SOURCE_DIR}/include
 QT += svg
 
-greaterThan(QT_MAJOR_VERSION, 4):QT += printsupport
+contains(QT_VERSION, ^5\\.[0-9]\\..*):QT += printsupport
 
 # Input
 SOURCES += main.cpp

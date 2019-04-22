@@ -1,14 +1,6 @@
 Release Highlights
 ==================
 
-Version 2.6.1:
--------------
- * Keep it building with modern Qt versions, at least up to Qt5.10
- * Improve tooltip handling
- * Fix horizontal bar chart
- * Use @rpath for OSX dynamic libraries
- * Fix build on Qt4/ARM
-
 Version 2.6.0:
 --------------
 Features:

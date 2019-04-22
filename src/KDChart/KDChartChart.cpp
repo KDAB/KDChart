@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2019 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2016 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
@@ -1761,28 +1761,15 @@ bool Chart::event( QEvent* event )
 {
     if ( event->type() == QEvent::ToolTip ) {
         const QHelpEvent* const helpEvent = static_cast< QHelpEvent* >( event );
-        for (int stage = 0; stage < 2; ++stage) {
-            KDAB_FOREACH( const AbstractCoordinatePlane* const plane, d->coordinatePlanes ) {
-                KDAB_FOREACH( const AbstractDiagram* diagram, plane->diagrams() ) {
-
-                    QModelIndex index;
-                    if (stage == 0) {
-                        // First search at the exact position
-                        index = diagram->indexAt(helpEvent->pos());
-                    }
-                    else {
-                        // Second, search in a larger area, which is easier to hit on screens with higher DPI.
-                        const QModelIndexList indexes = diagram->indexesIn(QRect( helpEvent->pos() - QPoint(15,15), QSize(30,30)));
-                        index = indexes.isEmpty() ? QModelIndex() : indexes.front();
-                    }
-
-                    const QVariant toolTip = index.data( Qt::ToolTipRole );
-                    if ( toolTip.isValid() ) {
-                        const QPoint pos = mapFromGlobal( helpEvent->pos() );
-                        const QRect rect( pos - QPoint( 1, 1 ), QSize( 3, 3 ) );
-                        QToolTip::showText( QCursor::pos(), toolTip.toString(), this, rect );
-                        return true;
-                    }
+        KDAB_FOREACH( const AbstractCoordinatePlane* const plane, d->coordinatePlanes ) {
+            KDAB_FOREACH( const AbstractDiagram* diagram, plane->diagrams() ) {
+                const QModelIndex index = diagram->indexAt( helpEvent->pos() );
+                const QVariant toolTip = index.data( Qt::ToolTipRole );
+                if ( toolTip.isValid() ) {
+                    QPoint pos = mapFromGlobal( helpEvent->pos() );
+                    QRect rect( pos - QPoint( 1, 1 ), QSize( 3, 3 ) );
+                    QToolTip::showText( QCursor::pos(), toolTip.toString(), this, rect );
+                    return true;
                 }
             }
         }

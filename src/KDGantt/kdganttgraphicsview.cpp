@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2019 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2016 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
@@ -178,12 +178,12 @@ void HeaderWidget::contextMenuEvent( QContextMenuEvent* event )
     else if ( action == actionZoomIn )
     {
         assert( grid != 0 );
-        grid->setDayWidth( qMax(0.1, grid->dayWidth() + grid->dayWidth() * 0.2) );
+        grid->setDayWidth( grid->dayWidth() + 10.0 );
     }
     else if ( action == actionZoomOut )
     {
         assert( grid != 0 );
-        grid->setDayWidth( qMax(0.1, grid->dayWidth() - grid->dayWidth() * 0.2) );
+        grid->setDayWidth( grid->dayWidth() - 10.0 );
     }
 
     event->accept();
