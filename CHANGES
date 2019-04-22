@@ -1,6 +1,10 @@
 Release Highlights
 ==================
 
+Version 2.6.2:
+-------------
+ * Update version number for OBS
+
 Version 2.6.1:
 -------------
  * Keep it building with modern Qt versions, at least up to Qt5.10
