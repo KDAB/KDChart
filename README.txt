@@ -1,3 +1,4 @@
+# <a name="title"></a> KD Chart [![Logo](https://github.com/KDAB/KDChart/blob/master/images/kdchart_48x48.png)](http://www.kdab.com/products/kd-chart)
 Introduction
 ============
 KD Chart is a tool for creating business and scientific charts.
