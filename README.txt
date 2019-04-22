@@ -37,7 +37,7 @@ Contact info@kdab.com for more information.
 
 License
 =======
-The KD Chart Software is Copyright (C) 2001-2019 Klarälvdalens Datakonsult AB (KDAB),
+The KD Chart Software is Copyright (C) 2001-2018 Klarälvdalens Datakonsult AB (KDAB),
 and is available under the terms of:
 * the GPL (see LICENSE.GPL.txt for details)
 * the KDAB commercial license, provided that you buy a license.

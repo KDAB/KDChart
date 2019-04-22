@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2019 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2018 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
@@ -219,7 +219,7 @@ Qt::ItemFlags SummaryHandlingProxyModel::flags( const QModelIndex& idx ) const
     const QAbstractItemModel* model = sourceModel();
     Qt::ItemFlags f = model->flags( sidx );
     if ( d->isSummary(sidx) ) {
-        f &= ~Qt::ItemIsEditable;
+        f &= !Qt::ItemIsEditable;
     }
     return f;
 }

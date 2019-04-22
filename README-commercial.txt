@@ -40,7 +40,7 @@ Contact info@kdab.com for more information.
 
 License
 =======
-Copyright (C) 2001-2019 Klarälvdalens Datakonsult AB (KDAB), a KDAB Group company, <info@kdab.com>
+Copyright (C) 2001-2018 Klarälvdalens Datakonsult AB (KDAB), a KDAB Group company, <info@kdab.com>
 
 Commercial licensing terms are available in the included file
         LICENSE.txt (for non-US customers)
