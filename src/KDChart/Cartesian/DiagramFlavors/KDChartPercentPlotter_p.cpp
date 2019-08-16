@@ -224,14 +224,18 @@ void PercentPlotter::paint( PaintContext* ctx )
 
             LineAttributes laCell;
 
-            const qreal value = ( point.value + extraY ) / yValueSums[ i.key() ] * 100;
+            const qreal scalingFactor =
+                qFuzzyIsNull( yValueSums[ i.key() ] ) ? 0.0 :
+                    100.0 / yValueSums[ i.key() ];
+
+            const qreal value = ( point.value + extraY ) * scalingFactor;
 
             const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
             // area corners, a + b are the line ends:
             const QPointF a( plane->translate( QPointF( lastPoint.key, lastValue ) ) );
             const QPointF b( plane->translate( QPointF( point.key, value ) ) );
-            const QPointF c( plane->translate( QPointF( lastPoint.key, lastExtraY / yValueSums[ i.key() ] * 100 ) ) );
-            const QPointF d( plane->translate( QPointF( point.key, extraY / yValueSums[ i.key() ] * 100 ) ) );
+            const QPointF c( plane->translate( QPointF( lastPoint.key, lastExtraY * scalingFactor ) ) );
+            const QPointF d( plane->translate( QPointF( point.key, extraY * scalingFactor ) ) );
             // add the line to the list:
             laCell = diagram()->lineAttributes( sourceIndex );
             // add data point labels:

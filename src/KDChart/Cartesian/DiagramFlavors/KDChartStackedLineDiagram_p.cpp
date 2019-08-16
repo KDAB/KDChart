@@ -92,6 +92,16 @@ const QPair<QPointF, QPointF> StackedLineDiagram::calculateDataBoundaries() cons
 
 void StackedLineDiagram::paint( PaintContext* ctx )
 {
+    if ( m_private->lineMode == LineDiagram::Linear ) {
+        paintWithLines( ctx );
+
+    } else {
+        paintWithSplines( ctx );
+    }
+}
+
+void StackedLineDiagram::paintWithLines( PaintContext* ctx )
+{
     reverseMapper().clear();
 
     const int columnCount = compressor().modelDataColumns();
@@ -228,6 +238,158 @@ void StackedLineDiagram::paint( PaintContext* ctx )
         }
         bottomPoints = points;
         bFirstDataset = false;
+    }
+    PaintingHelpers::paintElements( m_private, ctx, lpc, lineList );
+}
+
+void StackedLineDiagram::paintWithSplines( PaintContext* ctx )
+{
+    reverseMapper().clear();
+
+    const int columnCount = compressor().modelDataColumns();
+    const int rowCount = compressor().modelDataRows();
+
+// FIXME integrate column index retrieval to compressor:
+//    int maxFound = 0;
+//    {   // find the last column number that is not hidden
+//        for ( int iColumn =  datasetDimension() - 1;
+//             iColumn <  columnCount;
+//             iColumn += datasetDimension() )
+//            if ( ! diagram()->isHidden( iColumn ) )
+//                maxFound = iColumn;
+//    }
+    //maxFound = columnCount;
+    // ^^^ temp
+
+    LabelPaintCache lpc;
+    LineAttributesInfoList lineList;
+
+    QVector< qreal > percentSumValues;
+
+    for ( int column = 0; column < columnCount; ++column )
+    {
+        CartesianDiagramDataCompressor::CachePosition previousCellPosition;
+
+        //display area can be set by dataset ( == column) and/or by cell
+        LineAttributes laPreviousCell; // by default no area is drawn
+        QModelIndex indexPreviousCell;
+        QList<QPainterPath> areas;
+
+        for ( int row = 0; row < rowCount; ++row ) {
+            const CartesianDiagramDataCompressor::CachePosition position( row, column );
+            CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+            const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
+
+            const LineAttributes laCell = diagram()->lineAttributes( sourceIndex );
+            const bool bDisplayCellArea = laCell.displayArea();
+
+            const LineAttributes::MissingValuesPolicy policy = laCell.missingValuesPolicy();
+
+            if ( ISNAN( point.value ) && policy == LineAttributes::MissingValuesShownAsZero )
+                point.value = 0.0;
+
+            auto valueAt = [&] ( int row, int col ) -> qreal {
+                if ( row < 0 || row >= rowCount ) {
+                    return NAN;
+                }
+
+                const CartesianDiagramDataCompressor::CachePosition position( row, col );
+                const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+
+                return !ISNAN( point.value ) ? point.value
+                     : policy == LineAttributes::MissingValuesAreBridged ? interpolateMissingValue( position )
+                     : NAN;
+            };
+
+            auto safeAdd = [] ( qreal accumulator, qreal newValue ) {
+                return ISNAN( newValue ) ? accumulator : accumulator + newValue;
+            };
+
+            qreal nextKey = 0;
+            QVector<qreal> stackedValuesTop( 4, 0.0 );
+            QVector<qreal> stackedValuesBottom( 4, 0.0 );
+
+            for ( int currentRow = 0; currentRow < 4; ++currentRow ) {
+                stackedValuesTop[currentRow] = safeAdd( stackedValuesTop[currentRow], valueAt( row - 1 + currentRow, column ) );
+            }
+
+            for ( int column2 = column - 1; column2 >= 0; --column2 )
+            {
+                for ( int currentRow = 0; currentRow < 4; ++currentRow ) {
+                    stackedValuesTop[currentRow] = safeAdd( stackedValuesTop[currentRow], valueAt( row - 1 + currentRow, column2 ) );
+                    stackedValuesBottom[currentRow] = safeAdd( stackedValuesBottom[currentRow], valueAt( row - 1 + currentRow, column2 ) );
+                }
+            }
+
+            nextKey = row + 1;
+
+            auto dataAt = [&] ( const QVector<qreal>& source, qreal key, int index ) {
+                return ctx->coordinatePlane()->translate( QPointF( diagram()->centerDataPoints() ? key + 0.5 : key, source[index] ) );
+            };
+
+            const QPointF ptNorthWest = dataAt( stackedValuesTop, point.key, 1 );
+            const QPointF ptSouthWest =
+                    bDisplayCellArea ? dataAt( stackedValuesBottom, point.key, 1 )
+                                     : ptNorthWest;
+
+            QPointF ptNorthEast;
+            QPointF ptSouthEast;
+
+            if ( row + 1 < rowCount ) {
+                ptNorthEast = dataAt( stackedValuesTop, nextKey, 2 );
+                lineList.append( LineAttributesInfo( sourceIndex, ptNorthWest, ptNorthEast ) );
+                ptSouthEast =
+                    bDisplayCellArea ? dataAt( stackedValuesBottom, nextKey, 2 )
+                                     : ptNorthEast;
+
+                if ( areas.count() && laCell != laPreviousCell ) {
+                    PaintingHelpers::paintAreas( m_private, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
+                    areas.clear();
+                }
+
+                if ( bDisplayCellArea ) {
+                    QPainterPath path;
+                    path.moveTo( ptNorthWest );
+
+                    const auto ptBeforeNorthWest =
+                        row > 0 ? dataAt( stackedValuesTop, point.key - 1, 0 )
+                                : ptNorthWest;
+                    const auto ptAfterNorthEast =
+                        row < rowCount - 1 ? dataAt( stackedValuesTop, point.key + 2, 3 )
+                                           : ptNorthEast;
+                    addSplineChunkTo( path, ptBeforeNorthWest, ptNorthWest, ptNorthEast, ptAfterNorthEast );
+
+                    path.lineTo( ptNorthEast );
+                    path.lineTo( ptSouthEast );
+
+                    const auto ptBeforeSouthWest =
+                        row > 0 ? dataAt( stackedValuesBottom, point.key - 1, 0 )
+                                : ptSouthWest;
+                    const auto ptAfterSouthEast =
+                        row < rowCount - 1 ? dataAt( stackedValuesBottom, point.key + 2, 3 )
+                                           : ptSouthEast;
+                    addSplineChunkTo( path, ptAfterSouthEast, ptSouthEast, ptSouthWest, ptBeforeSouthWest, SplineDirection::Reverse );
+
+                    areas << path;
+                    laPreviousCell = laCell;
+                    indexPreviousCell = sourceIndex;
+                } else {
+                    //qDebug() << "no area shown for row"<<iRow<<"  column"<<iColumn;
+                }
+            } else {
+                ptNorthEast = ptNorthWest;
+                ptSouthEast = ptSouthWest;
+            }
+
+            const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
+            if ( !ISNAN( point.value ) )
+                m_private->addLabel( &lpc, sourceIndex, &position, pts, Position::NorthWest,
+                                     Position::NorthWest, point.value );
+        }
+        if ( areas.count() ) {
+            PaintingHelpers::paintAreas( m_private, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
+            areas.clear();
+        }
     }
     PaintingHelpers::paintElements( m_private, ctx, lpc, lineList );
 }

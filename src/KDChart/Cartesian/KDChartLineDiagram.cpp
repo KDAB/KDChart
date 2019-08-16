@@ -363,6 +363,24 @@ ValueTrackerAttributes LineDiagram::valueTrackerAttributes(
             KDChart::ValueTrackerAttributesRole ).value<ValueTrackerAttributes>();
 }
 
+
+/**
+ * Returns whether the lines are drawn smoothed
+ */
+LineDiagram::LineMode LineDiagram::lineMode() const
+{
+    return d->lineMode;
+}
+
+
+void LineDiagram::setLineMode( LineMode lineMode )
+{
+    d->lineMode = lineMode;
+    emit propertiesChanged();
+}
+
+
+
 void LineDiagram::resizeEvent ( QResizeEvent* )
 {
 }

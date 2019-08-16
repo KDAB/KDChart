@@ -28,6 +28,7 @@
 #include "KDChartAbstractDiagram_p.h"
 #include "KDChartCartesianCoordinatePlane.h"
 #include "KDChartLineDiagram.h"
+#include "KDChartLineDiagram_p.h"
 #include "KDChartValueTrackerAttributes.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
@@ -53,6 +54,23 @@ const QPointF project( const QPointF& point, const ThreeDLineAttributes& tdAttri
                     point.y() * cos( xrad ) - tdAttributes.depth() * sin( xrad ) );
 }
 
+QPainterPath fitPoints( const QPolygonF &points )
+{
+    QPainterPath path;
+    path.moveTo( points.at( 0 ) );
+    const auto count = points.size();
+
+    auto dataAt = [&] (int i) {
+        return i < 0 || i >= count ? QPointF(NAN, NAN) : points.at( i );
+    };
+
+    for (int i = 1; i < count; ++i) {
+        addSplineChunkTo( path, dataAt( i - 2 ), points.at( i - 1 ), points.at( i ), dataAt( i + 1 ) );
+    }
+
+    return path;
+}
+
 void paintPolyline( PaintContext* ctx, const QBrush& brush, const QPen& pen, const QPolygonF& points )
 {
     ctx->painter()->setBrush( brush );
@@ -68,6 +86,21 @@ void paintPolyline( PaintContext* ctx, const QBrush& brush, const QPen& pen, con
         ctx->painter()->drawLine( points.at( i ), points.at( i + 1 ) );
     }
 #endif
+}
+
+void paintSpline( PaintContext* ctx, const QBrush& brush, const QPen& pen, const QPolygonF& points )
+{
+    if (points.size() < 3) {
+        paintPolyline (ctx, brush, pen, points);
+        return;
+    }
+
+    ctx->painter()->setBrush( brush );
+    ctx->painter()->setBrush( QBrush() );
+    ctx->painter()->setPen( PrintingParameters::scalePen(
+        QPen( pen.color(), pen.width(), pen.style(), Qt::FlatCap, Qt::MiterJoin ) ) );
+
+    ctx->painter()->drawPath( fitPoints(points) );
 }
 
 void paintThreeDLines( PaintContext* ctx, AbstractDiagram *diagram, const QModelIndex& index,
@@ -203,6 +236,21 @@ static ValueTrackerAttributes valueTrackerAttributes( AbstractDiagram* diagram, 
     return ValueTrackerAttributes();
 }
 
+void paintObject ( AbstractDiagram::Private *diagramPrivate, PaintContext* ctx, const QBrush& brush, const QPen& pen, const QPolygonF& points )
+{
+    LineDiagram::LineMode mode = LineDiagram::Linear;
+
+    if ( auto lineDiagram = dynamic_cast<LineDiagram::Private*>( diagramPrivate ) ) {
+        mode = lineDiagram->lineMode;
+    }
+
+    if ( mode == LineDiagram::Linear ) {
+        paintPolyline( ctx, brush, pen, points );
+    } else {
+        paintSpline( ctx, brush, pen, points );
+    }
+}
+
 void paintElements( AbstractDiagram::Private *diagramPrivate, PaintContext* ctx,
                     const LabelPaintCache& lpc, const LineAttributesInfoList& lineList )
 {
@@ -238,7 +286,7 @@ void paintElements( AbstractDiagram::Private *diagramPrivate, PaintContext* ctx,
             } else {
                 // different painter settings or discontinuous line: start a new run of lines
                 if ( points.count() ) {
-                    PaintingHelpers::paintPolyline( ctx, curBrush, curPen, points );
+                    paintObject( diagramPrivate, ctx, curBrush, curPen, points );
                 }
                 curBrush = brush;
                 curPen = pen;
@@ -250,7 +298,7 @@ void paintElements( AbstractDiagram::Private *diagramPrivate, PaintContext* ctx,
     }
     if ( points.count() ) {
         // the last run of lines is yet to be painted - do it now
-        PaintingHelpers::paintPolyline( ctx, curBrush, curPen, points );
+        paintObject( diagramPrivate, ctx, curBrush, curPen, points );
     }
 
     KDAB_FOREACH ( const LineAttributesInfo& lineInfo, lineList ) {
@@ -286,6 +334,32 @@ void paintAreas( AbstractDiagram::Private* diagramPrivate, PaintContext* ctx, co
     transColor.setAlpha( opacity );
     trans.setColor(transColor);
     QPen indexPen = diagram->pen(index);
+    indexPen.setBrush( trans );
+    const PainterSaver painterSaver( ctx->painter() );
+
+    ctx->painter()->setRenderHint( QPainter::Antialiasing, diagram->antiAliasing() );
+    ctx->painter()->setPen( PrintingParameters::scalePen( indexPen ) );
+    ctx->painter()->setBrush( trans );
+
+    ctx->painter()->drawPath( path );
+}
+
+void paintAreas( AbstractDiagram::Private* diagramPrivate, PaintContext* ctx, const QModelIndex& index,
+                 const QList< QPainterPath >& areas, uint opacity )
+{
+    AbstractDiagram* diagram = diagramPrivate->diagram;
+    QPainterPath path;
+    for ( int i = 0; i < areas.count(); ++i )
+    {
+        path += areas[ i ];
+        // diagramPrivate->reverseMapper.addPolygon( index.row(), index.column(), p );
+    }
+
+    QBrush trans = diagram->brush( index );
+    QColor transColor = trans.color();
+    transColor.setAlpha( opacity );
+    trans.setColor( transColor );
+    QPen indexPen = diagram->pen( index );
     indexPen.setBrush( trans );
     const PainterSaver painterSaver( ctx->painter() );
 

@@ -51,6 +51,7 @@ private slots:
     void on_animateAreasCB_toggled( bool checked );
     void on_highlightAreaCB_toggled( bool checked );
     void on_highlightAreaSB_valueChanged( int i );
+    void on_smoothLinesCB_toggled( bool checked );
     void setHighlightArea( int row, int column, int opacity,
                            bool checked, bool doUpdate );
     void on_trackAreasCB_toggled( bool checked );

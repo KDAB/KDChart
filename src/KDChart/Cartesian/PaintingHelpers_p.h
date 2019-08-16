@@ -59,7 +59,57 @@ void paintElements( AbstractDiagram::Private *diagramPrivate, PaintContext* ctx,
 void paintAreas( AbstractDiagram::Private* diagramPrivate, PaintContext* ctx, const QModelIndex& index,
                  const QList< QPolygonF >& areas, uint opacity );
 
+void paintSpline( PaintContext* ctx, const QBrush& brush, const QPen& pen, const QPolygonF& points );
+void paintAreas( AbstractDiagram::Private* diagramPrivate, PaintContext* ctx, const QModelIndex& index,
+                 const QList< QPainterPath >& areas, uint opacity );
+
 }
+
+inline qreal euclideanLength( const QPointF &p )
+{
+    return sqrt( p.x() * p.x() + p.y() * p.y() );
+}
+
+enum class SplineNodePosition { Left, Right };
+
+inline QPointF splineNode( QPointF before, QPointF current, QPointF after, SplineNodePosition position )
+{
+    if ( ISNAN( before.y() ) || ISNAN ( after.y() ) )
+        return current;
+
+    const auto diff = after - before;
+    const auto scale = 0.25 * diff.x() / euclideanLength( diff );
+    return current + diff * scale * ( position == SplineNodePosition::Left ? 1 : -1 );
+}
+
+enum class SplineDirection { Normal, Reverse };
+
+inline QPair<QPointF, QPointF> splineChunk( QPointF before, QPointF a, QPointF b, QPointF after,
+                                            SplineDirection direction = SplineDirection::Normal )
+{
+    QPointF nodeLeft = a;
+    QPointF nodeRight = b;
+
+    if ( !ISNAN( before.y() ) ) {
+        nodeLeft = splineNode( before, a, b,
+                direction == SplineDirection::Normal ? SplineNodePosition::Left : SplineNodePosition::Right );
+    }
+
+    if ( !ISNAN( after.y() ) ) {
+        nodeRight = splineNode( a, b, after,
+                direction != SplineDirection::Normal ? SplineNodePosition::Left : SplineNodePosition::Right );
+    }
+
+    return { nodeLeft, nodeRight };
+}
+
+inline void addSplineChunkTo( QPainterPath& path, QPointF before, QPointF a, QPointF b, QPointF after,
+                              SplineDirection direction = SplineDirection::Normal )
+{
+    const auto chunk = splineChunk( before, a, b, after, direction );
+    path.cubicTo( chunk.first, chunk.second, b );
+}
+
 }
 
 #endif

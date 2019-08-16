@@ -71,6 +71,11 @@ public:
         Percent = 2
     };
 
+    enum LineMode {
+        Linear,
+        Spline
+    };
+
 
     void setType( const LineType type );
     LineType type() const;
@@ -115,6 +120,9 @@ public:
     void setValueTrackerAttributes( const QModelIndex & index,
                                     const ValueTrackerAttributes & a );
     ValueTrackerAttributes valueTrackerAttributes( const QModelIndex & index ) const;
+
+    void setLineMode( LineMode lineMode );
+    LineMode lineMode() const;
 
 #if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
     // implement AbstractCartesianDiagram

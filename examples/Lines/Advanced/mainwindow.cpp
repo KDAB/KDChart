@@ -129,6 +129,12 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
     m_chart->update();
 }
 
+void MainWindow::on_smoothLinesCB_toggled( bool checked )
+{
+    m_lines->setLineMode( checked ? LineDiagram::Spline : LineDiagram::Linear);
+    m_chart->update();
+}
+
 void MainWindow::on_centerDataPointsCB_toggled( bool checked )
 {
     m_lines->setCenterDataPoints( checked );
