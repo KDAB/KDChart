@@ -38,7 +38,7 @@ namespace KDChart {
 
     private:
         void paintWithLines( PaintContext* ctx );
-        void paintWithSplines( PaintContext* ctx );
+        void paintWithSplines( PaintContext* ctx, qreal tension );
     };
 
 }

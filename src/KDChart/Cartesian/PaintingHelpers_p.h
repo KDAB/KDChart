@@ -72,41 +72,41 @@ inline qreal euclideanLength( const QPointF &p )
 
 enum class SplineNodePosition { Left, Right };
 
-inline QPointF splineNode( QPointF before, QPointF current, QPointF after, SplineNodePosition position )
+inline QPointF splineNode( qreal tension, QPointF before, QPointF current, QPointF after, SplineNodePosition position )
 {
     if ( ISNAN( before.y() ) || ISNAN ( after.y() ) )
         return current;
 
     const auto diff = after - before;
-    const auto scale = 0.25 * diff.x() / euclideanLength( diff );
+    const auto scale = 0.25 * tension * diff.x() / euclideanLength( diff );
     return current + diff * scale * ( position == SplineNodePosition::Left ? 1 : -1 );
 }
 
 enum class SplineDirection { Normal, Reverse };
 
-inline QPair<QPointF, QPointF> splineChunk( QPointF before, QPointF a, QPointF b, QPointF after,
+inline QPair<QPointF, QPointF> splineChunk( qreal tension, QPointF before, QPointF a, QPointF b, QPointF after,
                                             SplineDirection direction = SplineDirection::Normal )
 {
     QPointF nodeLeft = a;
     QPointF nodeRight = b;
 
     if ( !ISNAN( before.y() ) ) {
-        nodeLeft = splineNode( before, a, b,
+        nodeLeft = splineNode( tension, before, a, b,
                 direction == SplineDirection::Normal ? SplineNodePosition::Left : SplineNodePosition::Right );
     }
 
     if ( !ISNAN( after.y() ) ) {
-        nodeRight = splineNode( a, b, after,
+        nodeRight = splineNode( tension, a, b, after,
                 direction != SplineDirection::Normal ? SplineNodePosition::Left : SplineNodePosition::Right );
     }
 
     return { nodeLeft, nodeRight };
 }
 
-inline void addSplineChunkTo( QPainterPath& path, QPointF before, QPointF a, QPointF b, QPointF after,
+inline void addSplineChunkTo( QPainterPath& path, qreal tension, QPointF before, QPointF a, QPointF b, QPointF after,
                               SplineDirection direction = SplineDirection::Normal )
 {
-    const auto chunk = splineChunk( before, a, b, after, direction );
+    const auto chunk = splineChunk( tension, before, a, b, after, direction );
     path.cubicTo( chunk.first, chunk.second, b );
 }
 

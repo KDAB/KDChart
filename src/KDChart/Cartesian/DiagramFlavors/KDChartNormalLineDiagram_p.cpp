@@ -52,11 +52,11 @@ const QPair< QPointF, QPointF > NormalLineDiagram::calculateDataBoundaries() con
 
 void NormalLineDiagram::paint( PaintContext* ctx )
 {
-    if (m_private->lineMode == LineDiagram::Linear) {
+    if ( qFuzzyIsNull( m_private->tension ) ) {
         paintWithLines( ctx );
 
     } else {
-        paintWithSplines( ctx );
+        paintWithSplines( ctx, m_private->tension );
     }
 }
 
@@ -165,7 +165,7 @@ void NormalLineDiagram::paintWithLines( PaintContext* ctx )
     PaintingHelpers::paintElements( m_private, ctx, lpc, lineList );
 }
 
-void NormalLineDiagram::paintWithSplines( PaintContext* ctx )
+void NormalLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
 {
     reverseMapper().clear();
     Q_ASSERT( dynamic_cast<CartesianCoordinatePlane*>( ctx->coordinatePlane() ) );
@@ -264,7 +264,7 @@ void NormalLineDiagram::paintWithSplines( PaintContext* ctx )
 
                         path.moveTo( a );
 
-                        addSplineChunkTo( path, dataAt( row - 2 ), a, b, dataAt( row + 1 ) );
+                        addSplineChunkTo( path, tension, dataAt( row - 2 ), a, b, dataAt( row + 1 ) );
 
                         path.lineTo( d );
                         path.lineTo( c );

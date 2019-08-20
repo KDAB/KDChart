@@ -71,11 +71,6 @@ public:
         Percent = 2
     };
 
-    enum LineMode {
-        Linear,
-        Spline
-    };
-
 
     void setType( const LineType type );
     LineType type() const;
@@ -121,8 +116,13 @@ public:
                                     const ValueTrackerAttributes & a );
     ValueTrackerAttributes valueTrackerAttributes( const QModelIndex & index ) const;
 
-    void setLineMode( LineMode lineMode );
-    LineMode lineMode() const;
+    /**
+     * This property defines the strength of the line curvature - 0 for
+     * straight lines between data points, 1 for a smooth curve through
+     * the data points
+     */
+    void setLineTension( qreal tenson );
+    qreal lineTension() const;
 
 #if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
     // implement AbstractCartesianDiagram
