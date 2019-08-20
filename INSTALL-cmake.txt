@@ -1,0 +1,88 @@
+These are the instructions for installing KD Chart using the CMake buildsystem.
+CMake version 2.8.7 or higher is required.
+
+KD Chart requires a Qt version >= 4.6 with Network, XML, Svg, Sql support enabled.
+
+The same source code compiles with either Qt 4 or Qt 5.
+
+1) From the top directory of your KD Chart installation create a build directory:
+
+     mkdir build
+
+   and change directory into that build directory:
+
+     cd build
+
+2) Now run 'cmake' depending on the kind of build one of the following:
+     cmake -DCMAKE_BUILD_TYPE=Debug ..
+     cmake -DCMAKE_BUILD_TYPE=Release ..
+     cmake -DKDChart_STATIC=True -DCMAKE_BUILD_TYPE=Debug ..
+     cmake -DKDChart_STATIC=True -DCMAKE_BUILD_TYPE=Release ..
+
+   To define the install-location use for example:
+     cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=C:/kdchart ..
+     cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/opt/kdchart ..
+
+3) Unix
+
+set your LD_LIBRARY_PATH to point to your KD Chart installation lib directory.
+
+If you do not have LD_LIBRARY_PATH set already then use this line:
+LD_LIBRARY_PATH=/path/to/kdchart/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH
+
+The above has to be added into your .bashrc or similar to remain. It may also of course be run from a shell just before building software using KD Chart, but in this case your settings will only be available for this shell.
+
+4) MacOS
+
+Proceed as described above, but using DYLD_LIBRARY_PATH instead
+of LD_LIBRARY_PATH
+
+5) Windows
+
+Add the path to KD Chart lib into your LIB environment variable and the path
+to KD Chart bin into your PATH environment variable.
+
+Or run:
+  set PATH=\path\to\kdchart\bin;%PATH%
+  set LIB=\path\to\kdchart\lib;%LIB%
+
+
+6) Build everything by typing:
+
+make    # Unix,
+nmake   # Windows
+
+
+7) (optionally:) Install KD Chart:
+
+   From your top-level KD Chart directory just type
+
+make install   # Unix,
+nmake install  # Windows
+
+   This will copy the necessary files into the sub-directories of
+   your installation path:
+   For Unix/Linux, Mac: /usr/local/KDAB/KDChart-VERSION/
+   For Windows that is: C:\KDAB\KDChart-VERSION\
+
+
+8) Symbian (Qt4 only)
+
+A CMake build is not available for Symbian platforms.  Refer to the INSTALL.txt
+file for instructions on using autotools for a Symbian install.
+
+
+9) Have a look at the examples applications. They will get you started with KD Chart.
+
+== Testing ==
+To build the testing harness, pass -DKDChart_TESTS=true to CMake, like so:
+  % cmake -DKDChart_TESTS=true
+
+Then run 'make test' to run the unit tests.
+
+== Force a Qt4 build ==
+On systems with both Qt4 and Qt5 available, the CMake buildsystem will always
+attempt to use Qt5. To force a Qt build, pass -DKDChart_ENFORCE_QT4_BUILD=true
+to CMake, as in:
+  % cmake -DKDChart_ENFORCE_QT4_BUILD=true
