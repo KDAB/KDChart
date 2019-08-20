@@ -129,9 +129,9 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
     m_chart->update();
 }
 
-void MainWindow::on_smoothLinesCB_toggled( bool checked )
+void MainWindow::on_smoothLinesSDR_valueChanged( int value )
 {
-    m_lines->setLineMode( checked ? LineDiagram::Spline : LineDiagram::Linear);
+    m_lines->setLineTension( value / 10.0 );
     m_chart->update();
 }
 
