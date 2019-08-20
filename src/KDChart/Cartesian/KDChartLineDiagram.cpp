@@ -367,15 +367,15 @@ ValueTrackerAttributes LineDiagram::valueTrackerAttributes(
 /**
  * Returns whether the lines are drawn smoothed
  */
-LineDiagram::LineMode LineDiagram::lineMode() const
+qreal LineDiagram::lineTension() const
 {
-    return d->lineMode;
+    return d->tension;
 }
 
 
-void LineDiagram::setLineMode( LineMode lineMode )
+void LineDiagram::setLineTension( qreal tension )
 {
-    d->lineMode = lineMode;
+    d->tension = tension;
     emit propertiesChanged();
 }
 

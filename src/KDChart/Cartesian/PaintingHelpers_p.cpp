@@ -54,7 +54,7 @@ const QPointF project( const QPointF& point, const ThreeDLineAttributes& tdAttri
                     point.y() * cos( xrad ) - tdAttributes.depth() * sin( xrad ) );
 }
 
-QPainterPath fitPoints( const QPolygonF &points )
+QPainterPath fitPoints( const QPolygonF &points, qreal tension )
 {
     QPainterPath path;
     path.moveTo( points.at( 0 ) );
@@ -65,7 +65,7 @@ QPainterPath fitPoints( const QPolygonF &points )
     };
 
     for (int i = 1; i < count; ++i) {
-        addSplineChunkTo( path, dataAt( i - 2 ), points.at( i - 1 ), points.at( i ), dataAt( i + 1 ) );
+        addSplineChunkTo( path, tension, dataAt( i - 2 ), points.at( i - 1 ), points.at( i ), dataAt( i + 1 ) );
     }
 
     return path;
@@ -88,10 +88,10 @@ void paintPolyline( PaintContext* ctx, const QBrush& brush, const QPen& pen, con
 #endif
 }
 
-void paintSpline( PaintContext* ctx, const QBrush& brush, const QPen& pen, const QPolygonF& points )
+void paintSpline( PaintContext* ctx, const QBrush& brush, const QPen& pen, const QPolygonF& points, qreal tension )
 {
     if (points.size() < 3) {
-        paintPolyline (ctx, brush, pen, points);
+        paintPolyline( ctx, brush, pen, points );
         return;
     }
 
@@ -100,7 +100,7 @@ void paintSpline( PaintContext* ctx, const QBrush& brush, const QPen& pen, const
     ctx->painter()->setPen( PrintingParameters::scalePen(
         QPen( pen.color(), pen.width(), pen.style(), Qt::FlatCap, Qt::MiterJoin ) ) );
 
-    ctx->painter()->drawPath( fitPoints(points) );
+    ctx->painter()->drawPath( fitPoints(points, tension) );
 }
 
 void paintThreeDLines( PaintContext* ctx, AbstractDiagram *diagram, const QModelIndex& index,
@@ -238,16 +238,16 @@ static ValueTrackerAttributes valueTrackerAttributes( AbstractDiagram* diagram, 
 
 void paintObject ( AbstractDiagram::Private *diagramPrivate, PaintContext* ctx, const QBrush& brush, const QPen& pen, const QPolygonF& points )
 {
-    LineDiagram::LineMode mode = LineDiagram::Linear;
+    qreal tension = 0;
 
     if ( auto lineDiagram = dynamic_cast<LineDiagram::Private*>( diagramPrivate ) ) {
-        mode = lineDiagram->lineMode;
+        tension = lineDiagram->tension;
     }
 
-    if ( mode == LineDiagram::Linear ) {
+    if ( qFuzzyIsNull(tension) ) {
         paintPolyline( ctx, brush, pen, points );
     } else {
-        paintSpline( ctx, brush, pen, points );
+        paintSpline( ctx, brush, pen, points, tension );
     }
 }
 

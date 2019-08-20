@@ -92,11 +92,11 @@ const QPair<QPointF, QPointF> StackedLineDiagram::calculateDataBoundaries() cons
 
 void StackedLineDiagram::paint( PaintContext* ctx )
 {
-    if ( m_private->lineMode == LineDiagram::Linear ) {
+    if ( qFuzzyIsNull( m_private->tension ) ) {
         paintWithLines( ctx );
 
     } else {
-        paintWithSplines( ctx );
+        paintWithSplines( ctx, m_private->tension );
     }
 }
 
@@ -242,7 +242,7 @@ void StackedLineDiagram::paintWithLines( PaintContext* ctx )
     PaintingHelpers::paintElements( m_private, ctx, lpc, lineList );
 }
 
-void StackedLineDiagram::paintWithSplines( PaintContext* ctx )
+void StackedLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
 {
     reverseMapper().clear();
 
@@ -357,7 +357,7 @@ void StackedLineDiagram::paintWithSplines( PaintContext* ctx )
                     const auto ptAfterNorthEast =
                         row < rowCount - 1 ? dataAt( stackedValuesTop, point.key + 2, 3 )
                                            : ptNorthEast;
-                    addSplineChunkTo( path, ptBeforeNorthWest, ptNorthWest, ptNorthEast, ptAfterNorthEast );
+                    addSplineChunkTo( path, tension, ptBeforeNorthWest, ptNorthWest, ptNorthEast, ptAfterNorthEast );
 
                     path.lineTo( ptNorthEast );
                     path.lineTo( ptSouthEast );
@@ -368,7 +368,7 @@ void StackedLineDiagram::paintWithSplines( PaintContext* ctx )
                     const auto ptAfterSouthEast =
                         row < rowCount - 1 ? dataAt( stackedValuesBottom, point.key + 2, 3 )
                                            : ptSouthEast;
-                    addSplineChunkTo( path, ptAfterSouthEast, ptSouthEast, ptSouthWest, ptBeforeSouthWest, SplineDirection::Reverse );
+                    addSplineChunkTo( path, tension, ptAfterSouthEast, ptSouthEast, ptSouthWest, ptBeforeSouthWest, SplineDirection::Reverse );
 
                     areas << path;
                     laPreviousCell = laCell;
