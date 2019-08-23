@@ -54,7 +54,7 @@ void NormalPlotter::paint( PaintContext* ctx )
     Q_ASSERT( dynamic_cast< CartesianCoordinatePlane* >( ctx->coordinatePlane() ) );
     const CartesianCoordinatePlane* const plane = static_cast< CartesianCoordinatePlane* >( ctx->coordinatePlane() );
     const int colCount = compressor().modelDataColumns();
-    const int rowCount = compressor().modelDataRows();    
+    const int rowCount = compressor().modelDataRows();
 
     LabelPaintCache lpc;
 
@@ -121,6 +121,7 @@ void NormalPlotter::paint( PaintContext* ctx )
             }
             PaintingHelpers::paintElements( m_private, ctx, lpc, lineList );
         }
+
     }
     else
     {

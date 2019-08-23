@@ -363,6 +363,24 @@ ValueTrackerAttributes LineDiagram::valueTrackerAttributes(
             KDChart::ValueTrackerAttributesRole ).value<ValueTrackerAttributes>();
 }
 
+
+/**
+ * Returns whether the lines are drawn smoothed
+ */
+qreal LineDiagram::lineTension() const
+{
+    return d->tension;
+}
+
+
+void LineDiagram::setLineTension( qreal tension )
+{
+    d->tension = tension;
+    emit propertiesChanged();
+}
+
+
+
 void LineDiagram::resizeEvent ( QResizeEvent* )
 {
 }

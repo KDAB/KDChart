@@ -45,6 +45,10 @@ namespace KDChart {
         virtual LineDiagram::LineType type() const;
         virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const;
         virtual void paint( PaintContext* ctx );
+
+    private:
+        void paintWithLines( PaintContext* ctx );
+        void paintWithSplines( PaintContext* ctx, qreal tension );
     };
 
 }

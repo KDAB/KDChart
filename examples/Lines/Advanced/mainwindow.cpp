@@ -129,6 +129,12 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
     m_chart->update();
 }
 
+void MainWindow::on_smoothLinesSDR_valueChanged( int value )
+{
+    m_lines->setLineTension( value / 10.0 );
+    m_chart->update();
+}
+
 void MainWindow::on_centerDataPointsCB_toggled( bool checked )
 {
     m_lines->setCenterDataPoints( checked );

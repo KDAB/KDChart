@@ -68,6 +68,7 @@ namespace KDChart {
         LineDiagramType* percentDiagram;
         bool centerDataPoints;
         bool reverseDatasetOrder;
+        qreal tension;
     };
 
     KDCHART_IMPL_DERIVED_DIAGRAM( LineDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane )
