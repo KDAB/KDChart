@@ -1,6 +1,11 @@
 Release Highlights
 ==================
 
+Version XXX: (currently unreleased)
+------------
+ * CMake buildsystem
+ * Added support for spline-based line smoothing
+
 Version 2.6.2:
 -------------
  * Update version number for OBS
