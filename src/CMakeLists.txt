@@ -28,10 +28,11 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(FORMS
   KDChart/KDChartDatasetSelector.ui
 )
-
 qt4_wrap_ui(KDCHART_UI ${FORMS})
 
-set(RESOURCES KDChart/KDAB_kdchart_LeveyJennings_resources.qrc)
+set(RESOURCES
+    KDChart/KDAB_kdchart_LeveyJennings_resources.qrc
+)
 qt4_add_resources(KDCHART_RES ${RESOURCES})
 
 if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/KDChart)
@@ -319,6 +320,14 @@ DESTINATION ${INSTALL_INCLUDE_DIR}/KDChart
 )
 
 set(SOURCES
+  # No cpp counter part source files, so automoc need to know them
+  KDChart/KDChartZoomParameters.h
+  KDChart/KDChartNullPaintDevice.h
+  KDChart/KDChartGlobal.h
+  KDChart/KDChartEnums.h
+  KDChart/Cartesian/CartesianCoordinateTransformation.h
+  KDChart/KDChartPainterSaver_p.h
+  # Sources
   KDChart/KDChartMeasure.cpp
   KDChart/KDChartAbstractCoordinatePlane.cpp
   KDChart/KDChartChart.cpp
