@@ -1,9 +1,9 @@
-These are the instructions for installing KD CHART using the CMake buildsystem.
+These are the instructions for installing KD Chart using the CMake buildsystem.
 CMake version 2.8.7 or higher is required.
 
 The same source code compiles with either Qt 4 or Qt 5.
 
-1) From the top directory of your KD CHART installation create a build directory:
+1) From the top directory of your KD Chart installation create a build directory:
 
      mkdir build
 
@@ -14,8 +14,8 @@ The same source code compiles with either Qt 4 or Qt 5.
 2) Now run 'cmake' depending on the kind of build one of the following:
      cmake -DCMAKE_BUILD_TYPE=Debug ..
      cmake -DCMAKE_BUILD_TYPE=Release ..
-     cmake -DKDCHART_STATIC=True -DCMAKE_BUILD_TYPE=Debug ..
-     cmake -DKDCHART_STATIC=True -DCMAKE_BUILD_TYPE=Release ..
+     cmake -DKDChart_STATIC=True -DCMAKE_BUILD_TYPE=Debug ..
+     cmake -DKDChart_STATIC=True -DCMAKE_BUILD_TYPE=Release ..
 
    To define the install-location use for example:
      cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=C:/kdchart ..
@@ -23,13 +23,13 @@ The same source code compiles with either Qt 4 or Qt 5.
 
 3) Unix
 
-set your LD_LIBRARY_PATH to point to your KD CHART installation lib directory.
+set your LD_LIBRARY_PATH to point to your KD Chart installation lib directory.
 
 If you do not have LD_LIBRARY_PATH set already then use this line:
 LD_LIBRARY_PATH=/path/to/kdchart/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH
 
-The above has to be added into your .bashrc or similar to remain. It may also of course be run from a shell just before building software using KD CHART, but in this case your settings will only be available for this shell.
+The above has to be added into your .bashrc or similar to remain. It may also of course be run from a shell just before building software using KD Chart, but in this case your settings will only be available for this shell.
 
 4) MacOS
 
@@ -37,8 +37,8 @@ Proceed as described above, but using DYLD_LIBRARY_PATH instead of LD_LIBRARY_PA
 
 5) Windows
 
-Add the path to KD CHART lib into your LIB environment variable and the path
-to KD CHART bin into your PATH environment variable.
+Add the path to KD Chart lib into your LIB environment variable and the path
+to KD Chart bin into your PATH environment variable.
 
 Or run:
   set PATH=\path\to\kdchart\bin;%PATH%
@@ -51,9 +51,9 @@ make    # Unix,
 nmake   # Windows
 
 
-7) (optionally:) Install KD CHART:
+7) (optionally:) Install KD Chart:
 
-   From your top-level KD CHART directory just type
+   From your top-level KD Chart directory just type
 
 make install   # Unix,
 nmake install  # Windows
@@ -63,7 +63,7 @@ nmake install  # Windows
    For Unix/Linux, Mac: /usr/local/KDAB/KDChart-VERSION/
    For Windows that is: C:\KDAB\KDChart-VERSION\
 
-8) Have a look at the examples applications. They will get you started with KD CHART.
+8) Have a look at the examples applications. They will get you started with KD Chart.
 
 == Testing ==
 To build the testing harness, pass -DKDChart_TESTS=true to CMake, like so:
