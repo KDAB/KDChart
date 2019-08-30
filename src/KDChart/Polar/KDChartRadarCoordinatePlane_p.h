@@ -47,10 +47,10 @@ class RadarCoordinatePlane::Private : public PolarCoordinatePlane::Private
 public:
     explicit Private() { }
 
-    virtual ~Private() { }
+    ~Private() override { }
     TextAttributes textAttributes;
     
-    virtual void initialize()
+    void initialize() override
     {
         grid = new RadarGrid();
     }

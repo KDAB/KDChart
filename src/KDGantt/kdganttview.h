@@ -56,7 +56,7 @@ namespace KDGantt {
     public:
 
         explicit View(QWidget* parent=0);
-        virtual ~View();
+        ~View() override;
 
         QAbstractItemModel* model() const;
         QItemSelectionModel* selectionModel() const;
@@ -103,7 +103,7 @@ namespace KDGantt {
         void collapseAll( QModelIndex index = QModelIndex() );
 
     protected:
-        /*reimp*/ void resizeEvent(QResizeEvent*);
+        /*reimp*/ void resizeEvent(QResizeEvent*) override;
     };
 }
 

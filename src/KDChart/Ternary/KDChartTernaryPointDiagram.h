@@ -39,13 +39,13 @@ namespace KDChart {
 
     public:
         explicit TernaryPointDiagram ( QWidget* parent = 0, TernaryCoordinatePlane* plane = 0 );
-        virtual ~TernaryPointDiagram();
+        ~TernaryPointDiagram() override;
 
-        virtual void resize (const QSizeF &area);
-        virtual void paint (PaintContext *paintContext);
+        void resize (const QSizeF &area) override;
+        void paint (PaintContext *paintContext) override;
 
     protected:
-        virtual const QPair< QPointF, QPointF >  calculateDataBoundaries () const;
+        const QPair< QPointF, QPointF >  calculateDataBoundaries () const override;
     };
 
 }

@@ -42,7 +42,7 @@ class KDCHART_EXPORT HeaderFooter : public TextArea
 
 public:
     HeaderFooter( Chart* parent = 0 );
-    virtual ~HeaderFooter();
+    ~HeaderFooter() override;
 
     virtual HeaderFooter * clone() const;
 

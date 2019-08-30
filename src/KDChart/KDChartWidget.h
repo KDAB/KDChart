@@ -75,7 +75,7 @@ namespace KDChart {
         explicit Widget( QWidget* parent = 0 );
 
         /** Destructor. */
-        ~Widget();
+        ~Widget() override;
         /** Sets the data in the given column using a QVector of qreal for the Y values. */
         void setDataset( int column, const QVector< qreal > & data, const QString& title = QString() );
         /** Sets the data in the given column using a QVector of QPairs

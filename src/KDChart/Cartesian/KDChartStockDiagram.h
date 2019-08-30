@@ -47,7 +47,7 @@ public:
     };
 
     explicit StockDiagram( QWidget *parent = 0, CartesianCoordinatePlane *plane = 0 );
-    ~StockDiagram();
+    ~StockDiagram() override;
 
     void setType( Type type );
     Type type() const;
@@ -98,19 +98,19 @@ public:
     virtual const int numberOfAbscissaSegments() const;
     virtual const int numberOfOrdinateSegments() const;
 #else
-    virtual int numberOfAbscissaSegments() const;
-    virtual int numberOfOrdinateSegments() const;
+    int numberOfAbscissaSegments() const override;
+    int numberOfOrdinateSegments() const override;
 #endif
 
-    virtual void paint( PaintContext *paintContext );
+    void paint( PaintContext *paintContext ) override;
 
-    virtual void resize( const QSizeF &size );
+    void resize( const QSizeF &size ) override;
 
-    virtual qreal threeDItemDepth( int column ) const;
-    virtual qreal threeDItemDepth( const QModelIndex &index ) const;
+    qreal threeDItemDepth( int column ) const override;
+    qreal threeDItemDepth( const QModelIndex &index ) const override;
 
 protected:
-    virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
+    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
 };
 
 } // Namespace KDChart

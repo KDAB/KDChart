@@ -35,17 +35,17 @@ namespace KDGantt {
         KDGANTT_DECLARE_PRIVATE_BASE_POLYMORPHIC(ListViewRowController)
     public:
 	ListViewRowController( QListView* lv, QAbstractProxyModel* proxy );
-        ~ListViewRowController();
+        ~ListViewRowController() override;
 
-        /*reimp*/ int headerHeight() const;
-        /*reimp*/ int maximumItemHeight() const;
-        /*reimp*/ int totalHeight() const;
-        /*reimp*/ bool isRowVisible( const QModelIndex& idx ) const;
-        /*reimp*/ bool isRowExpanded( const QModelIndex& idx ) const;
-        /*reimp*/ Span rowGeometry( const QModelIndex& idx ) const;
-        /*reimp*/ QModelIndex indexAt( int height ) const;
-        /*reimp*/ QModelIndex indexAbove( const QModelIndex& idx ) const;
-        /*reimp*/ QModelIndex indexBelow( const QModelIndex& idx ) const;
+        /*reimp*/ int headerHeight() const override;
+        /*reimp*/ int maximumItemHeight() const override;
+        /*reimp*/ int totalHeight() const override;
+        /*reimp*/ bool isRowVisible( const QModelIndex& idx ) const override;
+        /*reimp*/ bool isRowExpanded( const QModelIndex& idx ) const override;
+        /*reimp*/ Span rowGeometry( const QModelIndex& idx ) const override;
+        /*reimp*/ QModelIndex indexAt( int height ) const override;
+        /*reimp*/ QModelIndex indexAbove( const QModelIndex& idx ) const override;
+        /*reimp*/ QModelIndex indexBelow( const QModelIndex& idx ) const override;
     };
 }
 

@@ -46,7 +46,7 @@ namespace KDGantt {
         };
 
         explicit ItemDelegate( QObject* parent = 0 );
-        virtual ~ItemDelegate();
+        ~ItemDelegate() override;
 
         void setDefaultBrush( ItemType type, const QBrush& brush );
         QBrush defaultBrush( ItemType type ) const;

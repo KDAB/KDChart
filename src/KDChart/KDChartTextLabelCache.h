@@ -98,7 +98,7 @@ class PrerenderedLabel : public PrerenderedElement
 {
 public:
     PrerenderedLabel();
-    ~PrerenderedLabel();
+    ~PrerenderedLabel() override;
 
     void setFont( const QFont& font );
     const QFont& font() const;
@@ -116,13 +116,13 @@ public:
     qreal angle() const;
 
     // reimpl PrerenderedElement:
-    const QPixmap& pixmap() const;
-    QPointF referencePointLocation( KDChartEnums::PositionValue position ) const;
+    const QPixmap& pixmap() const override;
+    QPointF referencePointLocation( KDChartEnums::PositionValue position ) const override;
     // overload: return location of referencePoint():
     QPointF referencePointLocation() const;
 
 protected:
-    void invalidate() const;
+    void invalidate() const override;
 
 private:
     /** Create a label with the given text and the given rotation

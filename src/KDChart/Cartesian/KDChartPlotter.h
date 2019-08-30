@@ -54,7 +54,7 @@ public:
     friend class PlotterType;
 
     explicit Plotter( QWidget* parent = 0, CartesianCoordinatePlane* plane = 0 );
-    virtual ~Plotter();
+    ~Plotter() override;
 
     virtual Plotter* clone() const;
 
@@ -112,27 +112,27 @@ public:
 #else
     // implement AbstractCartesianDiagram
     /* reimpl */
-    int numberOfAbscissaSegments () const;
+    int numberOfAbscissaSegments () const override;
     /* reimpl */
-    int numberOfOrdinateSegments () const;
+    int numberOfOrdinateSegments () const override;
 #endif
 
 protected Q_SLOTS:
     void connectAttributesModel( AttributesModel* );
 
 protected:
-    void paint ( PaintContext* paintContext );
+    void paint ( PaintContext* paintContext ) override;
 
 public:
-    void resize ( const QSizeF& area );
+    void resize ( const QSizeF& area ) override;
 
 protected:
-    virtual qreal threeDItemDepth( const QModelIndex & index ) const;
-    virtual qreal threeDItemDepth( int column ) const;
+    qreal threeDItemDepth( const QModelIndex & index ) const override;
+    qreal threeDItemDepth( int column ) const override;
     /** \reimpl */
-    virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
-    void paintEvent ( QPaintEvent* );
-    void resizeEvent ( QResizeEvent* );
+    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    void paintEvent ( QPaintEvent* ) override;
+    void resizeEvent ( QResizeEvent* ) override;
 protected Q_SLOTS:
     void setDataBoundariesDirty();
     void calcMergeRadius();

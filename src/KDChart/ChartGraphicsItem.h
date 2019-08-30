@@ -42,7 +42,7 @@ namespace KDChart {
 
         int row() const { return m_row; }
         int column() const { return m_column; }
-        int type() const { return Type; }
+        int type() const override { return Type; }
 
     private:
         int m_row;

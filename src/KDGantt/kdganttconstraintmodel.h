@@ -35,7 +35,7 @@ namespace KDGantt {
         KDGANTT_DECLARE_PRIVATE_DERIVED_PARENT( ConstraintModel, QObject* )
      public:
         explicit ConstraintModel( QObject* parent=0 );
-        virtual ~ConstraintModel();
+        ~ConstraintModel() override;
 
         /**
         * Subclassing ConstraintModel and overriding addConstraint() and removeConstraint() can provide

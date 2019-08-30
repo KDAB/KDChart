@@ -44,7 +44,7 @@ namespace KDGantt {
     public:
 
         AbstractGrid(QObject* parent = 0);
-        virtual ~AbstractGrid();
+        ~AbstractGrid() override;
 
         QAbstractItemModel* model() const;
         QModelIndex rootIndex() const;

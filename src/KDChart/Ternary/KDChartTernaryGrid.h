@@ -46,10 +46,10 @@ namespace KDChart {
     public:
         TernaryGrid();
 
-        virtual ~TernaryGrid();
+        ~TernaryGrid() override;
 
-        void drawGrid( PaintContext* context );
-        DataDimensionsList calculateGrid( const DataDimensionsList& rawDataDimensions ) const;
+        void drawGrid( PaintContext* context ) override;
+        DataDimensionsList calculateGrid( const DataDimensionsList& rawDataDimensions ) const override;
 
         /** Returns two QSizeF objects specifying the dimension of the
             margins needed between each corner of the diagram and the

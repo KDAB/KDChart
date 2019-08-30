@@ -50,7 +50,7 @@ class DatasetSettings::Private : public QObject
     Q_OBJECT
 public:
     Private( Chart *chart, DatasetSettings *q, QObject *parent );
-    ~Private();
+    ~Private() override;
 
     Ui::DatasetSettings *ui;
     int m_dataset;

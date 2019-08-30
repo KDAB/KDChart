@@ -36,16 +36,16 @@ namespace KDGantt {
 
         explicit ConstraintGraphicsItem( const Constraint& c,
                                          QGraphicsItem* parent = 0, GraphicsScene* scene = 0 );
-        virtual ~ConstraintGraphicsItem();
+        ~ConstraintGraphicsItem() override;
 
-        /*reimp*/ int type() const;
+        /*reimp*/ int type() const override;
         /*reimp (non virtual)*/GraphicsScene* scene() const;
 
         /*reimp*/ QString ganttToolTip() const;
 
-        /*reimp*/ QRectF boundingRect() const;
+        /*reimp*/ QRectF boundingRect() const override;
         /*reimp*/ void paint( QPainter* painter, const QStyleOptionGraphicsItem* option,
-                              QWidget* widget = 0 );
+                              QWidget* widget = 0 ) override;
 
         inline const Constraint& constraint() const { return m_constraint; }
         Constraint proxyConstraint() const;

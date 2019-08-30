@@ -52,7 +52,7 @@ class AbstractPieDiagram::Private : public AbstractPolarDiagram::Private
     friend class AbstractPieDiagram;
 public:
     Private();
-    ~Private();
+    ~Private() override;
 
     Private( const Private& rhs ) :
         AbstractPolarDiagram::Private( rhs ),

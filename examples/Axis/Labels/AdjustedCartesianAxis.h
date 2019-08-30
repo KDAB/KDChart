@@ -36,7 +36,7 @@ class AdjustedCartesianAxis: public KDChart::CartesianAxis
 public:
     explicit AdjustedCartesianAxis( KDChart::AbstractCartesianDiagram* diagram = 0 );
 
-    virtual const QString customizedLabel( const QString& label ) const;
+    const QString customizedLabel( const QString& label ) const override;
 
     void setBounds( qreal lower, qreal upper ) {
         m_lowerBound = lower;

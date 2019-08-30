@@ -65,7 +65,7 @@ namespace KDChart {
           * \sa AbstractCartesianDiagram::addAxis
           */
         explicit CartesianAxis ( AbstractCartesianDiagram* diagram = 0 );
-        ~CartesianAxis();
+        ~CartesianAxis() override;
 
         /**
          * Returns true if both axes have the same settings.
@@ -73,9 +73,9 @@ namespace KDChart {
         bool compare( const CartesianAxis* other ) const;
 
         /** reimpl */
-        virtual void paint( QPainter* );
+        void paint( QPainter* ) override;
         /** reimpl */
-        virtual void paintCtx( PaintContext* );
+        void paintCtx( PaintContext* ) override;
 
         /**
          * Sets the optional text displayed as chart title.
@@ -161,19 +161,19 @@ namespace KDChart {
         int customTickLength() const;
 
         /** pure virtual in QLayoutItem */
-        virtual bool isEmpty() const;
+        bool isEmpty() const override;
         /** pure virtual in QLayoutItem */
-        virtual Qt::Orientations expandingDirections() const;
+        Qt::Orientations expandingDirections() const override;
         /** pure virtual in QLayoutItem */
-        virtual QSize maximumSize() const;
+        QSize maximumSize() const override;
         /** pure virtual in QLayoutItem */
-        virtual QSize minimumSize() const;
+        QSize minimumSize() const override;
         /** pure virtual in QLayoutItem */
-        virtual QSize sizeHint() const;
+        QSize sizeHint() const override;
         /** pure virtual in QLayoutItem */
-        virtual void setGeometry( const QRect& r );
+        void setGeometry( const QRect& r ) override;
         /** pure virtual in QLayoutItem */
-        virtual QRect geometry() const;
+        QRect geometry() const override;
 
     public Q_SLOTS:
         void setCachedSizeDirty() const;

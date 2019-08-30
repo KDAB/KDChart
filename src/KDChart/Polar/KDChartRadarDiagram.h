@@ -47,20 +47,20 @@ class KDCHART_EXPORT RadarDiagram : public AbstractPolarDiagram
 public:
     explicit RadarDiagram(
         QWidget* parent = 0, RadarCoordinatePlane* plane = 0 );
-    virtual ~RadarDiagram();
+    ~RadarDiagram() override;
 
     virtual void paint ( PaintContext* paintContext,
                          bool calculateListAndReturnScale,
                          qreal& newZoomX, qreal& newZoomY );
     /** \reimpl */
-    virtual void resize ( const QSizeF& area );
+    void resize ( const QSizeF& area ) override;
 
     /** \reimpl */
-    virtual qreal valueTotals () const;
+    qreal valueTotals () const override;
     /** \reimpl */
-    virtual qreal numberOfValuesPerDataset() const;
+    qreal numberOfValuesPerDataset() const override;
     /** \reimpl */
-    virtual qreal numberOfGridRings() const;
+    qreal numberOfGridRings() const override;
 
     /**
      * if val is true the diagram will mirror the diagram datapoints
@@ -89,10 +89,10 @@ public:
 
 protected:
     /** \reimpl */
-    virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
-    void paintEvent ( QPaintEvent* );
-    void resizeEvent ( QResizeEvent* );
-    virtual void paint ( PaintContext* paintContext );
+    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    void paintEvent ( QPaintEvent* ) override;
+    void resizeEvent ( QResizeEvent* ) override;
+    void paint ( PaintContext* paintContext ) override;
 
 }; // End of class RadarDiagram
 

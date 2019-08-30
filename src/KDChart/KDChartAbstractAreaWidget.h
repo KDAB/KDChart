@@ -58,7 +58,7 @@ public:
       * class, but you would overwrite paint() instead.
       * @sa paint
       */
-    virtual void paintEvent( QPaintEvent* event );
+    void paintEvent( QPaintEvent* event ) override;
 
     /**
       * @brief Draws the background and frame, then calls paint().
@@ -104,9 +104,9 @@ Q_SIGNALS:
     void positionChanged( AbstractAreaWidget * );
 
 protected:
-    virtual ~AbstractAreaWidget() ;
-    virtual QRect areaGeometry() const;
-    virtual void positionHasChanged();
+    ~AbstractAreaWidget() override ;
+    QRect areaGeometry() const override;
+    void positionHasChanged() override;
 };
 
 }

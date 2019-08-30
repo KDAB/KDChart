@@ -47,7 +47,7 @@ namespace KDGantt {
         };
 	
         DateTimeGrid();
-        virtual ~DateTimeGrid();
+        ~DateTimeGrid() override;
 
         QDateTime startDateTime() const;
         void setStartDateTime( const QDateTime& dt );
@@ -81,18 +81,18 @@ namespace KDGantt {
         void setNoInformationBrush( const QBrush& brush );
         QBrush noInformationBrush() const;
 
-        /*reimp*/ Span mapToChart( const QModelIndex& idx ) const;
+        /*reimp*/ Span mapToChart( const QModelIndex& idx ) const override;
         /*reimp*/ bool mapFromChart( const Span& span, const QModelIndex& idx,
-                                     const QList<Constraint>& constraints=QList<Constraint>() ) const;
-        /*reimp*/ qreal mapToChart( const QVariant& value ) const;
-        /*reimp*/ QVariant mapFromChart( qreal x ) const;
+                                     const QList<Constraint>& constraints=QList<Constraint>() ) const override;
+        /*reimp*/ qreal mapToChart( const QVariant& value ) const override;
+        /*reimp*/ QVariant mapFromChart( qreal x ) const override;
         /*reimp*/ void paintGrid( QPainter* painter, 
                                   const QRectF& sceneRect, const QRectF& exposedRect,
                                   AbstractRowController* rowController = 0,
-                                  QWidget* widget=0 );
+                                  QWidget* widget=0 ) override;
         /*reimp*/ void paintHeader( QPainter* painter, 
                                     const QRectF& headerRect, const QRectF& exposedRect,
-                                    qreal offset, QWidget* widget=0 );
+                                    qreal offset, QWidget* widget=0 ) override;
 
     protected:
         virtual void paintHourScaleHeader( QPainter* painter, 
@@ -119,8 +119,8 @@ namespace KDGantt {
         QRectF computeRect(const QDateTime& from, const QDateTime& to, const QRectF& rect) const;
         QPair<QDateTime, QDateTime> dateTimeRange(const QRectF& rect) const;
 
-        /* reimp */ void drawBackground(QPainter* paint, const QRectF& rect);
-        /* reimp */ void drawForeground(QPainter* paint, const QRectF& rect);
+        /* reimp */ void drawBackground(QPainter* paint, const QRectF& rect) override;
+        /* reimp */ void drawForeground(QPainter* paint, const QRectF& rect) override;
     };
 
     class KDGANTT_EXPORT DateTimeScaleFormatter

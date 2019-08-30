@@ -46,7 +46,7 @@ namespace KDChart {
 
     public:
         explicit AbstractCartesianDiagram( QWidget* parent = 0, CartesianCoordinatePlane* plane = 0 );
-        virtual ~AbstractCartesianDiagram();
+        ~AbstractCartesianDiagram() override;
 
         /**
          * Returns true if both diagrams have the same settings.
@@ -90,7 +90,7 @@ namespace KDChart {
          */
         virtual void layoutPlanes();
         /** \reimpl */
-        virtual void setCoordinatePlane( AbstractCoordinatePlane* plane );
+        void setCoordinatePlane( AbstractCoordinatePlane* plane ) override;
 
         /**
           * Makes this diagram use another diagram \a diagram as reference diagram with relative offset
@@ -112,11 +112,11 @@ namespace KDChart {
         virtual QPointF referenceDiagramOffset() const;
 
         /* reimpl */
-        void setModel( QAbstractItemModel* model );
+        void setModel( QAbstractItemModel* model ) override;
         /* reimpl */
-        void setRootIndex( const QModelIndex& index );
+        void setRootIndex( const QModelIndex& index ) override;
         /* reimpl */
-        void setAttributesModel( AttributesModel* model );
+        void setAttributesModel( AttributesModel* model ) override;
 
     protected Q_SLOTS:
         void connectAttributesModel( AttributesModel* );

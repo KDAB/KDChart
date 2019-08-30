@@ -54,7 +54,7 @@ public:
     Palette( const Palette& );
     Palette &operator= ( const Palette & );
 
-    ~Palette();
+    ~Palette() override;
 
     /** Provide access to the three builtin palettes, one with standard bright
      * colors, one with more subdued colors, and one with rainbow colors.  */

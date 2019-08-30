@@ -102,9 +102,9 @@ public:
         , hasOwnGridAttributesSagittal ( false )
     {}
 
-    virtual ~Private() { }
+    ~Private() override { }
 
-    virtual void initialize()
+    void initialize() override
     {
         grid = new PolarGrid();
     }

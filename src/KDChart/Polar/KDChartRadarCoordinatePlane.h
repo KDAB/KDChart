@@ -42,7 +42,7 @@ namespace KDChart {
     public:
 
         explicit RadarCoordinatePlane ( Chart* parent = 0 );
-        ~RadarCoordinatePlane();
+        ~RadarCoordinatePlane() override;
         
                 
         /**

@@ -42,10 +42,10 @@ namespace KDChart {
     {
     public:
         explicit NormalPlotter( Plotter* );
-        virtual ~NormalPlotter() {}
-        virtual Plotter::PlotType type() const;
-        virtual const QPair< QPointF,  QPointF > calculateDataBoundaries() const;
-        virtual void paint( PaintContext* ctx );
+        ~NormalPlotter() override {}
+        Plotter::PlotType type() const override;
+        const QPair< QPointF,  QPointF > calculateDataBoundaries() const override;
+        void paint( PaintContext* ctx ) override;
     };
 }
 

@@ -45,7 +45,7 @@ namespace KDChart {
     {
     public:
         CartesianGrid();
-        virtual ~CartesianGrid();
+        ~CartesianGrid() override;
 
         int minimalSteps() const;
         void setMinimalSteps(int minsteps);
@@ -53,14 +53,14 @@ namespace KDChart {
         int maximalSteps() const;
         void setMaximalSteps(int maxsteps);
 
-        void drawGrid( PaintContext* context );
+        void drawGrid( PaintContext* context ) override;
 
     private:
         int m_minsteps;
         int m_maxsteps;
         
         DataDimensionsList calculateGrid(
-            const DataDimensionsList& rawDataDimensions ) const;
+            const DataDimensionsList& rawDataDimensions ) const override;
 
         /**
          * Helper function called by calculateGrid() to calculate the grid of one dimension.

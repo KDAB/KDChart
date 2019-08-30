@@ -79,7 +79,7 @@ class Legend::Private : public AbstractAreaWidget::Private
     friend class Legend;
 public:
     Private();
-    ~Private();
+    ~Private() override;
 
     DiagramObserver* findObserverForDiagram( AbstractDiagram* diagram )
     {

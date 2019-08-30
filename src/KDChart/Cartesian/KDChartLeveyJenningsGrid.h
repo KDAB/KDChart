@@ -43,16 +43,16 @@ namespace KDChart {
     {
     public:
         LeveyJenningsGrid() : CartesianGrid() {}
-        virtual ~LeveyJenningsGrid() {}
+        ~LeveyJenningsGrid() override {}
 
-        void drawGrid( PaintContext* context );
+        void drawGrid( PaintContext* context ) override;
 
     private:
-        DataDimensionsList calculateGrid( const DataDimensionsList& rawDataDimensions ) const;
+        DataDimensionsList calculateGrid( const DataDimensionsList& rawDataDimensions ) const override;
         DataDimension calculateGridXY( const DataDimension& rawDataDimension, 
-                          Qt::Orientation orientation, bool adjustLower, bool adjustUpper ) const;
+                          Qt::Orientation orientation, bool adjustLower, bool adjustUpper ) const override;
         void calculateStepWidth( qreal start_, qreal end_, const QList<qreal>& granularities, Qt::Orientation orientation,
-                                 qreal& stepWidth, qreal& subStepWidth, bool adjustLower, bool adjustUpper ) const;
+                                 qreal& stepWidth, qreal& subStepWidth, bool adjustLower, bool adjustUpper ) const override;
     };
 
 }

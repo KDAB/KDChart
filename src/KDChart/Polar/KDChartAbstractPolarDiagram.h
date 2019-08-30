@@ -42,7 +42,7 @@ namespace KDChart {
     public:
         explicit AbstractPolarDiagram (
             QWidget* parent = 0, PolarCoordinatePlane* plane = 0 );
-        virtual ~AbstractPolarDiagram() {}
+        ~AbstractPolarDiagram() override {}
 
         virtual qreal valueTotals () const = 0;
         virtual qreal numberOfValuesPerDataset() const = 0;

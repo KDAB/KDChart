@@ -39,7 +39,7 @@ namespace KDChart {
     ThreeDBarAttributes( const ThreeDBarAttributes& );
     ThreeDBarAttributes &operator= ( const ThreeDBarAttributes& );
 
-    ~ThreeDBarAttributes();
+    ~ThreeDBarAttributes() override;
 
     /* threeD Bars specific */
     void setUseShadowColors( bool useShadowColors );

@@ -53,9 +53,9 @@ class KDCHART_EXPORT LeveyJenningsDiagram : public LineDiagram
 
 public:
     explicit LeveyJenningsDiagram( QWidget* parent = 0, LeveyJenningsCoordinatePlane* plane = 0 );
-    virtual ~LeveyJenningsDiagram();
+    ~LeveyJenningsDiagram() override;
 
-    virtual LineDiagram * clone() const;
+    LineDiagram * clone() const override;
 
     enum Symbol
     {
@@ -102,13 +102,13 @@ public:
     QString symbol( Symbol symbol ) const;
 
     /* \reimpl */
-    void setModel( QAbstractItemModel* model );
+    void setModel( QAbstractItemModel* model ) override;
 
     QPair< QDateTime, QDateTime > timeRange() const;
     void setTimeRange( const QPair< QDateTime, QDateTime >& timeRange );
 
 protected:
-    void paint( PaintContext* paintContext );
+    void paint( PaintContext* paintContext ) override;
     void drawChanges( PaintContext* paintContext );
 
     virtual void drawDataPointSymbol( PaintContext* paintContext, const QPointF& pos, bool ok );
@@ -121,7 +121,7 @@ protected:
     QSvgRenderer* iconRenderer( Symbol symbol );
 
     /** \reimpl */
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const;
+    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
 
 protected Q_SLOTS:
     void calculateMeanAndStandardDeviation() const;

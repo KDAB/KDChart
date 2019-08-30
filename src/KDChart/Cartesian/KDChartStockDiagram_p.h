@@ -37,7 +37,7 @@ class StockDiagram::Private : public AbstractCartesianDiagram::Private
 public:
     Private();
     Private( const Private& r );
-    ~Private();
+    ~Private() override;
 
     Type type;
     StockDiagram* stockDiagram() { return static_cast< StockDiagram* >( diagram ); }

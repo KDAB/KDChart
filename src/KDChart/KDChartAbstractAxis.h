@@ -63,7 +63,7 @@ namespace KDChart {
 
     public:
         explicit AbstractAxis( AbstractDiagram* diagram = 0 );
-        virtual ~AbstractAxis();
+        ~AbstractAxis() override;
 
         // FIXME implement when code os ready for it:
         // virtual Area* clone() const = 0;
@@ -230,8 +230,8 @@ namespace KDChart {
         */
         QStringList shortLabels() const;
 
-        virtual void setGeometry( const QRect& rect ) = 0;
-        virtual QRect geometry() const = 0;
+        void setGeometry( const QRect& rect ) override = 0;
+        QRect geometry() const override = 0;
 
         /**
             \brief Convenience function, returns the coordinate plane, in which this axis is used.

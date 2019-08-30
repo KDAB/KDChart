@@ -168,7 +168,7 @@ class Chart::Private : public QObject
 
         Private( Chart* );
 
-        virtual ~Private();
+        ~Private() override;
 
         void createLayouts();
         void updateDirtyLayouts();

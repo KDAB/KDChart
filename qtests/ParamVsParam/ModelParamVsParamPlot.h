@@ -37,16 +37,16 @@ public:
 		QObject					*p_parent = 0);
 
 	int columnCount(
-		const QModelIndex	&p_parent = QModelIndex()) const;
+		const QModelIndex	&p_parent = QModelIndex()) const override;
 
 protected:
 	QVariant data(
 		const QModelIndex		&p_index,
-		int						p_role = Qt::DisplayRole) const;
+		int						p_role = Qt::DisplayRole) const override;
 
-	virtual bool filterAcceptsColumn(
+	bool filterAcceptsColumn(
 		int						p_source_column,
-		const QModelIndex		&p_source_parent) const;
+		const QModelIndex		&p_source_parent) const override;
 
 private:
 	int					m_column1;

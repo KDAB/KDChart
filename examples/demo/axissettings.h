@@ -36,7 +36,7 @@ class AxisSettings : public QWidget
 
 public:
     explicit AxisSettings( KDChart::Chart *chart, QWidget *parent = 0 );
-    ~AxisSettings();
+    ~AxisSettings() override;
 
 public Q_SLOTS:
     void diagramTypeChanged();

@@ -46,14 +46,14 @@ using namespace KDChart;
 class TransposeProxyModel : public QAbstractProxyModel{
 public:
   explicit TransposeProxyModel(QObject* parent = 0) : QAbstractProxyModel(parent) {}
-  virtual ~TransposeProxyModel() {}
-  QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const { return index(sourceIndex.column(), sourceIndex.row()); }
-  QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const { return sourceModel()->index(proxyIndex.column(), proxyIndex.row()); }
-  QModelIndex index(int r, int c, const QModelIndex &ind=QModelIndex()) const { Q_UNUSED(ind) return createIndex(r,c); }
-  QModelIndex parent(const QModelIndex&) const { return QModelIndex(); }
-  int rowCount(const QModelIndex &) const { return sourceModel()->columnCount(); }
-  int columnCount(const QModelIndex &) const { return sourceModel()->rowCount(); }
-  QVariant data(const QModelIndex &ind, int role) const { return sourceModel()->data(mapToSource(ind), role); }
+  ~TransposeProxyModel() override {}
+  QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const override { return index(sourceIndex.column(), sourceIndex.row()); }
+  QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const override { return sourceModel()->index(proxyIndex.column(), proxyIndex.row()); }
+  QModelIndex index(int r, int c, const QModelIndex &ind=QModelIndex()) const override { Q_UNUSED(ind) return createIndex(r,c); }
+  QModelIndex parent(const QModelIndex&) const override { return QModelIndex(); }
+  int rowCount(const QModelIndex &) const override { return sourceModel()->columnCount(); }
+  int columnCount(const QModelIndex &) const override { return sourceModel()->rowCount(); }
+  QVariant data(const QModelIndex &ind, int role) const override { return sourceModel()->data(mapToSource(ind), role); }
 };
 
 /**

@@ -52,9 +52,9 @@ class CartesianCoordinatePlane::Private : public AbstractCoordinatePlane::Privat
     friend class CartesianCoordinatePlane;
 public:
     explicit Private();
-    virtual ~Private() {  }
+    ~Private() override {  }
 
-    virtual void initialize()
+    void initialize() override
     {
         bPaintIsRunning = false;
         coordinateTransformation.axesCalcModeX = Linear;
@@ -67,7 +67,7 @@ public:
         return static_cast< Private * >( plane->d_func() );
     }
 
-    virtual bool isVisiblePoint( const AbstractCoordinatePlane * plane, const QPointF& point ) const
+    bool isVisiblePoint( const AbstractCoordinatePlane * plane, const QPointF& point ) const override
     {
         QPointF p = point;
         const CartesianCoordinatePlane* const ref =

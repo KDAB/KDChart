@@ -54,7 +54,7 @@ class KDCHART_EXPORT AbstractArea : public QObject,
     KDCHART_DECLARE_PRIVATE_DERIVED( AbstractArea )
 
 public:
-    virtual ~AbstractArea() ;
+    ~AbstractArea() override ;
 
     /**
       * @brief Draws the background and frame, then calls paint().
@@ -68,7 +68,7 @@ public:
       * Call paintAll, if you want the background and the frame to be drawn
       * before the normal paint() is invoked automatically.
       */
-    virtual void paintAll( QPainter& painter );
+    void paintAll( QPainter& painter ) override;
 
     /**
      * This is called at layout time by KDChart::AutoSpacerLayoutItem::sizeHint().
@@ -125,8 +125,8 @@ public:
 
 protected:
     AbstractArea();
-    virtual QRect areaGeometry() const;
-    virtual void positionHasChanged();
+    QRect areaGeometry() const override;
+    void positionHasChanged() override;
 
 Q_SIGNALS:
     void positionChanged( AbstractArea * );

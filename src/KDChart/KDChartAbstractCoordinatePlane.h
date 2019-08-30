@@ -56,7 +56,7 @@ namespace KDChart {
         explicit AbstractCoordinatePlane( Chart* parent = 0 );
 
     public:
-        virtual ~AbstractCoordinatePlane();
+        ~AbstractCoordinatePlane() override;
 
         /**
          * Adds a diagram to this coordinate plane.
@@ -259,24 +259,24 @@ namespace KDChart {
 
 
         /** pure virtual in QLayoutItem */
-        virtual bool isEmpty() const;
+        bool isEmpty() const override;
         /** pure virtual in QLayoutItem */
-        virtual Qt::Orientations expandingDirections() const;
+        Qt::Orientations expandingDirections() const override;
         /** pure virtual in QLayoutItem */
-        virtual QSize maximumSize() const;
+        QSize maximumSize() const override;
         /** pure virtual in QLayoutItem */
-        virtual QSize minimumSize() const;
+        QSize minimumSize() const override;
         /** pure virtual in QLayoutItem */
-        virtual QSize sizeHint() const;
+        QSize sizeHint() const override;
         /** pure virtual in QLayoutItem
           *
           * \note Do not call this function directly, unless you know
           * exactly what you are doing.  Geometry management is done
           * by KD Chart's internal layouting measures.
           */
-        virtual void setGeometry( const QRect& r );
+        void setGeometry( const QRect& r ) override;
         /** pure virtual in QLayoutItem */
-        virtual QRect geometry() const;
+        QRect geometry() const override;
 
         virtual void mousePressEvent( QMouseEvent* event );
         virtual void mouseDoubleClickEvent( QMouseEvent* event );

@@ -66,7 +66,7 @@ namespace KDGantt {
     public:
 
         explicit GraphicsView( QWidget* parent=0 );
-        virtual ~GraphicsView();
+        ~GraphicsView() override;
 
         QAbstractItemModel* model() const;
         QAbstractProxyModel* summaryHandlingModel() const;
@@ -124,7 +124,7 @@ namespace KDGantt {
         void headerContextMenuRequested( const QPoint& pt );
 
     protected:
-        /*reimp*/void resizeEvent( QResizeEvent* );
+        /*reimp*/void resizeEvent( QResizeEvent* ) override;
     private:
         friend class View;
 

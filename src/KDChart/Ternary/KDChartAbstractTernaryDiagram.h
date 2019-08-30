@@ -44,17 +44,17 @@ namespace KDChart {
     public:
         explicit AbstractTernaryDiagram ( QWidget* parent = 0,
                                           TernaryCoordinatePlane* plane = 0 );
-        virtual ~AbstractTernaryDiagram();
+        ~AbstractTernaryDiagram() override;
 
-        virtual void resize (const QSizeF &area) = 0;
-        virtual void paint (PaintContext *paintContext);
+        void resize (const QSizeF &area) override = 0;
+        void paint (PaintContext *paintContext) override;
 
         virtual void addAxis( TernaryAxis* axis );
         virtual void takeAxis( TernaryAxis* axis );
         virtual TernaryAxisList axes () const;
 
     protected:
-        virtual const QPair< QPointF, QPointF >  calculateDataBoundaries () const = 0;
+        const QPair< QPointF, QPointF >  calculateDataBoundaries () const override = 0;
 
     };
 

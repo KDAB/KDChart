@@ -33,25 +33,25 @@ namespace KDGantt {
         Q_DISABLE_COPY(ForwardingProxyModel)
     public:
         explicit ForwardingProxyModel( QObject* parent=0 );
-        virtual ~ForwardingProxyModel();
+        ~ForwardingProxyModel() override;
 
-        /*reimp*/ QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
-        /*reimp*/ QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
+        /*reimp*/ QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const override;
+        /*reimp*/ QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const override;
 
-        /*reimp*/ void setSourceModel( QAbstractItemModel* model );
+        /*reimp*/ void setSourceModel( QAbstractItemModel* model ) override;
 
-        /*reimp*/ QModelIndex index( int row, int column, const QModelIndex& parent = QModelIndex() ) const;
-        /*reimp*/ QModelIndex parent( const QModelIndex& idx ) const;
+        /*reimp*/ QModelIndex index( int row, int column, const QModelIndex& parent = QModelIndex() ) const override;
+        /*reimp*/ QModelIndex parent( const QModelIndex& idx ) const override;
 
-        /*reimp*/ int rowCount( const QModelIndex& idx = QModelIndex() ) const;
-        /*reimp*/ int columnCount( const QModelIndex& idx = QModelIndex() ) const;
+        /*reimp*/ int rowCount( const QModelIndex& idx = QModelIndex() ) const override;
+        /*reimp*/ int columnCount( const QModelIndex& idx = QModelIndex() ) const override;
 
-        /*reimp*/ bool setData( const QModelIndex& index, const QVariant& value, int role = Qt::EditRole );
+        /*reimp*/ bool setData( const QModelIndex& index, const QVariant& value, int role = Qt::EditRole ) override;
 
-        /*reimp*/ QMimeData *mimeData(const QModelIndexList &indexes) const;
-        /*reimp*/ bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
-        /*reimp*/ QStringList mimeTypes() const;
-        /*reimp*/ Qt::DropActions supportedDropActions() const;
+        /*reimp*/ QMimeData *mimeData(const QModelIndexList &indexes) const override;
+        /*reimp*/ bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
+        /*reimp*/ QStringList mimeTypes() const override;
+        /*reimp*/ Qt::DropActions supportedDropActions() const override;
     
     protected Q_SLOTS:
         virtual void sourceModelAboutToBeReset();

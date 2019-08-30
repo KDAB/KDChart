@@ -45,13 +45,13 @@ namespace KDChart {
     {
     public:
         RadarGrid() : AbstractGrid() {}
-        virtual ~RadarGrid() {}
+        ~RadarGrid() override {}
 
-        virtual void drawGrid( PaintContext* context );
+        void drawGrid( PaintContext* context ) override;
 
     private:
-        virtual DataDimensionsList calculateGrid(
-            const DataDimensionsList& rawDataDimensions ) const;
+        DataDimensionsList calculateGrid(
+            const DataDimensionsList& rawDataDimensions ) const override;
     };
 
 }

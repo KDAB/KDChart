@@ -32,18 +32,18 @@ class ColorSlider : public QAbstractSlider
     Q_PROPERTY( QColor endColor READ endColor WRITE setStartColor NOTIFY endColorChanged )
 public:
     explicit ColorSlider( QWidget *parent = 0 );
-    ~ColorSlider();
+    ~ColorSlider() override;
     QColor startColor() const;
     void setStartColor( const QColor &color );
     QColor endColor() const;
     void setEndColor( const QColor &color );
-    QSize sizeHint() const;
+    QSize sizeHint() const override;
 
 protected:
-    void paintEvent( QPaintEvent *event );
-    void mousePressEvent(QMouseEvent *event );
-    void mouseReleaseEvent(QMouseEvent *event );
-    void mouseMoveEvent( QMouseEvent *event );
+    void paintEvent( QPaintEvent *event ) override;
+    void mousePressEvent(QMouseEvent *event ) override;
+    void mouseReleaseEvent(QMouseEvent *event ) override;
+    void mouseMoveEvent( QMouseEvent *event ) override;
 
 Q_SIGNALS:
     void startColorChanged();

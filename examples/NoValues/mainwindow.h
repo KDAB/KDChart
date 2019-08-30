@@ -38,7 +38,7 @@ class MainWindow : public QWidget
 
 public:
     MainWindow( QWidget* parent = 0 );
-    virtual ~MainWindow() { }
+    ~MainWindow() override { }
 
 private:
     KDChart::Chart* m_chart;

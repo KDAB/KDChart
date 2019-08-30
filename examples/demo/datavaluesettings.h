@@ -35,7 +35,7 @@ class DataValueSettings : public QWidget
 
 public:
     DataValueSettings( KDChart::Chart *chart, QWidget* parent = 0 );
-    ~DataValueSettings();
+    ~DataValueSettings() override;
 
 public Q_SLOTS:
     void refresh();

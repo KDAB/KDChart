@@ -54,7 +54,7 @@ namespace KDChart {
         friend class TextArea;
     public:
         explicit Private();
-        virtual ~Private();
+        ~Private() override;
 
         Private( const Private& rhs ) :
             AbstractAreaBase::Private( rhs )

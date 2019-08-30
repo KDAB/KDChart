@@ -109,7 +109,7 @@ namespace KDChart {
 
     public:
         explicit Chart ( QWidget* parent = 0 );
-        ~Chart();
+        ~Chart() override;
 
         /**
          * @brief useNewLayoutSystem
@@ -454,7 +454,7 @@ namespace KDChart {
         /**
           * Adjusts the internal layout when the chart is resized.
           */
-        /* reimp */ void resizeEvent ( QResizeEvent * event );
+        /* reimp */ void resizeEvent ( QResizeEvent * event ) override;
 
         /**
           * @brief Draws the background and frame, then calls paint().
@@ -463,18 +463,18 @@ namespace KDChart {
           * class, but if you do, do not forget to call paint().
           * @sa paint
           */
-        /* reimp */ void paintEvent( QPaintEvent* event );
+        /* reimp */ void paintEvent( QPaintEvent* event ) override;
 
         /** reimp */
-        void mousePressEvent( QMouseEvent* event );
+        void mousePressEvent( QMouseEvent* event ) override;
         /** reimp */
-        void mouseDoubleClickEvent( QMouseEvent* event );
+        void mouseDoubleClickEvent( QMouseEvent* event ) override;
         /** reimp */
-        void mouseMoveEvent( QMouseEvent* event );
+        void mouseMoveEvent( QMouseEvent* event ) override;
         /** reimp */
-        void mouseReleaseEvent( QMouseEvent* event );
+        void mouseReleaseEvent( QMouseEvent* event ) override;
         /** reimp */
-        bool event( QEvent* event );
+        bool event( QEvent* event ) override;
 
     private:
         // TODO move this to the private class

@@ -42,7 +42,7 @@ class KDCHART_EXPORT AbstractPieDiagram : public AbstractPolarDiagram
 public:
     explicit AbstractPieDiagram(
         QWidget* parent = 0, PolarCoordinatePlane* plane = 0 );
-    virtual ~AbstractPieDiagram();
+    ~AbstractPieDiagram() override;
 
     /**
      * Returns true if both diagrams have the same settings.

@@ -60,7 +60,7 @@ namespace KDChart {
           * \sa AbstractCartesianDiagram::addAxis
           */
         explicit LeveyJenningsAxis ( LeveyJenningsDiagram* diagram = 0 );
-        ~LeveyJenningsAxis();
+        ~LeveyJenningsAxis() override;
 
         LeveyJenningsGridAttributes::GridType type() const;
         void setType( LeveyJenningsGridAttributes::GridType type );
@@ -74,7 +74,7 @@ namespace KDChart {
         bool compare( const LeveyJenningsAxis* other ) const;
 
         /** reimpl */
-        void paintCtx( PaintContext* );
+        void paintCtx( PaintContext* ) override;
 
     protected:
         virtual void paintAsOrdinate( PaintContext* );

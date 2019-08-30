@@ -39,7 +39,7 @@ public:
     enum DiagramType{ Bar, LyingBar, Line, Plotter, Pie };
     enum Subtype{ Normal, Percent, Stacked };
     explicit DiagramTypeDialog( KDChart::Chart *chart, QWidget *parent = 0 );
-    ~DiagramTypeDialog();
+    ~DiagramTypeDialog() override;
 
     void setDefaultModels( QHash< DiagramType, QAbstractItemModel* > models );
 

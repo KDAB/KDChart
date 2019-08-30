@@ -56,7 +56,7 @@ namespace KDChart {
         friend class AbstractTernaryDiagram;
     public:
         Private();
-        ~Private() {}
+        ~Private() override {}
 
         Private( const Private& rhs ) :
             AbstractDiagram::Private( rhs ),

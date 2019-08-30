@@ -55,7 +55,7 @@ public:
     };
 
     explicit AttributesModel( QAbstractItemModel* model, QObject * parent = 0 );
-    ~AttributesModel();
+    ~AttributesModel() override;
 
     /** Copies the internal data (maps and palette) of another
      *  AttributesModel* into this one.
@@ -92,26 +92,26 @@ public:
     QVariant data(int column, int role) const;
 
     /** \reimpl */
-    QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
+    QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const override;
     /** \reimpl */
-    int rowCount(const QModelIndex& ) const;
+    int rowCount(const QModelIndex& ) const override;
     /** \reimpl */
-    int columnCount(const QModelIndex& ) const;
+    int columnCount(const QModelIndex& ) const override;
     /** \reimpl */
-    QVariant data(const QModelIndex&, int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex&, int role = Qt::DisplayRole) const override;
     /** \reimpl */
-    bool setData ( const QModelIndex & index, const QVariant & value, int role = Qt::DisplayRole);
+    bool setData ( const QModelIndex & index, const QVariant & value, int role = Qt::DisplayRole) override;
     /** Remove any explicit attributes settings that might have been specified before. */
     bool resetData ( const QModelIndex & index, int role = Qt::DisplayRole);
     /** \reimpl */
     bool setHeaderData ( int section, Qt::Orientation orientation, const QVariant & value,
-                         int role = Qt::DisplayRole);
+                         int role = Qt::DisplayRole) override;
     /** Returns default values for the header data. */
     virtual QVariant defaultHeaderData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
     /** Remove any explicit attributes settings that might have been specified before. */
     bool resetHeaderData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole);
     /** \reimpl */
-    void setSourceModel ( QAbstractItemModel* sourceModel );
+    void setSourceModel ( QAbstractItemModel* sourceModel ) override;
 
     /** Define the default value for a certain role.
         Passing a default-constructed QVariant is equivalent to removing the default. */

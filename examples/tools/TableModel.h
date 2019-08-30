@@ -45,7 +45,7 @@ class TESTTOOLS_EXPORT TableModel : public QAbstractTableModel
     Q_OBJECT
 public:
     TableModel( QObject* parent = 0 );
-    ~TableModel();
+    ~TableModel() override;
 
     /** Return header data from the model.
         The model will use the first data row and the first data column of the
@@ -54,15 +54,15 @@ public:
         start at index (0, 0).
     */
     QVariant headerData( int section, Qt::Orientation orientation,
-                         int role = Qt::DisplayRole ) const;
+                         int role = Qt::DisplayRole ) const override;
 
-    int rowCount( const QModelIndex& parent = QModelIndex() ) const;
+    int rowCount( const QModelIndex& parent = QModelIndex() ) const override;
 
-    int columnCount( const QModelIndex& parent = QModelIndex() ) const;
+    int columnCount( const QModelIndex& parent = QModelIndex() ) const override;
 
-    QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const;
+    QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const override;
 
-    bool setData( const QModelIndex& index, const QVariant& value, int role = Qt::EditRole );
+    bool setData( const QModelIndex& index, const QVariant& value, int role = Qt::EditRole ) override;
 
     /** Load the table from a comma separated file.
      *

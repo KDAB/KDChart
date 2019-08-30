@@ -31,10 +31,10 @@ namespace KDChart {
     {
     public:
         explicit PercentLyingBarDiagram( BarDiagram* );
-        virtual ~PercentLyingBarDiagram() {}
-        virtual BarDiagram::BarType type() const;
-        virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const;
-        virtual void paint( PaintContext* ctx );
+        ~PercentLyingBarDiagram() override {}
+        BarDiagram::BarType type() const override;
+        const QPair<QPointF,  QPointF> calculateDataBoundaries() const override;
+        void paint( PaintContext* ctx ) override;
     };
 
 }

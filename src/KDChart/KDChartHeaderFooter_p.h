@@ -57,7 +57,7 @@ class KDChart::HeaderFooter::Private : public KDChart::TextArea::Private
     friend class KDChart::HeaderFooter;
 public:
     explicit Private();
-    ~Private();
+    ~Private() override;
 
     Private( const Private& rhs ) :
         TextArea::Private( rhs ),

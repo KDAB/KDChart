@@ -53,7 +53,7 @@ class KDCHART_EXPORT TextArea : public QObject, public AbstractAreaBase, public 
 
 
 public:
-    virtual ~TextArea() ;
+    ~TextArea() override ;
 
 //    virtual TextArea * clone() const = 0;
     /**
@@ -68,12 +68,12 @@ public:
       * Call paintAll, if you want the background and the frame to be drawn
       * before the normal paint() is invoked automatically.
       */
-    void paintAll( QPainter& painter );
+    void paintAll( QPainter& painter ) override;
 
 protected:
     TextArea();
-    virtual QRect areaGeometry() const;
-    virtual void positionHasChanged();
+    QRect areaGeometry() const override;
+    void positionHasChanged() override;
 
 Q_SIGNALS:
     void positionChanged( TextArea * );

@@ -34,16 +34,16 @@ namespace KDGantt {
         Q_OBJECT
     public:
         explicit HeaderWidget( GraphicsView* parent );
-        virtual ~HeaderWidget();
+        ~HeaderWidget() override;
 
         GraphicsView* view() const { return qobject_cast<GraphicsView*>( parent() );}
 
     public Q_SLOTS:
         void scrollTo( int );
     protected:
-        /*reimp*/ bool event( QEvent* ev );
-        /*reimp*/ void paintEvent( QPaintEvent* ev );
-        /*reimp*/ void contextMenuEvent( QContextMenuEvent* ev );
+        /*reimp*/ bool event( QEvent* ev ) override;
+        /*reimp*/ void paintEvent( QPaintEvent* ev ) override;
+        /*reimp*/ void contextMenuEvent( QContextMenuEvent* ev ) override;
     private:
         qreal m_offset;
     };

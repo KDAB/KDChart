@@ -54,7 +54,7 @@ class AbstractArea::Private : public AbstractAreaBase::Private
     friend class AbstractArea;
 public:
     explicit Private();
-    virtual ~Private();
+    ~Private() override;
 };
 
 

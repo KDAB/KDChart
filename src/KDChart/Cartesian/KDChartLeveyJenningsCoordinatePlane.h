@@ -48,9 +48,9 @@ namespace KDChart {
 
     public:
         explicit LeveyJenningsCoordinatePlane( Chart* parent = 0 );
-        ~LeveyJenningsCoordinatePlane();
+        ~LeveyJenningsCoordinatePlane() override;
 
-        void addDiagram( AbstractDiagram* diagram );
+        void addDiagram( AbstractDiagram* diagram ) override;
 
         LeveyJenningsGridAttributes gridAttributes() const;
         void setGridAttributes( const LeveyJenningsGridAttributes& attr );

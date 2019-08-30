@@ -169,25 +169,25 @@ public:
     // the Legends/Advanced example. It will not work well in various ways - won't get enough space and look
     // very broken, will inhibit resizing the window etc.
 
-    QSize sizeHint() const
+    QSize sizeHint() const override
     {
         QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
         return w->sizeHint();
     }
 
-    QSize minimumSize() const
+    QSize minimumSize() const override
     {
         QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
         return w->minimumSize();
     }
 
-    QSize maximumSize() const
+    QSize maximumSize() const override
     {
         QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
         return w->maximumSize();
     }
 
-    Qt::Orientations expandingDirections() const
+    Qt::Orientations expandingDirections() const override
     {
         QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
         if ( isEmpty() ) {
@@ -197,19 +197,19 @@ public:
         return e;
     }
 
-    void setGeometry(const QRect &g)
+    void setGeometry(const QRect &g) override
     {
         QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
         w->setGeometry(g);
     }
 
-    QRect geometry() const
+    QRect geometry() const override
     {
         QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
         return w->geometry();
     }
 
-    bool hasHeightForWidth() const
+    bool hasHeightForWidth() const override
     {
         QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
         bool ret = !isEmpty() &&
@@ -217,14 +217,14 @@ public:
         return ret;
     }
 
-    int heightForWidth( int width ) const
+    int heightForWidth( int width ) const override
     {
         QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
         int ret = w->heightForWidth( width );
         return ret;
     }
 
-    bool isEmpty() const {
+    bool isEmpty() const override {
         QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
         // legend->hide() should indeed hide the legend,
         // but a legend in a chart that hasn't been shown yet isn't hidden

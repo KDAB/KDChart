@@ -42,12 +42,12 @@ class KDCHART_EXPORT PieDiagram : public AbstractPieDiagram
 public:
     explicit PieDiagram(
         QWidget* parent = 0, PolarCoordinatePlane* plane = 0 );
-    virtual ~PieDiagram();
+    ~PieDiagram() override;
 
 protected:
     // Implement AbstractDiagram
     /** \reimpl */
-    virtual void paint( PaintContext* paintContext );
+    void paint( PaintContext* paintContext ) override;
 
 public:
     /**
@@ -73,23 +73,23 @@ public:
     bool isLabelCollisionAvoidanceEnabled() const;
 
     /** \reimpl */
-    virtual void resize ( const QSizeF& area );
+    void resize ( const QSizeF& area ) override;
 
     // Implement AbstractPolarDiagram
     /** \reimpl */
-    virtual qreal valueTotals () const;
+    qreal valueTotals () const override;
     /** \reimpl */
-    virtual qreal numberOfValuesPerDataset() const;
+    qreal numberOfValuesPerDataset() const override;
     /** \reimpl */
-    virtual qreal numberOfGridRings() const;
+    qreal numberOfGridRings() const override;
 
     virtual PieDiagram * clone() const;
 
 protected:
     /** \reimpl */
-    virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
-    void paintEvent( QPaintEvent* );
-    void resizeEvent( QResizeEvent* );
+    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    void paintEvent( QPaintEvent* ) override;
+    void resizeEvent( QResizeEvent* ) override;
 
 private:
     // ### move to private class?

@@ -46,24 +46,24 @@ class KDCHART_EXPORT PolarDiagram : public AbstractPolarDiagram
 public:
     explicit PolarDiagram(
         QWidget* parent = 0, PolarCoordinatePlane* plane = 0 );
-    virtual ~PolarDiagram();
+    ~PolarDiagram() override;
 
 protected:
     // Implement AbstractDiagram
     /** \reimpl */
-    virtual void paint ( PaintContext* paintContext );
+    void paint ( PaintContext* paintContext ) override;
 
 public:
     /** \reimpl */
-    virtual void resize ( const QSizeF& area );
+    void resize ( const QSizeF& area ) override;
 
     // Implement AbstractPolarDiagram
     /** \reimpl */
-    virtual qreal valueTotals () const;
+    qreal valueTotals () const override;
     /** \reimpl */
-    virtual qreal numberOfValuesPerDataset() const;
+    qreal numberOfValuesPerDataset() const override;
     /** \reimpl */
-    virtual qreal numberOfGridRings() const;
+    qreal numberOfGridRings() const override;
 
     virtual PolarDiagram * clone() const;
 
@@ -96,9 +96,9 @@ public:
 
 protected:
     /** \reimpl */
-    virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
-    void paintEvent ( QPaintEvent* );
-    void resizeEvent ( QResizeEvent* );
+    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    void paintEvent ( QPaintEvent* ) override;
+    void resizeEvent ( QResizeEvent* ) override;
     virtual void paintPolarMarkers( PaintContext* ctx, const QPolygonF& polygon );
 
 }; // End of class PolarDiagram

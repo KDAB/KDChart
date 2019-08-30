@@ -46,7 +46,7 @@ public:
 	 MainWindow(
 		 QWidget					*p_parent =	0);
 
-	 virtual	~MainWindow();
+	 	~MainWindow() override;
 
 private slots:
 	void timeoutEditingFinished();

@@ -37,10 +37,10 @@ class MyDateTimeScaleFormatter : public DateTimeScaleFormatter {
 public:
     MyDateTimeScaleFormatter();
 
-    /*reimp*/QDateTime nextRangeBegin( const QDateTime& datetime ) const;
-    /*reimp*/QDateTime currentRangeBegin( const QDateTime& datetime ) const;
+    /*reimp*/QDateTime nextRangeBegin( const QDateTime& datetime ) const override;
+    /*reimp*/QDateTime currentRangeBegin( const QDateTime& datetime ) const override;
 
-    /*reimp*/QString text( const QDateTime& dt ) const;
+    /*reimp*/QString text( const QDateTime& dt ) const override;
 };
 
 MyDateTimeScaleFormatter::MyDateTimeScaleFormatter()
@@ -75,7 +75,7 @@ public:
         : QHeaderView( Qt::Horizontal, parent ) {
     }
 
-    /*reimp*/QSize sizeHint() const {
+    /*reimp*/QSize sizeHint() const override {
         QSize s = QHeaderView::sizeHint(); s.rheight() *= 3; return s;
     }
 };

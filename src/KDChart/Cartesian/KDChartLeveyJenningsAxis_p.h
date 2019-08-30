@@ -56,7 +56,7 @@ public:
         , type( LeveyJenningsGridAttributes::Expected )
         , format( Qt::ISODate )
     {}
-    ~Private() {}
+    ~Private() override {}
 
 private:
     LeveyJenningsGridAttributes::GridType type;

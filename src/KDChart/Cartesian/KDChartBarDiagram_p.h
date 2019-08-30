@@ -59,7 +59,7 @@ class BarDiagram::Private : public AbstractCartesianDiagram::Private
 public:
     Private();
     Private( const Private& rhs );
-    ~Private();
+    ~Private() override;
 
     void setOrientationAndType( Qt::Orientation, BarDiagram::BarType );
 

@@ -62,31 +62,31 @@ namespace KDChart {
         */
         explicit DatasetProxyModel ( QObject* parent = 0 );
 
-        QModelIndex buddy( const QModelIndex& index ) const;
+        QModelIndex buddy( const QModelIndex& index ) const override;
 
-        Qt::ItemFlags flags( const QModelIndex& index ) const;
+        Qt::ItemFlags flags( const QModelIndex& index ) const override;
 
         QModelIndex index( int row, int column,
-                           const QModelIndex &parent = QModelIndex() ) const;
-        QModelIndex parent(const QModelIndex &child ) const;
+                           const QModelIndex &parent = QModelIndex() ) const override;
+        QModelIndex parent(const QModelIndex &child ) const override;
 
         /** Implements the mapping from the source to the proxy indexes. */
-        QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
+        QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const override;
 
         /** Implements the mapping from the proxy to the source indexes. */
-        QModelIndex mapToSource ( const QModelIndex& proxyIndex ) const;
+        QModelIndex mapToSource ( const QModelIndex& proxyIndex ) const override;
 
         /** Overloaded from base class. */
-        QVariant data(const QModelIndex &index, int role) const;
+        QVariant data(const QModelIndex &index, int role) const override;
 
         /** Overloaded from base class. */
-        bool setData( const QModelIndex& index, const QVariant& value, int role );
+        bool setData( const QModelIndex& index, const QVariant& value, int role ) override;
 
         /** Overloaded from base class. */
-        QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
+        QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const override;
 
         /** Overloaded from base class. */
-        void setSourceModel(QAbstractItemModel *sourceModel);
+        void setSourceModel(QAbstractItemModel *sourceModel) override;
 
         /** Set the root index of the table in
 	    the source model */
@@ -123,11 +123,11 @@ namespace KDChart {
     protected:
         /** Decide whether the column is accepted. */
         bool filterAcceptsColumn ( int sourceColumn,
-                                   const QModelIndex & ) const;
+                                   const QModelIndex & ) const override;
 
 
         /** Decide whether the row is accepted. */
-        bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const;
+        bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const override;
 
     private:
 

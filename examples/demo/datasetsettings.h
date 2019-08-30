@@ -36,7 +36,7 @@ class DatasetSettings : public QWidget
 
 public:
     explicit DatasetSettings( KDChart::Chart *chart, QWidget *parent = 0 );
-    ~DatasetSettings();
+    ~DatasetSettings() override;
     int datasetCount() const;
 public Q_SLOTS:
     void setDatasetCount( int value );

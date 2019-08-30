@@ -45,19 +45,19 @@ public:
         //qDebug() << "EmptyModel::EmptyModel()";
     }
 
-    ~EmptyModel()
+    ~EmptyModel() override
     {
         //qDebug() << "EmptyModel::~EmptyModel()";
     }
 
-    int columnCount( const QModelIndex& parent = QModelIndex() ) const
+    int columnCount( const QModelIndex& parent = QModelIndex() ) const override
     {
         Q_UNUSED( parent );
         //qDebug() << "EmptyModel::columnCount(...)";
         return 0;
     }
 
-    int rowCount( const QModelIndex& parent = QModelIndex() ) const
+    int rowCount( const QModelIndex& parent = QModelIndex() ) const override
     {
         Q_UNUSED( parent );
         //qDebug() << "EmptyModel::rowCount(...)";
@@ -67,7 +67,7 @@ public:
 
     // NOTE: The following method will not be called by KD Chart,
     //       because the model is returning 0 for columnCount() / rowCount().
-    QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const
+    QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const override
     {
         Q_UNUSED( role );
         qDebug() << "EmptyModel::data(" << index.row() << index.column() << ")";
@@ -75,7 +75,7 @@ public:
         return QVariant();
     }
 
-    QModelIndex index( int row, int column, const QModelIndex& parent = QModelIndex() ) const
+    QModelIndex index( int row, int column, const QModelIndex& parent = QModelIndex() ) const override
     {
         Q_UNUSED( row );
         Q_UNUSED( column );
@@ -84,7 +84,7 @@ public:
         return QModelIndex();
     }
 
-    QModelIndex parent( const QModelIndex& parent ) const
+    QModelIndex parent( const QModelIndex& parent ) const override
     {
         Q_UNUSED( parent );
         //qDebug() << "EmptyModel::parent(...)";

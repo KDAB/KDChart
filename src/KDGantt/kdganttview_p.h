@@ -56,7 +56,7 @@ namespace KDGantt {
         Q_OBJECT
     public:
         explicit KDGanttTreeView( QAbstractProxyModel* proxy, QWidget* parent=0 );
-        virtual ~KDGanttTreeView();
+        ~KDGanttTreeView() override;
 
         AbstractRowController* rowController() { return &m_controller; }
 

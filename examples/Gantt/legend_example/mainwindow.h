@@ -45,8 +45,8 @@ class MainWindow : public QMainWindow {
 
 public:
     explicit MainWindow( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
-    virtual ~MainWindow();
-    virtual void closeEvent(QCloseEvent *event);
+    ~MainWindow() override;
+    void closeEvent(QCloseEvent *event) override;
 
 private slots:
     void addNewEntry();

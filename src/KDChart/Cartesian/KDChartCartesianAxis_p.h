@@ -60,7 +60,7 @@ public:
         , cachedFontHeight( 0 )
         , axisTitleSpace( 1.0 )
     {}
-    ~Private() {}
+    ~Private() override {}
 
     static const Private *get( const CartesianAxis *axis ) { return axis->d_func(); };
 

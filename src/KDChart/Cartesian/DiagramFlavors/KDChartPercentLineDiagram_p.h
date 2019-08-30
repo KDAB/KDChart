@@ -31,10 +31,10 @@ namespace KDChart {
     {
     public:
         explicit PercentLineDiagram( LineDiagram* );
-        virtual ~PercentLineDiagram() {}
-        virtual LineDiagram::LineType type() const;
-        virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const;
-        virtual void paint( PaintContext* ctx );
+        ~PercentLineDiagram() override {}
+        LineDiagram::LineType type() const override;
+        const QPair<QPointF,  QPointF> calculateDataBoundaries() const override;
+        void paint( PaintContext* ctx ) override;
 
     private:
         void paintWithLines( PaintContext* ctx );

@@ -40,24 +40,24 @@ class KDCHART_EXPORT RingDiagram : public AbstractPieDiagram
 public:
     explicit RingDiagram(
         QWidget* parent = 0, PolarCoordinatePlane* plane = 0 );
-    virtual ~RingDiagram();
+    ~RingDiagram() override;
 
 protected:
     // Implement AbstractDiagram
     /** \reimpl */
-    virtual void paint( PaintContext* paintContext );
+    void paint( PaintContext* paintContext ) override;
 public:
     /** \reimpl */
-    virtual void resize( const QSizeF& area );
+    void resize( const QSizeF& area ) override;
 
     // Implement AbstractPolarDiagram
     /** \reimpl */
-    virtual qreal valueTotals() const;
+    qreal valueTotals() const override;
     /** \reimpl */
-    virtual qreal numberOfValuesPerDataset() const;
-    virtual qreal numberOfDatasets() const;
+    qreal numberOfValuesPerDataset() const override;
+    qreal numberOfDatasets() const override;
     /** \reimpl */
-    virtual qreal numberOfGridRings() const;
+    qreal numberOfGridRings() const override;
 
     qreal valueTotals( int dataset ) const;
 
@@ -76,9 +76,9 @@ public:
 
 protected:
     /** \reimpl */
-    virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
-    void paintEvent( QPaintEvent* );
-    void resizeEvent( QResizeEvent* );
+    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    void paintEvent( QPaintEvent* ) override;
+    void resizeEvent( QResizeEvent* ) override;
 
 private:
     void drawOneSlice( QPainter* painter, uint dataset, uint slice, qreal granularity );

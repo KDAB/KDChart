@@ -52,7 +52,7 @@ class AbstractPolarDiagram::Private : public AbstractDiagram::Private
     friend class AbstractPolarDiagram;
 public:
     Private();
-    ~Private();
+    ~Private() override;
 
     Private( const Private& rhs ) :
         AbstractDiagram::Private( rhs ),
@@ -63,7 +63,7 @@ public:
 
     /** \reimpl */
     // FIXME: Optimize when needed
-    virtual qreal calcPercentValue( const QModelIndex & index ) const
+    qreal calcPercentValue( const QModelIndex & index ) const override
     {
         Q_ASSERT( index.isValid() );
         qreal sum = 0.0;

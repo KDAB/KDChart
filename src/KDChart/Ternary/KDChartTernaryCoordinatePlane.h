@@ -41,16 +41,16 @@ namespace KDChart {
 
     public:
         explicit TernaryCoordinatePlane( Chart* parent = 0 );
-        ~TernaryCoordinatePlane();
+        ~TernaryCoordinatePlane() override;
 
-        void addDiagram( AbstractDiagram* diagram );
+        void addDiagram( AbstractDiagram* diagram ) override;
 
-        void layoutDiagrams();
+        void layoutDiagrams() override;
 
-        const QPointF translate ( const QPointF& diagramPoint ) const;
+        const QPointF translate ( const QPointF& diagramPoint ) const override;
 
-        void paint( QPainter* );
-        DataDimensionsList getDataDimensionsList() const;
+        void paint( QPainter* ) override;
+        DataDimensionsList getDataDimensionsList() const override;
 
         /** \reimpl */
         QSize minimumSizeHint() const;

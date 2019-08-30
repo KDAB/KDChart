@@ -41,10 +41,10 @@ namespace KDChart {
     {
     public:
         explicit NormalBarDiagram( BarDiagram* );
-        virtual ~NormalBarDiagram() {}
-        virtual BarDiagram::BarType type() const;
-        virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const;
-        virtual void paint( PaintContext* ctx );
+        ~NormalBarDiagram() override {}
+        BarDiagram::BarType type() const override;
+        const QPair<QPointF,  QPointF> calculateDataBoundaries() const override;
+        void paint( PaintContext* ctx ) override;
     };
 
 }

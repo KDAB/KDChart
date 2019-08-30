@@ -56,11 +56,11 @@ namespace KDChart {
     public:
         explicit Private();
 
-        virtual ~Private() {
+        ~Private() override {
             // grid is delete in base class dtor
         }
 
-        virtual void initialize()
+        void initialize() override
         {
             grid = new LeveyJenningsGrid();
         }

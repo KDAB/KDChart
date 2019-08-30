@@ -46,20 +46,20 @@ namespace KDChart {
 
     public:
         explicit TernaryAxis ( AbstractTernaryDiagram* diagram = 0 );
-        ~TernaryAxis();
+        ~TernaryAxis() override;
 
-        virtual void  paintAll( QPainter &);
-        virtual void  paint (QPainter *);
-        virtual void  paintCtx (PaintContext *);
+        void  paintAll( QPainter &) override;
+        void  paint (QPainter *) override;
+        void  paintCtx (PaintContext *) override;
 
-        virtual QRect  geometry () const;
-        virtual void  setGeometry (const QRect &rect);
+        QRect  geometry () const override;
+        void  setGeometry (const QRect &rect) override;
 
-        virtual bool  isEmpty () const;
-        virtual QSize  minimumSize () const;
-        virtual QSize  maximumSize () const;
-        virtual QSize  sizeHint () const;
-        virtual Qt::Orientations  expandingDirections () const  ;
+        bool  isEmpty () const override;
+        QSize  minimumSize () const override;
+        QSize  maximumSize () const override;
+        QSize  sizeHint () const override;
+        Qt::Orientations  expandingDirections () const override  ;
 
         virtual const Position  position () const;
         virtual void  setPosition (Position p);

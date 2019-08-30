@@ -60,13 +60,13 @@ public:
         m_tasks.push_back( task );
     }
 
-    /*reimp*/int rowCount( const QModelIndex& index = QModelIndex() ) const {
+    /*reimp*/int rowCount( const QModelIndex& index = QModelIndex() ) const override {
         return index.isValid()?0:m_tasks.size();
     }
-    /*reimp*/int columnCount( const QModelIndex& index = QModelIndex() ) const {
+    /*reimp*/int columnCount( const QModelIndex& index = QModelIndex() ) const override {
         return index.isValid()?0:4;
     }
-    /*reimp*/QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const
+    /*reimp*/QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const override
     {
         if ( index.isValid() && index.row() < rowCount() && index.column() < columnCount() ) {
             switch ( index.column() ) {
@@ -132,7 +132,7 @@ public:
 #endif
     }
 
-    ~MoveHelper() {
+    ~MoveHelper() override {
         qDebug() << "Moving row" << m_row1 << "to" << m_row2;
         showContraints( "Before:" );
         m_model->moveRow( m_row1, m_row2 );

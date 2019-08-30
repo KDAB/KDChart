@@ -33,7 +33,7 @@ class GradientDialog : public QDialog
 
 public:
     explicit GradientDialog( QWidget *parent = 0 );
-    ~GradientDialog();
+    ~GradientDialog() override;
     QGradient gradient() const;
     void setGradient( const QGradient &gradient );
     static QGradient getGradient( const QGradient &gradient, QWidget *parent = 0, const QString &title = QString() );

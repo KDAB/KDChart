@@ -59,7 +59,7 @@ class AbstractCoordinatePlane::Private : public AbstractArea::Private
     friend class AbstractCoordinatePlane;
 protected:
     explicit Private();
-    virtual ~Private() {
+    ~Private() override {
         delete grid;
     };
 

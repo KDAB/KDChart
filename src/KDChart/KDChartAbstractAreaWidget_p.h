@@ -54,7 +54,7 @@ class AbstractAreaWidget::Private : public AbstractAreaBase::Private
     friend class AbstractAreaWidget;
 public:
     explicit Private();
-    virtual ~Private();
+    ~Private() override;
 
     Private( const Private& rhs ) :
         AbstractAreaBase::Private( rhs ),

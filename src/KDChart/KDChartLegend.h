@@ -62,7 +62,7 @@ class KDCHART_EXPORT Legend : public AbstractAreaWidget
 public:
     explicit Legend( QWidget* parent = 0 );
     explicit Legend( KDChart::AbstractDiagram* diagram, QWidget* parent = 0 );
-    virtual ~Legend();
+    ~Legend() override;
 
 
     enum LegendStyle { MarkersOnly     = 0,
@@ -81,10 +81,10 @@ public:
      */
     bool compare( const Legend* other ) const;
 
-    virtual void resizeEvent( QResizeEvent * event ); // TODO: should be protected
+    void resizeEvent( QResizeEvent * event ) override; // TODO: should be protected
 
-    virtual void paint( QPainter* painter );
-    virtual void setVisible( bool visible );
+    void paint( QPainter* painter ) override;
+    void setVisible( bool visible ) override;
 
     /**
         Specifies the reference area for font size of title text,
@@ -383,14 +383,14 @@ m_legend->setFloatingPosition( relativePosition );
     uint spacing() const;
 
     // called internally by KDChart::Chart, when painting into a custom QPainter
-    virtual void forceRebuild();
+    void forceRebuild() override;
 
-    virtual QSize minimumSizeHint() const;
-    virtual QSize sizeHint() const;
-    virtual bool hasHeightForWidth() const;
-    virtual int heightForWidth( int width ) const;
-    virtual void needSizeHint();
-    virtual void resizeLayout( const QSize& size );
+    QSize minimumSizeHint() const override;
+    QSize sizeHint() const override;
+    bool hasHeightForWidth() const override;
+    int heightForWidth( int width ) const override;
+    void needSizeHint() override;
+    void resizeLayout( const QSize& size ) override;
 
 Q_SIGNALS:
     void destroyedLegend( Legend* );

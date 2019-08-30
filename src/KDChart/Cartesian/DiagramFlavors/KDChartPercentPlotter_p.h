@@ -31,10 +31,10 @@ namespace KDChart {
     {
     public:
         explicit PercentPlotter( Plotter* );
-        virtual ~PercentPlotter() {}
-        virtual Plotter::PlotType type() const;
-        virtual const QPair< QPointF,  QPointF > calculateDataBoundaries() const;
-        virtual void paint( PaintContext* ctx );
+        ~PercentPlotter() override {}
+        Plotter::PlotType type() const override;
+        const QPair< QPointF,  QPointF > calculateDataBoundaries() const override;
+        void paint( PaintContext* ctx ) override;
     };
 }
 
