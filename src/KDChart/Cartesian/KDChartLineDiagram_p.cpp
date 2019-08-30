@@ -32,7 +32,7 @@ using namespace std;
 
 LineDiagram::Private::Private( const Private& rhs )
     : AbstractCartesianDiagram::Private( rhs )
-    , tension(0.0)
+    , tension(rhs.tension)
 {
 }
 

@@ -45,6 +45,7 @@
 using namespace KDChart;
 
 LineDiagram::Private::Private()
+    : tension(0.0)
 {
 }
 
