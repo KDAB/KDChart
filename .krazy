@@ -3,8 +3,10 @@ CHECKSETS qt4,c++,foss
 #KDAB-specific checks
 EXTRA kdabcopyright
 
-#exclude invasive checks
-EXCLUDE style,includes,normalize,explicit,qminmax,cpp
+#exclude checks now being done by clazy or clang-tools
+EXCLUDE style,includes,strings,explicit,normalize,passbyvalue,operators,nullstrcompare,nullstrassign,doublequote_chars,qobject,sigsandslots,staticobjects,cpp
+#exclude more checks
+EXCLUDE qminmax,captruefalse
 
 #skip autogen buildsystem
 SKIP /autogen/|/autogen.py|/genignore.py
@@ -12,4 +14,8 @@ SKIP /autogen/|/autogen.py|/genignore.py
 SKIP /examples/
 #if you have a build subdir, skip it
 SKIP /build-
+#skip generated cmake
+SKIP KDChartConfig\.cmake\.in
 
+#skip the borrowed code in the cmake subdir
+SKIP /cmake/CMakePackageConfigHelpers.cmake|/cmake/InstallLocation.cmake|/cmake/Qt5Portability.cmake|/cmake/ECMGenerateHeaders.cmake
