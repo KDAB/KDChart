@@ -109,7 +109,7 @@ if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GR /EHsc /wd4251")
 endif()
 
-if (NOT MSVC)
+if(CMAKE_COMPILER_IS_GNUCXX)
   add_compile_options(-Wsuggest-override)
 endif()
 
