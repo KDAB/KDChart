@@ -187,8 +187,8 @@ endif()
 
 add_subdirectory(src)
 
-if (Qt5Core_FOUND)
-  # only build python bindings for Qt5
+# only build python bindings for Qt5
+if (Qt5Core_FOUND AND ENABLE_PYTHON_BINDINGS)
   add_subdirectory(python)
 endif()
 
