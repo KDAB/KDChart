@@ -1,0 +1,156 @@
+<?xml version="1.0"?>
+<typesystem package="KDGantt">
+    <load-typesystem name="typesystem_widgets.xml" generate="no"/>
+
+    <namespace-type name="KDGantt" generate="no">
+        <enum-type name="ItemDataRole" />
+        <enum-type name="ItemType" />
+    
+        <object-type name="AbstractGrid" />
+        <object-type name="AbstractRowController" />
+        <object-type name="ConstraintGraphicsItem">
+            <enum-type name="Type" />
+        </object-type>
+        <object-type name="ConstraintModel" />
+        <object-type name="ConstraintProxy" />
+        <value-type name="Constraint">
+            <enum-type name="Type" />
+            <enum-type name="RelationType" />
+            <enum-type name="ConstraintDataRole" />
+            <add-function signature="__repr__" return-type="PyObject*">
+                <inject-code class="target" position="beginning">
+                   QBuffer buffer;
+                   buffer.open(QBuffer::ReadWrite);
+                   QDebug dbg(&amp;buffer);
+                   dbg &lt;&lt; %CPPSELF;
+                   buffer.close();
+                   const QByteArray str = buffer.data();
+                   %PYARG_0 = Shiboken::String::fromCString(str.constData());
+                </inject-code>
+            </add-function>
+        </value-type>
+        <object-type name="DateTimeGrid">
+            <enum-type name="Scale" />
+            <modify-function signature="setUserDefinedLowerScale(KDGantt::DateTimeScaleFormatter*)">
+                <modify-argument index="1">
+                    <parent index="this" action="add"/>
+                </modify-argument>
+            </modify-function>
+            <modify-function signature="setUserDefinedUpperScale(KDGantt::DateTimeScaleFormatter*)">
+                <modify-argument index="1">
+                    <parent index="this" action="add"/>
+                </modify-argument>
+            </modify-function>
+        </object-type>
+        <value-type name="DateTimeScaleFormatter">
+            <enum-type name="Range" />
+        </value-type>
+        <object-type name="ForwardingProxyModel">
+            <modify-function signature="mimeData(QModelIndexList)const">
+                <modify-argument index="return">
+                    <define-ownership class="native" owner="c++"/>
+                    
+                </modify-argument>
+            </modify-function>
+        </object-type>
+        <object-type name="GraphicsItem" />
+        <object-type name="GraphicsScene" />
+        <object-type name="GraphicsView" />
+        <object-type name="ItemDelegate">
+            <extra-includes>
+                <include file-name="QItemDelegate" location="global"/>
+            </extra-includes>
+            <enum-type name="InteractionState" />
+        </object-type>
+        <object-type name="Legend" />
+        <object-type name="ListViewRowController" />
+        <object-type name="ProxyModel" />
+        <value-type name="Span">
+            <add-function signature="__repr__" return-type="PyObject*">
+                <inject-code class="target" position="beginning">
+                   QBuffer buffer;
+                   buffer.open(QBuffer::ReadWrite);
+                   QDebug dbg(&amp;buffer);
+                   dbg &lt;&lt; %CPPSELF;
+                   buffer.close();
+                   const QByteArray str = buffer.data();
+                   %PYARG_0 = Shiboken::String::fromCString(str.constData());
+                </inject-code>
+            </add-function>
+        </value-type>
+        <value-type name="StyleOptionGanttItem" >
+            <enum-type name="Position" />
+            <add-function signature="__repr__" return-type="PyObject*">
+                <inject-code class="target" position="beginning">
+                   QBuffer buffer;
+                   buffer.open(QBuffer::ReadWrite);
+                   QDebug dbg(&amp;buffer);
+                   dbg &lt;&lt; %CPPSELF;
+                   buffer.close();
+                   const QByteArray str = buffer.data();
+                   %PYARG_0 = Shiboken::String::fromCString(str.constData());
+                </inject-code>
+            </add-function>
+        </value-type>
+        <object-type name="SummaryHandlingProxyModel" />
+        <object-type name="TreeViewRowController" />
+        <object-type name="View">
+            <modify-function signature="setGraphicsView(KDGantt::GraphicsView*)">
+                <modify-argument index="1">
+                    <parent index="this" action="add"/>
+                </modify-argument>
+            </modify-function>
+
+            <modify-function signature="setRowController(KDGantt::AbstractRowController*)">
+                <modify-argument index="1">
+                    <parent index="this" action="add"/>
+                </modify-argument>
+            </modify-function>
+
+            <modify-function signature="setLeftView(QAbstractItemView*)">
+                <modify-argument index="1">
+                    <parent index="this" action="add"/>
+                </modify-argument>
+            </modify-function>
+
+            <modify-function signature="setGrid(KDGantt::AbstractGrid*)">
+                <modify-argument index="1">
+                    <parent index="this" action="add"/>
+                </modify-argument>
+            </modify-function>
+
+            <modify-function signature="setGrid(KDGantt::AbstractGrid*)">
+                <modify-argument index="1">
+                    <parent index="this" action="add"/>
+                </modify-argument>
+            </modify-function>
+
+            <modify-function signature="setModel(QAbstractItemModel*)">
+                <modify-argument index="1">
+                    <parent index="this" action="add"/>
+                </modify-argument>
+            </modify-function>
+            
+            <modify-function signature="leftView()">
+                 <modify-argument index="return">
+                    <define-ownership class="native" owner="c++"/>
+                </modify-argument>
+                <inject-code class="target" position="beginning">
+                    %RETURN_TYPE %0 = %CPPSELF.%TYPE::%FUNCTION_NAME();
+                    if (%0 == nullptr)
+                    {
+                        %PYARG_0 = Py_None;
+                    }
+                    else
+                    {
+                        // KDGantt::KDGanttTreeView is private class, PySide need some help here
+                        if (strcmp(%0.metaObject()-&gt;className(), "KDGantt::KDGanttTreeView") == 0)
+                            %PYARG_0 = %CONVERTTOPYTHON[QTreeView*](%0);
+                        else
+                            %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](%0);
+                    }
+                </inject-code>
+            </modify-function>
+        </object-type>
+    </namespace-type>
+</typesystem>

@@ -15,6 +15,10 @@
 #  Build the examples.
 #  Default=true
 #
+# -DENABLE_PYTHON_BINDINGS=[true|false]
+#  Build/Generate python bindings.
+#  Default=false
+#
 cmake_minimum_required(VERSION 2.8.7)
 cmake_policy(SET CMP0020 NEW)
 cmake_policy(SET CMP0025 NEW)
@@ -43,6 +47,7 @@ endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_MODULE_PATH}")
 
+option(ENABLE_PYTHON_BINDINGS "Build Python bindings" OFF)
 option(${PROJECT_NAME}_STATIC "Build statically" OFF)
 option(${PROJECT_NAME}_TESTS "Build the tests" OFF)
 option(${PROJECT_NAME}_EXAMPLES "Build the examples" ON)
@@ -181,6 +186,11 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
 endif()
 
 add_subdirectory(src)
+
+if (Qt5Core_FOUND)
+  # only build python bindings for Qt5
+  add_subdirectory(python)
+endif()
 
 if(${PROJECT_NAME}_IS_ROOT_PROJECT)
   export(TARGETS kdchart NAMESPACE KDChart::
