@@ -15,7 +15,7 @@
 #  Build the examples.
 #  Default=true
 #
-# -DENABLE_PYTHON_BINDINGS=[true|false]
+# -DDISABLE_PYTHON_BINDINGS=[true|false]
 #  Build/Generate python bindings.
 #  Default=false
 #
@@ -47,7 +47,7 @@ endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_MODULE_PATH}")
 
-option(ENABLE_PYTHON_BINDINGS "Build Python bindings" OFF)
+option(DISABLE_PYTHON_BINDINGS "Build Python bindings" OFF)
 option(${PROJECT_NAME}_STATIC "Build statically" OFF)
 option(${PROJECT_NAME}_TESTS "Build the tests" OFF)
 option(${PROJECT_NAME}_EXAMPLES "Build the examples" ON)
@@ -188,7 +188,7 @@ endif()
 add_subdirectory(src)
 
 # only build python bindings for Qt5
-if (Qt5Core_FOUND AND ENABLE_PYTHON_BINDINGS)
+if (Qt5Core_FOUND AND NOT DISABLE_PYTHON_BINDINGS)
   add_subdirectory(python)
 endif()
 
