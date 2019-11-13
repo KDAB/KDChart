@@ -1,6 +1,14 @@
 project(PyKdChart)
 
+set(PYKDCHART_VERSION_MAJOR ${KDChart_VERSION_MAJOR})
+set(PYKDCHART_VERSION_MINOR ${KDChart_VERSION_MAJOR})
+set(PYKDCHART_VERSION_PATCH ${KDChart_VERSION_MAJOR})
+set(PYKDCHART_VERSION "${PYKDCHART_VERSION_MAJOR}.${PYKDCHART_VERSION_MINOR}.${PYKDCHART_VERSION_PATCH}")
+set(PYKDCHART_VERSION_STRING "${FATCRM_VERSION}")
+set(PYKDCHART_MODULE_NAME "PyKDChart")
+
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/)
+set(BUILD_PYTHON_BINDINGS True)
 
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
@@ -9,22 +17,29 @@ find_package(Qt5PrintSupport REQUIRED)
 
 # Python
 set(Python_ADDITIONAL_VERSIONS 3.6)
-find_package(PythonInterp REQUIRED)
-find_package(PythonLibs REQUIRED)
-execute_process (
-	COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"
-       	OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
+find_package(PythonInterp QUIET)
 
-set(PYKDCHART_VERSION_MAJOR "2")
-set(PYKDCHART_VERSION_MINOR "6")
-set(PYKDCHART_VERSION_PATCH "1")
-set(PYKDCHART_VERSION "${PYKDCHART_VERSION_MAJOR}.${PYKDCHART_VERSION_MINOR}.${PYKDCHART_VERSION_PATCH}")
-set(PYKDCHART_VERSION_STRING "${FATCRM_VERSION}")
-set(PYKDCHART_MODULE_NAME "PyKDChart")
+if (PYTHONINTERP_FOUND)
+    find_package(PythonLibs QUIET)
+    if (PYTHONLIBS_FOUND)
+        # PySide
+        # Need same version  as c++ Qt library
+	find_package(PySide2 EXACT ${Qt5Core_VERSION} QUIET)
+        if (PySide2_FOUND)
+            include(PySide2Tools)
+            add_subdirectory(PyKDChart)
+        else()
+            message(WARNING "** PySide2 required libraries not found! Disabling build for bindings.")
+        endif()
+    else()
+        message(WARNING "** Python libraries not found! Disabling build for bindings.")
+    endif()
+else()
+    message(WARNING "** Python executable not found! Disabling build for bindings.")
+endif()
 
-# PySide
-# Need same version  as c++ Qt library
-find_package(PySide2 EXACT ${Qt5Core_VERSION} REQUIRED)
-include(PySide2Tools)
 
-add_subdirectory(PyKDChart)
+
+
+
+
