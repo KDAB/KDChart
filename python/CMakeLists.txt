@@ -17,7 +17,7 @@ find_package(Qt5PrintSupport REQUIRED)
 
 # Python
 set(Python_ADDITIONAL_VERSIONS 3.6)
-find_package(PythonInterp QUIET)
+find_package(PythonInterp 3.6 QUIET)
 
 if (PYTHONINTERP_FOUND)
     find_package(PythonLibs QUIET)
