@@ -19,6 +19,10 @@
 #  Build/Generate python bindings.
 #  Default=false
 #
+# -DPYTHON_BINDINGS_INSTALL_DIR=[path]
+#  alternative install path for python bindings
+#  Defautl=<auto detect>
+#
 cmake_minimum_required(VERSION 2.8.7)
 cmake_policy(SET CMP0020 NEW)
 cmake_policy(SET CMP0025 NEW)
