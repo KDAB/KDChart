@@ -9,6 +9,7 @@ set(PYKDCHART_MODULE_NAME "PyKDChart")
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/)
 set(BUILD_PYTHON_BINDINGS True)
+set(PYTHON_BINDINGS_INSTALL_DIR "" CACHE PATH "Alternative install dir for python bindings")
 
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
@@ -24,8 +25,15 @@ if (PYTHONINTERP_FOUND)
     if (PYTHONLIBS_FOUND)
         # PySide
         # Need same version  as c++ Qt library
-	find_package(PySide2 EXACT ${Qt5Core_VERSION} QUIET)
+        find_package(PySide2 EXACT ${Qt5Core_VERSION} QUIET)
         if (PySide2_FOUND)
+            if(PYTHON_BINDINGS_INSTALL_DIR EQUAL "")
+                # use auto detected value
+                set(INSTALL_PYTHON_SITE_PACKAGES ${PYTHON_SITE_PACKAGES})
+            else()
+                # use user defined value
+                set(INSTALL_PYTHON_SITE_PACKAGES ${PYTHON_BINDINGS_INSTALL_DIR})
+            endif()
             include(PySide2Tools)
             add_subdirectory(PyKDChart)
         else()
