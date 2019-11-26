@@ -40,7 +40,6 @@ endif()
 
 macro(CREATE_PYTHON_BINDINGS
         LIBRARY_NAME
-        BUILD_AS_STATIC
         TYPESYSTEM_PATHS
         INCLUDE_PATHS
         OUTPUT_SOURCES
@@ -80,14 +79,8 @@ macro(CREATE_PYTHON_BINDINGS
         COMMENT "Running generator for ${LIBRARY_NAME} binding...")
 
         set(TARGET_NAME "Py${LIBRARY_NAME}")
-        if(${BUILD_AS_STATIC})
-            set(MODULE_NAME "Py${LIBRARY_NAME}")
-            add_library(${TARGET_NAME} STATIC ${OUTPUT_SOURCES})
-        else()
-            set(MODULE_NAME "${LIBRARY_NAME}")
-            add_library(${TARGET_NAME} MODULE ${OUTPUT_SOURCES})
-        endif()
-
+        set(MODULE_NAME "${LIBRARY_NAME}")
+        add_library(${TARGET_NAME} MODULE ${OUTPUT_SOURCES})
         set_target_properties(${TARGET_NAME} PROPERTIES
             PREFIX ""
             OUTPUT_NAME ${MODULE_NAME}
@@ -96,6 +89,10 @@ macro(CREATE_PYTHON_BINDINGS
 
         if(WIN32)
             set_target_properties(${TARGET_NAME} PROPERTIES SUFFIX ".pyd")
+            get_filename_component(PYTHON3_PATH_LIB ${PYTHON_LIBRARIES} DIRECTORY)
+            set(PYTHON_WINDOWS_LIBRARIES ${PYTHON3_PATH_LIB}/python3.lib)
+        else()
+            set(PYTHON_WINDOWS_LIBRARIES "")
         endif()
 
         target_include_directories(${TARGET_NAME} PUBLIC
@@ -107,10 +104,11 @@ macro(CREATE_PYTHON_BINDINGS
         )
 
         target_link_libraries(${TARGET_NAME}
+            ${PYTHON_LIBRARIES}
+            ${PYTHON_WINDOWS_LIBRARIES}
             ${TARGET_LINK_LIBRARIES}
             ${SHIBOKEN_LIBRARY}
             ${PYSIDE_LIBRARY}
-            ${PYTHON_LIBRARIES}
         )
 
         target_compile_definitions(${TARGET_NAME}
