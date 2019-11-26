@@ -19,8 +19,6 @@ set(PyKDGantt_SRC
     ${CMAKE_CURRENT_BINARY_DIR}/KDGantt/kdgantt_datetimescaleformatter_wrapper.h
     ${CMAKE_CURRENT_BINARY_DIR}/KDGantt/kdgantt_forwardingproxymodel_wrapper.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/KDGantt/kdgantt_forwardingproxymodel_wrapper.h
-    ${CMAKE_CURRENT_BINARY_DIR}/KDGantt/kdgantt_graphicsitem_wrapper.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/KDGantt/kdgantt_graphicsitem_wrapper.h
     ${CMAKE_CURRENT_BINARY_DIR}/KDGantt/kdgantt_graphicsscene_wrapper.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/KDGantt/kdgantt_graphicsscene_wrapper.h
     ${CMAKE_CURRENT_BINARY_DIR}/KDGantt/kdgantt_graphicsview_wrapper.cpp
@@ -67,10 +65,10 @@ set(PyKDGantt_target_include_directories
 )
 
 set(PyKDGantt_target_link_libraries
+    kdchart
     Qt5::Core
     Qt5::Widgets
     Qt5::PrintSupport
-    kdchart
 )
 
 set(PyKDGantt_DEPENDS
@@ -79,7 +77,6 @@ set(PyKDGantt_DEPENDS
 
 CREATE_PYTHON_BINDINGS(
     "KDGantt"
-    FALSE
     "${PyKDGantt_typesystem_paths}"
     "${PyKDGantt_include_paths}"
     "${PyKDGantt_SRC}"

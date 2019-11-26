@@ -53,7 +53,10 @@
                 </modify-argument>
             </modify-function>
         </object-type>
+        <!--
+        This cause undefined symbols on windows
         <object-type name="GraphicsItem" />
+        -->
         <object-type name="GraphicsScene" />
         <object-type name="GraphicsView" />
         <object-type name="ItemDelegate">
