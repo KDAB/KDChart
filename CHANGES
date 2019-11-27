@@ -1,10 +1,11 @@
 Release Highlights
 ==================
 
-Version XXX: (currently unreleased)
+Version 3.0.0: (currently unreleased)
 ------------
  * CMake buildsystem
  * Added support for spline-based line smoothing
+ * Added Python3 bindings for KDGantt (CMake buildsystem only. see INSTALL-bindings.txt)
 
 Version 2.6.2:
 -------------
