@@ -48,7 +48,8 @@ macro(CREATE_PYTHON_BINDINGS
         GLOBAL_INCLUDE
         TYPESYSTEM_XML
         DEPENDS
-        OUTPUT_DIR)
+        OUTPUT_DIR
+        QT_API_VERSION)
 
     # Transform the path separators into something shiboken understands.
     make_path(shiboken_include_dirs ${INCLUDE_PATHS})
@@ -73,7 +74,7 @@ macro(CREATE_PYTHON_BINDINGS
                 ${shiboken_framework_include_dirs_option}
                 --output-directory=${CMAKE_CURRENT_BINARY_DIR}
                 ${TYPESYSTEM_XML}
-                --api-version="5.12"
+                --api-version="${QT_API_VERSION}"
         DEPENDS ${TYPESYSTEM_XML} ${DEPENDS}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMENT "Running generator for ${LIBRARY_NAME} binding...")
