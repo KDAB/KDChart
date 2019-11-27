@@ -1,1 +1,1 @@
-install(FILES kdchart.prf DESTINATION ${INSTALL_DATADIR}/mkspecs/features )
+install(FILES kdchart.prf DESTINATION ${INSTALL_DATADIR}/mkspecs/features)
