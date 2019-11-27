@@ -41,7 +41,6 @@ if(QtCore_is_framework)
 endif()
 
 macro(CREATE_PYTHON_BINDINGS
-
     LIBRARY_NAME
     TYPESYSTEM_PATHS
     INCLUDE_PATHS
@@ -51,7 +50,8 @@ macro(CREATE_PYTHON_BINDINGS
     GLOBAL_INCLUDE
     TYPESYSTEM_XML
     DEPENDS
-        OUTPUT_DIR)
+        OUTPUT_DIR
+    QT_API_VERSION)
 
     # Transform the path separators into something shiboken understands.
     make_path(shiboken_include_dirs ${INCLUDE_PATHS})
