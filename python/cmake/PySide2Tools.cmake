@@ -118,9 +118,11 @@ macro(CREATE_PYTHON_BINDINGS
         ${PYSIDE_LIBRARY}
     )
 
-    target_compile_definitions(${TARGET_NAME}
-        PRIVATE Py_LIMITED_API=0x03050000
-    )
+    if(CMAKE_BUILD_TYPE MATCHES "^[Rr]el")
+        target_compile_definitions(${TARGET_NAME}
+           PRIVATE Py_LIMITED_API=0x03050000
+       )
+    endif()
 
     install(TARGETS ${TARGET_NAME}
         LIBRARY DESTINATION ${INSTALL_PYTHON_SITE_PACKAGES}/${PYKDCHART_MODULE_NAME}
