@@ -16,12 +16,12 @@
 #  Default=true
 #
 # -DDISABLE_PYTHON_BINDINGS=[true|false]
-#  Build/Generate python bindings.
+#  Build/Generate python bindings.  Always true for Debug builds
 #  Default=false
 #
 # -DPYTHON_BINDINGS_INSTALL_DIR=[path]
 #  alternative install path for python bindings
-#  Defautl=<auto detect>
+#  Default=<auto detect>
 #
 cmake_minimum_required(VERSION 2.8.7)
 cmake_policy(SET CMP0020 NEW)
@@ -42,16 +42,20 @@ option(
 )
 
 if(CMAKE_VERSION VERSION_LESS "3.1")
-    if(CMAKE_COMPILER_IS_GNUCXX)
-        set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
-    endif ()
+  if(CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+  endif()
 else()
-    set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 14)
 endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_MODULE_PATH}")
 
-option(DISABLE_PYTHON_BINDINGS "Build Python bindings" OFF)
+if(CMAKE_BUILD_TYPE MATCHES "^[Rr]el")
+  option(DISABLE_PYTHON_BINDINGS "Build Python bindings" OFF)
+else()
+  set(DISABLE_PYTHON_BINDINGS ON)
+endif()
 option(${PROJECT_NAME}_STATIC "Build statically" OFF)
 option(${PROJECT_NAME}_TESTS "Build the tests" OFF)
 option(${PROJECT_NAME}_EXAMPLES "Build the examples" ON)
@@ -103,8 +107,8 @@ add_definitions(-DUSE_EXCEPTIONS)
 if(MSVC)
   add_definitions(-D_SCL_SECURE_NO_WARNINGS)
 endif()
-if (${CMAKE_SYSTEM_NAME} MATCHES "SunOS")
-    add_definitions(-DSUN7)
+if(${CMAKE_SYSTEM_NAME} MATCHES "SunOS")
+  add_definitions(-DSUN7)
 endif()
 # Note: The following KDCHART_MASTER_CVS definition is used to distinguish
 #       between Klaraelvdalens Datakonsult AB Master CVS and other CVS
@@ -192,7 +196,7 @@ endif()
 add_subdirectory(src)
 
 # only build python bindings for Qt5
-if (Qt5Core_FOUND AND NOT DISABLE_PYTHON_BINDINGS)
+if(Qt5Core_FOUND AND NOT DISABLE_PYTHON_BINDINGS)
   add_subdirectory(python)
 endif()
 
@@ -202,20 +206,19 @@ if(${PROJECT_NAME}_IS_ROOT_PROJECT)
   )
 
   if(${PROJECT_NAME}_TESTS OR ${PROJECT_NAME}_EXAMPLES)
-      # Shared testtools lib
-      add_library(testtools ${KDChart_LIBRARY_MODE} examples/tools/TableModel.cpp)
+    # Shared testtools lib
+    add_library(testtools ${KDChart_LIBRARY_MODE} examples/tools/TableModel.cpp)
 
-      target_link_libraries(testtools ${QT_LIBRARIES})
-      target_compile_definitions(testtools PRIVATE KDCHART_BUILD_TESTTOOLS_LIB)
+    target_link_libraries(testtools ${QT_LIBRARIES})
+    target_compile_definitions(testtools PRIVATE KDCHART_BUILD_TESTTOOLS_LIB)
 
-      if(NOT ${PROJECT_NAME}_STATIC)
-        target_compile_definitions(testtools PRIVATE QT_SHARED TESTTOOLS_MAKEDLL)
-      endif()
+    if(NOT ${PROJECT_NAME}_STATIC)
+      target_compile_definitions(testtools PRIVATE QT_SHARED TESTTOOLS_MAKEDLL)
+    endif()
 
-      target_include_directories(testtools
-        PUBLIC
-          "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/examples/tools>"
-      )
+    target_include_directories(testtools
+      PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/examples/tools>"
+    )
   endif()
 
   add_subdirectory(features)
