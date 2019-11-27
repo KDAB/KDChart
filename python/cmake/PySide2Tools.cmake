@@ -41,6 +41,7 @@ if(QtCore_is_framework)
 endif()
 
 macro(CREATE_PYTHON_BINDINGS
+
     LIBRARY_NAME
     TYPESYSTEM_PATHS
     INCLUDE_PATHS
@@ -68,13 +69,14 @@ macro(CREATE_PYTHON_BINDINGS
 
     set_property(SOURCE ${OUTPUT_SOURCES} PROPERTY SKIP_AUTOGEN ON)
     add_custom_command(OUTPUT ${OUTPUT_SOURCES}
-        COMMAND ${SHIBOKEN_BINARY} ${GENERATOR_EXTRA_FLAGS} ${GLOBAL_INCLUDE}
-            --include-paths=${shiboken_include_dirs}
-            --typesystem-paths=${shiboken_typesystem_dirs}
-            ${shiboken_framework_include_dirs_option}
-            --output-directory=${CMAKE_CURRENT_BINARY_DIR}
-            ${TYPESYSTEM_XML}
-            --api-version="5.12"
+        COMMAND ${SHIBOKEN_BINARY} ${GENERATOR_EXTRA_FLAGS}
+                ${GLOBAL_INCLUDE}
+                --include-paths=${shiboken_include_dirs}
+                --typesystem-paths=${shiboken_typesystem_dirs}
+                ${shiboken_framework_include_dirs_option}
+                --output-directory=${CMAKE_CURRENT_BINARY_DIR}
+                ${TYPESYSTEM_XML}
+                --api-version="${QT_API_VERSION}"
         DEPENDS ${TYPESYSTEM_XML} ${DEPENDS}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMENT "Running generator for ${LIBRARY_NAME} binding..."

@@ -84,4 +84,5 @@ create_python_bindings(
     ${CMAKE_CURRENT_SOURCE_DIR}/typesystem_kdgantt.xml
     "${PyKDGantt_DEPENDS}"
     ${BINDING_OUTPUT_DIR}
+    ${PY_QT_API_VERSION}
 )
