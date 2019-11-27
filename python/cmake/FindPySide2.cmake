@@ -11,11 +11,10 @@
 
 #  PYTHON_SITE_PACKAGES        - Path where the Python modules are installed
 
-
 set(PySide2_FOUND FALSE)
 set(Shiboken2_FOUND FALSE)
 set(PySide2Python3_FOUND FALSE)
-set(PYSIDE2_CUSTOM_PREFIX  "/usr/" CACHE PATH "Extra path to look for PySide components.")
+set(PYSIDE2_CUSTOM_PREFIX "/usr/" CACHE PATH "Extra path to look for PySide components.")
 
 execute_process(
     COMMAND ${PYTHON_EXECUTABLE} -c "if True:
@@ -26,12 +25,11 @@ execute_process(
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
-message(STATUS "Python site-packages:       ${PYTHON_SITE_PACKAGES}" )
+message(STATUS "Python site-packages:       ${PYTHON_SITE_PACKAGES}")
 
 # extract python library basename
 list(GET PYTHON_LIBRARIES 0 PYTHON_LIBRARY_FILENAME)
 get_filename_component(PYTHON_LIBRARY_FILENAME ${PYTHON_LIBRARY_FILENAME} NAME)
-
 
 # extract PySide2 version
 execute_process(
@@ -88,21 +86,20 @@ if(PYSIDE2_BASEDIR)
     list(GET PYSIDE2_SO_VERSION 2 PYSIDE2_SO_MINOR_VERSION)
     string(REPLACE ";" "." PYSIDE2_SO_VERSION "${PYSIDE2_SO_VERSION}")
 
-
     if(NOT APPLE)
         set(PYSIDE2_SUFFIX "${PYSIDE2_SUFFIX}.${PYSIDE2_SO_MACRO_VERSION}.${PYSIDE2_SO_MICRO_VERSION}")
-      else()
+    else()
         string(REPLACE ".so" "" PYSIDE2_SUFFIX ${PYSIDE2_SUFFIX})
         set(PYSIDE2_SUFFIX "${PYSIDE2_SUFFIX}.${PYSIDE2_SO_MACRO_VERSION}.${PYSIDE2_SO_MICRO_VERSION}.dylib")
     endif()
 
     set(PySide2_FOUND TRUE)
-    message(STATUS "PySide2 base dir:       ${PYSIDE2_BASEDIR}" )
+    message(STATUS "PySide2 base dir:       ${PYSIDE2_BASEDIR}")
     message(STATUS "PySide2 version:        ${PYSIDE2_SO_VERSION}")
     message(STATUS "PySide2 suffix:         ${PYSIDE2_SUFFIX}")
 
 else()
-    message(STATUS "PySide not found. Consider running pip3 install --index-url=http://download.qt.io/snapshots/ci/pyside/5.12/latest/ pyside2 --trusted-host download.qt.io")
+    message(STATUS "PySide not found. Consider running pip3 install --index-url=https://download.qt.io/snapshots/ci/pyside/5.12/latest/ pyside2 --trusted-host download.qt.io")
 endif()
 
 #SHIBOKEN
@@ -131,26 +128,27 @@ execute_process(
     OUTPUT_VARIABLE SHIBOKEN_BASEDIR
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
-message(STATUS "ShibokenGenerator base dir:       ${SHIBOKEN_GENERATOR_BASEDIR}" )
-message(STATUS "Shiboken base dir:                ${SHIBOKEN_BASEDIR}" )
+message(STATUS "ShibokenGenerator base dir:       ${SHIBOKEN_GENERATOR_BASEDIR}")
+message(STATUS "Shiboken base dir:                ${SHIBOKEN_BASEDIR}")
 
 if(SHIBOKEN_BASEDIR)
     find_path(SHIBOKEN_INCLUDE_DIR
-          shiboken.h
-          PATHS ${SHIBOKEN_GENERATOR_BASEDIR}/include ${PYSIDE2_CUSTOM_PREFIX}/include/shiboken2
-          NO_DEFAULT_PATH)
+        shiboken.h
+        PATHS ${SHIBOKEN_GENERATOR_BASEDIR}/include ${PYSIDE2_CUSTOM_PREFIX}/include/shiboken2
+        NO_DEFAULT_PATH
+    )
     if(MSVC)
-        SET(SHIBOKEN_LIBRARY_BASENAME "shiboken2.abi3.lib")
+        set(SHIBOKEN_LIBRARY_BASENAME "shiboken2.abi3.lib")
     elseif(CYGWIN)
-        SET(SHIBOKEN_LIBRARY_BASENAME "")
+        set(SHIBOKEN_LIBRARY_BASENAME "")
     elseif(WIN32)
-        SET(SHIBOKEN_LIBRARY_BASENAME "libshiboken2.${PYSIDE2_SUFFIX}")
+        set(SHIBOKEN_LIBRARY_BASENAME "libshiboken2.${PYSIDE2_SUFFIX}")
     else()
-        SET(SHIBOKEN_LIBRARY_BASENAME "libshiboken2.${PYSIDE2_SUFFIX}")
+        set(SHIBOKEN_LIBRARY_BASENAME "libshiboken2.${PYSIDE2_SUFFIX}")
     endif()
 
-    if (NOT SHIBOKEN_INCLUDE_DIR)
-        message(STATUS "shiboken_generator not found. Consider running pip3 install --index-url=http://download.qt.io/snapshots/ci/pyside/5.12/latest/ shiboken2-generator --trusted-host download.qt.io")
+    if(NOT SHIBOKEN_INCLUDE_DIR)
+        message(STATUS "shiboken_generator not found. Consider running pip3 install --index-url=https://download.qt.io/snapshots/ci/pyside/5.12/latest/ shiboken2-generator --trusted-host download.qt.io")
         return()
     endif()
 
@@ -167,27 +165,25 @@ if(SHIBOKEN_BASEDIR)
     )
 
     set(SHIBOKEN_GENERATOR_VERSION "<none>")
-    if (SHIBOKEN_BINARY)
+    if(SHIBOKEN_BINARY)
         execute_process(
             COMMAND ${SHIBOKEN_BINARY} --version
             OUTPUT_VARIABLE SHIBOKEN_GENERATOR_VERSION
             OUTPUT_STRIP_TRAILING_WHITESPACE
         )
         string(REGEX MATCH "([0-9]+)\\.([0-9]+)\\.([0-9]+)" SHIBOKEN_GENERATOR_VERSION "${SHIBOKEN_GENERATOR_VERSION}")
-
-
     endif()
 
     message(STATUS "Shiboken include dir:       ${SHIBOKEN_INCLUDE_DIR}")
     message(STATUS "Shiboken library:           ${SHIBOKEN_LIBRARY}")
     message(STATUS "Shiboken binary:            ${SHIBOKEN_BINARY}  Vr:${SHIBOKEN_GENERATOR_VERSION}")
 
-    if (SHIBOKEN_INCLUDE_DIR AND SHIBOKEN_LIBRARY AND SHIBOKEN_BINARY)
+    if(SHIBOKEN_INCLUDE_DIR AND SHIBOKEN_LIBRARY AND SHIBOKEN_BINARY)
         set(Shiboken2_FOUND TRUE)
     endif()
 
 else()
-    message(STATUS "shiboken_generator not found. Consider running pip3 install --index-url=http://download.qt.io/snapshots/ci/pyside/5.12/latest/ shiboken2-generator --trusted-host download.qt.io")
+    message(STATUS "shiboken_generator not found. Consider running pip3 install --index-url=https://download.qt.io/snapshots/ci/pyside/5.12/latest/ shiboken2-generator --trusted-host download.qt.io")
     set(Shiboken2_FOUND FALSE)
 endif()
 
@@ -207,12 +203,12 @@ if(MSVC)
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
 else()
-     # On Linux and MacOs our modules should not link with any python library
-     # that must be handled by the main process
+    # On Linux and MacOs our modules should not link with any python library
+    # that must be handled by the main process
     set(PYTHON_LIMITED_LIBRARIES "")
 endif()
 
-if (PySide2_FOUND)
+if(PySide2_FOUND)
     #PySide
     #===============================================================================
     find_path(PYSIDE_INCLUDE_DIR
@@ -222,13 +218,13 @@ if (PySide2_FOUND)
 
     # Platform specific library names
     if(MSVC)
-        SET(PYSIDE_LIBRARY_BASENAME "pyside2.abi3.lib")
+        set(PYSIDE_LIBRARY_BASENAME "pyside2.abi3.lib")
     elseif(CYGWIN)
-        SET(PYSIDE_LIBRARY_BASENAME "")
+        set(PYSIDE_LIBRARY_BASENAME "")
     elseif(WIN32)
-        SET(PYSIDE_LIBRARY_BASENAME "libpyside2.${PYSIDE2_SUFFIX}")
+        set(PYSIDE_LIBRARY_BASENAME "libpyside2.${PYSIDE2_SUFFIX}")
     else()
-        SET(PYSIDE_LIBRARY_BASENAME "libpyside2.${PYSIDE2_SUFFIX}")
+        set(PYSIDE_LIBRARY_BASENAME "libpyside2.${PYSIDE2_SUFFIX}")
     endif()
 
     find_file(PYSIDE_LIBRARY
@@ -245,7 +241,7 @@ if (PySide2_FOUND)
     message(STATUS "PySide library:             ${PYSIDE_LIBRARY}")
     message(STATUS "PySide typesystems:         ${PYSIDE_TYPESYSTEMS}")
 
-    if (PYSIDE_INCLUDE_DIR AND PYSIDE_LIBRARY AND PYSIDE_TYPESYSTEMS)
+    if(PYSIDE_INCLUDE_DIR AND PYSIDE_LIBRARY AND PYSIDE_TYPESYSTEMS)
         set(PySide2Python3_FOUND TRUE)
     endif()
 
@@ -255,8 +251,7 @@ if (PySide2_FOUND)
         set_property(TARGET PySide2::libpyside PROPERTY
             IMPORTED_IMPLIB ${PYSIDE_LIBRARY})
     endif()
-    set_property(TARGET PySide2::libpyside PROPERTY
-        IMPORTED_LOCATION ${PYSIDE_LIBRARY})
+    set_property(TARGET PySide2::libpyside PROPERTY IMPORTED_LOCATION ${PYSIDE_LIBRARY})
     set_property(TARGET PySide2::libpyside APPEND PROPERTY
         INTERFACE_INCLUDE_DIRECTORIES
         ${PYSIDE_INCLUDE_DIR}
@@ -267,19 +262,20 @@ if (PySide2_FOUND)
     )
 endif()
 
-if (Shiboken2_FOUND)
+if(Shiboken2_FOUND)
     # Create shiboke2 target
     add_library(Shiboken2::libshiboken SHARED IMPORTED GLOBAL)
     if(MSVC)
         set_property(TARGET Shiboken2::libshiboken PROPERTY
             IMPORTED_IMPLIB ${SHIBOKEN_LIBRARY})
     endif()
-    set_property(TARGET Shiboken2::libshiboken PROPERTY
-        IMPORTED_LOCATION ${SHIBOKEN_LIBRARY})
+    set_property(TARGET Shiboken2::libshiboken PROPERTY IMPORTED_LOCATION ${SHIBOKEN_LIBRARY})
     set_property(TARGET Shiboken2::libshiboken APPEND PROPERTY
-        INTERFACE_INCLUDE_DIRECTORIES ${SHIBOKEN_INCLUDE_DIR} ${PYTHON_INCLUDE_DIRS})
+        INTERFACE_INCLUDE_DIRECTORIES ${SHIBOKEN_INCLUDE_DIR} ${PYTHON_INCLUDE_DIRS}
+    )
     set_property(TARGET Shiboken2::libshiboken APPEND PROPERTY
-        INTERFACE_LINK_LIBRARIES ${PYTHON_LIMITED_LIBRARIES})
+        INTERFACE_LINK_LIBRARIES ${PYTHON_LIMITED_LIBRARIES}
+    )
 endif()
 
 if(PySide2_FOUND AND Shiboken2_FOUND)
@@ -301,7 +297,7 @@ mark_as_advanced(
 )
 
 find_package_handle_standard_args(PySide2
-  REQUIRED_VARS 
+    REQUIRED_VARS
     SHIBOKEN_INCLUDE_DIR
     SHIBOKEN_LIBRARY
     SHIBOKEN_BINARY
@@ -311,6 +307,6 @@ find_package_handle_standard_args(PySide2
     PYSIDE_LIBRARY
     PYSIDE_TYPESYSTEMS
     PYTHON_SITE_PACKAGES
-  VERSION_VAR
+    VERSION_VAR
     PYSIDE2_VERSION
 )
