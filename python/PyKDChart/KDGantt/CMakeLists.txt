@@ -52,11 +52,9 @@ set(PyKDGantt_include_paths
     $<JOIN:$<TARGET_PROPERTY:Qt5::PrintSupport,INTERFACE_INCLUDE_DIRECTORIES>,${PATH_SEP}>
 )
 
-
 set(PyKDGantt_typesystem_paths
     ${PYSIDE_TYPESYSTEMS}
 )
-
 
 set(PyKDGantt_target_include_directories
     ${PYSIDE_INCLUDE_DIR}/QtCore
@@ -75,7 +73,7 @@ set(PyKDGantt_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/kdgantt_global.h
 )
 
-CREATE_PYTHON_BINDINGS(
+create_python_bindings(
     "KDGantt"
     "${PyKDGantt_typesystem_paths}"
     "${PyKDGantt_include_paths}"

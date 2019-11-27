@@ -20,13 +20,13 @@ find_package(Qt5PrintSupport REQUIRED)
 set(Python_ADDITIONAL_VERSIONS 3.6)
 find_package(PythonInterp 3.6 QUIET)
 
-if (PYTHONINTERP_FOUND)
+if(PYTHONINTERP_FOUND)
     find_package(PythonLibs QUIET)
-    if (PYTHONLIBS_FOUND)
+    if(PYTHONLIBS_FOUND)
         # PySide
         # Need same version  as c++ Qt library
         find_package(PySide2 EXACT ${Qt5Core_VERSION} QUIET)
-        if (PySide2_FOUND)
+        if(PySide2_FOUND)
             if(PYTHON_BINDINGS_INSTALL_DIR EQUAL "")
                 # use auto detected value
                 set(INSTALL_PYTHON_SITE_PACKAGES ${PYTHON_SITE_PACKAGES})
@@ -45,9 +45,3 @@ if (PYTHONINTERP_FOUND)
 else()
     message(WARNING "** Python executable not found! Disabling build for bindings.")
 endif()
-
-
-
-
-
-
