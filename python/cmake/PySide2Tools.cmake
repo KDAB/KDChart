@@ -91,12 +91,15 @@ macro(CREATE_PYTHON_BINDINGS
         LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR}/
     )
 
+    set(PYTHON_WINDOWS_LIBRARIES "")
     if(WIN32)
         set_target_properties(${TARGET_NAME} PROPERTIES SUFFIX ".pyd")
-        get_filename_component(PYTHON3_PATH_LIB ${PYTHON_LIBRARIES} DIRECTORY)
-        set(PYTHON_WINDOWS_LIBRARIES ${PYTHON3_PATH_LIB}/python3.lib)
-    else()
-        set(PYTHON_WINDOWS_LIBRARIES "")
+        # Remove python minor version from the filename this is necessary because
+        # pyside uses ony python3.lib in the link
+        foreach(LIBRARY_PATH IN LISTS PYTHON_LIBRARIES)
+            string(REGEX REPLACE "python3[1-9]" "python3" PYTHON_LIBRARY_PATH ${LIBRARY_PATH})
+            list(APPEND PYTHON_WINDOWS_LIBRARIES ${PYTHON_LIBRARY_PATH})
+        endforeach()
     endif()
 
     target_include_directories(${TARGET_NAME} PUBLIC
