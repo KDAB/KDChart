@@ -620,7 +620,8 @@ namespace {
 
 void CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, qreal > & range )
 {
-    if ( !fuzzyCompare(d->horizontalMin, range.first) || !fuzzyCompare(d->horizontalMax, range.second) ) {
+    const bool bAutoAdjustHorizontalRange = d->autoAdjustHorizontalRangeToData < 100;
+    if ( !fuzzyCompare(d->horizontalMin, range.first) || !fuzzyCompare(d->horizontalMax, range.second) || bAutoAdjustHorizontalRange ) {
         d->autoAdjustHorizontalRangeToData = 100;
         d->horizontalMin = range.first;
         d->horizontalMax = range.second;
@@ -632,7 +633,8 @@ void CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, qreal > &
 
 void CartesianCoordinatePlane::setVerticalRange( const QPair< qreal, qreal > & range )
 {
-    if ( !fuzzyCompare(d->verticalMin, range.first) || !fuzzyCompare(d->verticalMax, range.second) ) {
+    const bool bAutoAdjustVerticalRange = d->autoAdjustVerticalRangeToData < 100;
+    if ( !fuzzyCompare(d->verticalMin, range.first) || !fuzzyCompare(d->verticalMax, range.second) || bAutoAdjustVerticalRange ) {
         d->autoAdjustVerticalRangeToData = 100;
         d->verticalMin = range.first;
         d->verticalMax = range.second;
