@@ -28,10 +28,13 @@
 namespace KDChart {
     class Chart;
 }
+
+QT_BEGIN_NAMESPACE
 namespace Qt
 {
 typedef WindowFlags WFlags;
 }
+QT_END_NAMESPACE
 
 class FrameWidget : public QWidget
 {
