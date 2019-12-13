@@ -29,15 +29,15 @@
 
 #include <QWidget>
 
-
-
 namespace KDChart {
 class Plotter;
 }
-
 class Model;
+
+QT_BEGIN_NAMESPACE
 class QPushButton;
 class QRadioButton;
+QT_END_NAMESPACE
 
 class MainWidget : public QWidget
 {
