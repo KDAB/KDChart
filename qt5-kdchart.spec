@@ -4,7 +4,7 @@ Release:        1
 Summary:        A Qt tool for creating business and scientific charts
 Source:         %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
-URL:            http://github.com/KDAB/KDChart
+URL:            https://github.com/KDAB/KDChart
 Group:          System/Libraries
 License:        GPL-2.0+
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
