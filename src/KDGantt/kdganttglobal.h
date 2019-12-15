@@ -35,7 +35,7 @@ Contains KDGantt macros.  */
 #include "kdchart_export.h"
 
 #if (defined(__MINGW32__) || defined(__MINGW64__)) && (__GNUC__ == 4) && (__GNUC_MINOR__ == 4) && (__GNUC_PATCHLEVEL__ == 0)
-// workaround a mingw bug, http://sourceforge.net/tracker/index.php?func=detail&aid=2373234&group_id=2435&atid=102435
+// workaround a mingw bug, https://sourceforge.net/p/mingw/bugs/1220/
 int swprintf (wchar_t *, size_t, const wchar_t *, ...);
 int vswprintf(wchar_t *, const wchar_t *, va_list);
 #endif
@@ -205,7 +205,7 @@ protected: \
 
 #if defined(Q_OS_WIN) && defined(QT_DLL)
 #if defined(_MSC_VER) && _MSC_VER >= 1300
-// workaround http://support.microsoft.com/default.aspx?scid=kb;en-us;309801
+// workaround old msvc bug 309801 (link under support.microsoft.com no longer exists)
 #include <QPointF>
 #include <QVector>
 template class Q_DECL_IMPORT QVector<QPointF>;

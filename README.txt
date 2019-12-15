@@ -1,4 +1,4 @@
-# <a name="title"></a> KD Chart [![Logo](https://github.com/KDAB/KDChart/blob/master/images/kdchart_48x48.png)](http://www.kdab.com/products/kd-chart)
+# <a name="title"></a> KD Chart [![Logo](https://github.com/KDAB/KDChart/blob/master/images/kdchart_48x48.png)](https://www.kdab.com/products/kd-chart)
 Introduction
 ============
 KD Chart is a tool for creating business and scientific charts.
@@ -9,7 +9,7 @@ just a few parameters and then relying on the defaults for the rest.
 
 KD Chart targets C++ programmers who use Qt in their applications.
 
-For more information, see http://www.kdab.com/kdab-products/kd-chart
+For more information, see https://www.kdab.com/kdab-products/kd-chart
 
 Using KD Chart
 ==============
@@ -21,14 +21,14 @@ After reading the introductory overview files in doc/
 you will find more information at three places:
 
   detailed browsable API reference:   doc/refman/index.html
-                                or:   http://docs.kdab.com/kdchart
+                                or:   https://docs.kdab.com/kdchart
   programmers manual with examples:   doc/manual/kdchart.pdf
   our sorted example programs:        examples/
 
 Contact
 =======
 * Join our mailing list: https://mail.kdab.com/mailman/listinfo/kdchart-interest
-* See our official home page: http://www.kdab.com/products/kd-chart
+* See our official home page: https://www.kdab.com/products/kd-chart
 * Visit us on GitHub: https://github.com/KDAB/KDChart
 
 Get Involved
@@ -65,7 +65,7 @@ We continue to help develop parts of Qt and are one of the major contributors
 to the Qt Project. We can give advanced or standard trainings anywhere
 around the globe on Qt as well as C++, OpenGL, 3D and more.
 
-Please visit http://www.kdab.com to meet the people who write code like this.
+Please visit https://www.kdab.com to meet the people who write code like this.
 
 
 KD CHART and the KD CHART logo are registered trademarks of Klaralvdalens Datakonsult AB

@@ -513,63 +513,63 @@ namespace KDChart {
      * @brief Class only listed here to document inheritance of some KDChart classes.
      *
      * Please consult the respective Qt documentation for details:
-     * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
+     * <A HREF="https://doc.qt.io/qt-5/qabstractitemview.html">https://doc.qt.io/qt-5/qabstractitemview.html</A>
  */
 /**
      * @class QAbstractProxyModel "(do not include)"
      * @brief Class only listed here to document inheritance of some KDChart classes.
      *
  * Please consult the respective Qt documentation for details:
-     * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
+     * <A HREF="https://doc.qt.io/qt-5/qabstractproxymodel.html">https://doc.qt.io/qt-5/qabstractproxymodel.html</A>
  */
 /**
      * @class QFrame "(do not include)"
      * @brief Class only listed here to document inheritance of some KDChart classes.
      *
  * Please consult the respective Qt documentation for details:
-     * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
+     * <A HREF="https://doc.qt.io/qt-5/qframe.html">https://doc.qt.io/qt-5/qframe.html</A>
  */
 /**
      * @class QObject "(do not include)"
      * @brief Class only listed here to document inheritance of some KDChart classes.
      *
  * Please consult the respective Qt documentation for details:
-     * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
+     * <A HREF="https://doc.qt.io/qt-5/qobject.html">https://doc.qt.io/qt-5/qobject.html</A>
  */
 /**
      * @class QSortFilterProxyModel "(do not include)"
      * @brief Class only listed here to document inheritance of some KDChart classes.
      *
  * Please consult the respective Qt documentation for details:
-     * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
+     * <A HREF="https://doc.qt.io/qt-5/qsortfilterproxymodel.html">https://doc.qt.io/qt-5/qsortfilterproxymodel.html</A>
  */
 /**
  * @class QWidget "(do not include)"
  * @brief Class only listed here to document inheritance of some KDChart classes.
  *
  * Please consult the respective Qt documentation for details:
- * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
+ * <A HREF="https://doc.qt.io/qt-5/qwidget.html">https://doc.qt.io/qt-5/qwidget.html</A>
  */
 /**
  * @class QTextDocument "(do not include)"
  * @brief Class only listed here to document inheritance of some KDChart classes.
  *
  * Please consult the respective Qt documentation for details:
- * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
+ * <A HREF="https://doc.qt.io/qt-5/qtextdocument.html">https://doc.qt.io/qt-5/qtextdocument.html</A>
  */
 /**
  * @class QLayoutItem "(do not include)"
  * @brief Class only listed here to document inheritance of some KDChart classes.
  *
  * Please consult the respective Qt documentation for details:
- * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
+ * <A HREF="https://doc.qt.io/qt-5/qlayoutitem-members.html">https://doc.qt.io/qt-5/qlayoutitem-members.html</A>
  */
 /**
  * @class QGraphicsPolygonItem "(do not include)"
  * @brief Class only listed here to document inheritance of some KDChart classes.
  *
  * Please consult the respective Qt documentation for details:
- * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
+ * <A HREF="https://doc.qt.io/qt-5/qgraphicspolygonitem.html">https://doc.qt.io/qt-5/qgraphicspolygonitem.html</A>
  */
 
 
