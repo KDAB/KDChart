@@ -6,7 +6,7 @@ EXTRA kdabcopyright
 #exclude checks now being done by clazy or clang-tools
 EXCLUDE style,includes,strings,explicit,normalize,passbyvalue,operators,nullstrcompare,nullstrassign,doublequote_chars,qobject,sigsandslots,staticobjects,cpp
 #exclude more checks
-EXCLUDE qminmax,captruefalse
+EXCLUDE qminmax,captruefalse,dpointer,inline,constref
 
 #skip autogen buildsystem
 SKIP /autogen/|/autogen.py|/genignore.py
