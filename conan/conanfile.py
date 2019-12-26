@@ -23,7 +23,6 @@
 
 from conans import ConanFile, CMake, tools
 
-
 class KdchartConan(ConanFile):
     name = "KDChart"
     version = "2.6.50"

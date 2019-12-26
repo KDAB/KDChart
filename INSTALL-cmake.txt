@@ -3,6 +3,13 @@ CMake version 2.8.7 or higher is required.
 
 The same source code compiles with either Qt 4 or Qt 5.
 
+Please see the comments at the top of CMakeLists.txt for
+the available configuration options you can pass to cmake.
+
+The installation directory defaults to c:\KDAB\KDChart-<version> on Windows
+and /usr/local/KDAB/KDChart-<version> on non-Windows.  You can change this
+location by passing the option -DCMAKE_INSTALL_PREFIX=/install/path to cmake.
+
 1) From the top directory of your KD Chart installation create a build directory:
 
      mkdir build
@@ -29,7 +36,9 @@ If you do not have LD_LIBRARY_PATH set already then use this line:
 LD_LIBRARY_PATH=/path/to/kdchart/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH
 
-The above has to be added into your .bashrc or similar to remain. It may also of course be run from a shell just before building software using KD Chart, but in this case your settings will only be available for this shell.
+The above has to be added into your .bashrc or similar to remain. It may also of course
+be run from a shell just before building KD Chart, but in this case your settings will
+only be available for this shell.
 
 4) MacOS
 
@@ -44,12 +53,10 @@ Or run:
   set PATH=\path\to\kdchart\bin;%PATH%
   set LIB=\path\to\kdchart\lib;%LIB%
 
-
 6) Build everything by typing:
 
 make    # Unix,
 nmake   # Windows
-
 
 7) (optionally:) Install KD Chart:
 

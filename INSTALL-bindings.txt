@@ -1,6 +1,6 @@
 These are the instructions for installing KD Chart bindings using the CMake buildsystem.
 
-Starting with version 3.0.0, KD Chart can build Python3 bindings.
+Starting with version 2.7.0 KD Chart can build Python3 bindings.
 
 You need these:
  - Python3.6 or higher
@@ -13,7 +13,7 @@ https://wiki.qt.io/Qt_for_Python/GettingStarted describes various ways to instal
 We recommend using pip, for example:
 % pip3 install --index-url=https://download.qt.io/snapshots/ci/pyside/5.12/latest/ pyside2 shiboken2-generator --trusted-host download.qt.io
 
-afterwards run pip3 list | grep PySide2
+afterwards run 'pip3 list | grep PySide2'
 make sure the version matches the same Qt you intend to use when building KD Chart
 
 Look at https://download.qt.io/snapshots/ci/pyside for the versions available for installation

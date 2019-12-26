@@ -1,18 +1,20 @@
 Release Highlights
 ==================
 
-Version 3.0.0: (currently unreleased)
-------------
- * CMake buildsystem
- * Added support for spline-based line smoothing
- * Added Python3 bindings for KDGantt (CMake buildsystem only. see INSTALL-bindings.txt)
+Version 2.7.0: (currently unreleased)
+--------------
+ ** WARNING ** Version 2.7.x will be the last to support Qt4 **
+ * New CMake-based build system (optional)
+ * Add support for spline-based line smoothing
+ * New Python3 bindings for KDGantt (CMake buildsystem only. see INSTALL-bindings.txt)
+ * New installing file for Conan (see conan folder)
 
 Version 2.6.2:
--------------
+--------------
  * Update version number for OBS
 
 Version 2.6.1:
--------------
+--------------
  * Keep it building with modern Qt versions, at least up to Qt5.10
  * Improve tooltip handling
  * Fix horizontal bar chart
