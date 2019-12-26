@@ -7,6 +7,10 @@
 #  Force building against Qt4, even if Qt5 is found.
 #  Default=false
 #
+# -DKDChart_STATIC=[true|false]
+#  Build static versions of the libraries
+#  Default=false
+#
 # -DKDChart_TESTS=[true|false]
 #  Build the test harness.
 #  Default=false
@@ -54,6 +58,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_MODULE_PATH}")
 if(CMAKE_BUILD_TYPE MATCHES "^[Rr]el")
   option(DISABLE_PYTHON_BINDINGS "Build Python bindings" OFF)
 else()
+  message(WARNING "** Python Bindings are disabled in debug build mode.")
   set(DISABLE_PYTHON_BINDINGS ON)
 endif()
 option(${PROJECT_NAME}_STATIC "Build statically" OFF)

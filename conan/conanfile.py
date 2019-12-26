@@ -32,7 +32,22 @@ class KdchartConan(ConanFile):
     url = "https://github.com/KDAB/KDChart.git"
     description = "KD Chart is a tool for creating business and scientific charts."
     generators = "cmake"
-
+    options = dict({
+        "build_static": [True, False],
+        "build_examples": [True, False],
+        "build_tests": [True, False],
+        "disable_python_bindings": [True, False],
+        "python_bindings_install_dir": "ANY"
+    })
+    default_options = dict({
+        "build_static": False,
+        "build_examples": True,
+        "build_tests": False,
+        "disable_python_bindings": False,
+        "python_bindings_install_dir": "ANY"
+    })
+    settings = "build_type"
+    
     def requirements(self):
         # Kdab uses a custom qt build
         # To build qt with with extra modules enabled use qt package from:
@@ -58,6 +73,12 @@ class KdchartConan(ConanFile):
 
     def build(self):
         self.cmake = CMake(self)
+        self.cmake.definitions["KDChart_STATIC"] = self.options.build_static
+        self.cmake.definitions["KDChart_EXAMPLES"] = self.options.build_examples
+        self.cmake.definitions["KDChart_TESTS"] = self.options.build_tests
+        self.cmake.definitions["DISABLE_PYTHON_BINDINGS"] = self.options.disable_python_bindings
+        if self.options.python_bindings_install_dir:
+            self.cmake.definitions["PYTHON_BINDINGS_INSTALL_DIR"] = self.options.python_bindings_install_dir
         self.cmake.configure()
         self.cmake.build()
 

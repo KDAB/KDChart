@@ -17,12 +17,10 @@ find_package(Qt5Svg REQUIRED)
 find_package(Qt5PrintSupport REQUIRED)
 
 # Python
-set(Python_ADDITIONAL_VERSIONS 3.6)
-find_package(PythonInterp 3.6 QUIET)
+find_package(Python3 3.6 COMPONENTS Interpreter Development)
 
-if(PYTHONINTERP_FOUND)
-  find_package(PythonLibs QUIET)
-  if(PYTHONLIBS_FOUND)
+if(Python3_Interpreter_FOUND)
+  if(Python3_Development_FOUND)
     # PySide
     # Need same version  as c++ Qt library
     find_package(PySide2 EXACT ${Qt5Core_VERSION} QUIET)

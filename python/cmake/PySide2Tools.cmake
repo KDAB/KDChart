@@ -1,7 +1,7 @@
 if(WIN32)
-    set(PATH_SEP "\;")
+  set(PATH_SEP "\;")
 else()
-    set(PATH_SEP ":")
+  set(PATH_SEP ":")
 endif()
 set(GENERATOR_EXTRA_FLAGS --generator-set=shiboken
                           --enable-parent-ctor-heuristic
@@ -15,16 +15,16 @@ set(GENERATOR_EXTRA_FLAGS --generator-set=shiboken
 # Clang does produce linker errors when we disable the hack.
 # But the ugly workaround in Python is replaced by a shiboken change.
 if(WIN32 OR DEFINED AVOID_PROTECTED_HACK)
-    message(STATUS "PySide2 will be generated avoiding the protected hack!")
-    set(GENERATOR_EXTRA_FLAGS ${GENERATOR_EXTRA_FLAGS} --avoid-protected-hack)
-    add_definitions(-DAVOID_PROTECTED_HACK)
+  message(STATUS "PySide2 will be generated avoiding the protected hack!")
+  set(GENERATOR_EXTRA_FLAGS ${GENERATOR_EXTRA_FLAGS} --avoid-protected-hack)
+  add_definitions(-DAVOID_PROTECTED_HACK)
 else()
-    message(STATUS "PySide will be generated using the protected hack!")
+  message(STATUS "PySide will be generated using the protected hack!")
 endif()
 
 macro(make_path varname)
-    # accepts any number of path variables
-    string(REPLACE ";" "${PATH_SEP}" ${varname} "${ARGN}")
+  # accepts any number of path variables
+  string(REPLACE ";" "${PATH_SEP}" ${varname} "${ARGN}")
 endmacro()
 
 list(GET Qt5Core_INCLUDE_DIRS 0 QT_INCLUDE_DIR)
@@ -32,105 +32,101 @@ list(GET Qt5Core_INCLUDE_DIRS 0 QT_INCLUDE_DIR)
 get_target_property(QtCore_is_framework Qt5::Core FRAMEWORK)
 
 if(QtCore_is_framework)
-    # Get the path to the framework dir.
-    get_filename_component(QT_FRAMEWORK_INCLUDE_DIR "${QT_INCLUDE_DIR}/../" ABSOLUTE)
+  # Get the path to the framework dir.
+  get_filename_component(QT_FRAMEWORK_INCLUDE_DIR "${QT_INCLUDE_DIR}/../" ABSOLUTE)
 
-    # QT_INCLUDE_DIR points to the QtCore.framework directory, so we need to adjust this to point
-    # to the actual include directory, which has include files for non-framework parts of Qt.
-    get_filename_component(QT_INCLUDE_DIR "${QT_INCLUDE_DIR}/../../include" ABSOLUTE)
+  # QT_INCLUDE_DIR points to the QtCore.framework directory, so we need to adjust this to point
+  # to the actual include directory, which has include files for non-framework parts of Qt.
+  get_filename_component(QT_INCLUDE_DIR "${QT_INCLUDE_DIR}/../../include" ABSOLUTE)
 endif()
 
 macro(CREATE_PYTHON_BINDINGS
-    LIBRARY_NAME
-    TYPESYSTEM_PATHS
-    INCLUDE_PATHS
-    OUTPUT_SOURCES
-    TARGET_INCLUDE_DIRS
-    TARGET_LINK_LIBRARIES
-    GLOBAL_INCLUDE
-    TYPESYSTEM_XML
-    DEPENDS
-        OUTPUT_DIR
-    QT_API_VERSION)
+  LIBRARY_NAME
+  TYPESYSTEM_PATHS
+  INCLUDE_PATHS
+  OUTPUT_SOURCES
+  TARGET_INCLUDE_DIRS
+  TARGET_LINK_LIBRARIES
+  GLOBAL_INCLUDE
+  TYPESYSTEM_XML
+  DEPENDS
+    OUTPUT_DIR
+  QT_API_VERSION)
 
-    # Transform the path separators into something shiboken understands.
-    make_path(shiboken_include_dirs ${INCLUDE_PATHS})
-    make_path(shiboken_typesystem_dirs ${TYPESYSTEM_PATHS})
-    get_property(raw_python_dir_include_dirs DIRECTORY PROPERTY INCLUDE_DIRECTORIES)
-    make_path(python_dir_include_dirs ${raw_python_dir_include_dirs})
-    set(shiboken_include_dirs "${shiboken_include_dirs}${PATH_SEP}${python_dir_include_dirs}")
+  # Transform the path separators into something shiboken understands.
+  make_path(shiboken_include_dirs ${INCLUDE_PATHS})
+  make_path(shiboken_typesystem_dirs ${TYPESYSTEM_PATHS})
+  get_property(raw_python_dir_include_dirs DIRECTORY PROPERTY INCLUDE_DIRECTORIES)
+  make_path(python_dir_include_dirs ${raw_python_dir_include_dirs})
+  set(shiboken_include_dirs "${shiboken_include_dirs}${PATH_SEP}${python_dir_include_dirs}")
 
-    set(shiboken_framework_include_dirs_option "")
-    if(CMAKE_HOST_APPLE)
-        set(shiboken_framework_include_dirs "${QT_FRAMEWORK_INCLUDE_DIR}")
-        make_path(shiboken_framework_include_dirs ${shiboken_framework_include_dirs})
-        set(shiboken_framework_include_dirs_option "--framework-include-paths=${shiboken_framework_include_dirs}")
-    endif()
+  set(shiboken_framework_include_dirs_option "")
+  if(CMAKE_HOST_APPLE)
+    set(shiboken_framework_include_dirs "${QT_FRAMEWORK_INCLUDE_DIR}")
+    make_path(shiboken_framework_include_dirs ${shiboken_framework_include_dirs})
+    set(shiboken_framework_include_dirs_option "--framework-include-paths=${shiboken_framework_include_dirs}")
+  endif()
 
-    set_property(SOURCE ${OUTPUT_SOURCES} PROPERTY SKIP_AUTOGEN ON)
-    add_custom_command(OUTPUT ${OUTPUT_SOURCES}
-        COMMAND ${SHIBOKEN_BINARY} ${GENERATOR_EXTRA_FLAGS}
-                ${GLOBAL_INCLUDE}
-                --include-paths=${shiboken_include_dirs}
-                --typesystem-paths=${shiboken_typesystem_dirs}
-                ${shiboken_framework_include_dirs_option}
-                --output-directory=${CMAKE_CURRENT_BINARY_DIR}
-                ${TYPESYSTEM_XML}
-                --api-version="${QT_API_VERSION}"
-        DEPENDS ${TYPESYSTEM_XML} ${DEPENDS}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMENT "Running generator for ${LIBRARY_NAME} binding..."
-    )
+  set_property(SOURCE ${OUTPUT_SOURCES} PROPERTY SKIP_AUTOGEN ON)
+  add_custom_command(OUTPUT ${OUTPUT_SOURCES}
+    COMMAND ${SHIBOKEN_BINARY} ${GENERATOR_EXTRA_FLAGS}
+            ${GLOBAL_INCLUDE}
+            --include-paths=${shiboken_include_dirs}
+            --typesystem-paths=${shiboken_typesystem_dirs}
+            ${shiboken_framework_include_dirs_option}
+            --output-directory=${CMAKE_CURRENT_BINARY_DIR}
+            ${TYPESYSTEM_XML}
+            --api-version="${QT_API_VERSION}"
+    DEPENDS ${TYPESYSTEM_XML} ${DEPENDS}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMENT "Running generator for ${LIBRARY_NAME} binding..."
+  )
 
-    set(TARGET_NAME "Py${LIBRARY_NAME}")
-    set(MODULE_NAME "${LIBRARY_NAME}")
-    add_library(${TARGET_NAME} MODULE ${OUTPUT_SOURCES})
-    set_target_properties(${TARGET_NAME} PROPERTIES
-        PREFIX ""
-        OUTPUT_NAME ${MODULE_NAME}
-        LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR}/
-    )
+  set(TARGET_NAME "Py${LIBRARY_NAME}")
+  set(MODULE_NAME "${LIBRARY_NAME}")
+  add_library(${TARGET_NAME} MODULE ${OUTPUT_SOURCES})
+  set_target_properties(${TARGET_NAME} PROPERTIES
+    PREFIX ""
+    OUTPUT_NAME ${MODULE_NAME}
+    LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR}/
+  )
 
-    set(PYTHON_WINDOWS_LIBRARIES "")
-    if(WIN32)
-        set_target_properties(${TARGET_NAME} PROPERTIES SUFFIX ".pyd")
-        # Remove python minor version from the filename this is necessary because
-        # pyside uses ony python3.lib in the link
-        foreach(LIBRARY_PATH IN LISTS PYTHON_LIBRARIES)
-            string(REGEX REPLACE "python3[1-9]" "python3" PYTHON_LIBRARY_PATH ${LIBRARY_PATH})
-            list(APPEND PYTHON_WINDOWS_LIBRARIES ${PYTHON_LIBRARY_PATH})
-        endforeach()
-    endif()
+  set(PYTHON_WINDOWS_LIBRARIES "")
+  if(WIN32)
+    set_target_properties(${TARGET_NAME} PROPERTIES SUFFIX ".pyd")
+    # Remove python minor version from the filename this is necessary because
+    # pyside uses ony python3.lib in the link
+    foreach(LIBRARY_PATH IN LISTS Python3_LIBRARIES)
+      string(REGEX REPLACE "python3[1-9]" "python3" Python3_LIBRARY ${LIBRARY_PATH})
+      list(APPEND PYTHON_WINDOWS_LIBRARIES ${Python3_LIBRARY})
+    endforeach()
+  endif()
 
-    target_include_directories(${TARGET_NAME} PUBLIC
-        ${TARGET_INCLUDE_DIRS}
-        ${SHIBOKEN_INCLUDE_DIR}
-        ${PYSIDE_INCLUDE_DIR}
-        ${PYSIDE_EXTRA_INCLUDES}
-        ${PYTHON_INCLUDE_DIRS}
-    )
+  target_include_directories(${TARGET_NAME} PUBLIC
+    ${TARGET_INCLUDE_DIRS}
+    ${SHIBOKEN_INCLUDE_DIR}
+    ${PYSIDE_INCLUDE_DIR}
+    ${PYSIDE_EXTRA_INCLUDES}
+    ${Python3_INCLUDE_DIRS}
+  )
 
-    target_link_libraries(${TARGET_NAME}
-        ${PYTHON_LIBRARIES}
-        ${PYTHON_WINDOWS_LIBRARIES}
-        ${TARGET_LINK_LIBRARIES}
-        ${SHIBOKEN_LIBRARY}
-        ${PYSIDE_LIBRARY}
-    )
+  target_link_libraries(${TARGET_NAME}
+    ${Python3_LIBRARIES}
+    ${PYTHON_WINDOWS_LIBRARIES}
+    ${TARGET_LINK_LIBRARIES}
+    ${SHIBOKEN_LIBRARY}
+    ${PYSIDE_LIBRARY}
+  )
 
-    if(CMAKE_BUILD_TYPE MATCHES "^[Rr]el")
-        target_compile_definitions(${TARGET_NAME}
-           PRIVATE Py_LIMITED_API=0x03050000
-       )
-    endif()
+  if(CMAKE_BUILD_TYPE MATCHES "^[Rr]el")
+    target_compile_definitions(${TARGET_NAME} PRIVATE Py_LIMITED_API=0x03050000)
+  endif()
 
-    install(TARGETS ${TARGET_NAME}
-        LIBRARY DESTINATION ${INSTALL_PYTHON_SITE_PACKAGES}/${PYKDCHART_MODULE_NAME}
-    )
+  install(TARGETS ${TARGET_NAME}
+    LIBRARY DESTINATION ${INSTALL_PYTHON_SITE_PACKAGES}/${PYKDCHART_MODULE_NAME}
+  )
 
-    if(APPLE)
-        set_property(TARGET ${TARGET_NAME} APPEND PROPERTY
-            LINK_FLAGS "-undefined dynamic_lookup")
-    endif()
+  if(APPLE)
+    set_property(TARGET ${TARGET_NAME} APPEND PROPERTY LINK_FLAGS "-undefined dynamic_lookup")
+  endif()
 endmacro()
-
