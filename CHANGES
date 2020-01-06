@@ -1,7 +1,7 @@
 Release Highlights
 ==================
 
-Version 2.7.0: (currently unreleased)
+Version 2.7.0:
 --------------
  ** WARNING ** Version 2.7.x will be the last to support Qt4 **
  * C++11 capable compilers are now required
