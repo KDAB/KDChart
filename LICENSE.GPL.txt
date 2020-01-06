@@ -1,5 +1,5 @@
 
- The KD Chart Library is Copyright (C) 2001-2019 Klaralvdalens Datakonsult AB.
+ The KD Chart Library is Copyright (C) 2001-2020 Klaralvdalens Datakonsult AB.
 
  You may use, distribute and copy the KD Chart Library under the terms of
  the GNU General Public License version 2 or under the terms of GNU General
