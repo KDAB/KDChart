@@ -10,7 +10,7 @@ SUBDIRS += examples
 unittests: SUBDIRS +=qtests
 SUBDIRS +=tests
 
-VERSION  = 2.7.0
+VERSION  = 2.99.50
 
 MAJOR_VERSION = 2
 
