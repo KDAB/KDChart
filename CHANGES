@@ -7,7 +7,7 @@ Version 2.7.0: (currently unreleased)
  * New CMake-based build system (optional)
  * Add support for spline-based line smoothing
  * New Python3 bindings for KDGantt (CMake buildsystem only. see INSTALL-bindings.txt)
- * New installing file for Conan (see conan folder)
+ * New installing file for Conan (WIP - see conan folder)
 
 Version 2.6.2:
 --------------

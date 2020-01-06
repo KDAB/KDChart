@@ -2,7 +2,7 @@
 from autogen.autogen import autogen
 
 project = "KDChart"
-version = "2.6.50"
+version = "2.7.0"
 subprojects = ["KDChart", "KDGantt"]
 prefixed = True
 

@@ -1,9 +1,10 @@
 Name:           qt5-kdchart
-Version:        2.6.2
+Version:        2.7.0
 Release:        1
 Summary:        A Qt tool for creating business and scientific charts
-Source:         %{name}-%{version}.tar.gz
+Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
+Source2:        %{name}-%{version}.tar.gz.asc
 URL:            https://github.com/KDAB/KDChart
 Group:          System/Libraries
 License:        GPL-2.0+
@@ -47,7 +48,7 @@ This package contains header files and associated tools and libraries to
 develop programs using kdchart.
 
 %prep
-%setup -q
+%autosetup
 
 %build
 touch .license.accepted
@@ -81,5 +82,7 @@ QMAKE_ARGS="LIB_SUFFIX=64" ./configure.sh -shared -release -no-unittests -prefix
 %{_libdir}/libkdchart.so
 
 %changelog
+* Mon Jan 06 2020 Allen Winter <allen.winter@kdab.com> 2.7.0
+  2.7.0
 * Mon Apr 22 2019 Allen Winter <allen.winter@kdab.com> 2.6.2
   2.6.2 final
