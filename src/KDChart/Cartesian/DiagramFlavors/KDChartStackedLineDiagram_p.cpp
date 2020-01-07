@@ -288,22 +288,61 @@ void StackedLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
             if ( ISNAN( point.value ) && policy == LineAttributes::MissingValuesShownAsZero )
                 point.value = 0.0;
 
-            auto valueAt = [&] ( int row, int col ) -> qreal {
-                if ( row < 0 || row >= rowCount ) {
-                    return NAN;
+            // TODO: revert back to lambdas when we stop caring about pre-C++11
+            // auto valueAt = [&] ( int row, int col ) -> qreal {
+            //     if ( row < 0 || row >= rowCount ) {
+            //         return NAN;
+            //     }
+            //
+            //     const CartesianDiagramDataCompressor::CachePosition position( row, col );
+            //     const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+            //
+            //     return !ISNAN( point.value ) ? point.value
+            //          : policy == LineAttributes::MissingValuesAreBridged ? interpolateMissingValue( position )
+            //          : NAN;
+            // };
+            //
+            // auto safeAdd = [] ( qreal accumulator, qreal newValue ) {
+            //     return ISNAN( newValue ) ? accumulator : accumulator + newValue;
+            // };
+
+            struct valueAtLambda {
+                valueAtLambda( int rowCount, StackedLineDiagram* _this, LineAttributes::MissingValuesPolicy policy )
+                    : rowCount( rowCount )
+                    , _this( _this )
+                    , policy( policy )
+                {
                 }
 
-                const CartesianDiagramDataCompressor::CachePosition position( row, col );
-                const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+                int rowCount;
+                StackedLineDiagram* _this;
+                LineAttributes::MissingValuesPolicy policy;
 
-                return !ISNAN( point.value ) ? point.value
-                     : policy == LineAttributes::MissingValuesAreBridged ? interpolateMissingValue( position )
-                     : NAN;
-            };
+                qreal operator() ( int row, int col ) const
+                {
+                    if ( row < 0 || row >= rowCount ) {
+                        return NAN;
+                    }
 
-            auto safeAdd = [] ( qreal accumulator, qreal newValue ) {
-                return ISNAN( newValue ) ? accumulator : accumulator + newValue;
+                    const CartesianDiagramDataCompressor::CachePosition position( row, col );
+                    const CartesianDiagramDataCompressor::DataPoint point = _this->compressor().data( position );
+
+                    return !ISNAN( point.value ) ? point.value
+                         : policy == LineAttributes::MissingValuesAreBridged ? _this->interpolateMissingValue( position )
+                         : NAN;
+                }
+
             };
+            valueAtLambda valueAt( rowCount, this, policy );
+
+
+            struct safeAddLambda {
+                qreal operator() (qreal accumulator, qreal newValue) const
+                {
+                    return ISNAN( newValue ) ? accumulator : accumulator + newValue;
+                }
+            };
+            safeAddLambda safeAdd;
 
             qreal nextKey = 0;
             QVector<qreal> stackedValuesTop( 4, 0.0 );
@@ -323,9 +362,26 @@ void StackedLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
 
             nextKey = row + 1;
 
-            auto dataAt = [&] ( const QVector<qreal>& source, qreal key, int index ) {
-                return ctx->coordinatePlane()->translate( QPointF( diagram()->centerDataPoints() ? key + 0.5 : key, source[index] ) );
+            // TODO: revert back to lambdas when we stop caring about pre-C++11
+            // auto dataAt = [&] ( const QVector<qreal>& source, qreal key, int index ) {
+            //     return ctx->coordinatePlane()->translate( QPointF( diagram()->centerDataPoints() ? key + 0.5 : key, source[index] ) );
+            // };
+            struct dataAtLambda {
+                dataAtLambda( PaintContext* ctx, StackedLineDiagram* _this )
+                    : ctx( ctx )
+                    , _this( _this )
+                {
+                }
+
+                PaintContext* ctx;
+                StackedLineDiagram* _this;
+
+                QPointF operator() ( const QVector<qreal>& source, qreal key, int index ) const
+                {
+                    return ctx->coordinatePlane()->translate( QPointF( _this->diagram()->centerDataPoints() ? key + 0.5 : key, source[index] ) );
+                }
             };
+            dataAtLambda dataAt( ctx, this );
 
             const QPointF ptNorthWest = dataAt( stackedValuesTop, point.key, 1 );
             const QPointF ptSouthWest =
@@ -351,10 +407,10 @@ void StackedLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
                     QPainterPath path;
                     path.moveTo( ptNorthWest );
 
-                    const auto ptBeforeNorthWest =
+                    const QPointF ptBeforeNorthWest =
                         row > 0 ? dataAt( stackedValuesTop, point.key - 1, 0 )
                                 : ptNorthWest;
-                    const auto ptAfterNorthEast =
+                    const QPointF ptAfterNorthEast =
                         row < rowCount - 1 ? dataAt( stackedValuesTop, point.key + 2, 3 )
                                            : ptNorthEast;
                     addSplineChunkTo( path, tension, ptBeforeNorthWest, ptNorthWest, ptNorthEast, ptAfterNorthEast );
@@ -362,13 +418,13 @@ void StackedLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
                     path.lineTo( ptNorthEast );
                     path.lineTo( ptSouthEast );
 
-                    const auto ptBeforeSouthWest =
+                    const QPointF ptBeforeSouthWest =
                         row > 0 ? dataAt( stackedValuesBottom, point.key - 1, 0 )
                                 : ptSouthWest;
-                    const auto ptAfterSouthEast =
+                    const QPointF ptAfterSouthEast =
                         row < rowCount - 1 ? dataAt( stackedValuesBottom, point.key + 2, 3 )
                                            : ptSouthEast;
-                    addSplineChunkTo( path, tension, ptAfterSouthEast, ptSouthEast, ptSouthWest, ptBeforeSouthWest, SplineDirection::Reverse );
+                    addSplineChunkTo( path, tension, ptAfterSouthEast, ptSouthEast, ptSouthWest, ptBeforeSouthWest, ReverseSplineDirection );
 
                     areas << path;
                     laPreviousCell = laCell;
