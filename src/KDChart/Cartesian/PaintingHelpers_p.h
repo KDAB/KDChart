@@ -72,43 +72,43 @@ inline qreal euclideanLength( const QPointF &p )
     return sqrt( p.x() * p.x() + p.y() * p.y() );
 }
 
-enum class SplineNodePosition { Left, Right };
+enum SplineNodePosition { LeftSplineNodePosition, RightSplineNodePosition };
 
 inline QPointF splineNode( qreal tension, QPointF before, QPointF current, QPointF after, SplineNodePosition position )
 {
     if ( ISNAN( before.y() ) || ISNAN ( after.y() ) )
         return current;
 
-    const auto diff = after - before;
-    const auto scale = 0.25 * tension * diff.x() / euclideanLength( diff );
-    return current + diff * scale * ( position == SplineNodePosition::Left ? 1 : -1 );
+    const QPointF diff = after - before;
+    const qreal scale = 0.25 * tension * diff.x() / euclideanLength( diff );
+    return current + diff * scale * ( position == LeftSplineNodePosition ? 1 : -1 );
 }
 
-enum class SplineDirection { Normal, Reverse };
+enum SplineDirection { NormalSplineDirection, ReverseSplineDirection };
 
 inline QPair<QPointF, QPointF> splineChunk( qreal tension, QPointF before, QPointF a, QPointF b, QPointF after,
-                                            SplineDirection direction = SplineDirection::Normal )
+                                            SplineDirection direction = NormalSplineDirection )
 {
     QPointF nodeLeft = a;
     QPointF nodeRight = b;
 
     if ( !ISNAN( before.y() ) ) {
         nodeLeft = splineNode( tension, before, a, b,
-                direction == SplineDirection::Normal ? SplineNodePosition::Left : SplineNodePosition::Right );
+                direction == NormalSplineDirection ? LeftSplineNodePosition : RightSplineNodePosition );
     }
 
     if ( !ISNAN( after.y() ) ) {
         nodeRight = splineNode( tension, a, b, after,
-                direction != SplineDirection::Normal ? SplineNodePosition::Left : SplineNodePosition::Right );
+                direction != NormalSplineDirection ? LeftSplineNodePosition : RightSplineNodePosition );
     }
 
-    return { nodeLeft, nodeRight };
+    return qMakePair( nodeLeft, nodeRight );
 }
 
 inline void addSplineChunkTo( QPainterPath& path, qreal tension, QPointF before, QPointF a, QPointF b, QPointF after,
-                              SplineDirection direction = SplineDirection::Normal )
+                              SplineDirection direction = NormalSplineDirection )
 {
-    const auto chunk = splineChunk( tension, before, a, b, after, direction );
+    const QPair<QPointF, QPointF> chunk = splineChunk( tension, before, a, b, after, direction );
     path.cubicTo( chunk.first, chunk.second, b );
 }
 
