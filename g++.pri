@@ -8,7 +8,7 @@
         -Wnon-virtual-dtor -Wundef -Wcast-align \
         -Wchar-subscripts -Wpointer-arith \
         -Wwrite-strings -Wformat -Wformat-security \
-        -Wmissing-format-attribute -Woverloaded-virtual
+        -Wmissing-format-attribute -Woverloaded-virtual -std=c++11
 
 # -Wconversion gives too many warnings from Qt-4.4.3 with gcc-4.3.2 (was fine with gcc-4.2.4), so removing it
 

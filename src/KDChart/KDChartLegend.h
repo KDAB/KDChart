@@ -387,7 +387,7 @@ m_legend->setFloatingPosition( relativePosition );
 
     QSize minimumSizeHint() const override;
     QSize sizeHint() const override;
-    bool hasHeightForWidth() const override;
+    bool hasHeightForWidth() const; //override;
     int heightForWidth( int width ) const override;
     void needSizeHint() override;
     void resizeLayout( const QSize& size ) override;
