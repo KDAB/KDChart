@@ -8,7 +8,6 @@ Version 3.0.0 (currently unreleased):
 Version 2.7.0:
 --------------
  ** WARNING ** Version 2.7.x will be the last to support Qt4 **
- * C++11 capable compilers are now required
  * New CMake-based build system (optional)
  * Add support for spline-based line smoothing
  * New Python3 bindings for KDGantt (CMake buildsystem only. see INSTALL-bindings.txt)
