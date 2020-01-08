@@ -625,7 +625,7 @@ void CartesianDiagramDataCompressor::calculateSampleStepWidth()
         return;
     }
 
-    static unsigned int SomePrimes[] = {
+    static const unsigned int SomePrimes[] = {
         2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47,
         53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101,
         151, 211, 313, 401, 503, 607, 701, 811, 911, 1009,
