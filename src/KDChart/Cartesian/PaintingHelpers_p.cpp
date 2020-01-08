@@ -58,11 +58,28 @@ QPainterPath fitPoints( const QPolygonF &points, qreal tension )
 {
     QPainterPath path;
     path.moveTo( points.at( 0 ) );
-    const auto count = points.size();
+    const int count = points.size();
 
-    auto dataAt = [&] (int i) {
-        return i < 0 || i >= count ? QPointF(NAN, NAN) : points.at( i );
+    // TODO: convert to lambda when we stop caring about pre-C++11
+    // auto dataAt = [&] (int i) {
+    //     return i < 0 || i >= count ? QPointF(NAN, NAN) : points.at( i );
+    // };
+    struct dataAtLambda {
+        dataAtLambda(const QPolygonF &points, int count)
+            : points(points)
+            , count(count)
+        {}
+
+        const QPolygonF &points;
+        int count;
+
+        QPointF operator() (int i) const
+        {
+            return i < 0 || i >= count ? QPointF(NAN, NAN) : points.at( i );
+        }
     };
+
+    dataAtLambda dataAt(points, count);
 
     for (int i = 1; i < count; ++i) {
         addSplineChunkTo( path, tension, dataAt( i - 2 ), points.at( i - 1 ), points.at( i ), dataAt( i + 1 ) );
@@ -240,7 +257,7 @@ void paintObject ( AbstractDiagram::Private *diagramPrivate, PaintContext* ctx, 
 {
     qreal tension = 0;
 
-    if ( auto lineDiagram = dynamic_cast<LineDiagram::Private*>( diagramPrivate ) ) {
+    if ( LineDiagram::Private* lineDiagram = dynamic_cast<LineDiagram::Private*>( diagramPrivate ) ) {
         tension = lineDiagram->tension;
     }
 

@@ -253,14 +253,42 @@ void NormalLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
                     if ( laCell.displayArea() ) {
                         QPainterPath path;
 
-                        auto dataAt = [&] ( int i ) {
-                            if ( i < 0 || i >= rowCount ) {
-                                return QPointF( NAN, NAN );
-                            } else {
-                                const auto data = compressor().data( { i, column } );
-                                return QPointF( plane->translate( QPointF( data.key + offset, data.value ) ) );
+                        // TODO: revert back to lambdas when we stop caring about pre-C++11
+                        // auto dataAt = [&] ( int i ) {
+                        //     if ( i < 0 || i >= rowCount ) {
+                        //         return QPointF( NAN, NAN );
+                        //     } else {
+                        //         const auto data = compressor().data( { i, column } );
+                        //         return QPointF( plane->translate( QPointF( data.key + offset, data.value ) ) );
+                        //     }
+                        // };
+                        struct dataAtLambda {
+                            dataAtLambda( int rowCount, int column, int offset, CartesianCoordinatePlane* plane, NormalLineDiagram* _this )
+                                : rowCount( rowCount )
+                                , column( column )
+                                , offset( offset )
+                                , plane( plane )
+                                , _this( _this )
+                            {
+                            }
+
+                            int rowCount;
+                            int column;
+                            int offset;
+                            CartesianCoordinatePlane* plane;
+                            NormalLineDiagram* _this;
+
+                            QPointF operator() ( int i ) const
+                            {
+                                if ( i < 0 || i >= rowCount ) {
+                                    return QPointF( NAN, NAN );
+                                } else {
+                                    const KDChart::CartesianDiagramDataCompressor::DataPoint data = _this->compressor().data( CartesianDiagramDataCompressor::CachePosition( i, column ) );
+                                    return QPointF( plane->translate( QPointF( data.key + offset, data.value ) ) );
+                                }
                             }
                         };
+                        dataAtLambda dataAt( rowCount, column, offset, plane, this );
 
                         path.moveTo( a );
 
@@ -270,7 +298,7 @@ void NormalLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
                         path.lineTo( c );
                         path.lineTo( a );
                         PaintingHelpers::paintAreas( m_private, ctx, attributesModel()->mapToSource( lastPoint.index ),
-                                                     {path}, laCell.transparency() );
+                                                     QList<QPainterPath>() << path, laCell.transparency() ); // TODO: change to {path} in C++11
                     }
                 }
             }
