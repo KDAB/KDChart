@@ -1,8 +1,6 @@
 KD Chart 2.5.0 supports Qt version 4.x.
 KD Chart 2.5.1 and later supports both Qt 4 and Qt 5.
 
-Make sure you use a C++ compiler that can handle C++11 features.
-
 If you are using sources from github (via a git clone or a generated zip file), jump
 to section 1-bis). Commercial users, start at section 1).
 
