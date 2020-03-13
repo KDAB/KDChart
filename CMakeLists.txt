@@ -200,7 +200,12 @@ endif()
 
 add_subdirectory(src)
 
-# only build python bindings for Qt5
+# only build python bindings for Qt5.12 or greater
+if(Qt5Core_VERSION VERSION_LESS 5.12)
+  message(WARNING "** Python Bindings are disabled. Qt version is too old and unsupported.")
+  set(DISABLE_PYTHON_BINDINGS ON)
+endif()
+
 if(Qt5Core_FOUND AND NOT DISABLE_PYTHON_BINDINGS)
   add_subdirectory(python)
 endif()
