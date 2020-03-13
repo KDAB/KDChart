@@ -35,7 +35,6 @@
 
 QT_BEGIN_NAMESPACE
 class QPainter;
-class KDTextDocument;
 QT_END_NAMESPACE
 
 // TODO remove
