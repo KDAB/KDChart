@@ -29,8 +29,10 @@
 
 class ModelParamVsParam;
 
+QT_BEGIN_NAMESPACE
 class QGridLayout;
 class QLineEdit;
+QT_END_NAMESPACE
 
 namespace KDChart
 {
