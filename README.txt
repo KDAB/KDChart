@@ -30,6 +30,7 @@ Contact
 * Join our mailing list: https://mail.kdab.com/mailman/listinfo/kdchart-interest
 * See our official home page: https://www.kdab.com/products/kd-chart
 * Visit us on GitHub: https://github.com/KDAB/KDChart
+* Email info@kdab.com for questions about copyright, licensing or commercial support.
 
 Get Involved
 ============
@@ -37,7 +38,7 @@ KDAB will happily accept external contributions, but substantial
 contributions will require a signed Copyright Assignment Agreement
 (see doc/KDChart-CopyrightAssignmentForm.docx).
 
-Contact info@kdab.com for more information.
+Email info@kdab.com for more information about the Copyright Assignment Agreement.
 
 Please submit your contributions or issue reports from our GitHub space at
 https://github.com/KDAB/KDChart
