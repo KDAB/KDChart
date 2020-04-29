@@ -196,6 +196,14 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
   install(EXPORT KDChartTargets NAMESPACE KDChart::
     DESTINATION "${INSTALL_LIBRARY_DIR}/cmake/KDChart"
   )
+
+  # Generate .pri file for qmake users
+  include(ECMGeneratePriFile)
+  set(PROJECT_VERSION_STRING ${${PROJECT_NAME}_VERSION})
+  ecm_generate_pri_file(BASE_NAME ${PROJECT_NAME}
+                        LIB_NAME kdchart
+                        FILENAME_VAR pri_filename)
+  install(FILES ${pri_filename} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 endif()
 
 add_subdirectory(src)
@@ -240,13 +248,5 @@ if(${PROJECT_NAME}_IS_ROOT_PROJECT)
   if(${PROJECT_NAME}_EXAMPLES)
     add_subdirectory(examples)
   endif()
-
-  # Generate .pri file for qmake users
-  include(ECMGeneratePriFile)
-  set(PROJECT_VERSION_STRING ${${PROJECT_NAME}_VERSION})
-  ecm_generate_pri_file(BASE_NAME ${PROJECT_NAME}
-                        LIB_NAME kdchart
-                        FILENAME_VAR pri_filename)
-  install(FILES ${pri_filename} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 
 endif()
