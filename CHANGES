@@ -5,6 +5,7 @@ Version 3.0.0 (currently unreleased):
 -------------
  * (remove Qt4 support)
  * (require C++11)
+ * CMake buildsystem: generates .pri files for qmake users
 
 Version 2.7.0:
 --------------
