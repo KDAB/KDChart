@@ -1,8 +1,6 @@
 Release Highlights
 ==================
 
-** WARNING ** Version 2.7.x will be the last to support Qt4 **
-
 Version 2.7.1 (unreleased):
 --------------------------
  * CMake buildsystem - installs library pdb files with MSVC builds
