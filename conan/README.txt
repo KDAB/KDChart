@@ -3,7 +3,7 @@ In the following example we assume you have the kdchart source available in
 
 $ conan create -s build_type=Release -o kdchart:build_examples=True -o kdchart:build_tests=True /path/to/kdchart-source/conan kdab/stable
 
-configuration options:
+Configuration options:
  * build_static
    Builds static versions of the libraries. Default=False
    
@@ -13,7 +13,7 @@ configuration options:
  * build_examples
    Build the examples. Default=True
    
- * diable_python_bindings
+ * disable_python_bindings
    Build/Generate python bindings (always true for Debug builds). Default=False
    
  * python_bindings_install_dir
