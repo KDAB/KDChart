@@ -1,15 +1,20 @@
 Release Highlights
 ==================
 
-Version 3.0.0 (currently unreleased):
--------------
+** WARNING ** Version 2.7.x will be the last to support Qt4 **
+
+Version 3.0.0 (unreleased):
+---------------------------
  * (remove Qt4 support)
  * (require C++11)
  * CMake buildsystem: generates .pri files for qmake users
 
+Version 2.7.1 (unreleased):
+---------------------------
+ * CMake buildsystem - installs library pdb files with MSVC builds
+ 
 Version 2.7.0:
 --------------
- ** WARNING ** Version 2.7.x will be the last to support Qt4 **
  * New CMake-based build system (optional)
  * Add support for spline-based line smoothing
  * New Python3 bindings for KDGantt (CMake buildsystem only. see INSTALL-bindings.txt)
