@@ -32,6 +32,7 @@
 
 #include <KDABLibFakes>
 
+#include <QPainterPath>
 #include <limits>
 
 using namespace KDChart;
