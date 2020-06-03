@@ -30,6 +30,7 @@
 #include <QPainter>
 
 #include <KDABLibFakes>
+#include <QPainterPath>
 
 
 using namespace KDChart;

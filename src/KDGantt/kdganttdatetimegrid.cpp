@@ -34,6 +34,7 @@
 #include <QString>
 #include <QDebug>
 #include <QList>
+#include <QPainterPath>
 
 #include <cassert>
 
