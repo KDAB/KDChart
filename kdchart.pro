@@ -79,12 +79,14 @@ INSTALL_DOC_DIR = $$INSTALL_PREFIX/share/doc/KDChart
 
 # install license(s):
 exists( LICENSE.txt ):     licenses.files  = LICENSE.txt
+exists( LICENSE.US.txt ):  licenses.files += LICENSE.US.txt
 exists( LICENSE.GPL.txt ): licenses.files += LICENSE.GPL.txt
 licenses.path = $$INSTALL_DOC_DIR
 INSTALLS += licenses
 
 # install readme(s):
 exists ( README.txt ):            readme.files  = README.txt
+exists ( README-commercial.txt ): readme.files += README-commercial.txt
 readme.path = $$INSTALL_DOC_DIR
 INSTALLS += readme
 
