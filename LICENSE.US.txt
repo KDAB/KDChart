@@ -123,13 +123,6 @@ ANY AWARD OF DAMAGES FROM KDAB TO YOU SHALL NOT EXCEED THE TOTAL AMOUNT
 YOU HAVE PAID TO KDAB IN CONNECTION WITH THIS EULA.
 
 
-SUPPORT AND UPDATES
-You will receive email based, software developer support and access to
-Updates to the Licensed Product for one year from the date of initial
-delivery, in accordance with KDAB support policies and procedures.
-Such policies and procedures may be changed from time to time.
-
-
 GENERAL PROVISIONS
 This EULA may only be modified in writing signed by you and an
 authorized officer of KDAB. All terms of any purchase order or other
