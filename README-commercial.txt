@@ -1,4 +1,3 @@
-# <a name="title"></a> KD Chart [![Logo](https://github.com/KDAB/KDChart/blob/master/images/kdchart_48x48.png)](https://www.kdab.com/products/kd-chart)
 Introduction
 ============
 KD Chart is a tool for creating business and scientific charts.
@@ -32,6 +31,9 @@ Contact
 * Visit us on GitHub: https://github.com/KDAB/KDChart
 * Email info@kdab.com for questions about copyright, licensing or commercial support.
 
+In case of additional questions during evaluation or use of
+KD Chart please contact info@kdab.com.
+
 Get Involved
 ============
 KDAB will happily accept external contributions, but substantial
@@ -45,13 +47,15 @@ https://github.com/KDAB/KDChart
 
 License
 =======
-The KD Chart Software is Copyright (C) 2001-2020 Klarälvdalens Datakonsult AB (KDAB),
-and is available under the terms of:
-* the GPL (see LICENSE.GPL.txt for details)
-* the KDAB commercial license, provided that you buy a license.
-  please contact info@kdab.com if you are interested in buying commercial licenses.
+The KD Chart Software is Copyright (C) 2001-2020 Klarälvdalens Datakonsult AB (KDAB)
 
-Commercial use is described in README-commercial.txt.
+Commercial licensing terms are available in the included file
+        LICENSE.txt (for non-US customers)
+or
+        LICENSE.US.txt (for US customers)
+, respectively.
+
+For terms of redistribution, refer to the license agreement.
 
 About KDAB
 ==========
