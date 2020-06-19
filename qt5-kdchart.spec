@@ -1,5 +1,5 @@
 Name:           qt5-kdchart
-Version:        2.7.0
+Version:        2.7.1
 Release:        1
 Summary:        A Qt tool for creating business and scientific charts
 Source0:        %{name}-%{version}.tar.gz
@@ -82,6 +82,8 @@ QMAKE_ARGS="LIB_SUFFIX=64" ./configure.sh -shared -release -no-unittests -prefix
 %{_libdir}/libkdchart.so
 
 %changelog
+* Fri Jun 19 2020 Allen Winter <allen.winter@kdab.com> 2.7.1
+  2.7.1
 * Mon Jan 06 2020 Allen Winter <allen.winter@kdab.com> 2.7.0
   2.7.0
 * Mon Apr 22 2019 Allen Winter <allen.winter@kdab.com> 2.6.2
