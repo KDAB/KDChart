@@ -25,7 +25,7 @@ from conans import ConanFile, CMake, tools
 
 class KdchartConan(ConanFile):
     name = "KDChart"
-    version = "2.7.0"
+    version = "2.7.1"
     license = ("https://raw.githubusercontent.com/KDAB/KDChart/master/LICENSE.txt,"
                "https://raw.githubusercontent.com/KDAB/KDChart/master/LICENSE.GPL.txt")
     author = "Klaralvdalens Datakonsult AB (KDAB) info@kdab.com"

@@ -7,6 +7,8 @@ Version 2.7.1 (unreleased):
 ---------------------------
  * CMake buildsystem - installs library pdb files with MSVC builds
  * CMake buildsystem - generates .pri files for qmake users
+ * Fix build for Qt5.15
+ * Fix build against a namespaced Qt
  
 Version 2.7.0:
 --------------
