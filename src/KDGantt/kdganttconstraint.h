@@ -101,7 +101,7 @@ namespace KDGantt {
 }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug KDCHART_EXPORT operator<<( QDebug dbg, const KDGantt::Constraint& c );
+QDebug KDGANTT_EXPORT operator<<( QDebug dbg, const KDGantt::Constraint& c );
 #endif /* QT_NO_DEBUG_STREAM */
 
 #endif /* KDGANTTCONSTRAINT_H */
