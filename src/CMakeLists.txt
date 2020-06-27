@@ -1,9 +1,3 @@
-# QT += svg
-#
-# greaterThan(QT_MAJOR_VERSION, 4): QT += printsupport
-#
-# include(../variables.pri)
-#
 set(QT_USE_QTXML TRUE)
 set(QT_USE_QTSVG TRUE)
 
@@ -504,6 +498,6 @@ install(TARGETS kdchart EXPORT KDChartTargets
   LIBRARY DESTINATION ${INSTALL_LIBRARY_DIR}
   ARCHIVE DESTINATION ${INSTALL_ARCHIVE_DIR}
 )
-if(MSVC)
+if(MSVC AND NOT ${PROJECT_NAME}_STATIC)
   install(FILES "$<TARGET_PDB_FILE_DIR:kdchart>/$<TARGET_PDB_FILE_NAME:kdchart>" DESTINATION ${INSTALL_LIBRARY_DIR} CONFIGURATIONS Debug RelWithDebInfo)
 endif()

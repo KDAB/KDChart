@@ -161,7 +161,7 @@ namespace KDGantt {
 
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug KDCHART_EXPORT operator<<( QDebug dbg, KDGantt::DateTimeScaleFormatter::Range );
+QDebug KDGANTT_EXPORT operator<<( QDebug dbg, KDGantt::DateTimeScaleFormatter::Range );
 #endif
 
 #endif /* KDGANTTDATETIMEGRID_H */

@@ -12,6 +12,10 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOUIC TRUE)
 set(CMAKE_AUTORCC TRUE)
 
+if(${PROJECT_NAME}_STATIC)
+  add_definitions(-DKDCHART_STATICLIB)
+endif()
+
 # For Qt::WFlag...
 add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x000000)
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
