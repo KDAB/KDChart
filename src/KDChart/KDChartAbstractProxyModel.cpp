@@ -67,7 +67,7 @@ QModelIndex AbstractProxyModel::mapFromSource( const QModelIndex & sourceIndex )
 
 QModelIndex AbstractProxyModel::mapToSource( const QModelIndex &proxyIndex ) const
 {
-  if ( !proxyIndex.isValid() )
+  if ( !sourceModel() || !proxyIndex.isValid() )
     return QModelIndex();
   if ( proxyIndex.model() != this )
     qDebug() << proxyIndex.model() << this;
@@ -86,13 +86,15 @@ QModelIndex AbstractProxyModel::mapToSource( const QModelIndex &proxyIndex ) con
 
 QModelIndex AbstractProxyModel::index( int row, int col, const QModelIndex& index ) const
 {
-    Q_ASSERT(sourceModel());
+    if (!sourceModel())
+        return QModelIndex();
     return mapFromSource(sourceModel()->index( row, col, mapToSource(index) ));
 }
 
 QModelIndex AbstractProxyModel::parent( const QModelIndex& index ) const
 {
-    Q_ASSERT(sourceModel());
+    if(!sourceModel())
+        return QModelIndex();
     return mapFromSource(sourceModel()->parent( mapToSource(index) ));
 }
 
