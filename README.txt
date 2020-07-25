@@ -9,13 +9,14 @@ just a few parameters and then relying on the defaults for the rest.
 
 KD Chart targets C++ programmers who use Qt in their applications.
 
-For more information, see https://www.kdab.com/kdab-products/kd-chart
+For more information, see https://www.kdab.com/products/kd-chart
 
 Using KD Chart
 ==============
 KD Chart requires Qt 4.x or later.
 
-See INSTALL.txt for installation instructions.
+See INSTALL.txt or INSTALL-cmake.txt for installation instructions.
+(Note that the qmake and CMake buildsystems are fully supported)
 
 After reading the introductory overview files in doc/
 you will find more information at three places:
