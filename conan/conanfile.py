@@ -50,7 +50,7 @@ class KdchartConan(ConanFile):
     
     def requirements(self):
         # Kdab uses a custom qt build
-        # To build qt with with extra modules enabled use qt package from:
+        # To build qt with extra modules enabled use qt package from:
         #   https://github.com/bincrafters/conan-qt
         # Build the command:
         #   conan create -ks -o qt:qtsvg=True -o qt:qtdeclarative=True -o qt:qtremoteobjects=True -o qt:qtscxml=True . 5.13.2@kdab/stable
