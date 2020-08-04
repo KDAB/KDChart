@@ -629,7 +629,7 @@ void GraphicsView::resizeEvent( QResizeEvent* ev )
  * position \a pos in the view or an invalid index
  * if no item was present at that position.
  *
- * This is useful for for example contextmenus.
+ * This is useful for example contextmenus.
  */
 QModelIndex GraphicsView::indexAt( const QPoint& pos ) const
 {

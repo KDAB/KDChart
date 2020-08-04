@@ -587,7 +587,7 @@ namespace KDChart {
          * \brief Returns whether this diagram is drawn in percent mode.
          *
          * If true, all data points in the same column of a diagram will
-         * be be drawn at the same X coordinate and stacked up so that the distance from the
+         * be drawn at the same X coordinate and stacked up so that the distance from the
          * last data point (or the zero line) to a data point P is always the ratio of (Y-Value of P)/
          * (sum of all Y-Values in same column as P) relative to the diagrams height
          * (or width, if abscissa and ordinate are swapped).
