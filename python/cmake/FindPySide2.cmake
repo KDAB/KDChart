@@ -15,6 +15,7 @@ set(PySide2_FOUND FALSE)
 set(Shiboken2_FOUND FALSE)
 set(PySide2Python3_FOUND FALSE)
 set(PYSIDE2_CUSTOM_PREFIX "/usr/" CACHE PATH "Extra path to look for PySide components.")
+set(QTFORPYTHON_URL "http://download.qt.io/official_releases/QtForPython")
 
 execute_process(
   COMMAND ${Python3_EXECUTABLE} -c "if True:
@@ -95,7 +96,8 @@ if(PYSIDE2_BASEDIR)
   message(STATUS "PySide2 suffix:         ${PYSIDE2_SUFFIX}")
 
 else()
-  message(STATUS "PySide not found. Consider running pip3 install --index-url=https://download.qt.io/snapshots/ci/pyside/5.12/latest/ pyside2 --trusted-host download.qt.io")
+  message(STATUS "PySide not found. Consider running pip3 install --index-url=${QTFORPYTHON_URL} --trusted-host download.qt.io pyside2")
+  return()
 endif()
 
 #SHIBOKEN
@@ -144,11 +146,6 @@ if(SHIBOKEN_BASEDIR)
     set(SHIBOKEN_LIBRARY_BASENAME "libshiboken2.${PYSIDE2_SUFFIX}")
   endif()
 
-  if(NOT SHIBOKEN_INCLUDE_DIR)
-    message(STATUS "shiboken_generator not found. Consider running pip3 install --index-url=https://download.qt.io/snapshots/ci/pyside/${Qt5Core_VERSION}/latest/ shiboken2-generator --trusted-host download.qt.io")
-    return()
-  endif()
-
   message("Look for ${SHIBOKEN_LIBRARY_BASENAME} at ${SHIBOKEN_BASEDIR}")
   find_file(SHIBOKEN_LIBRARY
     ${SHIBOKEN_LIBRARY_BASENAME}
@@ -178,10 +175,13 @@ if(SHIBOKEN_BASEDIR)
 
   if(SHIBOKEN_INCLUDE_DIR AND SHIBOKEN_LIBRARY AND SHIBOKEN_BINARY)
     set(Shiboken2_FOUND TRUE)
+  else()
+    message(STATUS "shiboken not found. Consider running pip3 install --index-url=${QTFORPYTHON_URL} --trusted-host download.qt.io shiboken2")
+    return()
   endif()
 
 else()
-  message(STATUS "shiboken_generator not found. Consider running pip3 install --index-url=https://download.qt.io/snapshots/ci/pyside/${Qt5Core_VERSION}/latest/ shiboken2-generator --trusted-host download.qt.io")
+  message(STATUS "shiboken-generator not found. Consider running pip3 install --index-url=${QTFORPYTHON_URL} --trusted-host download.qt.io shiboken2_generator")
   set(Shiboken2_FOUND FALSE)
 endif()
 

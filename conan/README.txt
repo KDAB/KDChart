@@ -6,15 +6,15 @@ $ conan create -s build_type=Release -o kdchart:build_examples=True -o kdchart:b
 Configuration options:
  * build_static
    Builds static versions of the libraries. Default=False
-   
+
  * build_tests
    Build the test harness. Default=False
-   
+
  * build_examples
    Build the examples. Default=True
-   
- * disable_python_bindings
-   Build/Generate python bindings (always true for Debug builds). Default=False
-   
+
+ * build_python_bindings
+   Build/Generate python bindings (always false for Debug or static builds). Default=False
+
  * python_bindings_install_dir
    Alternative install path for python bindings. Default=auto detect

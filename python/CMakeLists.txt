@@ -8,7 +8,6 @@ set(PYKDCHART_VERSION_STRING "${FATCRM_VERSION}")
 set(PYKDCHART_MODULE_NAME "PyKDChart")
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/)
-set(BUILD_PYTHON_BINDINGS True)
 set(PYTHON_BINDINGS_INSTALL_DIR "" CACHE PATH "Alternative install dir for python bindings")
 
 find_package(Qt5Core REQUIRED)
