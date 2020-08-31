@@ -28,3 +28,9 @@ Not supported:
  - only some 32-bit platforms are supported.  see https://wiki.qt.io/Qt_for_Python
 
 Also, there are no plans to support the qmake buildsystem.
+
+The bindings will be installed to the passed `-DCMAKE_INSTALL_PREFIX`, which
+might require setting the `PYTHONPATH` env variable to point to that path when
+running applications.  Alternatively, configure the bindings install location by
+passing (for example) `-DPYTHON_BINDINGS_INSTALL_PREFIX=/usr/lib/python3.8/site-packages`
+to CMake (adjust to the python path on your system).

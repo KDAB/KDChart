@@ -37,14 +37,14 @@ class KdchartConan(ConanFile):
         "build_examples": [True, False],
         "build_tests": [True, False],
         "build_python_bindings": [True, False],
-        "python_bindings_install_dir": "ANY"
+        "python_bindings_install_prefix": "ANY"
     })
     default_options = dict({
         "build_static": False,
         "build_examples": True,
         "build_tests": False,
         "build_python_bindings": False,
-        "python_bindings_install_dir": "ANY"
+        "python_bindings_install_prefix": "ANY"
     })
     settings = "build_type"
 
@@ -78,7 +78,7 @@ class KdchartConan(ConanFile):
         self.cmake.definitions["KDChart_TESTS"] = self.options.build_tests
         self.cmake.definitions["BUILD_PYTHON_BINDINGS"] = self.options.build_python_bindings
         if self.options.python_bindings_install_dir:
-            self.cmake.definitions["PYTHON_BINDINGS_INSTALL_DIR"] = self.options.python_bindings_install_dir
+            self.cmake.definitions["PYTHON_BINDINGS_INSTALL_PREFIX"] = self.options.python_bindings_install_dir
         self.cmake.configure()
         self.cmake.build()
 
