@@ -10,5 +10,4 @@ configure_file(
   COPYONLY
 )
 
-set(PY_QT_API_VERSION "${Qt5Core_VERSION_MAJOR}.${Qt5Core_VERSION_MINOR}")
 add_subdirectory(KDGantt)

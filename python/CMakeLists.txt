@@ -16,29 +16,9 @@ find_package(Qt5Svg REQUIRED)
 find_package(Qt5PrintSupport REQUIRED)
 
 # Python
-find_package(Python3 3.6 COMPONENTS Interpreter Development)
+find_package(Python3 ${PYTHON_VERSION} REQUIRED COMPONENTS Interpreter Development)
+find_package(Shiboken2 REQUIRED)
+find_package(PySide2 ${Qt5Widgets_VERSION} EXACT REQUIRED)
+include(PySide2ModuleBuild)
 
-if(Python3_Interpreter_FOUND)
-  if(Python3_Development_FOUND)
-    # PySide
-    # Need same version  as c++ Qt library
-    find_package(PySide2 EXACT ${Qt5Core_VERSION} QUIET)
-    if(PySide2_FOUND)
-      if(PYTHON_BINDINGS_INSTALL_DIR EQUAL "")
-        # use auto detected value
-        set(INSTALL_PYTHON_SITE_PACKAGES ${PYTHON_SITE_PACKAGES})
-      else()
-        # use user defined value
-        set(INSTALL_PYTHON_SITE_PACKAGES ${PYTHON_BINDINGS_INSTALL_DIR})
-      endif()
-      include(PySide2Tools)
-      add_subdirectory(PyKDChart)
-    else()
-      message(WARNING "** PySide2 required libraries not found! Disabling build for bindings.")
-    endif()
-  else()
-    message(WARNING "** Python libraries not found! Disabling build for bindings.")
-  endif()
-else()
-  message(WARNING "** Python executable not found! Disabling build for bindings.")
-endif()
+add_subdirectory(PyKDChart)
