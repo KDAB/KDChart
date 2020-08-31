@@ -15,7 +15,7 @@ else()
   add_definitions(-DKDCHART_BUILD_KDCHART_LIB)
 endif()
 
-add_definitions(-DQT_NO_KEYWORDS -Demit=)
+add_definitions(-DQT_NO_KEYWORDS -DQT_NO_CAST_FROM_BYTEARRAY -Demit=)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
