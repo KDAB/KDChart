@@ -1,4 +1,4 @@
-project(KDGantt)
+project(PyKDGantt)
 
 set(PyKDGantt_SRC
   ${CMAKE_CURRENT_BINARY_DIR}/KDGantt/kdgantt_abstractgrid_wrapper.cpp
@@ -84,5 +84,4 @@ create_python_bindings(
   ${CMAKE_CURRENT_SOURCE_DIR}/typesystem_kdgantt.xml
   "${PyKDGantt_DEPENDS}"
   ${BINDING_OUTPUT_DIR}
-  ${PY_QT_API_VERSION}
 )

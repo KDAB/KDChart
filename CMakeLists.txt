@@ -19,13 +19,13 @@
 #  Build the examples.
 #  Default=true
 #
-# -DDISABLE_PYTHON_BINDINGS=[true|false]
-#  Build/Generate python bindings.  Always true for Debug builds
+# -DBUILD_PYTHON_BINDINGS=[true|false]
+#  Build/Generate python bindings.  Always false for Debug builds
 #  Default=false
 #
-# -DPYTHON_BINDINGS_INSTALL_DIR=[path]
+# -DPYTHON_BINDINGS_INSTALL_PREFIX=[path]
 #  alternative install path for python bindings
-#  Default=<auto detect>
+#  Default=CMAKE_INSTALL_PREFIX
 #
 cmake_minimum_required(VERSION 2.8.7)
 cmake_policy(SET CMP0020 NEW)
@@ -58,11 +58,9 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_MODULE_PATH}")
 option(${PROJECT_NAME}_STATIC "Build statically" OFF)
 option(${PROJECT_NAME}_TESTS "Build the tests" OFF)
 option(${PROJECT_NAME}_EXAMPLES "Build the examples" ON)
-if(CMAKE_BUILD_TYPE MATCHES "^[Rr]el" AND NOT ${PROJECT_NAME}_STATIC)
-  option(DISABLE_PYTHON_BINDINGS "Build Python bindings" OFF)
-else()
-  message(WARNING "** Python Bindings are disabled in debug or static builds.")
-  set(DISABLE_PYTHON_BINDINGS ON)
+option(BUILD_PYTHON_BINDINGS "Build python bindings" OFF)
+if(BUILD_PYTHON_BINDINGS AND (CMAKE_BUILD_TYPE MATCHES "^[Dd]eb" OR ${PROJECT_NAME}_STATIC))
+  message(FATAL_ERROR "** Python Bindings are disabled in debug or static builds.")
 endif()
 
 set(${PROJECT_NAME}_VERSION_MAJOR 2)
@@ -107,7 +105,7 @@ endif()
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
 set(CMAKE_AUTOMOC TRUE)
 
-add_definitions(-DQT_NO_CAST_TO_ASCII -DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_FROM_BYTEARRAY -DQBA_NO_CAST_TO_VOID -DQBA_NO_CAST_TO_ASCII -DQT_NO_STL -DQT_FATAL_ASSERT)
+add_definitions(-DQT_NO_CAST_TO_ASCII -DQT_NO_CAST_FROM_ASCII -DQBA_NO_CAST_TO_VOID -DQBA_NO_CAST_TO_ASCII -DQT_NO_STL -DQT_FATAL_ASSERT)
 add_definitions(-DUSE_EXCEPTIONS)
 if(MSVC)
   add_definitions(-D_SCL_SECURE_NO_WARNINGS)
@@ -209,12 +207,12 @@ endif()
 add_subdirectory(src)
 
 # only build python bindings for Qt5.12 or greater
-if(Qt5Core_VERSION VERSION_LESS 5.12)
-  message(WARNING "** Python Bindings are disabled. Qt version is too old and unsupported.")
-  set(DISABLE_PYTHON_BINDINGS ON)
+if(BUILD_PYTHON_BINDINGS AND Qt5Core_VERSION VERSION_LESS 5.12)
+  message(WARNING "** Disabling Python Bindings. Qt version is too old and unsupported.")
+  set(BUILD_PYTHON_BINDINGS OFF)
 endif()
 
-if(Qt5Core_FOUND AND NOT DISABLE_PYTHON_BINDINGS)
+if(Qt5Core_FOUND AND BUILD_PYTHON_BINDINGS)
   add_subdirectory(python)
 endif()
 
