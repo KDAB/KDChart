@@ -1,4 +1,4 @@
-# <a name="title"></a> KD Chart [![Logo](https://github.com/KDAB/KDChart/blob/master/images/kdchart_48x48.png)](https://www.kdab.com/products/kd-chart)
+# <a name="title"></a> KD Chart [![Logo](https://github.com/KDAB/KDChart/blob/master/images/kdchart-medium.png)](ttps://www.kdab.com/development-resources/qt-tools/kd-chart)
 Introduction
 ============
 KD Chart is a tool for creating business and scientific charts.
@@ -9,50 +9,49 @@ just a few parameters and then relying on the defaults for the rest.
 
 KD Chart targets C++ programmers who use Qt in their applications.
 
-For more information, see https://www.kdab.com/products/kd-chart
+For more information, see https://www.kdab.com/development-resources/qt-tools/kd-chart
 
 Using KD Chart
 ==============
 KD Chart requires Qt 4.x or later.
 
-See INSTALL.txt or INSTALL-cmake.txt for installation instructions.
-(Note that the qmake and CMake buildsystems are fully supported)
+See [INSTALL.txt](INSTALL.txt) or [INSTALL-cmake.txt](INSTALL-cmake.txt)
+for installation instructions (CMake and qmake and buildsystems supported).
 
 After reading the introductory overview files in doc/
-you will find more information at three places:
+you will find more information at these places:
 
-  detailed browsable API reference:   doc/refman/index.html
-                                or:   https://docs.kdab.com/kdchart
-  programmers manual with examples:   doc/manual/kdchart.pdf
-  our sorted example programs:        examples/
+  * [detailed browsable API reference](https://docs.kdab.com/kdchart)
+  * [programmers manual with examples](doc/manual/kdchart.pdf)
+  * [our sorted example programs](examples/)
 
 Contact
 =======
-* Join our mailing list: https://mail.kdab.com/mailman/listinfo/kdchart-interest
-* See our official home page: https://www.kdab.com/products/kd-chart
+* See our official home page: https://www.kdab.com/development-resources/qt-tools/kd-chart
 * Visit us on GitHub: https://github.com/KDAB/KDChart
 * Email info@kdab.com for questions about copyright, licensing or commercial support.
 
 Get Involved
 ============
-KDAB will happily accept external contributions, but substantial
-contributions will require a signed Copyright Assignment Agreement
-(see doc/KDChart-CopyrightAssignmentForm.docx).
+KDAB will happily accept external contributions, but substantial contributions require
+a signed [Copyright Assignment Agreement](doc/KDChart-CopyrightAssignmentForm.docx).
 
-Email info@kdab.com for more information about the Copyright Assignment Agreement.
+Contact info@kdab.com for more information about the Copyright Assignment Agreement.
 
 Please submit your contributions or issue reports from our GitHub space at
 https://github.com/KDAB/KDChart
 
 License
 =======
-The KD Chart Software is Copyright (C) 2001-2020 Klarälvdalens Datakonsult AB (KDAB),
+The KD Chart Software is Copyright 2001-2020 Klarälvdalens Datakonsult AB (KDAB),
 and is available under the terms of:
-* the GPL (see LICENSE.GPL.txt for details)
+
+* the [GPL](LICENSE.GPL.txt)
 * the KDAB commercial license, provided that you buy a license.
   please contact info@kdab.com if you are interested in buying commercial licenses.
 
-Commercial use is described in README-commercial.txt.
+Commercial licensing terms are available in the included files [LICENSE.txt](LICENSE.txt),
+[LICENSE.US.txt](LICENSE.US.txt) and [README-commercial.txt](README-commercial.txt).
 
 About KDAB
 ==========
