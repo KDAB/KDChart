@@ -1,5 +1,3 @@
-project(PyKDGantt)
-
 set(PyKDGantt_SRC
   ${CMAKE_CURRENT_BINARY_DIR}/KDGantt/kdgantt_abstractgrid_wrapper.cpp
   ${CMAKE_CURRENT_BINARY_DIR}/KDGantt/kdgantt_abstractgrid_wrapper.h

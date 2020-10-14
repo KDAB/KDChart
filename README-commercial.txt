@@ -8,7 +8,7 @@ just a few parameters and then relying on the defaults for the rest.
 
 KD Chart targets C++ programmers who use Qt in their applications.
 
-For more information, see https://www.kdab.com/products/kd-chart
+For more information, see https://www.kdab.com/development-resources/qt-tools/kd-chart
 
 Using KD Chart
 ==============
@@ -18,17 +18,16 @@ See INSTALL.txt or INSTALL-cmake.txt for installation instructions.
 (Note that the qmake and CMake buildsystems are fully supported)
 
 After reading the introductory overview files in doc/
-you will find more information at three places:
+you will find more information at these places:
 
-  detailed browsable API reference:   doc/refman/index.html
-                                or:   https://docs.kdab.com/kdchart
-  programmers manual with examples:   doc/manual/kdchart.pdf
-  our sorted example programs:        examples/
+  * [detailed browsable API reference](https://docs.kdab.com/kdchart)
+  * [programmers manual with examples](doc/manual/kdchart.pdf)
+  * [our sorted example programs](examples/)
 
 Contact
 =======
 * Join our mailing list: https://mail.kdab.com/mailman/listinfo/kdchart-interest
-* See our official home page: https://www.kdab.com/products/kd-chart
+* See our official home page: https://www.kdab.com/development-resources/qt-tools/kd-chart
 * Visit us on GitHub: https://github.com/KDAB/KDChart
 * Email info@kdab.com for questions about copyright, licensing or commercial support.
 

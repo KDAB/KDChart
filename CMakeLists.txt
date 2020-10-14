@@ -19,22 +19,24 @@
 #  Build the examples.
 #  Default=true
 #
-# -DBUILD_PYTHON_BINDINGS=[true|false]
-#  Build/Generate python bindings.  Always false for Debug builds
+# -DKDChart_PYTHON_BINDINGS=[true|false]
+#  Build/Generate Python bindings.  Always false for Debug builds.
 #  Default=false
 #
-# -DPYTHON_BINDINGS_INSTALL_PREFIX=[path]
-#  alternative install path for python bindings
+# -DKDChart_PYTHON_BINDINGS_INSTALL_PREFIX=[path]
+#  Alternative install path for Python bindings.
 #  Default=CMAKE_INSTALL_PREFIX
 #
 cmake_minimum_required(VERSION 2.8.7)
 cmake_policy(SET CMP0020 NEW)
 cmake_policy(SET CMP0025 NEW)
 
-if("${CMAKE_INSTALL_PREFIX}" STREQUAL "")
-  set(USE_DEFAULT_INSTALL_LOCATION True)
-else()
-  set(USE_DEFAULT_INSTALL_LOCATION False)
+set(KDAB_INSTALL True)
+if((NOT DEFINED ${USE_DEFAULT_INSTALL_LOCATION}) OR (NOT ${USE_DEFAULT_INSTALL_LOCATION}))
+  if(NOT "${CMAKE_INSTALL_PREFIX}" STREQUAL "")
+    set(KDAB_INSTALL False)
+  endif()
+  set(USE_DEFAULT_INSTALL_LOCATION ${KDAB_INSTALL} CACHE INTERNAL "Install to default KDAB Location" FORCE)
 endif()
 
 project(KDChart CXX)
@@ -58,8 +60,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_MODULE_PATH}")
 option(${PROJECT_NAME}_STATIC "Build statically" OFF)
 option(${PROJECT_NAME}_TESTS "Build the tests" OFF)
 option(${PROJECT_NAME}_EXAMPLES "Build the examples" ON)
-option(BUILD_PYTHON_BINDINGS "Build python bindings" OFF)
-if(BUILD_PYTHON_BINDINGS AND (CMAKE_BUILD_TYPE MATCHES "^[Dd]eb" OR ${PROJECT_NAME}_STATIC))
+option(${PROJECT_NAME}_PYTHON_BINDINGS "Build python bindings" OFF)
+if(${PROJECT_NAME}_PYTHON_BINDINGS AND (CMAKE_BUILD_TYPE MATCHES "^[Dd]eb" OR ${PROJECT_NAME}_STATIC))
   message(FATAL_ERROR "** Python Bindings are disabled in debug or static builds.")
 endif()
 
@@ -67,6 +69,8 @@ set(${PROJECT_NAME}_VERSION_MAJOR 2)
 set(${PROJECT_NAME}_VERSION_MINOR 99)
 set(${PROJECT_NAME}_VERSION_PATCH 50)
 set(${PROJECT_NAME}_VERSION ${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR}.${${PROJECT_NAME}_VERSION_PATCH})
+set(${PROJECT_NAME}_SOVERSION ${${PROJECT_NAME}_VERSION_MAJOR})
+
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # setup default install locations
@@ -207,12 +211,12 @@ endif()
 add_subdirectory(src)
 
 # only build python bindings for Qt5.12 or greater
-if(BUILD_PYTHON_BINDINGS AND Qt5Core_VERSION VERSION_LESS 5.12)
+if(${PROJECT_NAME}_PYTHON_BINDINGS AND Qt5Core_VERSION VERSION_LESS 5.12)
   message(WARNING "** Disabling Python Bindings. Qt version is too old and unsupported.")
-  set(BUILD_PYTHON_BINDINGS OFF)
+  set(${PROJECT_NAME}_PYTHON_BINDINGS OFF)
 endif()
 
-if(Qt5Core_FOUND AND BUILD_PYTHON_BINDINGS)
+if(Qt5Core_FOUND AND ${PROJECT_NAME}_PYTHON_BINDINGS)
   add_subdirectory(python)
 endif()
 

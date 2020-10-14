@@ -9,12 +9,6 @@ if(Qt5Core_FOUND)
   include_directories(${Qt5PrintSupport_INCLUDE_DIRS})
 endif()
 
-if(${PROJECT_NAME}_STATIC)
-  add_definitions(-DKDCHART_STATICLIB)
-else()
-  add_definitions(-DKDCHART_BUILD_KDCHART_LIB)
-endif()
-
 add_definitions(-DQT_NO_KEYWORDS -DQT_NO_CAST_FROM_BYTEARRAY -Demit=)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -450,6 +444,15 @@ check_cxx_source_compiles("int main(void) { return 0; }" HAVE_LD_VERSION_SCRIPT)
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS_SAVE})
 
 add_library(kdchart ${KDChart_LIBRARY_MODE} ${SOURCES} ${KDCHART_UI} ${KDCHART_RES})
+set_target_properties(kdchart PROPERTIES
+  SOVERSION ${${PROJECT_NAME}_SOVERSION}
+  VERSION ${${PROJECT_NAME}_VERSION}
+)
+if(${PROJECT_NAME}_STATIC)
+  target_compile_definitions(kdchart PUBLIC KDCHART_STATICLIB)
+else()
+  target_compile_definitions(kdchart PRIVATE -DKDCHART_BUILD_KDCHART_LIB)
+endif()
 target_link_libraries(kdchart ${QT_LIBRARIES})
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND HAVE_LD_VERSION_SCRIPT)
   set_target_properties(kdchart PROPERTIES LINK_FLAGS "-Wl,--version-script,\"${CMAKE_CURRENT_SOURCE_DIR}/libkdchart.map\"")
@@ -459,7 +462,6 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "SunOS")
   target_link_libraries(kdchart sunmath)
 endif()
 set_target_properties(kdchart PROPERTIES DEFINE_SYMBOL KDCHART_BUILD_KDCHART_LIB)
-set_target_properties(kdchart PROPERTIES VERSION ${${PROJECT_NAME}_VERSION})
 target_include_directories(kdchart
   INTERFACE
     "$<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR}/KDChart>"
@@ -481,16 +483,15 @@ target_include_directories(kdchart
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/KDChart/Ternary>"
 )
 
-# append d to debug libraries for windows builds
+#version libraries on Windows
 if(WIN32)
-  set(postfix ${${PROJECT_NAME}_VERSION_MAJOR})
-  string(TOUPPER ${CMAKE_BUILD_TYPE} UPPER_BUILD_TYPE)
-  if(${UPPER_BUILD_TYPE} MATCHES "^DEBUG")
-    string(CONCAT postfix ${postfix} "d")
-    set_target_properties(kdchart PROPERTIES DEBUG_POSTFIX ${postfix})
-  else()
-    set_target_properties(kdchart PROPERTIES ${UPPER_BUILD_TYPE}_POSTFIX ${postfix})
-  endif()
+  set(postfix ${${PROJECT_NAME}_SOVERSION})
+  set(CMAKE_RELEASE_POSTFIX ${postfix})
+  set_target_properties(kdchart PROPERTIES RELEASE_POSTFIX ${CMAKE_RELEASE_POSTFIX})
+  #append 'd' to debug libraries
+  string(CONCAT postfix ${postfix} "d")
+  set(CMAKE_DEBUG_POSTFIX ${postfix})
+  set_target_properties(kdchart PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 endif()
 
 install(TARGETS kdchart EXPORT KDChartTargets
