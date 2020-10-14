@@ -7,6 +7,8 @@ Version 2.7.2:
 --------------
  * CMake buildsystem - option BUILD_PYTHON_BINDINGS => KDChart_PYTHON_BINDINGS
  * CMake buildsystem - option PYTHON_BINDINGS_INSTALL_PREFIX => KDChart_PYTHON_BINDINGS_INSTALL_PREFIX
+ * Fix static linking examples and unittests in the CMake buildsystem
+ * small buildsystem improvements
 
 Version 2.7.1:
 --------------
