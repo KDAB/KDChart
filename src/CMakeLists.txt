@@ -444,6 +444,10 @@ check_cxx_source_compiles("int main(void) { return 0; }" HAVE_LD_VERSION_SCRIPT)
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS_SAVE})
 
 add_library(kdchart ${KDChart_LIBRARY_MODE} ${SOURCES} ${KDCHART_UI} ${KDCHART_RES})
+set_target_properties(kdchart PROPERTIES
+  SOVERSION ${${PROJECT_NAME}_SOVERSION}
+  VERSION ${${PROJECT_NAME}_VERSION}
+)
 if(${PROJECT_NAME}_STATIC)
   target_compile_definitions(kdchart PUBLIC KDCHART_STATICLIB)
 else()
@@ -458,7 +462,6 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "SunOS")
   target_link_libraries(kdchart sunmath)
 endif()
 set_target_properties(kdchart PROPERTIES DEFINE_SYMBOL KDCHART_BUILD_KDCHART_LIB)
-set_target_properties(kdchart PROPERTIES VERSION ${${PROJECT_NAME}_VERSION})
 target_include_directories(kdchart
   INTERFACE
     "$<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR}/KDChart>"
@@ -482,7 +485,7 @@ target_include_directories(kdchart
 
 #version libraries on Windows
 if(WIN32)
-  set(postfix ${${PROJECT_NAME}_VERSION_MAJOR})
+  set(postfix ${${PROJECT_NAME}_SOVERSION})
   set(CMAKE_RELEASE_POSTFIX ${postfix})
   set_target_properties(kdchart PROPERTIES RELEASE_POSTFIX ${CMAKE_RELEASE_POSTFIX})
   #append 'd' to debug libraries
