@@ -19,12 +19,12 @@
 #  Build the examples.
 #  Default=true
 #
-# -DBUILD_PYTHON_BINDINGS=[true|false]
-#  Build/Generate python bindings.  Always false for Debug builds
+# -DKDChart_PYTHON_BINDINGS=[true|false]
+#  Build/Generate Python bindings.  Always false for Debug builds.
 #  Default=false
 #
-# -DPYTHON_BINDINGS_INSTALL_PREFIX=[path]
-#  alternative install path for python bindings
+# -DKDChart_PYTHON_BINDINGS_INSTALL_PREFIX=[path]
+#  Alternative install path for Python bindings.
 #  Default=CMAKE_INSTALL_PREFIX
 #
 cmake_minimum_required(VERSION 2.8.7)
@@ -60,8 +60,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_MODULE_PATH}")
 option(${PROJECT_NAME}_STATIC "Build statically" OFF)
 option(${PROJECT_NAME}_TESTS "Build the tests" OFF)
 option(${PROJECT_NAME}_EXAMPLES "Build the examples" ON)
-option(BUILD_PYTHON_BINDINGS "Build python bindings" OFF)
-if(BUILD_PYTHON_BINDINGS AND (CMAKE_BUILD_TYPE MATCHES "^[Dd]eb" OR ${PROJECT_NAME}_STATIC))
+option(${PROJECT_NAME}_PYTHON_BINDINGS "Build python bindings" OFF)
+if(${PROJECT_NAME}_PYTHON_BINDINGS AND (CMAKE_BUILD_TYPE MATCHES "^[Dd]eb" OR ${PROJECT_NAME}_STATIC))
   message(FATAL_ERROR "** Python Bindings are disabled in debug or static builds.")
 endif()
 
@@ -209,12 +209,12 @@ endif()
 add_subdirectory(src)
 
 # only build python bindings for Qt5.12 or greater
-if(BUILD_PYTHON_BINDINGS AND Qt5Core_VERSION VERSION_LESS 5.12)
+if(${PROJECT_NAME}_PYTHON_BINDINGS AND Qt5Core_VERSION VERSION_LESS 5.12)
   message(WARNING "** Disabling Python Bindings. Qt version is too old and unsupported.")
-  set(BUILD_PYTHON_BINDINGS OFF)
+  set(${PROJECT_NAME}_PYTHON_BINDINGS OFF)
 endif()
 
-if(Qt5Core_FOUND AND BUILD_PYTHON_BINDINGS)
+if(Qt5Core_FOUND AND ${PROJECT_NAME}_PYTHON_BINDINGS)
   add_subdirectory(python)
 endif()
 

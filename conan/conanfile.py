@@ -76,9 +76,9 @@ class KdchartConan(ConanFile):
         self.cmake.definitions["KDChart_STATIC"] = self.options.build_static
         self.cmake.definitions["KDChart_EXAMPLES"] = self.options.build_examples
         self.cmake.definitions["KDChart_TESTS"] = self.options.build_tests
-        self.cmake.definitions["BUILD_PYTHON_BINDINGS"] = self.options.build_python_bindings
+        self.cmake.definitions["KDChart_PYTHON_BINDINGS"] = self.options.build_python_bindings
         if self.options.python_bindings_install_dir:
-            self.cmake.definitions["PYTHON_BINDINGS_INSTALL_PREFIX"] = self.options.python_bindings_install_dir
+            self.cmake.definitions["KDChart_PYTHON_BINDINGS_INSTALL_PREFIX"] = self.options.python_bindings_install_dir
         self.cmake.configure()
         self.cmake.build()
 
