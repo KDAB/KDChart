@@ -1,5 +1,5 @@
 Name:           kdchart
-Version:        2.7.1
+Version:        2.7.2
 Release:        1
 Summary:        A Qt tool for creating business and scientific charts
 Source0:        %{name}-%{version}.tar.gz
@@ -7,7 +7,7 @@ Source1:        %{name}-rpmlintrc
 Source2:        %{name}-%{version}.tar.gz.asc
 URL:            https://github.com/KDAB/KDChart
 Group:          System/Libraries
-License:        GPL-2.0+
+License:        GPL-2.0-only OR GPL-3.0-only
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Vendor:         Klaralvdalens Datakonsult AB (KDAB)
 Packager:       Klaralvdalens Datakonsult AB (KDAB) <info@kdab.com>
@@ -82,6 +82,8 @@ QMAKE_ARGS="LIB_SUFFIX=64" ./configure.sh -shared -release -no-unittests -prefix
 %{_libdir}/libkdchart.so
 
 %changelog
+* Fri Oct 16 2020 Allen Winter <allen.winter@kdab.com> 2.7.2
+  2.7.2
 * Fri Jun 19 2020 Allen Winter <allen.winter@kdab.com> 2.7.1
   2.7.1
 * Mon Jan 06 2020 Allen Winter <allen.winter@kdab.com> 2.7.0
