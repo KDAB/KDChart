@@ -1,4 +1,10 @@
-kdchart (2.7.1) final; urgency=high
+kdchart (2.7.2) final; urgency=high
+
+  * 2.7.2 final release
+
+ -- Allen Winter <allen.winter@kdab.com>  Fri, 16 Oct 2020 12:00:00 -0500
+
+ kdchart (2.7.1) final; urgency=high
 
   * 2.7.1 final release
 

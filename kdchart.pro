@@ -16,13 +16,11 @@ MAJOR_VERSION = 2
 
 QT_VERSION=$$[QT_VERSION]
 isEmpty(QT_VERSION) {
-    error("ERROR: qmake from Qt3 detected. Please use qmake from Qt4!")
+    error("ERROR: qmake from Qt3 detected. Please use qmake from Qt4 or Qt5!")
 }
-
 
 unix:DEFAULT_INSTALL_PREFIX = /usr/local/KDAB/KDChart-$$VERSION
 win32:DEFAULT_INSTALL_PREFIX = "C:\KDAB\KDChart"-$$VERSION
-
 
 # for backw. compat. we still allow manual invocation of qmake using PREFIX:
 isEmpty( KDCHART_INSTALL_PREFIX ): KDCHART_INSTALL_PREFIX=$$PREFIX
