@@ -1416,7 +1416,7 @@ void Chart::reLayoutFloatingLegends()
             QPointF pt( relPos.calculatedPoint( size() ) );
             //qDebug() << pt;
             // calculate the legend's top left point
-            const Qt::Alignment alignTopLeft = Qt::AlignBottom | Qt::AlignLeft;
+            const Qt::Alignment alignTopLeft = Qt::AlignTop | Qt::AlignLeft;
             if ( (relPos.alignment() & alignTopLeft) != alignTopLeft ) {
                 if ( relPos.alignment() & Qt::AlignRight )
                     pt.rx() -= legendSize.width();
