@@ -4,10 +4,9 @@
 ##
 ## This file is part of the KD Chart library.
 ##
-## Licensees holding valid commercial KD Soap licenses may use this file in
-## accordance with the KD Soap Commercial License Agreement provided with
+## Licensees holding valid commercial KD Chart licenses may use this file in
+## accordance with the KD Chart Commercial License Agreement provided with
 ## the Software.
-##
 ##
 ## This file may be distributed and/or modified under the terms of the
 ## GNU Lesser General Public License version 2.1 and version 3 as published by the
