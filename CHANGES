@@ -3,6 +3,10 @@ Release Highlights
 
 ** WARNING ** Version 2.7.x will be the last to support Qt4 **
 
+Version 2.7.3:
+--------------
+ * CMake buildsystem - fix library versioning for RelWithDebInfo on Windows
+
 Version 2.7.2:
 --------------
  * CMake buildsystem - option BUILD_PYTHON_BINDINGS => KDChart_PYTHON_BINDINGS
