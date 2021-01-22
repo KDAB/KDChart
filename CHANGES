@@ -8,6 +8,10 @@ Version 3.0.0 (unreleased):
  * (remove Qt4 support)
  * (require C++11)
 
+Version 2.7.3:
+--------------
+ * CMake buildsystem - fix library versioning for RelWithDebInfo on Windows
+
 Version 2.7.2:
 --------------
  * CMake buildsystem - option BUILD_PYTHON_BINDINGS => KDChart_PYTHON_BINDINGS
