@@ -23,16 +23,17 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include <QDialog>
+#include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
 class QLineEdit;
 class QCheckBox;
 QT_END_NAMESPACE
 
-namespace KDGantt {
-    class View;
+namespace KDGantt
+{
+class View;
 }
 
 class ProjectModel;
@@ -48,11 +49,12 @@ public:
 private slots:
     void fileButtonClicked();
 };
-        
-class MainWindow : public QMainWindow {
+
+class MainWindow : public QMainWindow
+{
     Q_OBJECT
 public:
-    explicit MainWindow( QWidget* parent = 0 );
+    explicit MainWindow(QWidget *parent = 0);
 
 private slots:
     void slotFileSavePdf();
@@ -67,10 +69,9 @@ private slots:
     void slotAlignCenter();
     void slotAlignRight();
     void slotAlignHidden();
-    
+
 private:
-    ProjectModel* m_model;
-    KDGantt::View* m_view;
+    ProjectModel *m_model;
+    KDGantt::View *m_view;
 };
 #endif /* MAINWINDOW_H */
-

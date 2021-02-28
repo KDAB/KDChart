@@ -26,7 +26,8 @@
 #include "ui_mainwindow.h"
 #include <TableModel.h>
 
-namespace KDChart {
+namespace KDChart
+{
 class Chart;
 class DatasetProxyModel;
 class LineDiagram;
@@ -39,21 +40,19 @@ class MainWindow : public QWidget, private Ui::MainWindow
     Q_OBJECT
 
 public:
-    MainWindow( QWidget* parent = 0 );
+    MainWindow(QWidget *parent = 0);
 
 private slots:
-    void annotationsToggled( bool );
-    void gridLinesOnAnnotationsToggled( bool );
+    void annotationsToggled(bool);
+    void gridLinesOnAnnotationsToggled(bool);
 
 private:
-    KDChart::Chart* m_chart;
-    KDChart::CartesianAxis* m_xAxis;
+    KDChart::Chart *m_chart;
+    KDChart::CartesianAxis *m_xAxis;
     TableModel m_model;
-    KDChart::DatasetProxyModel* m_datasetProxy;
-    KDChart::LineDiagram* m_lines;
-    KDChart::Legend* m_legend;
+    KDChart::DatasetProxyModel *m_datasetProxy;
+    KDChart::LineDiagram *m_lines;
+    KDChart::Legend *m_legend;
 };
 
-
 #endif /* MAINWINDOW_H */
-

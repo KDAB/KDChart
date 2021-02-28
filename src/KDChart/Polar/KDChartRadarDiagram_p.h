@@ -39,26 +39,26 @@
 
 #include <KDABLibFakes>
 
-
-namespace KDChart {
-
+namespace KDChart
+{
 /**
  * \internal
  */
 class RadarDiagram::Private : public AbstractPolarDiagram::Private
 {
     friend class RadarDiagram;
+
 public:
     Private();
     ~Private() override;
 
-    Private( const Private& rhs ) :
-        AbstractPolarDiagram::Private( rhs ),
-        closeDatasets( rhs.closeDatasets ),
-        reverseData( rhs.reverseData ),
-        fillAlpha( rhs.fillAlpha )
-        {
-        }
+    Private(const Private &rhs)
+        : AbstractPolarDiagram::Private(rhs)
+        , closeDatasets(rhs.closeDatasets)
+        , reverseData(rhs.reverseData)
+        , fillAlpha(rhs.fillAlpha)
+    {
+    }
 
 private:
     bool closeDatasets;
@@ -67,7 +67,7 @@ private:
     LabelPaintCache labelPaintCache;
 };
 
-KDCHART_IMPL_DERIVED_DIAGRAM( RadarDiagram, AbstractPolarDiagram, RadarCoordinatePlane )
+KDCHART_IMPL_DERIVED_DIAGRAM(RadarDiagram, AbstractPolarDiagram, RadarCoordinatePlane)
 
 }
 

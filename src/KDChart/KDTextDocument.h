@@ -34,27 +34,27 @@
 // We mean it.
 //
 
-#include <QTextDocument>
 #include <QSize>
+#include <QTextDocument>
 
 /**
-  * KDTextDocument is an internally used enhanced QTextDocument
-  * \internal
-  */
+ * KDTextDocument is an internally used enhanced QTextDocument
+ * \internal
+ */
 class KDTextDocument : public QTextDocument
 {
     Q_OBJECT
 
 public:
-    explicit KDTextDocument( QObject* parent = 0 );
-    explicit KDTextDocument( const QString& text, QObject* parent = 0 );
+    explicit KDTextDocument(QObject *parent = 0);
+    explicit KDTextDocument(const QString &text, QObject *parent = 0);
     ~KDTextDocument() override;
 
     QSize sizeHint();
     QSize minimumSizeHint();
 
 private:
-    QSize sizeForWidth( int width );
+    QSize sizeForWidth(int width);
 
 private:
     bool mHintValid;
@@ -62,6 +62,4 @@ private:
     QSize mMinimumSizeHint;
 };
 
-
 #endif /* KDTEXTDOCUMENT_H */
-

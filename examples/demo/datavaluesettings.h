@@ -25,8 +25,9 @@
 
 #include <QWidget>
 
-namespace KDChart {
-    class Chart;
+namespace KDChart
+{
+class Chart;
 }
 
 class DataValueSettings : public QWidget
@@ -34,7 +35,7 @@ class DataValueSettings : public QWidget
     Q_OBJECT
 
 public:
-    DataValueSettings( KDChart::Chart *chart, QWidget* parent = 0 );
+    DataValueSettings(KDChart::Chart *chart, QWidget *parent = 0);
     ~DataValueSettings() override;
 
 public Q_SLOTS:
@@ -43,9 +44,6 @@ public Q_SLOTS:
 private:
     class Private;
     Private *d;
-
 };
 
-
 #endif /* MAINWINDOW_H */
-

@@ -38,27 +38,31 @@
 
 #include <KDABLibFakes>
 
-
-namespace KDChart {
-
+namespace KDChart
+{
 /**
  * \internal
  */
 class AbstractThreeDAttributes::Private
 {
     friend class AbstractThreeDAttributes;
+
 public:
     Private();
 
 private:
     bool enabled;
-// FIXME: What is this needed for? height is not referenced anywhere.
-//    int height;
+    // FIXME: What is this needed for? height is not referenced anywhere.
+    //    int height;
     qreal depth;
     bool threeDBrushEnabled;
 };
 
-inline AbstractThreeDAttributes::AbstractThreeDAttributes( Private * p ) : _d( p ) { init(); }
+inline AbstractThreeDAttributes::AbstractThreeDAttributes(Private *p)
+    : _d(p)
+{
+    init();
+}
 
 }
 

@@ -27,7 +27,7 @@
 
 namespace KDChart
 {
-    class Chart;
+class Chart;
 }
 
 class AxisSettings : public QWidget
@@ -35,7 +35,7 @@ class AxisSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit AxisSettings( KDChart::Chart *chart, QWidget *parent = 0 );
+    explicit AxisSettings(KDChart::Chart *chart, QWidget *parent = 0);
     ~AxisSettings() override;
 
 public Q_SLOTS:

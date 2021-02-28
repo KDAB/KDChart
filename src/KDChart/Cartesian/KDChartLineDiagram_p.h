@@ -38,69 +38,70 @@
 
 #include <QPainterPath>
 
-#include "KDChartThreeDLineAttributes.h"
 #include "KDChartAbstractCartesianDiagram_p.h"
 #include "KDChartCartesianDiagramDataCompressor_p.h"
+#include "KDChartThreeDLineAttributes.h"
 
 #include <KDABLibFakes>
 
-
-namespace KDChart {
-
-    class PaintContext;
+namespace KDChart
+{
+class PaintContext;
 
 /**
  * \internal
  */
-    class LineDiagram::Private : public AbstractCartesianDiagram::Private
+class LineDiagram::Private : public AbstractCartesianDiagram::Private
+{
+    friend class LineDiagram;
+    friend class LineDiagramType;
+
+public:
+    Private();
+    Private(const Private &rhs);
+    ~Private() override;
+
+    LineDiagramType *implementor; // the current type
+    LineDiagramType *normalDiagram;
+    LineDiagramType *stackedDiagram;
+    LineDiagramType *percentDiagram;
+    bool centerDataPoints;
+    bool reverseDatasetOrder;
+    qreal tension;
+};
+
+KDCHART_IMPL_DERIVED_DIAGRAM(LineDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane)
+
+class LineDiagram::LineDiagramType
+{
+public:
+    explicit LineDiagramType(LineDiagram *d)
+        : m_private(d->d_func())
     {
-        friend class LineDiagram;
-        friend class LineDiagramType;
-
-    public:
-        Private();
-        Private( const Private& rhs );
-        ~Private() override;
-
-        LineDiagramType* implementor; // the current type
-        LineDiagramType* normalDiagram;
-        LineDiagramType* stackedDiagram;
-        LineDiagramType* percentDiagram;
-        bool centerDataPoints;
-        bool reverseDatasetOrder;
-        qreal tension;
-    };
-
-    KDCHART_IMPL_DERIVED_DIAGRAM( LineDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane )
-
-    class LineDiagram::LineDiagramType
+    }
+    virtual ~LineDiagramType()
     {
-    public:
-        explicit LineDiagramType( LineDiagram* d )
-            : m_private( d->d_func() )
-        {
-        }
-        virtual ~LineDiagramType() {}
-        virtual LineDiagram::LineType type() const = 0;
-        virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const = 0;
-        virtual void paint( PaintContext* ctx ) = 0;
-        LineDiagram* diagram() const;
+    }
+    virtual LineDiagram::LineType type() const = 0;
+    virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const = 0;
+    virtual void paint(PaintContext *ctx) = 0;
+    LineDiagram *diagram() const;
 
-    protected:
-        // make some elements of m_private available to derived classes:
-        AttributesModel* attributesModel() const;
-        QModelIndex attributesModelRootIndex() const;
-        ReverseMapper& reverseMapper();
-        CartesianDiagramDataCompressor& compressor() const;
+protected:
+    // make some elements of m_private available to derived classes:
+    AttributesModel *attributesModel() const;
+    QModelIndex attributesModelRootIndex() const;
+    ReverseMapper &reverseMapper();
+    CartesianDiagramDataCompressor &compressor() const;
 
-        qreal interpolateMissingValue( const CartesianDiagramDataCompressor::CachePosition& pos ) const;
+    qreal interpolateMissingValue(const CartesianDiagramDataCompressor::CachePosition &pos) const;
 
-        int datasetDimension() const;
+    int datasetDimension() const;
 
-        qreal valueForCell( int row, int column ) const;
+    qreal valueForCell(int row, int column) const;
 
-        LineDiagram::Private* m_private;
-    };
+    LineDiagram::Private *m_private;
+};
 }
 
 #endif /* KDCHARTLINEDIAGRAM_P_H */

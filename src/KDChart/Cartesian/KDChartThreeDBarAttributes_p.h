@@ -38,15 +38,15 @@
 
 #include <KDABLibFakes>
 
-
-namespace KDChart {
-
+namespace KDChart
+{
 /**
  * \internal
  */
 class ThreeDBarAttributes::Private : public AbstractThreeDAttributes::Private
 {
     friend class ThreeDBarAttributes;
+
 public:
     Private();
 
@@ -58,6 +58,5 @@ private:
 KDCHART_DERIVED_PRIVATE_FOOTER(ThreeDBarAttributes, AbstractThreeDAttributes)
 
 }
-
 
 #endif // KDCHARTTHREEDBARATTRIBUTES_P_H

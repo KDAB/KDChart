@@ -27,17 +27,18 @@
 
 #include <QHash>
 
-namespace KDGantt {
-    class ItemDelegate::Private {
-    public:
-        Private();
+namespace KDGantt
+{
+class ItemDelegate::Private
+{
+public:
+    Private();
 
-        QPen constraintPen( const QPointF& start, const QPointF& end, const Constraint& constraint );
+    QPen constraintPen(const QPointF &start, const QPointF &end, const Constraint &constraint);
 
-        QHash<ItemType, QBrush> defaultbrush;
-        QHash<ItemType, QPen> defaultpen;
-    };
+    QHash<ItemType, QBrush> defaultbrush;
+    QHash<ItemType, QPen> defaultpen;
+};
 }
 
 #endif /* KDGANTTITEMDELEGATE_P_H */
-

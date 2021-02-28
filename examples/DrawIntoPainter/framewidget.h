@@ -25,8 +25,9 @@
 
 #include <QWidget>
 
-namespace KDChart {
-    class Chart;
+namespace KDChart
+{
+class Chart;
 }
 
 QT_BEGIN_NAMESPACE
@@ -41,16 +42,14 @@ class FrameWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit FrameWidget( QWidget * parent = 0, Qt::WFlags f = 0 );
+    explicit FrameWidget(QWidget *parent = 0, Qt::WFlags f = 0);
 
-    void paintEvent( QPaintEvent* ) override;
+    void paintEvent(QPaintEvent *) override;
 
-    void setChart( KDChart::Chart* chart );
+    void setChart(KDChart::Chart *chart);
 
 private:
-    KDChart::Chart* mChart;
+    KDChart::Chart *mChart;
 };
 
-
 #endif /* FRAMEWIDGET_H */
-

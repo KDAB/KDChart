@@ -29,60 +29,60 @@
 
 #include "KDChartLeveyJenningsGridAttributes.h"
 
-namespace KDChart {
+namespace KDChart
+{
+class LeveyJenningsDiagram;
 
-    class LeveyJenningsDiagram;
+/**
+ * The class for levey jennings axes.
+ *
+ * For being useful, axes need to be assigned to a diagram, see
+ * LeveyJenningsDiagram::addAxis and LeveyJenningsDiagram::takeAxis.
+ *
+ * \sa PolarAxis, AbstractCartesianDiagram
+ */
+class KDCHART_EXPORT LeveyJenningsAxis : public CartesianAxis
+{
+    Q_OBJECT
+
+    Q_DISABLE_COPY(LeveyJenningsAxis)
+    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT(LeveyJenningsAxis, AbstractDiagram *)
+
+public:
+    /**
+     * C'tor of the class for levey jennings axes.
+     *
+     * \note If using a zero parent for the constructor, you need to call
+     * your diagram's addAxis function to add your axis to the diagram.
+     * Otherwise, there is no need to call addAxis, since the constructor
+     * does that automatically for you, if you pass a diagram as parameter.
+     *
+     * \sa AbstractCartesianDiagram::addAxis
+     */
+    explicit LeveyJenningsAxis(LeveyJenningsDiagram *diagram = 0);
+    ~LeveyJenningsAxis() override;
+
+    LeveyJenningsGridAttributes::GridType type() const;
+    void setType(LeveyJenningsGridAttributes::GridType type);
+
+    Qt::DateFormat dateFormat() const;
+    void setDateFormat(Qt::DateFormat format);
 
     /**
-      * The class for levey jennings axes.
-      *
-      * For being useful, axes need to be assigned to a diagram, see
-      * LeveyJenningsDiagram::addAxis and LeveyJenningsDiagram::takeAxis.
-      *
-      * \sa PolarAxis, AbstractCartesianDiagram
-      */
-    class KDCHART_EXPORT LeveyJenningsAxis : public CartesianAxis
-    {
-        Q_OBJECT
+     * Returns true if both axes have the same settings.
+     */
+    bool compare(const LeveyJenningsAxis *other) const;
 
-        Q_DISABLE_COPY( LeveyJenningsAxis )
-        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( LeveyJenningsAxis, AbstractDiagram* )
+    /** reimpl */
+    void paintCtx(PaintContext *) override;
 
-    public:
-        /**
-          * C'tor of the class for levey jennings axes.
-          *
-          * \note If using a zero parent for the constructor, you need to call
-          * your diagram's addAxis function to add your axis to the diagram.
-          * Otherwise, there is no need to call addAxis, since the constructor
-          * does that automatically for you, if you pass a diagram as parameter.
-          *
-          * \sa AbstractCartesianDiagram::addAxis
-          */
-        explicit LeveyJenningsAxis ( LeveyJenningsDiagram* diagram = 0 );
-        ~LeveyJenningsAxis() override;
+protected:
+    virtual void paintAsOrdinate(PaintContext *);
 
-        LeveyJenningsGridAttributes::GridType type() const;
-        void setType( LeveyJenningsGridAttributes::GridType type );
+    virtual void paintAsAbscissa(PaintContext *);
+};
 
-        Qt::DateFormat dateFormat() const;
-        void setDateFormat( Qt::DateFormat format );
-
-        /**
-         * Returns true if both axes have the same settings.
-         */
-        bool compare( const LeveyJenningsAxis* other ) const;
-
-        /** reimpl */
-        void paintCtx( PaintContext* ) override;
-
-    protected:
-        virtual void paintAsOrdinate( PaintContext* );
-
-        virtual void paintAsAbscissa( PaintContext* );
-    };
-
-    typedef QList<LeveyJenningsAxis*> LeveyJenningsAxisList;
+typedef QList<LeveyJenningsAxis *> LeveyJenningsAxisList;
 }
 
 #endif

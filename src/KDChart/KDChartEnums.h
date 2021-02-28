@@ -25,8 +25,8 @@
 
 #include "KDChartGlobal.h"
 
-#include <QRectF>
 #include <QObject>
+#include <QRectF>
 #include <QVector>
 
 /** \file KDChartEnums.h
@@ -37,12 +37,12 @@
   Project global class providing some enums needed both by KDChartParams
   and by KDChartCustomBox.
   */
-class KDCHART_EXPORT KDChartEnums :public QObject
+class KDCHART_EXPORT KDChartEnums : public QObject
 {
     Q_OBJECT
-    Q_ENUMS( TextLayoutPolicy )
-    Q_ENUMS( AreaName )
-    Q_ENUMS( PositionFlag )
+    Q_ENUMS(TextLayoutPolicy)
+    Q_ENUMS(AreaName)
+    Q_ENUMS(PositionFlag)
 
 public:
     /**
@@ -97,7 +97,8 @@ public:
         GranularitySequence_10_50,
         GranularitySequence_25_50,
         GranularitySequence_125_25,
-        GranularitySequenceIrregular };
+        GranularitySequenceIrregular
+    };
 
     /**
       Converts the specified granularity sequence enum to a
@@ -106,23 +107,23 @@ public:
       \param sequence the granularity sequence enum to convert
       \return the string representation of the granularity sequence
       */
-    static QString granularitySequenceToString( GranularitySequence sequence ) {
-        switch ( sequence ) {
-            case GranularitySequence_10_20:
-                return QString::fromLatin1("GranularitySequence_10_20");
-            case GranularitySequence_10_50:
-                return QString::fromLatin1("GranularitySequence_10_50");
-            case GranularitySequence_25_50:
-                return QString::fromLatin1("GranularitySequence_25_50");
-            case GranularitySequence_125_25:
-                return QString::fromLatin1("GranularitySequence_125_25");
-            case GranularitySequenceIrregular:
-                return QString::fromLatin1("GranularitySequenceIrregular");
+    static QString granularitySequenceToString(GranularitySequence sequence)
+    {
+        switch (sequence) {
+        case GranularitySequence_10_20:
+            return QString::fromLatin1("GranularitySequence_10_20");
+        case GranularitySequence_10_50:
+            return QString::fromLatin1("GranularitySequence_10_50");
+        case GranularitySequence_25_50:
+            return QString::fromLatin1("GranularitySequence_25_50");
+        case GranularitySequence_125_25:
+            return QString::fromLatin1("GranularitySequence_125_25");
+        case GranularitySequenceIrregular:
+            return QString::fromLatin1("GranularitySequenceIrregular");
         }
-        Q_ASSERT( !"Unknown GranularitySequenceValue" );
+        Q_ASSERT(!"Unknown GranularitySequenceValue");
         return QString::fromLatin1("GranularitySequence_10_20");
     }
-
 
     /**
       Converts the specified string to a granularity sequence enum value.
@@ -130,21 +131,21 @@ public:
       \param string the string to convert
       \return the granularity sequence enum value
       */
-    static GranularitySequence stringToGranularitySequence( const QString& string ) {
-      if ( string == QString::fromLatin1("GranularitySequence_10_20") )
-          return GranularitySequence_10_20;
-      if ( string == QString::fromLatin1("GranularitySequence_10_50") )
-          return GranularitySequence_10_50;
-      if ( string == QString::fromLatin1("GranularitySequence_25_50") )
-          return GranularitySequence_25_50;
-      if ( string == QString::fromLatin1("GranularitySequence_125") )
-          return GranularitySequence_125_25;
-      if ( string == QString::fromLatin1("GranularitySequenceIrregular") )
-          return GranularitySequenceIrregular;
-      // default, should not happen
-      return GranularitySequence_10_20;
+    static GranularitySequence stringToGranularitySequence(const QString &string)
+    {
+        if (string == QString::fromLatin1("GranularitySequence_10_20"))
+            return GranularitySequence_10_20;
+        if (string == QString::fromLatin1("GranularitySequence_10_50"))
+            return GranularitySequence_10_50;
+        if (string == QString::fromLatin1("GranularitySequence_25_50"))
+            return GranularitySequence_25_50;
+        if (string == QString::fromLatin1("GranularitySequence_125"))
+            return GranularitySequence_125_25;
+        if (string == QString::fromLatin1("GranularitySequenceIrregular"))
+            return GranularitySequenceIrregular;
+        // default, should not happen
+        return GranularitySequence_10_20;
     }
-
 
     /**
       Text layout policy: what to do if text that is to be drawn would
@@ -153,16 +154,12 @@ public:
       \li \c LayoutJustOverwrite Just ignore the layout collision and write the text nevertheless.
       \li \c LayoutPolicyRotate Try counter-clockwise rotation to make the text fit into the space.
       \li \c LayoutPolicyShiftVertically Shift the text baseline upwards (or downwards, resp.) and draw a connector line between the text and its anchor.
-      \li \c LayoutPolicyShiftHorizontally Shift the text baseline to the left (or to the right, resp.) and draw a connector line between the text and its anchor.
-      \li \c LayoutPolicyShrinkFontSize Reduce the text font size.
+      \li \c LayoutPolicyShiftHorizontally Shift the text baseline to the left (or to the right, resp.) and draw a connector line between the text and its
+      anchor. \li \c LayoutPolicyShrinkFontSize Reduce the text font size.
 
       \sa KDChartParams::setPrintDataValues
       */
-    enum TextLayoutPolicy { LayoutJustOverwrite,
-        LayoutPolicyRotate,
-        LayoutPolicyShiftVertically,
-        LayoutPolicyShiftHorizontally,
-        LayoutPolicyShrinkFontSize };
+    enum TextLayoutPolicy { LayoutJustOverwrite, LayoutPolicyRotate, LayoutPolicyShiftVertically, LayoutPolicyShiftHorizontally, LayoutPolicyShrinkFontSize };
 
     /**
       Converts the specified text layout policy enum to a
@@ -171,8 +168,7 @@ public:
       \param type the text layout policy to convert
       \return the string representation of the text layout policy enum
       */
-    static QString layoutPolicyToString( TextLayoutPolicy type );
-
+    static QString layoutPolicyToString(TextLayoutPolicy type);
 
     /**
       Converts the specified string to a text layout policy enum value.
@@ -180,8 +176,7 @@ public:
       \param string the string to convert
       \return the text layout policy enum value
       */
-    static TextLayoutPolicy stringToLayoutPolicy( const QString& string );
-
+    static TextLayoutPolicy stringToLayoutPolicy(const QString &string);
 
     /**
         Numerical values of the static KDChart::Position instances,
@@ -190,40 +185,43 @@ public:
         \sa Position
     */
     enum PositionValue {
-        PositionUnknown   = 0,
-        PositionCenter    = 1,
+        PositionUnknown = 0,
+        PositionCenter = 1,
         PositionNorthWest = 2,
-        PositionNorth     = 3,
+        PositionNorth = 3,
         PositionNorthEast = 4,
-        PositionEast      = 5,
+        PositionEast = 5,
         PositionSouthEast = 6,
-        PositionSouth     = 7,
+        PositionSouth = 7,
         PositionSouthWest = 8,
-        PositionWest      = 9,
-        PositionFloating  =10
+        PositionWest = 9,
+        PositionFloating = 10
     };
-
 
     /**
       Measure calculation mode: the way how the absolute value of a KDChart::Measure is determined during KD Chart's internal geometry calculation time.
 
       KDChart::Measure values either are relative (calculated in relation to a given AbstractArea), or they are absolute (used as fixed values).
 
-      Values stored in relative measure always are interpreted as per-mille of a reference area's height (or width, resp.) depending on the orientation set for the KDChart::Measure.
+      Values stored in relative measure always are interpreted as per-mille of a reference area's height (or width, resp.) depending on the orientation set for
+      the KDChart::Measure.
 
       \li \c MeasureCalculationModeAbsolute Value set by setValue() is absolute, to be used unchanged.
-      \li \c MeasureCalculationModeRelative Value is relative, the reference area is specified by setReferenceArea(), and orientation specified by setOrientation().
-      \li \c MeasureCalculationModeAuto Value is relative, KD Chart will automatically determine which reference area to use, and it will determine the orientation too.
-      \li \c MeasureCalculationModeAutoArea Value is relative, Orientation is specified by setOrientation(), and KD Chart will automatically determine which reference area to use.
-      \li \c MeasureCalculationModeAutoOrientation Value is relative, Area is specified by setReferenceArea(), and KD Chart will automatically determine which orientation to use.
+      \li \c MeasureCalculationModeRelative Value is relative, the reference area is specified by setReferenceArea(), and orientation specified by
+      setOrientation(). \li \c MeasureCalculationModeAuto Value is relative, KD Chart will automatically determine which reference area to use, and it will
+      determine the orientation too. \li \c MeasureCalculationModeAutoArea Value is relative, Orientation is specified by setOrientation(), and KD Chart will
+      automatically determine which reference area to use. \li \c MeasureCalculationModeAutoOrientation Value is relative, Area is specified by
+      setReferenceArea(), and KD Chart will automatically determine which orientation to use.
 
       \sa KDChart::Measure::setCalculationMode
       */
-    enum MeasureCalculationMode { MeasureCalculationModeAbsolute,
+    enum MeasureCalculationMode {
+        MeasureCalculationModeAbsolute,
         MeasureCalculationModeRelative,
         MeasureCalculationModeAuto,
         MeasureCalculationModeAutoArea,
-        MeasureCalculationModeAutoOrientation };
+        MeasureCalculationModeAutoOrientation
+    };
 
     /**
       Converts the specified measure calculation mode enum to a
@@ -232,23 +230,23 @@ public:
       \param mode the measure calculation mode to convert
       \return the string representation of the Measure calculation mode enum
       */
-    static QString measureCalculationModeToString( MeasureCalculationMode mode ) {
-        switch ( mode ) {
-            case MeasureCalculationModeAbsolute:
-                return QString::fromLatin1("MeasureCalculationModeAbsolute");
-            case MeasureCalculationModeAuto:
-                return QString::fromLatin1("MeasureCalculationModeAuto");
-            case MeasureCalculationModeAutoArea:
-                return QString::fromLatin1("MeasureCalculationModeAutoArea");
-            case MeasureCalculationModeAutoOrientation:
-                return QString::fromLatin1("MeasureCalculationModeAutoOrientation");
-            case MeasureCalculationModeRelative:
-                return QString::fromLatin1("MeasureCalculationModeRelative");
+    static QString measureCalculationModeToString(MeasureCalculationMode mode)
+    {
+        switch (mode) {
+        case MeasureCalculationModeAbsolute:
+            return QString::fromLatin1("MeasureCalculationModeAbsolute");
+        case MeasureCalculationModeAuto:
+            return QString::fromLatin1("MeasureCalculationModeAuto");
+        case MeasureCalculationModeAutoArea:
+            return QString::fromLatin1("MeasureCalculationModeAutoArea");
+        case MeasureCalculationModeAutoOrientation:
+            return QString::fromLatin1("MeasureCalculationModeAutoOrientation");
+        case MeasureCalculationModeRelative:
+            return QString::fromLatin1("MeasureCalculationModeRelative");
         }
-        Q_ASSERT( !"unhandled MeasureCalculationMode" );
+        Q_ASSERT(!"unhandled MeasureCalculationMode");
         return QString::fromLatin1("MeasureCalculationModeAuto");
     }
-
 
     /**
       Converts the specified string to a measure calculation mode enum value.
@@ -256,19 +254,20 @@ public:
       \param string the string to convert
       \return the measure calculation mode enum value
       */
-    static MeasureCalculationMode stringToMeasureCalculationMode( const QString& string ) {
-      if ( string == QString::fromLatin1("MeasureCalculationModeAbsolute") )
-          return MeasureCalculationModeAbsolute;
-      if ( string == QString::fromLatin1("MeasureCalculationModeAuto") )
-          return MeasureCalculationModeAuto;
-      if ( string == QString::fromLatin1("MeasureCalculationModeAutoArea") )
-          return MeasureCalculationModeAutoArea;
-      if ( string == QString::fromLatin1("MeasureCalculationModeAutoOrientation") )
-          return MeasureCalculationModeAutoOrientation;
-      if ( string == QString::fromLatin1("MeasureCalculationModeRelative") )
-          return MeasureCalculationModeRelative;
-      // default, should not happen
-      return MeasureCalculationModeAuto;
+    static MeasureCalculationMode stringToMeasureCalculationMode(const QString &string)
+    {
+        if (string == QString::fromLatin1("MeasureCalculationModeAbsolute"))
+            return MeasureCalculationModeAbsolute;
+        if (string == QString::fromLatin1("MeasureCalculationModeAuto"))
+            return MeasureCalculationModeAuto;
+        if (string == QString::fromLatin1("MeasureCalculationModeAutoArea"))
+            return MeasureCalculationModeAutoArea;
+        if (string == QString::fromLatin1("MeasureCalculationModeAutoOrientation"))
+            return MeasureCalculationModeAutoOrientation;
+        if (string == QString::fromLatin1("MeasureCalculationModeRelative"))
+            return MeasureCalculationModeRelative;
+        // default, should not happen
+        return MeasureCalculationModeAuto;
     }
 
     /**
@@ -279,19 +278,21 @@ public:
       Values stored in relative measure take into account the width (and/or the height, resp.) of a so-called reference area,
       that is either specified by KDChart::Measure::setReferenceArea, or determined by KD Chart automatically, respectively.
 
-      \li \c MeasureOrientationAuto Value is calculated, based upon the width (or on the height, resp.) of the reference area: KD Chart will automatically determie an appropriate way.
-      \li \c MeasureOrientationHorizontal Value is calculated, based upon the width of the reference area.
-      \li \c MeasureOrientationVertical Value is calculated, based upon the height of the reference area.
-      \li \c MeasureOrientationMinimum Value is calculated, based upon the width (or on the height, resp.) of the reference area - which ever is smaller.
-      \li \c MeasureOrientationMaximum Value is calculated, based upon the width (or on the height, resp.) of the reference area - which ever is smaller.
+      \li \c MeasureOrientationAuto Value is calculated, based upon the width (or on the height, resp.) of the reference area: KD Chart will automatically
+      determie an appropriate way. \li \c MeasureOrientationHorizontal Value is calculated, based upon the width of the reference area. \li \c
+      MeasureOrientationVertical Value is calculated, based upon the height of the reference area. \li \c MeasureOrientationMinimum Value is calculated, based
+      upon the width (or on the height, resp.) of the reference area - which ever is smaller. \li \c MeasureOrientationMaximum Value is calculated, based upon
+      the width (or on the height, resp.) of the reference area - which ever is smaller.
 
       \sa KDChart::Measure::setOrientationMode
       */
-    enum MeasureOrientation { MeasureOrientationAuto,
+    enum MeasureOrientation {
+        MeasureOrientationAuto,
         MeasureOrientationHorizontal,
         MeasureOrientationVertical,
         MeasureOrientationMinimum,
-        MeasureOrientationMaximum };
+        MeasureOrientationMaximum
+    };
 
     /**
       Converts the specified measure orientation enum to a
@@ -300,23 +301,23 @@ public:
       \param mode the measure orientation to convert
       \return the string representation of the measure orientation enum
       */
-    static QString measureOrientationToString( MeasureOrientation mode ) {
-        switch ( mode ) {
-            case MeasureOrientationAuto:
-                return QString::fromLatin1("MeasureOrientationAuto");
-            case MeasureOrientationHorizontal:
-                return QString::fromLatin1("MeasureOrientationHorizontal");
-            case MeasureOrientationVertical:
-                return QString::fromLatin1("MeasureOrientationVertical");
-            case MeasureOrientationMinimum:
-                return QString::fromLatin1("MeasureOrientationMinimum");
-            case MeasureOrientationMaximum:
-                return QString::fromLatin1("MeasureOrientationMaximum");
+    static QString measureOrientationToString(MeasureOrientation mode)
+    {
+        switch (mode) {
+        case MeasureOrientationAuto:
+            return QString::fromLatin1("MeasureOrientationAuto");
+        case MeasureOrientationHorizontal:
+            return QString::fromLatin1("MeasureOrientationHorizontal");
+        case MeasureOrientationVertical:
+            return QString::fromLatin1("MeasureOrientationVertical");
+        case MeasureOrientationMinimum:
+            return QString::fromLatin1("MeasureOrientationMinimum");
+        case MeasureOrientationMaximum:
+            return QString::fromLatin1("MeasureOrientationMaximum");
         }
-        Q_ASSERT( !"Unknown MeasureOrientation value" );
+        Q_ASSERT(!"Unknown MeasureOrientation value");
         return QString::fromLatin1("MeasureOrientationAuto");
     }
-
 
     /**
       Converts the specified string to a measure orientation enum value.
@@ -324,23 +325,21 @@ public:
       \param string the string to convert
       \return the measure orientation enum value
       */
-    static MeasureOrientation stringToMeasureOrientation( const QString& string ) {
-      if ( string == QString::fromLatin1("MeasureOrientationAuto") )
-          return MeasureOrientationAuto;
-      if ( string == QString::fromLatin1("MeasureOrientationHorizontal") )
-          return MeasureOrientationHorizontal;
-      if ( string == QString::fromLatin1("MeasureOrientationVertical") )
-          return MeasureOrientationVertical;
-      if ( string == QString::fromLatin1("MeasureOrientationMinimum") )
-          return MeasureOrientationMinimum;
-      if ( string == QString::fromLatin1("MeasureOrientationMaximum") )
-          return MeasureOrientationMaximum;
-      // default, should not happen
-      return MeasureOrientationAuto;
+    static MeasureOrientation stringToMeasureOrientation(const QString &string)
+    {
+        if (string == QString::fromLatin1("MeasureOrientationAuto"))
+            return MeasureOrientationAuto;
+        if (string == QString::fromLatin1("MeasureOrientationHorizontal"))
+            return MeasureOrientationHorizontal;
+        if (string == QString::fromLatin1("MeasureOrientationVertical"))
+            return MeasureOrientationVertical;
+        if (string == QString::fromLatin1("MeasureOrientationMinimum"))
+            return MeasureOrientationMinimum;
+        if (string == QString::fromLatin1("MeasureOrientationMaximum"))
+            return MeasureOrientationMaximum;
+        // default, should not happen
+        return MeasureOrientationAuto;
     }
-
-
 };
-
 
 #endif

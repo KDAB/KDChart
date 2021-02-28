@@ -34,13 +34,13 @@
 // We mean it.
 //
 
+#include "KDChartAbstractAreaWidget_p.h"
 #include "KDChartLegend.h"
 #include <KDChartDiagramObserver.h>
-#include "KDChartAbstractAreaWidget_p.h"
-#include <KDChartTextAttributes.h>
 #include <KDChartMarkerAttributes.h>
-#include <QList>
+#include <KDChartTextAttributes.h>
 #include <QAbstractTextDocumentLayout>
+#include <QList>
 #include <QPainter>
 #include <QVector>
 
@@ -52,14 +52,14 @@ class KDTextDocument;
 class QTextDocument;
 QT_END_NAMESPACE
 
-namespace KDChart {
+namespace KDChart
+{
 class AbstractDiagram;
 struct DatasetItem;
 class DiagramObserver;
 class AbstractLayoutItem;
 
-struct HDatasetItem
-{
+struct HDatasetItem {
     HDatasetItem();
     int height() const;
 
@@ -69,7 +69,9 @@ struct HDatasetItem
     QSpacerItem *spacer;
 };
 
-class DiagramsObserversList : public QList<DiagramObserver*> {};
+class DiagramsObserversList : public QList<DiagramObserver *>
+{
+};
 
 /**
  * \internal
@@ -77,30 +79,31 @@ class DiagramsObserversList : public QList<DiagramObserver*> {};
 class Legend::Private : public AbstractAreaWidget::Private
 {
     friend class Legend;
+
 public:
     Private();
     ~Private() override;
 
-    DiagramObserver* findObserverForDiagram( AbstractDiagram* diagram )
+    DiagramObserver *findObserverForDiagram(AbstractDiagram *diagram)
     {
         for (int i = 0; i < observers.size(); ++i) {
-            DiagramObserver * obs = observers.at(i);
-            if ( obs->diagram() == diagram )
+            DiagramObserver *obs = observers.at(i);
+            if (obs->diagram() == diagram)
                 return obs;
         }
         return 0;
     }
 
-    void fetchPaintOptions( Legend *q );
-    QSizeF markerSize( Legend *q, int dataset, qreal fontHeight ) const;
-    QSizeF maxMarkerSize( Legend *q, qreal fontHeight ) const;
-    void reflowHDatasetItems( Legend *q );
-    void flowHDatasetItems( Legend *q );
+    void fetchPaintOptions(Legend *q);
+    QSizeF markerSize(Legend *q, int dataset, qreal fontHeight) const;
+    QSizeF maxMarkerSize(Legend *q, qreal fontHeight) const;
+    void reflowHDatasetItems(Legend *q);
+    void flowHDatasetItems(Legend *q);
     void destroyOldLayout();
 
 private:
     // user-settable
-    const QWidget* referenceArea;
+    const QWidget *referenceArea;
     Position position;
     Qt::Alignment alignment;
     Qt::Alignment textAlignment;
@@ -109,9 +112,9 @@ private:
     Qt::Orientation orientation;
     Qt::SortOrder order;
     bool showLines;
-    QMap<uint,QString> texts;
-    QMap<uint,QBrush> brushes;
-    QMap<uint,QPen> pens;
+    QMap<uint, QString> texts;
+    QMap<uint, QBrush> brushes;
+    QMap<uint, QPen> pens;
     QMap<uint, MarkerAttributes> markerAttributes;
     QList<uint> hiddenDatasets;
     TextAttributes textAttributes;
@@ -125,22 +128,29 @@ private:
     mutable QStringList modelLabels;
     mutable QList<QBrush> modelBrushes;
     mutable QList<QPen> modelPens;
-    mutable QList< MarkerAttributes > modelMarkers;
+    mutable QList<MarkerAttributes> modelMarkers;
     mutable QSize cachedSizeHint;
-    QVector< AbstractLayoutItem* > paintItems;
-    QGridLayout* layout;
-    QList< HDatasetItem > hLayoutDatasets;
+    QVector<AbstractLayoutItem *> paintItems;
+    QGridLayout *layout;
+    QList<HDatasetItem> hLayoutDatasets;
     DiagramsObserversList observers;
 };
 
-inline Legend::Legend( Private* p, QWidget* parent )
-    : AbstractAreaWidget( p, parent ) { init(); }
+inline Legend::Legend(Private *p, QWidget *parent)
+    : AbstractAreaWidget(p, parent)
+{
+    init();
+}
 
-inline Legend::Private * Legend::d_func()
-{ return static_cast<Private*>( AbstractAreaWidget::d_func() ); }
+inline Legend::Private *Legend::d_func()
+{
+    return static_cast<Private *>(AbstractAreaWidget::d_func());
+}
 
-inline const Legend::Private * Legend::d_func() const
-{ return static_cast<const Private*>( AbstractAreaWidget::d_func() ); }
+inline const Legend::Private *Legend::d_func() const
+{
+    return static_cast<const Private *>(AbstractAreaWidget::d_func());
+}
 
 }
 

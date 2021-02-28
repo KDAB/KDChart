@@ -30,7 +30,7 @@ class DerivedAddLegendDialog : public QDialog, public Ui::AddLegendDialog
     Q_OBJECT
 
 public:
-    DerivedAddLegendDialog( QWidget* parent = 0 );
+    DerivedAddLegendDialog(QWidget *parent = 0);
 };
 
 #endif // DERIVEDADDLEGENDDIALOG_H

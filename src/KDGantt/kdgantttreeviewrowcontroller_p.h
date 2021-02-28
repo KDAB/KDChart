@@ -31,22 +31,24 @@ QT_BEGIN_NAMESPACE
 class QAbstractProxyModel;
 QT_END_NAMESPACE
 
-namespace KDGantt {
-    class TreeViewRowController::Private {
+namespace KDGantt
+{
+class TreeViewRowController::Private
+{
+public:
+    class HackTreeView : public QTreeView
+    {
     public:
-        class HackTreeView : public QTreeView {
-        public:
-            using QTreeView::verticalOffset;
+        using QTreeView::verticalOffset;
 #if QT_VERSION >= 0x040300
-            using QTreeView::rowHeight;
+        using QTreeView::rowHeight;
 #else
-            using QTreeView::indexRowSizeHint;
+        using QTreeView::indexRowSizeHint;
 #endif
-        };
-        HackTreeView* treeview;
-        QAbstractProxyModel* proxy;
     };
+    HackTreeView *treeview;
+    QAbstractProxyModel *proxy;
+};
 }
 
 #endif /* KDGANTTTREEVIEWROWCONTROLLER_P_H */
-

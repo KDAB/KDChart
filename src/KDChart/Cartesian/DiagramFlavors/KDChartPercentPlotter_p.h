@@ -25,17 +25,19 @@
 
 #include "KDChartPlotter_p.h"
 
-namespace KDChart {
-
-    class PercentPlotter : public Plotter::PlotterType
+namespace KDChart
+{
+class PercentPlotter : public Plotter::PlotterType
+{
+public:
+    explicit PercentPlotter(Plotter *);
+    ~PercentPlotter() override
     {
-    public:
-        explicit PercentPlotter( Plotter* );
-        ~PercentPlotter() override {}
-        Plotter::PlotType type() const override;
-        const QPair< QPointF,  QPointF > calculateDataBoundaries() const override;
-        void paint( PaintContext* ctx ) override;
-    };
+    }
+    Plotter::PlotType type() const override;
+    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    void paint(PaintContext *ctx) override;
+};
 }
 
 #endif

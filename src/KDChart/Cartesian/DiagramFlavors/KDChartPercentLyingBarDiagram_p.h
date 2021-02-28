@@ -25,17 +25,19 @@
 
 #include "KDChartBarDiagram_p.h"
 
-namespace KDChart {
-
-    class PercentLyingBarDiagram : public BarDiagram::BarDiagramType
+namespace KDChart
+{
+class PercentLyingBarDiagram : public BarDiagram::BarDiagramType
+{
+public:
+    explicit PercentLyingBarDiagram(BarDiagram *);
+    ~PercentLyingBarDiagram() override
     {
-    public:
-        explicit PercentLyingBarDiagram( BarDiagram* );
-        ~PercentLyingBarDiagram() override {}
-        BarDiagram::BarType type() const override;
-        const QPair<QPointF,  QPointF> calculateDataBoundaries() const override;
-        void paint( PaintContext* ctx ) override;
-    };
+    }
+    BarDiagram::BarType type() const override;
+    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    void paint(PaintContext *ctx) override;
+};
 
 }
 

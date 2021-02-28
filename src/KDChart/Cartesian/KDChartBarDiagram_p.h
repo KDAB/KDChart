@@ -43,9 +43,8 @@
 
 #include <KDABLibFakes>
 
-
-namespace KDChart {
-
+namespace KDChart
+{
 class PaintContext;
 
 /**
@@ -58,53 +57,51 @@ class BarDiagram::Private : public AbstractCartesianDiagram::Private
 
 public:
     Private();
-    Private( const Private& rhs );
+    Private(const Private &rhs);
     ~Private() override;
 
-    void setOrientationAndType( Qt::Orientation, BarDiagram::BarType );
+    void setOrientationAndType(Qt::Orientation, BarDiagram::BarType);
 
     Qt::Orientation orientation;
 
-    BarDiagramType* implementor; // the current type
-    BarDiagramType* normalDiagram;
-    BarDiagramType* stackedDiagram;
-    BarDiagramType* percentDiagram;
-    BarDiagramType* normalLyingDiagram;
-    BarDiagramType* stackedLyingDiagram;
-    BarDiagramType* percentLyingDiagram;
+    BarDiagramType *implementor; // the current type
+    BarDiagramType *normalDiagram;
+    BarDiagramType *stackedDiagram;
+    BarDiagramType *percentDiagram;
+    BarDiagramType *normalLyingDiagram;
+    BarDiagramType *stackedLyingDiagram;
+    BarDiagramType *percentLyingDiagram;
 };
 
-KDCHART_IMPL_DERIVED_DIAGRAM( BarDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane )
+KDCHART_IMPL_DERIVED_DIAGRAM(BarDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane)
 
-    class BarDiagram::BarDiagramType
+class BarDiagram::BarDiagramType
+{
+public:
+    explicit BarDiagramType(BarDiagram *d)
+        : m_private(d->d_func())
     {
-    public:
-        explicit BarDiagramType( BarDiagram* d )
-            : m_private( d->d_func() )
-        {
-        }
-        virtual ~BarDiagramType() {}
-        virtual BarDiagram::BarType type() const = 0;
-        virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const = 0;
-        virtual void paint( PaintContext* ctx ) = 0;
-        BarDiagram* diagram() const;
+    }
+    virtual ~BarDiagramType()
+    {
+    }
+    virtual BarDiagram::BarType type() const = 0;
+    virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const = 0;
+    virtual void paint(PaintContext *ctx) = 0;
+    BarDiagram *diagram() const;
 
-    protected:
-        // make some elements of m_private available to derived classes:
-        AttributesModel* attributesModel() const;
-        QModelIndex attributesModelRootIndex() const;
-        ReverseMapper& reverseMapper();
-        CartesianDiagramDataCompressor& compressor() const;
+protected:
+    // make some elements of m_private available to derived classes:
+    AttributesModel *attributesModel() const;
+    QModelIndex attributesModelRootIndex() const;
+    ReverseMapper &reverseMapper();
+    CartesianDiagramDataCompressor &compressor() const;
 
-        void paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, qreal maxDepth );
-        void calculateValueAndGapWidths( int rowCount, int colCount,
-            qreal groupWidth,
-            qreal& barWidth,
-            qreal& spaceBetweenBars,
-            qreal& spaceBetweenGroups );
+    void paintBars(PaintContext *ctx, const QModelIndex &index, const QRectF &bar, qreal maxDepth);
+    void calculateValueAndGapWidths(int rowCount, int colCount, qreal groupWidth, qreal &barWidth, qreal &spaceBetweenBars, qreal &spaceBetweenGroups);
 
-        BarDiagram::Private* m_private;
-    };
+    BarDiagram::Private *m_private;
+};
 }
 
 #endif /* KDCHARTBARDIAGRAM_P_H */

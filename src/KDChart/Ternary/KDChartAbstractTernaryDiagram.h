@@ -26,37 +26,34 @@
 #include "KDChartAbstractDiagram.h"
 #include "KDChartTernaryAxis.h"
 
-namespace KDChart {
+namespace KDChart
+{
+class TernaryCoordinatePlane;
+class TernaryAxis;
 
-    class TernaryCoordinatePlane;
-    class TernaryAxis;
+/**
+ * @brief Base class for diagrams based on a ternary coordinate plane.
+ */
+class KDCHART_EXPORT AbstractTernaryDiagram : public AbstractDiagram
+{
+    Q_OBJECT
+    Q_DISABLE_COPY(AbstractTernaryDiagram)
+    KDCHART_DECLARE_DERIVED_DIAGRAM(AbstractTernaryDiagram, TernaryCoordinatePlane)
 
-    /**
-      * @brief Base class for diagrams based on a ternary coordinate plane.
-      */
-    class KDCHART_EXPORT AbstractTernaryDiagram : public AbstractDiagram
-    {
-        Q_OBJECT
-        Q_DISABLE_COPY( AbstractTernaryDiagram )
-        KDCHART_DECLARE_DERIVED_DIAGRAM( AbstractTernaryDiagram,
-                                         TernaryCoordinatePlane )
+public:
+    explicit AbstractTernaryDiagram(QWidget *parent = 0, TernaryCoordinatePlane *plane = 0);
+    ~AbstractTernaryDiagram() override;
 
-    public:
-        explicit AbstractTernaryDiagram ( QWidget* parent = 0,
-                                          TernaryCoordinatePlane* plane = 0 );
-        ~AbstractTernaryDiagram() override;
+    void resize(const QSizeF &area) override = 0;
+    void paint(PaintContext *paintContext) override;
 
-        void resize (const QSizeF &area) override = 0;
-        void paint (PaintContext *paintContext) override;
+    virtual void addAxis(TernaryAxis *axis);
+    virtual void takeAxis(TernaryAxis *axis);
+    virtual TernaryAxisList axes() const;
 
-        virtual void addAxis( TernaryAxis* axis );
-        virtual void takeAxis( TernaryAxis* axis );
-        virtual TernaryAxisList axes () const;
-
-    protected:
-        const QPair< QPointF, QPointF >  calculateDataBoundaries () const override = 0;
-
-    };
+protected:
+    const QPair<QPointF, QPointF> calculateDataBoundaries() const override = 0;
+};
 
 }
 

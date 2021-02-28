@@ -38,20 +38,20 @@
 
 #include <KDABLibFakes>
 
-
-namespace KDChart {
-
+namespace KDChart
+{
 /**
  * \internal
  */
 class ThreeDLineAttributes::Private : public AbstractThreeDAttributes::Private
 {
     friend class ThreeDLineAttributes;
+
 public:
     Private();
 
 private:
-    //ThreeDLines
+    // ThreeDLines
     uint lineXRotation;
     uint lineYRotation;
 };
@@ -59,6 +59,5 @@ private:
 KDCHART_DERIVED_PRIVATE_FOOTER(ThreeDLineAttributes, AbstractThreeDAttributes)
 
 }
-
 
 #endif // KDCHARTTHREEDLINESATTRIBUTES_P_H

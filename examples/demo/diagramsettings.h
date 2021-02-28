@@ -25,8 +25,9 @@
 
 #include <QWidget>
 
-namespace KDChart{
-    class Chart;
+namespace KDChart
+{
+class Chart;
 }
 
 class DiagramSettings : public QWidget
@@ -34,7 +35,7 @@ class DiagramSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit DiagramSettings( KDChart::Chart* chart, QWidget *parent = 0 );
+    explicit DiagramSettings(KDChart::Chart *chart, QWidget *parent = 0);
     ~DiagramSettings() override;
 
 public Q_SLOTS:

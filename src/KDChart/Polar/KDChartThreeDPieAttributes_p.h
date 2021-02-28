@@ -38,15 +38,15 @@
 
 #include <KDABLibFakes>
 
-
-namespace KDChart {
-
+namespace KDChart
+{
 /**
-* \internal
-*/
+ * \internal
+ */
 class ThreeDPieAttributes::Private : public AbstractThreeDAttributes::Private
 {
     friend class ThreeDPieAttributes;
+
 public:
     Private();
 
@@ -57,6 +57,5 @@ private:
 KDCHART_DERIVED_PRIVATE_FOOTER(ThreeDPieAttributes, AbstractThreeDAttributes)
 
 }
-
 
 #endif // KDCHARTTHREEDPIEATTRIBUTES_P_H

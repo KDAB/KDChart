@@ -23,8 +23,8 @@
 #ifndef PRINTINGPARAMETERS_H
 #define PRINTINGPARAMETERS_H
 
-#include <QPen>
 #include <QDebug>
+#include <QPen>
 
 //
 //  W A R N I N G
@@ -37,24 +37,26 @@
 // We mean it.
 //
 
-namespace KDChart {
-    /**
-     * PrintingParameters stores the scale factor which lines has to been scaled with when printing.
-     * It's essentially printer's logical DPI / widget's logical DPI
-     * \internal
-     */
-    class PrintingParameters {
-    public:
-        static void setScaleFactor( const qreal scaleFactor );
-        static void resetScaleFactor();
-        static QPen scalePen( const QPen& pen );
+namespace KDChart
+{
+/**
+ * PrintingParameters stores the scale factor which lines has to been scaled with when printing.
+ * It's essentially printer's logical DPI / widget's logical DPI
+ * \internal
+ */
+class PrintingParameters
+{
+public:
+    static void setScaleFactor(const qreal scaleFactor);
+    static void resetScaleFactor();
+    static QPen scalePen(const QPen &pen);
 
-    private:
-        PrintingParameters();
-        static PrintingParameters* instance();
+private:
+    PrintingParameters();
+    static PrintingParameters *instance();
 
-        qreal scaleFactor;
-    };
+    qreal scaleFactor;
+};
 }
 
 #endif

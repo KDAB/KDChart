@@ -27,14 +27,15 @@
 
 #define d d_func()
 
-
 using namespace KDChart;
 
 class BackgroundAttributes::Private
 {
     friend class KDChart::BackgroundAttributes;
+
 public:
     Private();
+
 private:
     bool visible;
     QBrush brush;
@@ -42,26 +43,25 @@ private:
     QPixmap pixmap;
 };
 
-BackgroundAttributes::Private::Private() :
-    visible( false ),
-    pixmapMode( BackgroundAttributes::BackgroundPixmapModeNone )
+BackgroundAttributes::Private::Private()
+    : visible(false)
+    , pixmapMode(BackgroundAttributes::BackgroundPixmapModeNone)
 {
 }
-
 
 BackgroundAttributes::BackgroundAttributes()
-    : _d( new Private() )
+    : _d(new Private())
 {
 }
 
-BackgroundAttributes::BackgroundAttributes( const BackgroundAttributes& r )
-    : _d( new Private( *r.d ) )
+BackgroundAttributes::BackgroundAttributes(const BackgroundAttributes &r)
+    : _d(new Private(*r.d))
 {
 }
 
-BackgroundAttributes & BackgroundAttributes::operator=( const BackgroundAttributes& r )
+BackgroundAttributes &BackgroundAttributes::operator=(const BackgroundAttributes &r)
 {
-    if ( this == &r )
+    if (this == &r)
         return *this;
 
     *d = *r.d;
@@ -69,14 +69,12 @@ BackgroundAttributes & BackgroundAttributes::operator=( const BackgroundAttribut
     return *this;
 }
 
-bool BackgroundAttributes::operator==( const BackgroundAttributes& r ) const
+bool BackgroundAttributes::operator==(const BackgroundAttributes &r) const
 {
-    return isEqualTo( r );
+    return isEqualTo(r);
 }
 
-
-bool BackgroundAttributes::isEqualTo(
-        const BackgroundAttributes& other, bool ignorePixmap ) const
+bool BackgroundAttributes::isEqualTo(const BackgroundAttributes &other, bool ignorePixmap) const
 {
     /*
     qDebug() << "BackgroundAttributes::operator==";
@@ -85,35 +83,27 @@ bool BackgroundAttributes::isEqualTo(
     qDebug() << "pixmapMode"<< (pixmapMode() == other.pixmapMode());
     qDebug() << "pixmap"    << (pixmap().serialNumber() == other.pixmap().serialNumber());
     */
-    return (
-            isVisible()  == other.isVisible() &&
-            brush()      == other.brush() &&
-            pixmapMode() == other.pixmapMode() &&
-            (ignorePixmap ||
-            pixmap().cacheKey() == other.pixmap().cacheKey()) );
+    return (isVisible() == other.isVisible() && brush() == other.brush() && pixmapMode() == other.pixmapMode()
+            && (ignorePixmap || pixmap().cacheKey() == other.pixmap().cacheKey()));
 }
-
 
 BackgroundAttributes::~BackgroundAttributes()
 {
-    delete _d; _d = 0;
+    delete _d;
+    _d = 0;
 }
 
-
-
-
-void BackgroundAttributes::setVisible( bool visible )
+void BackgroundAttributes::setVisible(bool visible)
 {
     d->visible = visible;
 }
-
 
 bool BackgroundAttributes::isVisible() const
 {
     return d->visible;
 }
 
-void BackgroundAttributes::setBrush( const QBrush &brush )
+void BackgroundAttributes::setBrush(const QBrush &brush)
 {
     d->brush = brush;
 }
@@ -123,7 +113,7 @@ QBrush BackgroundAttributes::brush() const
     return d->brush;
 }
 
-void BackgroundAttributes::setPixmapMode( BackgroundPixmapMode mode )
+void BackgroundAttributes::setPixmapMode(BackgroundPixmapMode mode)
 {
     d->pixmapMode = mode;
 }
@@ -133,7 +123,7 @@ BackgroundAttributes::BackgroundPixmapMode BackgroundAttributes::pixmapMode() co
     return d->pixmapMode;
 }
 
-void BackgroundAttributes::setPixmap( const QPixmap &backPixmap )
+void BackgroundAttributes::setPixmap(const QPixmap &backPixmap)
 {
     d->pixmap = backPixmap;
 }
@@ -144,14 +134,10 @@ QPixmap BackgroundAttributes::pixmap() const
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)
-QDebug operator<<(QDebug dbg, const KDChart::BackgroundAttributes& ba)
+QDebug operator<<(QDebug dbg, const KDChart::BackgroundAttributes &ba)
 {
     dbg << "KDChart::BackgroundAttributes("
-	<< "visible="<<ba.isVisible()
-	<< "brush="<<ba.brush()
-	<< "pixmapmode="<<ba.pixmapMode()
-	<< "pixmap="<<ba.pixmap().cacheKey()
-	<< ")";
+        << "visible=" << ba.isVisible() << "brush=" << ba.brush() << "pixmapmode=" << ba.pixmapMode() << "pixmap=" << ba.pixmap().cacheKey() << ")";
     return dbg;
 }
 #endif /* QT_NO_DEBUG_STREAM */

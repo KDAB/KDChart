@@ -34,25 +34,27 @@
 // We mean it.
 //
 
-#include "KDChartAbstractCoordinatePlane_p.h"
 #include "CartesianCoordinateTransformation.h"
+#include "KDChartAbstractCoordinatePlane_p.h"
 #include "KDChartCartesianGrid.h"
 #include "KDChartZoomParameters.h"
 
 #include <KDABLibFakes>
 
-
-namespace KDChart {
-
+namespace KDChart
+{
 /**
  * \internal
  */
 class CartesianCoordinatePlane::Private : public AbstractCoordinatePlane::Private
 {
     friend class CartesianCoordinatePlane;
+
 public:
     explicit Private();
-    ~Private() override {  }
+    ~Private() override
+    {
+    }
 
     void initialize() override
     {
@@ -62,28 +64,24 @@ public:
         grid = new CartesianGrid();
     }
 
-    static Private *get( CartesianCoordinatePlane *plane )
+    static Private *get(CartesianCoordinatePlane *plane)
     {
-        return static_cast< Private * >( plane->d_func() );
+        return static_cast<Private *>(plane->d_func());
     }
 
-    bool isVisiblePoint( const AbstractCoordinatePlane * plane, const QPointF& point ) const override
+    bool isVisiblePoint(const AbstractCoordinatePlane *plane, const QPointF &point) const override
     {
         QPointF p = point;
-        const CartesianCoordinatePlane* const ref =
-            qobject_cast< const CartesianCoordinatePlane* >(
-                              const_cast< AbstractCoordinatePlane* >( plane )->sharedAxisMasterPlane() );
-        const CartesianCoordinatePlane* const cartPlane =
-            dynamic_cast< const CartesianCoordinatePlane* >( plane );
-        if ( ref != 0 && ref != cartPlane ) {
-            const QPointF logical = ref->translateBack( point ) - cartPlane->visibleDataRange().topLeft()
-                                                                + ref->visibleDataRange().topLeft();
-            p = ref->translate( logical );
+        const CartesianCoordinatePlane *const ref =
+            qobject_cast<const CartesianCoordinatePlane *>(const_cast<AbstractCoordinatePlane *>(plane)->sharedAxisMasterPlane());
+        const CartesianCoordinatePlane *const cartPlane = dynamic_cast<const CartesianCoordinatePlane *>(plane);
+        if (ref != 0 && ref != cartPlane) {
+            const QPointF logical = ref->translateBack(point) - cartPlane->visibleDataRange().topLeft() + ref->visibleDataRange().topLeft();
+            p = ref->translate(logical);
         }
-        const QRectF geo( plane->geometry() );
-        return geo.contains( p );
+        const QRectF geo(plane->geometry());
+        return geo.contains(p);
     }
-
 
     // the coordinate plane will calculate the coordinate transformation:
     CoordinateTransformation coordinateTransformation;
@@ -135,7 +133,6 @@ public:
     bool reverseVerticalPlane;
     bool reverseHorizontalPlane;
 };
-
 
 KDCHART_IMPL_DERIVED_PLANE(CartesianCoordinatePlane, AbstractCoordinatePlane)
 

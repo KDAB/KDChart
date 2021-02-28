@@ -38,15 +38,15 @@
 
 #include <KDABLibFakes>
 
-
-namespace KDChart {
-
+namespace KDChart
+{
 /**
  * \internal
  */
 class PieAttributes::Private
 {
     friend class PieAttributes;
+
 public:
     Private();
 

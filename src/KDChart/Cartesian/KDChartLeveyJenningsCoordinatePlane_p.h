@@ -36,39 +36,40 @@
 
 #include <QRectF>
 
-#include "KDChartLeveyJenningsGrid.h"
 #include "KDChartCartesianCoordinatePlane_p.h"
+#include "KDChartLeveyJenningsGrid.h"
 
 #include <KDABLibFakes>
 
-namespace KDChart {
+namespace KDChart
+{
+class CartesianAxis;
 
-    class CartesianAxis;
+/**
+ * \internal
+ */
 
-    /**
-     * \internal
-     */
+class LeveyJenningsCoordinatePlane::Private : public CartesianCoordinatePlane::Private
+{
+    friend class LeveyJenningsCoordinatePlane;
 
-    class LeveyJenningsCoordinatePlane::Private : public CartesianCoordinatePlane::Private
+public:
+    explicit Private();
+
+    ~Private() override
     {
-        friend class LeveyJenningsCoordinatePlane;
+        // grid is delete in base class dtor
+    }
 
-    public:
-        explicit Private();
+    void initialize() override
+    {
+        grid = new LeveyJenningsGrid();
+    }
 
-        ~Private() override {
-            // grid is delete in base class dtor
-        }
+    LeveyJenningsGridAttributes gridAttributes;
+};
 
-        void initialize() override
-        {
-            grid = new LeveyJenningsGrid();
-        }
-
-        LeveyJenningsGridAttributes gridAttributes;
-    };
-
-    KDCHART_IMPL_DERIVED_PLANE(LeveyJenningsCoordinatePlane, CartesianCoordinatePlane)
+KDCHART_IMPL_DERIVED_PLANE(LeveyJenningsCoordinatePlane, CartesianCoordinatePlane)
 }
 
 #endif /* KDCHARTTERNARYCOORDINATEPLANE_P_H */

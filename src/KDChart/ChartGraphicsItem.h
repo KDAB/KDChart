@@ -25,29 +25,38 @@
 
 #include <QGraphicsPolygonItem>
 
-namespace KDChart {
+namespace KDChart
+{
+/**
+ * @brief Graphics item used inside of the ReverseMapper
+ * \internal
+ */
+class ChartGraphicsItem : public QGraphicsPolygonItem
+{
+public:
+    enum { Type = UserType + 1 };
 
-    /**
-      * @brief Graphics item used inside of the ReverseMapper
-      * \internal
-      */
-    class ChartGraphicsItem : public QGraphicsPolygonItem
+    ChartGraphicsItem();
+
+    ChartGraphicsItem(int row, int column);
+
+    int row() const
     {
-    public:
-        enum { Type = UserType + 1 };
+        return m_row;
+    }
+    int column() const
+    {
+        return m_column;
+    }
+    int type() const override
+    {
+        return Type;
+    }
 
-        ChartGraphicsItem();
-
-        ChartGraphicsItem( int row,  int column );
-
-        int row() const { return m_row; }
-        int column() const { return m_column; }
-        int type() const override { return Type; }
-
-    private:
-        int m_row;
-        int m_column;
-    };
+private:
+    int m_row;
+    int m_column;
+};
 
 }
 

@@ -22,20 +22,19 @@
 
 #include "KDChartDataValueAttributes.h"
 
-#include <QVariant>
-#include <QDebug>
-#include "KDChartRelativePosition.h"
 #include "KDChartPosition.h"
-#include <KDChartTextAttributes.h>
-#include <KDChartFrameAttributes.h>
+#include "KDChartRelativePosition.h"
 #include <KDChartBackgroundAttributes.h>
+#include <KDChartFrameAttributes.h>
 #include <KDChartMarkerAttributes.h>
+#include <KDChartTextAttributes.h>
+#include <QDebug>
+#include <QVariant>
 
 #include <KDABLibFakes>
 
 // FIXME till
 #define KDCHART_DATA_VALUE_AUTO_DIGITS 4
-
 
 #define d d_func()
 
@@ -44,8 +43,10 @@ using namespace KDChart;
 class DataValueAttributes::Private
 {
     friend class DataValueAttributes;
+
 public:
     Private();
+
 private:
     TextAttributes textAttributes;
     FrameAttributes frameAttributes;
@@ -66,25 +67,25 @@ private:
     bool mirrorNegativeValueTextRotation : 1;
 };
 
-DataValueAttributes::Private::Private() :
-    decimalDigits( KDCHART_DATA_VALUE_AUTO_DIGITS ),
-    powerOfTenDivisor( 0 ),
-    visible( false ),
-    showInfinite( true )
+DataValueAttributes::Private::Private()
+    : decimalDigits(KDCHART_DATA_VALUE_AUTO_DIGITS)
+    , powerOfTenDivisor(0)
+    , visible(false)
+    , showInfinite(true)
 {
-    Measure me( 20.0, KDChartEnums::MeasureCalculationModeAuto, KDChartEnums::MeasureOrientationAuto );
-    textAttributes.setFontSize( me );
-    me.setValue( 8.0 );
-    me.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
-    textAttributes.setMinimalFontSize( me );
-    textAttributes.setRotation( -45 );
+    Measure me(20.0, KDChartEnums::MeasureCalculationModeAuto, KDChartEnums::MeasureOrientationAuto);
+    textAttributes.setFontSize(me);
+    me.setValue(8.0);
+    me.setCalculationMode(KDChartEnums::MeasureCalculationModeAbsolute);
+    textAttributes.setMinimalFontSize(me);
+    textAttributes.setRotation(-45);
 
     // we set the Position to unknown: so the diagrams can take their own decisions
-    positiveRelPos.setReferencePosition( Position::Unknown );
-    negativeRelPos.setReferencePosition( Position::Unknown );
+    positiveRelPos.setReferencePosition(Position::Unknown);
+    negativeRelPos.setReferencePosition(Position::Unknown);
 
-    positiveRelPos.setAlignment( Qt::AlignTop | Qt::AlignRight );
-    negativeRelPos.setAlignment( Qt::AlignBottom | Qt::AlignRight );
+    positiveRelPos.setAlignment(Qt::AlignTop | Qt::AlignRight);
+    negativeRelPos.setAlignment(Qt::AlignBottom | Qt::AlignRight);
 
     showRepetitiveDataLabels = false;
     showOverlappingDataLabels = false;
@@ -93,20 +94,19 @@ DataValueAttributes::Private::Private() :
     mirrorNegativeValueTextRotation = false;
 }
 
-
 DataValueAttributes::DataValueAttributes()
-    : _d( new Private() )
+    : _d(new Private())
 {
 }
 
-DataValueAttributes::DataValueAttributes( const DataValueAttributes& r )
-    : _d( new Private( *r.d ) )
+DataValueAttributes::DataValueAttributes(const DataValueAttributes &r)
+    : _d(new Private(*r.d))
 {
 }
 
-DataValueAttributes & DataValueAttributes::operator=( const DataValueAttributes& r )
+DataValueAttributes &DataValueAttributes::operator=(const DataValueAttributes &r)
 {
-    if ( this == &r )
+    if (this == &r)
         return *this;
 
     *d = *r.d;
@@ -116,47 +116,35 @@ DataValueAttributes & DataValueAttributes::operator=( const DataValueAttributes&
 
 DataValueAttributes::~DataValueAttributes()
 {
-    delete _d; _d = 0;
+    delete _d;
+    _d = 0;
 }
 
-
-bool DataValueAttributes::operator==( const DataValueAttributes& r ) const
+bool DataValueAttributes::operator==(const DataValueAttributes &r) const
 {
-    return  isVisible() == r.isVisible() &&
-            textAttributes() == r.textAttributes() &&
-            frameAttributes() == r.frameAttributes() &&
-            backgroundAttributes() == r.backgroundAttributes() &&
-            markerAttributes() == r.markerAttributes() &&
-            decimalDigits() == r.decimalDigits() &&
-            prefix() == r.prefix() &&
-            suffix() == r.suffix() &&
-            dataLabel() == r.dataLabel() &&
-            powerOfTenDivisor() == r.powerOfTenDivisor() &&
-            showInfinite() == r.showInfinite() &&
-            negativePosition() == r.negativePosition() &&
-            positivePosition() == r.positivePosition() &&
-            showRepetitiveDataLabels() == r.showRepetitiveDataLabels() &&
-            showOverlappingDataLabels() == r.showOverlappingDataLabels() &&
-            usePercentage() == r.usePercentage() &&
-            mirrorNegativeValueTextRotation() == r.mirrorNegativeValueTextRotation();
+    return isVisible() == r.isVisible() && textAttributes() == r.textAttributes() && frameAttributes() == r.frameAttributes()
+        && backgroundAttributes() == r.backgroundAttributes() && markerAttributes() == r.markerAttributes() && decimalDigits() == r.decimalDigits()
+        && prefix() == r.prefix() && suffix() == r.suffix() && dataLabel() == r.dataLabel() && powerOfTenDivisor() == r.powerOfTenDivisor()
+        && showInfinite() == r.showInfinite() && negativePosition() == r.negativePosition() && positivePosition() == r.positivePosition()
+        && showRepetitiveDataLabels() == r.showRepetitiveDataLabels() && showOverlappingDataLabels() == r.showOverlappingDataLabels()
+        && usePercentage() == r.usePercentage() && mirrorNegativeValueTextRotation() == r.mirrorNegativeValueTextRotation();
 }
 
 /*static*/
-const DataValueAttributes& DataValueAttributes::defaultAttributes()
+const DataValueAttributes &DataValueAttributes::defaultAttributes()
 {
     static const DataValueAttributes theDefaultDataValueAttributes;
     return theDefaultDataValueAttributes;
 }
 
 /*static*/
-const QVariant& DataValueAttributes::defaultAttributesAsVariant()
+const QVariant &DataValueAttributes::defaultAttributesAsVariant()
 {
     static const QVariant theDefaultDataValueAttributesVariant = qVariantFromValue(defaultAttributes());
     return theDefaultDataValueAttributesVariant;
 }
 
-
-void DataValueAttributes::setVisible( bool visible )
+void DataValueAttributes::setVisible(bool visible)
 {
     d->visible = visible;
 }
@@ -166,7 +154,7 @@ bool DataValueAttributes::isVisible() const
     return d->visible;
 }
 
-void DataValueAttributes::setTextAttributes( const TextAttributes &a )
+void DataValueAttributes::setTextAttributes(const TextAttributes &a)
 {
     d->textAttributes = a;
 }
@@ -176,7 +164,7 @@ TextAttributes DataValueAttributes::textAttributes() const
     return d->textAttributes;
 }
 
-void DataValueAttributes::setFrameAttributes( const FrameAttributes &a )
+void DataValueAttributes::setFrameAttributes(const FrameAttributes &a)
 {
     d->frameAttributes = a;
 }
@@ -186,7 +174,7 @@ FrameAttributes DataValueAttributes::frameAttributes() const
     return d->frameAttributes;
 }
 
-void DataValueAttributes::setBackgroundAttributes( const BackgroundAttributes &a )
+void DataValueAttributes::setBackgroundAttributes(const BackgroundAttributes &a)
 {
     d->backgroundAttributes = a;
 }
@@ -196,7 +184,7 @@ BackgroundAttributes DataValueAttributes::backgroundAttributes() const
     return d->backgroundAttributes;
 }
 
-void DataValueAttributes::setMarkerAttributes( const MarkerAttributes &a )
+void DataValueAttributes::setMarkerAttributes(const MarkerAttributes &a)
 {
     d->markerAttributes = a;
 }
@@ -206,7 +194,7 @@ MarkerAttributes DataValueAttributes::markerAttributes() const
     return d->markerAttributes;
 }
 
-void DataValueAttributes::setMirrorNegativeValueTextRotation( bool enable )
+void DataValueAttributes::setMirrorNegativeValueTextRotation(bool enable)
 {
     d->mirrorNegativeValueTextRotation = enable;
 }
@@ -216,7 +204,7 @@ bool DataValueAttributes::mirrorNegativeValueTextRotation() const
     return d->mirrorNegativeValueTextRotation;
 }
 
-void DataValueAttributes::setUsePercentage( bool enable )
+void DataValueAttributes::setUsePercentage(bool enable)
 {
     d->usePercentage = enable;
 }
@@ -226,7 +214,7 @@ bool DataValueAttributes::usePercentage() const
     return d->usePercentage;
 }
 
-void DataValueAttributes::setDecimalDigits( int digits )
+void DataValueAttributes::setDecimalDigits(int digits)
 {
     d->decimalDigits = digits;
 }
@@ -236,7 +224,7 @@ int DataValueAttributes::decimalDigits() const
     return d->decimalDigits;
 }
 
-void DataValueAttributes::setPrefix( const QString prefixString )
+void DataValueAttributes::setPrefix(const QString prefixString)
 {
     d->prefix = prefixString;
 }
@@ -246,9 +234,9 @@ QString DataValueAttributes::prefix() const
     return d->prefix;
 }
 
-void DataValueAttributes::setSuffix( const QString suffixString )
+void DataValueAttributes::setSuffix(const QString suffixString)
 {
-    d->suffix  = suffixString;
+    d->suffix = suffixString;
 }
 
 QString DataValueAttributes::suffix() const
@@ -256,9 +244,9 @@ QString DataValueAttributes::suffix() const
     return d->suffix;
 }
 
-void DataValueAttributes::setDataLabel( const QString label )
+void DataValueAttributes::setDataLabel(const QString label)
 {
-    d->dataLabel =  label;
+    d->dataLabel = label;
 }
 
 QString DataValueAttributes::dataLabel() const
@@ -271,7 +259,7 @@ bool DataValueAttributes::showRepetitiveDataLabels() const
     return d->showRepetitiveDataLabels;
 }
 
-void DataValueAttributes::setShowRepetitiveDataLabels( bool showRepetitiveDataLabels )
+void DataValueAttributes::setShowRepetitiveDataLabels(bool showRepetitiveDataLabels)
 {
     d->showRepetitiveDataLabels = showRepetitiveDataLabels;
 }
@@ -281,12 +269,12 @@ bool DataValueAttributes::showOverlappingDataLabels() const
     return d->showOverlappingDataLabels;
 }
 
-void DataValueAttributes::setShowOverlappingDataLabels( bool showOverlappingDataLabels )
+void DataValueAttributes::setShowOverlappingDataLabels(bool showOverlappingDataLabels)
 {
     d->showOverlappingDataLabels = showOverlappingDataLabels;
 }
 
-void DataValueAttributes::setPowerOfTenDivisor( int powerOfTenDivisor )
+void DataValueAttributes::setPowerOfTenDivisor(int powerOfTenDivisor)
 {
     d->powerOfTenDivisor = powerOfTenDivisor;
 }
@@ -296,7 +284,7 @@ int DataValueAttributes::powerOfTenDivisor() const
     return d->powerOfTenDivisor;
 }
 
-void DataValueAttributes::setShowInfinite( bool infinite )
+void DataValueAttributes::setShowInfinite(bool infinite)
 {
     d->showInfinite = infinite;
 }
@@ -306,7 +294,7 @@ bool DataValueAttributes::showInfinite() const
     return d->showInfinite;
 }
 
-void DataValueAttributes::setNegativePosition( const RelativePosition& relPosition )
+void DataValueAttributes::setNegativePosition(const RelativePosition &relPosition)
 {
     d->negativeRelPos = relPosition;
 }
@@ -316,7 +304,7 @@ const RelativePosition DataValueAttributes::negativePosition() const
     return d->negativeRelPos;
 }
 
-void DataValueAttributes::setPositivePosition( const RelativePosition& relPosition )
+void DataValueAttributes::setPositivePosition(const RelativePosition &relPosition)
 {
     d->positiveRelPos = relPosition;
 }
@@ -327,21 +315,14 @@ const RelativePosition DataValueAttributes::positivePosition() const
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)
-QDebug operator<<(QDebug dbg, const KDChart::DataValueAttributes& val )
+QDebug operator<<(QDebug dbg, const KDChart::DataValueAttributes &val)
 {
     dbg << "RelativePosition DataValueAttributes("
-	<< "visible="<<val.isVisible()
-	<< "textattributes="<<val.textAttributes()
-	<< "frameattributes="<<val.frameAttributes()
-	<< "backgroundattributes="<<val.backgroundAttributes()
-	<< "decimaldigits="<<val.decimalDigits()
-	<< "poweroftendivisor="<<val.powerOfTenDivisor()
-	<< "showinfinite="<<val.showInfinite()
-	<< "negativerelativeposition="<<val.negativePosition()
-	<< "positiverelativeposition="<<val.positivePosition()
-    << "showRepetitiveDataLabels="<<val.showRepetitiveDataLabels()
-    << "showOverlappingDataLabels="<<val.showOverlappingDataLabels()
-    <<")";
+        << "visible=" << val.isVisible() << "textattributes=" << val.textAttributes() << "frameattributes=" << val.frameAttributes()
+        << "backgroundattributes=" << val.backgroundAttributes() << "decimaldigits=" << val.decimalDigits() << "poweroftendivisor=" << val.powerOfTenDivisor()
+        << "showinfinite=" << val.showInfinite() << "negativerelativeposition=" << val.negativePosition()
+        << "positiverelativeposition=" << val.positivePosition() << "showRepetitiveDataLabels=" << val.showRepetitiveDataLabels()
+        << "showOverlappingDataLabels=" << val.showOverlappingDataLabels() << ")";
     return dbg;
 }
 #endif /* QT_NO_DEBUG_STREAM */

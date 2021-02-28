@@ -23,30 +23,30 @@
 #ifndef KDCHARTTERNARYPOINTDIAGRAM_H
 #define KDCHARTTERNARYPOINTDIAGRAM_H
 
-#include "KDChartTernaryCoordinatePlane.h"
 #include "KDChartAbstractTernaryDiagram.h"
+#include "KDChartTernaryCoordinatePlane.h"
 
-namespace KDChart {
+namespace KDChart
+{
+/**
+ * @brief A TernaryPointDiagram is a point diagram within a ternary coordinate plane
+ */
+class KDCHART_EXPORT TernaryPointDiagram : public AbstractTernaryDiagram
+{
+    Q_OBJECT
+    Q_DISABLE_COPY(TernaryPointDiagram)
+    KDCHART_DECLARE_DERIVED_DIAGRAM(TernaryPointDiagram, TernaryCoordinatePlane)
 
-    /**
-      * @brief A TernaryPointDiagram is a point diagram within a ternary coordinate plane
-      */
-    class KDCHART_EXPORT TernaryPointDiagram : public AbstractTernaryDiagram
-    {
-        Q_OBJECT
-        Q_DISABLE_COPY( TernaryPointDiagram )
-        KDCHART_DECLARE_DERIVED_DIAGRAM( TernaryPointDiagram, TernaryCoordinatePlane )
+public:
+    explicit TernaryPointDiagram(QWidget *parent = 0, TernaryCoordinatePlane *plane = 0);
+    ~TernaryPointDiagram() override;
 
-    public:
-        explicit TernaryPointDiagram ( QWidget* parent = 0, TernaryCoordinatePlane* plane = 0 );
-        ~TernaryPointDiagram() override;
+    void resize(const QSizeF &area) override;
+    void paint(PaintContext *paintContext) override;
 
-        void resize (const QSizeF &area) override;
-        void paint (PaintContext *paintContext) override;
-
-    protected:
-        const QPair< QPointF, QPointF >  calculateDataBoundaries () const override;
-    };
+protected:
+    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+};
 
 }
 

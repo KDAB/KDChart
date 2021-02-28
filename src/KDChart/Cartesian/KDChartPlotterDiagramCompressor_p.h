@@ -25,38 +25,37 @@
 
 #include "KDChartPlotterDiagramCompressor.h"
 
-#include <QtCore/QPointF>
 #include <QtCore/QDateTime>
+#include <QtCore/QPointF>
 
-typedef QPair< QPointF, QPointF > Boundaries;
+typedef QPair<QPointF, QPointF> Boundaries;
 
 namespace KDChart
 {
-
 class PlotterDiagramCompressor::Private : public QObject
 {
     Q_OBJECT
 public:
-    Private( PlotterDiagramCompressor *parent );
-    QModelIndexList mapToModel( const CachePosition& pos );
-    void calculateDataBoundaries();    
-    void setBoundaries( const Boundaries &bound );
-    bool forcedBoundaries( Qt::Orientation orient ) const;
-    bool inBoundaries( Qt::Orientation orient, const PlotterDiagramCompressor::DataPoint &dp ) const;
+    Private(PlotterDiagramCompressor *parent);
+    QModelIndexList mapToModel(const CachePosition &pos);
+    void calculateDataBoundaries();
+    void setBoundaries(const Boundaries &bound);
+    bool forcedBoundaries(Qt::Orientation orient) const;
+    bool inBoundaries(Qt::Orientation orient, const PlotterDiagramCompressor::DataPoint &dp) const;
     PlotterDiagramCompressor *m_parent;
     QAbstractItemModel *m_model;
     qreal m_mergeRadius;
     qreal m_maxSlopeRadius;
-    QVector< QVector< DataPoint > > m_bufferlist;
+    QVector<QVector<DataPoint>> m_bufferlist;
     Boundaries m_boundary;
-    QPair< qreal, qreal > m_forcedXBoundaries;
-    QPair< qreal, qreal > m_forcedYBoundaries;
+    QPair<qreal, qreal> m_forcedXBoundaries;
+    QPair<qreal, qreal> m_forcedYBoundaries;
     QDateTime m_timeOfLastInvalidation;
     PlotterDiagramCompressor::CompressionMode m_mode;
-    QVector< qreal > m_accumulatedDistances;
-    //QVector< PlotterDiagramCompressor::Iterator > exisitingIterators;
+    QVector<qreal> m_accumulatedDistances;
+    // QVector< PlotterDiagramCompressor::Iterator > exisitingIterators;
 public Q_SLOTS:
-    void rowsInserted( const QModelIndex& parent, int start, int end );
+    void rowsInserted(const QModelIndex &parent, int start, int end);
     void clearBuffer();
     void setModelToZero();
 };

@@ -23,36 +23,40 @@
 #ifndef KDCHARTPOLARGrid_H
 #define KDCHARTPOLARGrid_H
 
-#include "KDChartPolarCoordinatePlane.h"
 #include "KDChartAbstractGrid.h"
+#include "KDChartPolarCoordinatePlane.h"
 
-namespace KDChart {
+namespace KDChart
+{
+class PaintContext;
+class PolarCoordinatePlane;
 
-    class PaintContext;
-    class PolarCoordinatePlane;
-
-    /**
-     * \internal
-     *
-     * \brief Class for the grid in a polar plane.
-     *
-     * The PolarGrid interface is used
-     * for calculating and for drawing
-     * the sagittal grid lines, and the circular grid lines
-     * of a polar coordinate plane.
-     */
-    class PolarGrid : public AbstractGrid
+/**
+ * \internal
+ *
+ * \brief Class for the grid in a polar plane.
+ *
+ * The PolarGrid interface is used
+ * for calculating and for drawing
+ * the sagittal grid lines, and the circular grid lines
+ * of a polar coordinate plane.
+ */
+class PolarGrid : public AbstractGrid
+{
+public:
+    PolarGrid()
+        : AbstractGrid()
     {
-    public:
-        PolarGrid() : AbstractGrid() {}
-        ~PolarGrid() override {}
+    }
+    ~PolarGrid() override
+    {
+    }
 
-        void drawGrid( PaintContext* context ) override;
+    void drawGrid(PaintContext *context) override;
 
-    private:
-        DataDimensionsList calculateGrid(
-            const DataDimensionsList& rawDataDimensions ) const override;
-    };
+private:
+    DataDimensionsList calculateGrid(const DataDimensionsList &rawDataDimensions) const override;
+};
 
 }
 

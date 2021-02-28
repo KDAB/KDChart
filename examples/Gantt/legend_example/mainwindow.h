@@ -29,30 +29,33 @@
 QT_BEGIN_NAMESPACE
 class QStandardItemModel;
 class QCloseEvent;
-namespace Ui {
-    class MainWindow;
+namespace Ui
+{
+class MainWindow;
 }
 QT_END_NAMESPACE
 
-namespace KDGantt {
-    class ConstraintModel;
-    class DateTimeGrid;
-    class Legend;
+namespace KDGantt
+{
+class ConstraintModel;
+class DateTimeGrid;
+class Legend;
 }
 
-class MainWindow : public QMainWindow {
+class MainWindow : public QMainWindow
+{
     Q_OBJECT
 
 public:
-    explicit MainWindow( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
+    explicit MainWindow(QWidget *parent = 0, Qt::WindowFlags flags = 0);
     ~MainWindow() override;
     void closeEvent(QCloseEvent *event) override;
 
 private slots:
     void addNewEntry();
     void removeEntry();
-    void showContextMenu( const QPoint& );
-    void enableActions( const QItemSelection& selected );
+    void showContextMenu(const QPoint &);
+    void enableActions(const QItemSelection &selected);
     void zoomIn();
     void zoomOut();
     void zoomFit();
@@ -68,22 +71,22 @@ private:
     void initItemDelegate();
     void initGrid();
 
-    void setReadOnly( const QModelIndex& index, bool readOnly );
-    void addConstraint( const QModelIndex& index1, const QModelIndex& index2 );
+    void setReadOnly(const QModelIndex &index, bool readOnly);
+    void addConstraint(const QModelIndex &index1, const QModelIndex &index2);
 
-    QStandardItemModel* model;
-    KDGantt::ConstraintModel* constraintModel;
-    KDGantt::DateTimeGrid* grid;
-    KDGantt::Legend* smallLegend;
-    KDGantt::Legend* detailedLegend;
+    QStandardItemModel *model;
+    KDGantt::ConstraintModel *constraintModel;
+    KDGantt::DateTimeGrid *grid;
+    KDGantt::Legend *smallLegend;
+    KDGantt::Legend *detailedLegend;
 
-    QAction* newEntryAction;
-    QAction* removeEntryAction;
-    QAction* zoomInAction;
-    QAction* zoomOutAction;
-    QAction* zoomFitAction;
+    QAction *newEntryAction;
+    QAction *removeEntryAction;
+    QAction *zoomInAction;
+    QAction *zoomOutAction;
+    QAction *zoomFitAction;
 
-    Ui::MainWindow* ui;
+    Ui::MainWindow *ui;
 };
 
 #endif /* MAINWINDOW_H */

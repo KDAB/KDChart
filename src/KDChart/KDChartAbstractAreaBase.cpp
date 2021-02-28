@@ -22,72 +22,69 @@
 
 #include "KDChartAbstractAreaBase.h"
 #include "KDChartAbstractAreaBase_p.h"
+#include "KDChartPainterSaver_p.h"
+#include "KDChartPrintingParameters.h"
 #include <KDChartBackgroundAttributes.h>
 #include <KDChartFrameAttributes.h>
 #include <KDChartTextAttributes.h>
-#include "KDChartPainterSaver_p.h"
-#include "KDChartPrintingParameters.h"
 #include <QPainter>
 
 #include <KDABLibFakes>
 #include <QPainterPath>
 
-
 using namespace KDChart;
 
-AbstractAreaBase::Private::Private() :
-    visible( true )
+AbstractAreaBase::Private::Private()
+    : visible(true)
 {
     init();
 }
 
-
-AbstractAreaBase::Private::~Private() {}
-
+AbstractAreaBase::Private::~Private()
+{
+}
 
 void AbstractAreaBase::Private::init()
 {
 }
 
-
-AbstractAreaBase::AbstractAreaBase() :
-    _d( new Private() )
+AbstractAreaBase::AbstractAreaBase()
+    : _d(new Private())
 {
 }
 
 AbstractAreaBase::~AbstractAreaBase()
 {
-    delete _d; _d = 0;
+    delete _d;
+    _d = 0;
 }
-
 
 void AbstractAreaBase::init()
 {
 }
 
-
 #define d d_func()
 
-bool AbstractAreaBase::compare( const AbstractAreaBase* other ) const
+bool AbstractAreaBase::compare(const AbstractAreaBase *other) const
 {
-    if ( other == this ) return true;
-    if ( !other ) {
+    if (other == this)
+        return true;
+    if (!other) {
         return false;
     }
-    return  (frameAttributes()      == other->frameAttributes()) &&
-            (backgroundAttributes() == other->backgroundAttributes());
+    return (frameAttributes() == other->frameAttributes()) && (backgroundAttributes() == other->backgroundAttributes());
 }
 
-void AbstractAreaBase::alignToReferencePoint( const RelativePosition& position )
+void AbstractAreaBase::alignToReferencePoint(const RelativePosition &position)
 {
-    Q_UNUSED( position );
+    Q_UNUSED(position);
     // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: void AbstractAreaBase::alignToReferencePoint( const RelativePosition& position )" );
+    qWarning("Sorry, not implemented: void AbstractAreaBase::alignToReferencePoint( const RelativePosition& position )");
 }
 
-void AbstractAreaBase::setFrameAttributes( const FrameAttributes &a )
+void AbstractAreaBase::setFrameAttributes(const FrameAttributes &a)
 {
-    if ( d->frameAttributes == a )
+    if (d->frameAttributes == a)
         return;
 
     d->frameAttributes = a;
@@ -99,9 +96,9 @@ FrameAttributes AbstractAreaBase::frameAttributes() const
     return d->frameAttributes;
 }
 
-void AbstractAreaBase::setBackgroundAttributes( const BackgroundAttributes &a )
+void AbstractAreaBase::setBackgroundAttributes(const BackgroundAttributes &a)
 {
-    if ( d->backgroundAttributes == a )
+    if (d->backgroundAttributes == a)
         return;
 
     d->backgroundAttributes = a;
@@ -113,108 +110,97 @@ BackgroundAttributes AbstractAreaBase::backgroundAttributes() const
     return d->backgroundAttributes;
 }
 
-
 /* static */
-void AbstractAreaBase::paintBackgroundAttributes( QPainter& painter, const QRect& rect,
-    const KDChart::BackgroundAttributes& attributes )
+void AbstractAreaBase::paintBackgroundAttributes(QPainter &painter, const QRect &rect, const KDChart::BackgroundAttributes &attributes)
 {
-    if ( !attributes.isVisible() ) return;
+    if (!attributes.isVisible())
+        return;
 
     /* first draw the brush (may contain a pixmap)*/
-    if ( Qt::NoBrush != attributes.brush().style() ) {
-        KDChart::PainterSaver painterSaver( &painter );
-        painter.setPen( Qt::NoPen );
-        const QPointF newTopLeft( painter.deviceMatrix().map( rect.topLeft() ) );
-        painter.setBrushOrigin( newTopLeft );
-        painter.setBrush( attributes.brush() );
-        painter.drawRect( rect.adjusted( 0, 0, -1, -1 ) );
+    if (Qt::NoBrush != attributes.brush().style()) {
+        KDChart::PainterSaver painterSaver(&painter);
+        painter.setPen(Qt::NoPen);
+        const QPointF newTopLeft(painter.deviceMatrix().map(rect.topLeft()));
+        painter.setBrushOrigin(newTopLeft);
+        painter.setBrush(attributes.brush());
+        painter.drawRect(rect.adjusted(0, 0, -1, -1));
     }
     /* next draw the backPixmap over the brush */
-    if ( !attributes.pixmap().isNull() &&
-        attributes.pixmapMode() != BackgroundAttributes::BackgroundPixmapModeNone ) {
+    if (!attributes.pixmap().isNull() && attributes.pixmapMode() != BackgroundAttributes::BackgroundPixmapModeNone) {
         QPointF ol = rect.topLeft();
-        if ( BackgroundAttributes::BackgroundPixmapModeCentered == attributes.pixmapMode() )
-        {
-            ol.setX( rect.center().x() - attributes.pixmap().width() / 2 );
-            ol.setY( rect.center().y() - attributes.pixmap().height()/ 2 );
-            painter.drawPixmap( ol, attributes.pixmap() );
+        if (BackgroundAttributes::BackgroundPixmapModeCentered == attributes.pixmapMode()) {
+            ol.setX(rect.center().x() - attributes.pixmap().width() / 2);
+            ol.setY(rect.center().y() - attributes.pixmap().height() / 2);
+            painter.drawPixmap(ol, attributes.pixmap());
         } else {
             QMatrix m;
-            qreal zW = (qreal)rect.width()  / (qreal)attributes.pixmap().width();
+            qreal zW = (qreal)rect.width() / (qreal)attributes.pixmap().width();
             qreal zH = (qreal)rect.height() / (qreal)attributes.pixmap().height();
-            switch ( attributes.pixmapMode() ) {
-            case BackgroundAttributes::BackgroundPixmapModeScaled:
-            {
+            switch (attributes.pixmapMode()) {
+            case BackgroundAttributes::BackgroundPixmapModeScaled: {
                 qreal z;
-                z = qMin( zW, zH );
-                m.scale( z, z );
-            }
-            break;
+                z = qMin(zW, zH);
+                m.scale(z, z);
+            } break;
             case BackgroundAttributes::BackgroundPixmapModeStretched:
-                m.scale( zW, zH );
+                m.scale(zW, zH);
                 break;
-            default:
-                ; // Cannot happen, previously checked
+            default:; // Cannot happen, previously checked
             }
-            QPixmap pm = attributes.pixmap().transformed( m );
-            ol.setX( rect.center().x() - pm.width() / 2 );
-            ol.setY( rect.center().y() - pm.height()/ 2 );
-            painter.drawPixmap( ol, pm );
+            QPixmap pm = attributes.pixmap().transformed(m);
+            ol.setX(rect.center().x() - pm.width() / 2);
+            ol.setY(rect.center().y() - pm.height() / 2);
+            painter.drawPixmap(ol, pm);
         }
     }
 }
 
 /* static */
-void AbstractAreaBase::paintFrameAttributes( QPainter& painter, const QRect& rect,
-    const KDChart::FrameAttributes& attributes )
+void AbstractAreaBase::paintFrameAttributes(QPainter &painter, const QRect &rect, const KDChart::FrameAttributes &attributes)
 {
-
-    if ( !attributes.isVisible() ) return;
+    if (!attributes.isVisible())
+        return;
 
     // Note: We set the brush to NoBrush explicitly here.
     //       Otherwise we might get a filled rectangle, so any
     //       previously drawn background would be overwritten by that area.
 
-    const QPen oldPen( painter.pen() );
-    const QBrush oldBrush( painter.brush() );
+    const QPen oldPen(painter.pen());
+    const QBrush oldBrush(painter.brush());
 
-    painter.setPen( PrintingParameters::scalePen( attributes.pen() ) );
-    painter.setBrush( Qt::NoBrush );
-    painter.drawRoundedRect( rect.adjusted( 0, 0, -1, -1 ), attributes.cornerRadius(), attributes.cornerRadius() );
+    painter.setPen(PrintingParameters::scalePen(attributes.pen()));
+    painter.setBrush(Qt::NoBrush);
+    painter.drawRoundedRect(rect.adjusted(0, 0, -1, -1), attributes.cornerRadius(), attributes.cornerRadius());
 
-    painter.setBrush( oldBrush );
-    painter.setPen( oldPen );
+    painter.setBrush(oldBrush);
+    painter.setPen(oldPen);
 }
 
-void AbstractAreaBase::paintBackground( QPainter& painter, const QRect& rect )
+void AbstractAreaBase::paintBackground(QPainter &painter, const QRect &rect)
 {
-    Q_ASSERT_X ( d != 0, "AbstractAreaBase::paintBackground()",
-                "Private class was not initialized!" );
+    Q_ASSERT_X(d != 0, "AbstractAreaBase::paintBackground()", "Private class was not initialized!");
 
-    PainterSaver painterSaver( &painter );
+    PainterSaver painterSaver(&painter);
 
     const qreal radius = d->frameAttributes.cornerRadius();
     QPainterPath path;
-    path.addRoundedRect( rect.adjusted( 0, 0, -1, -1 ), radius, radius );
+    path.addRoundedRect(rect.adjusted(0, 0, -1, -1), radius, radius);
     painter.setClipPath(path);
 
-    paintBackgroundAttributes( painter, rect, d->backgroundAttributes );
+    paintBackgroundAttributes(painter, rect, d->backgroundAttributes);
 }
 
-
-void AbstractAreaBase::paintFrame( QPainter& painter, const QRect& rect )
+void AbstractAreaBase::paintFrame(QPainter &painter, const QRect &rect)
 {
-    Q_ASSERT_X ( d != 0, "AbstractAreaBase::paintFrame()",
-                "Private class was not initialized!" );
-    paintFrameAttributes( painter, rect, d->frameAttributes );
+    Q_ASSERT_X(d != 0, "AbstractAreaBase::paintFrame()", "Private class was not initialized!");
+    paintFrameAttributes(painter, rect, d->frameAttributes);
 }
 
-
-void AbstractAreaBase::getFrameLeadings(int& left, int& top, int& right, int& bottom ) const
+void AbstractAreaBase::getFrameLeadings(int &left, int &top, int &right, int &bottom) const
 {
     int padding = 0;
-    if ( d && d->frameAttributes.isVisible() ) {
-        padding = qMax( d->frameAttributes.padding(), 0 );
+    if (d && d->frameAttributes.isVisible()) {
+        padding = qMax(d->frameAttributes.padding(), 0);
     }
     left = padding;
     top = padding;
@@ -228,8 +214,8 @@ QRect AbstractAreaBase::innerRect() const
     int top;
     int right;
     int bottom;
-    getFrameLeadings( left, top, right, bottom );
-    return QRect ( QPoint( 0, 0 ), areaGeometry().size() ).adjusted( left, top, -right, -bottom );
+    getFrameLeadings(left, top, right, bottom);
+    return QRect(QPoint(0, 0), areaGeometry().size()).adjusted(left, top, -right, -bottom);
 }
 
 void AbstractAreaBase::positionHasChanged()

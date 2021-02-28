@@ -29,20 +29,21 @@
 #include <QMultiHash>
 #include <QPersistentModelIndex>
 
-namespace KDGantt {
-    class ConstraintModel::Private {
-    public:
-        Private();
+namespace KDGantt
+{
+class ConstraintModel::Private
+{
+public:
+    Private();
 
-        void addConstraintToIndex( const QModelIndex& idx, const Constraint& c );
-        void removeConstraintFromIndex( const QModelIndex& idx,  const Constraint& c );
+    void addConstraintToIndex(const QModelIndex &idx, const Constraint &c);
+    void removeConstraintFromIndex(const QModelIndex &idx, const Constraint &c);
 
-        typedef QMultiHash<QPersistentModelIndex,Constraint> IndexType;
+    typedef QMultiHash<QPersistentModelIndex, Constraint> IndexType;
 
-        QList<Constraint> constraints;
-        IndexType indexMap;
-    };
+    QList<Constraint> constraints;
+    IndexType indexMap;
+};
 }
 
 #endif /* KDGANTTCONSTRAINTMODEL_P_H */
-

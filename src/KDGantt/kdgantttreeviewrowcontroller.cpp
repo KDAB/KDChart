@@ -36,25 +36,25 @@ using namespace KDGantt;
  * aligns a gantt view with a QTreeView.
  */
 
-TreeViewRowController::TreeViewRowController( QTreeView* tv,
-					      QAbstractProxyModel* proxy )
-  : _d( new Private )
+TreeViewRowController::TreeViewRowController(QTreeView *tv, QAbstractProxyModel *proxy)
+    : _d(new Private)
 {
-    _d->treeview = static_cast<Private::HackTreeView*>(tv);
+    _d->treeview = static_cast<Private::HackTreeView *>(tv);
     _d->proxy = proxy;
 }
 
 TreeViewRowController::~TreeViewRowController()
 {
-    delete _d; _d=0;
+    delete _d;
+    _d = 0;
 }
 
 #define d d_func()
 
 int TreeViewRowController::headerHeight() const
 {
-  //return d->treeview->header()->sizeHint().height();
-    return d->treeview->viewport()->y()-d->treeview->frameWidth();
+    // return d->treeview->header()->sizeHint().height();
+    return d->treeview->viewport()->y() - d->treeview->frameWidth();
 }
 
 int TreeViewRowController::maximumItemHeight() const
@@ -64,66 +64,68 @@ int TreeViewRowController::maximumItemHeight() const
 
 int TreeViewRowController::totalHeight() const
 {
-    return d->treeview->verticalScrollBar()->maximum()+d->treeview->viewport()->height();
+    return d->treeview->verticalScrollBar()->maximum() + d->treeview->viewport()->height();
 }
 
-bool TreeViewRowController::isRowVisible( const QModelIndex& _idx ) const
+bool TreeViewRowController::isRowVisible(const QModelIndex &_idx) const
 {
-  //qDebug() << _idx.model()<<d->proxy << d->treeview->model();
-    const QModelIndex idx = d->proxy->mapToSource( _idx );
-    assert( idx.isValid() ? ( idx.model() == d->treeview->model() ):( true ) );
+    // qDebug() << _idx.model()<<d->proxy << d->treeview->model();
+    const QModelIndex idx = d->proxy->mapToSource(_idx);
+    assert(idx.isValid() ? (idx.model() == d->treeview->model()) : (true));
     return d->treeview->visualRect(idx).isValid();
 }
 
-bool TreeViewRowController::isRowExpanded( const QModelIndex& _idx ) const
+bool TreeViewRowController::isRowExpanded(const QModelIndex &_idx) const
 {
-    const QModelIndex idx = d->proxy->mapToSource( _idx );
-    assert( idx.isValid() ? ( idx.model() == d->treeview->model() ):( true ) );
-    return d->treeview->isExpanded( idx );
+    const QModelIndex idx = d->proxy->mapToSource(_idx);
+    assert(idx.isValid() ? (idx.model() == d->treeview->model()) : (true));
+    return d->treeview->isExpanded(idx);
 }
 
-Span TreeViewRowController::rowGeometry( const QModelIndex& _idx ) const
+Span TreeViewRowController::rowGeometry(const QModelIndex &_idx) const
 {
-    const QModelIndex idx = d->proxy->mapToSource( _idx );
-    assert( idx.isValid() ? ( idx.model() == d->treeview->model() ):( true ) );
-    QRect r = d->treeview->visualRect(idx).translated( QPoint( 0, d->treeview->verticalOffset() ) );
-    return Span( r.y(), r.height() );
+    const QModelIndex idx = d->proxy->mapToSource(_idx);
+    assert(idx.isValid() ? (idx.model() == d->treeview->model()) : (true));
+    QRect r = d->treeview->visualRect(idx).translated(QPoint(0, d->treeview->verticalOffset()));
+    return Span(r.y(), r.height());
 }
 
-QModelIndex TreeViewRowController::indexAt( int height ) const
+QModelIndex TreeViewRowController::indexAt(int height) const
 {
-  /* using indexAt( QPoint ) wont work here, since it does hit detection
-   *   against the actual item text/icon, so we would return wrong values
-   *   for items with no text etc.
-   *
-   *   The code below could cache for performance, but currently it doesn't
-   *   seem to be the performance bottleneck at all.
-   */
-    if ( !d->treeview->model() ) return QModelIndex();
+    /* using indexAt( QPoint ) wont work here, since it does hit detection
+     *   against the actual item text/icon, so we would return wrong values
+     *   for items with no text etc.
+     *
+     *   The code below could cache for performance, but currently it doesn't
+     *   seem to be the performance bottleneck at all.
+     */
+    if (!d->treeview->model())
+        return QModelIndex();
     int y = d->treeview->verticalOffset();
-    QModelIndex idx = d->treeview->model()->index( 0, 0, d->treeview->rootIndex() );
+    QModelIndex idx = d->treeview->model()->index(0, 0, d->treeview->rootIndex());
     do {
-        if ( y >= height ) break;
+        if (y >= height)
+            break;
 #if QT_VERSION >= 0x040300
-        y += d->treeview->rowHeight( idx );
+        y += d->treeview->rowHeight(idx);
 #else
         // Since TreeViewRowController is NOT using uniform row height
         // we can use this:
-        y += d->treeview->indexRowSizeHint( idx );
+        y += d->treeview->indexRowSizeHint(idx);
 #endif
-        idx = d->treeview->indexBelow( idx );
-    } while ( idx.isValid() );
-    return d->proxy->mapFromSource( idx );
+        idx = d->treeview->indexBelow(idx);
+    } while (idx.isValid());
+    return d->proxy->mapFromSource(idx);
 }
 
-QModelIndex TreeViewRowController::indexAbove( const QModelIndex& _idx ) const
+QModelIndex TreeViewRowController::indexAbove(const QModelIndex &_idx) const
 {
-    const QModelIndex idx = d->proxy->mapToSource( _idx );
-    return d->proxy->mapFromSource( d->treeview->indexAbove( idx ) );
+    const QModelIndex idx = d->proxy->mapToSource(_idx);
+    return d->proxy->mapFromSource(d->treeview->indexAbove(idx));
 }
 
-QModelIndex TreeViewRowController::indexBelow( const QModelIndex& _idx ) const
+QModelIndex TreeViewRowController::indexBelow(const QModelIndex &_idx) const
 {
-    const QModelIndex idx = d->proxy->mapToSource( _idx );
-    return d->proxy->mapFromSource( d->treeview->indexBelow( idx ) );
+    const QModelIndex idx = d->proxy->mapToSource(_idx);
+    return d->proxy->mapFromSource(d->treeview->indexBelow(idx));
 }

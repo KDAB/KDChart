@@ -36,8 +36,8 @@
 
 #include <QDateTime>
 
-#include "KDChartThreeDLineAttributes.h"
 #include "KDChartLineDiagram_p.h"
+#include "KDChartThreeDLineAttributes.h"
 
 #include <KDABLibFakes>
 
@@ -45,45 +45,46 @@ QT_BEGIN_NAMESPACE
 class QSvgRenderer;
 QT_END_NAMESPACE
 
-namespace KDChart {
-
-    class PaintContext;
+namespace KDChart
+{
+class PaintContext;
 
 /**
  * \internal
  */
-    class LeveyJenningsDiagram::Private : public LineDiagram::Private
-    {
-        friend class LeveyJenningsDiagram;
-    public:
-        Private();
-        Private( const Private& rhs );
-        ~Private() override;
+class LeveyJenningsDiagram::Private : public LineDiagram::Private
+{
+    friend class LeveyJenningsDiagram;
 
-        void setYAxisRange() const;
+public:
+    Private();
+    Private(const Private &rhs);
+    ~Private() override;
 
-        Qt::Alignment lotChangedPosition;
-        Qt::Alignment fluidicsPackChangedPosition;
-        Qt::Alignment sensorChangedPosition;
+    void setYAxisRange() const;
 
-        QVector< QDateTime > fluidicsPackChanges;
-        QVector< QDateTime > sensorChanges;
+    Qt::Alignment lotChangedPosition;
+    Qt::Alignment fluidicsPackChangedPosition;
+    Qt::Alignment sensorChangedPosition;
 
-        QPen scanLinePen;
+    QVector<QDateTime> fluidicsPackChanges;
+    QVector<QDateTime> sensorChanges;
 
-        QMap< LeveyJenningsDiagram::Symbol, QString >  icons;
-        QMap< LeveyJenningsDiagram::Symbol, QSvgRenderer* > iconRenderer;
+    QPen scanLinePen;
 
-        QPair< QDateTime, QDateTime > timeRange;
+    QMap<LeveyJenningsDiagram::Symbol, QString> icons;
+    QMap<LeveyJenningsDiagram::Symbol, QSvgRenderer *> iconRenderer;
 
-        float expectedMeanValue;
-        float expectedStandardDeviation;
+    QPair<QDateTime, QDateTime> timeRange;
 
-        mutable float calculatedMeanValue;
-        mutable float calculatedStandardDeviation;
-    };
+    float expectedMeanValue;
+    float expectedStandardDeviation;
 
-    KDCHART_IMPL_DERIVED_DIAGRAM( LeveyJenningsDiagram, LineDiagram, LeveyJenningsCoordinatePlane )
+    mutable float calculatedMeanValue;
+    mutable float calculatedStandardDeviation;
+};
+
+KDCHART_IMPL_DERIVED_DIAGRAM(LeveyJenningsDiagram, LineDiagram, LeveyJenningsCoordinatePlane)
 }
 
 #endif /* KDCHARTLINEDIAGRAM_P_H */

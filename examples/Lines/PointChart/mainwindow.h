@@ -26,9 +26,10 @@
 #include "ui_mainwindow.h"
 #include <TableModel.h>
 
-namespace KDChart {
-    class Chart;
-    class LineDiagram;
+namespace KDChart
+{
+class Chart;
+class LineDiagram;
 }
 
 QT_BEGIN_NAMESPACE
@@ -40,26 +41,24 @@ class MainWindow : public QWidget, private Ui::MainWindow
     Q_OBJECT
 
 public:
-    MainWindow( QWidget* parent = 0 );
+    MainWindow(QWidget *parent = 0);
     ~MainWindow() override;
 
 private slots:
 
-    void on_lineTypeCB_currentIndexChanged( const QString & text );
-    void on_paintValuesCB_toggled( bool checked );
-    void on_paintMarkersCB_toggled( bool checked );
-    void on_paintLinesCB_toggled( bool checked );
-    void on_markersStyleCB_currentIndexChanged( const QString & text );
-    void on_markersWidthSB_valueChanged( int i );
-    void on_markersHeightSB_valueChanged( int i);
-   
+    void on_lineTypeCB_currentIndexChanged(const QString &text);
+    void on_paintValuesCB_toggled(bool checked);
+    void on_paintMarkersCB_toggled(bool checked);
+    void on_paintLinesCB_toggled(bool checked);
+    void on_markersStyleCB_currentIndexChanged(const QString &text);
+    void on_markersWidthSB_valueChanged(int i);
+    void on_markersHeightSB_valueChanged(int i);
+
 private:
-    KDChart::Chart* m_chart;
-    KDChart::LineDiagram* m_lines;
+    KDChart::Chart *m_chart;
+    KDChart::LineDiagram *m_lines;
     TableModel m_model;
-    QPainterPath* path;
+    QPainterPath *path;
 };
 
-
 #endif /* MAINWINDOW_H */
-

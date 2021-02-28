@@ -32,9 +32,9 @@ class QPainter;
 class QPolygonF;
 QT_END_NAMESPACE
 
-namespace KDChart {
-
-    class ThreeDLineAttributes;
+namespace KDChart
+{
+class ThreeDLineAttributes;
 
 /**
  * @brief LineDiagram defines a common line diagram.
@@ -45,34 +45,28 @@ class KDCHART_EXPORT LineDiagram : public AbstractCartesianDiagram
 {
     Q_OBJECT
 
-    Q_DISABLE_COPY( LineDiagram )
-//    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( LineDiagram, CartesianCoordinatePlane * )
+    Q_DISABLE_COPY(LineDiagram)
+    //    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( LineDiagram, CartesianCoordinatePlane * )
 
-    KDCHART_DECLARE_DERIVED_DIAGRAM( LineDiagram, CartesianCoordinatePlane )
-
+    KDCHART_DECLARE_DERIVED_DIAGRAM(LineDiagram, CartesianCoordinatePlane)
 
 public:
     class LineDiagramType;
     friend class LineDiagramType;
 
-    explicit LineDiagram( QWidget* parent = 0, CartesianCoordinatePlane* plane = 0 );
+    explicit LineDiagram(QWidget *parent = 0, CartesianCoordinatePlane *plane = 0);
     ~LineDiagram() override;
 
-    virtual LineDiagram * clone() const;
+    virtual LineDiagram *clone() const;
 
     /**
      * Returns true if both diagrams have the same settings.
      */
-    bool compare( const LineDiagram* other ) const;
+    bool compare(const LineDiagram *other) const;
 
-    enum LineType {
-        Normal =  0,
-        Stacked = 1,
-        Percent = 2
-    };
+    enum LineType { Normal = 0, Stacked = 1, Percent = 2 };
 
-
-    void setType( const LineType type );
+    void setType(const LineType type);
     LineType type() const;
 
     /** If centerDataPoints() is true, all data points are moved by an
@@ -81,7 +75,7 @@ public:
      *
      * \sa centerDataPoints()
      */
-    void setCenterDataPoints( bool center );
+    void setCenterDataPoints(bool center);
     /** @return option set by setCenterDataPoints() */
     bool centerDataPoints() const;
 
@@ -90,68 +84,65 @@ public:
      * in the source model will then appear in front. This is mostly due to
      * historical reasons.
      */
-    void setReverseDatasetOrder( bool reverse );
+    void setReverseDatasetOrder(bool reverse);
     /** \see setReverseDatasetOrder */
     bool reverseDatasetOrder() const;
 
-    void setLineAttributes( const LineAttributes & a );
-    void setLineAttributes( int column, const LineAttributes & a );
-    void setLineAttributes( const QModelIndex & index, const LineAttributes & a );
-    void resetLineAttributes( int column );
-    void resetLineAttributes( const QModelIndex & index );
+    void setLineAttributes(const LineAttributes &a);
+    void setLineAttributes(int column, const LineAttributes &a);
+    void setLineAttributes(const QModelIndex &index, const LineAttributes &a);
+    void resetLineAttributes(int column);
+    void resetLineAttributes(const QModelIndex &index);
     LineAttributes lineAttributes() const;
-    LineAttributes lineAttributes( int column ) const;
-    LineAttributes lineAttributes( const QModelIndex & index ) const;
+    LineAttributes lineAttributes(int column) const;
+    LineAttributes lineAttributes(const QModelIndex &index) const;
 
-    void setThreeDLineAttributes( const ThreeDLineAttributes & a );
-    void setThreeDLineAttributes( int column, const ThreeDLineAttributes & a );
-    void setThreeDLineAttributes( const QModelIndex & index,
-                                  const ThreeDLineAttributes & a );
+    void setThreeDLineAttributes(const ThreeDLineAttributes &a);
+    void setThreeDLineAttributes(int column, const ThreeDLineAttributes &a);
+    void setThreeDLineAttributes(const QModelIndex &index, const ThreeDLineAttributes &a);
 
     ThreeDLineAttributes threeDLineAttributes() const;
-    ThreeDLineAttributes threeDLineAttributes( int column ) const;
-    ThreeDLineAttributes threeDLineAttributes( const QModelIndex & index ) const;
+    ThreeDLineAttributes threeDLineAttributes(int column) const;
+    ThreeDLineAttributes threeDLineAttributes(const QModelIndex &index) const;
 
-    void setValueTrackerAttributes( const QModelIndex & index,
-                                    const ValueTrackerAttributes & a );
-    ValueTrackerAttributes valueTrackerAttributes( const QModelIndex & index ) const;
+    void setValueTrackerAttributes(const QModelIndex &index, const ValueTrackerAttributes &a);
+    ValueTrackerAttributes valueTrackerAttributes(const QModelIndex &index) const;
 
     /**
      * This property defines the strength of the line curvature - 0 for
      * straight lines between data points, 1 for a smooth curve through
      * the data points
      */
-    void setLineTension( qreal tenson );
+    void setLineTension(qreal tenson);
     qreal lineTension() const;
 
 #if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
     // implement AbstractCartesianDiagram
     /* reimpl */
-    const int numberOfAbscissaSegments () const;
+    const int numberOfAbscissaSegments() const;
     /* reimpl */
-    const int numberOfOrdinateSegments () const;
+    const int numberOfOrdinateSegments() const;
 #else
     // implement AbstractCartesianDiagram
     /* reimpl */
-    int numberOfAbscissaSegments () const override;
+    int numberOfAbscissaSegments() const override;
     /* reimpl */
-    int numberOfOrdinateSegments () const override;
+    int numberOfOrdinateSegments() const override;
 #endif
 
 protected:
-    void paint ( PaintContext* paintContext ) override;
+    void paint(PaintContext *paintContext) override;
 
 public:
-    void resize ( const QSizeF& area ) override;
+    void resize(const QSizeF &area) override;
 
 protected:
-
-    qreal threeDItemDepth( const QModelIndex & index ) const override;
-    qreal threeDItemDepth( int column ) const override;
+    qreal threeDItemDepth(const QModelIndex &index) const override;
+    qreal threeDItemDepth(int column) const override;
     /** \reimpl */
     const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
-    void paintEvent ( QPaintEvent* ) override;
-    void resizeEvent ( QResizeEvent* ) override;
+    void paintEvent(QPaintEvent *) override;
+    void resizeEvent(QResizeEvent *) override;
 }; // End of class KDChartLineDiagram
 
 }

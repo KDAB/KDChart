@@ -25,51 +25,48 @@
 
 #include "KDChartPolarCoordinatePlane.h"
 
-namespace KDChart {
+namespace KDChart
+{
+class Chart;
 
-    class Chart;
-    
+/**
+ * @brief Radar coordinate plane
+ */
+class KDCHART_EXPORT RadarCoordinatePlane : public PolarCoordinatePlane
+{
+    Q_OBJECT
+
+    Q_DISABLE_COPY(RadarCoordinatePlane)
+    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT(RadarCoordinatePlane, Chart *)
+
+public:
+    explicit RadarCoordinatePlane(Chart *parent = 0);
+    ~RadarCoordinatePlane() override;
+
     /**
-      * @brief Radar coordinate plane
-      */
-    class KDCHART_EXPORT RadarCoordinatePlane : public PolarCoordinatePlane
-    {
-        Q_OBJECT
+     * Set the attributes to be used for axis captions.
+     *
+     * To disable axis captions, for example, your code should like this:
+     * \code
+     * TextAttributes ta = plane->textAttributes();
+     * ta.setVisible( false );
+     * plane-setTextAttributes( ta );
+     * \endcode
+     */
+    void setTextAttributes(const TextAttributes &attr);
 
-        Q_DISABLE_COPY( RadarCoordinatePlane )
-        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( RadarCoordinatePlane, Chart* )
+    /**
+     * \return The attributes used for axis.
+     *
+     * \note This function always returns a valid set of text attributes:
+     * If no special text attributes was set a default one is
+     * returned.
+     *
+     * \sa setTextAttributes
+     */
+    const TextAttributes textAttributes() const;
+};
 
-    public:
-
-        explicit RadarCoordinatePlane ( Chart* parent = 0 );
-        ~RadarCoordinatePlane() override;
-        
-                
-        /**
-         * Set the attributes to be used for axis captions.
-         *
-         * To disable axis captions, for example, your code should like this:
-         * \code
-         * TextAttributes ta = plane->textAttributes();
-         * ta.setVisible( false );
-         * plane-setTextAttributes( ta );
-         * \endcode
-         */
-        void setTextAttributes( const TextAttributes & attr );
- 
-        /**
-         * \return The attributes used for axis.
-         *
-         * \note This function always returns a valid set of text attributes:
-         * If no special text attributes was set a default one is 
-         * returned.
-         *
-         * \sa setTextAttributes
-         */
-        const TextAttributes textAttributes() const;
-
-    };
-    
 }
 
 #endif

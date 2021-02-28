@@ -34,10 +34,10 @@
 // We mean it.
 //
 
-#include <KDChartWidget.h>
-#include <KDChartChart.h>
 #include <KDChartCartesianCoordinatePlane.h>
+#include <KDChartChart.h>
 #include <KDChartPolarCoordinatePlane.h>
+#include <KDChartWidget.h>
 
 #include <KDABLibFakes>
 
@@ -50,9 +50,10 @@
 class KDChart::Widget::Private
 {
     friend class ::KDChart::Widget;
-    Widget * const q;
+    Widget *const q;
+
 public:
-    explicit Private( Widget * qq );
+    explicit Private(Widget *qq);
     ~Private(); // non-virtual, since nothing inherits this
 
 protected:
@@ -64,6 +65,5 @@ protected:
 
     int usedDatasetWidth;
 };
-
 
 #endif // KDChartWidget_p_H

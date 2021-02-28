@@ -30,15 +30,13 @@ class ZoomWidget : public KDChart::Widget
     Q_OBJECT
 
 public:
-    explicit ZoomWidget( QWidget* parent );
+    explicit ZoomWidget(QWidget *parent);
 
 protected:
-    QPointF findNewZoomCenter( const QPoint & pos );
-    void mousePressEvent( QMouseEvent * e ) override;
-    void wheelEvent( QWheelEvent* e ) override;
-    void keyPressEvent( QKeyEvent* e ) override;
+    QPointF findNewZoomCenter(const QPoint &pos);
+    void mousePressEvent(QMouseEvent *e) override;
+    void wheelEvent(QWheelEvent *e) override;
+    void keyPressEvent(QKeyEvent *e) override;
 };
 
-
 #endif /* ZOOMWIDGET_H */
-

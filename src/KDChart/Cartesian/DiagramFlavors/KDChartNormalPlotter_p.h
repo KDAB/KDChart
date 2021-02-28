@@ -23,7 +23,6 @@
 #ifndef KDCHARTNORMALPLOTTER_P_H
 #define KDCHARTNORMALPLOTTER_P_H
 
-
 //
 //  W A R N I N G
 //  -------------
@@ -36,17 +35,19 @@
 //
 #include "KDChartPlotter_p.h"
 
-namespace KDChart {
-
-    class NormalPlotter : public Plotter::PlotterType
+namespace KDChart
+{
+class NormalPlotter : public Plotter::PlotterType
+{
+public:
+    explicit NormalPlotter(Plotter *);
+    ~NormalPlotter() override
     {
-    public:
-        explicit NormalPlotter( Plotter* );
-        ~NormalPlotter() override {}
-        Plotter::PlotType type() const override;
-        const QPair< QPointF,  QPointF > calculateDataBoundaries() const override;
-        void paint( PaintContext* ctx ) override;
-    };
+    }
+    Plotter::PlotType type() const override;
+    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    void paint(PaintContext *ctx) override;
+};
 }
 
 #endif

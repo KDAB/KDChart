@@ -36,70 +36,70 @@
 
 #include "KDChartAbstractTernaryDiagram.h"
 
+#include "KDChartPainterSaver_p.h"
 #include "KDChartTernaryCoordinatePlane.h"
 #include <KDChartAbstractDiagram_p.h>
 #include <KDChartAbstractThreeDAttributes.h>
 #include <KDChartGridAttributes.h>
-#include "KDChartPainterSaver_p.h"
 
-#include "ReverseMapper.h"
 #include "ChartGraphicsItem.h"
+#include "ReverseMapper.h"
 #include <KDABLibFakes>
 
-namespace KDChart {
-
+namespace KDChart
+{
 /**
  * \internal
  */
-    class AbstractTernaryDiagram::Private : public AbstractDiagram::Private
+class AbstractTernaryDiagram::Private : public AbstractDiagram::Private
+{
+    friend class AbstractTernaryDiagram;
+
+public:
+    Private();
+    ~Private() override
     {
-        friend class AbstractTernaryDiagram;
-    public:
-        Private();
-        ~Private() override {}
+    }
 
-        Private( const Private& rhs ) :
-            AbstractDiagram::Private( rhs ),
-            // Do not copy axes and reference diagrams.
-            axesList(),
-            referenceDiagram( 0 ),
-            referenceDiagramOffset()
-        {
-        }
+    Private(const Private &rhs)
+        : AbstractDiagram::Private(rhs)
+        ,
+        // Do not copy axes and reference diagrams.
+        axesList()
+        , referenceDiagram(0)
+        , referenceDiagramOffset()
+    {
+    }
 
-        TernaryAxisList axesList;
+    TernaryAxisList axesList;
 
-        AbstractTernaryDiagram* referenceDiagram;
-        QPointF referenceDiagramOffset;
+    AbstractTernaryDiagram *referenceDiagram;
+    QPointF referenceDiagramOffset;
 
-        void drawPoint( QPainter* p, int row, int column,
-                        const QPointF& widgetLocation )
-        {
-            // Q_ASSERT( false ); // unused, to be removed
-            static const qreal Diameter = 5.0;
-            static const qreal Radius = Diameter / 2.0;
-            QRectF ellipseRect( widgetLocation - QPointF( Radius, Radius ),
-                                QSizeF( Diameter, Diameter ) );
-            p->drawEllipse( ellipseRect );
+    void drawPoint(QPainter *p, int row, int column, const QPointF &widgetLocation)
+    {
+        // Q_ASSERT( false ); // unused, to be removed
+        static const qreal Diameter = 5.0;
+        static const qreal Radius = Diameter / 2.0;
+        QRectF ellipseRect(widgetLocation - QPointF(Radius, Radius), QSizeF(Diameter, Diameter));
+        p->drawEllipse(ellipseRect);
 
-            reverseMapper.addRect( row, column, ellipseRect );
-        }
+        reverseMapper.addRect(row, column, ellipseRect);
+    }
 
-        virtual void paint( PaintContext* paintContext )
-        {
-            paintContext->painter()->setRenderHint( QPainter::Antialiasing,
-                                                    antiAliasing );
-            if ( !axesList.isEmpty() ) {
-
-                Q_FOREACH( TernaryAxis* axis, axesList ) {
-                    PainterSaver s( paintContext->painter() );
-                    axis->paintCtx( paintContext );
-                }
+    virtual void paint(PaintContext *paintContext)
+    {
+        paintContext->painter()->setRenderHint(QPainter::Antialiasing, antiAliasing);
+        if (!axesList.isEmpty()) {
+            Q_FOREACH (TernaryAxis *axis, axesList) {
+                PainterSaver s(paintContext->painter());
+                axis->paintCtx(paintContext);
             }
         }
-    };
+    }
+};
 
-    KDCHART_IMPL_DERIVED_DIAGRAM( AbstractTernaryDiagram, AbstractDiagram, TernaryCoordinatePlane )
+KDCHART_IMPL_DERIVED_DIAGRAM(AbstractTernaryDiagram, AbstractDiagram, TernaryCoordinatePlane)
 }
 
 #endif /* KDCHARTABSTRACTTERNARYDIAGRAM_P_H */

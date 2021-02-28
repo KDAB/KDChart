@@ -35,43 +35,44 @@ using namespace KDChart;
 class LeveyJenningsGridAttributes::Private
 {
     friend class LeveyJenningsGridAttributes;
+
 public:
     Private();
+
 private:
-    QMap< GridType, bool > visible;
-    QMap< GridType, QPen > pens;
-    QMap< LeveyJenningsGridAttributes::Range, QBrush > rangeBrushes;
+    QMap<GridType, bool> visible;
+    QMap<GridType, QPen> pens;
+    QMap<LeveyJenningsGridAttributes::Range, QBrush> rangeBrushes;
 };
 
 LeveyJenningsGridAttributes::Private::Private()
 {
-    pens[ Calculated ].setCapStyle( Qt::FlatCap );
-    pens[ Calculated ].setColor( Qt::blue );
-    pens[ Expected ].setCapStyle( Qt::FlatCap );
-    pens[ Expected ].setColor( Qt::black );
-    
-    visible[ Calculated ] = true;
-    visible[ Expected ] = true;
-    
-    rangeBrushes[ LeveyJenningsGridAttributes::CriticalRange ] = QBrush( QColor( 255, 255, 192 ) );
-    rangeBrushes[ LeveyJenningsGridAttributes::OutOfRange ]    = QBrush( QColor( 255, 128, 128 ) );
+    pens[Calculated].setCapStyle(Qt::FlatCap);
+    pens[Calculated].setColor(Qt::blue);
+    pens[Expected].setCapStyle(Qt::FlatCap);
+    pens[Expected].setColor(Qt::black);
+
+    visible[Calculated] = true;
+    visible[Expected] = true;
+
+    rangeBrushes[LeveyJenningsGridAttributes::CriticalRange] = QBrush(QColor(255, 255, 192));
+    rangeBrushes[LeveyJenningsGridAttributes::OutOfRange] = QBrush(QColor(255, 128, 128));
 }
 
-
 LeveyJenningsGridAttributes::LeveyJenningsGridAttributes()
-    : _d( new Private() )
+    : _d(new Private())
 {
     // this bloc left empty intentionally
 }
 
-LeveyJenningsGridAttributes::LeveyJenningsGridAttributes( const LeveyJenningsGridAttributes& r )
-    : _d( new Private( *r.d ) )
+LeveyJenningsGridAttributes::LeveyJenningsGridAttributes(const LeveyJenningsGridAttributes &r)
+    : _d(new Private(*r.d))
 {
 }
 
-LeveyJenningsGridAttributes & LeveyJenningsGridAttributes::operator=( const LeveyJenningsGridAttributes& r )
+LeveyJenningsGridAttributes &LeveyJenningsGridAttributes::operator=(const LeveyJenningsGridAttributes &r)
 {
-    if ( this == &r )
+    if (this == &r)
         return *this;
 
     *d = *r.d;
@@ -81,46 +82,43 @@ LeveyJenningsGridAttributes & LeveyJenningsGridAttributes::operator=( const Leve
 
 LeveyJenningsGridAttributes::~LeveyJenningsGridAttributes()
 {
-    delete _d; _d = 0;
+    delete _d;
+    _d = 0;
 }
 
-
-bool LeveyJenningsGridAttributes::operator==( const LeveyJenningsGridAttributes& r ) const
+bool LeveyJenningsGridAttributes::operator==(const LeveyJenningsGridAttributes &r) const
 {
-    return  isGridVisible( Expected ) == r.isGridVisible( Expected ) &&
-            isGridVisible( Calculated ) == r.isGridVisible( Calculated ) &&
-            gridPen( Expected ) == r.gridPen( Expected ) &&
-            gridPen( Calculated ) == r.gridPen( Calculated );
+    return isGridVisible(Expected) == r.isGridVisible(Expected) && isGridVisible(Calculated) == r.isGridVisible(Calculated)
+        && gridPen(Expected) == r.gridPen(Expected) && gridPen(Calculated) == r.gridPen(Calculated);
 }
 
-void LeveyJenningsGridAttributes::setRangeBrush( Range range, const QBrush& brush )
+void LeveyJenningsGridAttributes::setRangeBrush(Range range, const QBrush &brush)
 {
-    d->rangeBrushes[ range ] = brush;
+    d->rangeBrushes[range] = brush;
 }
 
-QBrush LeveyJenningsGridAttributes::rangeBrush( Range range ) const
+QBrush LeveyJenningsGridAttributes::rangeBrush(Range range) const
 {
-    return d->rangeBrushes[ range ];
+    return d->rangeBrushes[range];
 }
 
-
-void LeveyJenningsGridAttributes::setGridVisible( GridType type, bool visible )
+void LeveyJenningsGridAttributes::setGridVisible(GridType type, bool visible)
 {
-    d->visible[ type ] = visible;
+    d->visible[type] = visible;
 }
 
-bool LeveyJenningsGridAttributes::isGridVisible( GridType type ) const
+bool LeveyJenningsGridAttributes::isGridVisible(GridType type) const
 {
-    return d->visible[ type ];
+    return d->visible[type];
 }
 
-void LeveyJenningsGridAttributes::setGridPen( GridType type, const QPen& pen )
+void LeveyJenningsGridAttributes::setGridPen(GridType type, const QPen &pen)
 {
-    d->pens[ type ] = pen;
-    d->pens[ type ].setCapStyle( Qt::FlatCap );
+    d->pens[type] = pen;
+    d->pens[type].setCapStyle(Qt::FlatCap);
 }
 
-QPen LeveyJenningsGridAttributes::gridPen( GridType type ) const
+QPen LeveyJenningsGridAttributes::gridPen(GridType type) const
 {
-    return d->pens[ type ];
+    return d->pens[type];
 }

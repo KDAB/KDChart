@@ -26,24 +26,30 @@
 #include <KDChartCartesianAxis>
 #include <KDChartGlobal>
 
-
-class AdjustedCartesianAxis: public KDChart::CartesianAxis
+class AdjustedCartesianAxis : public KDChart::CartesianAxis
 {
     Q_OBJECT
 
-    Q_DISABLE_COPY( AdjustedCartesianAxis )
+    Q_DISABLE_COPY(AdjustedCartesianAxis)
 
 public:
-    explicit AdjustedCartesianAxis( KDChart::AbstractCartesianDiagram* diagram = 0 );
+    explicit AdjustedCartesianAxis(KDChart::AbstractCartesianDiagram *diagram = 0);
 
-    const QString customizedLabel( const QString& label ) const override;
+    const QString customizedLabel(const QString &label) const override;
 
-    void setBounds( qreal lower, qreal upper ) {
+    void setBounds(qreal lower, qreal upper)
+    {
         m_lowerBound = lower;
         m_upperBound = upper;
     }
-    qreal lowerBound() const { return m_lowerBound; }
-    qreal upperBound() const { return m_upperBound; }
+    qreal lowerBound() const
+    {
+        return m_lowerBound;
+    }
+    qreal upperBound() const
+    {
+        return m_upperBound;
+    }
 
 private:
     qreal m_lowerBound;

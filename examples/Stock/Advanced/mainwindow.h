@@ -24,24 +24,24 @@
 #define MAINWINDOW_H
 
 #include "ui_mainwindow.h"
-#include <TableModel.h>
 #include <KDChartChart>
 #include <KDChartStockDiagram>
 #include <KDChartThreeDBarAttributes>
+#include <TableModel.h>
 
 class MainWindow : public QWidget, private Ui::MainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow( QWidget *parent = 0 );
+    MainWindow(QWidget *parent = 0);
 
 private slots:
-    void on_threeDProperties_toggled( bool checked );
-    void on_perspectiveDepth_valueChanged( int value );
-    void on_perspectiveAngle_valueChanged( int value );
-    void on_useShadowColors_toggled( bool checked );
-    void on_stockTypeCB_currentIndexChanged( const QString &text );
+    void on_threeDProperties_toggled(bool checked);
+    void on_perspectiveDepth_valueChanged(int value);
+    void on_perspectiveAngle_valueChanged(int value);
+    void on_useShadowColors_toggled(bool checked);
+    void on_stockTypeCB_currentIndexChanged(const QString &text);
     void chooseColor();
 
 private:

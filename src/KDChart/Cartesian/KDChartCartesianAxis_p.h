@@ -34,44 +34,53 @@
 // We mean it.
 //
 
-#include "KDChartCartesianAxis.h"
-#include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartAbstractAxis_p.h"
+#include "KDChartAbstractCartesianDiagram.h"
+#include "KDChartCartesianAxis.h"
 
 #include <KDABLibFakes>
 
 #include <limits>
 
-namespace KDChart {
-
+namespace KDChart
+{
 /**
-  * \internal
-  */
+ * \internal
+ */
 class CartesianAxis::Private : public AbstractAxis::Private
 {
     friend class CartesianAxis;
 
 public:
-    Private( AbstractCartesianDiagram* diagram, CartesianAxis* axis )
-        : AbstractAxis::Private( diagram, axis )
-        , useDefaultTextAttributes( true )
-        , cachedHeaderLabels( QStringList() )
-        , cachedLabelHeight( 0.0 )
-        , cachedFontHeight( 0 )
-        , axisTitleSpace( 1.0 )
-    {}
-    ~Private() override {}
+    Private(AbstractCartesianDiagram *diagram, CartesianAxis *axis)
+        : AbstractAxis::Private(diagram, axis)
+        , useDefaultTextAttributes(true)
+        , cachedHeaderLabels(QStringList())
+        , cachedLabelHeight(0.0)
+        , cachedFontHeight(0)
+        , axisTitleSpace(1.0)
+    {
+    }
+    ~Private() override
+    {
+    }
 
-    static const Private *get( const CartesianAxis *axis ) { return axis->d_func(); };
+    static const Private *get(const CartesianAxis *axis)
+    {
+        return axis->d_func();
+    };
 
-    CartesianAxis* axis() const { return static_cast<CartesianAxis *>( mAxis ); }
-    void drawTitleText( QPainter*, CartesianCoordinatePlane* plane, const QRect& areaGeoRect ) const;
+    CartesianAxis *axis() const
+    {
+        return static_cast<CartesianAxis *>(mAxis);
+    }
+    void drawTitleText(QPainter *, CartesianCoordinatePlane *plane, const QRect &areaGeoRect) const;
     const TextAttributes titleTextAttributesWithAdjustedRotation() const;
     QSize calculateMaximumSize() const;
-    QString customizedLabelText( const QString& text, Qt::Orientation orientation, qreal value ) const;
+    QString customizedLabelText(const QString &text, Qt::Orientation orientation, qreal value) const;
     bool isVertical() const;
 
-    QMap< qreal, QString > annotations;
+    QMap<qreal, QString> annotations;
 
 private:
     friend class TickIterator;
@@ -81,7 +90,7 @@ private:
     Position position;
     QRect geometry;
     int customTickLength;
-    QList< qreal > customTicksPositions;
+    QList<qreal> customTicksPositions;
     mutable QStringList cachedHeaderLabels;
     mutable qreal cachedLabelHeight;
     mutable qreal cachedLabelWidth;
@@ -91,30 +100,42 @@ private:
     qreal axisTitleSpace;
 };
 
-inline CartesianAxis::CartesianAxis( Private * p, AbstractDiagram* diagram )
-    : AbstractAxis( p, diagram )
+inline CartesianAxis::CartesianAxis(Private *p, AbstractDiagram *diagram)
+    : AbstractAxis(p, diagram)
 {
     init();
 }
 
-inline CartesianAxis::Private * CartesianAxis::d_func()
-{ return static_cast<Private*>( AbstractAxis::d_func() ); }
-inline const CartesianAxis::Private * CartesianAxis::d_func() const
-{ return static_cast<const Private*>( AbstractAxis::d_func() ); }
-
+inline CartesianAxis::Private *CartesianAxis::d_func()
+{
+    return static_cast<Private *>(AbstractAxis::d_func());
+}
+inline const CartesianAxis::Private *CartesianAxis::d_func() const
+{
+    return static_cast<const Private *>(AbstractAxis::d_func());
+}
 
 class XySwitch
 {
 public:
-    explicit XySwitch( bool _isY ) : isY( _isY ) {}
+    explicit XySwitch(bool _isY)
+        : isY(_isY)
+    {
+    }
 
     // for rvalues
-    template< class T >
-    T operator()( T x, T y ) const { return isY ? y : x; }
+    template<class T>
+    T operator()(T x, T y) const
+    {
+        return isY ? y : x;
+    }
 
     // lvalues
-    template< class T >
-    T& lvalue( T& x, T& y ) const { return isY ? y : x; }
+    template<class T>
+    T &lvalue(T &x, T &y) const
+    {
+        return isY ? y : x;
+    }
 
     bool isY;
 };
@@ -122,47 +143,56 @@ public:
 class TickIterator
 {
 public:
-    enum TickType {
-        NoTick = 0,
-        MajorTick,
-        MajorTickHeaderDataLabel,
-        MajorTickManualShort,
-        MajorTickManualLong,
-        MinorTick,
-        CustomTick
-    };
+    enum TickType { NoTick = 0, MajorTick, MajorTickHeaderDataLabel, MajorTickManualShort, MajorTickManualLong, MinorTick, CustomTick };
     // this constructor is for use in CartesianAxis
-    TickIterator( CartesianAxis *a, CartesianCoordinatePlane* plane, uint majorThinningFactor,
-                  bool omitLastTick /* sorry about that */ );
+    TickIterator(CartesianAxis *a, CartesianCoordinatePlane *plane, uint majorThinningFactor, bool omitLastTick /* sorry about that */);
     // this constructor is for use in CartesianGrid
-    TickIterator( bool isY, const DataDimension& dimension, bool useAnnotationsForTicks,
-                  bool hasMajorTicks, bool hasMinorTicks, CartesianCoordinatePlane* plane );
+    TickIterator(bool isY,
+                 const DataDimension &dimension,
+                 bool useAnnotationsForTicks,
+                 bool hasMajorTicks,
+                 bool hasMinorTicks,
+                 CartesianCoordinatePlane *plane);
 
-    qreal position() const { return m_position; }
-    QString text() const { return m_text; }
-    TickType type() const { return m_type; }
-    bool hasShorterLabels() const { return m_axis && !m_axis->labels().isEmpty() &&
-                                    m_axis->shortLabels().count() == m_axis->labels().count(); }
-    bool isAtEnd() const { return m_position == std::numeric_limits< qreal >::infinity(); }
+    qreal position() const
+    {
+        return m_position;
+    }
+    QString text() const
+    {
+        return m_text;
+    }
+    TickType type() const
+    {
+        return m_type;
+    }
+    bool hasShorterLabels() const
+    {
+        return m_axis && !m_axis->labels().isEmpty() && m_axis->shortLabels().count() == m_axis->labels().count();
+    }
+    bool isAtEnd() const
+    {
+        return m_position == std::numeric_limits<qreal>::infinity();
+    }
     void operator++();
 
-    bool areAlmostEqual( qreal r1, qreal r2 ) const;
+    bool areAlmostEqual(qreal r1, qreal r2) const;
 
 private:
     // code shared by the two constructors
-    void init( bool isY, bool hasMajorTicks, bool hasMinorTicks, CartesianCoordinatePlane* plane );
+    void init(bool isY, bool hasMajorTicks, bool hasMinorTicks, CartesianCoordinatePlane *plane);
 
-    bool isHigherPrecedence( qreal importantLabelValue, qreal unimportantLabelValue ) const;
-    void computeMajorTickLabel( int decimalPlaces );
+    bool isHigherPrecedence(qreal importantLabelValue, qreal unimportantLabelValue) const;
+    void computeMajorTickLabel(int decimalPlaces);
 
     // these are generally set once in the constructor
-    CartesianAxis* m_axis;
+    CartesianAxis *m_axis;
     DataDimension m_dimension; // upper and lower bounds
     int m_decimalPlaces; // for numeric labels
     bool m_isLogarithmic;
-    QMap< qreal, QString > m_annotations;
-    QMap< qreal, QString > m_dataHeaderLabels;
-    QList< qreal > m_customTicks;
+    QMap<qreal, QString> m_annotations;
+    QMap<qreal, QString> m_dataHeaderLabels;
+    QList<qreal> m_customTicks;
     QStringList m_manualLabelTexts;
     uint m_majorThinningFactor;
     uint m_majorLabelCount;

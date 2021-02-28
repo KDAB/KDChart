@@ -36,8 +36,8 @@
 
 #include "KDChartAbstractArea_p.h"
 #include <KDChartAbstractCoordinatePlane.h>
-#include <KDChartGridAttributes.h>
 #include <KDChartAbstractGrid.h>
+#include <KDChartGridAttributes.h>
 #include <KDChartZoomParameters.h>
 
 #include <KDABLibFakes>
@@ -48,18 +48,19 @@ QT_BEGIN_NAMESPACE
 class QRubberBand;
 QT_END_NAMESPACE
 
-namespace KDChart {
-
-
+namespace KDChart
+{
 /**
  * \internal
  */
 class AbstractCoordinatePlane::Private : public AbstractArea::Private
 {
     friend class AbstractCoordinatePlane;
+
 protected:
     explicit Private();
-    ~Private() override {
+    ~Private() override
+    {
         delete grid;
     };
 
@@ -69,17 +70,15 @@ protected:
         // can not call the base class: grid = new AbstractGrid();
     }
 
-    virtual bool isVisiblePoint(
-        const AbstractCoordinatePlane * plane,
-        const QPointF& point ) const
+    virtual bool isVisiblePoint(const AbstractCoordinatePlane *plane, const QPointF &point) const
     {
-        Q_UNUSED( plane );
-        Q_UNUSED( point );
+        Q_UNUSED(plane);
+        Q_UNUSED(point);
         return true;
     }
 
-    KDChart::Chart* parent;
-    AbstractGrid* grid;
+    KDChart::Chart *parent;
+    AbstractGrid *grid;
     QRect geometry;
     AbstractDiagramList diagrams;
     GridAttributes gridAttributes;
@@ -88,29 +87,27 @@ protected:
     bool enableCornerSpacers;
 
     bool enableRubberBandZooming;
-    QRubberBand* rubberBand;
+    QRubberBand *rubberBand;
     QPoint rubberBandOrigin;
 
-    QStack< ZoomParameters > rubberBandZoomConfigHistory;
+    QStack<ZoomParameters> rubberBandZoomConfigHistory;
 };
 
-
-inline AbstractCoordinatePlane::AbstractCoordinatePlane( Private * p, KDChart::Chart* parent )
-    : AbstractArea( p )
+inline AbstractCoordinatePlane::AbstractCoordinatePlane(Private *p, KDChart::Chart *parent)
+    : AbstractArea(p)
 {
-    if ( p )
+    if (p)
         p->parent = parent;
     init();
 }
-inline AbstractCoordinatePlane::Private * AbstractCoordinatePlane::d_func()
+inline AbstractCoordinatePlane::Private *AbstractCoordinatePlane::d_func()
 {
-    return static_cast<Private*>( AbstractArea::d_func() );
+    return static_cast<Private *>(AbstractArea::d_func());
 }
-inline const AbstractCoordinatePlane::Private * AbstractCoordinatePlane::d_func() const
+inline const AbstractCoordinatePlane::Private *AbstractCoordinatePlane::d_func() const
 {
-    return static_cast<const Private*>( AbstractArea::d_func() );
+    return static_cast<const Private *>(AbstractArea::d_func());
 }
-
 
 }
 

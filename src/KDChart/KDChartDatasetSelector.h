@@ -27,60 +27,57 @@
 
 #include "KDChartDatasetProxyModel.h"
 
-
 /**
  * \cond PRIVATE_API_DOCU
  *
  * ( This class is used internally by DatasetSelectorWidget. )
  */
 QT_BEGIN_NAMESPACE
-namespace Ui {
-    class DatasetSelector;
+namespace Ui
+{
+class DatasetSelector;
 }
 QT_END_NAMESPACE
 /**
  * \endcond
  */
 
-namespace KDChart {
+namespace KDChart
+{
+class KDCHART_EXPORT DatasetSelectorWidget : public QFrame
+{
+    Q_OBJECT
 
-    class KDCHART_EXPORT DatasetSelectorWidget : public QFrame
-    {
-        Q_OBJECT
+public:
+    explicit DatasetSelectorWidget(QWidget *parent = 0);
+    ~DatasetSelectorWidget() override;
 
-    public:
-        explicit DatasetSelectorWidget ( QWidget* parent = 0 );
-        ~DatasetSelectorWidget() override;
+public Q_SLOTS:
+    void setSourceRowCount(const int &rowCount);
+    void setSourceColumnCount(const int &columnCount);
 
-    public Q_SLOTS:
-        void setSourceRowCount ( const int& rowCount );
-        void setSourceColumnCount ( const int& columnCount );
+Q_SIGNALS:
+    void configureDatasetProxyModel(const DatasetDescriptionVector &rowConfig, const DatasetDescriptionVector &columnConfig);
 
-    Q_SIGNALS:
-        void configureDatasetProxyModel (
-            const DatasetDescriptionVector& rowConfig,
-            const DatasetDescriptionVector& columnConfig );
+    void mappingDisabled();
 
-        void mappingDisabled ();
+private Q_SLOTS:
+    void on_sbStartColumn_valueChanged(int);
+    void on_sbStartRow_valueChanged(int);
+    void on_sbColumnCount_valueChanged(int);
+    void on_sbRowCount_valueChanged(int);
+    void on_cbReverseRows_stateChanged(int);
+    void on_cbReverseColumns_stateChanged(int);
+    void on_groupBox_toggled(bool);
 
-    private Q_SLOTS:
-        void on_sbStartColumn_valueChanged ( int );
-        void on_sbStartRow_valueChanged ( int );
-        void on_sbColumnCount_valueChanged( int );
-        void on_sbRowCount_valueChanged( int );
-        void on_cbReverseRows_stateChanged ( int );
-        void on_cbReverseColumns_stateChanged ( int );
-        void on_groupBox_toggled ( bool );
+private:
+    void resetDisplayValues();
+    void calculateMapping();
 
-
-    private:
-        void resetDisplayValues ();
-        void calculateMapping();
-
-        Ui::DatasetSelector* mUi;
-        int mSourceRowCount;
-        int mSourceColumnCount;
-    };
+    Ui::DatasetSelector *mUi;
+    int mSourceRowCount;
+    int mSourceColumnCount;
+};
 
 }
 

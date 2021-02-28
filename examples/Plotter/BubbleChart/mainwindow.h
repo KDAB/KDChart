@@ -29,9 +29,10 @@ QT_BEGIN_NAMESPACE
 class QStandardItemModel;
 QT_END_NAMESPACE
 
-namespace KDChart {
-    class Chart;
-    class Plotter;
+namespace KDChart
+{
+class Chart;
+class Plotter;
 }
 
 class MainWindow : public QWidget, private Ui::MainWindow
@@ -39,18 +40,16 @@ class MainWindow : public QWidget, private Ui::MainWindow
     Q_OBJECT
 
 public:
-    MainWindow( QWidget* parent = 0 );
+    MainWindow(QWidget *parent = 0);
 
 private slots:
     void initializeDataModel();
     void setMarkerAttributes();
 
 private:
-    QStandardItemModel* m_model;
-    KDChart::Chart* m_chart;
-    KDChart::Plotter* m_plotter;
+    QStandardItemModel *m_model;
+    KDChart::Chart *m_chart;
+    KDChart::Plotter *m_plotter;
 };
 
-
 #endif /* MAINWINDOW_H */
-
