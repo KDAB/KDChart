@@ -43,7 +43,7 @@ using namespace KDChart;
 
 MainWindow::MainWindow()
 {
-    QMenu *fileMenu = new QMenu(tr("&File"), this);
+    auto *fileMenu = new QMenu(tr("&File"), this);
     QAction *openAction = fileMenu->addAction(tr("&Open..."));
     openAction->setShortcut(QKeySequence(tr("Ctrl+O")));
     QAction *saveAction = fileMenu->addAction(tr("&Save As..."));
@@ -94,7 +94,7 @@ void MainWindow::setupViews()
 
     m_tableView = new QTableView;
 
-    QSplitter *splitter = new QSplitter(Qt::Vertical);
+    auto *splitter = new QSplitter(Qt::Vertical);
     splitter->addWidget(m_tableView);
     splitter->addWidget(m_chart);
     splitter->setStretchFactor(0, 0);
@@ -109,13 +109,15 @@ void MainWindow::setupViews()
 
     qDebug() << "(" << m_model->rowCount() << "," << m_model->columnCount() << ")";
 
-    KDChart::DatasetProxyModel *dproxy = new KDChart::DatasetProxyModel(this);
+    auto *dproxy = new KDChart::DatasetProxyModel(this);
     dproxy->setSourceModel(m_model);
     dproxy->setDatasetColumnDescriptionVector(columnConfig);
     m_diagramView->setModel(dproxy);
 
-    KDChart::HeaderFooter *headerFooter = new KDChart::HeaderFooter(m_chart);
-    headerFooter->setText(tr("You can edit the table data, or select table cells with keyboard/mouse."));
+    auto *headerFooter = new KDChart::HeaderFooter(m_chart);
+    headerFooter->setText(
+        tr("You can edit the table data, or select table "
+           "cells with keyboard/mouse."));
     headerFooter->setType(HeaderFooter::Header);
     headerFooter->setPosition(Position::North);
     m_chart->addHeaderFooter(headerFooter);
@@ -151,9 +153,11 @@ void MainWindow::selectionChanged(const QItemSelection &selected, const QItemSel
                 QItemSelectionRange range(pItemSelection->at(i));
                 for (int iRow = range.topLeft().row(); iRow <= range.bottomRight().row(); ++iRow) {
                     for (int iColumn = range.topLeft().column(); iColumn <= range.bottomRight().column(); ++iColumn) {
-                        // ignore the first column: that's just the label texts to be shown in the table view
+                        // ignore the first column: that's just the label texts
+                        // to be shown in the table view
                         if (iColumn)
-                            // enable (or disable, resp.) the surrounding line around this bar
+                            // enable (or disable, resp.) the surrounding line
+                            // around this bar
                             m_diagramView->setPen(m_diagramView->model()->index(iRow, iColumn - 1, m_diagramView->rootIndex()), pen);
                     }
                 }
@@ -191,7 +195,7 @@ void MainWindow::openFile(const QString &path)
                 if (!line.isEmpty()) {
                     m_model->insertRows(row, 1, QModelIndex());
 
-                    QStringList pieces = line.split(',', QString::SkipEmptyParts);
+                    QStringList pieces = line.split(',', Qt::SkipEmptyParts);
                     m_model->setData(m_model->index(row, 0, QModelIndex()), pieces.value(0));
                     m_model->setData(m_model->index(row, 1, QModelIndex()), pieces.value(1));
                     m_model->setData(m_model->index(row, 2, QModelIndex()), pieces.value(2));

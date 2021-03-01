@@ -39,9 +39,7 @@ using namespace KDGantt;
  *
  */
 
-ConstraintModel::Private::Private()
-{
-}
+ConstraintModel::Private::Private() = default;
 
 void ConstraintModel::Private::addConstraintToIndex(const QModelIndex &idx, const Constraint &c)
 {
@@ -119,7 +117,8 @@ struct compare_constraint_indexes_to : public std::unary_function<bool, Constrai
  */
 void ConstraintModel::addConstraint(const Constraint &c)
 {
-    // qDebug() << "ConstraintModel::addConstraint("<<c<<") (this="<<this<<") items=" << d->constraints.size();
+    // qDebug() << "ConstraintModel::addConstraint("<<c<<") (this="<<this<<")
+    // items=" << d->constraints.size();
     QList<Constraint>::iterator it = std::find_if(d->constraints.begin(), d->constraints.end(), compare_constraint_indexes_to(c));
 
     if (it == d->constraints.end()) {
@@ -171,7 +170,7 @@ bool ConstraintModel::removeConstraint(const Constraint &c)
 void ConstraintModel::clear()
 {
     QList<Constraint> lst = constraints();
-    Q_FOREACH (const Constraint &c, lst) {
+    for (const Constraint &c : qAsConst(lst)) {
         removeConstraint(c);
     }
 }
@@ -181,7 +180,7 @@ void ConstraintModel::cleanup()
 {
 #if 0
     QSet<Constraint> orphans;
-    Q_FOREACH( const Constraint& c, d->constraints ) {
+    for( const Constraint& c: qAsConst( d->constraints )) {
         if ( !c.startIndex().isValid() || !c.endIndex().isValid() ) orphans.insert( c );
     }
     //qDebug() << "Constraint::cleanup() found" << orphans << "orphans";
@@ -203,19 +202,20 @@ QList<Constraint> ConstraintModel::constraints() const
  */
 QList<Constraint> ConstraintModel::constraintsForIndex(const QModelIndex &idx) const
 {
-    // TODO: @Steffen: Please comment on this assert, it's long and not obvious (Johannes)
+    // TODO: @Steffen: Please comment on this assert, it's long and not obvious
+    // (Johannes)
     assert(!idx.isValid() || d->indexMap.isEmpty() || !d->indexMap.keys().front().model() || idx.model() == d->indexMap.keys().front().model());
     if (!idx.isValid()) {
         // Because of a Qt bug we need to treat this as a special case
         QSet<Constraint> result;
-        Q_FOREACH (const Constraint &c, d->constraints) {
+        for (const Constraint &c : qAsConst(d->constraints)) {
             if (!c.startIndex().isValid() || !c.endIndex().isValid())
                 result.insert(c);
         }
-        return result.toList();
+        return result.values();
     } else {
         QList<Constraint> result;
-        Q_FOREACH (const Constraint &c, d->constraints) {
+        for (const Constraint &c : qAsConst(d->constraints)) {
             if (c.startIndex() == idx || c.endIndex() == idx)
                 result.push_back(c);
         }
@@ -232,7 +232,7 @@ bool ConstraintModel::hasConstraint(const Constraint &c) const
 {
     /*
     // Because of a Qt bug we have to search like this
-    Q_FOREACH( Constraint c2, d->constraints ) {
+    for( Constraint c2: qAsConst( d->constraints )) {
         if ( c==c2 ) return true;
     }
     return false;
@@ -251,7 +251,7 @@ bool ConstraintModel::hasConstraint(const Constraint &c) const
 QDebug operator<<(QDebug dbg, const KDGantt::ConstraintModel &model)
 {
     dbg << "KDGantt::ConstraintModel[ " << static_cast<const QObject *>(&model) << ": [\n";
-    Q_FOREACH (const Constraint &c, model.constraints()) {
+    for (const Constraint &c : model.constraints()) {
         dbg << "\t" << c << "\n";
     }
     dbg << "]\n";

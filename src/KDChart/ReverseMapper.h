@@ -38,8 +38,8 @@ class AbstractDiagram;
 class ChartGraphicsItem;
 
 /**
- * @brief The ReverseMapper stores information about objects on a chart and their respective model indexes
- * \internal
+ * @brief The ReverseMapper stores information about objects on a chart and
+ * their respective model indexes \internal
  */
 class ReverseMapper
 {
@@ -53,11 +53,11 @@ public:
 
     void clear();
 
-    QModelIndexList indexesAt(const QPointF &point) const;
-    QModelIndexList indexesIn(const QRect &rect) const;
+    [[nodiscard]] QModelIndexList indexesAt(const QPointF &point) const;
+    [[nodiscard]] QModelIndexList indexesIn(const QRect &rect) const;
 
-    QPolygonF polygon(int row, int column) const;
-    QRectF boundingRect(int row, int column) const;
+    [[nodiscard]] QPolygonF polygon(int row, int column) const;
+    [[nodiscard]] QRectF boundingRect(int row, int column) const;
 
     void addItem(ChartGraphicsItem *item);
 

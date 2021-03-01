@@ -30,15 +30,15 @@
 #include <QDateTime>
 #include <QPersistentModelIndex>
 
-Q_DECLARE_METATYPE(QPersistentModelIndex);
+Q_DECLARE_METATYPE(QPersistentModelIndex)
 
 EntryDialog::EntryDialog(const QAbstractItemModel *model, QWidget *parent, Qt::WindowFlags f)
     : QDialog(parent, f)
     , indexList(QList<QPersistentModelIndex>())
+    , model(model)
     , ui(new Ui::EntryDialog)
 {
     ui->setupUi(this);
-    this->model = model;
     init();
 }
 

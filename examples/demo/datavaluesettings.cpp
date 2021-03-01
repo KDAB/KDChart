@@ -73,11 +73,11 @@ public Q_SLOTS:
     void on_suffixLE_textEdited(const QString &text);
 
 public:
-    const QModelIndex currentIndex() const;
-    const KDChart::DataValueAttributes attributes() const;
-    const char *positionToScreenName(const KDChart::Position &pos) const;
-    const Qt::Alignment alignmentFromScreeName(const QString &name) const;
-    const QString alignmentToScreenName(const Qt::Alignment &align) const;
+    [[nodiscard]] const QModelIndex currentIndex() const;
+    [[nodiscard]] const KDChart::DataValueAttributes attributes() const;
+    [[nodiscard]] const char *positionToScreenName(const KDChart::Position &pos) const;
+    [[nodiscard]] const Qt::Alignment alignmentFromScreeName(const QString &name) const;
+    [[nodiscard]] const QString alignmentToScreenName(const Qt::Alignment &align) const;
     void populateWidgets();
     void setAttributes(const KDChart::DataValueAttributes &da);
     void connectWidgets();
@@ -414,8 +414,8 @@ void DataValueSettings::Private::setAttributes(const KDChart::DataValueAttribute
 }
 
 // just a convenience method:
-// In the combo box we have the text "( Default Value )" instead of "Unknown Position"
-// because by setting a position to unknown we get KD Chart to use the
+// In the combo box we have the text "( Default Value )" instead of "Unknown
+// Position" because by setting a position to unknown we get KD Chart to use the
 // diagram-specific default positions.
 const char *DataValueSettings::Private::positionToScreenName(const Position &pos) const
 {

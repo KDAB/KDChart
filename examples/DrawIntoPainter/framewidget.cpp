@@ -29,7 +29,7 @@
 
 FrameWidget::FrameWidget(QWidget *parent, Qt::WFlags f)
     : QWidget(parent, f)
-    , mChart(0)
+    , mChart(nullptr)
 {
     // this bloc left empty intentionally
 }
@@ -37,8 +37,8 @@ FrameWidget::FrameWidget(QWidget *parent, Qt::WFlags f)
 void FrameWidget::setChart(KDChart::Chart *chart)
 {
     mChart = chart;
-    // This is necessary because Chart can't automatically schedule somebody else (this object) to
-    // call its custom paint method.
+    // This is necessary because Chart can't automatically schedule somebody
+    // else (this object) to call its custom paint method.
     connect(mChart, SIGNAL(propertiesChanged()), SLOT(update()));
 }
 

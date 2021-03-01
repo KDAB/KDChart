@@ -41,31 +41,31 @@ public:
     ~BarAttributes();
 
     void setFixedDataValueGap(qreal gap);
-    qreal fixedDataValueGap() const;
+    [[nodiscard]] qreal fixedDataValueGap() const;
 
     void setUseFixedDataValueGap(bool gapIsFixed);
-    bool useFixedDataValueGap() const;
+    [[nodiscard]] bool useFixedDataValueGap() const;
 
     void setFixedValueBlockGap(qreal gap);
-    qreal fixedValueBlockGap() const;
+    [[nodiscard]] qreal fixedValueBlockGap() const;
 
     void setUseFixedValueBlockGap(bool gapIsFixed);
-    bool useFixedValueBlockGap() const;
+    [[nodiscard]] bool useFixedValueBlockGap() const;
 
     void setFixedBarWidth(qreal width);
-    qreal fixedBarWidth() const;
+    [[nodiscard]] qreal fixedBarWidth() const;
 
     void setUseFixedBarWidth(bool useFixedBarWidth);
-    bool useFixedBarWidth() const;
+    [[nodiscard]] bool useFixedBarWidth() const;
 
     void setGroupGapFactor(qreal gapFactor);
-    qreal groupGapFactor() const;
+    [[nodiscard]] qreal groupGapFactor() const;
 
     void setBarGapFactor(qreal gapFactor);
-    qreal barGapFactor() const;
+    [[nodiscard]] qreal barGapFactor() const;
 
     void setDrawSolidExcessArrows(bool solidArrows);
-    bool drawSolidExcessArrows() const;
+    [[nodiscard]] bool drawSolidExcessArrows() const;
 
     bool operator==(const BarAttributes &) const;
     inline bool operator!=(const BarAttributes &other) const
@@ -80,7 +80,7 @@ private:
     {
         return _d;
     }
-    const Private *d_func() const
+    [[nodiscard]] const Private *d_func() const
     {
         return _d;
     }

@@ -83,7 +83,7 @@ LeveyJenningsGridAttributes &LeveyJenningsGridAttributes::operator=(const LeveyJ
 LeveyJenningsGridAttributes::~LeveyJenningsGridAttributes()
 {
     delete _d;
-    _d = 0;
+    _d = nullptr;
 }
 
 bool LeveyJenningsGridAttributes::operator==(const LeveyJenningsGridAttributes &r) const

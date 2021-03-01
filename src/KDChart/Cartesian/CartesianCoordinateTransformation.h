@@ -56,7 +56,8 @@ struct CoordinateTransformation {
 
     QTransform transform;
     QTransform backTransform;
-    // a logarithmic scale cannot cross zero, so we have to know which side we are on.
+    // a logarithmic scale cannot cross zero, so we have to know which side we
+    // are on.
     bool isPositiveX;
     bool isPositiveY;
 
@@ -82,7 +83,8 @@ struct CoordinateTransformation {
     {
         QRectF dataRect = constDataRect;
         if (axesCalcModeX == CartesianCoordinatePlane::Logarithmic) {
-            // the data will be scaled by logTransform() later, so scale its bounds as well
+            // the data will be scaled by logTransform() later, so scale its
+            // bounds as well
             isPositiveX = dataRect.left() >= 0.0;
             dataRect.setLeft(logTransform(dataRect.left(), isPositiveX));
             dataRect.setRight(logTransform(dataRect.right(), isPositiveX));
@@ -140,7 +142,7 @@ struct CoordinateTransformation {
     }
 };
 
-typedef QList<CoordinateTransformation> CoordinateTransformationList;
+using CoordinateTransformationList = QList<CoordinateTransformation>;
 
 }
 

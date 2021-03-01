@@ -49,21 +49,21 @@ public:
      * Sets the pen used to draw the tick marks
      */
     void setTickMarkPen(const QPen &pen);
-    QPen tickMarkPen() const;
+    [[nodiscard]] QPen tickMarkPen() const;
 
     /**
      * Sets the pen used to draw major tick marks
      */
     void setMajorTickMarkPen(const QPen &pen);
-    bool majorTickMarkPenIsSet() const;
-    QPen majorTickMarkPen() const;
+    [[nodiscard]] bool majorTickMarkPenIsSet() const;
+    [[nodiscard]] QPen majorTickMarkPen() const;
 
     /**
      * Sets the pen used to draw minor tick marks
      */
     void setMinorTickMarkPen(const QPen &pen);
-    bool minorTickMarkPenIsSet() const;
-    QPen minorTickMarkPen() const;
+    [[nodiscard]] bool minorTickMarkPenIsSet() const;
+    [[nodiscard]] QPen minorTickMarkPen() const;
 
     /**
      * Sets the pen used to draw the tick mark at a specific value
@@ -72,46 +72,46 @@ public:
      * if it wasn't already drawn before.
      */
     void setTickMarkPen(qreal value, const QPen &pen);
-    QPen tickMarkPen(qreal value) const;
-    typedef QMap<qreal, QPen> TickMarkerPensMap;
-    TickMarkerPensMap tickMarkPens() const;
+    [[nodiscard]] QPen tickMarkPen(qreal value) const;
+    using TickMarkerPensMap = QMap<qreal, QPen>;
+    [[nodiscard]] TickMarkerPensMap tickMarkPens() const;
 
-    bool hasTickMarkPenAt(qreal value) const;
+    [[nodiscard]] bool hasTickMarkPenAt(qreal value) const;
 
     /**
      * Color setter method provided for convenience
      */
     void setTickMarkColor(const QColor &color);
-    QColor tickMarkColor() const;
+    [[nodiscard]] QColor tickMarkColor() const;
 
     /**
      * Shows or hides minor tick marks
      */
     void setShowMinorTickMarks(bool show);
-    bool showMinorTickMarks() const;
+    [[nodiscard]] bool showMinorTickMarks() const;
 
     void setShowRulerLine(bool show);
-    bool showRulerLine() const;
+    [[nodiscard]] bool showRulerLine() const;
 
     /**
      * Shows or hides major tick marks
      */
     void setShowMajorTickMarks(bool show);
-    bool showMajorTickMarks() const;
+    [[nodiscard]] bool showMajorTickMarks() const;
 
     /**
      * Sets the length of major tick marks
      */
     void setMajorTickMarkLength(int length);
-    int majorTickMarkLength() const;
-    bool majorTickMarkLengthIsSet() const;
+    [[nodiscard]] int majorTickMarkLength() const;
+    [[nodiscard]] bool majorTickMarkLengthIsSet() const;
 
     /**
      * Sets the length of minor tick marks
      */
     void setMinorTickMarkLength(int length);
-    int minorTickMarkLength() const;
-    bool minorTickMarkLengthIsSet() const;
+    [[nodiscard]] int minorTickMarkLength() const;
+    [[nodiscard]] bool minorTickMarkLengthIsSet() const;
 
     /**
      * Set margin that should be used between the labels and the ticks. By
@@ -119,14 +119,15 @@ public:
      * height/width should be used as margin.
      */
     void setLabelMargin(int margin);
-    int labelMargin() const;
+    [[nodiscard]] int labelMargin() const;
 
     /**
      * Shows or hides the first tick. This is usually where the axes cross.
-     * The tick itself may be obscured by the other axis, but the label will be visible.
+     * The tick itself may be obscured by the other axis, but the label will be
+     * visible.
      */
     void setShowFirstTick(bool show);
-    bool showFirstTick() const;
+    [[nodiscard]] bool showFirstTick() const;
 
     bool operator==(const RulerAttributes &) const;
     inline bool operator!=(const RulerAttributes &other) const

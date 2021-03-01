@@ -32,7 +32,7 @@ class ChartWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ChartWidget(QWidget *parent = 0)
+    explicit ChartWidget(QWidget *parent = nullptr)
         : QWidget(parent)
     {
         m_model.insertRows(0, 5, QModelIndex());
@@ -45,7 +45,7 @@ public:
             }
         }
 
-        LineDiagram *diagram = new LineDiagram;
+        auto *diagram = new LineDiagram;
         diagram->setModel(&m_model);
 
         // Display values
@@ -103,7 +103,7 @@ public:
         m_chart.coordinatePlane()->replaceDiagram(diagram);
         m_chart.setGlobalLeadingRight(50);
 
-        QVBoxLayout *l = new QVBoxLayout(this);
+        auto *l = new QVBoxLayout(this);
         l->addWidget(&m_chart);
         setLayout(l);
     }

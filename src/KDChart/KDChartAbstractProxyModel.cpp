@@ -43,10 +43,10 @@ AbstractProxyModel::AbstractProxyModel(QObject *parent)
 {
 }
 
-// Allows access to QModelIndex's private data via type punning and a compatible data layout.
-// Due to inlining in Qt and no d-pointer, it is safe to assume that the layout won't change except
-// between major Qt versions. As it happens, the layout is the same in Qt4 and Qt5.
-// The only change is void * -> quintptr.
+// Allows access to QModelIndex's private data via type punning and a compatible
+// data layout. Due to inlining in Qt and no d-pointer, it is safe to assume
+// that the layout won't change except between major Qt versions. As it happens,
+// the layout is the same in Qt4 and Qt5. The only change is void * -> quintptr.
 struct MAY_ALIAS KDPrivateModelIndex {
     int r, c;
     void *p;
@@ -73,10 +73,11 @@ QModelIndex AbstractProxyModel::mapToSource(const QModelIndex &proxyIndex) const
     if (proxyIndex.model() != this)
         qDebug() << proxyIndex.model() << this;
     Q_ASSERT(proxyIndex.model() == this);
-    // So here we need to create a source index which holds that internal pointer.
-    // No way to pass it to sourceModel()->index... so we have to do the ugly way:
+    // So here we need to create a source index which holds that internal
+    // pointer. No way to pass it to sourceModel()->index... so we have to do
+    // the ugly way:
     QModelIndex sourceIndex;
-    KDPrivateModelIndex *hack = reinterpret_cast<KDPrivateModelIndex *>(&sourceIndex);
+    auto *hack = reinterpret_cast<KDPrivateModelIndex *>(&sourceIndex);
     hack->r = proxyIndex.row();
     hack->c = proxyIndex.column();
     hack->p = proxyIndex.internalPointer();

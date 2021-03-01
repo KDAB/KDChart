@@ -36,30 +36,30 @@ class KDGANTT_EXPORT ConstraintGraphicsItem : public QGraphicsItem
 public:
     enum { Type = UserType + 43 };
 
-    explicit ConstraintGraphicsItem(const Constraint &c, QGraphicsItem *parent = 0, GraphicsScene *scene = 0);
+    explicit ConstraintGraphicsItem(const Constraint &c, QGraphicsItem *parent = nullptr, GraphicsScene *scene = nullptr);
     ~ConstraintGraphicsItem() override;
 
-    /*reimp*/ int type() const override;
-    /*reimp (non virtual)*/ GraphicsScene *scene() const;
+    /*reimp*/ [[nodiscard]] int type() const override;
+    /*reimp (non virtual)*/ [[nodiscard]] GraphicsScene *scene() const;
 
-    /*reimp*/ QString ganttToolTip() const;
+    /*reimp*/ [[nodiscard]] QString ganttToolTip() const;
 
-    /*reimp*/ QRectF boundingRect() const override;
-    /*reimp*/ void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
+    /*reimp*/ [[nodiscard]] QRectF boundingRect() const override;
+    /*reimp*/ void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 
-    inline const Constraint &constraint() const
+    [[nodiscard]] inline const Constraint &constraint() const
     {
         return m_constraint;
     }
-    Constraint proxyConstraint() const;
+    [[nodiscard]] Constraint proxyConstraint() const;
 
     void setStart(const QPointF &start);
-    inline QPointF start() const
+    [[nodiscard]] inline QPointF start() const
     {
         return m_start;
     }
     void setEnd(const QPointF &end);
-    inline QPointF end() const
+    [[nodiscard]] inline QPointF end() const
     {
         return m_end;
     }

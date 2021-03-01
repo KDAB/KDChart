@@ -27,7 +27,7 @@
 
 using namespace KDGantt;
 
-typedef QAbstractProxyModel BASE;
+using BASE = QAbstractProxyModel;
 
 /*! Constructor. Creates a new ForwardingProxyModel with
  * parent \a parent
@@ -37,9 +37,7 @@ ForwardingProxyModel::ForwardingProxyModel(QObject *parent)
 {
 }
 
-ForwardingProxyModel::~ForwardingProxyModel()
-{
-}
+ForwardingProxyModel::~ForwardingProxyModel() = default;
 
 /*! Converts indexes in the source model to indexes in the proxy model */
 QModelIndex ForwardingProxyModel::mapFromSource(const QModelIndex &sourceIndex) const
@@ -49,7 +47,8 @@ QModelIndex ForwardingProxyModel::mapFromSource(const QModelIndex &sourceIndex) 
     assert(sourceIndex.model() == sourceModel());
 
     // Create an index that preserves the internal pointer from the source;
-    // this way KDDataConverterProxyModel preserves the structure of the source model
+    // this way KDDataConverterProxyModel preserves the structure of the source
+    // model
     return createIndex(sourceIndex.row(), sourceIndex.column(), sourceIndex.internalPointer());
 }
 #ifdef __GNUC__
@@ -75,10 +74,11 @@ QModelIndex ForwardingProxyModel::mapToSource(const QModelIndex &proxyIndex) con
     if (!proxyIndex.isValid())
         return QModelIndex();
     assert(proxyIndex.model() == this);
-    // So here we need to create a source index which holds that internal pointer.
-    // No way to pass it to sourceModel()->index... so we have to do the ugly way:
+    // So here we need to create a source index which holds that internal
+    // pointer. No way to pass it to sourceModel()->index... so we have to do
+    // the ugly way:
     QModelIndex sourceIndex;
-    KDPrivateModelIndex *hack = reinterpret_cast<KDPrivateModelIndex *>(&sourceIndex);
+    auto *hack = reinterpret_cast<KDPrivateModelIndex *>(&sourceIndex);
     hack->r = proxyIndex.row();
     hack->c = proxyIndex.column();
     hack->p = proxyIndex.internalPointer();
@@ -268,7 +268,8 @@ QModelIndex ForwardingProxyModel::parent(const QModelIndex &idx) const
 /*! \see QAbstractItemModel::setData */
 bool ForwardingProxyModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    // qDebug() << "ForwardingProxyModel::setData( " << index<<value<< role<<")";
+    // qDebug() << "ForwardingProxyModel::setData( " << index<<value<<
+    // role<<")";
     return sourceModel()->setData(mapToSource(index), value, role);
 }
 

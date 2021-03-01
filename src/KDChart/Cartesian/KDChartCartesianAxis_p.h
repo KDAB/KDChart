@@ -61,9 +61,7 @@ public:
         , axisTitleSpace(1.0)
     {
     }
-    ~Private() override
-    {
-    }
+    ~Private() override = default;
 
     static const Private *get(const CartesianAxis *axis)
     {
@@ -154,35 +152,35 @@ public:
                  bool hasMinorTicks,
                  CartesianCoordinatePlane *plane);
 
-    qreal position() const
+    [[nodiscard]] qreal position() const
     {
         return m_position;
     }
-    QString text() const
+    [[nodiscard]] QString text() const
     {
         return m_text;
     }
-    TickType type() const
+    [[nodiscard]] TickType type() const
     {
         return m_type;
     }
-    bool hasShorterLabels() const
+    [[nodiscard]] bool hasShorterLabels() const
     {
         return m_axis && !m_axis->labels().isEmpty() && m_axis->shortLabels().count() == m_axis->labels().count();
     }
-    bool isAtEnd() const
+    [[nodiscard]] bool isAtEnd() const
     {
         return m_position == std::numeric_limits<qreal>::infinity();
     }
     void operator++();
 
-    bool areAlmostEqual(qreal r1, qreal r2) const;
+    [[nodiscard]] bool areAlmostEqual(qreal r1, qreal r2) const;
 
 private:
     // code shared by the two constructors
     void init(bool isY, bool hasMajorTicks, bool hasMinorTicks, CartesianCoordinatePlane *plane);
 
-    bool isHigherPrecedence(qreal importantLabelValue, qreal unimportantLabelValue) const;
+    [[nodiscard]] bool isHigherPrecedence(qreal importantLabelValue, qreal unimportantLabelValue) const;
     void computeMajorTickLabel(int decimalPlaces);
 
     // these are generally set once in the constructor

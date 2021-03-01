@@ -73,16 +73,21 @@ private slots:
     void setModelTest()
     {
         compressor.setModel(&model);
-        QVERIFY2(compressor.modelDataColumns() == model.columnCount(), "columns should be equal to model columns, independent of resolution");
+        QVERIFY2(compressor.modelDataColumns() == model.columnCount(),
+                 "columns should be equal to model columns, independent of "
+                 "resolution");
         QVERIFY2(compressor.modelDataRows() == 0, "without a diagram resolution, columns should be zero");
     }
 
     void setResolutionTest()
     {
         compressor.setResolution(width, height);
-        QVERIFY2(compressor.modelDataColumns() == model.columnCount(), "column count should be equal to dataset count when both model and resolution are set");
+        QVERIFY2(compressor.modelDataColumns() == model.columnCount(),
+                 "column count should be equal to dataset count when both model and "
+                 "resolution are set");
         QVERIFY2(compressor.modelDataRows() == width,
-                 "row count should be equal to width when both model and resolution are set, and "
+                 "row count should be equal to width when both model and resolution "
+                 "are set, and "
                  "model row count exceeds widget width");
     }
 
@@ -128,8 +133,10 @@ private slots:
             QModelIndexList indexes;
             CachePosition point(0, 0);
             indexes = compressor.mapToModel(point);
-            Q_FOREACH (const QModelIndex &index, indexes) {
-                QVERIFY2(compressor.mapToCache(index) == point, "index mapToModel does not map back to the original cache point");
+            for (const QModelIndex &index : qAsConst(indexes)) {
+                QVERIFY2(compressor.mapToCache(index) == point,
+                         "index mapToModel does not map back to the original cache "
+                         "point");
             }
         }
         // test 2: invalid point:
@@ -137,13 +144,17 @@ private slots:
             QModelIndexList indexes;
             CachePosition point(0, ColumnCount); // just outside column count
             indexes = compressor.mapToModel(point);
-            QVERIFY2(indexes.isEmpty(), "index list for a point outside the data space should be empty");
+            QVERIFY2(indexes.isEmpty(),
+                     "index list for a point outside the data space should be "
+                     "empty");
         }
         {
             QModelIndexList indexes;
             CachePosition point(RowCount, 0); // just outside row count
             indexes = compressor.mapToModel(point);
-            QVERIFY2(indexes.isEmpty(), "index list for a point outside the data space should be empty");
+            QVERIFY2(indexes.isEmpty(),
+                     "index list for a point outside the data space should be "
+                     "empty");
         }
     }
 

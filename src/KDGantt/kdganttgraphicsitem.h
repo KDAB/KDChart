@@ -45,12 +45,12 @@ class GraphicsItem : public QGraphicsItem
 public:
     enum { Type = UserType + 42 };
 
-    explicit GraphicsItem(QGraphicsItem *parent = 0, GraphicsScene *scene = 0);
-    explicit GraphicsItem(const QModelIndex &idx, QGraphicsItem *parent = 0, GraphicsScene *scene = 0);
+    explicit GraphicsItem(QGraphicsItem *parent = nullptr, GraphicsScene *scene = nullptr);
+    explicit GraphicsItem(const QModelIndex &idx, QGraphicsItem *parent = nullptr, GraphicsScene *scene = nullptr);
     ~GraphicsItem() override;
 
-    /*reimp*/ int type() const override;
-    /*reimp (non-virtual)*/ GraphicsScene *scene() const;
+    /*reimp*/ [[nodiscard]] int type() const override;
+    /*reimp (non-virtual)*/ [[nodiscard]] GraphicsScene *scene() const;
 
     void updateItem(const Span &rowgeometry, const QPersistentModelIndex &idx);
 
@@ -59,23 +59,23 @@ public:
     // qreal dateTimeToSceneX( const QDateTime& dt ) const;
     // QDateTime sceneXtoDateTime( qreal x ) const;
 
-    QRectF rect() const
+    [[nodiscard]] QRectF rect() const
     {
         return m_rect;
     }
     void setRect(const QRectF &r);
     void setBoundingRect(const QRectF &r);
 
-    virtual QString ganttToolTip() const;
+    [[nodiscard]] virtual QString ganttToolTip() const;
 
-    const QPersistentModelIndex &index() const
+    [[nodiscard]] const QPersistentModelIndex &index() const
     {
         return m_index;
     }
     void setIndex(const QPersistentModelIndex &idx);
 
-    bool isEditable() const;
-    bool isUpdating() const
+    [[nodiscard]] bool isEditable() const;
+    [[nodiscard]] bool isUpdating() const
     {
         return m_isupdating;
     }
@@ -84,17 +84,17 @@ public:
     void addEndConstraint(ConstraintGraphicsItem *);
     void removeStartConstraint(ConstraintGraphicsItem *);
     void removeEndConstraint(ConstraintGraphicsItem *);
-    QList<ConstraintGraphicsItem *> startConstraints() const
+    [[nodiscard]] QList<ConstraintGraphicsItem *> startConstraints() const
     {
         return m_startConstraints;
     }
-    QList<ConstraintGraphicsItem *> endConstraints() const
+    [[nodiscard]] QList<ConstraintGraphicsItem *> endConstraints() const
     {
         return m_endConstraints;
     }
 
-    /*reimp*/ QRectF boundingRect() const override;
-    /*reimp*/ void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
+    /*reimp*/ [[nodiscard]] QRectF boundingRect() const override;
+    /*reimp*/ void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 
     /*reimp*/ QVariant itemChange(GraphicsItemChange, const QVariant &value) override;
 
@@ -110,10 +110,10 @@ protected:
 private:
     void init();
 
-    QPointF startConnector(int relationType) const;
-    QPointF endConnector(int relationType) const;
+    [[nodiscard]] QPointF startConnector(int relationType) const;
+    [[nodiscard]] QPointF endConnector(int relationType) const;
     void updateConstraintItems();
-    StyleOptionGanttItem getStyleOption() const;
+    [[nodiscard]] StyleOptionGanttItem getStyleOption() const;
     void updateModel();
     void updateItemFromMouse(const QPointF &scenepos);
     void constraintsChanged();

@@ -43,7 +43,7 @@ public:
 
     /* threeD Pies specific */
     void setUseShadowColors(bool useShadowColors);
-    bool useShadowColors() const;
+    [[nodiscard]] bool useShadowColors() const;
 
     bool operator==(const ThreeDPieAttributes &) const;
     inline bool operator!=(const ThreeDPieAttributes &other) const

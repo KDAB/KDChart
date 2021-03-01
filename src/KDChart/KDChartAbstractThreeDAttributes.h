@@ -41,17 +41,17 @@ public:
     virtual ~AbstractThreeDAttributes() = 0;
 
     void setEnabled(bool enabled);
-    bool isEnabled() const;
+    [[nodiscard]] bool isEnabled() const;
 
     void setDepth(qreal depth);
-    qreal depth() const;
+    [[nodiscard]] qreal depth() const;
 
     // returns the depth(), if is isEnabled() is true, otherwise returns 0.0
-    qreal validDepth() const;
+    [[nodiscard]] qreal validDepth() const;
 
-    bool isThreeDBrushEnabled() const;
+    [[nodiscard]] bool isThreeDBrushEnabled() const;
     void setThreeDBrushEnabled(bool enabled);
-    virtual QBrush threeDBrush(const QBrush &brush, const QRectF &rect) const;
+    [[nodiscard]] virtual QBrush threeDBrush(const QBrush &brush, const QRectF &rect) const;
 
     bool operator==(const AbstractThreeDAttributes &) const;
     inline bool operator!=(const AbstractThreeDAttributes &other) const

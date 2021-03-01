@@ -34,14 +34,15 @@ namespace KDChart
 /**
  * @brief A proxy model used for decorating data with attributes.
  *
- *        An AttributesModel forwards data from and to the source model and adds attributes,
- *        data that influences the graphical rendering of the source model data.
- *        The attributes are distinguished from the source model's data by their @p role values.
- *        Therefore this class does not need to, and does not, change the data layout from the
- *        source model's; indexes that refer to the same data have the same row and column
- *        values in both models.
- *        Attribute changes, that is changes to data with the attribute role, via the interface
- *        of this class (including setData()) are stored internally and not forwarded to the source model.
+ *        An AttributesModel forwards data from and to the source model and adds
+ * attributes, data that influences the graphical rendering of the source model
+ * data. The attributes are distinguished from the source model's data by their
+ * @p role values. Therefore this class does not need to, and does not, change
+ * the data layout from the source model's; indexes that refer to the same data
+ * have the same row and column values in both models. Attribute changes, that
+ * is changes to data with the attribute role, via the interface of this class
+ * (including setData()) are stored internally and not forwarded to the source
+ * model.
  */
 class KDCHART_EXPORT AttributesModel : public AbstractProxyModel
 {
@@ -50,7 +51,7 @@ class KDCHART_EXPORT AttributesModel : public AbstractProxyModel
 public:
     enum PaletteType { PaletteTypeDefault = 0, PaletteTypeRainbow = 1, PaletteTypeSubdued = 2 };
 
-    explicit AttributesModel(QAbstractItemModel *model, QObject *parent = 0);
+    explicit AttributesModel(QAbstractItemModel *model, QObject *parent = nullptr);
     ~AttributesModel() override;
 
     /** Copies the internal data (maps and palette) of another
@@ -63,58 +64,62 @@ public:
      */
     bool compare(const AttributesModel *other) const;
 
-    bool compareAttributes(int role, const QVariant &a, const QVariant &b) const;
+    [[nodiscard]] bool compareAttributes(int role, const QVariant &a, const QVariant &b) const;
 
     /* Attributes Model specific API */
     bool setModelData(const QVariant value, int role);
-    QVariant modelData(int role) const;
+    [[nodiscard]] QVariant modelData(int role) const;
 
     /** Returns whether the given role corresponds to one of the known
      * internally used ones. */
-    bool isKnownAttributesRole(int role) const;
+    [[nodiscard]] bool isKnownAttributesRole(int role) const;
 
     /** Sets the palettetype used by this attributesmodel */
     void setPaletteType(PaletteType type);
-    PaletteType paletteType() const;
+    [[nodiscard]] PaletteType paletteType() const;
 
     /** Returns the data that were specified at global level,
      * or the default data, or QVariant().
      */
-    QVariant data(int role) const;
+    [[nodiscard]] QVariant data(int role) const;
 
     /** Returns the data that were specified at per column level,
      * or the globally set data, or the default data, or QVariant().
      */
-    QVariant data(int column, int role) const;
+    [[nodiscard]] QVariant data(int column, int role) const;
 
     /** \reimpl */
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    [[nodiscard]] QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     /** \reimpl */
-    int rowCount(const QModelIndex &) const override;
+    [[nodiscard]] int rowCount(const QModelIndex &) const override;
     /** \reimpl */
-    int columnCount(const QModelIndex &) const override;
+    [[nodiscard]] int columnCount(const QModelIndex &) const override;
     /** \reimpl */
-    QVariant data(const QModelIndex &, int role = Qt::DisplayRole) const override;
+    [[nodiscard]] QVariant data(const QModelIndex &, int role = Qt::DisplayRole) const override;
     /** \reimpl */
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::DisplayRole) override;
-    /** Remove any explicit attributes settings that might have been specified before. */
+    /** Remove any explicit attributes settings that might have been specified
+     * before. */
     bool resetData(const QModelIndex &index, int role = Qt::DisplayRole);
     /** \reimpl */
     bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::DisplayRole) override;
     /** Returns default values for the header data. */
-    virtual QVariant defaultHeaderData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    /** Remove any explicit attributes settings that might have been specified before. */
+    [[nodiscard]] virtual QVariant defaultHeaderData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    /** Remove any explicit attributes settings that might have been specified
+     * before. */
     bool resetHeaderData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole);
     /** \reimpl */
     void setSourceModel(QAbstractItemModel *sourceModel) override;
 
     /** Define the default value for a certain role.
-        Passing a default-constructed QVariant is equivalent to removing the default. */
+        Passing a default-constructed QVariant is equivalent to removing the
+       default. */
     void setDefaultForRole(int role, const QVariant &value);
 
-    /** Set the dimension of the dataset in the source model. \sa AbstractDiagram::setDatasetDimension */
+    /** Set the dimension of the dataset in the source model. \sa
+     * AbstractDiagram::setDatasetDimension */
     void setDatasetDimension(int dimension);
-    int datasetDimension() const;
+    [[nodiscard]] int datasetDimension() const;
 
 Q_SIGNALS:
     void attributesChanged(const QModelIndex &, const QModelIndex &);
@@ -134,8 +139,8 @@ private Q_SLOTS:
 
 private:
     // helper
-    QVariant defaultsForRole(int role) const;
-    bool compareHeaderDataMaps(const QMap<int, QMap<int, QVariant>> &mapA, const QMap<int, QMap<int, QVariant>> &mapB) const;
+    [[nodiscard]] QVariant defaultsForRole(int role) const;
+    [[nodiscard]] bool compareHeaderDataMaps(const QMap<int, QMap<int, QVariant>> &mapA, const QMap<int, QMap<int, QVariant>> &mapB) const;
 
     void removeEntriesFromDataMap(int start, int end);
     void removeEntriesFromDirectionDataMaps(Qt::Orientation dir, int start, int end);

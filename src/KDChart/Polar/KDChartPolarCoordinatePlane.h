@@ -42,22 +42,23 @@ class KDCHART_EXPORT PolarCoordinatePlane : public AbstractCoordinatePlane
 
 public:
     struct CoordinateTransformation;
-    typedef QList<CoordinateTransformation> CoordinateTransformationList;
+    using CoordinateTransformationList = QList<CoordinateTransformation>;
 
-    explicit PolarCoordinatePlane(Chart *parent = 0);
+    explicit PolarCoordinatePlane(Chart *parent = nullptr);
     ~PolarCoordinatePlane() override;
 
     void addDiagram(AbstractDiagram *diagram) override;
 
-    const QPointF translate(const QPointF &diagramPoint) const override;
-    const QPointF translatePolar(const QPointF &diagramPoint) const;
+    [[nodiscard]] const QPointF translate(const QPointF &diagramPoint) const override;
+    [[nodiscard]] const QPointF translatePolar(const QPointF &diagramPoint) const;
 
     /** \brief Specify the rotation of the coordinate plane.
      *
      * In a pie diagram this indicates the position where the first pie starts,
      * in a polar diagram it specifies the Zero position of the circular axis:
      *
-     * \image html polar-plane-start-position.png "Illustration of \"start position\" property"
+     * \image html polar-plane-start-position.png "Illustration of \"start
+     * position\" property"
      *
      * \sa startPosition
      */
@@ -65,16 +66,16 @@ public:
     /** Retrieve the rotation of the coordinate plane.
      * \sa setStartPosition
      */
-    qreal startPosition() const;
+    [[nodiscard]] qreal startPosition() const;
 
-    qreal zoomFactorX() const override;
-    qreal zoomFactorY() const override;
+    [[nodiscard]] qreal zoomFactorX() const override;
+    [[nodiscard]] qreal zoomFactorY() const override;
 
     void setZoomFactors(qreal factorX, qreal factorY) override;
     void setZoomFactorX(qreal factor) override;
     void setZoomFactorY(qreal factor) override;
 
-    QPointF zoomCenter() const override;
+    [[nodiscard]] QPointF zoomCenter() const override;
 
     void setZoomCenter(const QPointF &center) override;
 
@@ -82,9 +83,8 @@ public:
      * Set the attributes to be used for grid lines drawn in circular
      * direction (or in sagittal direction, resp.).
      *
-     * To disable circular grid painting, for example, your code should like this:
-     * \code
-     * GridAttributes ga = plane->gridAttributes( bool );
+     * To disable circular grid painting, for example, your code should like
+     * this: \code GridAttributes ga = plane->gridAttributes( bool );
      * ga.setGridVisible( false );
      * plane-setGridAttributes( bool, ga );
      * \endcode
@@ -126,7 +126,7 @@ public:
      * \sa AbstractCoordinatePlane::globalGridAttributes
      * \sa hasOwnGridAttributes
      */
-    const GridAttributes gridAttributes(bool circular) const;
+    [[nodiscard]] const GridAttributes gridAttributes(bool circular) const;
 
     /**
      * \return Returns whether the grid attributes have been set for the
@@ -140,16 +140,16 @@ public:
      * \sa resetGridAttributes
      * \sa AbstractCoordinatePlane::globalGridAttributes
      */
-    bool hasOwnGridAttributes(bool circular) const;
+    [[nodiscard]] bool hasOwnGridAttributes(bool circular) const;
 
-    qreal angleUnit() const;
-    qreal radiusUnit() const;
+    [[nodiscard]] qreal angleUnit() const;
+    [[nodiscard]] qreal radiusUnit() const;
 
     /** reimpl */
     void paint(QPainter *) override;
 
 protected:
-    DataDimensionsList getDataDimensionsList() const override;
+    [[nodiscard]] DataDimensionsList getDataDimensionsList() const override;
     void paintEvent(QPaintEvent *);
     void resizeEvent(QResizeEvent *);
 

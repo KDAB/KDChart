@@ -40,7 +40,7 @@ class KDCHART_EXPORT PieDiagram : public AbstractPieDiagram
     KDCHART_DECLARE_DERIVED_DIAGRAM(PieDiagram, PolarCoordinatePlane)
 
 public:
-    explicit PieDiagram(QWidget *parent = 0, PolarCoordinatePlane *plane = 0);
+    explicit PieDiagram(QWidget *parent = nullptr, PolarCoordinatePlane *plane = nullptr);
     ~PieDiagram() override;
 
 protected:
@@ -58,42 +58,47 @@ public:
         LineFromSliceDecoration = 2 ///< A line is drawn from the pie slice to its label
     };
     Q_DECLARE_FLAGS(LabelDecorations, LabelDecoration)
-    /// Set the decorations to be painted around data labels according to @p decorations.
+    /// Set the decorations to be painted around data labels according to @p
+    /// decorations.
     void setLabelDecorations(LabelDecorations decorations);
     /// Return the decorations to be painted around data labels.
-    LabelDecorations labelDecorations() const;
+    [[nodiscard]] LabelDecorations labelDecorations() const;
 
-    /// If @p enabled is set to true, labels that would overlap will be shuffled to avoid overlap.
-    /// \note Collision avoidance may allow labels to be closer than AbstractDiagram with
-    ///       allowOverlappingDataValueTexts() == false, so you should usually also call
-    ///       setAllowOverlappingDataValueTexts( true ) if you enable this feature.
+    /// If @p enabled is set to true, labels that would overlap will be shuffled
+    /// to avoid overlap. \note Collision avoidance may allow labels to be
+    /// closer than AbstractDiagram with
+    ///       allowOverlappingDataValueTexts() == false, so you should usually
+    ///       also call setAllowOverlappingDataValueTexts( true ) if you enable
+    ///       this feature.
     void setLabelCollisionAvoidanceEnabled(bool enabled);
-    /// Return whether overlapping labels will be moved to until they don't overlap anymore.
-    bool isLabelCollisionAvoidanceEnabled() const;
+    /// Return whether overlapping labels will be moved to until they don't
+    /// overlap anymore.
+    [[nodiscard]] bool isLabelCollisionAvoidanceEnabled() const;
 
     /** \reimpl */
     void resize(const QSizeF &area) override;
 
     // Implement AbstractPolarDiagram
     /** \reimpl */
-    qreal valueTotals() const override;
+    [[nodiscard]] qreal valueTotals() const override;
     /** \reimpl */
-    qreal numberOfValuesPerDataset() const override;
+    [[nodiscard]] qreal numberOfValuesPerDataset() const override;
     /** \reimpl */
-    qreal numberOfGridRings() const override;
+    [[nodiscard]] qreal numberOfGridRings() const override;
 
-    virtual PieDiagram *clone() const;
+    [[nodiscard]] virtual PieDiagram *clone() const;
 
 protected:
     /** \reimpl */
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    [[nodiscard]] const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paintEvent(QPaintEvent *) override;
     void resizeEvent(QResizeEvent *) override;
 
 private:
     // ### move to private class?
     void placeLabels(PaintContext *paintContext);
-    // Solve problems with label overlap by changing label positions inside d->labelPaintCache.
+    // Solve problems with label overlap by changing label positions inside
+    // d->labelPaintCache.
     void shuffleLabels(QRectF *textBoundingRect);
     void paintInternal(PaintContext *paintContext);
     void drawSlice(QPainter *painter, const QRectF &drawPosition, uint slice);
@@ -104,8 +109,8 @@ private:
     void draw3dOuterRim(QPainter *painter, const QRectF &rect, qreal threeDHeight, qreal startAngle, qreal endAngle);
     void calcSliceAngles();
     void calcPieSize(const QRectF &contentsRect);
-    QRectF twoDPieRect(const QRectF &contentsRect, const ThreeDPieAttributes &threeDAttrs) const;
-    QRectF explodedDrawPosition(const QRectF &drawPosition, uint slice) const;
+    [[nodiscard]] QRectF twoDPieRect(const QRectF &contentsRect, const ThreeDPieAttributes &threeDAttrs) const;
+    [[nodiscard]] QRectF explodedDrawPosition(const QRectF &drawPosition, uint slice) const;
     uint findSliceAt(qreal angle, int columnCount);
     uint findLeftSlice(uint slice, int columnCount);
     uint findRightSlice(uint slice, int columnCount);

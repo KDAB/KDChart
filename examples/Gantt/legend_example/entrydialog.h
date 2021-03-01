@@ -45,17 +45,17 @@ class EntryDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit EntryDialog(const QAbstractItemModel *model, QWidget *parent = 0, Qt::WindowFlags f = 0);
+    explicit EntryDialog(const QAbstractItemModel *model, QWidget *parent = nullptr, Qt::WindowFlags f = {});
     void initFrom(const QModelIndex &index, const KDGantt::ConstraintModel *constraintModel);
 
-    QString name() const;
-    int type() const;
-    QDateTime startDate() const;
-    QDateTime endDate() const;
-    int completion() const;
-    bool readOnly() const;
-    QModelIndex depends() const;
-    QString legend() const;
+    [[nodiscard]] QString name() const;
+    [[nodiscard]] int type() const;
+    [[nodiscard]] QDateTime startDate() const;
+    [[nodiscard]] QDateTime endDate() const;
+    [[nodiscard]] int completion() const;
+    [[nodiscard]] bool readOnly() const;
+    [[nodiscard]] QModelIndex depends() const;
+    [[nodiscard]] QString legend() const;
 
 private slots:
     void updateEndDate(const QDateTime &startDate);

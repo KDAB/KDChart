@@ -30,8 +30,9 @@
 namespace KDChart
 {
 /**
- * \class ValueTrackerAttributes KDChartValueTrackerAttributes.h KDChartValueTrackerAttributes
- * \brief Cell-specific attributes regarding value tracking
+ * \class ValueTrackerAttributes KDChartValueTrackerAttributes.h
+ * KDChartValueTrackerAttributes \brief Cell-specific attributes regarding value
+ * tracking
  *
  * ValueTrackerAttributes groups the properties regarding
  * value tracking, and how it is displayed.
@@ -56,19 +57,19 @@ public:
     /**
      * @return The pen the lines and markers are drawn with
      */
-    QPen pen() const;
+    [[nodiscard]] QPen pen() const;
 
     void setLinePen(const QPen &pen);
-    QPen linePen() const;
+    [[nodiscard]] QPen linePen() const;
 
     void setMarkerPen(const QPen &pen);
-    QPen markerPen() const;
+    [[nodiscard]] QPen markerPen() const;
 
     void setMarkerBrush(const QBrush &brush);
-    QBrush markerBrush() const;
+    [[nodiscard]] QBrush markerBrush() const;
 
     void setArrowBrush(const QBrush &brush);
-    QBrush arrowBrush() const;
+    [[nodiscard]] QBrush arrowBrush() const;
 
     /** Set the brush the area below the value tracking
      * lines should be filled with. Default is a black brush
@@ -80,7 +81,7 @@ public:
     /**
      * @return The brush the area below the value tracking lines is filled with
      */
-    QBrush areaBrush() const;
+    [[nodiscard]] QBrush areaBrush() const;
 
     /** Set the size of the markers. This includes both the arrows at
      * the axises and the circle at the data point.
@@ -91,13 +92,13 @@ public:
     /**
      * @return The size of the markers
      */
-    QSizeF markerSize() const;
+    [[nodiscard]] QSizeF markerSize() const;
 
     /**
      * @return The orientations used to show the value tracking. Using only a
      * vertical line, horizontal line or both (the default).
      */
-    Qt::Orientations orientations() const;
+    [[nodiscard]] Qt::Orientations orientations() const;
 
     /** Set the orientations used to show the value tracking.
      * \param orientations The orientations of the value tracking lines.
@@ -113,7 +114,7 @@ public:
     /**
      * @return Whether value tracking is enabled or not
      */
-    bool isEnabled() const;
+    [[nodiscard]] bool isEnabled() const;
 
     bool operator==(const ValueTrackerAttributes &) const;
     inline bool operator!=(const ValueTrackerAttributes &other) const

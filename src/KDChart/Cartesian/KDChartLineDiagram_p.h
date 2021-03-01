@@ -79,26 +79,24 @@ public:
         : m_private(d->d_func())
     {
     }
-    virtual ~LineDiagramType()
-    {
-    }
-    virtual LineDiagram::LineType type() const = 0;
-    virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const = 0;
+    virtual ~LineDiagramType() = default;
+    [[nodiscard]] virtual LineDiagram::LineType type() const = 0;
+    [[nodiscard]] virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const = 0;
     virtual void paint(PaintContext *ctx) = 0;
-    LineDiagram *diagram() const;
+    [[nodiscard]] LineDiagram *diagram() const;
 
 protected:
     // make some elements of m_private available to derived classes:
-    AttributesModel *attributesModel() const;
-    QModelIndex attributesModelRootIndex() const;
+    [[nodiscard]] AttributesModel *attributesModel() const;
+    [[nodiscard]] QModelIndex attributesModelRootIndex() const;
     ReverseMapper &reverseMapper();
-    CartesianDiagramDataCompressor &compressor() const;
+    [[nodiscard]] CartesianDiagramDataCompressor &compressor() const;
 
-    qreal interpolateMissingValue(const CartesianDiagramDataCompressor::CachePosition &pos) const;
+    [[nodiscard]] qreal interpolateMissingValue(const CartesianDiagramDataCompressor::CachePosition &pos) const;
 
-    int datasetDimension() const;
+    [[nodiscard]] int datasetDimension() const;
 
-    qreal valueForCell(int row, int column) const;
+    [[nodiscard]] qreal valueForCell(int row, int column) const;
 
     LineDiagram::Private *m_private;
 };

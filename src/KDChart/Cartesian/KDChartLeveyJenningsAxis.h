@@ -59,13 +59,13 @@ public:
      *
      * \sa AbstractCartesianDiagram::addAxis
      */
-    explicit LeveyJenningsAxis(LeveyJenningsDiagram *diagram = 0);
+    explicit LeveyJenningsAxis(LeveyJenningsDiagram *diagram = nullptr);
     ~LeveyJenningsAxis() override;
 
-    LeveyJenningsGridAttributes::GridType type() const;
+    [[nodiscard]] LeveyJenningsGridAttributes::GridType type() const;
     void setType(LeveyJenningsGridAttributes::GridType type);
 
-    Qt::DateFormat dateFormat() const;
+    [[nodiscard]] Qt::DateFormat dateFormat() const;
     void setDateFormat(Qt::DateFormat format);
 
     /**
@@ -82,7 +82,7 @@ protected:
     virtual void paintAsAbscissa(PaintContext *);
 };
 
-typedef QList<LeveyJenningsAxis *> LeveyJenningsAxisList;
+using LeveyJenningsAxisList = QList<LeveyJenningsAxis *>;
 }
 
 #endif

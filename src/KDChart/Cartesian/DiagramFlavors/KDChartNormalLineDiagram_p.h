@@ -41,11 +41,9 @@ class NormalLineDiagram : public LineDiagram::LineDiagramType
 {
 public:
     explicit NormalLineDiagram(LineDiagram *);
-    ~NormalLineDiagram() override
-    {
-    }
-    LineDiagram::LineType type() const override;
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    ~NormalLineDiagram() override = default;
+    [[nodiscard]] LineDiagram::LineType type() const override;
+    [[nodiscard]] const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paint(PaintContext *ctx) override;
 
 private:

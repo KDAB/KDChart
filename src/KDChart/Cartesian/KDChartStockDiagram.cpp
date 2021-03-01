@@ -36,9 +36,7 @@ StockDiagram::StockDiagram(QWidget *parent, CartesianCoordinatePlane *plane)
     init();
 }
 
-StockDiagram::~StockDiagram()
-{
-}
+StockDiagram::~StockDiagram() = default;
 
 /**
  * Initializes the diagram
@@ -82,7 +80,7 @@ StockDiagram::Type StockDiagram::type() const
 
 void StockDiagram::setStockBarAttributes(const StockBarAttributes &attr)
 {
-    attributesModel()->setModelData(qVariantFromValue(attr), StockBarAttributesRole);
+    attributesModel()->setModelData(QVariant::fromValue(attr), StockBarAttributesRole);
     emit propertiesChanged();
 }
 
@@ -93,7 +91,7 @@ StockBarAttributes StockDiagram::stockBarAttributes() const
 
 void StockDiagram::setStockBarAttributes(int column, const StockBarAttributes &attr)
 {
-    d->setDatasetAttrs(column, qVariantFromValue(attr), StockBarAttributesRole);
+    d->setDatasetAttrs(column, QVariant::fromValue(attr), StockBarAttributesRole);
     emit propertiesChanged();
 }
 
@@ -112,7 +110,7 @@ StockBarAttributes StockDiagram::stockBarAttributes(int column) const
  */
 void StockDiagram::setThreeDBarAttributes(const ThreeDBarAttributes &attr)
 {
-    attributesModel()->setModelData(qVariantFromValue(attr), ThreeDBarAttributesRole);
+    attributesModel()->setModelData(QVariant::fromValue(attr), ThreeDBarAttributesRole);
     emit propertiesChanged();
 }
 
@@ -137,7 +135,7 @@ ThreeDBarAttributes StockDiagram::threeDBarAttributes() const
  */
 void StockDiagram::setThreeDBarAttributes(int column, const ThreeDBarAttributes &attr)
 {
-    d->setDatasetAttrs(column, qVariantFromValue(attr), StockBarAttributesRole);
+    d->setDatasetAttrs(column, QVariant::fromValue(attr), StockBarAttributesRole);
     emit propertiesChanged();
 }
 
@@ -268,20 +266,12 @@ QPen StockDiagram::downTrendCandlestickPen(int column) const
     return d->downTrendCandlestickPen;
 }
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-const
-#endif
-    int
-    StockDiagram::numberOfAbscissaSegments() const
+int StockDiagram::numberOfAbscissaSegments() const
 {
     return 1;
 }
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-const
-#endif
-    int
-    StockDiagram::numberOfOrdinateSegments() const
+int StockDiagram::numberOfOrdinateSegments() const
 {
     return 1;
 }
@@ -326,6 +316,7 @@ void StockDiagram::paint(PaintContext *context)
             case HighLowClose:
                 open.hidden = true;
                 // Fall-through intended!
+                [[fallthrough]];
             case OpenHighLowClose:
                 if (close.index.isValid() && low.index.isValid() && high.index.isValid())
                     d->drawOHLCBar(col, open, high, low, close, context);
@@ -373,7 +364,8 @@ const QPair<QPointF, QPointF> StockDiagram::calculateDataBoundaries() const
             const CartesianDiagramDataCompressor::CachePosition pos(row, col);
             const CartesianDiagramDataCompressor::DataPoint point = d->compressor.data(pos);
             yMax = qMax(yMax, point.value);
-            yMin = qMin(yMin, point.value); // FIXME: Can stock charts really have negative values?
+            yMin = qMin(yMin, point.value); // FIXME: Can stock charts really
+                                            // have negative values?
         }
     }
     return QPair<QPointF, QPointF>(QPointF(xMin, yMin), QPointF(xMax, yMax));

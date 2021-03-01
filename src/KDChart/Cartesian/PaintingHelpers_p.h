@@ -39,7 +39,7 @@ QT_END_NAMESPACE
 namespace KDChart
 {
 class LineAttributesInfo;
-typedef QVector<LineAttributesInfo> LineAttributesInfoList;
+using LineAttributesInfoList = QVector<LineAttributesInfo>;
 class ThreeDLineAttributes;
 class ValueTrackerAttributes;
 

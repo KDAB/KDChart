@@ -39,7 +39,7 @@ public:
     void addConstraintToIndex(const QModelIndex &idx, const Constraint &c);
     void removeConstraintFromIndex(const QModelIndex &idx, const Constraint &c);
 
-    typedef QMultiHash<QPersistentModelIndex, Constraint> IndexType;
+    using IndexType = QMultiHash<QPersistentModelIndex, Constraint>;
 
     QList<Constraint> constraints;
     IndexType indexMap;

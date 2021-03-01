@@ -48,7 +48,7 @@ class KDCHART_EXPORT AbstractAreaWidget : public QWidget, public AbstractAreaBas
     KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET(AbstractAreaWidget)
 
 public:
-    explicit AbstractAreaWidget(QWidget *parent = 0);
+    explicit AbstractAreaWidget(QWidget *parent = nullptr);
 
     /**
      * @brief Draws the background and frame, then calls paint().
@@ -87,12 +87,14 @@ public:
     void paintAll(QPainter &painter);
 
     /**
-     * Call this to trigger an unconditional re-building of the widget's internals.
+     * Call this to trigger an unconditional re-building of the widget's
+     * internals.
      */
     virtual void forceRebuild();
 
     /**
-     * Call this to trigger an conditional re-building of the widget's internals.
+     * Call this to trigger an conditional re-building of the widget's
+     * internals.
      *
      * e.g. AbstractAreaWidget call this, before calling layout()->setGeometry()
      */
@@ -104,7 +106,7 @@ Q_SIGNALS:
 
 protected:
     ~AbstractAreaWidget() override;
-    QRect areaGeometry() const override;
+    [[nodiscard]] QRect areaGeometry() const override;
     void positionHasChanged() override;
 };
 

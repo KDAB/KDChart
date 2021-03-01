@@ -48,15 +48,16 @@ class KDCHART_EXPORT Plotter : public AbstractCartesianDiagram
 
 public:
     // SLOPE enables a compression based on minmal slope changes
-    // DISTANCE is still buggy and can fail, same for BOTH, NONE is the default mode
+    // DISTANCE is still buggy and can fail, same for BOTH, NONE is the default
+    // mode
     enum CompressionMode { SLOPE, DISTANCE, BOTH, NONE };
     class PlotterType;
     friend class PlotterType;
 
-    explicit Plotter(QWidget *parent = 0, CartesianCoordinatePlane *plane = 0);
+    explicit Plotter(QWidget *parent = nullptr, CartesianCoordinatePlane *plane = nullptr);
     ~Plotter() override;
 
-    virtual Plotter *clone() const;
+    [[nodiscard]] virtual Plotter *clone() const;
 
     /**
      * Returns true if both diagrams have the same settings.
@@ -66,50 +67,42 @@ public:
     enum PlotType { Normal = 0, Percent };
 
     void setType(const PlotType type);
-    PlotType type() const;
+    [[nodiscard]] PlotType type() const;
 
     void setLineAttributes(const LineAttributes &a);
     void setLineAttributes(int column, const LineAttributes &a);
     void setLineAttributes(const QModelIndex &index, const LineAttributes &a);
     void resetLineAttributes(int column);
     void resetLineAttributes(const QModelIndex &index);
-    LineAttributes lineAttributes() const;
-    LineAttributes lineAttributes(int column) const;
-    LineAttributes lineAttributes(const QModelIndex &index) const;
+    [[nodiscard]] LineAttributes lineAttributes() const;
+    [[nodiscard]] LineAttributes lineAttributes(int column) const;
+    [[nodiscard]] LineAttributes lineAttributes(const QModelIndex &index) const;
 
     void setThreeDLineAttributes(const ThreeDLineAttributes &a);
     void setThreeDLineAttributes(int column, const ThreeDLineAttributes &a);
     void setThreeDLineAttributes(const QModelIndex &index, const ThreeDLineAttributes &a);
 
-    ThreeDLineAttributes threeDLineAttributes() const;
-    ThreeDLineAttributes threeDLineAttributes(int column) const;
-    ThreeDLineAttributes threeDLineAttributes(const QModelIndex &index) const;
+    [[nodiscard]] ThreeDLineAttributes threeDLineAttributes() const;
+    [[nodiscard]] ThreeDLineAttributes threeDLineAttributes(int column) const;
+    [[nodiscard]] ThreeDLineAttributes threeDLineAttributes(const QModelIndex &index) const;
 
     void setValueTrackerAttributes(const QModelIndex &index, const ValueTrackerAttributes &a);
-    ValueTrackerAttributes valueTrackerAttributes(const QModelIndex &index) const;
+    [[nodiscard]] ValueTrackerAttributes valueTrackerAttributes(const QModelIndex &index) const;
 
-    CompressionMode useDataCompression() const;
+    [[nodiscard]] CompressionMode useDataCompression() const;
     void setUseDataCompression(CompressionMode value);
 
-    qreal maxSlopeChange() const;
+    [[nodiscard]] qreal maxSlopeChange() const;
     void setMaxSlopeChange(qreal value);
 
-    qreal mergeRadiusPercentage() const;
+    [[nodiscard]] qreal mergeRadiusPercentage() const;
     void setMergeRadiusPercentage(qreal value);
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
     // implement AbstractCartesianDiagram
     /* reimpl */
-    const int numberOfAbscissaSegments() const;
+    [[nodiscard]] int numberOfAbscissaSegments() const override;
     /* reimpl */
-    const int numberOfOrdinateSegments() const;
-#else
-    // implement AbstractCartesianDiagram
-    /* reimpl */
-    int numberOfAbscissaSegments() const override;
-    /* reimpl */
-    int numberOfOrdinateSegments() const override;
-#endif
+    [[nodiscard]] int numberOfOrdinateSegments() const override;
 
 protected Q_SLOTS:
     void connectAttributesModel(AttributesModel *);
@@ -121,10 +114,10 @@ public:
     void resize(const QSizeF &area) override;
 
 protected:
-    qreal threeDItemDepth(const QModelIndex &index) const override;
-    qreal threeDItemDepth(int column) const override;
+    [[nodiscard]] qreal threeDItemDepth(const QModelIndex &index) const override;
+    [[nodiscard]] qreal threeDItemDepth(int column) const override;
     /** \reimpl */
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    [[nodiscard]] const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paintEvent(QPaintEvent *) override;
     void resizeEvent(QResizeEvent *) override;
 protected Q_SLOTS:

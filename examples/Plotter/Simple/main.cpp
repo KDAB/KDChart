@@ -76,7 +76,7 @@ int main(int argc, char **argv)
     model.setHeaderData(2, Qt::Horizontal, QString::fromLatin1("x"));
     model.setHeaderData(4, Qt::Horizontal, QString::fromLatin1("x^3"));
 
-    KDChart::Chart *chart = new KDChart::Chart();
+    auto *chart = new KDChart::Chart();
 
     KDChart::AbstractCartesianDiagram *diagram = new KDChart::Plotter;
     diagram->setModel(&model);
@@ -103,14 +103,14 @@ int main(int argc, char **argv)
     }
 #endif
 
-    KDChart::CartesianAxis *xAxis = new KDChart::CartesianAxis(diagram);
-    KDChart::CartesianAxis *yAxis = new KDChart::CartesianAxis(diagram);
+    auto *xAxis = new KDChart::CartesianAxis(diagram);
+    auto *yAxis = new KDChart::CartesianAxis(diagram);
     xAxis->setPosition(KDChart::CartesianAxis::Bottom);
     yAxis->setPosition(KDChart::CartesianAxis::Left);
     diagram->addAxis(xAxis);
     diagram->addAxis(yAxis);
 
-    KDChart::Legend *legend = new KDChart::Legend(diagram, chart);
+    auto *legend = new KDChart::Legend(diagram, chart);
     legend->setPosition(KDChart::Position::East);
     legend->setAlignment(Qt::AlignCenter);
     legend->setTitleText("Legend");

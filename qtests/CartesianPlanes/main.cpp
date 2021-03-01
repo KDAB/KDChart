@@ -33,17 +33,6 @@
 
 using namespace KDChart;
 
-#if QT_VERSION < 0x040200
-namespace QTest
-{
-template<>
-inline char *toString(const QPointF &p)
-{
-    return qstrdup(QString::fromLatin1("QPointF(%1,%2)").arg(p.x()).arg(p.y()).toLatin1().constData());
-}
-}
-#endif
-
 class NumericDataModel : public QStandardItemModel
 {
     Q_OBJECT
@@ -227,8 +216,8 @@ void TestCartesianPlanes::testRangeSettingsBars()
     QList<qreal> points;
     points << 40 << 45 << 42 << 34 << 34;
     m_model->setYValues(points);
-    // data point "0" is shown at "0.5" in bar diagrams, which requires some data range hackery.
-    // we correct for that like so:
+    // data point "0" is shown at "0.5" in bar diagrams, which requires some
+    // data range hackery. we correct for that like so:
     m_model->max.rx() += 1;
 
     doTestRangeSettings(m_bars, m_model->min, m_model->max);

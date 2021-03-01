@@ -40,7 +40,7 @@ class KDCHART_EXPORT RadarCoordinatePlane : public PolarCoordinatePlane
     KDCHART_DECLARE_PRIVATE_DERIVED_PARENT(RadarCoordinatePlane, Chart *)
 
 public:
-    explicit RadarCoordinatePlane(Chart *parent = 0);
+    explicit RadarCoordinatePlane(Chart *parent = nullptr);
     ~RadarCoordinatePlane() override;
 
     /**
@@ -64,7 +64,7 @@ public:
      *
      * \sa setTextAttributes
      */
-    const TextAttributes textAttributes() const;
+    [[nodiscard]] const TextAttributes textAttributes() const;
 };
 
 }

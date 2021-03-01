@@ -43,7 +43,7 @@
 
 #include <KDABLibFakes>
 
-#include <math.h>
+#include <cmath>
 
 //#define DEBUG_ITEMS_PAINT
 
@@ -186,7 +186,7 @@ void KDChart::TextBubbleLayoutItem::paint(QPainter *painter)
     const QBrush oldBrush = painter->brush();
     painter->setPen(Qt::black);
     painter->setBrush(QColor(255, 255, 220));
-    painter->drawRoundRect(geometry(), 10);
+    painter->drawRoundedRect(geometry(), 10, 10);
     painter->setPen(oldPen);
     painter->setBrush(oldBrush);
     m_text->paint(painter);
@@ -208,7 +208,8 @@ KDChart::TextLayoutItem::TextLayoutItem(const QString &text,
     , mAttributes(attributes)
     , mAutoReferenceArea(area)
     , mAutoReferenceOrientation(orientation)
-    , cachedSizeHint() // default this to invalid to force just-in-time calculation before first use of sizeHint()
+    , cachedSizeHint() // default this to invalid to force just-in-time
+                       // calculation before first use of sizeHint()
     , cachedFontSize(0.0)
     , cachedFont(mAttributes.font())
 {
@@ -219,9 +220,10 @@ KDChart::TextLayoutItem::TextLayoutItem()
     , mText()
     , mTextAlignment(Qt::AlignLeft)
     , mAttributes()
-    , mAutoReferenceArea(0)
+    , mAutoReferenceArea(nullptr)
     , mAutoReferenceOrientation(KDChartEnums::MeasureOrientationHorizontal)
-    , cachedSizeHint() // default this to invalid to force just-in-time calculation before first use of sizeHint()
+    , cachedSizeHint() // default this to invalid to force just-in-time
+                       // calculation before first use of sizeHint()
     , cachedFontSize(0.0)
     , cachedFont(mAttributes.font())
 {
@@ -294,7 +296,7 @@ KDChart::TextAttributes KDChart::TextLayoutItem::textAttributes() const
 
 Qt::Orientations KDChart::TextLayoutItem::expandingDirections() const
 {
-    return 0; // Grow neither vertically nor horizontally
+    return {}; // Grow neither vertically nor horizontally
 }
 
 QRect KDChart::TextLayoutItem::geometry() const
@@ -388,7 +390,8 @@ QFont KDChart::TextLayoutItem::realFont() const
 
 QPolygon KDChart::TextLayoutItem::boundingPolygon() const
 {
-    // should probably call sizeHint() here, but that one is expensive (see TODO there)
+    // should probably call sizeHint() here, but that one is expensive (see TODO
+    // there)
     return mCachedBoundingPolygon;
 }
 
@@ -407,7 +410,8 @@ bool KDChart::TextLayoutItem::intersects(const TextLayoutItem &other, const QPoi
 
 QSize KDChart::TextLayoutItem::sizeHint() const
 {
-    // ### we only really need to recalculate the size hint when mAttributes.rotation has *changed*
+    // ### we only really need to recalculate the size hint when
+    // mAttributes.rotation has *changed*
     if (maybeUpdateRealFont() || mAttributes.rotation() || !cachedSizeHint.isValid()) {
         const QSize newSizeHint(calcSizeHint(cachedFont));
         Q_ASSERT(newSizeHint.isValid());
@@ -435,7 +439,8 @@ QSize KDChart::TextLayoutItem::unrotatedTextSize(QFont fnt) const
 
     const QFontMetricsF fm(fnt, GlobalMeasureScaling::paintDevice());
     QRect veryLarge(0, 0, 100000, 100000);
-    // this overload of boundingRect() interprets \n as line breaks, not as regular characters.
+    // this overload of boundingRect() interprets \n as line breaks, not as
+    // regular characters.
     return fm.boundingRect(veryLarge, Qt::AlignLeft | Qt::AlignTop, mText).size().toSize();
 }
 
@@ -446,7 +451,7 @@ int KDChart::TextLayoutItem::marginWidth() const
 
 int KDChart::TextLayoutItem::marginWidth(const QSize &textSize) const
 {
-    return qMin(QApplication::style()->pixelMetric(QStyle::PM_ButtonMargin, 0, 0),
+    return qMin(QApplication::style()->pixelMetric(QStyle::PM_ButtonMargin, nullptr, nullptr),
                 // decrease frame size if the text is small
                 textSize.height() * 2 / 3);
 }
@@ -465,8 +470,9 @@ QSize KDChart::TextLayoutItem::calcSizeHint(const QFont &font) const
     QPoint topLeft(-size.width() * 0.5, -size.height() * 0.5);
     if (!mAttributes.rotation()) {
         mCachedBoundingPolygon.resize(4);
-        // using the same winding order as returned by QPolygon QTransform::mapToPolygon(const QRect&),
-        // which is: 0-1: top edge, 1-2: right edge, 2-3: bottom edge, 3-0: left edge (of input rect)
+        // using the same winding order as returned by QPolygon
+        // QTransform::mapToPolygon(const QRect&), which is: 0-1: top edge, 1-2:
+        // right edge, 2-3: bottom edge, 3-0: left edge (of input rect)
         mCachedBoundingPolygon[0] = topLeft;
         mCachedBoundingPolygon[1] = topLeft + QPoint(size.width(), 0); // top right
         mCachedBoundingPolygon[2] = topLeft + QPoint(size.width(), size.height()); // bottom right
@@ -510,8 +516,10 @@ void KDChart::TextLayoutItem::paint(QPainter *painter)
         document->setPageSize(rect.size());
         document->setHtml(mText);
         QAbstractTextDocumentLayout::PaintContext paintcontext;
-        // ### this doesn't work for rotated painting because clip does not translate the painting
-        // TODO translate the painting either using a QTransform or one of QPainter's transform stages
+        // ### this doesn't work for rotated painting because clip does not
+        // translate the painting
+        // TODO translate the painting either using a QTransform or one of
+        // QPainter's transform stages
         paintcontext.clip = rect;
         document->documentLayout()->draw(painter, paintcontext);
     } else {
@@ -630,7 +638,7 @@ KDChart::MarkerLayoutItem::MarkerLayoutItem(KDChart::AbstractDiagram *diagram,
 
 Qt::Orientations KDChart::MarkerLayoutItem::expandingDirections() const
 {
-    return 0; // Grow neither vertically nor horizontally
+    return {}; // Grow neither vertically nor horizontally
 }
 
 QRect KDChart::MarkerLayoutItem::geometry() const
@@ -660,7 +668,8 @@ void KDChart::MarkerLayoutItem::setGeometry(const QRect &r)
 
 QSize KDChart::MarkerLayoutItem::sizeHint() const
 {
-    // qDebug() << "KDChart::MarkerLayoutItem::sizeHint() returns:"<<mMarker.markerSize().toSize();
+    // qDebug() << "KDChart::MarkerLayoutItem::sizeHint()
+    // returns:"<<mMarker.markerSize().toSize();
     return mMarker.markerSize().toSize();
 }
 
@@ -721,7 +730,7 @@ KDChart::LineLayoutItem::LineLayoutItem(KDChart::AbstractDiagram *diagram,
 
 Qt::Orientations KDChart::LineLayoutItem::expandingDirections() const
 {
-    return 0; // Grow neither vertically nor horizontally
+    return {}; // Grow neither vertically nor horizontally
 }
 
 QRect KDChart::LineLayoutItem::geometry() const
@@ -812,7 +821,7 @@ KDChart::LineWithMarkerLayoutItem::LineWithMarkerLayoutItem(KDChart::AbstractDia
 
 Qt::Orientations KDChart::LineWithMarkerLayoutItem::expandingDirections() const
 {
-    return 0; // Grow neither vertically nor horizontally
+    return {}; // Grow neither vertically nor horizontally
 }
 
 QRect KDChart::LineWithMarkerLayoutItem::geometry() const
@@ -870,7 +879,7 @@ KDChart::AutoSpacerLayoutItem::AutoSpacerLayoutItem(bool layoutIsAtTopPosition,
 
 Qt::Orientations KDChart::AutoSpacerLayoutItem::expandingDirections() const
 {
-    return 0; // Grow neither vertically nor horizontally
+    return {}; // Grow neither vertically nor horizontally
 }
 
 QRect KDChart::AutoSpacerLayoutItem::geometry() const
@@ -902,7 +911,7 @@ static void updateCommonBrush(QBrush &commonBrush, bool &bStart, const KDChart::
 {
     const KDChart::BackgroundAttributes ba(area.backgroundAttributes());
     const bool hasSimpleBrush = (!area.frameAttributes().isVisible() && ba.isVisible()
-                                 && ba.pixmapMode() == KDChart::BackgroundAttributes::BackgroundPixmapModeNone && ba.brush().gradient() == 0);
+                                 && ba.pixmapMode() == KDChart::BackgroundAttributes::BackgroundPixmapModeNone && ba.brush().gradient() == nullptr);
     if (bStart) {
         bStart = false;
         commonBrush = hasSimpleBrush ? ba.brush() : QBrush();
@@ -921,7 +930,7 @@ QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
     int topBottomOverlap = 0;
     if (mTopBottomLayout) {
         for (int i = 0; i < mTopBottomLayout->count(); ++i) {
-            AbstractArea *area = dynamic_cast<AbstractArea *>(mTopBottomLayout->itemAt(i));
+            auto *area = dynamic_cast<AbstractArea *>(mTopBottomLayout->itemAt(i));
             if (area) {
                 // qDebug() << "AutoSpacerLayoutItem testing" << area;
                 topBottomOverlap = qMax(topBottomOverlap, mLayoutIsAtLeftPosition ? area->rightOverlap() : area->leftOverlap());
@@ -933,7 +942,7 @@ QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
     int leftRightOverlap = 0;
     if (mRightLeftLayout) {
         for (int i = 0; i < mRightLeftLayout->count(); ++i) {
-            AbstractArea *area = dynamic_cast<AbstractArea *>(mRightLeftLayout->itemAt(i));
+            auto *area = dynamic_cast<AbstractArea *>(mRightLeftLayout->itemAt(i));
             if (area) {
                 // qDebug() << "AutoSpacerLayoutItem testing" << area;
                 leftRightOverlap = qMax(leftRightOverlap, mLayoutIsAtTopPosition ? area->bottomOverlap() : area->topOverlap());
@@ -971,7 +980,7 @@ void KDChart::AutoSpacerLayoutItem::paint(QPainter *painter)
         const QPoint oldBrushOrigin(painter->brushOrigin());
         const QBrush oldBrush(painter->brush());
         const QPen oldPen(painter->pen());
-        const QPointF newTopLeft(painter->deviceMatrix().map(p1));
+        const QPointF newTopLeft(painter->deviceTransform().map(p1));
         painter->setBrushOrigin(newTopLeft);
         painter->setBrush(mCommonBrush);
         painter->setPen(Qt::NoPen);

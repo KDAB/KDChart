@@ -39,12 +39,12 @@ using namespace KDChart;
 
 AbstractCoordinatePlane::Private::Private()
     : AbstractArea::Private()
-    , parent(0)
-    , grid(0)
-    , referenceCoordinatePlane(0)
+    , parent(nullptr)
+    , grid(nullptr)
+    , referenceCoordinatePlane(nullptr)
     , enableCornerSpacers(true)
     , enableRubberBandZooming(false)
-    , rubberBand(0)
+    , rubberBand(nullptr)
 {
     // this bloc left empty intentionally
 }
@@ -63,7 +63,8 @@ AbstractCoordinatePlane::~AbstractCoordinatePlane()
 
 void AbstractCoordinatePlane::init()
 {
-    d->initialize(); // virtual method to init the correct grid: cartesian, polar, ...
+    d->initialize(); // virtual method to init the correct grid: cartesian,
+                     // polar, ...
     connect(this, SIGNAL(internal_geometryChanged(QRect, QRect)), this, SIGNAL(geometryChanged(QRect, QRect)), Qt::QueuedConnection);
 }
 
@@ -113,8 +114,8 @@ void AbstractCoordinatePlane::takeDiagram(AbstractDiagram *diagram)
     const int idx = d->diagrams.indexOf(diagram);
     if (idx != -1) {
         d->diagrams.removeAt(idx);
-        diagram->setParent(0);
-        diagram->setCoordinatePlane(0);
+        diagram->setParent(nullptr);
+        diagram->setCoordinatePlane(nullptr);
         disconnect(diagram, SIGNAL(modelsChanged()), this, SLOT(layoutPlanes()));
         disconnect(diagram, SIGNAL(modelDataChanged()), this, SLOT(update()));
         disconnect(diagram, SIGNAL(modelDataChanged()), this, SLOT(relayout()));
@@ -126,7 +127,7 @@ void AbstractCoordinatePlane::takeDiagram(AbstractDiagram *diagram)
 AbstractDiagram *AbstractCoordinatePlane::diagram()
 {
     if (d->diagrams.isEmpty()) {
-        return 0;
+        return nullptr;
     } else {
         return d->diagrams.first();
     }
@@ -140,12 +141,8 @@ AbstractDiagramList AbstractCoordinatePlane::diagrams()
 ConstAbstractDiagramList AbstractCoordinatePlane::diagrams() const
 {
     ConstAbstractDiagramList list;
-#ifndef QT_NO_STL
-    qCopy(d->diagrams.begin(), d->diagrams.end(), std::back_inserter(list));
-#else
-    Q_FOREACH (AbstractDiagram *a, d->diagrams)
-        list.push_back(a);
-#endif
+    list.reserve(d->diagrams.count());
+    std::copy(d->diagrams.begin(), d->diagrams.end(), std::back_inserter(list));
     return list;
 }
 
@@ -210,8 +207,8 @@ Qt::Orientations KDChart::AbstractCoordinatePlane::expandingDirections() const
 /* pure virtual in QLayoutItem */
 QSize KDChart::AbstractCoordinatePlane::maximumSize() const
 {
-    // No maximum size set. Especially not parent()->size(), we are not layouting
-    // to the parent widget's size when using Chart::paint()!
+    // No maximum size set. Especially not parent()->size(), we are not
+    // layouting to the parent widget's size when using Chart::paint()!
     return QSize(QLAYOUTSIZE_MAX, QLAYOUTSIZE_MAX);
 }
 /* pure virtual in QLayoutItem */
@@ -267,9 +264,9 @@ void KDChart::AbstractCoordinatePlane::setRubberBandZoomingEnabled(bool enable)
 {
     d->enableRubberBandZooming = enable;
 
-    if (!enable && d->rubberBand != 0) {
+    if (!enable && d->rubberBand != nullptr) {
         delete d->rubberBand;
-        d->rubberBand = 0;
+        d->rubberBand = nullptr;
     }
 }
 
@@ -295,10 +292,10 @@ bool KDChart::AbstractCoordinatePlane::isCornerSpacersEnabled() const
 void KDChart::AbstractCoordinatePlane::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
-        if (d->enableRubberBandZooming && d->rubberBand == 0)
+        if (d->enableRubberBandZooming && d->rubberBand == nullptr)
             d->rubberBand = new QRubberBand(QRubberBand::Rectangle, qobject_cast<QWidget *>(parent()));
 
-        if (d->rubberBand != 0) {
+        if (d->rubberBand != nullptr) {
             d->rubberBandOrigin = event->pos();
             d->rubberBand->setGeometry(QRect(event->pos(), QSize()));
             d->rubberBand->show();
@@ -314,15 +311,14 @@ void KDChart::AbstractCoordinatePlane::mousePressEvent(QMouseEvent *event)
             setZoomCenter(config.center());
 
             QWidget *const p = qobject_cast<QWidget *>(parent());
-            if (p != 0)
+            if (p != nullptr)
                 p->update();
 
             event->accept();
         }
     }
 
-    KDAB_FOREACH(AbstractDiagram * a, d->diagrams)
-    {
+    for (AbstractDiagram *a : qAsConst(d->diagrams)) {
         a->mousePressEvent(event);
     }
 }
@@ -334,21 +330,20 @@ void KDChart::AbstractCoordinatePlane::mouseDoubleClickEvent(QMouseEvent *event)
         // which is pretty annoying when zooming out fast
         mousePressEvent(event);
     }
-    KDAB_FOREACH(AbstractDiagram * a, d->diagrams)
-    {
+    for (AbstractDiagram *a : qAsConst(d->diagrams)) {
         a->mouseDoubleClickEvent(event);
     }
 }
 
 void KDChart::AbstractCoordinatePlane::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (d->rubberBand != 0) {
+    if (d->rubberBand != nullptr) {
         // save the old config on the stack
         d->rubberBandZoomConfigHistory.push(ZoomParameters(zoomFactorX(), zoomFactorY(), zoomCenter()));
 
         // this is the height/width of the rubber band in pixel space
-        const qreal rubberWidth = static_cast<qreal>(d->rubberBand->width());
-        const qreal rubberHeight = static_cast<qreal>(d->rubberBand->height());
+        const auto rubberWidth = static_cast<qreal>(d->rubberBand->width());
+        const auto rubberHeight = static_cast<qreal>(d->rubberBand->height());
 
         if (rubberWidth > 0.0 && rubberHeight > 0.0) {
             // this is the center of the rubber band in pixel space
@@ -362,7 +357,8 @@ void KDChart::AbstractCoordinatePlane::mouseReleaseEvent(QMouseEvent *event)
             const qreal myWidth = static_cast<qreal>(geometry().width());
             const qreal myHeight = static_cast<qreal>(geometry().height());
 
-            // this describes the new center of zooming, relative to the plane pixel space
+            // this describes the new center of zooming, relative to the plane
+            // pixel space
             const qreal newCenterX = rubberCenterX / myWidth / zoomFactorX() + zoomCenter().x() - 0.5 / zoomFactorX();
             const qreal newCenterY = rubberCenterY / myHeight / zoomFactorY() + zoomCenter().y() - 0.5 / zoomFactorY();
 
@@ -380,37 +376,31 @@ void KDChart::AbstractCoordinatePlane::mouseReleaseEvent(QMouseEvent *event)
 
         d->rubberBand->parentWidget()->update();
         delete d->rubberBand;
-        d->rubberBand = 0;
+        d->rubberBand = nullptr;
 
         event->accept();
     }
 
-    KDAB_FOREACH(AbstractDiagram * a, d->diagrams)
-    {
+    for (AbstractDiagram *a : qAsConst(d->diagrams)) {
         a->mouseReleaseEvent(event);
     }
 }
 
 void KDChart::AbstractCoordinatePlane::mouseMoveEvent(QMouseEvent *event)
 {
-    if (d->rubberBand != 0) {
+    if (d->rubberBand != nullptr) {
         const QRect normalized = QRect(d->rubberBandOrigin, event->pos()).normalized();
         d->rubberBand->setGeometry(normalized & geometry());
 
         event->accept();
     }
 
-    KDAB_FOREACH(AbstractDiagram * a, d->diagrams)
-    {
+    for (AbstractDiagram *a : qAsConst(d->diagrams)) {
         a->mouseMoveEvent(event);
     }
 }
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-const
-#endif
-    bool
-    KDChart::AbstractCoordinatePlane::isVisiblePoint(const QPointF &point) const
+bool KDChart::AbstractCoordinatePlane::isVisiblePoint(const QPointF &point) const
 {
     return d->isVisiblePoint(this, point);
 }

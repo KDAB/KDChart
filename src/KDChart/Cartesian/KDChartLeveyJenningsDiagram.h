@@ -46,15 +46,16 @@ class KDCHART_EXPORT LeveyJenningsDiagram : public LineDiagram
     Q_OBJECT
 
     Q_DISABLE_COPY(LeveyJenningsDiagram)
-    //    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( LineDiagram, CartesianCoordinatePlane * )
+    //    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( LineDiagram,
+    //    CartesianCoordinatePlane * )
 
     KDCHART_DECLARE_DERIVED_DIAGRAM(LeveyJenningsDiagram, LeveyJenningsCoordinatePlane)
 
 public:
-    explicit LeveyJenningsDiagram(QWidget *parent = 0, LeveyJenningsCoordinatePlane *plane = 0);
+    explicit LeveyJenningsDiagram(QWidget *parent = nullptr, LeveyJenningsCoordinatePlane *plane = nullptr);
     ~LeveyJenningsDiagram() override;
 
-    LineDiagram *clone() const override;
+    [[nodiscard]] LineDiagram *clone() const override;
 
     enum Symbol { OkDataPoint, NotOkDataPoint, LotChanged, SensorChanged, FluidicsPackChanged };
 
@@ -64,39 +65,39 @@ public:
     bool compare(const LeveyJenningsDiagram *other) const;
 
     void setLotChangedSymbolPosition(Qt::Alignment pos);
-    Qt::Alignment lotChangedSymbolPosition() const;
+    [[nodiscard]] Qt::Alignment lotChangedSymbolPosition() const;
 
     void setFluidicsPackChangedSymbolPosition(Qt::Alignment pos);
-    Qt::Alignment fluidicsPackChangedSymbolPosition() const;
+    [[nodiscard]] Qt::Alignment fluidicsPackChangedSymbolPosition() const;
 
     void setSensorChangedSymbolPosition(Qt::Alignment pos);
-    Qt::Alignment sensorChangedSymbolPosition() const;
+    [[nodiscard]] Qt::Alignment sensorChangedSymbolPosition() const;
 
     void setExpectedMeanValue(float meanValue);
-    float expectedMeanValue() const;
+    [[nodiscard]] float expectedMeanValue() const;
 
     void setExpectedStandardDeviation(float sd);
-    float expectedStandardDeviation() const;
+    [[nodiscard]] float expectedStandardDeviation() const;
 
-    float calculatedMeanValue() const;
-    float calculatedStandardDeviation() const;
+    [[nodiscard]] float calculatedMeanValue() const;
+    [[nodiscard]] float calculatedStandardDeviation() const;
 
     void setFluidicsPackChanges(const QVector<QDateTime> &changes);
-    QVector<QDateTime> fluidicsPackChanges() const;
+    [[nodiscard]] QVector<QDateTime> fluidicsPackChanges() const;
 
     void setSensorChanges(const QVector<QDateTime> &changes);
-    QVector<QDateTime> sensorChanges() const;
+    [[nodiscard]] QVector<QDateTime> sensorChanges() const;
 
     void setScanLinePen(const QPen &pen);
-    QPen scanLinePen() const;
+    [[nodiscard]] QPen scanLinePen() const;
 
     void setSymbol(Symbol symbol, const QString &filename);
-    QString symbol(Symbol symbol) const;
+    [[nodiscard]] QString symbol(Symbol symbol) const;
 
     /* \reimpl */
     void setModel(QAbstractItemModel *model) override;
 
-    QPair<QDateTime, QDateTime> timeRange() const;
+    [[nodiscard]] QPair<QDateTime, QDateTime> timeRange() const;
     void setTimeRange(const QPair<QDateTime, QDateTime> &timeRange);
 
 protected:
@@ -108,12 +109,12 @@ protected:
     virtual void drawSensorChangedSymbol(PaintContext *paintContext, const QPointF &pos);
     virtual void drawFluidicsPackChangedSymbol(PaintContext *paintContext, const QPointF &pos);
 
-    virtual QRectF iconRect() const;
+    [[nodiscard]] virtual QRectF iconRect() const;
 
     QSvgRenderer *iconRenderer(Symbol symbol);
 
     /** \reimpl */
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    [[nodiscard]] const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
 
 protected Q_SLOTS:
     void calculateMeanAndStandardDeviation() const;

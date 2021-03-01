@@ -65,21 +65,4 @@
 #define ISINF(x) std::isinf(x)
 #endif
 
-// We wrap every for () by extra { } to work around
-// the scope bug for loop counters in MS Visual C++ v6
-#if defined(Q_CC_MSVC) && !defined(Q_CC_MSVC_NET)
-/* This is done in Qt41 qglobal.h but not Qt42*/
-#if QT_VERSION < 0x040200
-#define for                                                                                                                                                    \
-    if (0) {                                                                                                                                                   \
-    } else for
-#endif
-#define KDAB_FOREACH(v, c)                                                                                                                                     \
-    if (0) {                                                                                                                                                   \
-    } else                                                                                                                                                     \
-        Q_FOREACH (v, c)
-#else
-#define KDAB_FOREACH(v, c) Q_FOREACH (v, c)
-#endif
-
 #endif

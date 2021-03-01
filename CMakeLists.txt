@@ -3,10 +3,6 @@
 # Pass the following variables to cmake to control the build:
 # (See INSTALL-cmake.txt for more information)
 #
-# -DKDChart_ENFORCE_QT4_BUILD=[true|false]
-#  Force building against Qt4, even if Qt5 is found.
-#  Default=false
-#
 # -DKDChart_STATIC=[true|false]
 #  Build static versions of the libraries
 #  Default=false
@@ -27,7 +23,8 @@
 #  Alternative install path for Python bindings.
 #  Default=CMAKE_INSTALL_PREFIX
 #
-cmake_minimum_required(VERSION 2.8.7)
+cmake_minimum_required(VERSION 3.16.0)
+
 cmake_policy(SET CMP0020 NEW)
 cmake_policy(SET CMP0025 NEW)
 
@@ -41,24 +38,12 @@ endif()
 
 project(KDChart CXX)
 
-option(
-  ${PROJECT_NAME}_ENFORCE_QT4_BUILD
-  "Enable if you want to enforce a build with Qt4"
-  OFF
-)
-
-if(CMAKE_VERSION VERSION_LESS "3.1")
-  if(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
-  endif()
-else()
-  set(CMAKE_CXX_STANDARD 14)
-endif()
+set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_MODULE_PATH}")
 
 option(${PROJECT_NAME}_STATIC "Build statically" OFF)
-option(${PROJECT_NAME}_TESTS "Build the tests" OFF)
+option(${PROJECT_NAME}_TESTS "Build the tests" ON)
 option(${PROJECT_NAME}_EXAMPLES "Build the examples" ON)
 option(${PROJECT_NAME}_PYTHON_BINDINGS "Build python bindings" OFF)
 if(${PROJECT_NAME}_PYTHON_BINDINGS AND (CMAKE_BUILD_TYPE MATCHES "^[Dd]eb" OR ${PROJECT_NAME}_STATIC))
@@ -77,39 +62,33 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 include(InstallLocation)
 
 # try Qt5 first, and prefer that (if found), but only if not disabled via option
-if(NOT ${PROJECT_NAME}_ENFORCE_QT4_BUILD)
-  find_package(Qt5Core QUIET)
-endif()
+find_package(Qt6 COMPONENTS Core Network Widgets Svg Xml PrintSupport Test REQUIRED)
 
-if(Qt5Core_FOUND)
-  find_package(Qt5Network REQUIRED)
-  find_package(Qt5Widgets CONFIG)
-  set(QT_LIBRARIES Qt5::Core)
-  set(QT_USE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Qt5Portability.cmake")
+set(QT_LIBRARIES Qt6::Core Qt6::Network Qt6::Widgets Qt6::Svg Qt6::Xml Qt6::PrintSupport Qt6::Test)
 
-  if(Qt5_POSITION_INDEPENDENT_CODE)
-    if(CMAKE_VERSION VERSION_LESS 2.8.9)
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-    elseif(NOT CMAKE_VERSION VERSION_LESS 2.8.11)
-      if(Qt5Core_VERSION VERSION_LESS 5.1)
-        set_property(TARGET Qt5::Core PROPERTY INTERFACE_POSITION_INDEPENDENT_CODE ON)
-      endif()
-    else()
-      set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-    endif()
-  endif()
-
-else()
-  find_package(Qt4 4.7 QUIET REQUIRED QtCore QtMain)
-
-  # Workaround qt4 moc bug, see https://bugzilla.redhat.com/show_bug.cgi?id=1396755
-  add_definitions(-D_SYS_SYSMACROS_H_OUTER)
-endif()
+# if(Qt5Core_FOUND)
+#   find_package(Qt5Network REQUIRED)
+#   find_package(Qt5Widgets CONFIG)
+#   set(QT_LIBRARIES Qt5::Core)
+#   set(QT_USE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Qt5Portability.cmake")
+#
+#   if(Qt5_POSITION_INDEPENDENT_CODE)
+#     if(CMAKE_VERSION VERSION_LESS 2.8.9)
+#       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+#     elseif(NOT CMAKE_VERSION VERSION_LESS 2.8.11)
+#       if(Qt5Core_VERSION VERSION_LESS 5.1)
+#         set_property(TARGET Qt5::Core PROPERTY INTERFACE_POSITION_INDEPENDENT_CODE ON)
+#       endif()
+#     else()
+#       set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+#     endif()
+#   endif()
+# endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
 set(CMAKE_AUTOMOC TRUE)
 
-add_definitions(-DQT_NO_CAST_TO_ASCII -DQT_NO_CAST_FROM_ASCII -DQBA_NO_CAST_TO_VOID -DQBA_NO_CAST_TO_ASCII -DQT_NO_STL -DQT_FATAL_ASSERT)
+add_definitions(-DQT_NO_CAST_TO_ASCII -DQT_NO_CAST_FROM_ASCII -DQBA_NO_CAST_TO_VOID -DQBA_NO_CAST_TO_ASCII -DQT_FATAL_ASSERT)
 add_definitions(-DUSE_EXCEPTIONS)
 if(MSVC)
   add_definitions(-D_SCL_SECURE_NO_WARNINGS)
@@ -130,7 +109,7 @@ if(MSVC)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-  add_compile_options(-Wsuggest-override)
+    add_compile_options(-Wsuggest-override -Wall -Wextra -pedantic -Werror)
 endif()
 
 if(${PROJECT_NAME}_STATIC)
@@ -211,14 +190,14 @@ endif()
 add_subdirectory(src)
 
 # only build python bindings for Qt5.12 or greater
-if(${PROJECT_NAME}_PYTHON_BINDINGS AND Qt5Core_VERSION VERSION_LESS 5.12)
-  message(WARNING "** Disabling Python Bindings. Qt version is too old and unsupported.")
-  set(${PROJECT_NAME}_PYTHON_BINDINGS OFF)
-endif()
+# if(${PROJECT_NAME}_PYTHON_BINDINGS AND Qt5Core_VERSION VERSION_LESS 5.12)
+#   message(WARNING "** Disabling Python Bindings. Qt version is too old and unsupported.")
+#   set(${PROJECT_NAME}_PYTHON_BINDINGS OFF)
+# endif()
 
-if(Qt5Core_FOUND AND ${PROJECT_NAME}_PYTHON_BINDINGS)
-  add_subdirectory(python)
-endif()
+# if(Qt5Core_FOUND AND ${PROJECT_NAME}_PYTHON_BINDINGS)
+#   add_subdirectory(python)
+# endif()
 
 if(${PROJECT_NAME}_IS_ROOT_PROJECT)
   export(TARGETS kdchart NAMESPACE KDChart::

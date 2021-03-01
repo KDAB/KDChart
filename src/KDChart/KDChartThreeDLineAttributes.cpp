@@ -57,9 +57,7 @@ ThreeDLineAttributes &ThreeDLineAttributes::operator=(const ThreeDLineAttributes
     return *this;
 }
 
-ThreeDLineAttributes::~ThreeDLineAttributes()
-{
-}
+ThreeDLineAttributes::~ThreeDLineAttributes() = default;
 
 void ThreeDLineAttributes::init()
 {

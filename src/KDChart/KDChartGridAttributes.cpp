@@ -96,7 +96,7 @@ GridAttributes &GridAttributes::operator=(const GridAttributes &r)
 GridAttributes::~GridAttributes()
 {
     delete _d;
-    _d = 0;
+    _d = nullptr;
 }
 
 bool GridAttributes::operator==(const GridAttributes &r) const
@@ -195,7 +195,8 @@ qreal GridAttributes::gridSubStepWidth() const
  * Specifies the granularity sequence to be used for calculating
  * the grid lines.
  *
- * By default the GridAttributes class uses KDChartEnums::GranularitySequence_10_20.
+ * By default the GridAttributes class uses
+ * KDChartEnums::GranularitySequence_10_20.
  *
  * \note Granularity can be set for Linear axis calculation mode only,
  * there is no way to specify a step width for Logarithmic axes.

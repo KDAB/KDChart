@@ -66,8 +66,7 @@ CartesianDiagramDataCompressor::aggregatedAttrs(const AbstractDiagram *diagram, 
 
     // aggregate attributes from all indices in the same CachePosition as index
     CartesianDiagramDataCompressor::AggregatedDataValueAttributes aggregated;
-    KDAB_FOREACH(const QModelIndex &neighborIndex, mapToModel(position))
-    {
+    for (const QModelIndex &neighborIndex : mapToModel(position)) {
         DataValueAttributes attrs = diagram->dataValueAttributes(neighborIndex);
         // only store visible and unique attributes
         if (!attrs.isVisible()) {
@@ -77,8 +76,9 @@ CartesianDiagramDataCompressor::aggregatedAttrs(const AbstractDiagram *diagram, 
             aggregated[neighborIndex] = attrs;
         }
     }
-    // if none of the attributes had the visible flag set, we just take the one set for the index
-    // to avoid returning an empty list (### why not return an empty list?)
+    // if none of the attributes had the visible flag set, we just take the one
+    // set for the index to avoid returning an empty list (### why not return an
+    // empty list?)
     if (aggregated.isEmpty()) {
         aggregated[index] = diagram->dataValueAttributes(index);
     }
@@ -103,7 +103,8 @@ bool CartesianDiagramDataCompressor::prepareDataChange(const QModelIndex &parent
         startPos = isRows ? mapToCache(*start, 0) : mapToCache(0, *start);
         endPos = isRows ? mapToCache(*end, 0) : mapToCache(0, *end);
         // The start position still isn't valid,
-        // means that no resolution was set yet or we're about to add the first rows
+        // means that no resolution was set yet or we're about to add the first
+        // rows
         if (startPos == nullPosition) {
             return false;
         }
@@ -119,9 +120,9 @@ void CartesianDiagramDataCompressor::slotRowsAboutToBeInserted(const QModelIndex
     if (!prepareDataChange(parent, true, &start, &end)) {
         return;
     }
-    for (int i = 0; i < m_data.size(); ++i) {
-        Q_ASSERT(start >= 0 && start <= m_data[i].size());
-        m_data[i].insert(start, end - start + 1, DataPoint());
+    for (auto &i : m_data) {
+        Q_ASSERT(start >= 0 && start <= i.size());
+        i.insert(start, end - start + 1, DataPoint());
     }
 }
 
@@ -164,8 +165,8 @@ void CartesianDiagramDataCompressor::slotRowsAboutToBeRemoved(const QModelIndex 
     if (!prepareDataChange(parent, true, &start, &end)) {
         return;
     }
-    for (int i = 0; i < m_data.size(); ++i) {
-        m_data[i].remove(start, end - start + 1);
+    for (auto &i : m_data) {
+        i.remove(start, end - start + 1);
     }
 }
 
@@ -179,8 +180,9 @@ void CartesianDiagramDataCompressor::slotRowsRemoved(const QModelIndex &parent, 
     CachePosition startPos = mapToCache(start, 0);
     static const CachePosition nullPosition;
     if (startPos == nullPosition) {
-        // Since we should already have rebuilt the cache, it won't help to rebuild it again.
-        // Do not Q_ASSERT() though, since the resolution might simply not be set or we might now have 0 rows
+        // Since we should already have rebuilt the cache, it won't help to
+        // rebuild it again. Do not Q_ASSERT() though, since the resolution
+        // might simply not be set or we might now have 0 rows
         return;
     }
 
@@ -210,8 +212,9 @@ void CartesianDiagramDataCompressor::slotColumnsRemoved(const QModelIndex &paren
 
     static const CachePosition nullPosition;
     if (startPos == nullPosition) {
-        // Since we should already have rebuilt the cache, it won't help to rebuild it again.
-        // Do not Q_ASSERT() though, since the resolution might simply not be set or we might now have 0 columns
+        // Since we should already have rebuilt the cache, it won't help to
+        // rebuild it again. Do not Q_ASSERT() though, since the resolution
+        // might simply not be set or we might now have 0 columns
         return;
     }
 
@@ -257,7 +260,7 @@ void CartesianDiagramDataCompressor::slotModelLayoutChanged()
 
 void CartesianDiagramDataCompressor::slotDiagramLayoutChanged(AbstractDiagram *diagramBase)
 {
-    AbstractCartesianDiagram *diagram = qobject_cast<AbstractCartesianDiagram *>(diagramBase);
+    auto *diagram = qobject_cast<AbstractCartesianDiagram *>(diagramBase);
     Q_ASSERT(diagram);
     if (diagram->datasetDimension() != m_datasetDimension) {
         setDatasetDimension(diagram->datasetDimension());
@@ -294,7 +297,7 @@ void CartesianDiagramDataCompressor::setModel(QAbstractItemModel *model)
         return;
     }
 
-    if (m_model != 0) {
+    if (m_model != nullptr) {
         disconnect(m_model, SIGNAL(headerDataChanged(Qt::Orientation, int, int)), this, SLOT(slotModelHeaderDataChanged(Qt::Orientation, int, int)));
         disconnect(m_model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(slotModelDataChanged(QModelIndex, QModelIndex)));
         disconnect(m_model, SIGNAL(layoutChanged()), this, SLOT(slotModelLayoutChanged()));
@@ -307,12 +310,12 @@ void CartesianDiagramDataCompressor::setModel(QAbstractItemModel *model)
         disconnect(m_model, SIGNAL(columnsRemoved(QModelIndex, int, int)), this, SLOT(slotColumnsRemoved(QModelIndex, int, int)));
         disconnect(m_model, SIGNAL(columnsAboutToBeRemoved(QModelIndex, int, int)), this, SLOT(slotColumnsAboutToBeRemoved(QModelIndex, int, int)));
         disconnect(m_model, SIGNAL(modelReset()), this, SLOT(rebuildCache()));
-        m_model = 0;
+        m_model = nullptr;
     }
 
     m_modelCache.setModel(model);
 
-    if (model != 0) {
+    if (model != nullptr) {
         m_model = model;
         connect(m_model, SIGNAL(headerDataChanged(Qt::Orientation, int, int)), SLOT(slotModelHeaderDataChanged(Qt::Orientation, int, int)));
         connect(m_model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), SLOT(slotModelDataChanged(QModelIndex, QModelIndex)));
@@ -373,8 +376,8 @@ bool CartesianDiagramDataCompressor::setResolutionInternal(int x, int y)
 
 void CartesianDiagramDataCompressor::clearCache()
 {
-    for (int column = 0; column < m_data.size(); ++column)
-        m_data[column].fill(DataPoint());
+    for (auto &column : m_data)
+        column.fill(DataPoint());
 }
 
 void CartesianDiagramDataCompressor::rebuildCache()
@@ -467,7 +470,7 @@ void CartesianDiagramDataCompressor::retrieveModelData(const CachePosition &posi
             }
             result.value = std::numeric_limits<qreal>::quiet_NaN();
             result.key = 0.0;
-            Q_FOREACH (const QModelIndex &index, indexes) {
+            for (const QModelIndex &index : qAsConst(indexes)) {
                 const qreal value = m_modelCache.data(index);
                 if (!ISNAN(value)) {
                     result.value = ISNAN(result.value) ? value : result.value + value;
@@ -479,8 +482,9 @@ void CartesianDiagramDataCompressor::retrieveModelData(const CachePosition &posi
             result.value /= indexes.size();
         }
 
-        Q_FOREACH (const QModelIndex &index, indexes) {
-            // the DataPoint point is visible if any of the underlying, aggregated points is visible
+        for (const QModelIndex &index : qAsConst(indexes)) {
+            // the DataPoint point is visible if any of the underlying,
+            // aggregated points is visible
             if (m_model->data(index, DataHiddenRole).value<bool>() == false) {
                 result.hidden = false;
             }
@@ -532,8 +536,9 @@ QModelIndexList CartesianDiagramDataCompressor::mapToModel(const CachePosition &
         indexes << m_model->index(position.row, position.column * 2, m_rootIndex); // checked
         indexes << m_model->index(position.row, position.column * 2 + 1, m_rootIndex); // checked
     } else {
-        // here, indexes per column is usually but not always 1 (e.g. stock diagrams can have three
-        // or four dimensions: High-Low-Close or Open-High-Low-Close)
+        // here, indexes per column is usually but not always 1 (e.g. stock
+        // diagrams can have three or four dimensions: High-Low-Close or
+        // Open-High-Low-Close)
         const qreal ipp = indexesPerPixel();
         const int baseRow = floor(position.row * ipp);
         // the following line needs to work for the last row(s), too...

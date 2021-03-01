@@ -38,8 +38,11 @@ DataDimensionsList LeveyJenningsGrid::calculateGrid(const DataDimensionsList &ra
 {
     Q_ASSERT_X(rawDataDimensions.count() == 2, "CartesianGrid::calculateGrid", "Error: calculateGrid() expects a list with exactly two entries.");
 
-    LeveyJenningsCoordinatePlane *plane = dynamic_cast<LeveyJenningsCoordinatePlane *>(mPlane);
-    Q_ASSERT_X(plane, "LeveyJenningsGrid::calculateGrid", "Error: PaintContext::calculatePlane() called, but no cartesian plane set.");
+    auto *plane = dynamic_cast<LeveyJenningsCoordinatePlane *>(mPlane);
+    Q_ASSERT_X(plane,
+               "LeveyJenningsGrid::calculateGrid",
+               "Error: PaintContext::calculatePlane() called, but no cartesian plane "
+               "set.");
 
     DataDimensionsList l(rawDataDimensions);
     // rule:  Returned list is either empty, or it is providing two
@@ -73,8 +76,9 @@ DataDimensionsList LeveyJenningsGrid::calculateGrid(const DataDimensionsList &ra
                 l.last().start = minMaxY.start;
                 l.last().end = minMaxY.end;
                 l.last().stepWidth = dimY.stepWidth;
-                // qDebug() << "CartesianGrid::calculateGrid()  final grid y-range:" << l.last().end - l.last().start << "   step width:" << l.last().stepWidth
-                // << endl;
+                // qDebug() << "CartesianGrid::calculateGrid()  final grid
+                // y-range:" << l.last().end - l.last().start << "   step width:"
+                // << l.last().stepWidth << '\n';
                 // calculate some reasonable subSteps if the
                 // user did not set the sub grid but did set
                 // the stepWidth.
@@ -85,8 +89,11 @@ DataDimensionsList LeveyJenningsGrid::calculateGrid(const DataDimensionsList &ra
             }
         }
     }
-    // qDebug() << "CartesianGrid::calculateGrid()  final grid Y-range:" << l.last().end - l.last().start << "   step width:" << l.last().stepWidth;
-    // qDebug() << "CartesianGrid::calculateGrid()  final grid X-range:" << l.first().end - l.first().start << "   step width:" << l.first().stepWidth;
+    // qDebug() << "CartesianGrid::calculateGrid()  final grid Y-range:" <<
+    // l.last().end - l.last().start << "   step width:" << l.last().stepWidth;
+    // qDebug() << "CartesianGrid::calculateGrid()  final grid X-range:" <<
+    // l.first().end - l.first().start << "   step width:" <<
+    // l.first().stepWidth;
 
     return l;
 }
@@ -119,11 +126,13 @@ DataDimension LeveyJenningsGrid::calculateGridXY(const DataDimension &rawDataDim
                 granularities << 1.0 << 1.25 << 2.0 << 2.5 << 5.0;
                 break;
             }
-            // qDebug("CartesianGrid::calculateGridXY()   dim.start: %f   dim.end: %f", dim.start, dim.end);
+            // qDebug("CartesianGrid::calculateGridXY()   dim.start: %f dim.end:
+            // %f", dim.start, dim.end);
             calculateStepWidth(dim.start, dim.end, granularities, orientation, dim.stepWidth, dim.subStepWidth, adjustLower, adjustUpper);
         }
     } else {
-        // qDebug() << "CartesianGrid::calculateGridXY() returns stepWidth 1.0  !!";
+        // qDebug() << "CartesianGrid::calculateGridXY() returns stepWidth 1.0
+        // !!";
         // Do not ignore the user configuration
         dim.stepWidth = dim.stepWidth ? dim.stepWidth : 1.0;
     }
@@ -141,7 +150,8 @@ static void calculateSteps(qreal start_,
                            bool adjustLower,
                            bool adjustUpper)
 {
-    // qDebug("-----------------------------------\nstart: %f   end: %f   power-of-ten: %i", start_, end_, power);
+    // qDebug("-----------------------------------\nstart: %f   end: %f
+    // power-of-ten: %i", start_, end_, power);
 
     qreal distance = 0.0;
     steps = 0.0;
@@ -159,12 +169,14 @@ static void calculateSteps(qreal start_,
         const qreal testDistance = qAbs(end - start);
         const qreal testSteps = testDistance / testStepWidth;
 
-        // qDebug() << "testDistance:" << testDistance << "  distance:" << distance;
+        // qDebug() << "testDistance:" << testDistance << "  distance:" <<
+        // distance;
         if ((minSteps <= testSteps) && (testSteps <= maxSteps) && ((steps == 0.0) || (testDistance <= distance))) {
             steps = testSteps;
             stepWidth = testStepWidth;
             distance = testDistance;
-            // qDebug( "start: %f   end: %f   step width: %f   steps: %f   distance: %f", start, end, stepWidth, steps, distance);
+            // qDebug( "start: %f   end: %f   step width: %f   steps: %f
+            // distance: %f", start, end, stepWidth, steps, distance);
         }
     }
 }
@@ -182,7 +194,7 @@ void LeveyJenningsGrid::calculateStepWidth(qreal start_,
 
     Q_ASSERT_X(granularities.count(), "CartesianGrid::calculateStepWidth", "Error: The list of GranularitySequence values is empty.");
     QList<qreal> list(granularities);
-    qSort(list);
+    std::sort(list.begin(), list.end());
 
     const qreal start = qMin(start_, end_);
     const qreal end = qMax(start_, end_);
@@ -212,7 +224,8 @@ void LeveyJenningsGrid::calculateStepWidth(qreal start_,
         --power;
     } while (steps == 0.0);
     ++power;
-    // qDebug( "steps calculated:  stepWidth: %f   steps: %f", stepWidth, steps);
+    // qDebug( "steps calculated:  stepWidth: %f   steps: %f", stepWidth,
+    // steps);
 
     // find the matching sub-grid line width in case it is
     // not set by the user
@@ -241,17 +254,22 @@ void LeveyJenningsGrid::calculateStepWidth(qreal start_,
             // qDebug("C");
         }
     }
-    // qDebug("LeveyJenningsGrid::calculateStepWidth() found stepWidth %f (%f steps) and sub-stepWidth %f", stepWidth, steps, subStepWidth);
+    // qDebug("LeveyJenningsGrid::calculateStepWidth() found stepWidth %f (%f
+    // steps) and sub-stepWidth %f", stepWidth, steps, subStepWidth);
 }
 
 void LeveyJenningsGrid::drawGrid(PaintContext *context)
 {
-    // This plane is used for tranlating the coordinates - not for the data boundaries
+    // This plane is used for tranlating the coordinates - not for the data
+    // boundaries
     PainterSaver p(context->painter());
-    LeveyJenningsCoordinatePlane *plane = qobject_cast<LeveyJenningsCoordinatePlane *>(mPlane->sharedAxisMasterPlane(context->painter()));
-    Q_ASSERT_X(plane, "LeveyJenningsGrid::drawGrid", "Bad function call: PaintContext::coodinatePlane() NOT a Levey Jennings plane.");
+    auto *plane = qobject_cast<LeveyJenningsCoordinatePlane *>(mPlane->sharedAxisMasterPlane(context->painter()));
+    Q_ASSERT_X(plane,
+               "LeveyJenningsGrid::drawGrid",
+               "Bad function call: PaintContext::coodinatePlane() NOT a Levey "
+               "Jennings plane.");
 
-    LeveyJenningsDiagram *diag = qobject_cast<LeveyJenningsDiagram *>(plane->diagram());
+    auto *diag = qobject_cast<LeveyJenningsDiagram *>(plane->diagram());
     if (!diag) {
         return;
     }

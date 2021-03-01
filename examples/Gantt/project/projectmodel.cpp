@@ -33,23 +33,23 @@
 
 #include <cassert>
 
-typedef QAbstractItemModel BASE;
+using BASE = QAbstractItemModel;
 
 class ProjectModel::Node
 {
 public:
-    explicit Node(Node *parent = 0);
+    explicit Node(Node *parent = nullptr);
     virtual ~Node();
 
     void addChild(Node *);
     void insertChild(int i, Node *);
     void removeChild(Node *);
 
-    Node *parent() const
+    [[nodiscard]] Node *parent() const
     {
         return m_parent;
     }
-    int childCount() const
+    [[nodiscard]] int childCount() const
     {
         return m_children.count();
     }
@@ -57,7 +57,7 @@ public:
     {
         return m_children.indexOf(n);
     }
-    Node *child(int i) const
+    [[nodiscard]] Node *child(int i) const
     {
         return m_children.at(i);
     }
@@ -98,31 +98,31 @@ public:
         m_position = p;
     }
 
-    QDateTime start() const
+    [[nodiscard]] QDateTime start() const
     {
         return m_start;
     }
-    QDateTime end() const
+    [[nodiscard]] QDateTime end() const
     {
         return m_end;
     }
 
-    QString label() const
+    [[nodiscard]] QString label() const
     {
         return m_label;
     }
 
-    KDGantt::ItemType type() const
+    [[nodiscard]] KDGantt::ItemType type() const
     {
         return m_type;
     }
 
-    int completion() const
+    [[nodiscard]] int completion() const
     {
         return m_completion;
     }
 
-    KDGantt::StyleOptionGanttItem::Position position() const
+    [[nodiscard]] KDGantt::StyleOptionGanttItem::Position position() const
     {
         return m_position;
     }
@@ -176,7 +176,7 @@ void ProjectModel::Node::insertChild(int i, Node *child)
 
 void ProjectModel::Node::removeChild(Node *child)
 {
-    child->setParent(0);
+    child->setParent(nullptr);
     m_children.removeAll(child);
 }
 
@@ -288,7 +288,7 @@ QVariant ProjectModel::data(const QModelIndex &idx, int role) const
         switch (role) {
         case Qt::DisplayRole:
         case Qt::EditRole:
-            return qVariantFromValue<int>(n->type());
+            return QVariant::fromValue<int>(n->type());
         }
     } else if (idx.column() == 2) {
         switch (role) {

@@ -58,9 +58,7 @@ Widget::Private::Private(Widget *qq)
     layout.addWidget(&m_chart);
 }
 
-Widget::Private::~Private()
-{
-}
+Widget::Private::~Private() = default;
 
 /**
  * \class Widget KDChartWidget.h
@@ -89,7 +87,7 @@ Widget::Widget(QWidget *parent)
 Widget::~Widget()
 {
     delete _d;
-    _d = 0;
+    _d = nullptr;
 }
 
 void Widget::init()
@@ -265,7 +263,7 @@ QList<KDChart::HeaderFooter *> Widget::allHeadersFooters()
  */
 void Widget::addHeaderFooter(const QString &text, HeaderFooter::HeaderFooterType type, Position position)
 {
-    HeaderFooter *newHeader = new HeaderFooter(&d->m_chart);
+    auto *newHeader = new HeaderFooter(&d->m_chart);
     newHeader->setType(type);
     newHeader->setPosition(position);
     newHeader->setText(text);
@@ -313,7 +311,7 @@ QList<KDChart::Legend *> Widget::allLegends()
  */
 void Widget::addLegend(Position position)
 {
-    Legend *legend = new Legend(diagram(), &d->m_chart);
+    auto *legend = new Legend(diagram(), &d->m_chart);
     legend->setPosition(position);
     d->m_chart.addLegend(legend);
 }
@@ -342,7 +340,7 @@ void Widget::takeLegend(Legend *legend)
 
 AbstractDiagram *Widget::diagram()
 {
-    if (coordinatePlane() == 0)
+    if (coordinatePlane() == nullptr)
         qDebug() << "diagram(): coordinatePlane() was NULL";
 
     return coordinatePlane()->diagram();
@@ -390,7 +388,7 @@ static bool isPolar(KDChart::Widget::ChartType type)
 
 void Widget::setType(ChartType chartType, SubType chartSubType)
 {
-    AbstractDiagram *diag = 0;
+    AbstractDiagram *diag = nullptr;
     const ChartType oldType = type();
 
     if (chartType != oldType) {
@@ -433,17 +431,17 @@ void Widget::setType(ChartType chartType, SubType chartSubType)
         case NoType:
             break;
         }
-        if (diag != NULL) {
+        if (diag != nullptr) {
             if (isCartesian(oldType) && isCartesian(chartType)) {
-                AbstractCartesianDiagram *oldDiag = qobject_cast<AbstractCartesianDiagram *>(coordinatePlane()->diagram());
-                AbstractCartesianDiagram *newDiag = qobject_cast<AbstractCartesianDiagram *>(diag);
-                Q_FOREACH (CartesianAxis *axis, oldDiag->axes()) {
+                auto *oldDiag = qobject_cast<AbstractCartesianDiagram *>(coordinatePlane()->diagram());
+                auto *newDiag = qobject_cast<AbstractCartesianDiagram *>(diag);
+                for (CartesianAxis *axis : oldDiag->axes()) {
                     oldDiag->takeAxis(axis);
                     newDiag->addAxis(axis);
                 }
             }
 
-            Q_FOREACH (Legend *l, d->m_chart.legends()) {
+            for (Legend *l : d->m_chart.legends()) {
                 l->setDiagram(diag);
             }
 
@@ -465,7 +463,7 @@ void Widget::setType(ChartType chartType, SubType chartSubType)
 template<class DiagramType, class Subtype>
 void setSubtype(AbstractDiagram *_dia, Subtype st)
 {
-    if (DiagramType *dia = qobject_cast<DiagramType *>(_dia)) {
+    if (auto *dia = qobject_cast<DiagramType *>(_dia)) {
         dia->setType(st);
     }
 }
@@ -529,11 +527,12 @@ Widget::SubType Widget::subType() const
     Widget::SubType retVal = Normal;
 
     AbstractDiagram *const dia = const_cast<Widget *>(this)->diagram();
-    BarDiagram *barDia = qobject_cast<BarDiagram *>(dia);
-    LineDiagram *lineDia = qobject_cast<LineDiagram *>(dia);
-    Plotter *plotterDia = qobject_cast<Plotter *>(dia);
+    auto *barDia = qobject_cast<BarDiagram *>(dia);
+    auto *lineDia = qobject_cast<LineDiagram *>(dia);
+    auto *plotterDia = qobject_cast<Plotter *>(dia);
 
-    // FIXME(khz): Add the impl for these chart types - or remove them from here:
+    // FIXME(khz): Add the impl for these chart types - or remove them from
+    // here:
     //    PieDiagram*   pieDia   = qobject_cast< PieDiagram* >( diagram() );
     //    PolarDiagram* polarDia = qobject_cast< PolarDiagram* >( diagram() );
     //    RingDiagram*  ringDia  = qobject_cast< RingDiagram* >( diagram() );
@@ -592,8 +591,8 @@ bool Widget::checkDatasetWidth(int width)
             diagram()->setDatasetDimension( width );
             return true;
         }
-        qDebug() << "It's impossible to mix up the different setDataset() methods on the same widget.";
-        return false;*/
+        qDebug() << "It's impossible to mix up the different setDataset()
+       methods on the same widget."; return false;*/
 }
 
 /**

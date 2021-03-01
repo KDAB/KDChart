@@ -89,7 +89,7 @@ public:
         bool hidden;
         QModelIndex index;
     };
-    typedef QVector<DataPoint> DataPointVector;
+    using DataPointVector = QVector<DataPoint>;
     class CachePosition
     {
     public:
@@ -115,14 +115,15 @@ public:
             // This function is used to topologically sort all cache positions.
 
             // Think of them as entries in a matrix or table:
-            // An entry comes before another entry if it is either above the other
-            // entry, or in the same row and to the left of the other entry.
+            // An entry comes before another entry if it is either above the
+            // other entry, or in the same row and to the left of the other
+            // entry.
             return row < rhs.row || (row == rhs.row && column < rhs.column);
         }
     };
 
-    typedef QMap<QModelIndex, DataValueAttributes> AggregatedDataValueAttributes;
-    typedef QMap<CartesianDiagramDataCompressor::CachePosition, AggregatedDataValueAttributes> DataValueAttributesCache;
+    using AggregatedDataValueAttributes = QMap<QModelIndex, DataValueAttributes>;
+    using DataValueAttributesCache = QMap<CartesianDiagramDataCompressor::CachePosition, AggregatedDataValueAttributes>;
 
     enum ApproximationMode {
         // do not approximate, interpolate by averaging all
@@ -132,7 +133,7 @@ public:
         SamplingSeven
     };
 
-    explicit CartesianDiagramDataCompressor(QObject *parent = 0);
+    explicit CartesianDiagramDataCompressor(QObject *parent = nullptr);
 
     // input: model, chart resolution, approximation mode
     void setModel(QAbstractItemModel *);

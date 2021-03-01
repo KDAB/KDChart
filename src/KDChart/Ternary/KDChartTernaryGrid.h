@@ -49,7 +49,7 @@ public:
     ~TernaryGrid() override;
 
     void drawGrid(PaintContext *context) override;
-    DataDimensionsList calculateGrid(const DataDimensionsList &rawDataDimensions) const override;
+    [[nodiscard]] DataDimensionsList calculateGrid(const DataDimensionsList &rawDataDimensions) const override;
 
     /** Returns two QSizeF objects specifying the dimension of the
         margins needed between each corner of the diagram and the
@@ -59,13 +59,13 @@ public:
         The margins are returned in <em>diagram coordinates</em>,
         since the grid does not know about widget coordinates.
     */
-    QPair<QSizeF, QSizeF> requiredMargins() const;
+    [[nodiscard]] QPair<QSizeF, QSizeF> requiredMargins() const;
     /** Return the locations of the grid lines, so that axes can
         draw axis rulers at the correct positions.
         This information is valid after the grid has been
         painted (that is, the axes need to be painted after the
         grid. */
-    const QVector<TickInfo> &tickInfo() const;
+    [[nodiscard]] const QVector<TickInfo> &tickInfo() const;
 
 private:
     QVector<TickInfo> m_tickInfo;

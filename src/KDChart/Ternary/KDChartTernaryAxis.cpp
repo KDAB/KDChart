@@ -55,9 +55,9 @@ TernaryAxis::TernaryAxis(AbstractTernaryDiagram *diagram)
 TernaryAxis::~TernaryAxis()
 {
     delete m_label;
-    m_label = 0;
+    m_label = nullptr;
     delete m_fifty;
-    m_fifty = 0;
+    m_fifty = nullptr;
 }
 
 void TernaryAxis::paintAll(QPainter &)
@@ -73,14 +73,14 @@ void TernaryAxis::paint(QPainter *)
 void TernaryAxis::paintCtx(PaintContext *paintContext)
 {
     QPainter *p = paintContext->painter();
-    TernaryCoordinatePlane *plane = (TernaryCoordinatePlane *)paintContext->coordinatePlane();
+    auto *plane = (TernaryCoordinatePlane *)paintContext->coordinatePlane();
     // QObject* refArea = plane->parent();
     QRectF titleArea;
 
     // paint the axis label (across the triangle, that one):
     QList<PrerenderedLabel *> labels;
     labels << m_label << m_fifty;
-    Q_FOREACH (PrerenderedLabel *label, labels) {
+    for (PrerenderedLabel *label : qAsConst(labels)) {
         const QPixmap &pixmap = label->pixmap();
         QPointF point = plane->translate(label->position()) - label->referencePointLocation();
         p->drawPixmap(point, pixmap);
@@ -135,7 +135,8 @@ void TernaryAxis::setPosition(Position p)
         return;
 
     if (p != KDChartEnums::PositionWest && p != KDChartEnums::PositionEast && p != KDChartEnums::PositionSouth) {
-        qDebug() << "TernaryAxis::setPosition: only south, east and west are supported "
+        qDebug() << "TernaryAxis::setPosition: only south, east and west are "
+                    "supported "
                     "positions for ternary axes.";
         return;
     }
@@ -269,6 +270,7 @@ QPair<QSizeF, QSizeF> TernaryAxis::requiredMargins() const
     default:
         qDebug() << "TernaryAxis::requiredMargins: unknown location";
     }
-    //     qDebug() << "TernaryAxis::requiredMargins:" << topleft << bottomRight;
+    //     qDebug() << "TernaryAxis::requiredMargins:" << topleft <<
+    //     bottomRight;
     return QPair<QSizeF, QSizeF>(topleft, bottomRight);
 }

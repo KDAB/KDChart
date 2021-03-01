@@ -65,14 +65,14 @@ public:
     };
 
     void setVisible(bool visible);
-    bool isVisible() const;
+    [[nodiscard]] bool isVisible() const;
 
-    typedef QMap<uint, uint> MarkerStylesMap;
+    using MarkerStylesMap = QMap<uint, uint>;
     void setMarkerStylesMap(const MarkerStylesMap &map);
-    MarkerStylesMap markerStylesMap() const;
+    [[nodiscard]] MarkerStylesMap markerStylesMap() const;
 
     void setThreeD(bool value);
-    bool threeD() const;
+    [[nodiscard]] bool threeD() const;
 
     /**
      * Set the marker-style to use. This could be either one of the
@@ -84,26 +84,27 @@ public:
      * Qt::DecorationRole .
      */
     void setMarkerStyle(uint style);
-    uint markerStyle() const;
+    [[nodiscard]] uint markerStyle() const;
 
     /**
      * Normally you need to specify a valid QSizeF here, but for Legends you can
-     * use the invalid size QSizeF(), to enable automatic marker size calculation:
+     * use the invalid size QSizeF(), to enable automatic marker size
+     * calculation:
      *
      * For Markers shown in a Legend this means the marker size will be equal to
      * the font height used for the labels that are shown next to the markers.
      */
     void setMarkerSize(const QSizeF &size);
-    QSizeF markerSize() const;
+    [[nodiscard]] QSizeF markerSize() const;
 
     void setMarkerColor(const QColor &color);
-    QColor markerColor() const;
+    [[nodiscard]] QColor markerColor() const;
 
     void setCustomMarkerPath(const QPainterPath &path);
-    QPainterPath customMarkerPath() const;
+    [[nodiscard]] QPainterPath customMarkerPath() const;
 
     void setPen(const QPen &pen);
-    QPen pen() const;
+    [[nodiscard]] QPen pen() const;
 
     bool operator==(const MarkerAttributes &) const;
     bool operator!=(const MarkerAttributes &) const;

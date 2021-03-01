@@ -57,7 +57,8 @@ class PaintContext;
  * derive your classes from AbstractArea or AbstractAreaWidget.
  *
  * @note This classis not a QObject, so it is easier to inherit from
- * it, if your are inheriting from a QObject too like AbstractAreaWidget does it.
+ * it, if your are inheriting from a QObject too like AbstractAreaWidget does
+ * it.
  *
  * @sa AbstractArea, AbstractAreaWidget
  */
@@ -79,10 +80,10 @@ public:
     void alignToReferencePoint(const RelativePosition &position);
 
     void setFrameAttributes(const FrameAttributes &a);
-    FrameAttributes frameAttributes() const;
+    [[nodiscard]] FrameAttributes frameAttributes() const;
 
     void setBackgroundAttributes(const BackgroundAttributes &a);
-    BackgroundAttributes backgroundAttributes() const;
+    [[nodiscard]] BackgroundAttributes backgroundAttributes() const;
 
     virtual void paintBackground(QPainter &painter, const QRect &rectangle);
     virtual void paintFrame(QPainter &painter, const QRect &rectangle);
@@ -103,14 +104,14 @@ protected:
      * from AbstractArea or AbstractAreaWidget.
      * \sa AbstractArea, AbstractAreaWidget
      */
-    QRect innerRect() const;
+    [[nodiscard]] QRect innerRect() const;
 
     /** \internal
      * This internal method is used by AbstractArea and AbstractAreaWidget
      * to find out the real widget size.
      * \sa AbstractArea, AbstractAreaWidget
      */
-    virtual QRect areaGeometry() const = 0;
+    [[nodiscard]] virtual QRect areaGeometry() const = 0;
 
     /** \internal
      * This internal method can be overwritten by derived classes,

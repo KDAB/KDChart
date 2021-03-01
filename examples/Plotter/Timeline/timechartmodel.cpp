@@ -61,7 +61,7 @@ QVariant TimeChartModel::data(const QModelIndex &index, int role) const
     if (index.column() % 2 != 0 || role != Qt::DisplayRole)
         return v;
     else
-        return QDateTime::fromTime_t(0).secsTo(v.toDateTime()) / 3600.0;
+        return QDateTime::fromSecsSinceEpoch(0).secsTo(v.toDateTime()) / 3600.0;
 }
 
 /*!

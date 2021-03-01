@@ -47,7 +47,7 @@
 using namespace KDChart;
 
 Legend::Private::Private()
-    : referenceArea(0)
+    : referenceArea(nullptr)
     , position(Position::East)
     , alignment(Qt::AlignCenter)
     , textAlignment(Qt::AlignCenter)
@@ -60,8 +60,9 @@ Legend::Private::Private()
     , useAutomaticMarkerSize(true)
     , legendStyle(MarkersOnly)
 {
-    // By default we specify a simple, hard point as the 'relative' position's ref. point,
-    // since we can not be sure that there will be any parent specified for the legend.
+    // By default we specify a simple, hard point as the 'relative' position's
+    // ref. point, since we can not be sure that there will be any parent
+    // specified for the legend.
     relativePosition.setReferencePoints(PositionPoints(QPointF(0.0, 0.0)));
     relativePosition.setReferencePosition(Position::NorthWest);
     relativePosition.setAlignment(Qt::AlignTop | Qt::AlignLeft);
@@ -101,7 +102,7 @@ void Legend::init()
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     d->layout = new QGridLayout(this);
-    d->layout->setMargin(2);
+    d->layout->setContentsMargins(2, 2, 2, 2);
     d->layout->setSpacing(d->spacing);
 
     const Measure normalFontSizeTitle(12, KDChartEnums::MeasureCalculationModeAbsolute);
@@ -144,7 +145,7 @@ QSize Legend::sizeHint() const
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "Legend::sizeHint() started";
 #endif
-    Q_FOREACH (AbstractLayoutItem *paintItem, d->paintItems) {
+    for (AbstractLayoutItem *paintItem : qAsConst(d->paintItems)) {
         paintItem->sizeHint();
     }
     return AbstractAreaWidget::sizeHint();
@@ -196,7 +197,7 @@ Legend::LegendStyle Legend::legendStyle() const
  */
 Legend *Legend::clone() const
 {
-    Legend *legend = new Legend(new Private(*d), 0);
+    auto *legend = new Legend(new Private(*d), nullptr);
     legend->setTextAttributes(textAttributes());
     legend->setTitleTextAttributes(titleTextAttributes());
     legend->setFrameAttributes(frameAttributes());
@@ -236,7 +237,7 @@ void Legend::paint(QPainter *painter)
 
     activateTheLayout();
 
-    Q_FOREACH (AbstractLayoutItem *paintItem, d->paintItems) {
+    for (AbstractLayoutItem *paintItem : qAsConst(d->paintItems)) {
         paintItem->paint(painter);
     }
 
@@ -248,8 +249,7 @@ void Legend::paint(QPainter *painter)
 uint Legend::datasetCount() const
 {
     int modelLabelsCount = 0;
-    KDAB_FOREACH(DiagramObserver * observer, d->observers)
-    {
+    for (DiagramObserver *observer : qAsConst(d->observers)) {
         AbstractDiagram *diagram = observer->diagram();
         Q_ASSERT(diagram->datasetLabels().count() == diagram->datasetBrushes().count());
         modelLabelsCount += diagram->datasetLabels().count();
@@ -274,7 +274,7 @@ const QWidget *Legend::referenceArea() const
 AbstractDiagram *Legend::diagram() const
 {
     if (d->observers.isEmpty()) {
-        return 0;
+        return nullptr;
     }
     return d->observers.first()->diagram();
 }
@@ -300,7 +300,7 @@ ConstDiagramList Legend::constDiagrams() const
 void Legend::addDiagram(AbstractDiagram *newDiagram)
 {
     if (newDiagram) {
-        DiagramObserver *observer = new DiagramObserver(newDiagram, this);
+        auto *observer = new DiagramObserver(newDiagram, this);
 
         DiagramObserver *oldObs = d->findObserverForDiagram(newDiagram);
         if (oldObs) {
@@ -347,8 +347,8 @@ void Legend::removeDiagram(AbstractDiagram *oldDiagram)
 
 void Legend::removeDiagrams()
 {
-    // removeDiagram() may change the d->observers list. So, build up the list of
-    // diagrams to remove first and then remove them one by one.
+    // removeDiagram() may change the d->observers list. So, build up the list
+    // of diagrams to remove first and then remove them one by one.
     QList<AbstractDiagram *> diagrams;
     for (int i = 0; i < d->observers.size(); ++i) {
         diagrams.append(d->observers.at(i)->diagram());
@@ -405,8 +405,8 @@ void Legend::resetDiagram(AbstractDiagram *oldDiagram)
 
 void Legend::setVisible(bool visible)
 {
-    // do NOT bail out if visible == isVisible(), because the return value of isVisible() also depends
-    // on the visibility of the parent.
+    // do NOT bail out if visible == isVisible(), because the return value of
+    // isVisible() also depends on the visibility of the parent.
     QWidget::setVisible(visible);
     emitPositionChanged();
 }
@@ -553,7 +553,8 @@ bool Legend::useAutomaticMarkerSize() const
 /**
     \brief Removes all legend texts that might have been set by setText.
 
-    This resets the Legend to default behaviour: Texts are created automatically.
+    This resets the Legend to default behaviour: Texts are created
+   automatically.
 */
 void Legend::resetTexts()
 {
@@ -853,10 +854,10 @@ QSizeF Legend::Private::maxMarkerSize(Legend *q, qreal fontHeight) const
 }
 
 HDatasetItem::HDatasetItem()
-    : markerLine(0)
-    , label(0)
-    , separatorLine(0)
-    , spacer(0)
+    : markerLine(nullptr)
+    , label(nullptr)
+    , separatorLine(nullptr)
+    , spacer(nullptr)
 {
 }
 
@@ -864,7 +865,8 @@ static void updateToplevelLayout(QWidget *w)
 {
     while (w) {
         if (w->isTopLevel()) {
-            // The null check has proved necessary during destruction of the Legend / Chart
+            // The null check has proved necessary during destruction of the
+            // Legend / Chart
             if (w->layout()) {
                 w->layout()->update();
             }
@@ -878,11 +880,12 @@ static void updateToplevelLayout(QWidget *w)
 
 void Legend::buildLegend()
 {
-    /* Grid layout partitioning (horizontal orientation): row zero is the title, row one the divider
-       line between title and dataset items, row two for each item: line, marker, text label and separator
-       line in that order.
-       In a vertically oriented legend, row pairs (2, 3), ... contain a possible separator line (first row)
-       and (second row) line, marker, text label each. */
+    /* Grid layout partitioning (horizontal orientation): row zero is the title,
+       row one the divider line between title and dataset items, row two for
+       each item: line, marker, text label and separator line in that order. In
+       a vertically oriented legend, row pairs (2, 3), ... contain a possible
+       separator line (first row) and (second row) line, marker, text label
+       each. */
     d->destroyOldLayout();
 
     if (orientation() == Qt::Vertical) {
@@ -898,7 +901,7 @@ void Legend::buildLegend()
 
     // legend caption
     if (!titleText().isEmpty() && titleTextAttributes().isVisible()) {
-        TextLayoutItem *titleItem = new TextLayoutItem(titleText(), titleTextAttributes(), referenceArea(), measureOrientation, d->textAlignment);
+        auto *titleItem = new TextLayoutItem(titleText(), titleTextAttributes(), referenceArea(), measureOrientation, d->textAlignment);
         titleItem->setParentWidget(this);
 
         d->paintItems << titleItem;
@@ -906,7 +909,7 @@ void Legend::buildLegend()
 
         // The line between the title and the legend items, if any.
         if (showLines() && d->modelLabels.count()) {
-            HorizontalLineLayoutItem *lineItem = new HorizontalLineLayoutItem;
+            auto *lineItem = new HorizontalLineLayoutItem;
             d->paintItems << lineItem;
             d->layout->addItem(lineItem, 1, 0, 1, 5, Qt::AlignCenter);
         }
@@ -951,13 +954,15 @@ void Legend::buildLegend()
     }
 
     // for all datasets: add (line)marker items and text items to the layout;
-    // actual layout happens in flowHDatasetItems() for horizontal layout, here for vertical
+    // actual layout happens in flowHDatasetItems() for horizontal layout, here
+    // for vertical
     for (int dataset = 0; dataset < d->modelLabels.count(); ++dataset) {
         const int vLayoutRow = 2 + dataset * 2;
         HDatasetItem dsItem;
 
-        // It is possible to set the marker brush through markerAttributes as well as
-        // the dataset brush set in the diagram - the markerAttributes have higher precedence.
+        // It is possible to set the marker brush through markerAttributes as
+        // well as the dataset brush set in the diagram - the markerAttributes
+        // have higher precedence.
         MarkerAttributes markerAttrs = markerAttributes(dataset);
         markerAttrs.setMarkerSize(d->markerSize(this, dataset, fontHeight));
         const QBrush markerBrush = markerAttrs.markerColor().isValid() ? QBrush(markerAttrs.markerColor()) : brush(dataset);
@@ -1004,7 +1009,7 @@ void Legend::buildLegend()
 
         // horizontal separator line, only between items
         if (showLines() && dataset != d->modelLabels.count() - 1) {
-            HorizontalLineLayoutItem *lineItem = new HorizontalLineLayoutItem;
+            auto *lineItem = new HorizontalLineLayoutItem;
             d->layout->addItem(lineItem, vLayoutRow + 1, 0, 1, 5, Qt::AlignCenter);
             d->paintItems << lineItem;
         }
@@ -1016,7 +1021,7 @@ void Legend::buildLegend()
 
     // vertical line (only in vertical mode)
     if (orientation() == Qt::Vertical && showLines() && d->modelLabels.count()) {
-        VerticalLineLayoutItem *lineItem = new VerticalLineLayoutItem;
+        auto *lineItem = new VerticalLineLayoutItem;
         d->paintItems << lineItem;
         d->layout->addItem(lineItem, 2, 2, d->modelLabels.count() * 2, 1);
     }
@@ -1041,13 +1046,14 @@ void Legend::Private::reflowHDatasetItems(Legend *q)
     }
 
     paintItems.clear();
-    // Dissolve exactly the QHBoxLayout(s) created as "currentLine" in flowHDatasetItems - don't remove the
-    // caption and line under the caption! Those are easily identified because they aren't QLayouts.
+    // Dissolve exactly the QHBoxLayout(s) created as "currentLine" in
+    // flowHDatasetItems - don't remove the caption and line under the caption!
+    // Those are easily identified because they aren't QLayouts.
     for (int i = layout->count() - 1; i >= 0; i--) {
         QLayoutItem *const item = layout->itemAt(i);
         QLayout *const hbox = item->layout();
         if (!hbox) {
-            AbstractLayoutItem *alItem = dynamic_cast<AbstractLayoutItem *>(item);
+            auto *alItem = dynamic_cast<AbstractLayoutItem *>(item);
             Q_ASSERT(alItem);
             paintItems << alItem;
             continue;
@@ -1064,15 +1070,15 @@ void Legend::Private::reflowHDatasetItems(Legend *q)
     flowHDatasetItems(q);
 }
 
-// this works pretty much like flow layout for text, and it is only applicable to dataset items
-// laid out horizontally
+// this works pretty much like flow layout for text, and it is only applicable
+// to dataset items laid out horizontally
 void Legend::Private::flowHDatasetItems(Legend *q)
 {
     const int separatorLineWidth = 3; // hardcoded in VerticalLineLayoutItem::sizeHint()
 
     const int allowedWidth = q->areaGeometry().width();
 
-    QHBoxLayout *currentLine = new QHBoxLayout;
+    auto *currentLine = new QHBoxLayout;
     int mainLayoutRow = 1;
     layout->addItem(currentLine,
                     mainLayoutRow++,
@@ -1081,8 +1087,8 @@ void Legend::Private::flowHDatasetItems(Legend *q)
                     /*columnSpan*/ 5,
                     Qt::AlignLeft | Qt::AlignVCenter);
 
-    for (int dataset = 0; dataset < hLayoutDatasets.size(); dataset++) {
-        HDatasetItem *hdsItem = &hLayoutDatasets[dataset];
+    for (auto &hLayoutDataset : hLayoutDatasets) {
+        HDatasetItem *hdsItem = &hLayoutDataset;
 
         bool spacerUsed = false;
         bool separatorUsed = false;
@@ -1103,7 +1109,8 @@ void Legend::Private::flowHDatasetItems(Legend *q)
                                 /*columnSpan*/ 5,
                                 Qt::AlignLeft | Qt::AlignVCenter);
             } else {
-                // > 1 dataset item in line, put spacing and maybe a separator between them
+                // > 1 dataset item in line, put spacing and maybe a separator
+                // between them
                 if (!hdsItem->spacer) {
                     hdsItem->spacer = new QSpacerItem(q->spacing(), 1);
                 }
@@ -1120,14 +1127,15 @@ void Legend::Private::flowHDatasetItems(Legend *q)
                 }
             }
         }
-        // those have no parents in the current layout, so they wouldn't get cleaned up otherwise
+        // those have no parents in the current layout, so they wouldn't get
+        // cleaned up otherwise
         if (!spacerUsed) {
             delete hdsItem->spacer;
-            hdsItem->spacer = 0;
+            hdsItem->spacer = nullptr;
         }
         if (!separatorUsed) {
             delete hdsItem->separatorLine;
-            hdsItem->separatorLine = 0;
+            hdsItem->separatorLine = nullptr;
         }
 
         currentLine->addItem(hdsItem->markerLine);
@@ -1139,9 +1147,10 @@ void Legend::Private::flowHDatasetItems(Legend *q)
 
 bool Legend::hasHeightForWidth() const
 {
-    // this is better than using orientation() because, for layout purposes, we're not height-for-width
-    // *yet* before buildLegend() has been called, and the layout logic might get upset if we say
-    // something that will only be true in the future
+    // this is better than using orientation() because, for layout purposes,
+    // we're not height-for-width *yet* before buildLegend() has been called,
+    // and the layout logic might get upset if we say something that will only
+    // be true in the future
     return !d->hLayoutDatasets.isEmpty();
 }
 
@@ -1162,7 +1171,7 @@ int Legend::heightForWidth(int width) const
 
     int currentLineWidth = 0;
     int currentLineHeight = 0;
-    Q_FOREACH (const HDatasetItem &hdsItem, d->hLayoutDatasets) {
+    for (const HDatasetItem &hdsItem : qAsConst(d->hLayoutDatasets)) {
         const int payloadWidth = hdsItem.markerLine->sizeHint().width() + hdsItem.label->sizeHint().width();
         if (!currentLineWidth) {
             // first iteration
@@ -1188,8 +1197,9 @@ int Legend::heightForWidth(int width) const
 
 void Legend::Private::destroyOldLayout()
 {
-    // in the horizontal layout case, the QHBoxLayout destructor also deletes child layout items
-    // (it isn't documented that QLayoutItems delete their children)
+    // in the horizontal layout case, the QHBoxLayout destructor also deletes
+    // child layout items (it isn't documented that QLayoutItems delete their
+    // children)
     for (int i = layout->count() - 1; i >= 0; i--) {
         delete layout->takeAt(i);
     }

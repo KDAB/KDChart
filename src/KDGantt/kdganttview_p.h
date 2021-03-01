@@ -57,7 +57,7 @@ class KDGanttTreeView : public QTreeView
 {
     Q_OBJECT
 public:
-    explicit KDGanttTreeView(QAbstractProxyModel *proxy, QWidget *parent = 0);
+    explicit KDGanttTreeView(QAbstractProxyModel *proxy, QWidget *parent = nullptr);
     ~KDGanttTreeView() override;
 
     AbstractRowController *rowController()
@@ -82,7 +82,7 @@ public:
 
     void init();
 
-    GraphicsItem *createItem(ItemType type) const;
+    [[nodiscard]] GraphicsItem *createItem(ItemType type) const;
 
     void updateScene();
 

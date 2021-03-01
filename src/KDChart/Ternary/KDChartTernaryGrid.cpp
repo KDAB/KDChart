@@ -55,9 +55,7 @@ TernaryGrid::TernaryGrid()
 {
 }
 
-TernaryGrid::~TernaryGrid()
-{
-}
+TernaryGrid::~TernaryGrid() = default;
 
 void TernaryGrid::drawGrid(PaintContext *context)
 {
@@ -65,8 +63,11 @@ void TernaryGrid::drawGrid(PaintContext *context)
 
     QPainter &painter = *context->painter(); // recover from pointer madness
     PainterSaver s(&painter); // can i have a reference based version of that?
-    TernaryCoordinatePlane *plane = dynamic_cast<TernaryCoordinatePlane *>(context->coordinatePlane());
-    Q_ASSERT_X(plane, "TernaryGrid::drawGrid", "Bad function call: PaintContext::coodinatePlane() NOT a ternary plane.");
+    auto *plane = dynamic_cast<TernaryCoordinatePlane *>(context->coordinatePlane());
+    Q_ASSERT_X(plane,
+               "TernaryGrid::drawGrid",
+               "Bad function call: PaintContext::coodinatePlane() NOT a ternary "
+               "plane.");
 
     // translate the points and see how many grid lines we can draw:
     const int MaxDepth = 3;
@@ -89,7 +90,7 @@ void TernaryGrid::drawGrid(PaintContext *context)
 
     QVector<QLineF> lines[MaxDepth];
     {
-        Q_FOREACH (const TickInfo &tick, m_tickInfo) {
+        for (const TickInfo &tick : qAsConst(m_tickInfo)) {
             const qreal &percent = tick.percentage;
             { // draw parallels to B
                 TernaryPoint ternaryStart(percent, 1.0 - percent);
@@ -153,7 +154,7 @@ void TernaryGrid::drawGrid(PaintContext *context)
     percentages.erase(std::unique(percentages.begin(), percentages.end()), percentages.end());
 
     {
-        Q_FOREACH (const TickInfo &tick, percentages) {
+        for (const TickInfo &tick : qAsConst(percentages)) {
             const qreal &percent = tick.percentage;
             { // BC axis markers:
                 const QPointF markerDistance(FullMarkerDistanceBC / (tick.depth + 1));

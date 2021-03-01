@@ -40,23 +40,21 @@ class KDCHART_EXPORT AbstractPolarDiagram : public AbstractDiagram
     KDCHART_DECLARE_DERIVED_DIAGRAM(AbstractPolarDiagram, PolarCoordinatePlane)
 
 public:
-    explicit AbstractPolarDiagram(QWidget *parent = 0, PolarCoordinatePlane *plane = 0);
-    ~AbstractPolarDiagram() override
-    {
-    }
+    explicit AbstractPolarDiagram(QWidget *parent = nullptr, PolarCoordinatePlane *plane = nullptr);
+    ~AbstractPolarDiagram() override = default;
 
-    virtual qreal valueTotals() const = 0;
-    virtual qreal numberOfValuesPerDataset() const = 0;
-    virtual qreal numberOfDatasets() const
+    [[nodiscard]] virtual qreal valueTotals() const = 0;
+    [[nodiscard]] virtual qreal numberOfValuesPerDataset() const = 0;
+    [[nodiscard]] virtual qreal numberOfDatasets() const
     {
         return 1;
     };
-    virtual qreal numberOfGridRings() const = 0;
+    [[nodiscard]] virtual qreal numberOfGridRings() const = 0;
 
-    const PolarCoordinatePlane *polarCoordinatePlane() const;
+    [[nodiscard]] const PolarCoordinatePlane *polarCoordinatePlane() const;
 
-    int columnCount() const;
-    int rowCount() const;
+    [[nodiscard]] int columnCount() const;
+    [[nodiscard]] int rowCount() const;
 };
 
 }

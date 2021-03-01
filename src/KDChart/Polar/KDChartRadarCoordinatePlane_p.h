@@ -45,13 +45,9 @@ class RadarCoordinatePlane::Private : public PolarCoordinatePlane::Private
     friend class RadarCoordinatePlane;
 
 public:
-    explicit Private()
-    {
-    }
+    explicit Private() = default;
 
-    ~Private() override
-    {
-    }
+    ~Private() override = default;
     TextAttributes textAttributes;
 
     void initialize() override

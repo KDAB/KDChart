@@ -37,9 +37,7 @@ PolarDiagram::Private::Private()
 {
 }
 
-PolarDiagram::Private::~Private()
-{
-}
+PolarDiagram::Private::~Private() = default;
 
 #define d d_func()
 
@@ -49,9 +47,7 @@ PolarDiagram::PolarDiagram(QWidget *parent, PolarCoordinatePlane *plane)
     // init();
 }
 
-PolarDiagram::~PolarDiagram()
-{
-}
+PolarDiagram::~PolarDiagram() = default;
 
 void PolarDiagram::init()
 {
@@ -85,7 +81,7 @@ void PolarDiagram::init()
  */
 PolarDiagram *PolarDiagram::clone() const
 {
-    PolarDiagram *newDiagram = new PolarDiagram(new Private(*d));
+    auto *newDiagram = new PolarDiagram(new Private(*d));
     // This needs to be copied after the fact
     newDiagram->d->showDelimitersAtPosition = d->showDelimitersAtPosition;
     newDiagram->d->showLabelsAtPosition = d->showLabelsAtPosition;
@@ -154,7 +150,8 @@ void PolarDiagram::paint(PaintContext *ctx, bool calculateListAndReturnScale, qr
     const int colCount = model()->columnCount(rootIndex());
 
     if (calculateListAndReturnScale) {
-        // Check if all of the data value texts / data comments fit into the available space...
+        // Check if all of the data value texts / data comments fit into the
+        // available space...
         d->labelPaintCache.clear();
 
         for (int iCol = 0; iCol < colCount; ++iCol) {
@@ -163,7 +160,7 @@ void PolarDiagram::paint(PaintContext *ctx, bool calculateListAndReturnScale, qr
                 const qreal value = model()->data(index).toReal();
                 QPointF point = coordinatePlane()->translate(QPointF(value, iRow)) + ctx->rectangle().topLeft();
                 // qDebug() << point;
-                d->addLabel(&d->labelPaintCache, index, 0, PositionPoints(point), Position::Center, Position::Center, value);
+                d->addLabel(&d->labelPaintCache, index, nullptr, PositionPoints(point), Position::Center, Position::Center, value);
             }
         }
 
@@ -191,11 +188,13 @@ void PolarDiagram::paint(PaintContext *ctx, bool calculateListAndReturnScale, qr
     } else {
         // Paint the data sets
         for (int iCol = 0; iCol < colCount; ++iCol) {
-            // TODO(khz): As of yet PolarDiagram can not show per-segment line attributes
-            //           but it draws every polyline in one go - using one color.
-            //           This needs to be enhanced to allow for cell-specific settings
-            //           in the same way as LineDiagram does it.
-            QBrush brush = d->datasetAttrs(iCol, KDChart::DatasetBrushRole).value<QBrush>();
+            // TODO(khz): As of yet PolarDiagram can not show per-segment line
+            // attributes
+            //           but it draws every polyline in one go - using one
+            //           color. This needs to be enhanced to allow for
+            //           cell-specific settings in the same way as LineDiagram
+            //           does it.
+            auto brush = d->datasetAttrs(iCol, KDChart::DatasetBrushRole).value<QBrush>();
             QPolygonF polygon;
             for (int iRow = 0; iRow < rowCount; ++iRow) {
                 QModelIndex index = model()->index(iRow, iCol, rootIndex()); // checked
@@ -205,7 +204,8 @@ void PolarDiagram::paint(PaintContext *ctx, bool calculateListAndReturnScale, qr
                 // qDebug() << point;
             }
             if (closeDatasets() && !polygon.isEmpty()) {
-                // close the circle by connecting the last data point to the first
+                // close the circle by connecting the last data point to the
+                // first
                 polygon.append(polygon.first());
             }
 
@@ -247,7 +247,8 @@ qreal PolarDiagram::numberOfGridRings() const
 void PolarDiagram::setZeroDegreePosition(int degrees)
 {
     Q_UNUSED(degrees);
-    qWarning() << "Deprecated PolarDiagram::setZeroDegreePosition() called, setting ignored.";
+    qWarning() << "Deprecated PolarDiagram::setZeroDegreePosition() called, "
+                  "setting ignored.";
 }
 
 int PolarDiagram::zeroDegreePosition() const

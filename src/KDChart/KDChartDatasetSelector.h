@@ -49,7 +49,7 @@ class KDCHART_EXPORT DatasetSelectorWidget : public QFrame
     Q_OBJECT
 
 public:
-    explicit DatasetSelectorWidget(QWidget *parent = 0);
+    explicit DatasetSelectorWidget(QWidget *parent = nullptr);
     ~DatasetSelectorWidget() override;
 
 public Q_SLOTS:

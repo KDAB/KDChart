@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     m_chart = new Chart();
     chartLayout->addWidget(m_chart);
 
@@ -212,8 +212,8 @@ void MainWindow::on_widthCB_toggled(bool checked)
 
 void MainWindow::on_fixPlaneSizeCB_toggled(bool checked)
 {
-    CartesianCoordinatePlane *plane = qobject_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane());
-    if (plane == 0)
+    auto *plane = qobject_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane());
+    if (plane == nullptr)
         return;
     plane->setFixedDataCoordinateSpaceRelation(checked);
     // just a little adjustment:

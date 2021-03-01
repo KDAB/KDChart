@@ -30,7 +30,7 @@ class TimeAxis : public KDChart::CartesianAxis
     Q_OBJECT
 public:
     explicit TimeAxis(KDChart::AbstractCartesianDiagram *parent);
-    const QString customizedLabel(const QString &label) const override;
+    [[nodiscard]] const QString customizedLabel(const QString &label) const override;
 };
 
 #endif

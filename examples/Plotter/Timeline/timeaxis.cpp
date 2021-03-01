@@ -39,6 +39,6 @@ const QString TimeAxis::customizedLabel(const QString &label) const
     // return QString::number(label.toReal(), 'E', precision);
 
     // Format the time-value to a nice string representation.
-    const QDateTime dateTime = QDateTime::fromTime_t(label.toDouble() * 3600.0);
+    const QDateTime dateTime = QDateTime::fromSecsSinceEpoch(label.toDouble() * 3600.0);
     return dateTime.date().toString();
 }

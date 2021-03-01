@@ -100,22 +100,24 @@ QDateTime DateTimeGrid::Private::chartXtoDateTime(qreal x) const
 /*!\class KDGantt::DateTimeScaleFormatter
  * \ingroup KDGantt
  *
- * This class formats dates and times used in DateTimeGrid follawing a given format.
+ * This class formats dates and times used in DateTimeGrid follawing a given
+ * format.
  *
  * The format follows the format of QDateTime::toString(), with one addition:
- * "w" is replaced with the week number of the date as number without a leading zero (1-53)
- * "ww" is replaced with the week number of the date as number with a leading zero (01-53)
+ * "w" is replaced with the week number of the date as number without a leading
+ * zero (1-53) "ww" is replaced with the week number of the date as number with
+ * a leading zero (01-53)
  *
  * For example:
  *
  * \code
  *  // formatter to print the complete date over the current week
  *  // This leads to the first day of the week being printed
- *  DateTimeScaleFormatter formatter = DateTimeScaleFormatter( DateTimeScaleFormatter::Week, "yyyy-MM-dd" );
- * \endcode
+ *  DateTimeScaleFormatter formatter = DateTimeScaleFormatter(
+ * DateTimeScaleFormatter::Week, "yyyy-MM-dd" ); \endcode
  *
- * Optionally, you can set an user defined text alignment flag. The default value is Qt::AlignCenter.
- * \sa DateTimeScaleFormatter::DateTimeScaleFormatter
+ * Optionally, you can set an user defined text alignment flag. The default
+ * value is Qt::AlignCenter. \sa DateTimeScaleFormatter::DateTimeScaleFormatter
  *
  * This class even controls the range of the grid sections.
  * \sa KDGanttDateTimeScaleFormatter::Range
@@ -192,8 +194,8 @@ Qt::Alignment DateTimeScaleFormatter::alignment() const
     return d->alignment;
 }
 
-/*! \returns the QDateTime being the begin of the range after the one containing \a datetime
- *  \sa currentRangeBegin
+/*! \returns the QDateTime being the begin of the range after the one containing
+ * \a datetime \sa currentRangeBegin
  */
 QDateTime DateTimeScaleFormatter::nextRangeBegin(const QDateTime &datetime) const
 {
@@ -242,7 +244,8 @@ QDateTime DateTimeScaleFormatter::nextRangeBegin(const QDateTime &datetime) cons
     }
     // result = result.toLocalTime();
     assert(result != datetime);
-    // qDebug() << "DateTimeScaleFormatter::nextRangeBegin("<<datetime<<")="<<d->range<<result;
+    // qDebug() <<
+    // "DateTimeScaleFormatter::nextRangeBegin("<<datetime<<")="<<d->range<<result;
     return result;
 }
 
@@ -298,9 +301,7 @@ DateTimeGrid::DateTimeGrid()
 {
 }
 
-DateTimeGrid::~DateTimeGrid()
-{
-}
+DateTimeGrid::~DateTimeGrid() = default;
 
 /*! \returns The QDateTime used as start date for the grid.
  *
@@ -364,11 +365,11 @@ void DateTimeGrid::setDayWidth(qreal w)
  * Following example demonstrates how to change the format of the header to use
  * a date-scaling with the header-label displayed with the ISO date-notation.
  * \code
- * DateTimeScaleFormatter* formatter = new DateTimeScaleFormatter(DateTimeScaleFormatter::Day, QString::fromLatin1("yyyy-MMMM-dddd"));
- * grid->setUserDefinedUpperScale( formatter );
- * grid->setUserDefinedLowerScale( formatter );
- * grid->setScale( DateTimeGrid::ScaleUserDefined );
- * \endcode
+ * DateTimeScaleFormatter* formatter = new
+ * DateTimeScaleFormatter(DateTimeScaleFormatter::Day,
+ * QString::fromLatin1("yyyy-MMMM-dddd")); grid->setUserDefinedUpperScale(
+ * formatter ); grid->setUserDefinedLowerScale( formatter ); grid->setScale(
+ * DateTimeGrid::ScaleUserDefined ); \endcode
  */
 void DateTimeGrid::setScale(Scale s)
 {
@@ -391,8 +392,8 @@ DateTimeGrid::Scale DateTimeGrid::scale() const
  *  user defined formatter to \a lower. The DateTimeGrid object takes
  *  ownership of the formatter, which has to be allocated with new.
  *
- * You have to set the scale to ScaleUserDefined for this setting to take effect.
- * \sa DateTimeScaleFormatter
+ * You have to set the scale to ScaleUserDefined for this setting to take
+ * effect. \sa DateTimeScaleFormatter
  */
 void DateTimeGrid::setUserDefinedLowerScale(DateTimeScaleFormatter *lower)
 {
@@ -405,8 +406,8 @@ void DateTimeGrid::setUserDefinedLowerScale(DateTimeScaleFormatter *lower)
  *  user defined formatter to \a upper. The DateTimeGrid object takes
  *  ownership of the formatter, which has to be allocated with new.
  *
- * You have to set the scale to ScaleUserDefined for this setting to take effect.
- * \sa DateTimeScaleFormatter
+ * You have to set the scale to ScaleUserDefined for this setting to take
+ * effect. \sa DateTimeScaleFormatter
  */
 void DateTimeGrid::setUserDefinedUpperScale(DateTimeScaleFormatter *upper)
 {
@@ -509,11 +510,12 @@ QBrush DateTimeGrid::noInformationBrush() const
 
 /*!
  * \param value The datetime to get the x value for.
- * \returns The x value corresponding to \a value or -1.0 if \a value is not a datetime variant.
+ * \returns The x value corresponding to \a value or -1.0 if \a value is not a
+ * datetime variant.
  */
 qreal DateTimeGrid::mapToChart(const QVariant &value) const
 {
-    if (!value.canConvert(QVariant::DateTime) || (value.type() == QVariant::String && value.toString().isEmpty())) {
+    if (!value.canConvert<QDateTime>()) {
         return -1.0;
     }
     return d->dateTimeToChartX(value.toDateTime());
@@ -521,7 +523,8 @@ qreal DateTimeGrid::mapToChart(const QVariant &value) const
 
 /*!
  * \param x The x value get the datetime for.
- * \returns The datetime corresponding to \a x or an invalid datetime if x cannot be mapped.
+ * \returns The datetime corresponding to \a x or an invalid datetime if x
+ * cannot be mapped.
  */
 QVariant DateTimeGrid::mapFromChart(qreal x) const
 {
@@ -539,19 +542,19 @@ Span DateTimeGrid::mapToChart(const QModelIndex &idx) const
     assert(idx.model() == model());
     const QVariant sv = model()->data(idx, StartTimeRole);
     const QVariant ev = model()->data(idx, EndTimeRole);
-    if (sv.canConvert(QVariant::DateTime) && ev.canConvert(QVariant::DateTime) && !(sv.type() == QVariant::String && sv.toString().isEmpty())
-        && !(ev.type() == QVariant::String && ev.toString().isEmpty())) {
+    if (sv.canConvert<QDateTime>() && ev.canConvert<QDateTime>()) {
         QDateTime st = sv.toDateTime();
         QDateTime et = ev.toDateTime();
         if (et.isValid() && st.isValid()) {
             qreal sx = d->dateTimeToChartX(st);
             qreal ex = d->dateTimeToChartX(et) - sx;
-            // qDebug() << "DateTimeGrid::mapToChart("<<st<<et<<") => "<< Span( sx, ex );
+            // qDebug() << "DateTimeGrid::mapToChart("<<st<<et<<") => "<< Span(
+            // sx, ex );
             return Span(sx, ex);
         }
     }
     // Special case for Events with only a start date
-    if (sv.canConvert(QVariant::DateTime) && !(sv.type() == QVariant::String && sv.toString().isEmpty())) {
+    if (sv.canConvert<QDateTime>()) {
         QDateTime st = sv.toDateTime();
         if (st.isValid()) {
             qreal sx = d->dateTimeToChartX(st);
@@ -578,15 +581,15 @@ static void debug_print_idx( const QModelIndex& idx )
  * end time for the supplied index.
  *
  * \param span The span used to map from.
- * \param idx The index used for setting the start time and end time in the model.
- * \param constraints A list of hard constraints to match against the start time and
- * end time mapped from the span.
+ * \param idx The index used for setting the start time and end time in the
+ * model. \param constraints A list of hard constraints to match against the
+ * start time and end time mapped from the span.
  *
- * \returns true if the start time and time was successfully added to the model, or false
- * if unsucessful.
- * Also returns false if any of the constraints isn't satisfied. That is, if the start time of
- * the constrained index is before the end time of the dependency index, or the end time of the
- * constrained index is before the start time of the dependency index.
+ * \returns true if the start time and time was successfully added to the model,
+ * or false if unsucessful. Also returns false if any of the constraints isn't
+ * satisfied. That is, if the start time of the constrained index is before the
+ * end time of the dependency index, or the end time of the constrained index is
+ * before the start time of the dependency index.
  */
 bool DateTimeGrid::mapFromChart(const Span &span, const QModelIndex &idx, const QList<Constraint> &constraints) const
 {
@@ -598,7 +601,7 @@ bool DateTimeGrid::mapFromChart(const Span &span, const QModelIndex &idx, const 
     QDateTime st = d->chartXtoDateTime(span.start());
     QDateTime et = d->chartXtoDateTime(span.start() + span.length());
     // qDebug() << "DateTimeGrid::mapFromChart("<<span<<") => "<< st << et;
-    Q_FOREACH (const Constraint &c, constraints) {
+    for (const Constraint &c : qAsConst(constraints)) {
         if (c.type() != Constraint::TypeHard || !isSatisfiedConstraint(c))
             continue;
         if (c.startIndex() == idx) {
@@ -614,7 +617,7 @@ bool DateTimeGrid::mapFromChart(const Span &span, const QModelIndex &idx, const 
         }
     }
 
-    return model()->setData(idx, qVariantFromValue(st), StartTimeRole) && model()->setData(idx, qVariantFromValue(et), EndTimeRole);
+    return model()->setData(idx, QVariant::fromValue(st), StartTimeRole) && model()->setData(idx, QVariant::fromValue(et), EndTimeRole);
 }
 
 Qt::PenStyle DateTimeGrid::Private::gridLinePenStyle(QDateTime dt, Private::HeaderType headerType) const
@@ -700,8 +703,9 @@ void DateTimeGrid::Private::paintVerticalLines(QPainter *painter,
         offsetDays = 1;
 
     for (qreal x = dateTimeToChartX(dt); x < exposedRect.right(); dt = dt.addSecs(offsetSeconds), dt = dt.addDays(offsetDays), x = dateTimeToChartX(dt)) {
-        // TODO not the best solution as it might be one paint too much, but i don't know what
-        // causes the test to fail yet, i think it might be a rounding error
+        // TODO not the best solution as it might be one paint too much, but i
+        // don't know what causes the test to fail yet, i think it might be a
+        // rounding error
         // if ( x >= exposedRect.left() ) {
         QPen pen = painter->pen();
         pen.setBrush(QApplication::palette().dark());
@@ -744,10 +748,12 @@ void DateTimeGrid::Private::paintVerticalUserDefinedLines(QPainter *painter,
             painter->fillRect(QRectF(x, exposedRect.top(), dayWidth, exposedRect.height()), painter->brush());
             painter->setBrush(oldBrush);
         }
-        // TODO not the best solution as it might be one paint too much, but i don't know what
-        // causes the test to fail yet, i think it might be a rounding error
+        // TODO not the best solution as it might be one paint too much, but i
+        // don't know what causes the test to fail yet, i think it might be a
+        // rounding error
         // if ( x >= exposedRect.left() ) {
-        // FIXME: Also fill area between this and the next vertical line to indicate free days? (Johannes)
+        // FIXME: Also fill area between this and the next vertical line to
+        // indicate free days? (Johannes)
         painter->drawLine(QPointF(x, sceneRect.top()), QPointF(x, sceneRect.bottom()));
         //}
     }
@@ -783,7 +789,7 @@ void DateTimeGrid::paintGrid(QPainter *painter, const QRectF &sceneRect, const Q
         d->paintVerticalLines(painter, sceneRect, exposedRect, widget, d->headerTypeForScale(scale()));
         break;
     case ScaleAuto: {
-        const qreal tabw = QApplication::fontMetrics().width(QLatin1String("XXXXX"));
+        const qreal tabw = QFontMetrics(QApplication::font()).horizontalAdvance(QLatin1String("XXXXX"));
         const qreal dayw = dayWidth();
         if (dayw > 24 * 60 * 60 * tabw) {
             d->paintVerticalUserDefinedLines(painter, sceneRect, exposedRect, &d->minute_lower, widget);
@@ -824,7 +830,8 @@ void DateTimeGrid::paintGrid(QPainter *painter, const QRectF &sceneRect, const Q
                 painter->fillRect(QRectF(exposedRect.left(), s.start(), exposedRect.width(), s.length()), d->noInformationBrush);
             }
             // Is alternating background better?
-            // if ( idx.row()%2 ) painter->fillRect( QRectF( exposedRect.x(), s.start(), exposedRect.width(), s.length() ),
+            // if ( idx.row()%2 ) painter->fillRect( QRectF( exposedRect.x(),
+            // s.start(), exposedRect.width(), s.length() ),
             // QApplication::palette().alternateBase() );
             idx = rowController->indexBelow(idx);
         }
@@ -848,7 +855,7 @@ int DateTimeGrid::Private::tabHeight(const QString &txt, QWidget *widget) const
 
 void DateTimeGrid::Private::getAutomaticFormatters(DateTimeScaleFormatter **lower, DateTimeScaleFormatter **upper)
 {
-    const qreal tabw = QApplication::fontMetrics().width(QLatin1String("XXXXX"));
+    const qreal tabw = QFontMetrics(QApplication::font()).horizontalAdvance(QLatin1String("XXXXX"));
     const qreal dayw = dayWidth;
     if (dayw > 24 * 60 * 60 * tabw) {
         *lower = &minute_lower;
@@ -937,7 +944,7 @@ void DateTimeGrid::paintUserDefinedHeader(QPainter *painter,
 
         QStyleOptionHeader opt;
         if (widget)
-            opt.init(widget);
+            opt.initFrom(widget);
         opt.rect = QRectF(x - offset + 1, headerRect.top(), qMax<qreal>(1., nextx - x - 1), headerRect.height()).toAlignedRect();
         opt.textAlignment = formatter->alignment();
         opt.text = formatter->text(dt);
@@ -995,7 +1002,7 @@ void DateTimeGrid::Private::paintHeader(QPainter *painter,
          dt = dt.addSecs(offsetSeconds), dt = dt.addDays(offsetDays), dt = dt.addMonths(offsetMonths), x = dateTimeToChartX(dt)) {
         QStyleOptionHeader opt;
         if (widget)
-            opt.init(widget);
+            opt.initFrom(widget);
         opt.rect = formatter->textRect(x, offset, dayWidth, headerRect, dt);
         opt.text = formatter->format(dt);
         opt.textAlignment = Qt::AlignCenter;
@@ -1011,9 +1018,7 @@ void DateTimeGrid::paintHourScaleHeader(QPainter *painter, const QRectF &headerR
     class HourFormatter : public Private::DateTextFormatter
     {
     public:
-        ~HourFormatter() override
-        {
-        }
+        ~HourFormatter() override = default;
 
         QString format(const QDateTime &dt) override
         {
@@ -1038,9 +1043,7 @@ void DateTimeGrid::paintHourScaleHeader(QPainter *painter, const QRectF &headerR
     class DayFormatter : public Private::DateTextFormatter
     {
     public:
-        ~DayFormatter() override
-        {
-        }
+        ~DayFormatter() override = default;
         QString format(const QDateTime &dt) override
         {
             return dt.date().toString();
@@ -1069,9 +1072,7 @@ void DateTimeGrid::paintDayScaleHeader(QPainter *painter, const QRectF &headerRe
     class DayFormatter : public Private::DateTextFormatter
     {
     public:
-        ~DayFormatter() override
-        {
-        }
+        ~DayFormatter() override = default;
 
         QString format(const QDateTime &dt) override
         {
@@ -1096,9 +1097,7 @@ void DateTimeGrid::paintDayScaleHeader(QPainter *painter, const QRectF &headerRe
     class WeekFormatter : public Private::DateTextFormatter
     {
     public:
-        ~WeekFormatter() override
-        {
-        }
+        ~WeekFormatter() override = default;
         QString format(const QDateTime &dt) override
         {
             return QString::number(dt.date().weekNumber()) + QLatin1String("/") + QString::number(dt.date().year());
@@ -1127,9 +1126,7 @@ void DateTimeGrid::paintWeekScaleHeader(QPainter *painter, const QRectF &headerR
     class WeekFormatter : public Private::DateTextFormatter
     {
     public:
-        ~WeekFormatter() override
-        {
-        }
+        ~WeekFormatter() override = default;
 
         QString format(const QDateTime &dt) override
         {
@@ -1153,9 +1150,7 @@ void DateTimeGrid::paintWeekScaleHeader(QPainter *painter, const QRectF &headerR
     class MonthFormatter : public Private::DateTextFormatter
     {
     public:
-        ~MonthFormatter() override
-        {
-        }
+        ~MonthFormatter() override = default;
 
         QString format(const QDateTime &dt) override
         {
@@ -1183,9 +1178,7 @@ void DateTimeGrid::paintMonthScaleHeader(QPainter *painter, const QRectF &header
     class MonthFormatter : public Private::DateTextFormatter
     {
     public:
-        ~MonthFormatter() override
-        {
-        }
+        ~MonthFormatter() override = default;
 
         QString format(const QDateTime &dt) override
         {
@@ -1209,9 +1202,7 @@ void DateTimeGrid::paintMonthScaleHeader(QPainter *painter, const QRectF &header
     class YearFormatter : public Private::DateTextFormatter
     {
     public:
-        ~YearFormatter() override
-        {
-        }
+        ~YearFormatter() override = default;
 
         QString format(const QDateTime &dt) override
         {
@@ -1287,7 +1278,7 @@ void DateTimeGrid::drawBackground(QPainter *paint, const QRectF &rect)
     paint->save();
 
     // Paint the first date column
-    while (1) {
+    while (true) {
         QDate nextDate = d->chartXtoDateTime(startx + 1).date();
         if (date != nextDate) {
             QRectF dayRect(startx - dayWidth(), rect.top(), dayWidth(), rect.height());
@@ -1327,7 +1318,7 @@ void DateTimeGrid::drawForeground(QPainter *paint, const QRectF &rect)
     paint->save();
 
     // Paint the first date column
-    while (1) {
+    while (true) {
         QDate nextDate = d->chartXtoDateTime(startx + 1).date();
         if (date != nextDate) {
             QRectF dayRect(startx - dayWidth(), rect.top(), dayWidth(), rect.height());

@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
     path = new QPainterPath();
     path->addEllipse(-2.0, -1.0, 4.0, 2.0);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     m_chart = new Chart();
     chartLayout->addWidget(m_chart);
 

@@ -37,9 +37,7 @@ TableModel::TableModel(QObject *parent)
 {
 }
 
-TableModel::~TableModel()
-{
-}
+TableModel::~TableModel() = default;
 
 int TableModel::rowCount(const QModelIndex &) const
 {
@@ -56,14 +54,14 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
     // FIXME kdchart queries (-1, -1) for empty models
     if (index.row() == -1 || index.column() == -1) {
         qDebug() << "TableModel::data: row:" << index.row() << ", column:" << index.column() << ", rowCount:" << rowCount() << ", columnCount:" << columnCount()
-                 << endl
+                 << '\n'
                  << "TableModel::data: FIXME fix kdchart views to not query"
                     " model data for invalid indices!";
         return QVariant();
     }
 
     /*    qDebug () << "TableModel::data: row: "<< index.row() << ", column: "
-                  << index.column() << endl;*/
+                  << index.column() << '\n';*/
     Q_ASSERT(index.row() >= 0 && index.row() < rowCount());
     Q_ASSERT(index.column() >= 0 && index.column() < columnCount());
 
@@ -100,7 +98,8 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
     case Qt::ToolTipRole:
         break;
     default:
-        //        qDebug () << "TableModel::headerData: unknown role " << role << "." << endl;
+        //        qDebug () << "TableModel::headerData: unknown role " <<
+        //        role << "." << '\n';
         break;
     }
     return result;

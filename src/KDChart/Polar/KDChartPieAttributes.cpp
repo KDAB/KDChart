@@ -61,7 +61,7 @@ PieAttributes &PieAttributes::operator=(const PieAttributes &r)
 PieAttributes::~PieAttributes()
 {
     delete _d;
-    _d = 0;
+    _d = nullptr;
 }
 
 bool PieAttributes::operator==(const PieAttributes &r) const

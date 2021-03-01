@@ -66,7 +66,7 @@ public:
         xCenter = center.x();
         yCenter = center.y();
     }
-    const QPointF center() const
+    [[nodiscard]] const QPointF center() const
     {
         return QPointF(xCenter, yCenter);
     }

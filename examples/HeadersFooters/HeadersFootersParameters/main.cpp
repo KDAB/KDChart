@@ -35,7 +35,7 @@ class ChartWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ChartWidget(QWidget *parent = 0)
+    explicit ChartWidget(QWidget *parent = nullptr)
         : QWidget(parent)
     {
         m_model.insertRows(0, 2, QModelIndex());
@@ -47,13 +47,13 @@ public:
             }
         }
 
-        BarDiagram *diagram = new BarDiagram;
+        auto *diagram = new BarDiagram;
         diagram->setModel(&m_model);
 
         m_chart.coordinatePlane()->replaceDiagram(diagram);
 
         // Add at one Header and set it up
-        HeaderFooter *header = new HeaderFooter(&m_chart);
+        auto *header = new HeaderFooter(&m_chart);
         header->setPosition(Position::North);
         header->setText("A Simple Bar Chart");
         m_chart.addHeaderFooter(header);
@@ -86,7 +86,7 @@ public:
         hfa.setVisible(true);
         header->setFrameAttributes(hfa);
 
-        QVBoxLayout *l = new QVBoxLayout(this);
+        auto *l = new QVBoxLayout(this);
         l->addWidget(&m_chart);
         m_chart.setGlobalLeadingTop(10);
         setLayout(l);

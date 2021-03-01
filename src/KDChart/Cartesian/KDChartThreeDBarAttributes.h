@@ -43,11 +43,11 @@ public:
 
     /* threeD Bars specific */
     void setUseShadowColors(bool useShadowColors);
-    bool useShadowColors() const;
+    [[nodiscard]] bool useShadowColors() const;
 
     // Pending Michel I am not sure this will be used
     void setAngle(uint threeDAngle);
-    uint angle() const;
+    [[nodiscard]] uint angle() const;
 
     bool operator==(const ThreeDBarAttributes &) const;
     inline bool operator!=(const ThreeDBarAttributes &other) const

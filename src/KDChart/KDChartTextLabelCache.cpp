@@ -213,14 +213,10 @@ void PrerenderedLabel::paint() const
         painter.drawRect(0, 0, Width, Height);
         painter.setCompositionMode(mode);
 
-        QMatrix matrix;
+        QTransform matrix;
         matrix.translate(0.5 * Width, 0.5 * Height);
         matrix.rotate(m_angle);
-#if QT_VERSION > 0x040199
-        painter.setWorldMatrix(matrix);
-#else
-        painter.setMatrix(matrix);
-#endif
+        painter.setWorldTransform(matrix);
 
         painter.setPen(m_pen);
         painter.setBrush(m_brush);
@@ -260,7 +256,7 @@ void PrerenderedLabel::paint() const
         positions << KDChartEnums::PositionCenter << KDChartEnums::PositionNorthWest << KDChartEnums::PositionNorth << KDChartEnums::PositionNorthEast
                   << KDChartEnums::PositionEast << KDChartEnums::PositionSouthEast << KDChartEnums::PositionSouth << KDChartEnums::PositionSouthWest
                   << KDChartEnums::PositionWest;
-        Q_FOREACH (KDChartEnums::PositionValue position, positions) { // krazy:exclude=foreach
+        for (KDChartEnums::PositionValue position : qAsConst(positions)) { // krazy:exclude=foreach
             static const double Radius = 0.5;
             static const double Diameter = 2 * Radius;
 

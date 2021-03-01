@@ -45,7 +45,7 @@ class EntryDialog : public QDialog
     Q_OBJECT
 
 public:
-    EntryDialog(const QAbstractItemModel *model, QWidget *parent = 0, Qt::WindowFlags f = 0);
+    EntryDialog(const QAbstractItemModel *model, QWidget *parent = nullptr, Qt::WindowFlags f = {});
     void initFrom(const QModelIndex &index, const KDGantt::ConstraintModel *constraintModel);
 
     QString name() const;
@@ -63,7 +63,7 @@ private slots:
 
 private:
     void init();
-    void addDependItem(const QAbstractItemModel *model, const QModelIndex &index, int indent = 0);
+    void addDependItem(const QAbstractItemModel *model, const QModelIndex &index, int indent = {});
 
     QList<QPersistentModelIndex> indexList;
     const QAbstractItemModel *model;

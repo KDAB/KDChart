@@ -37,10 +37,8 @@ class MainWindow : public QWidget
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = 0);
-    ~MainWindow() override
-    {
-    }
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow() override = default;
 
 private:
     KDChart::Chart *m_chart;

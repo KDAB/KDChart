@@ -31,19 +31,19 @@ class TimeChartModel : public QSortFilterProxyModel
 {
     Q_OBJECT
 public:
-    explicit TimeChartModel(QObject *parent = 0);
+    explicit TimeChartModel(QObject *parent = nullptr);
 
-    QPair<QDateTime, QDateTime> visibleRange() const;
+    [[nodiscard]] QPair<QDateTime, QDateTime> visibleRange() const;
 
 public Q_SLOTS:
     void setVisibleRange(const QDateTime &start, const QDateTime &end);
     void setVisibleStart(const QDateTime &start);
     void setVisibleEnd(const QDateTime &end);
 
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 protected:
-    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
+    [[nodiscard]] bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 
 private:
     QPair<QDateTime, QDateTime> range;

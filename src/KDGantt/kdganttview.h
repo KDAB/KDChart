@@ -56,33 +56,33 @@ class KDGANTT_EXPORT View : public QWidget
     Q_PRIVATE_SLOT(d, void slotGfxViewVerticalRangeChanged(int, int))
 
 public:
-    explicit View(QWidget *parent = 0);
+    explicit View(QWidget *parent = nullptr);
     ~View() override;
 
-    QAbstractItemModel *model() const;
-    QItemSelectionModel *selectionModel() const;
-    ItemDelegate *itemDelegate() const;
-    ConstraintModel *constraintModel() const;
-    AbstractGrid *grid() const;
-    QModelIndex rootIndex() const;
+    [[nodiscard]] QAbstractItemModel *model() const;
+    [[nodiscard]] QItemSelectionModel *selectionModel() const;
+    [[nodiscard]] ItemDelegate *itemDelegate() const;
+    [[nodiscard]] ConstraintModel *constraintModel() const;
+    [[nodiscard]] AbstractGrid *grid() const;
+    [[nodiscard]] QModelIndex rootIndex() const;
 
-    QModelIndex indexAt(const QPoint &pos) const;
+    [[nodiscard]] QModelIndex indexAt(const QPoint &pos) const;
 
     void setLeftView(QAbstractItemView *);
-    const QAbstractItemView *leftView() const;
+    [[nodiscard]] const QAbstractItemView *leftView() const;
     QAbstractItemView *leftView();
 
-    const QSplitter *splitter() const;
+    [[nodiscard]] const QSplitter *splitter() const;
     QSplitter *splitter();
 
     void setRowController(AbstractRowController *);
     AbstractRowController *rowController();
-    const AbstractRowController *rowController() const;
+    [[nodiscard]] const AbstractRowController *rowController() const;
 
     void setGraphicsView(GraphicsView *);
-    const GraphicsView *graphicsView() const;
+    [[nodiscard]] const GraphicsView *graphicsView() const;
     GraphicsView *graphicsView();
-    const QAbstractProxyModel *ganttProxyModel() const;
+    [[nodiscard]] const QAbstractProxyModel *ganttProxyModel() const;
     QAbstractProxyModel *ganttProxyModel();
 
     void ensureVisible(const QModelIndex &index);

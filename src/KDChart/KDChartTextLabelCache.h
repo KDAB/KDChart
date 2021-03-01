@@ -31,29 +31,28 @@
 #include "KDChartEnums.h"
 
 /**
- * @brief  base class for prerendered elements like labels, pixmaps, markers, etc.
+ * @brief  base class for prerendered elements like labels, pixmaps, markers,
+ * etc.
  */
 class PrerenderedElement
 {
 public:
     PrerenderedElement();
-    virtual ~PrerenderedElement()
-    {
-    }
+    virtual ~PrerenderedElement() = default;
 
     /** Returns the rendered element.
         If any of the properties have change, the element will be
         regenerated. */
-    virtual const QPixmap &pixmap() const = 0;
+    [[nodiscard]] virtual const QPixmap &pixmap() const = 0;
 
     /** Return the location of the reference point relatively to the
         pixmap's origin. */
-    virtual QPointF referencePointLocation(KDChartEnums::PositionValue) const = 0;
+    [[nodiscard]] virtual QPointF referencePointLocation(KDChartEnums::PositionValue) const = 0;
 
     /** Set the position of the element. */
     void setPosition(const QPointF &position);
     /** Get the position of the element. */
-    const QPointF &position() const;
+    [[nodiscard]] const QPointF &position() const;
 
     /** Set the reference point of the element.
         Every element has nine possible reference points (all compass
@@ -61,7 +60,7 @@ public:
      */
     void setReferencePoint(KDChartEnums::PositionValue);
     /** Get the reference point of the element. */
-    KDChartEnums::PositionValue referencePoint() const;
+    [[nodiscard]] KDChartEnums::PositionValue referencePoint() const;
 
 protected:
     /** invalidate() needs to be called if any of the properties that
@@ -78,8 +77,8 @@ private:
 };
 
 /**
-    @brief PrerenderedLabel is an internal KDChart class that simplifies creation
-    and caching of cached text labels.
+    @brief PrerenderedLabel is an internal KDChart class that simplifies
+   creation and caching of cached text labels.
 
     It provides referenze points to anchor the text to other
     elements. Reference points use the positions defined in

@@ -43,9 +43,9 @@ public:
 
     /* threeD lines specific */
     void setLineXRotation(const uint degrees);
-    uint lineXRotation() const;
+    [[nodiscard]] uint lineXRotation() const;
     void setLineYRotation(const uint degrees);
-    uint lineYRotation() const;
+    [[nodiscard]] uint lineYRotation() const;
 
     bool operator==(const ThreeDLineAttributes &) const;
     inline bool operator!=(const ThreeDLineAttributes &other) const

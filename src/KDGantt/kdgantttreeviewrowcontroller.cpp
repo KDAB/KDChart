@@ -46,7 +46,7 @@ TreeViewRowController::TreeViewRowController(QTreeView *tv, QAbstractProxyModel 
 TreeViewRowController::~TreeViewRowController()
 {
     delete _d;
-    _d = 0;
+    _d = nullptr;
 }
 
 #define d d_func()
@@ -106,13 +106,7 @@ QModelIndex TreeViewRowController::indexAt(int height) const
     do {
         if (y >= height)
             break;
-#if QT_VERSION >= 0x040300
         y += d->treeview->rowHeight(idx);
-#else
-        // Since TreeViewRowController is NOT using uniform row height
-        // we can use this:
-        y += d->treeview->indexRowSizeHint(idx);
-#endif
         idx = d->treeview->indexBelow(idx);
     } while (idx.isValid());
     return d->proxy->mapFromSource(idx);

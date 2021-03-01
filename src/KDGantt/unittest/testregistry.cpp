@@ -36,11 +36,9 @@ KDAB::UnitTest::TestRegistry::TestRegistry()
 {
 }
 
-KDAB::UnitTest::TestRegistry::~TestRegistry()
-{
-}
+KDAB::UnitTest::TestRegistry::~TestRegistry() = default;
 
-KDAB::UnitTest::TestRegistry *KDAB::UnitTest::TestRegistry::mSelf = 0;
+KDAB::UnitTest::TestRegistry *KDAB::UnitTest::TestRegistry::mSelf = nullptr;
 
 // static
 KDAB::UnitTest::TestRegistry *KDAB::UnitTest::TestRegistry::instance()
@@ -54,7 +52,7 @@ KDAB::UnitTest::TestRegistry *KDAB::UnitTest::TestRegistry::instance()
 void KDAB::UnitTest::TestRegistry::deleteInstance()
 {
     delete mSelf;
-    mSelf = 0;
+    mSelf = nullptr;
 }
 
 void KDAB::UnitTest::TestRegistry::registerTestFactory(const TestFactory *tf, const char *group)
@@ -66,14 +64,14 @@ void KDAB::UnitTest::TestRegistry::registerTestFactory(const TestFactory *tf, co
 unsigned int KDAB::UnitTest::TestRegistry::run() const
 {
     unsigned int failed = 0;
-    for (std::map<std::string, std::vector<const TestFactory *>>::const_iterator g = mTests.begin(); g != mTests.end(); ++g) {
-        std::cerr << "===== GROUP \"" << g->first << "\" =========" << std::endl;
-        for (std::vector<const TestFactory *>::const_iterator it = g->second.begin(); it != g->second.end(); ++it) {
-            std::auto_ptr<Test> t((*it)->create());
+    for (const auto &mTest : mTests) {
+        std::cerr << "===== GROUP \"" << mTest.first << "\" =========\n";
+        for (auto it = mTest.second.begin(); it != mTest.second.end(); ++it) {
+            std::unique_ptr<Test> t((*it)->create());
             assert(t.get());
-            std::cerr << "  === \"" << t->name() << "\" ===" << std::endl;
+            std::cerr << "  === \"" << t->name() << "\" ===\n";
             t->run();
-            std::cerr << "    Succeeded: " << std::setw(4) << t->succeeded() << ";  failed: " << std::setw(4) << t->failed() << std::endl;
+            std::cerr << "    Succeeded: " << std::setw(4) << t->succeeded() << ";  failed: " << std::setw(4) << t->failed() << '\n';
             failed += t->failed();
         }
     }
@@ -85,18 +83,18 @@ unsigned int KDAB::UnitTest::TestRegistry::run(const char *group) const
     assert(group);
     assert(*group);
     unsigned int failed = 0;
-    const std::map<std::string, std::vector<const TestFactory *>>::const_iterator g = mTests.find(group);
+    const auto g = mTests.find(group);
     if (g == mTests.end()) {
-        std::cerr << "ERROR: No such group \"" << group << "\"" << std::endl;
+        std::cerr << "ERROR: No such group \"" << group << "\"" << '\n';
         return 1;
     }
-    std::cerr << "===== GROUP \"" << g->first << "\" =========" << std::endl;
-    for (std::vector<const TestFactory *>::const_iterator it = g->second.begin(); it != g->second.end(); ++it) {
-        std::auto_ptr<Test> t((*it)->create());
+    std::cerr << "===== GROUP \"" << g->first << "\" =========" << '\n';
+    for (auto it : g->second) {
+        std::unique_ptr<Test> t(it->create());
         assert(t.get());
-        std::cerr << "  === \"" << t->name() << "\" ===" << std::endl;
+        std::cerr << "  === \"" << t->name() << "\" ===" << '\n';
         t->run();
-        std::cerr << "    Succeeded: " << t->succeeded() << ";  failed: " << t->failed() << std::endl;
+        std::cerr << "    Succeeded: " << t->succeeded() << ";  failed: " << t->failed() << '\n';
         failed += t->failed();
     }
     return failed;

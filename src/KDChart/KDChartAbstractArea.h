@@ -68,7 +68,8 @@ public:
     void paintAll(QPainter &painter) override;
 
     /**
-     * This is called at layout time by KDChart::AutoSpacerLayoutItem::sizeHint().
+     * This is called at layout time by
+     * KDChart::AutoSpacerLayoutItem::sizeHint().
      *
      * The method triggers AbstractArea::sizeHint() to find out the
      * amount of overlap at the left edge of the area.
@@ -79,9 +80,10 @@ public:
      * All we have here is a primitive flag to be set by the caller
      * if it is sure that no sizeHint() needs to be called.
      */
-    virtual int leftOverlap(bool doNotRecalculate = false) const;
+    [[nodiscard]] virtual int leftOverlap(bool doNotRecalculate = false) const;
     /**
-     * This is called at layout time by KDChart::AutoSpacerLayoutItem::sizeHint().
+     * This is called at layout time by
+     * KDChart::AutoSpacerLayoutItem::sizeHint().
      *
      * The method triggers AbstractArea::sizeHint() to find out the
      * amount of overlap at the right edge of the area.
@@ -92,9 +94,10 @@ public:
      * All we have here is a primitive flag to be set by the caller
      * if it is sure that no sizeHint() needs to be called.
      */
-    virtual int rightOverlap(bool doNotRecalculate = false) const;
+    [[nodiscard]] virtual int rightOverlap(bool doNotRecalculate = false) const;
     /**
-     * This is called at layout time by KDChart::AutoSpacerLayoutItem::sizeHint().
+     * This is called at layout time by
+     * KDChart::AutoSpacerLayoutItem::sizeHint().
      *
      * The method triggers AbstractArea::sizeHint() to find out the
      * amount of overlap at the top edge of the area.
@@ -105,9 +108,10 @@ public:
      * All we have here is a primitive flag to be set by the caller
      * if it is sure that no sizeHint() needs to be called.
      */
-    virtual int topOverlap(bool doNotRecalculate = false) const;
+    [[nodiscard]] virtual int topOverlap(bool doNotRecalculate = false) const;
     /**
-     * This is called at layout time by KDChart:AutoSpacerLayoutItem::sizeHint().
+     * This is called at layout time by
+     * KDChart:AutoSpacerLayoutItem::sizeHint().
      *
      * The method triggers AbstractArea::sizeHint() to find out the
      * amount of overlap at the bottom edge of the area.
@@ -118,11 +122,11 @@ public:
      * All we have here is a primitive flag to be set by the caller
      * if it is sure that no sizeHint() needs to be called.
      */
-    virtual int bottomOverlap(bool doNotRecalculate = false) const;
+    [[nodiscard]] virtual int bottomOverlap(bool doNotRecalculate = false) const;
 
 protected:
     AbstractArea();
-    QRect areaGeometry() const override;
+    [[nodiscard]] QRect areaGeometry() const override;
     void positionHasChanged() override;
 
 Q_SIGNALS:

@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     m_chart = new Chart();
     chartLayout->addWidget(m_chart);
 
@@ -57,9 +57,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     plane2->setReferenceCoordinatePlane(m_chart->coordinatePlane());
 
-    CartesianAxis *xAxis = new CartesianAxis(m_lines2);
-    CartesianAxis *yAxis = new CartesianAxis(m_lines);
-    CartesianAxis *yAxis2 = new CartesianAxis(m_lines2);
+    auto *xAxis = new CartesianAxis(m_lines2);
+    auto *yAxis = new CartesianAxis(m_lines);
+    auto *yAxis2 = new CartesianAxis(m_lines2);
 
     xAxis->setPosition(KDChart::CartesianAxis::Top);
     yAxis->setPosition(KDChart::CartesianAxis::Left);
@@ -84,7 +84,7 @@ void MainWindow::init()
 
 void MainWindow::on_displayGrid1CB_toggled(bool checked)
 {
-    CartesianCoordinatePlane *plane = qobject_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane());
+    auto *plane = qobject_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane());
 
     // disable grid for plane
     GridAttributes gv(plane->gridAttributes(Qt::Vertical));

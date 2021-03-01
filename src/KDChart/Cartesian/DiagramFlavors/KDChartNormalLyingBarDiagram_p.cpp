@@ -42,7 +42,8 @@ BarDiagram::BarType NormalLyingBarDiagram::type() const
     return BarDiagram::Normal;
 }
 
-// TODO there is a lot of duplication between this and the non-lying bar diagram, fix it someday...
+// TODO there is a lot of duplication between this and the non-lying bar
+// diagram, fix it someday...
 const QPair<QPointF, QPointF> NormalLyingBarDiagram::calculateDataBoundaries() const
 {
     const int rowCount = compressor().modelDataRows();
@@ -169,7 +170,7 @@ void NormalLyingBarDiagram::paint(PaintContext *ctx)
             const QPointF bottomRight = ctx->coordinatePlane()->translate(dataPoint) + QPointF(0, barWidth);
 
             const QRectF rect = QRectF(topLeft, bottomRight).translated(1.0, offset);
-            m_private->addLabel(&lpc, sourceIndex, 0, PositionPoints(rect), Position::North, Position::South, point.value);
+            m_private->addLabel(&lpc, sourceIndex, nullptr, PositionPoints(rect), Position::North, Position::South, point.value);
             paintBars(ctx, sourceIndex, rect, maxDepth);
 
             offset += barWidth + spaceBetweenBars;

@@ -61,7 +61,7 @@ class AbstractLayoutItem;
 
 struct HDatasetItem {
     HDatasetItem();
-    int height() const;
+    [[nodiscard]] int height() const;
 
     AbstractLayoutItem *markerLine;
     TextLayoutItem *label;
@@ -91,7 +91,7 @@ public:
             if (obs->diagram() == diagram)
                 return obs;
         }
-        return 0;
+        return nullptr;
     }
 
     void fetchPaintOptions(Legend *q);

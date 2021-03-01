@@ -81,7 +81,8 @@ bool BackgroundAttributes::isEqualTo(const BackgroundAttributes &other, bool ign
     qDebug() << "isVisible" << (isVisible() == other.isVisible());
     qDebug() << "brush"     << (brush() == other.brush());
     qDebug() << "pixmapMode"<< (pixmapMode() == other.pixmapMode());
-    qDebug() << "pixmap"    << (pixmap().serialNumber() == other.pixmap().serialNumber());
+    qDebug() << "pixmap"    << (pixmap().serialNumber() ==
+    other.pixmap().serialNumber());
     */
     return (isVisible() == other.isVisible() && brush() == other.brush() && pixmapMode() == other.pixmapMode()
             && (ignorePixmap || pixmap().cacheKey() == other.pixmap().cacheKey()));
@@ -90,7 +91,7 @@ bool BackgroundAttributes::isEqualTo(const BackgroundAttributes &other, bool ign
 BackgroundAttributes::~BackgroundAttributes()
 {
     delete _d;
-    _d = 0;
+    _d = nullptr;
 }
 
 void BackgroundAttributes::setVisible(bool visible)

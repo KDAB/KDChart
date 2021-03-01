@@ -80,7 +80,7 @@ MarkerAttributes &MarkerAttributes::operator=(const MarkerAttributes &r)
 MarkerAttributes::~MarkerAttributes()
 {
     delete _d;
-    _d = 0;
+    _d = nullptr;
 }
 
 #define d d_func()
@@ -91,12 +91,14 @@ bool MarkerAttributes::operator==(const MarkerAttributes &r) const
     qDebug() << "MarkerAttributes::operator== finds"
             << "b" << (isVisible() == r.isVisible())
             << "c" << (markerStylesMap() == r.markerStylesMap())
-            << "d" << (markerStyle() == r.markerStyle()) << markerStyle() <<r.markerStyle()
+            << "d" << (markerStyle() == r.markerStyle()) << markerStyle()
+    <<r.markerStyle()
             << "e" << (markerSize() == r.markerSize())
             << "f" << (markerColor() == r.markerColor())
             << "p" << (customMarkerPath() == r.customMarkerPath())
             << "g" << (pen() == r.pen())
-            << "h" << (markerColor() == r.markerColor()) << markerColor() << r.markerColor();
+            << "h" << (markerColor() == r.markerColor()) << markerColor() <<
+    r.markerColor();
     */
     return (isVisible() == r.isVisible() && markerStylesMap() == r.markerStylesMap() && markerStyle() == r.markerStyle() && markerSize() == r.markerSize()
             && markerColor() == r.markerColor() && customMarkerPath() == r.customMarkerPath() && pen() == r.pen());

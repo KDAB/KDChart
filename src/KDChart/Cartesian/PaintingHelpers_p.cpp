@@ -37,9 +37,7 @@
 #include "KDChartValueTrackerAttributes.h"
 #include "ReverseMapper.h"
 
-namespace KDChart
-{
-namespace PaintingHelpers
+namespace KDChart::PaintingHelpers
 {
 /*!
   Projects a point in a space defined by its x, y, and z coordinates
@@ -93,16 +91,7 @@ void paintPolyline(PaintContext *ctx, const QBrush &brush, const QPen &pen, cons
 {
     ctx->painter()->setBrush(brush);
     ctx->painter()->setPen(PrintingParameters::scalePen(QPen(pen.color(), pen.width(), pen.style(), Qt::FlatCap, Qt::MiterJoin)));
-#if QT_VERSION > 0x040299
     ctx->painter()->drawPolyline(points);
-#else
-    // FIXME (Mirko) verify, this sounds reverse-logical
-    // For Qt versions older than 4.3 drawPolyline is VERY slow
-    // so we use traditional line segments drawing instead then.
-    for (int i = 0; i < points.size() - 1; ++i) {
-        ctx->painter()->drawLine(points.at(i), points.at(i + 1));
-    }
-#endif
 }
 
 void paintSpline(PaintContext *ctx, const QBrush &brush, const QPen &pen, const QPolygonF &points, qreal tension)
@@ -146,7 +135,7 @@ void paintThreeDLines(PaintContext *ctx,
 
 void paintValueTracker(PaintContext *ctx, const ValueTrackerAttributes &vt, const QPointF &at)
 {
-    CartesianCoordinatePlane *plane = qobject_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane());
+    auto *plane = qobject_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane());
     if (!plane)
         return;
 
@@ -222,13 +211,14 @@ void paintValueTracker(PaintContext *ctx, const ValueTrackerAttributes &vt, cons
     ctx->painter()->drawPolygon(endMarker, 3);
 }
 
-// ### for BC reasons we cannot insert a common interface for LineDiagram and Plotter into the class
+// ### for BC reasons we cannot insert a common interface for LineDiagram and
+// Plotter into the class
 //     hierarchy, so we have to use hacks to use their common methods
 static ThreeDLineAttributes threeDLineAttributes(AbstractDiagram *diagram, const QModelIndex &index)
 {
-    if (Plotter *plotter = qobject_cast<Plotter *>(diagram)) {
+    if (auto *plotter = qobject_cast<Plotter *>(diagram)) {
         return plotter->threeDLineAttributes(index);
-    } else if (LineDiagram *lineDiagram = qobject_cast<LineDiagram *>(diagram)) {
+    } else if (auto *lineDiagram = qobject_cast<LineDiagram *>(diagram)) {
         return lineDiagram->threeDLineAttributes(index);
     }
     Q_ASSERT(false);
@@ -237,9 +227,9 @@ static ThreeDLineAttributes threeDLineAttributes(AbstractDiagram *diagram, const
 
 static ValueTrackerAttributes valueTrackerAttributes(AbstractDiagram *diagram, const QModelIndex &index)
 {
-    if (Plotter *plotter = qobject_cast<Plotter *>(diagram)) {
+    if (auto *plotter = qobject_cast<Plotter *>(diagram)) {
         return plotter->valueTrackerAttributes(index);
-    } else if (LineDiagram *lineDiagram = qobject_cast<LineDiagram *>(diagram)) {
+    } else if (auto *lineDiagram = qobject_cast<LineDiagram *>(diagram)) {
         return lineDiagram->valueTrackerAttributes(index);
     }
     Q_ASSERT(false);
@@ -250,7 +240,7 @@ void paintObject(AbstractDiagram::Private *diagramPrivate, PaintContext *ctx, co
 {
     qreal tension = 0;
 
-    if (LineDiagram::Private *lineDiagram = dynamic_cast<LineDiagram::Private *>(diagramPrivate)) {
+    if (auto *lineDiagram = dynamic_cast<LineDiagram::Private *>(diagramPrivate)) {
         tension = lineDiagram->tension;
     }
 
@@ -271,8 +261,7 @@ void paintElements(AbstractDiagram::Private *diagramPrivate, PaintContext *ctx, 
     QBrush curBrush;
     QPen curPen;
     QPolygonF points;
-    KDAB_FOREACH(const LineAttributesInfo &lineInfo, lineList)
-    {
+    for (const LineAttributesInfo &lineInfo : qAsConst(lineList)) {
         const QModelIndex &index = lineInfo.index;
         const ThreeDLineAttributes td = threeDLineAttributes(diagram, index);
 
@@ -283,16 +272,18 @@ void paintElements(AbstractDiagram::Private *diagramPrivate, PaintContext *ctx, 
             const QPen pen(diagram->pen(index));
 
             // line goes from lineInfo.value to lineInfo.nextValue
-            // We don't want it added if we're not drawing it, since the reverse mapper is used
-            // for lookup when trying to find e.g. tooltips. Having the line added when invisible gives
-            // us tooltips in empty areas.
+            // We don't want it added if we're not drawing it, since the reverse
+            // mapper is used for lookup when trying to find e.g. tooltips.
+            // Having the line added when invisible gives us tooltips in empty
+            // areas.
             if (pen.style() != Qt::NoPen)
                 diagramPrivate->reverseMapper.addLine(lineInfo.index.row(), lineInfo.index.column(), lineInfo.value, lineInfo.nextValue);
 
             if (points.count() && points.last() == lineInfo.value && curBrush == brush && curPen == pen) {
                 // continue the current run of lines
             } else {
-                // different painter settings or discontinuous line: start a new run of lines
+                // different painter settings or discontinuous line: start a new
+                // run of lines
                 if (points.count()) {
                     paintObject(diagramPrivate, ctx, curBrush, curPen, points);
                 }
@@ -309,8 +300,7 @@ void paintElements(AbstractDiagram::Private *diagramPrivate, PaintContext *ctx, 
         paintObject(diagramPrivate, ctx, curBrush, curPen, points);
     }
 
-    KDAB_FOREACH(const LineAttributesInfo &lineInfo, lineList)
-    {
+    for (const LineAttributesInfo &lineInfo : qAsConst(lineList)) {
         const ValueTrackerAttributes vt = valueTrackerAttributes(diagram, lineInfo.index);
         if (vt.isEnabled()) {
             PaintingHelpers::paintValueTracker(ctx, vt, lineInfo.nextValue);
@@ -357,7 +347,8 @@ void paintAreas(AbstractDiagram::Private *diagramPrivate, PaintContext *ctx, con
     QPainterPath path;
     for (int i = 0; i < areas.count(); ++i) {
         path += areas[i];
-        // diagramPrivate->reverseMapper.addPolygon( index.row(), index.column(), p );
+        // diagramPrivate->reverseMapper.addPolygon( index.row(),
+        // index.column(), p );
     }
 
     QBrush trans = diagram->brush(index);
@@ -375,5 +366,4 @@ void paintAreas(AbstractDiagram::Private *diagramPrivate, PaintContext *ctx, con
     ctx->painter()->drawPath(path);
 }
 
-} // namespace PaintingHelpers
-} // namespace KDChart
+} // namespace KDChart::PaintingHelpers

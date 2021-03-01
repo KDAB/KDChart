@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     m_chart = new Chart();
     m_chart->setGlobalLeading(20, 20, 20, 20);
     chartLayout->addWidget(m_chart);
@@ -55,10 +55,10 @@ MainWindow::MainWindow(QWidget *parent)
     m_lines = new LineDiagram();
     m_lines->setModel(&m_model);
     // CartesianAxisList List = m_lines->axesList();
-    CartesianAxis *xAxis = new CartesianAxis(m_lines);
-    CartesianAxis *yAxis = new CartesianAxis(m_lines);
-    CartesianAxis *axisTop = new CartesianAxis(m_lines);
-    CartesianAxis *axisRight = new CartesianAxis(m_lines);
+    auto *xAxis = new CartesianAxis(m_lines);
+    auto *yAxis = new CartesianAxis(m_lines);
+    auto *axisTop = new CartesianAxis(m_lines);
+    auto *axisRight = new CartesianAxis(m_lines);
     xAxis->setPosition(KDChart::CartesianAxis::Bottom);
     yAxis->setPosition(KDChart::CartesianAxis::Left);
     axisTop->setPosition(KDChart::CartesianAxis::Top);
@@ -90,10 +90,11 @@ MainWindow::MainWindow(QWidget *parent)
     m_legend = new Legend(m_lines, m_chart);
     m_chart->addLegend(m_legend);
 
-    // initialize attributes; this is necessary because we need to enable data value attributes before
-    // any of them (e.g. only markers) can be displayed. but if we enable data value attributs, a default
-    // data value text is included, even if we only wanted to set markers. so we enable DVA and then
-    // individually disable the parts we don't want.
+    // initialize attributes; this is necessary because we need to enable data
+    // value attributes before any of them (e.g. only markers) can be displayed.
+    // but if we enable data value attributs, a default data value text is
+    // included, even if we only wanted to set markers. so we enable DVA and
+    // then individually disable the parts we don't want.
     on_paintValuesCB_toggled(false);
     on_paintMarkersCB_toggled(false);
 }

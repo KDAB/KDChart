@@ -144,7 +144,7 @@ private:
      * \note This function needs to be implemented by all derived classes,
      * like CartesianGrid, PolarGrid, ...
      */
-    virtual DataDimensionsList calculateGrid(const DataDimensionsList &rawDataDimensions) const = 0;
+    [[nodiscard]] virtual DataDimensionsList calculateGrid(const DataDimensionsList &rawDataDimensions) const = 0;
     DataDimensionsList mCachedRawDataDimensions;
 };
 

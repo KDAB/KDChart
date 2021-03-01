@@ -48,14 +48,12 @@ public:
         : AbstractGrid()
     {
     }
-    ~RadarGrid() override
-    {
-    }
+    ~RadarGrid() override = default;
 
     void drawGrid(PaintContext *context) override;
 
 private:
-    DataDimensionsList calculateGrid(const DataDimensionsList &rawDataDimensions) const override;
+    [[nodiscard]] DataDimensionsList calculateGrid(const DataDimensionsList &rawDataDimensions) const override;
 };
 
 }

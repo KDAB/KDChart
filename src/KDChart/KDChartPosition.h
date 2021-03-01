@@ -30,8 +30,9 @@
 #include <QMetaType>
 #include <Qt>
 
+#include <QStringList>
+
 QT_BEGIN_NAMESPACE
-class QStringList;
 class QByteArray;
 template<typename T>
 class QList;
@@ -48,11 +49,14 @@ namespace KDChart
  * methods below), in a similar way, as you would use a
  * compass to navigate on a map.
  *
- * For each piece (slice/bar, etc.) of a chart for example, you can specify the position of the value
+ * For each piece (slice/bar, etc.) of a chart for example, you can specify the
+position of the value
  * labels. Figure 1 illustrates which cardinal points refer to which points
- * on a pie or bar chart, resp. In the graphic, "N" stands for North, "S" for South, etc.
+ * on a pie or bar chart, resp. In the graphic, "N" stands for North, "S" for
+South, etc.
  *
- * \image html position-alignments.png "Figure 1: Different interpretations of KDChart::Position within KDChart"
+ * \image html position-alignments.png "Figure 1: Different interpretations of
+KDChart::Position within KDChart"
  *
  * \note Often you will declare a \c Position together with the
  * RelativePosition class, to specify a logical point,
@@ -82,22 +86,22 @@ public:
     Position();
     Position(KDChartEnums::PositionValue value); // intentionally non-explicit
 
-    KDChartEnums::PositionValue value() const;
+    [[nodiscard]] KDChartEnums::PositionValue value() const;
 
-    const char *name() const;
-    QString printableName() const;
+    [[nodiscard]] const char *name() const;
+    [[nodiscard]] QString printableName() const;
 
-    bool isUnknown() const;
+    [[nodiscard]] bool isUnknown() const;
 
-    bool isWestSide() const;
-    bool isNorthSide() const;
-    bool isEastSide() const;
-    bool isSouthSide() const;
+    [[nodiscard]] bool isWestSide() const;
+    [[nodiscard]] bool isNorthSide() const;
+    [[nodiscard]] bool isEastSide() const;
+    [[nodiscard]] bool isSouthSide() const;
 
-    bool isCorner() const;
-    bool isPole() const;
+    [[nodiscard]] bool isCorner() const;
+    [[nodiscard]] bool isPole() const;
 
-    bool isFloating() const;
+    [[nodiscard]] bool isFloating() const;
 
     static const Position &Unknown;
     static const Position &Center;
@@ -151,9 +155,7 @@ inline bool Position::operator!=(int other) const
 class KDCHART_EXPORT PositionPoints
 {
 public:
-    PositionPoints()
-    {
-    } // all points get initialized with the default automatically
+    PositionPoints() = default; // all points get initialized with the default automatically
 
     PositionPoints(QPointF center,
                    QPointF northWest,
@@ -218,22 +220,14 @@ public:
         mapOfDegrees[pos] = degrees;
     }
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-    const qreal degrees(KDChartEnums::PositionValue pos) const
-#else
-    qreal degrees(KDChartEnums::PositionValue pos) const
-#endif
+    [[nodiscard]] qreal degrees(KDChartEnums::PositionValue pos) const
     {
         if (mapOfDegrees.contains(pos))
             return mapOfDegrees[pos];
         return 0.0;
     }
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-    const QPointF point(Position position) const
-#else
-    QPointF point(Position position) const
-#endif
+    [[nodiscard]] QPointF point(Position position) const
     {
         // qDebug() << "point( " << position.name() << " )";
         if (position == Position::Center)
@@ -257,7 +251,7 @@ public:
         return mPositionUnknown;
     }
 
-    bool isNull() const
+    [[nodiscard]] bool isNull() const
     {
         return mPositionUnknown.isNull() && mPositionCenter.isNull() && mPositionNorthWest.isNull() && mPositionNorth.isNull() && mPositionNorthEast.isNull()
             && mPositionEast.isNull() && mPositionSouthEast.isNull() && mPositionSouth.isNull() && mPositionSouthWest.isNull() && mPositionWest.isNull();

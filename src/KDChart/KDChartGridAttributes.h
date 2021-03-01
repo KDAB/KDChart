@@ -46,22 +46,23 @@ public:
     ~GridAttributes();
 
     void setGridVisible(bool visible);
-    bool isGridVisible() const;
+    [[nodiscard]] bool isGridVisible() const;
 
     /**
-     * When this is enabled, grid lines are drawn only where axis annotations are.
-     * Otherwise annotations are disregarded as far as the grid is concerned.
+     * When this is enabled, grid lines are drawn only where axis annotations
+     * are. Otherwise annotations are disregarded as far as the grid is
+     * concerned.
      *
      * The default is false.
      */
     void setLinesOnAnnotations(bool);
-    bool linesOnAnnotations() const;
+    [[nodiscard]] bool linesOnAnnotations() const;
 
     void setGridStepWidth(qreal stepWidth = 0.0);
-    qreal gridStepWidth() const;
+    [[nodiscard]] qreal gridStepWidth() const;
 
     void setGridSubStepWidth(qreal subStepWidth = 0.0);
-    qreal gridSubStepWidth() const;
+    [[nodiscard]] qreal gridSubStepWidth() const;
 
     /**
      * Specify which granularity sequence is to be used to find a matching
@@ -75,7 +76,7 @@ public:
      * \sa setAdjustBoundsToGrid, GranularitySequence
      */
     void setGridGranularitySequence(KDChartEnums::GranularitySequence sequence);
-    KDChartEnums::GranularitySequence gridGranularitySequence() const;
+    [[nodiscard]] KDChartEnums::GranularitySequence gridGranularitySequence() const;
 
     /**
      * By default visible bounds of the data area are adjusted to match
@@ -88,23 +89,23 @@ public:
      * \sa CartesianCoordinatePlane::setVerticalRange
      */
     void setAdjustBoundsToGrid(bool adjustLower, bool adjustUpper);
-    bool adjustLowerBoundToGrid() const;
-    bool adjustUpperBoundToGrid() const;
+    [[nodiscard]] bool adjustLowerBoundToGrid() const;
+    [[nodiscard]] bool adjustUpperBoundToGrid() const;
 
     void setGridPen(const QPen &pen);
-    QPen gridPen() const;
+    [[nodiscard]] QPen gridPen() const;
 
     void setSubGridVisible(bool visible);
-    bool isSubGridVisible() const;
+    [[nodiscard]] bool isSubGridVisible() const;
 
     void setSubGridPen(const QPen &pen);
-    QPen subGridPen() const;
+    [[nodiscard]] QPen subGridPen() const;
 
     void setOuterLinesVisible(bool visible);
-    bool isOuterLinesVisible() const;
+    [[nodiscard]] bool isOuterLinesVisible() const;
 
     void setZeroLinePen(const QPen &pen);
-    QPen zeroLinePen() const;
+    [[nodiscard]] QPen zeroLinePen() const;
 
     bool operator==(const GridAttributes &) const;
     inline bool operator!=(const GridAttributes &other) const

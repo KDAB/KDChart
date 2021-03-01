@@ -39,13 +39,9 @@
 using namespace KDChart;
 using namespace std;
 
-LeveyJenningsDiagram::Private::Private()
-{
-}
+LeveyJenningsDiagram::Private::Private() = default;
 
-LeveyJenningsDiagram::Private::~Private()
-{
-}
+LeveyJenningsDiagram::Private::~Private() = default;
 
 #define d d_func()
 
@@ -78,16 +74,14 @@ void LeveyJenningsDiagram::init()
     setSelectionMode(QAbstractItemView::SingleSelection);
 }
 
-LeveyJenningsDiagram::~LeveyJenningsDiagram()
-{
-}
+LeveyJenningsDiagram::~LeveyJenningsDiagram() = default;
 
 /**
  * Creates an exact copy of this diagram.
  */
 LineDiagram *LeveyJenningsDiagram::clone() const
 {
-    LeveyJenningsDiagram *newDiagram = new LeveyJenningsDiagram(new Private(*d));
+    auto *newDiagram = new LeveyJenningsDiagram(new Private(*d));
     return newDiagram;
 }
 
@@ -314,7 +308,7 @@ float LeveyJenningsDiagram::calculatedStandardDeviation() const
 
 void LeveyJenningsDiagram::setModel(QAbstractItemModel *model)
 {
-    if (this->model() != 0) {
+    if (this->model() != nullptr) {
         disconnect(this->model(), SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), this, SLOT(calculateMeanAndStandardDeviation()));
         disconnect(this->model(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(calculateMeanAndStandardDeviation()));
         disconnect(this->model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)), this, SLOT(calculateMeanAndStandardDeviation()));
@@ -324,7 +318,7 @@ void LeveyJenningsDiagram::setModel(QAbstractItemModel *model)
         disconnect(this->model(), SIGNAL(layoutChanged()), this, SLOT(calculateMeanAndStandardDeviation()));
     }
     LineDiagram::setModel(model);
-    if (this->model() != 0) {
+    if (this->model() != nullptr) {
         connect(this->model(), SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), this, SLOT(calculateMeanAndStandardDeviation()));
         connect(this->model(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(calculateMeanAndStandardDeviation()));
         connect(this->model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)), this, SLOT(calculateMeanAndStandardDeviation()));
@@ -358,8 +352,7 @@ void LeveyJenningsDiagram::calculateMeanAndStandardDeviation() const
 
     qreal sum = 0.0;
     qreal sumSquares = 0.0;
-    KDAB_FOREACH(qreal value, values)
-    {
+    for (qreal value : qAsConst(values)) {
         sum += value;
         sumSquares += value * value;
     }
@@ -414,8 +407,8 @@ const QPair<QPointF, QPointF> LeveyJenningsDiagram::calculateDataBoundaries() co
 
     // rounded down/up to the prev/next midnight (at least that's the default)
     const QPair<QDateTime, QDateTime> range = timeRange();
-    const unsigned int minTime = range.first.toTime_t();
-    const unsigned int maxTime = range.second.toTime_t();
+    const unsigned int minTime = range.first.toSecsSinceEpoch();
+    const unsigned int maxTime = range.second.toSecsSinceEpoch();
 
     const qreal xMin = minTime / static_cast<qreal>(24 * 60 * 60);
     const qreal xMax = maxTime / static_cast<qreal>(24 * 60 * 60) - xMin;
@@ -445,20 +438,20 @@ QPair<QDateTime, QDateTime> LeveyJenningsDiagram::timeRange() const
         // round down/up to the prev/next midnight
         const QDate min = floorDay(begin);
         const QDate max = ceilDay(end);
-        return QPair<QDateTime, QDateTime>(QDateTime(min), QDateTime(max));
+        return {min.startOfDay(), max.endOfDay()};
     } else if (begin.secsTo(end) > 3600) {
         // more than 1h: rond down up to the prex/next hour
         // if begin to end is more than 24h
         const QDateTime min = floorHour(begin);
         const QDateTime max = ceilHour(end);
-        return QPair<QDateTime, QDateTime>(min, max);
+        return {min, max};
     }
-    return QPair<QDateTime, QDateTime>(begin, end);
+    return {begin, end};
 }
 
 /**
- * Sets the \a timeRange visible on the x axis. Set it to QPair< QDateTime, QDateTime >()
- * to use the default auto calculation.
+ * Sets the \a timeRange visible on the x axis. Set it to QPair< QDateTime,
+ * QDateTime >() to use the default auto calculation.
  */
 void LeveyJenningsDiagram::setTimeRange(const QPair<QDateTime, QDateTime> &timeRange)
 {
@@ -474,18 +467,16 @@ void LeveyJenningsDiagram::setTimeRange(const QPair<QDateTime, QDateTime> &timeR
  */
 void LeveyJenningsDiagram::drawChanges(PaintContext *ctx)
 {
-    const unsigned int minTime = timeRange().first.toTime_t();
+    const unsigned int minTime = timeRange().first.toSecsSinceEpoch();
 
-    KDAB_FOREACH(const QDateTime &dt, d->fluidicsPackChanges)
-    {
-        const qreal xValue = (dt.toTime_t() - minTime) / static_cast<qreal>(24 * 60 * 60);
+    for (const QDateTime &dt : qAsConst(d->fluidicsPackChanges)) {
+        const qreal xValue = (dt.toSecsSinceEpoch() - minTime) / static_cast<qreal>(24 * 60 * 60);
         const QPointF point(xValue, 0.0);
         drawFluidicsPackChangedSymbol(ctx, point);
     }
 
-    KDAB_FOREACH(const QDateTime &dt, d->sensorChanges)
-    {
-        const qreal xValue = (dt.toTime_t() - minTime) / static_cast<qreal>(24 * 60 * 60);
+    for (const QDateTime &dt : qAsConst(d->sensorChanges)) {
+        const qreal xValue = (dt.toSecsSinceEpoch() - minTime) / static_cast<qreal>(24 * 60 * 60);
         const QPointF point(xValue, 0.0);
         drawSensorChangedSymbol(ctx, point);
     }
@@ -514,7 +505,7 @@ void LeveyJenningsDiagram::paint(PaintContext *ctx)
     const QAbstractItemModel &m = *model();
     const int rowCount = m.rowCount(rootIndex());
 
-    const unsigned int minTime = timeRange().first.toTime_t();
+    const unsigned int minTime = timeRange().first.toSecsSinceEpoch();
 
     painter->setRenderHint(QPainter::Antialiasing, true);
 
@@ -537,7 +528,7 @@ void LeveyJenningsDiagram::paint(PaintContext *ctx)
         const int lot = m.data(lotIndex).toInt();
         const bool ok = m.data(okIndex).toBool();
         const QDateTime time = m.data(timeIndex).toDateTime();
-        const qreal xValue = (time.toTime_t() - minTime) / static_cast<qreal>(24 * 60 * 60);
+        const qreal xValue = (time.toSecsSinceEpoch() - minTime) / static_cast<qreal>(24 * 60 * 60);
 
         QVariant vExpectedMean = m.data(expectedMeanIndex);
         const qreal expectedMean = vExpectedMean.toReal();
@@ -550,7 +541,8 @@ void LeveyJenningsDiagram::paint(PaintContext *ctx)
             hadMissingValue = true;
         } else {
             if (!vExpectedMean.isNull() && !vExpectedSD.isNull()) {
-                // this calculates the 'logical' value relative to the expected mean and SD of this point
+                // this calculates the 'logical' value relative to the expected
+                // mean and SD of this point
                 value -= expectedMean;
                 value /= expectedSD;
                 value *= d->expectedStandardDeviation;
@@ -569,7 +561,8 @@ void LeveyJenningsDiagram::paint(PaintContext *ctx)
                 painter->setPen(newPen);
                 painter->drawLine(prevPoint, point);
                 painter->setPen(pen);
-                // d->reverseMapper.addLine( valueIndex.row(), valueIndex.column(), prevPoint, point );
+                // d->reverseMapper.addLine( valueIndex.row(),
+                // valueIndex.column(), prevPoint, point );
             } else if (row > 0) {
                 drawLotChangeSymbol(ctx, QPointF(xValue, value));
             }

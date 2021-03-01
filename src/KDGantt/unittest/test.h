@@ -55,13 +55,13 @@ namespace UnitTest
     do {                                                                                                                                                       \
         try {                                                                                                                                                  \
             x;                                                                                                                                                 \
-            fail(__FILE__, __LINE__) << "\"" #x "\" didn't throw \"" #E "\"" << std::endl;                                                                     \
+            fail(__FILE__, __LINE__) << "\"" #x "\" didn't throw \"" #E "\"\n";                                                                                \
         } catch (E & ppq_ut_thrown) {                                                                                                                          \
             success();                                                                                                                                         \
             (void)ppq_ut_thrown;                                                                                                                               \
             code;                                                                                                                                              \
         } catch (...) {                                                                                                                                        \
-            fail(__FILE__, __LINE__) << "\"" #x "\" threw something, but it wasn't \"" #E "\"" << std::endl;                                                   \
+            fail(__FILE__, __LINE__) << "\"" #x "\" threw something, but it wasn't \"" #E "\"\n";                                                              \
         }                                                                                                                                                      \
     } while (false)
 
@@ -77,9 +77,9 @@ namespace UnitTest
             x;                                                                                                                                                 \
             success();                                                                                                                                         \
         } catch (E &) {                                                                                                                                        \
-            fail(__FILE__, __LINE__) << "\"" #x "\" threw \"" #E "\", but shouldn't" << std::endl;                                                             \
+            fail(__FILE__, __LINE__) << "\"" #x "\" threw \"" #E "\", but shouldn't\n";                                                                        \
         } catch (...) {                                                                                                                                        \
-            fail(__FILE__, __LINE__) << "\"" #x "\" threw something, but it wasn't \"" #E "\"" << std::endl;                                                   \
+            fail(__FILE__, __LINE__) << "\"" #x "\" threw something, but it wasn't \"" #E "\"\n";                                                              \
         }                                                                                                                                                      \
     } while (false)
 
@@ -90,19 +90,17 @@ class Test
 
 public:
     Test(const std::string &name);
-    virtual ~Test()
-    {
-    }
+    virtual ~Test() = default;
 
-    const std::string &name() const
+    [[nodiscard]] const std::string &name() const
     {
         return mName;
     }
-    unsigned int failed() const
+    [[nodiscard]] unsigned int failed() const
     {
         return mFailed;
     }
-    unsigned int succeeded() const
+    [[nodiscard]] unsigned int succeeded() const
     {
         return mSucceeded;
     }
@@ -138,7 +136,7 @@ protected:
         if (x1 == x2)
             this->success();
         else {
-            this->fail(file, line) << '"' << expr1 << "\" yielded " << x1 << "; expected: " << x2 << "(\"" << expr2 << "\")" << std::endl;
+            this->fail(file, line) << '"' << expr1 << "\" yielded " << x1 << "; expected: " << x2 << "(\"" << expr2 << "\")\n";
         }
     }
     template<typename T, typename S>
@@ -147,8 +145,7 @@ protected:
         if (x1 != x2)
             this->success();
         else {
-            this->fail(file, line) << '"' << expr1 << "\" yielded " << x1 << "; expected something not equal to: " << x2 << "(\"" << expr2 << "\")"
-                                   << std::endl;
+            this->fail(file, line) << '"' << expr1 << "\" yielded " << x1 << "; expected something not equal to: " << x2 << "(\"" << expr2 << "\")\n";
         }
     }
 
@@ -163,10 +160,8 @@ protected:
 class TestFactory
 {
 public:
-    virtual ~TestFactory()
-    {
-    }
-    virtual Test *create() const = 0;
+    virtual ~TestFactory() = default;
+    [[nodiscard]] virtual Test *create() const = 0;
 };
 
 }
@@ -182,11 +177,11 @@ template<typename T_Test>
 class GenericFactory : public TestFactory
 {
 public:
-    GenericFactory(const char *group = 0)
+    GenericFactory(const char *group = nullptr)
     {
         TestRegistry::instance()->registerTestFactory(this, group);
     }
-    Test *create() const override
+    [[nodiscard]] Test *create() const override
     {
         return new T_Test();
     }
@@ -197,8 +192,8 @@ public:
 
 #include "libutil.h"
 
-// Use these macros to export your UnitTest class so that it gets executed by the test runner.
-// Use the second macro if your class is within a namespace.
+// Use these macros to export your UnitTest class so that it gets executed by
+// the test runner. Use the second macro if your class is within a namespace.
 // Arguments :
 // - Namespace (unquoted) : the namespace in which the test class in contained
 // - Class (unquoted) : the test class, without namespace
@@ -214,8 +209,9 @@ public:
 // Use this macro to import the test explicitly (for windows static libs only)
 #define KDAB_IMPORT_UNITTEST(Class) KDAB_IMPORT_STATIC_SYMBOLS(Class)
 
-// Convenience macros that create a simple test class for a single test and export it.
-// Usage : KDAB_UNITTEST_SIMPLE( MyClass, "mygroup" ) { doSomething(); assertEqual(...); }
+// Convenience macros that create a simple test class for a single test and
+// export it. Usage : KDAB_UNITTEST_SIMPLE( MyClass, "mygroup" ) {
+// doSomething(); assertEqual(...); }
 #define KDAB_UNITTEST_SIMPLE(Class, Group)                                                                                                                     \
     class Class##Test : public KDAB::UnitTest::Test                                                                                                            \
     {                                                                                                                                                          \
@@ -224,7 +220,7 @@ public:
             : Test(#Class)                                                                                                                                     \
         {                                                                                                                                                      \
         }                                                                                                                                                      \
-        void run();                                                                                                                                            \
+        void run() override;                                                                                                                                   \
     };                                                                                                                                                         \
     KDAB_EXPORT_UNITTEST(Class##Test, Group)                                                                                                                   \
     void Class##Test::run()
@@ -239,7 +235,7 @@ public:
             : Test(#Namespace "::" #Class)                                                                                                                     \
         {                                                                                                                                                      \
         }                                                                                                                                                      \
-        void run();                                                                                                                                            \
+        void run() override;                                                                                                                                   \
     };                                                                                                                                                         \
     }                                                                                                                                                          \
     KDAB_EXPORT_SCOPED_UNITTEST(Namespace, Class##Test, Group)                                                                                                 \

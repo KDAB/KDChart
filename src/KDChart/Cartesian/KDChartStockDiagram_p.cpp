@@ -43,8 +43,8 @@ public:
     QPolygonF drawThreeDRect(const QRectF &rect, const QBrush &brush, const QPen &pen, const ThreeDProperties &props);
 
 private:
-    QPointF projectPoint(const QPointF &point, qreal depth, qreal angle) const;
-    QColor calcShadowColor(const QColor &color, qreal angle) const;
+    [[nodiscard]] QPointF projectPoint(const QPointF &point, qreal depth, qreal angle) const;
+    [[nodiscard]] QColor calcShadowColor(const QColor &color, qreal angle) const;
 
     QPainter *painter;
 };
@@ -53,7 +53,8 @@ private:
  * Projects a point in 3D space
  *
  * @param depth The distance from the point and the projected point
- * @param angle The angle the projected point is rotated by around the original point
+ * @param angle The angle the projected point is rotated by around the original
+ * point
  */
 QPointF StockDiagram::Private::ThreeDPainter::projectPoint(const QPointF &point, qreal depth, qreal angle) const
 {
@@ -66,7 +67,8 @@ QPointF StockDiagram::Private::ThreeDPainter::projectPoint(const QPointF &point,
 }
 
 /**
- * Returns the shadow color for a given color, depending on the angle of rotation
+ * Returns the shadow color for a given color, depending on the angle of
+ * rotation
  *
  * @param color The color to calculate the shadow color for
  * @param angle The angle that the colored area is rotated by
@@ -82,7 +84,8 @@ QColor StockDiagram::Private::ThreeDPainter::calcShadowColor(const QColor &color
 }
 
 /**
- * Draws a 2D line in 3D space by painting it with a z-coordinate of props.depth / 2.0
+ * Draws a 2D line in 3D space by painting it with a z-coordinate of props.depth
+ * / 2.0
  *
  * @param line The line to draw
  * @param pen The pen to use to draw the line
@@ -114,7 +117,8 @@ QPolygonF StockDiagram::Private::ThreeDPainter::drawTwoDLine(const QLineF &line,
 }
 
 /**
- * Draws an ordinary line in 3D by expanding it in the z-axis by the given depth.
+ * Draws an ordinary line in 3D by expanding it in the z-axis by the given
+ * depth.
  *
  * @param line The line to draw
  * @param brush The brush to fill the resulting polygon with
@@ -139,7 +143,8 @@ QPolygonF StockDiagram::Private::ThreeDPainter::drawThreeDLine(const QLineF &lin
     threeDArea << p1 << p2 << deepP2 << deepP1 << p1;
 
     // Use shadow colors if ThreeDProperties::useShadowColors is set
-    // Note: Setting a new color on a brush or pen does not effect gradients or textures
+    // Note: Setting a new color on a brush or pen does not effect gradients or
+    // textures
     if (props.useShadowColors) {
         QBrush shadowBrush(brush);
         QPen shadowPen(pen);
@@ -221,9 +226,7 @@ StockDiagram::Private::Private(const Private &r)
 {
 }
 
-StockDiagram::Private::~Private()
-{
-}
+StockDiagram::Private::~Private() = default;
 
 /**
  * Projects a point onto the coordinate plane
@@ -287,32 +290,48 @@ void StockDiagram::Private::drawOHLCBar(int dataset,
 
     if (reversedOrder) {
         if (!open.hidden)
-            drawLine(dataset, col, leftOpenPoint, rightOpenPoint, context); // Open marker
+            drawLine(dataset, col, leftOpenPoint, rightOpenPoint,
+                     context); // Open marker
         if (!low.hidden && !high.hidden)
             drawLine(dataset, col, lowPoint, highPoint, context); // Low-High line
         if (!close.hidden)
-            drawLine(dataset, col, leftClosePoint, rightClosePoint, context); // Close marker
+            drawLine(dataset, col, leftClosePoint, rightClosePoint,
+                     context); // Close marker
     } else {
         if (!close.hidden)
-            drawLine(dataset, col, leftClosePoint, rightClosePoint, context); // Close marker
+            drawLine(dataset, col, leftClosePoint, rightClosePoint,
+                     context); // Close marker
         if (!low.hidden && !high.hidden)
             drawLine(dataset, col, lowPoint, highPoint, context); // Low-High line
         if (!open.hidden)
-            drawLine(dataset, col, leftOpenPoint, rightOpenPoint, context); // Open marker
+            drawLine(dataset, col, leftOpenPoint, rightOpenPoint,
+                     context); // Open marker
     }
 
     LabelPaintCache lpc;
     if (!open.hidden) {
-        addLabel(&lpc, diagram->attributesModel()->mapToSource(open.index), 0, PositionPoints(leftOpenPoint), Position::South, Position::South, open.value);
+        addLabel(&lpc,
+                 diagram->attributesModel()->mapToSource(open.index),
+                 nullptr,
+                 PositionPoints(leftOpenPoint),
+                 Position::South,
+                 Position::South,
+                 open.value);
     }
     if (!high.hidden) {
-        addLabel(&lpc, diagram->attributesModel()->mapToSource(high.index), 0, PositionPoints(highPoint), Position::South, Position::South, high.value);
+        addLabel(&lpc, diagram->attributesModel()->mapToSource(high.index), nullptr, PositionPoints(highPoint), Position::South, Position::South, high.value);
     }
     if (!low.hidden) {
-        addLabel(&lpc, diagram->attributesModel()->mapToSource(low.index), 0, PositionPoints(lowPoint), Position::South, Position::South, low.value);
+        addLabel(&lpc, diagram->attributesModel()->mapToSource(low.index), nullptr, PositionPoints(lowPoint), Position::South, Position::South, low.value);
     }
     if (!close.hidden) {
-        addLabel(&lpc, diagram->attributesModel()->mapToSource(close.index), 0, PositionPoints(rightClosePoint), Position::South, Position::South, close.value);
+        addLabel(&lpc,
+                 diagram->attributesModel()->mapToSource(close.index),
+                 nullptr,
+                 PositionPoints(rightClosePoint),
+                 Position::South,
+                 Position::South,
+                 close.value);
     }
     paintDataValueTextsAndMarkers(context, lpc, false);
 }
@@ -333,7 +352,8 @@ void StockDiagram::Private::drawCandlestick(int /*dataset*/,
 {
     PainterSaver painterSaver(context->painter());
 
-    // Note: A row in the model is a column in a StockDiagram, and the other way around
+    // Note: A row in the model is a column in a StockDiagram, and the other way
+    // around
     const int row = low.index.row();
     const int col = low.index.column();
 
@@ -387,8 +407,8 @@ void StockDiagram::Private::drawCandlestick(int /*dataset*/,
         threeDProps.angle = threeDAttr.angle();
         threeDProps.useShadowColors = threeDAttr.useShadowColors();
 
-        // If the perspective angle is within [0,180], we paint from bottom to top,
-        // otherwise from top to bottom to ensure the correct z order
+        // If the perspective angle is within [0,180], we paint from bottom to
+        // top, otherwise from top to bottom to ensure the correct z order
         if (threeDProps.angle > 0.0 && threeDProps.angle < 180.0) {
             if (drawLowerLine)
                 drawnPolygon = threeDPainter.drawTwoDLine(lowerLine, pen, threeDProps);
@@ -423,29 +443,30 @@ void StockDiagram::Private::drawCandlestick(int /*dataset*/,
 
     LabelPaintCache lpc;
     if (!low.hidden)
-        addLabel(&lpc, diagram->attributesModel()->mapToSource(low.index), 0, PositionPoints(lowPoint), Position::South, Position::South, low.value);
+        addLabel(&lpc, diagram->attributesModel()->mapToSource(low.index), nullptr, PositionPoints(lowPoint), Position::South, Position::South, low.value);
     if (drawCandlestick) {
-        // Both, the open as well as the close value are represented by this candlestick
+        // Both, the open as well as the close value are represented by this
+        // candlestick
         reverseMapper.addPolygon(row, openValueColumn(), drawnPolygon);
         reverseMapper.addPolygon(row, closeValueColumn(), drawnPolygon);
 
         addLabel(&lpc,
                  diagram->attributesModel()->mapToSource(open.index),
-                 0,
+                 nullptr,
                  PositionPoints(candlestick.bottomRight()),
                  Position::South,
                  Position::South,
                  open.value);
         addLabel(&lpc,
                  diagram->attributesModel()->mapToSource(close.index),
-                 0,
+                 nullptr,
                  PositionPoints(candlestick.topRight()),
                  Position::South,
                  Position::South,
                  close.value);
     }
     if (!high.hidden)
-        addLabel(&lpc, diagram->attributesModel()->mapToSource(high.index), 0, PositionPoints(highPoint), Position::South, Position::South, high.value);
+        addLabel(&lpc, diagram->attributesModel()->mapToSource(high.index), nullptr, PositionPoints(highPoint), Position::South, Position::South, high.value);
 
     paintDataValueTextsAndMarkers(context, lpc, false);
 }

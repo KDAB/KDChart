@@ -62,12 +62,13 @@ struct PolarCoordinatePlane::CoordinateTransformation {
         return QPointF(R * cos(DEGTORAD(theta)), R * sin(DEGTORAD(theta)));
     }
 
-    inline const QPointF translate(const QPointF &diagramPoint) const
+    [[nodiscard]] inline const QPointF translate(const QPointF &diagramPoint) const
     {
         // ### de-inline me
         // calculate the polar coordinates
         const qreal x = (diagramPoint.x() * radiusUnit) - (minValue * radiusUnit);
-        // qDebug() << x << "=" << diagramPoint.x() << "*" << radiusUnit << "  startPosition: " << startPosition;
+        // qDebug() << x << "=" << diagramPoint.x() << "*" << radiusUnit << "
+        // startPosition: " << startPosition;
         const qreal y = (diagramPoint.y() * -angleUnit) - 90.0 - startPosition;
         // convert to cartesian coordinates
         QPointF cartesianPoint = polarToCartesian(x, y);
@@ -82,7 +83,7 @@ struct PolarCoordinatePlane::CoordinateTransformation {
         return newOrigin + cartesianPoint;
     }
 
-    inline const QPointF translatePolar(const QPointF &diagramPoint) const
+    [[nodiscard]] inline const QPointF translatePolar(const QPointF &diagramPoint) const
     {
         // ### de-inline me
         return QPointF(diagramPoint.x() * angleUnit, diagramPoint.y() * radiusUnit);
@@ -95,16 +96,14 @@ class PolarCoordinatePlane::Private : public AbstractCoordinatePlane::Private
 
 public:
     explicit Private()
-        : currentTransformation(0)
+        : currentTransformation(nullptr)
         , initialResizeEventReceived(false)
         , hasOwnGridAttributesCircular(false)
         , hasOwnGridAttributesSagittal(false)
     {
     }
 
-    ~Private() override
-    {
-    }
+    ~Private() override = default;
 
     void initialize() override
     {

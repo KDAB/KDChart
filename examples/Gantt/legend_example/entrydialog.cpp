@@ -30,7 +30,7 @@
 #include <QDateTime>
 #include <QPersistentModelIndex>
 
-Q_DECLARE_METATYPE(QPersistentModelIndex);
+Q_DECLARE_METATYPE(QPersistentModelIndex)
 
 EntryDialog::EntryDialog(const QAbstractItemModel *model, QWidget *parent, Qt::WindowFlags f)
     : QDialog(parent, f)
@@ -79,8 +79,7 @@ void EntryDialog::initFrom(const QModelIndex &index, const KDGantt::ConstraintMo
         return;
 
     QModelIndex constraintIndex;
-    for (int i = 0; i < constraints.size(); ++i) {
-        KDGantt::Constraint constraint = constraints[i];
+    for (auto constraint : constraints) {
         if (constraint.endIndex() == index) {
             constraintIndex = constraint.startIndex();
             break;

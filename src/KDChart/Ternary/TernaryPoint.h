@@ -36,22 +36,22 @@ public:
     TernaryPoint();
     TernaryPoint(qreal a, qreal b);
 
-    qreal a() const
+    [[nodiscard]] qreal a() const
     {
         return m_a;
     }
-    qreal b() const
+    [[nodiscard]] qreal b() const
     {
         return m_b;
     }
-    qreal c() const
+    [[nodiscard]] qreal c() const
     {
         return 1.0 - m_a - m_b;
     }
 
     void set(qreal a, qreal b);
 
-    bool isValid() const;
+    [[nodiscard]] bool isValid() const;
 
 private:
     qreal m_a;

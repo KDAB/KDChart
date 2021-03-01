@@ -45,13 +45,13 @@ using namespace KDChart;
 
 BarDiagram::Private::Private()
     : orientation(Qt::Vertical)
-    , implementor(0)
-    , normalDiagram(0)
-    , stackedDiagram(0)
-    , percentDiagram(0)
-    , normalLyingDiagram(0)
-    , stackedLyingDiagram(0)
-    , percentLyingDiagram(0)
+    , implementor(nullptr)
+    , normalDiagram(nullptr)
+    , stackedDiagram(nullptr)
+    , percentDiagram(nullptr)
+    , normalLyingDiagram(nullptr)
+    , stackedLyingDiagram(nullptr)
+    , percentLyingDiagram(nullptr)
 {
 }
 
@@ -70,7 +70,7 @@ void BarDiagram::Private::setOrientationAndType(Qt::Orientation o, BarDiagram::B
     if (orientation == o && implementor->type() == type) {
         return;
     }
-    BarDiagram *barDia = qobject_cast<BarDiagram *>(diagram);
+    auto *barDia = qobject_cast<BarDiagram *>(diagram);
 
     orientation = o;
 
@@ -133,16 +133,14 @@ void BarDiagram::init()
     d->compressor.setModel(attributesModel());
 }
 
-BarDiagram::~BarDiagram()
-{
-}
+BarDiagram::~BarDiagram() = default;
 
 /**
  * Creates an exact copy of this diagram.
  */
 BarDiagram *BarDiagram::clone() const
 {
-    BarDiagram *newDiagram = new BarDiagram(new Private(*d));
+    auto *newDiagram = new BarDiagram(new Private(*d));
     newDiagram->setType(type());
     return newDiagram;
 }
@@ -199,7 +197,7 @@ Qt::Orientation BarDiagram::orientation() const
  */
 void BarDiagram::setBarAttributes(const BarAttributes &ba)
 {
-    d->attributesModel->setModelData(qVariantFromValue(ba), BarAttributesRole);
+    d->attributesModel->setModelData(QVariant::fromValue(ba), BarAttributesRole);
     emit propertiesChanged();
 }
 
@@ -208,7 +206,7 @@ void BarDiagram::setBarAttributes(const BarAttributes &ba)
  */
 void BarDiagram::setBarAttributes(int column, const BarAttributes &ba)
 {
-    d->setDatasetAttrs(column, qVariantFromValue(ba), BarAttributesRole);
+    d->setDatasetAttrs(column, QVariant::fromValue(ba), BarAttributesRole);
     emit propertiesChanged();
 }
 
@@ -217,7 +215,7 @@ void BarDiagram::setBarAttributes(int column, const BarAttributes &ba)
  */
 void BarDiagram::setBarAttributes(const QModelIndex &index, const BarAttributes &ba)
 {
-    attributesModel()->setData(d->attributesModel->mapFromSource(index), qVariantFromValue(ba), BarAttributesRole);
+    attributesModel()->setData(d->attributesModel->mapFromSource(index), QVariant::fromValue(ba), BarAttributesRole);
     emit propertiesChanged();
 }
 
@@ -254,7 +252,7 @@ BarAttributes BarDiagram::barAttributes(const QModelIndex &index) const
 void BarDiagram::setThreeDBarAttributes(const ThreeDBarAttributes &threeDAttrs)
 {
     setDataBoundariesDirty();
-    d->attributesModel->setModelData(qVariantFromValue(threeDAttrs), ThreeDBarAttributesRole);
+    d->attributesModel->setModelData(QVariant::fromValue(threeDAttrs), ThreeDBarAttributesRole);
     emit layoutChanged(this);
     emit propertiesChanged();
 }
@@ -265,7 +263,7 @@ void BarDiagram::setThreeDBarAttributes(const ThreeDBarAttributes &threeDAttrs)
 void BarDiagram::setThreeDBarAttributes(int column, const ThreeDBarAttributes &threeDAttrs)
 {
     setDataBoundariesDirty();
-    d->setDatasetAttrs(column, qVariantFromValue(threeDAttrs), ThreeDBarAttributesRole);
+    d->setDatasetAttrs(column, QVariant::fromValue(threeDAttrs), ThreeDBarAttributesRole);
     // emit layoutChanged( this );
     emit propertiesChanged();
 }
@@ -276,7 +274,7 @@ void BarDiagram::setThreeDBarAttributes(int column, const ThreeDBarAttributes &t
 void BarDiagram::setThreeDBarAttributes(const QModelIndex &index, const ThreeDBarAttributes &threeDAttrs)
 {
     setDataBoundariesDirty();
-    d->attributesModel->setData(d->attributesModel->mapFromSource(index), qVariantFromValue(threeDAttrs), ThreeDBarAttributesRole);
+    d->attributesModel->setData(d->attributesModel->mapFromSource(index), QVariant::fromValue(threeDAttrs), ThreeDBarAttributesRole);
     // emit layoutChanged( this );
     emit propertiesChanged();
 }
@@ -333,8 +331,9 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries() const
 
     // note: calculateDataBoundaries() is ignoring the hidden flags.
     // That's not a bug but a feature: Hiding data does not mean removing them.
-    // For totally removing data from KD Chart's view people can use e.g. a proxy model
-    // calculate boundaries for different line types Normal - Stacked - Percent - Default Normal
+    // For totally removing data from KD Chart's view people can use e.g. a
+    // proxy model calculate boundaries for different line types Normal -
+    // Stacked - Percent - Default Normal
     return d->implementor->calculateDataBoundaries();
 }
 
@@ -361,14 +360,13 @@ void BarDiagram::paint(PaintContext *ctx)
     ctx->setCoordinatePlane(plane->sharedAxisMasterPlane(ctx->painter()));
 
     // This was intended as a fix for KDCH-515, however it caused KDCH-816
-    // and the original problem in KDCH-515 had by then been fixed in another way.
-    // Bottom line is, this code is wrong because the above call to
-    // plane->sharedAxisMasterPlane() performs a translation of the painter, which
-    // also translates the clip rect, so if we set the old clip rect again afterwards,
-    // we get a wrong clipping.
-    // Also, this code is unnecessary because CartesianCoordinatePlane::paint()
-    // already sets the clipping properly before calling this method.
-    // ctx->painter()->setClipping( true );
+    // and the original problem in KDCH-515 had by then been fixed in another
+    // way. Bottom line is, this code is wrong because the above call to
+    // plane->sharedAxisMasterPlane() performs a translation of the painter,
+    // which also translates the clip rect, so if we set the old clip rect again
+    // afterwards, we get a wrong clipping. Also, this code is unnecessary
+    // because CartesianCoordinatePlane::paint() already sets the clipping
+    // properly before calling this method. ctx->painter()->setClipping( true );
     // ctx->painter()->setClipRect( ctx->rectangle() );
 
     // paint different bar types Normal - Stacked - Percent - Default Normal
@@ -385,20 +383,12 @@ void BarDiagram::resize(const QSizeF &size)
     QAbstractItemView::resize(size.toSize());
 }
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-const
-#endif
-    int
-    BarDiagram::numberOfAbscissaSegments() const
+int BarDiagram::numberOfAbscissaSegments() const
 {
     return d->attributesModel->rowCount(attributesModelRootIndex());
 }
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-const
-#endif
-    int
-    BarDiagram::numberOfOrdinateSegments() const
+int BarDiagram::numberOfOrdinateSegments() const
 {
     return d->attributesModel->columnCount(attributesModelRootIndex());
 }

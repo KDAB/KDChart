@@ -32,15 +32,15 @@ class KDGANTT_EXPORT SummaryHandlingProxyModel : public ForwardingProxyModel
     Q_OBJECT
     KDGANTT_DECLARE_PRIVATE_BASE_POLYMORPHIC(SummaryHandlingProxyModel)
 public:
-    explicit SummaryHandlingProxyModel(QObject *parent = 0);
+    explicit SummaryHandlingProxyModel(QObject *parent = nullptr);
     ~SummaryHandlingProxyModel() override;
 
     /*reimp*/ void setSourceModel(QAbstractItemModel *model) override;
 
-    /*reimp*/ QVariant data(const QModelIndex &proxyIndex, int role = Qt::DisplayRole) const override;
+    /*reimp*/ [[nodiscard]] QVariant data(const QModelIndex &proxyIndex, int role = Qt::DisplayRole) const override;
     /*reimp*/ bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
-    /*reimp*/ Qt::ItemFlags flags(const QModelIndex &idx) const override;
+    /*reimp*/ [[nodiscard]] Qt::ItemFlags flags(const QModelIndex &idx) const override;
 
 protected:
     /*reimp*/ void sourceModelReset() override;

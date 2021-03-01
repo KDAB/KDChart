@@ -24,22 +24,17 @@
 
 using namespace KDGantt;
 
-/*!\class KDGantt::AbstractRowController kdganttabstractrowcontroller.h KDGanttAbstractRowController
- * \ingroup KDGantt
- * \brief Abstract baseclass for row controllers. A row controller is used
- * by the GraphicsView to nagivate the model and to determine the
- * row geometries
+/*!\class KDGantt::AbstractRowController kdganttabstractrowcontroller.h
+ * KDGanttAbstractRowController \ingroup KDGantt \brief Abstract baseclass for
+ * row controllers. A row controller is used by the GraphicsView to nagivate the
+ * model and to determine the row geometries
  */
 
 /*! Constructor. Does nothing */
-AbstractRowController::AbstractRowController()
-{
-}
+AbstractRowController::AbstractRowController() = default;
 
 /*! Destructor. Does nothing */
-AbstractRowController::~AbstractRowController()
-{
-}
+AbstractRowController::~AbstractRowController() = default;
 
 /*!\fn virtual int AbstractRowController::headerHeight() const = 0
  * \returns The height of the header part of the view.
@@ -53,17 +48,17 @@ AbstractRowController::~AbstractRowController()
  * number_of_rows*row_height.
  */
 
-/*!\fn virtual bool AbstractRowController::isRowVisible( const QModelIndex& idx ) const
- * \returns true if the row containing index \a idx is visible
- * in the view.
+/*!\fn virtual bool AbstractRowController::isRowVisible( const QModelIndex& idx
+ * ) const \returns true if the row containing index \a idx is visible in the
+ * view.
  *
  * Implement this to allow KDGantt to optimize how items on
  * screen are created. It is not harmful to always return true here,
  * but the View will not perform optimally.
  */
 
-/*!\fn virtual Span AbstractRowController::rowGeometry( const QModelIndex& idx ) const
- * \returns A Span consisting of the row offset and height for the row
+/*!\fn virtual Span AbstractRowController::rowGeometry( const QModelIndex& idx )
+ * const \returns A Span consisting of the row offset and height for the row
  * containing \a idx. A simple implementation might look like
  *
  * \code
@@ -74,14 +69,14 @@ AbstractRowController::~AbstractRowController()
  * \endcode
  */
 
-/*!\fn virtual QModelIndex AbstractRowController::indexBelow( const QModelIndex& idx ) const
- *\returns The modelindex for the next row after \a idx.
+/*!\fn virtual QModelIndex AbstractRowController::indexBelow( const QModelIndex&
+ *idx ) const \returns The modelindex for the next row after \a idx.
  *
  *\see QTreeView::indexBelow
  */
 
-/*!\fn virtual QModelIndex AbstractRowController::indexAbove( const QModelIndex& idx ) const
- *\returns The modelindex for the previous row before \a idx.
+/*!\fn virtual QModelIndex AbstractRowController::indexAbove( const QModelIndex&
+ *idx ) const \returns The modelindex for the previous row before \a idx.
  *
  *\see QTreeView::indexAbove
  */

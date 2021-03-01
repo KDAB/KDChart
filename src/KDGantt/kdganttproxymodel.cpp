@@ -25,7 +25,7 @@
 
 using namespace KDGantt;
 
-typedef ForwardingProxyModel BASE;
+using BASE = ForwardingProxyModel;
 
 ProxyModel::Private::Private(ProxyModel *_q)
 #if 0
@@ -59,7 +59,7 @@ ProxyModel::ProxyModel(QObject *parent)
 ProxyModel::~ProxyModel()
 {
     delete _d;
-    _d = 0;
+    _d = nullptr;
 }
 
 #define d d_func()

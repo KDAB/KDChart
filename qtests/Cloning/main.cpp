@@ -132,7 +132,8 @@ private slots:
         diagram->setShowLabelsAtPosition(Position::North, true);
         diagram->setShowLabelsAtPosition(Position::South, false);
         PolarDiagram *clone = diagram->clone();
-        // QCOMPARE( diagram->zeroDegreePosition(), clone->zeroDegreePosition() );
+        // QCOMPARE( diagram->zeroDegreePosition(), clone->zeroDegreePosition()
+        // );
         QCOMPARE(diagram->rotateCircularLabels(), clone->rotateCircularLabels());
         QCOMPARE(diagram->showDelimitersAtPosition(Position::North), clone->showDelimitersAtPosition(Position::North));
         QCOMPARE(diagram->showDelimitersAtPosition(Position::South), clone->showDelimitersAtPosition(Position::South));

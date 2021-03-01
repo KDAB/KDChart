@@ -57,9 +57,7 @@ ThreeDPieAttributes &ThreeDPieAttributes::operator=(const ThreeDPieAttributes &r
     return *this;
 }
 
-ThreeDPieAttributes::~ThreeDPieAttributes()
-{
-}
+ThreeDPieAttributes::~ThreeDPieAttributes() = default;
 
 void ThreeDPieAttributes::init()
 {

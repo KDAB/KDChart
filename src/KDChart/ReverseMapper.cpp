@@ -22,7 +22,7 @@
 
 #include "ReverseMapper.h"
 
-#include <math.h>
+#include <cmath>
 
 #include <QGraphicsScene>
 #include <QPainterPath>
@@ -36,13 +36,13 @@
 using namespace KDChart;
 
 ReverseMapper::ReverseMapper()
-    : m_scene(0)
-    , m_diagram(0)
+    : m_scene(nullptr)
+    , m_diagram(nullptr)
 {
 }
 
 ReverseMapper::ReverseMapper(AbstractDiagram *diagram)
-    : m_scene(0)
+    : m_scene(nullptr)
     , m_diagram(diagram)
 {
 }
@@ -50,7 +50,7 @@ ReverseMapper::ReverseMapper(AbstractDiagram *diagram)
 ReverseMapper::~ReverseMapper()
 {
     delete m_scene;
-    m_scene = 0;
+    m_scene = nullptr;
 }
 
 void ReverseMapper::setDiagram(AbstractDiagram *diagram)
@@ -71,8 +71,8 @@ QModelIndexList ReverseMapper::indexesIn(const QRect &rect) const
     if (m_scene && m_scene->sceneRect().intersects(rect)) {
         QList<QGraphicsItem *> items = m_scene->items(rect);
         QModelIndexList indexes;
-        Q_FOREACH (QGraphicsItem *item, items) {
-            ChartGraphicsItem *i = qgraphicsitem_cast<ChartGraphicsItem *>(item);
+        for (QGraphicsItem *item : qAsConst(items)) {
+            auto *i = qgraphicsitem_cast<ChartGraphicsItem *>(item);
             if (i) {
                 QModelIndex index(m_diagram->model()->index(i->row(), i->column(), m_diagram->rootIndex())); // checked
                 indexes << index;
@@ -90,8 +90,8 @@ QModelIndexList ReverseMapper::indexesAt(const QPointF &point) const
     if (m_scene && m_scene->sceneRect().contains(point)) {
         QList<QGraphicsItem *> items = m_scene->items(point);
         QModelIndexList indexes;
-        Q_FOREACH (QGraphicsItem *item, items) {
-            ChartGraphicsItem *i = qgraphicsitem_cast<ChartGraphicsItem *>(item);
+        for (QGraphicsItem *item : qAsConst(items)) {
+            auto *i = qgraphicsitem_cast<ChartGraphicsItem *>(item);
             if (i) {
                 QModelIndex index(m_diagram->model()->index(i->row(), i->column(), m_diagram->rootIndex())); // checked
                 if (!indexes.contains(index))
@@ -124,7 +124,8 @@ void ReverseMapper::addItem(ChartGraphicsItem *item)
 {
     Q_ASSERT(m_scene);
     m_scene->addItem(item);
-    m_itemMap.insert(m_diagram->model()->index(item->row(), item->column(), m_diagram->rootIndex()), item); // checked
+    m_itemMap.insert(m_diagram->model()->index(item->row(), item->column(), m_diagram->rootIndex()),
+                     item); // checked
 }
 
 void ReverseMapper::addRect(int row, int column, const QRectF &rect)
@@ -134,7 +135,7 @@ void ReverseMapper::addRect(int row, int column, const QRectF &rect)
 
 void ReverseMapper::addPolygon(int row, int column, const QPolygonF &polygon)
 {
-    ChartGraphicsItem *item = new ChartGraphicsItem(row, column);
+    auto *item = new ChartGraphicsItem(row, column);
     item->setPolygon(polygon);
     addItem(item);
 }

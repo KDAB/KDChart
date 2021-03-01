@@ -87,8 +87,8 @@ public:
     ~PainterSaver()
     {
 #if defined Q_OS_WIN
-        // the use of setClipRect is a workaround for a bug in Qt 4.3.0 which could
-        // lead to an assert on Windows
+        // the use of setClipRect is a workaround for a bug in Qt 4.3.0 which
+        // could lead to an assert on Windows
         if (m_isQt4_3_0) {
             painter->setClipRect(0, 0, 2, 2);
         }

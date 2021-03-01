@@ -35,33 +35,33 @@ class KDGANTT_EXPORT Legend : public QAbstractItemView
     Q_OBJECT
     KDGANTT_DECLARE_PRIVATE_BASE_POLYMORPHIC(Legend)
 public:
-    explicit Legend(QWidget *parent = 0);
+    explicit Legend(QWidget *parent = nullptr);
     ~Legend() override;
 
-    /*reimp*/ QModelIndex indexAt(const QPoint &point) const override;
-    /*reimp*/ QRect visualRect(const QModelIndex &index) const override;
+    /*reimp*/ [[nodiscard]] QModelIndex indexAt(const QPoint &point) const override;
+    /*reimp*/ [[nodiscard]] QRect visualRect(const QModelIndex &index) const override;
 
     /*reimp*/ void scrollTo(const QModelIndex &, ScrollHint = EnsureVisible) override
     {
     }
 
-    /*reimp*/ QSize sizeHint() const override;
-    /*reimp*/ QSize minimumSizeHint() const override;
+    /*reimp*/ [[nodiscard]] QSize sizeHint() const override;
+    /*reimp*/ [[nodiscard]] QSize minimumSizeHint() const override;
 
     /*reimp*/ void setModel(QAbstractItemModel *model) override;
 
 protected:
     virtual QRect drawItem(QPainter *painter, const QModelIndex &index, const QPoint &pos = QPoint()) const;
-    virtual QSize measureItem(const QModelIndex &index, bool recursive = true) const;
-    virtual StyleOptionGanttItem getStyleOption(const QModelIndex &index) const;
+    [[nodiscard]] virtual QSize measureItem(const QModelIndex &index, bool recursive = true) const;
+    [[nodiscard]] virtual StyleOptionGanttItem getStyleOption(const QModelIndex &index) const;
 
     /*reimp*/ void paintEvent(QPaintEvent *event) override;
 
-    /*reimp*/ int horizontalOffset() const override
+    /*reimp*/ [[nodiscard]] int horizontalOffset() const override
     {
         return 0;
     }
-    /*reimp*/ bool isIndexHidden(const QModelIndex &) const override
+    /*reimp*/ [[nodiscard]] bool isIndexHidden(const QModelIndex &) const override
     {
         return false;
     }
@@ -72,11 +72,11 @@ protected:
     /*reimp*/ void setSelection(const QRect &, QItemSelectionModel::SelectionFlags) override
     {
     }
-    /*reimp*/ int verticalOffset() const override
+    /*reimp*/ [[nodiscard]] int verticalOffset() const override
     {
         return 0;
     }
-    /*reimp*/ QRegion visualRegionForSelection(const QItemSelection &) const override
+    /*reimp*/ [[nodiscard]] QRegion visualRegionForSelection(const QItemSelection &) const override
     {
         return QRegion();
     }

@@ -28,7 +28,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QPointF>
 
-typedef QPair<QPointF, QPointF> Boundaries;
+using Boundaries = QPair<QPointF, QPointF>;
 
 namespace KDChart
 {
@@ -40,8 +40,8 @@ public:
     QModelIndexList mapToModel(const CachePosition &pos);
     void calculateDataBoundaries();
     void setBoundaries(const Boundaries &bound);
-    bool forcedBoundaries(Qt::Orientation orient) const;
-    bool inBoundaries(Qt::Orientation orient, const PlotterDiagramCompressor::DataPoint &dp) const;
+    [[nodiscard]] bool forcedBoundaries(Qt::Orientation orient) const;
+    [[nodiscard]] bool inBoundaries(Qt::Orientation orient, const PlotterDiagramCompressor::DataPoint &dp) const;
     PlotterDiagramCompressor *m_parent;
     QAbstractItemModel *m_model;
     qreal m_mergeRadius;

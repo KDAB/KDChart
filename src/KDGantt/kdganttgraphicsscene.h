@@ -51,7 +51,7 @@ class KDGANTT_EXPORT GraphicsScene : public QGraphicsScene
     Q_OBJECT
     KDGANTT_DECLARE_PRIVATE_BASE_POLYMORPHIC(GraphicsScene)
 public:
-    explicit GraphicsScene(QObject *parent = 0);
+    explicit GraphicsScene(QObject *parent = nullptr);
     ~GraphicsScene() override;
 
     // qreal dateTimeToSceneX( const QDateTime& dt ) const;
@@ -60,38 +60,38 @@ public:
     static QModelIndex mainIndex(const QModelIndex &idx);
     static QModelIndex dataIndex(const QModelIndex &idx);
 
-    QAbstractItemModel *model() const;
-    QAbstractProxyModel *summaryHandlingModel() const;
-    QModelIndex rootIndex() const;
-    ConstraintModel *constraintModel() const;
-    QItemSelectionModel *selectionModel() const;
+    [[nodiscard]] QAbstractItemModel *model() const;
+    [[nodiscard]] QAbstractProxyModel *summaryHandlingModel() const;
+    [[nodiscard]] QModelIndex rootIndex() const;
+    [[nodiscard]] ConstraintModel *constraintModel() const;
+    [[nodiscard]] QItemSelectionModel *selectionModel() const;
 
     void insertItem(const QPersistentModelIndex &, GraphicsItem *);
     void removeItem(const QModelIndex &);
     using QGraphicsScene::removeItem;
-    GraphicsItem *findItem(const QModelIndex &) const;
-    GraphicsItem *findItem(const QPersistentModelIndex &) const;
+    [[nodiscard]] GraphicsItem *findItem(const QModelIndex &) const;
+    [[nodiscard]] GraphicsItem *findItem(const QPersistentModelIndex &) const;
 
     void updateItems();
     void clearItems();
     void deleteSubtree(const QModelIndex &);
 
-    ConstraintGraphicsItem *findConstraintItem(const Constraint &) const;
+    [[nodiscard]] ConstraintGraphicsItem *findConstraintItem(const Constraint &) const;
     void clearConstraintItems();
 
     void setItemDelegate(ItemDelegate *);
-    ItemDelegate *itemDelegate() const;
+    [[nodiscard]] ItemDelegate *itemDelegate() const;
 
     void setRowController(AbstractRowController *rc);
-    AbstractRowController *rowController() const;
+    [[nodiscard]] AbstractRowController *rowController() const;
 
     void setGrid(AbstractGrid *grid);
-    AbstractGrid *grid() const;
+    [[nodiscard]] AbstractGrid *grid() const;
 
-    bool isReadOnly() const;
+    [[nodiscard]] bool isReadOnly() const;
 
     void updateRow(const QModelIndex &idx);
-    GraphicsItem *createItem(ItemType type) const;
+    [[nodiscard]] GraphicsItem *createItem(ItemType type) const;
 
     /* used by GraphicsItem */
     void itemEntered(const QModelIndex &);
@@ -99,7 +99,7 @@ public:
     void itemClicked(const QModelIndex &);
     void itemDoubleClicked(const QModelIndex &);
     void setDragSource(GraphicsItem *item);
-    GraphicsItem *dragSource() const;
+    [[nodiscard]] GraphicsItem *dragSource() const;
 
     /* Printing */
     void print(QPrinter *printer, bool drawRowLabels = true, bool drawColumnLabels = true);

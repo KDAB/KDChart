@@ -30,7 +30,7 @@ class ChartWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ChartWidget(QWidget *parent = 0)
+    explicit ChartWidget(QWidget *parent = nullptr)
         : QWidget(parent)
     {
         m_model.insertRows(0, 2, QModelIndex());
@@ -42,12 +42,12 @@ public:
             }
         }
 
-        KDChart::BarDiagram *diagram = new KDChart::BarDiagram;
+        auto *diagram = new KDChart::BarDiagram;
         diagram->setModel(&m_model);
 
         m_chart.coordinatePlane()->replaceDiagram(diagram);
 
-        QVBoxLayout *l = new QVBoxLayout(this);
+        auto *l = new QVBoxLayout(this);
         l->addWidget(&m_chart);
         setLayout(l);
         m_timer = new QTimer(this);

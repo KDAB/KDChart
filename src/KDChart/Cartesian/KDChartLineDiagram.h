@@ -46,7 +46,8 @@ class KDCHART_EXPORT LineDiagram : public AbstractCartesianDiagram
     Q_OBJECT
 
     Q_DISABLE_COPY(LineDiagram)
-    //    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( LineDiagram, CartesianCoordinatePlane * )
+    //    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( LineDiagram,
+    //    CartesianCoordinatePlane * )
 
     KDCHART_DECLARE_DERIVED_DIAGRAM(LineDiagram, CartesianCoordinatePlane)
 
@@ -54,10 +55,10 @@ public:
     class LineDiagramType;
     friend class LineDiagramType;
 
-    explicit LineDiagram(QWidget *parent = 0, CartesianCoordinatePlane *plane = 0);
+    explicit LineDiagram(QWidget *parent = nullptr, CartesianCoordinatePlane *plane = nullptr);
     ~LineDiagram() override;
 
-    virtual LineDiagram *clone() const;
+    [[nodiscard]] virtual LineDiagram *clone() const;
 
     /**
      * Returns true if both diagrams have the same settings.
@@ -67,7 +68,7 @@ public:
     enum LineType { Normal = 0, Stacked = 1, Percent = 2 };
 
     void setType(const LineType type);
-    LineType type() const;
+    [[nodiscard]] LineType type() const;
 
     /** If centerDataPoints() is true, all data points are moved by an
      * offset of 0.5 to the right. This is useful in conjunction with
@@ -77,7 +78,7 @@ public:
      */
     void setCenterDataPoints(bool center);
     /** @return option set by setCenterDataPoints() */
-    bool centerDataPoints() const;
+    [[nodiscard]] bool centerDataPoints() const;
 
     /** With this property set to true, data sets in a normal line diagram
      * are drawn in reversed order. More clearly, the first (top-most) data set
@@ -86,27 +87,27 @@ public:
      */
     void setReverseDatasetOrder(bool reverse);
     /** \see setReverseDatasetOrder */
-    bool reverseDatasetOrder() const;
+    [[nodiscard]] bool reverseDatasetOrder() const;
 
     void setLineAttributes(const LineAttributes &a);
     void setLineAttributes(int column, const LineAttributes &a);
     void setLineAttributes(const QModelIndex &index, const LineAttributes &a);
     void resetLineAttributes(int column);
     void resetLineAttributes(const QModelIndex &index);
-    LineAttributes lineAttributes() const;
-    LineAttributes lineAttributes(int column) const;
-    LineAttributes lineAttributes(const QModelIndex &index) const;
+    [[nodiscard]] LineAttributes lineAttributes() const;
+    [[nodiscard]] LineAttributes lineAttributes(int column) const;
+    [[nodiscard]] LineAttributes lineAttributes(const QModelIndex &index) const;
 
     void setThreeDLineAttributes(const ThreeDLineAttributes &a);
     void setThreeDLineAttributes(int column, const ThreeDLineAttributes &a);
     void setThreeDLineAttributes(const QModelIndex &index, const ThreeDLineAttributes &a);
 
-    ThreeDLineAttributes threeDLineAttributes() const;
-    ThreeDLineAttributes threeDLineAttributes(int column) const;
-    ThreeDLineAttributes threeDLineAttributes(const QModelIndex &index) const;
+    [[nodiscard]] ThreeDLineAttributes threeDLineAttributes() const;
+    [[nodiscard]] ThreeDLineAttributes threeDLineAttributes(int column) const;
+    [[nodiscard]] ThreeDLineAttributes threeDLineAttributes(const QModelIndex &index) const;
 
     void setValueTrackerAttributes(const QModelIndex &index, const ValueTrackerAttributes &a);
-    ValueTrackerAttributes valueTrackerAttributes(const QModelIndex &index) const;
+    [[nodiscard]] ValueTrackerAttributes valueTrackerAttributes(const QModelIndex &index) const;
 
     /**
      * This property defines the strength of the line curvature - 0 for
@@ -114,21 +115,13 @@ public:
      * the data points
      */
     void setLineTension(qreal tenson);
-    qreal lineTension() const;
+    [[nodiscard]] qreal lineTension() const;
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
     // implement AbstractCartesianDiagram
     /* reimpl */
-    const int numberOfAbscissaSegments() const;
+    [[nodiscard]] int numberOfAbscissaSegments() const override;
     /* reimpl */
-    const int numberOfOrdinateSegments() const;
-#else
-    // implement AbstractCartesianDiagram
-    /* reimpl */
-    int numberOfAbscissaSegments() const override;
-    /* reimpl */
-    int numberOfOrdinateSegments() const override;
-#endif
+    [[nodiscard]] int numberOfOrdinateSegments() const override;
 
 protected:
     void paint(PaintContext *paintContext) override;
@@ -137,10 +130,10 @@ public:
     void resize(const QSizeF &area) override;
 
 protected:
-    qreal threeDItemDepth(const QModelIndex &index) const override;
-    qreal threeDItemDepth(int column) const override;
+    [[nodiscard]] qreal threeDItemDepth(const QModelIndex &index) const override;
+    [[nodiscard]] qreal threeDItemDepth(int column) const override;
     /** \reimpl */
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    [[nodiscard]] const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paintEvent(QPaintEvent *) override;
     void resizeEvent(QResizeEvent *) override;
 }; // End of class KDChartLineDiagram

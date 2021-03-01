@@ -45,11 +45,12 @@ using namespace KDGantt;
  * \see GraphicsView::setModel
  */
 
-typedef ForwardingProxyModel BASE;
+using BASE = ForwardingProxyModel;
 
 bool SummaryHandlingProxyModel::Private::cacheLookup(const QModelIndex &idx, QPair<QDateTime, QDateTime> *result) const
 {
-    // qDebug() << "cacheLookup("<<idx<<"), cache has " << cached_summary_items.count() << "items";
+    // qDebug() << "cacheLookup("<<idx<<"), cache has " <<
+    // cached_summary_items.count() << "items";
     QHash<QModelIndex, QPair<QDateTime, QDateTime>>::const_iterator it = cached_summary_items.constFind(idx);
     if (it != cached_summary_items.constEnd()) {
         *result = *it;
@@ -71,23 +72,22 @@ void SummaryHandlingProxyModel::Private::insertInCache(const SummaryHandlingProx
         /* The probably results in recursive calls here */
         QVariant tmpsv = model->data(pdIdx, StartTimeRole);
         QVariant tmpev = model->data(pdIdx, EndTimeRole);
-        if (!tmpsv.canConvert(QVariant::DateTime) || !tmpev.canConvert(QVariant::DateTime)) {
-            qDebug() << "Skipping item " << sourceIdx << " because it doesn't contain QDateTime";
-            continue;
-        }
 
         // check for valid datetimes
-        if (tmpsv.type() == QVariant::DateTime && !tmpsv.value<QDateTime>().isValid())
+        if (!tmpsv.value<QDateTime>().isValid())
             continue;
-        if (tmpev.type() == QVariant::DateTime && !tmpev.value<QDateTime>().isValid())
+        if (!tmpev.value<QDateTime>().isValid())
             continue;
 
-        // We need to test for empty strings to
-        // avoid a stupid Qt warning
-        if (tmpsv.type() == QVariant::String && tmpsv.value<QString>().isEmpty())
-            continue;
-        if (tmpev.type() == QVariant::String && tmpev.value<QString>().isEmpty())
-            continue;
+        // // We need to test for empty strings to
+        // // avoid a stupid Qt warning
+        // if (tmpsv.type() == QVariant::String
+        //     && tmpsv.value<QString>().isEmpty())
+        //     continue;
+        // if (tmpev.type() == QVariant::String
+        //     && tmpev.value<QString>().isEmpty())
+        //     continue;
+
         QDateTime tmpst = tmpsv.toDateTime();
         QDateTime tmpet = tmpev.toDateTime();
         if (st.isNull() || st > tmpst)
@@ -97,9 +97,9 @@ void SummaryHandlingProxyModel::Private::insertInCache(const SummaryHandlingProx
     }
     QVariant tmpssv = sourceModel->data(mainIdx, StartTimeRole);
     QVariant tmpsev = sourceModel->data(mainIdx, EndTimeRole);
-    if (tmpssv.canConvert(QVariant::DateTime) && !(tmpssv.canConvert(QVariant::String) && tmpssv.toString().isEmpty()) && tmpssv.toDateTime() != st)
+    if (tmpssv.canConvert<QDateTime>() && !(tmpssv.canConvert<QString>() && tmpssv.toString().isEmpty()) && tmpssv.toDateTime() != st)
         sourceModel->setData(mainIdx, st, StartTimeRole);
-    if (tmpsev.canConvert(QVariant::DateTime) && !(tmpsev.canConvert(QVariant::String) && tmpsev.toString().isEmpty()) && tmpsev.toDateTime() != et)
+    if (tmpsev.canConvert<QDateTime>() && !(tmpsev.canConvert<QString>() && tmpsev.toString().isEmpty()) && tmpsev.toDateTime() != et)
         sourceModel->setData(mainIdx, et, EndTimeRole);
     cached_summary_items[sourceIdx] = qMakePair(st, et);
 }
@@ -229,7 +229,8 @@ QVariant SummaryHandlingProxyModel::data(const QModelIndex &proxyIndex, int role
         // qDebug() << "requested summary";
         QPair<QDateTime, QDateTime> result;
         if (d->cacheLookup(sidx, &result)) {
-            // qDebug() << "SummaryHandlingProxyModel::data(): Looking up summary for " << proxyIndex << role;
+            // qDebug() << "SummaryHandlingProxyModel::data(): Looking up
+            // summary for " << proxyIndex << role;
             switch (role) {
             case StartTimeRole:
                 return result.first;
@@ -288,13 +289,13 @@ KDAB_SCOPED_UNITTEST_SIMPLE(KDGantt, SummaryHandlingProxyModel, "test")
 
     model.setSourceModel(&sourceModel);
 
-    QStandardItem *topitem = new QStandardItem(QString::fromLatin1("Summary"));
+    auto *topitem = new QStandardItem(QString::fromLatin1("Summary"));
     topitem->setData(KDGantt::TypeSummary, KDGantt::ItemTypeRole);
     sourceModel.appendRow(topitem);
 
-    QStandardItem *task1 = new QStandardItem(QString::fromLatin1("Task1"));
+    auto *task1 = new QStandardItem(QString::fromLatin1("Task1"));
     task1->setData(KDGantt::TypeTask, KDGantt::ItemTypeRole);
-    QStandardItem *task2 = new QStandardItem(QString::fromLatin1("Task2"));
+    auto *task2 = new QStandardItem(QString::fromLatin1("Task2"));
     task2->setData(KDGantt::TypeTask, KDGantt::ItemTypeRole);
     topitem->appendRow(task1);
     topitem->appendRow(task2);

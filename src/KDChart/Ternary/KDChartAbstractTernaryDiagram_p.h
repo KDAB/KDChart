@@ -57,16 +57,14 @@ class AbstractTernaryDiagram::Private : public AbstractDiagram::Private
 
 public:
     Private();
-    ~Private() override
-    {
-    }
+    ~Private() override = default;
 
     Private(const Private &rhs)
         : AbstractDiagram::Private(rhs)
         ,
         // Do not copy axes and reference diagrams.
         axesList()
-        , referenceDiagram(0)
+        , referenceDiagram(nullptr)
         , referenceDiagramOffset()
     {
     }
@@ -91,7 +89,7 @@ public:
     {
         paintContext->painter()->setRenderHint(QPainter::Antialiasing, antiAliasing);
         if (!axesList.isEmpty()) {
-            Q_FOREACH (TernaryAxis *axis, axesList) {
+            for (TernaryAxis *axis : qAsConst(axesList)) {
                 PainterSaver s(paintContext->painter());
                 axis->paintCtx(paintContext);
             }

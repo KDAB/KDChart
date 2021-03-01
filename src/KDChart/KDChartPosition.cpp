@@ -85,7 +85,8 @@ const Position &Position::West = staticPositionWest;
 const Position &Position::Floating = staticPositionFloating;
 
 /**
- * Default constructor. Creates a new Position, defaulting it to Position::Unknown.
+ * Default constructor. Creates a new Position, defaulting it to
+ * Position::Unknown.
  */
 Position::Position()
     : m_value(KDChartEnums::PositionUnknown)
@@ -162,7 +163,8 @@ bool Position::isFloating() const
 }
 
 /**
- * Returns a non-translated string in English language, corresponding to this Position.
+ * Returns a non-translated string in English language, corresponding to this
+ * Position.
  */
 const char *Position::name() const
 {

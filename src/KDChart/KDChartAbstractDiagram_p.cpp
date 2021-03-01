@@ -66,20 +66,14 @@ LabelPaintInfo::LabelPaintInfo(const QModelIndex &_index,
 }
 
 LabelPaintInfo::LabelPaintInfo(const LabelPaintInfo &other)
-    : index(other.index)
-    , attrs(other.attrs)
-    , labelArea(other.labelArea)
-    , markerPos(other.markerPos)
-    , isValuePositive(other.isValuePositive)
-    , value(other.value)
-{
-}
+
+    = default;
 
 AbstractDiagram::Private::Private()
-    : diagram(0)
+    : diagram(nullptr)
     , doDumpPaintTime(false)
-    , plane(0)
-    , attributesModel(new PrivateAttributesModel(0, 0))
+    , plane(nullptr)
+    , attributesModel(new PrivateAttributesModel(nullptr, nullptr))
     , allowOverlappingDataValueTexts(false)
     , antiAliasing(true)
     , percent(false)
@@ -143,11 +137,11 @@ void AbstractDiagram::Private::setAttributesModel(AttributesModel *amodel)
 }
 
 AbstractDiagram::Private::Private(const AbstractDiagram::Private &rhs)
-    : diagram(0)
+    : diagram(nullptr)
     , doDumpPaintTime(rhs.doDumpPaintTime)
     ,
     // Do not copy the plane
-    plane(0)
+    plane(nullptr)
     , attributesModelRootIndex(QModelIndex())
     , attributesModel(rhs.attributesModel)
     , allowOverlappingDataValueTexts(rhs.allowOverlappingDataValueTexts)
@@ -156,7 +150,7 @@ AbstractDiagram::Private::Private(const AbstractDiagram::Private &rhs)
     , datasetDimension(rhs.datasetDimension)
     , mCachedFontMetrics(rhs.cachedFontMetrics())
 {
-    attributesModel = new PrivateAttributesModel(0, 0);
+    attributesModel = new PrivateAttributesModel(nullptr, nullptr);
     attributesModel->initFrom(rhs.attributesModel);
 }
 
@@ -197,7 +191,8 @@ void AbstractDiagram::Private::addLabel(LabelPaintCache *cache,
             relPos.setReferencePosition(isPositive ? autoPositionPositive : autoPositionNegative);
         }
 
-        // Rotate the label position (not the label itself) if the diagram is rotated so that the defaults still work
+        // Rotate the label position (not the label itself) if the diagram is
+        // rotated so that the defaults still work
         if (isTransposed()) {
             KDChartEnums::PositionValue posValue = relPos.referencePosition().value();
             if (posValue >= KDChartEnums::PositionNorthWest && posValue <= KDChartEnums::PositionWest) {
@@ -218,9 +213,10 @@ void AbstractDiagram::Private::addLabel(LabelPaintCache *cache,
 
         const qreal fontHeight = cachedFontMetrics(dva.textAttributes().calculatedFont(plane, KDChartEnums::MeasureOrientationMinimum), diagram)->height();
 
-        // Note: When printing data value texts and padding's Measure is using automatic reference area
-        //       detection, the font height is used as reference size for both horizontal and vertical
-        //       padding.
+        // Note: When printing data value texts and padding's Measure is using
+        // automatic reference area
+        //       detection, the font height is used as reference size for both
+        //       horizontal and vertical padding.
         QSizeF relativeMeasureSize(fontHeight, fontHeight);
 
         if (!dva.textAttributes().hasRotation()) {
@@ -229,7 +225,8 @@ void AbstractDiagram::Private::addLabel(LabelPaintCache *cache,
             dva.setTextAttributes(ta);
         }
 
-        // get the size of the label text using a subset of the information going into the final layout
+        // get the size of the label text using a subset of the information
+        // going into the final layout
         const QString text = formatDataValueText(dva, index, value);
         QTextDocument doc;
         doc.setDocumentMargin(0);
@@ -283,7 +280,8 @@ void AbstractDiagram::Private::addLabel(LabelPaintCache *cache,
             // move to the general area where the label should be
             QPointF calcPoint = relPos.calculatedPoint(relativeMeasureSize);
             transform.translate(calcPoint.x(), calcPoint.y());
-            // align the text rect; find out by how many half-widths / half-heights to move.
+            // align the text rect; find out by how many half-widths /
+            // half-heights to move.
             int dx = -1;
             if (relPos.alignment() & Qt::AlignLeft) {
                 dx -= 1;
@@ -312,9 +310,10 @@ void AbstractDiagram::Private::addLabel(LabelPaintCache *cache,
         QPainterPath labelArea;
         // labelArea.addPolygon( transform.mapToPolygon( plainRect.toRect() ) );
         // labelArea.closeSubpath();
-        // Not doing that because QTransform has a special case for 180° that gives a different than
-        // usual ordering of the points in the polygon returned by mapToPolygon( const QRect & ).
-        // We expect a particular ordering in paintDataValueTextsAndMarkers() by using elementAt( 0 ),
+        // Not doing that because QTransform has a special case for 180° that
+        // gives a different than usual ordering of the points in the polygon
+        // returned by mapToPolygon( const QRect & ). We expect a particular
+        // ordering in paintDataValueTextsAndMarkers() by using elementAt( 0 ),
         // and similar things might happen elsewhere.
         labelArea.addPolygon(transform.map(QPolygon(plainRect.toRect(), true)));
 
@@ -369,18 +368,19 @@ void AbstractDiagram::Private::paintDataValueTextsAndMarkers(PaintContext *ctx,
                                                              const LabelPaintCache &cache,
                                                              bool paintMarkers,
                                                              bool justCalculateRect /* = false */,
-                                                             QRectF *cumulatedBoundingRect /* = 0 */)
+                                                             QRectF *cumulatedBoundingRect /* = nullptr */)
 {
     if (justCalculateRect && !cumulatedBoundingRect) {
-        qWarning() << Q_FUNC_INFO << "Neither painting nor finding the bounding rect, what are we doing?";
+        qWarning() << Q_FUNC_INFO
+                   << "Neither painting nor finding the bounding rect, what "
+                      "are we doing?";
     }
 
     const PainterSaver painterSaver(ctx->painter());
     ctx->painter()->setClipping(false);
 
     if (paintMarkers && !justCalculateRect) {
-        KDAB_FOREACH(const LabelPaintInfo &info, cache.paintReplay)
-        {
+        for (const LabelPaintInfo &info : qAsConst(cache.paintReplay)) {
             diagram->paintMarker(ctx->painter(), info.index, info.markerPos);
         }
     }
@@ -396,8 +396,7 @@ void AbstractDiagram::Private::paintDataValueTextsAndMarkers(PaintContext *ctx,
 
     forgetAlreadyPaintedDataValues();
 
-    KDAB_FOREACH(const LabelPaintInfo &info, cache.paintReplay)
-    {
+    for (const LabelPaintInfo &info : qAsConst(cache.paintReplay)) {
         const QPointF pos = info.labelArea.elementAt(0);
         paintDataValueText(ctx->painter(), info.attrs, pos, info.isValuePositive, info.value, justCalculateRect, cumulatedBoundingRect);
 
@@ -448,7 +447,7 @@ void AbstractDiagram::Private::paintDataValueText(QPainter *painter,
                                                   const QPointF &pos,
                                                   qreal value,
                                                   bool justCalculateRect /* = false */,
-                                                  QRectF *cumulatedBoundingRect /* = 0 */)
+                                                  QRectF *cumulatedBoundingRect /* = nullptr */)
 {
     const DataValueAttributes dva(diagram->dataValueAttributes(index));
     const QString text = formatDataValueText(dva, index, value);
@@ -461,7 +460,7 @@ void AbstractDiagram::Private::paintDataValueText(QPainter *painter,
                                                   bool valueIsPositive,
                                                   const QString &text,
                                                   bool justCalculateRect /* = false */,
-                                                  QRectF *cumulatedBoundingRect /* = 0 */)
+                                                  QRectF *cumulatedBoundingRect /* = nullptr */)
 {
     if (!attrs.isVisible()) {
         return;
@@ -512,13 +511,15 @@ void AbstractDiagram::Private::paintDataValueText(QPainter *painter,
     if (!attrs.showOverlappingDataLabels()) {
         const QRectF br(layout->frameBoundingRect(doc.rootFrame()));
         QPolygon pr = transform.mapToPolygon(br.toRect());
-        // Using QPainterPath allows us to use intersects() (which has many early-exits)
-        // instead of QPolygon::intersected (which calculates a slow and precise intersection polygon)
+        // Using QPainterPath allows us to use intersects() (which has many
+        // early-exits) instead of QPolygon::intersected (which calculates a
+        // slow and precise intersection polygon)
         QPainterPath path;
         path.addPolygon(pr);
 
-        // iterate backwards because recently added items are more likely to overlap, so we spend
-        // less time checking irrelevant items when there is overlap
+        // iterate backwards because recently added items are more likely to
+        // overlap, so we spend less time checking irrelevant items when there
+        // is overlap
         for (int i = alreadyDrawnDataValueTexts.count() - 1; i >= 0; i--) {
             if (alreadyDrawnDataValueTexts.at(i).intersects(path)) {
                 // qDebug() << "not painting this label due to overlap";
@@ -566,11 +567,12 @@ void AbstractDiagram::Private::paintDataValueText(QPainter *painter,
 QModelIndex AbstractDiagram::Private::indexAt(const QPoint &point) const
 {
     QModelIndexList l = indexesAt(point);
-    qSort(l);
-    if (!l.isEmpty())
+    if (!l.isEmpty()) {
+        std::sort(l.begin(), l.end());
         return l.first();
-    else
-        return QModelIndex();
+    } else {
+        return {};
+    }
 }
 
 QModelIndexList AbstractDiagram::Private::indexesAt(const QPoint &point) const
@@ -600,11 +602,12 @@ void AbstractDiagram::Private::setDatasetAttrs(int dataset, const QVariant &data
     // only one data dimension, and thus also only one column per data set.
     int column = dataset * datasetDimension;
 
-    // For DataHiddenRole, also store the flag in the other data points that belong to this data set,
-    // otherwise it's impossible to hide data points in a plotter diagram because there will always
-    // be one model index that belongs to this data point that is not hidden.
-    // For more details on how hiding works, see the data compressor.
-    // Also see KDCH-503 for which this is a workaround.
+    // For DataHiddenRole, also store the flag in the other data points that
+    // belong to this data set, otherwise it's impossible to hide data points in
+    // a plotter diagram because there will always be one model index that
+    // belongs to this data point that is not hidden. For more details on how
+    // hiding works, see the data compressor. Also see KDCH-503 for which this
+    // is a workaround.
     int columnSpan = role == DataHiddenRole ? datasetDimension : 1;
 
     for (int i = 0; i < columnSpan; i++) {
@@ -629,25 +632,24 @@ void AbstractDiagram::Private::resetDatasetAttrs(int dataset, int role)
 bool AbstractDiagram::Private::isTransposed() const
 {
     // Determine the diagram that specifies the orientation.
-    // That diagram is the reference diagram, if it exists, or otherwise the diagram itself.
-    // Note: In KDChart 2.3 or earlier, only a bar diagram can be transposed.
-    const AbstractCartesianDiagram *refDiagram = qobject_cast<const AbstractCartesianDiagram *>(diagram);
+    // That diagram is the reference diagram, if it exists, or otherwise the
+    // diagram itself. Note: In KDChart 2.3 or earlier, only a bar diagram can
+    // be transposed.
+    const auto *refDiagram = qobject_cast<const AbstractCartesianDiagram *>(diagram);
     if (!refDiagram) {
         return false;
     }
     if (refDiagram->referenceDiagram()) {
         refDiagram = refDiagram->referenceDiagram();
     }
-    const BarDiagram *barDiagram = qobject_cast<const BarDiagram *>(refDiagram);
+    const auto *barDiagram = qobject_cast<const BarDiagram *>(refDiagram);
     if (!barDiagram) {
         return false;
     }
     return barDiagram->orientation() == Qt::Horizontal;
 }
 
-LineAttributesInfo::LineAttributesInfo()
-{
-}
+LineAttributesInfo::LineAttributesInfo() = default;
 
 LineAttributesInfo::LineAttributesInfo(const QModelIndex &_index, const QPointF &_value, const QPointF &_nextValue)
     : index(_index)

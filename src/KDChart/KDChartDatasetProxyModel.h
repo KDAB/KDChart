@@ -32,7 +32,7 @@ namespace KDChart
 {
 class IndexOutOfBoundsException;
 
-typedef QVector<int> DatasetDescriptionVector;
+using DatasetDescriptionVector = QVector<int>;
 
 /** DatasetProxyModel takes a KDChart dataset configuration and translates
     it into a filtering proxy model.
@@ -60,35 +60,35 @@ public:
         Without further configuration, this model is invalid.
         @see setDatasetDescriptionVector
     */
-    explicit DatasetProxyModel(QObject *parent = 0);
+    explicit DatasetProxyModel(QObject *parent = nullptr);
 
-    QModelIndex buddy(const QModelIndex &index) const override;
+    [[nodiscard]] QModelIndex buddy(const QModelIndex &index) const override;
 
-    Qt::ItemFlags flags(const QModelIndex &index) const override;
+    [[nodiscard]] Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
-    QModelIndex parent(const QModelIndex &child) const override;
+    [[nodiscard]] QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] QModelIndex parent(const QModelIndex &child) const override;
 
     /** Implements the mapping from the source to the proxy indexes. */
-    QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override;
+    [[nodiscard]] QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override;
 
     /** Implements the mapping from the proxy to the source indexes. */
-    QModelIndex mapToSource(const QModelIndex &proxyIndex) const override;
+    [[nodiscard]] QModelIndex mapToSource(const QModelIndex &proxyIndex) const override;
 
     /** Overloaded from base class. */
-    QVariant data(const QModelIndex &index, int role) const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
 
     /** Overloaded from base class. */
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
     /** Overloaded from base class. */
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    [[nodiscard]] QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
     /** Overloaded from base class. */
     void setSourceModel(QAbstractItemModel *sourceModel) override;
 
     /** Set the root index of the table in
-    the source model */
+        the source model */
     void setSourceRootIndex(const QModelIndex &rootIdx);
 
 public Q_SLOTS:
@@ -118,23 +118,23 @@ public Q_SLOTS:
 
 protected:
     /** Decide whether the column is accepted. */
-    bool filterAcceptsColumn(int sourceColumn, const QModelIndex &) const override;
+    [[nodiscard]] bool filterAcceptsColumn(int sourceColumn, const QModelIndex &) const override;
 
     /** Decide whether the row is accepted. */
-    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
+    [[nodiscard]] bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 
 private:
     /** Map a proxy column to a source column. */
-    int mapProxyColumnToSource(const int &proxyColumn) const;
+    [[nodiscard]] int mapProxyColumnToSource(const int &proxyColumn) const;
 
     /** Map a source column to a proxy column. */
-    int mapSourceColumnToProxy(const int &sourceColumn) const;
+    [[nodiscard]] int mapSourceColumnToProxy(const int &sourceColumn) const;
 
     /** Map a proxy row to a source row. */
-    int mapProxyRowToSource(const int &proxyRow) const;
+    [[nodiscard]] int mapProxyRowToSource(const int &proxyRow) const;
 
     /** Map a source row to a proxy row. */
-    int mapSourceRowToProxy(const int &sourceRow) const;
+    [[nodiscard]] int mapSourceRowToProxy(const int &sourceRow) const;
 
     /** Initialize the transformation vectors from the dataset
         description.
@@ -153,10 +153,10 @@ private:
         be unique (otherwise, a 1-to-1 mapping in both directions is
         impossible).
 
-        sourceCount is the number of columns in the source model. The proxy-to-source map has
-        as many elements as the proxy has columns, the source-to-proxy map
-        has as many elements as the source has columns. Same goes for rows
-        (the mapping logic is the same).
+        sourceCount is the number of columns in the source model. The
+       proxy-to-source map has as many elements as the proxy has columns, the
+       source-to-proxy map has as many elements as the source has columns. Same
+       goes for rows (the mapping logic is the same).
 
      */
     void initializeDatasetDecriptors(const DatasetDescriptionVector &inConfiguration,

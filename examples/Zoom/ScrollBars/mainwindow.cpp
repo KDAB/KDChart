@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     m_chart = new Chart();
     m_chart->setGlobalLeadingTop(10);
     m_chart->setGlobalLeadingRight(10);
@@ -51,8 +51,8 @@ MainWindow::MainWindow(QWidget *parent)
     m_lines = new LineDiagram();
     m_lines->setModel(&m_model);
 
-    CartesianAxis *xAxis = new CartesianAxis(m_lines);
-    CartesianAxis *yAxis = new CartesianAxis(m_lines);
+    auto *xAxis = new CartesianAxis(m_lines);
+    auto *yAxis = new CartesianAxis(m_lines);
     xAxis->setPosition(KDChart::CartesianAxis::Bottom);
     yAxis->setPosition(KDChart::CartesianAxis::Left);
 

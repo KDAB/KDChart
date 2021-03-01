@@ -51,8 +51,8 @@ static QPixmap drawIntoPixmap(const QSize &size, KDChart::Chart *chart)
     return pix;
 }
 
-// When set, this example uses FrameWidget which uses Chart::paint to paint itself.
-// When not set, this example uses a Chart widget directly.
+// When set, this example uses FrameWidget which uses Chart::paint to paint
+// itself. When not set, this example uses a Chart widget directly.
 #define USE_FRAME_WIDGET 1
 
 MainWindow::MainWindow(QWidget *parent)
@@ -60,9 +60,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
 #ifdef USE_FRAME_WIDGET
-    FrameWidget *chartFrameWidget = new FrameWidget();
+    auto *chartFrameWidget = new FrameWidget();
     chartLayout->addWidget(chartFrameWidget);
 #endif
     hSBar->setVisible(false);
@@ -74,10 +74,10 @@ MainWindow::MainWindow(QWidget *parent)
     m_lines = new LineDiagram();
     m_lines->setModel(&m_model);
 
-    CartesianAxis *xAxis = new CartesianAxis(m_lines);
-    CartesianAxis *yAxis = new CartesianAxis(m_lines);
-    CartesianAxis *axisTop = new CartesianAxis(m_lines);
-    CartesianAxis *axisRight = new CartesianAxis(m_lines);
+    auto *xAxis = new CartesianAxis(m_lines);
+    auto *yAxis = new CartesianAxis(m_lines);
+    auto *axisTop = new CartesianAxis(m_lines);
+    auto *axisRight = new CartesianAxis(m_lines);
     xAxis->setPosition(KDChart::CartesianAxis::Bottom);
     yAxis->setPosition(KDChart::CartesianAxis::Left);
     axisTop->setPosition(KDChart::CartesianAxis::Top);
@@ -164,10 +164,11 @@ MainWindow::MainWindow(QWidget *parent)
     faChart.setPen(QPen(QColor(0xb0, 0xb0, 0xff), 8));
     m_chart->setFrameAttributes(faChart);
 
-    // initialize attributes; this is necessary because we need to enable data value attributes before
-    // any of them (e.g. only markers) can be displayed. but if we enable data value attributs, a default
-    // data value text is included, even if we only wanted to set markers. so we enable DVA and then
-    // individually disable the parts we don't want.
+    // initialize attributes; this is necessary because we need to enable data
+    // value attributes before any of them (e.g. only markers) can be displayed.
+    // but if we enable data value attributs, a default data value text is
+    // included, even if we only wanted to set markers. so we enable DVA and
+    // then individually disable the parts we don't want.
     on_paintValuesCB_toggled(false);
     on_paintMarkersCB_toggled(false);
 }
@@ -187,7 +188,7 @@ void MainWindow::on_lineTypeCB_currentIndexChanged(const QString &text)
 void MainWindow::on_paintLegendCB_toggled(bool checked)
 {
     KDChart::Legend *legend = m_chart->legend();
-    if (checked != (legend != 0)) {
+    if (checked != (legend != nullptr)) {
         if (checked)
             m_chart->addLegend(m_legend);
         else
@@ -283,7 +284,8 @@ void MainWindow::on_vSBar_valueChanged(int vPos)
     m_chart->coordinatePlane()->setZoomCenter(QPointF(hSBar->value() / 1000.0, vPos / 1000.0));
 }
 
-// since DataValue markers have no relative sizing mode we need to scale them for printing
+// since DataValue markers have no relative sizing mode we need to scale them
+// for printing
 void MainWindow::paintMarkers(bool checked, const QSize &printSize)
 {
     MarkerAttributes::MarkerStylesMap map;
@@ -350,7 +352,7 @@ void MainWindow::paintMarkers(bool checked, const QSize &printSize)
         const int rowCount = m_lines->model()->rowCount();
         for (int j = 0; j < rowCount; ++j) {
             QModelIndex index = m_lines->model()->index(j, iColumn, QModelIndex());
-            QBrush brush = m_lines->model()->headerData(iColumn, Qt::Vertical, DatasetBrushRole).value<QBrush>();
+            auto brush = m_lines->model()->headerData(iColumn, Qt::Vertical, DatasetBrushRole).value<QBrush>();
             qreal value = m_lines->model()->data(index).toReal();
             /* Set a specific color - marker for a specific value */
             if (value == 13) {
@@ -383,13 +385,15 @@ void MainWindow::on_savePDF_clicked()
         return;
     qDebug() << "Painting into PDF";
     QPrinter printer(QPrinter::HighResolution);
-    printer.setOrientation(QPrinter::Landscape);
+    printer.setPageOrientation(QPageLayout::Landscape);
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(file);
-    paintMarkers(paintMarkersCB->isChecked(), printer.pageRect().size());
+    // TODO
+    // paintMarkers( paintMarkersCB->isChecked(), printer.pageRect().size() );
     QPainter painter;
     painter.begin(&printer);
-    m_chart->paint(&painter, printer.pageRect());
+    // TODO
+    // m_chart->paint( &painter, printer.pageRect() );
     painter.end();
     paintMarkers(paintMarkersCB->isChecked(), m_chart->geometry().size());
     qDebug() << "Painting into PDF - done";

@@ -41,11 +41,9 @@ class NormalBarDiagram : public BarDiagram::BarDiagramType
 {
 public:
     explicit NormalBarDiagram(BarDiagram *);
-    ~NormalBarDiagram() override
-    {
-    }
-    BarDiagram::BarType type() const override;
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    ~NormalBarDiagram() override = default;
+    [[nodiscard]] BarDiagram::BarType type() const override;
+    [[nodiscard]] const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paint(PaintContext *ctx) override;
 };
 

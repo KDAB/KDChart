@@ -40,16 +40,16 @@ class KDGANTT_EXPORT ConstraintProxy : public QObject
 {
     Q_OBJECT
 public:
-    explicit ConstraintProxy(QObject *parent = 0);
+    explicit ConstraintProxy(QObject *parent = nullptr);
     ~ConstraintProxy() override;
 
     void setSourceModel(ConstraintModel *src);
     void setDestinationModel(ConstraintModel *dest);
     void setProxyModel(QAbstractProxyModel *proxy);
 
-    ConstraintModel *sourceModel() const;
-    ConstraintModel *destinationModel() const;
-    QAbstractProxyModel *proxyModel() const;
+    [[nodiscard]] ConstraintModel *sourceModel() const;
+    [[nodiscard]] ConstraintModel *destinationModel() const;
+    [[nodiscard]] QAbstractProxyModel *proxyModel() const;
 
 private Q_SLOTS:
 

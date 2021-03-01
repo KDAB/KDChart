@@ -40,15 +40,15 @@ public:
 
     ChartGraphicsItem(int row, int column);
 
-    int row() const
+    [[nodiscard]] int row() const
     {
         return m_row;
     }
-    int column() const
+    [[nodiscard]] int column() const
     {
         return m_column;
     }
-    int type() const override
+    [[nodiscard]] int type() const override
     {
         return Type;
     }

@@ -59,7 +59,7 @@ public:
      *
      * \sa AbstractCartesianDiagram::addAxis
      */
-    explicit CartesianAxis(AbstractCartesianDiagram *diagram = 0);
+    explicit CartesianAxis(AbstractCartesianDiagram *diagram = nullptr);
     ~CartesianAxis() override;
 
     /**
@@ -76,7 +76,7 @@ public:
      * Sets the optional text displayed as chart title.
      */
     void setTitleText(const QString &text);
-    QString titleText() const;
+    [[nodiscard]] QString titleText() const;
 
     /**
      * \deprecated
@@ -86,22 +86,23 @@ public:
      */
     void setTitleSpace(qreal value);
     /// \deprecated
-    qreal titleSpace() const;
+    [[nodiscard]] qreal titleSpace() const;
 
     /// \deprecated \brief use setTitleTextAttributes() instead
     void setTitleSize(qreal value);
     /// \deprecated
-    qreal titleSize() const;
+    [[nodiscard]] qreal titleSize() const;
 
     void setTitleTextAttributes(const TextAttributes &a);
     /**
      * Returns the text attributes that will be used for displaying the
      * title text.
-     * This is either the text attributes as specified by setTitleTextAttributes,
-     * or (if setTitleTextAttributes() was not called) the default text attributes.
-     * \sa resetTitleTextAttributes, hasDefaultTitleTextAttributes
+     * This is either the text attributes as specified by
+     * setTitleTextAttributes, or (if setTitleTextAttributes() was not called)
+     * the default text attributes. \sa resetTitleTextAttributes,
+     * hasDefaultTitleTextAttributes
      */
-    TextAttributes titleTextAttributes() const;
+    [[nodiscard]] TextAttributes titleTextAttributes() const;
     /**
      * Reset the title text attributes to the built-in default:
      *
@@ -109,19 +110,15 @@ public:
      * and 1.5 times their size.
      */
     void resetTitleTextAttributes();
-    bool hasDefaultTitleTextAttributes() const;
+    [[nodiscard]] bool hasDefaultTitleTextAttributes() const;
 
     virtual void setPosition(Position p);
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-    virtual const Position position() const;
-#else
-    virtual Position position() const;
-#endif
+    [[nodiscard]] virtual Position position() const;
 
     virtual void layoutPlanes();
 
-    virtual bool isAbscissa() const;
-    virtual bool isOrdinate() const;
+    [[nodiscard]] virtual bool isAbscissa() const;
+    [[nodiscard]] virtual bool isOrdinate() const;
 
     /**
      * Sets the axis annotations to \a annotations.
@@ -134,7 +131,7 @@ public:
     /**
      * Returns the currently set axis annotations.
      */
-    QMap<qreal, QString> annotations() const;
+    [[nodiscard]] QMap<qreal, QString> annotations() const;
 
     /**
      * Sets custom ticks on the axis.
@@ -144,7 +141,7 @@ public:
     /**
      * Returns the currently set custom ticks on the axis.
      */
-    QList<qreal> customTicks() const;
+    [[nodiscard]] QList<qreal> customTicks() const;
 
     /**
      * Sets the length of custom ticks on the axis.
@@ -153,32 +150,32 @@ public:
     /**
      * Returns the length of custom ticks on the axis.
      */
-    int customTickLength() const;
+    [[nodiscard]] int customTickLength() const;
 
     /** pure virtual in QLayoutItem */
-    bool isEmpty() const override;
+    [[nodiscard]] bool isEmpty() const override;
     /** pure virtual in QLayoutItem */
-    Qt::Orientations expandingDirections() const override;
+    [[nodiscard]] Qt::Orientations expandingDirections() const override;
     /** pure virtual in QLayoutItem */
-    QSize maximumSize() const override;
+    [[nodiscard]] QSize maximumSize() const override;
     /** pure virtual in QLayoutItem */
-    QSize minimumSize() const override;
+    [[nodiscard]] QSize minimumSize() const override;
     /** pure virtual in QLayoutItem */
-    QSize sizeHint() const override;
+    [[nodiscard]] QSize sizeHint() const override;
     /** pure virtual in QLayoutItem */
     void setGeometry(const QRect &r) override;
     /** pure virtual in QLayoutItem */
-    QRect geometry() const override;
+    [[nodiscard]] QRect geometry() const override;
 
 public Q_SLOTS:
     void setCachedSizeDirty() const;
 
-    virtual int tickLength(bool subUnitTicks = false) const;
+    [[nodiscard]] virtual int tickLength(bool subUnitTicks = false) const;
 private Q_SLOTS:
     void coordinateSystemChanged();
 };
 
-typedef QList<CartesianAxis *> CartesianAxisList;
+using CartesianAxisList = QList<CartesianAxis *>;
 }
 
 #endif

@@ -44,11 +44,6 @@
 #include <cassert>
 #include <functional>
 
-/* Older Qt don't have this macro, so define it... */
-#ifndef QT_VERSION_CHECK
-#define QT_VERSION_CHECK(major, minor, patch) ((major << 16) | (minor << 8) | (patch))
-#endif
-
 // defines HAVE_PRINTER if support for printing should be included
 #ifdef _WIN32_WCE
 // There is no printer support under wince even if QT_NO_PRINTER is not set
@@ -66,16 +61,16 @@ using namespace KDGantt;
 
 GraphicsScene::Private::Private(GraphicsScene *_q)
     : q(_q)
-    , dragSource(0)
+    , dragSource(nullptr)
     , itemDelegate(new ItemDelegate(_q))
-    , rowController(0)
+    , rowController(nullptr)
     , grid(&default_grid)
     , readOnly(false)
     , isPrinting(false)
     , drawColumnLabels(true)
     , labelsWidth(0.0)
     , summaryHandlingModel(new SummaryHandlingProxyModel(_q))
-    , selectionModel(0)
+    , selectionModel(nullptr)
 {
     default_grid.setStartDateTime(QDateTime::currentDateTime().addDays(-1));
 }
@@ -86,7 +81,7 @@ void GraphicsScene::Private::resetConstraintItems()
     if (constraintModel.isNull())
         return;
     QList<Constraint> clst = constraintModel->constraints();
-    Q_FOREACH (const Constraint &c, clst) {
+    for (const Constraint &c : qAsConst(clst)) {
         createConstraintItem(c);
     }
     q->updateItems();
@@ -98,7 +93,7 @@ void GraphicsScene::Private::createConstraintItem(const Constraint &c)
     GraphicsItem *eitem = q->findItem(summaryHandlingModel->mapFromSource(c.endIndex()));
 
     if (sitem && eitem) {
-        ConstraintGraphicsItem *citem = new ConstraintGraphicsItem(c);
+        auto *citem = new ConstraintGraphicsItem(c);
         sitem->addStartConstraint(citem);
         eitem->addEndConstraint(citem);
         q->addItem(citem);
@@ -111,7 +106,7 @@ void GraphicsScene::Private::createConstraintItem(const Constraint &c)
 void GraphicsScene::Private::deleteConstraintItem(ConstraintGraphicsItem *citem)
 {
     // qDebug()<<"GraphicsScene::Private::deleteConstraintItem citem="<<citem;
-    if (citem == 0) {
+    if (citem == nullptr) {
         return;
     }
     Constraint c = citem->constraint();
@@ -157,7 +152,7 @@ ConstraintGraphicsItem *GraphicsScene::Private::findConstraintItem(const Constra
             return *it;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 GraphicsScene::GraphicsScene(QObject *parent)
@@ -275,8 +270,8 @@ AbstractRowController *GraphicsScene::rowController() const
 
 void GraphicsScene::setGrid(AbstractGrid *grid)
 {
-    QAbstractItemModel *model = 0;
-    if (grid == 0)
+    QAbstractItemModel *model = nullptr;
+    if (grid == nullptr)
         grid = &d->default_grid;
     if (d->grid) {
         d->grid->disconnect(this);
@@ -371,7 +366,7 @@ void GraphicsScene::Private::recursiveUpdateMultiItem(const Span &span, const QM
     item->updateItem(span, idx);
     QModelIndex child;
     int cr = 0;
-    while ((child = idx.child(cr, 0)).isValid()) {
+    while ((child = summaryHandlingModel->index(cr, 0, idx)).isValid()) {
         recursiveUpdateMultiItem(span, child);
         ++cr;
     }
@@ -379,7 +374,8 @@ void GraphicsScene::Private::recursiveUpdateMultiItem(const Span &span, const QM
 
 void GraphicsScene::updateRow(const QModelIndex &rowidx)
 {
-    // qDebug() << "GraphicsScene::updateRow("<<rowidx<<")" << rowidx.data( Qt::DisplayRole );
+    // qDebug() << "GraphicsScene::updateRow("<<rowidx<<")" << rowidx.data(
+    // Qt::DisplayRole );
     if (!rowidx.isValid())
         return;
 #if !defined(NDEBUG)
@@ -433,14 +429,14 @@ void GraphicsScene::insertItem(const QPersistentModelIndex &idx, GraphicsItem *i
         // Create items for constraints
         const QModelIndex sidx = summaryHandlingModel()->mapToSource(idx);
         const QList<Constraint> clst = d->constraintModel->constraintsForIndex(sidx);
-        Q_FOREACH (const Constraint &c, clst) {
+        for (const Constraint &c : qAsConst(clst)) {
             QModelIndex other_idx;
             if (c.startIndex() == sidx) {
                 other_idx = c.endIndex();
                 GraphicsItem *other_item = d->items.value(summaryHandlingModel()->mapFromSource(other_idx), 0);
                 if (!other_item)
                     continue;
-                ConstraintGraphicsItem *citem = new ConstraintGraphicsItem(c);
+                auto *citem = new ConstraintGraphicsItem(c);
                 item->addStartConstraint(citem);
                 other_item->addEndConstraint(citem);
                 addItem(citem);
@@ -449,7 +445,7 @@ void GraphicsScene::insertItem(const QPersistentModelIndex &idx, GraphicsItem *i
                 GraphicsItem *other_item = d->items.value(summaryHandlingModel()->mapFromSource(other_idx), 0);
                 if (!other_item)
                     continue;
-                ConstraintGraphicsItem *citem = new ConstraintGraphicsItem(c);
+                auto *citem = new ConstraintGraphicsItem(c);
                 other_item->addStartConstraint(citem);
                 item->addEndConstraint(citem);
                 addItem(citem);
@@ -474,9 +470,11 @@ void GraphicsScene::removeItem(const QModelIndex &idx)
         d->items.erase(it);
         {
             // Remove any constraintitems attached
-            const QSet<ConstraintGraphicsItem *> clst =
-                QSet<ConstraintGraphicsItem *>::fromList(item->startConstraints()) + QSet<ConstraintGraphicsItem *>::fromList(item->endConstraints());
-            Q_FOREACH (ConstraintGraphicsItem *citem, clst) {
+            const auto &startConstraints = item->startConstraints();
+            const auto &endConstraints = item->endConstraints();
+            const QSet<ConstraintGraphicsItem *> clst = QSet<ConstraintGraphicsItem *>(startConstraints.begin(), startConstraints.end())
+                + QSet<ConstraintGraphicsItem *>(endConstraints.begin(), endConstraints.end());
+            for (ConstraintGraphicsItem *citem : qAsConst(clst)) {
                 d->deleteConstraintItem(citem);
             }
         }
@@ -488,7 +486,7 @@ void GraphicsScene::removeItem(const QModelIndex &idx)
 GraphicsItem *GraphicsScene::findItem(const QModelIndex &idx) const
 {
     if (!idx.isValid())
-        return 0;
+        return nullptr;
     assert(idx.model() == summaryHandlingModel());
     QHash<QPersistentModelIndex, GraphicsItem *>::const_iterator it = d->items.find(idx);
     return (it != d->items.end()) ? *it : 0;
@@ -497,7 +495,7 @@ GraphicsItem *GraphicsScene::findItem(const QModelIndex &idx) const
 GraphicsItem *GraphicsScene::findItem(const QPersistentModelIndex &idx) const
 {
     if (!idx.isValid())
-        return 0;
+        return nullptr;
     assert(idx.model() == summaryHandlingModel());
     QHash<QPersistentModelIndex, GraphicsItem *>::const_iterator it = d->items.find(idx);
     return (it != d->items.end()) ? *it : 0;
@@ -532,7 +530,7 @@ void GraphicsScene::deleteSubtree(const QModelIndex &_idx)
     const int colcount = idx.model()->columnCount(parent);
     {
         for (int i = 0; i < colcount; ++i) {
-            removeItem(parent.child(idx.row(), i));
+            removeItem(idx.model()->index(idx.row(), i, parent));
         }
     }
     const int rowcount = summaryHandlingModel()->rowCount(_idx);
@@ -575,9 +573,9 @@ void GraphicsScene::helpEvent(QGraphicsSceneHelpEvent *helpEvent)
 {
 #ifndef QT_NO_TOOLTIP
     QGraphicsItem *item = itemAt(helpEvent->scenePos(), QTransform());
-    if (GraphicsItem *gitem = qgraphicsitem_cast<GraphicsItem *>(item)) {
+    if (auto *gitem = qgraphicsitem_cast<GraphicsItem *>(item)) {
         QToolTip::showText(helpEvent->screenPos(), gitem->ganttToolTip());
-    } else if (ConstraintGraphicsItem *citem = qgraphicsitem_cast<ConstraintGraphicsItem *>(item)) {
+    } else if (auto *citem = qgraphicsitem_cast<ConstraintGraphicsItem *>(item)) {
         QToolTip::showText(helpEvent->screenPos(), citem->ganttToolTip());
     } else {
         QGraphicsScene::helpEvent(helpEvent);
@@ -592,7 +590,7 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &_rect)
     if (d->isPrinting && d->drawColumnLabels) {
         QRectF headerRect(scn.topLeft() + QPointF(d->labelsWidth, 0), QSizeF(scn.width() - d->labelsWidth, d->rowController->headerHeight()));
 
-        d->grid->paintHeader(painter, headerRect, rect, 0, 0);
+        d->grid->paintHeader(painter, headerRect, rect, 0, nullptr);
 
 #if 0
         /* We have to blank out the part of the header that is invisible during
@@ -604,11 +602,7 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &_rect)
         opt.rect = labelsTabRect.toRect();
         opt.text = QLatin1String("");
         opt.textAlignment = Qt::AlignCenter;
-#if QT_VERSION >= QT_VERSION_CHECK(4, 4, 0)
         style()->drawControl(QStyle::CE_Header, &opt, painter, 0);
-#else
-        QApplication::style()->drawControl(QStyle::CE_Header, &opt, painter, 0);
-#endif
 #endif
 
         scn.setTop(headerRect.bottom());
@@ -671,7 +665,11 @@ void GraphicsScene::print(QPrinter *printer, bool drawRowLabels, bool drawColumn
     Q_UNUSED(drawColumnLabels);
 #else
     QPainter painter(printer);
-    doPrint(&painter, printer->pageRect(), sceneRect().left(), sceneRect().right(), printer, drawRowLabels, drawColumnLabels);
+    // TODO:
+    Q_UNUSED(drawRowLabels);
+    Q_UNUSED(drawColumnLabels);
+    // doPrint( &painter, printer->pageRect(), sceneRect().left(),
+    // sceneRect().right(), printer, drawRowLabels, drawColumnLabels );
 #endif
 }
 
@@ -697,12 +695,18 @@ void GraphicsScene::print(QPrinter *printer, qreal start, qreal end, bool drawRo
     Q_UNUSED(drawColumnLabels);
 #else
     QPainter painter(printer);
-    doPrint(&painter, printer->pageRect(), start, end, printer, drawRowLabels, drawColumnLabels);
+    // TODO:
+    Q_UNUSED(start);
+    Q_UNUSED(end);
+    Q_UNUSED(drawRowLabels);
+    Q_UNUSED(drawColumnLabels);
+    // doPrint( &painter, printer->pageRect(), start, end, printer,
+    // drawRowLabels, drawColumnLabels );
 #endif
 }
 
-/*! Render the GanttView inside the rectangle \a target using the painter \a painter.
- * If \a drawRowLabels is true (the default), each row will have it's
+/*! Render the GanttView inside the rectangle \a target using the painter \a
+ * painter. If \a drawRowLabels is true (the default), each row will have it's
  * label printed on the left side. If \a drawColumnLabels is true (the
  * default), each column will have it's label printed at the
  * top side.
@@ -714,11 +718,11 @@ void GraphicsScene::print(QPainter *painter, const QRectF &_targetRect, bool dra
         targetRect = sceneRect();
     }
 
-    doPrint(painter, targetRect, sceneRect().left(), sceneRect().right(), 0, drawRowLabels, drawColumnLabels);
+    doPrint(painter, targetRect, sceneRect().left(), sceneRect().right(), nullptr, drawRowLabels, drawColumnLabels);
 }
 
-/*! Render the GanttView inside the rectangle \a target using the painter \a painter.
- * If \a drawRowLabels is true (the default), each row will have it's
+/*! Render the GanttView inside the rectangle \a target using the painter \a
+ * painter. If \a drawRowLabels is true (the default), each row will have it's
  * label printed on the left side. If \a drawColumnLabels is true (the
  * default), each column will have it's label printed at the
  * top side.
@@ -734,7 +738,7 @@ void GraphicsScene::print(QPainter *painter, qreal start, qreal end, const QRect
         targetRect = sceneRect();
     }
 
-    doPrint(painter, targetRect, start, end, 0, drawRowLabels, drawColumnLabels);
+    doPrint(painter, targetRect, start, end, nullptr, drawRowLabels, drawColumnLabels);
 }
 
 /*!\internal
@@ -745,7 +749,6 @@ void GraphicsScene::doPrint(QPainter *painter, const QRectF &targetRect, qreal s
     d->isPrinting = true;
     d->drawColumnLabels = drawColumnLabels;
     d->labelsWidth = 0.0;
-#if QT_VERSION >= QT_VERSION_CHECK(4, 4, 0)
     QFont sceneFont(font());
 #ifdef HAVE_PRINTER
     if (printer) {
@@ -757,20 +760,6 @@ void GraphicsScene::doPrint(QPainter *painter, const QRectF &targetRect, qreal s
         else
             sceneFont.setPixelSize(font().pixelSize());
     }
-#endif
-#else
-    QFont sceneFont(painter->font());
-#ifdef HAVE_PRINTER
-    if (printer) {
-        sceneFont = QFont(painter->font(), printer);
-        if (painter->font().pointSizeF() >= 0.0)
-            sceneFont.setPointSizeF(painter->font().pointSizeF());
-        else if (painter->font().pointSize() >= 0)
-            sceneFont.setPointSize(painter->font().pointSize());
-        else
-            sceneFont.setPixelSize(painter->font().pixelSize());
-    }
-#endif
 #endif
 
     QGraphicsTextItem dummyTextItem(QLatin1String("X"));
@@ -800,7 +789,7 @@ void GraphicsScene::doPrint(QPainter *painter, const QRectF &targetRect, qreal s
             QModelIndex idx = summaryHandlingModel()->mapFromSource(sidx);
             const Span rg = rowController()->rowGeometry(sidx);
             const QString txt = idx.data(Qt::DisplayRole).toString();
-            QGraphicsTextItem *item = new QGraphicsTextItem(txt);
+            auto *item = new QGraphicsTextItem(txt);
             addItem(item);
             textLabels << item;
             item->adjustSize();
@@ -808,8 +797,8 @@ void GraphicsScene::doPrint(QPainter *painter, const QRectF &targetRect, qreal s
             item->setPos(0, rg.start());
         } while ((sidx = rowController()->indexBelow(sidx)).isValid());
         // Add a little margin to textWidth
-        textWidth += QFontMetricsF(sceneFont).width(QString::fromLatin1("X"));
-        Q_FOREACH (QGraphicsTextItem *item, textLabels) {
+        textWidth += QFontMetricsF(sceneFont).horizontalAdvance(QString::fromLatin1("X"));
+        for (QGraphicsTextItem *item : qAsConst(textLabels)) {
             item->setPos(scnRect.left() - textWidth, item->y());
             item->show();
         }
@@ -873,53 +862,51 @@ private:
     QPointer<QAbstractItemModel> m_model;
 
 public:
-    SceneTestRowController()
-    {
-    }
+    SceneTestRowController() = default;
 
     void setModel(QAbstractItemModel *model)
     {
         m_model = model;
     }
 
-    /*reimp*/ int headerHeight() const override
+    /*reimp*/ [[nodiscard]] int headerHeight() const override
     {
         return 40;
     }
 
-    /*reimp*/ bool isRowVisible(const QModelIndex &) const override
+    /*reimp*/ [[nodiscard]] bool isRowVisible(const QModelIndex &) const override
     {
         return true;
     }
-    /*reimp*/ bool isRowExpanded(const QModelIndex &) const override
+    /*reimp*/ [[nodiscard]] bool isRowExpanded(const QModelIndex &) const override
     {
         return false;
     }
-    /*reimp*/ KDGantt::Span rowGeometry(const QModelIndex &idx) const override
+    /*reimp*/ [[nodiscard]] KDGantt::Span rowGeometry(const QModelIndex &idx) const override
     {
         return KDGantt::Span(idx.row() * ROW_HEIGHT, ROW_HEIGHT);
     }
-    /*reimp*/ int maximumItemHeight() const override
+    /*reimp*/ [[nodiscard]] int maximumItemHeight() const override
     {
         return ROW_HEIGHT / 2;
     }
-    /*reimp*/ int totalHeight() const override
+    /*reimp*/ [[nodiscard]] int totalHeight() const override
     {
         return m_model->rowCount() * ROW_HEIGHT;
     }
 
-    /*reimp*/ QModelIndex indexAt(int height) const override
+    /*reimp*/ [[nodiscard]] QModelIndex indexAt(int height) const override
     {
         return m_model->index(height / ROW_HEIGHT, 0);
     }
 
-    /*reimp*/ QModelIndex indexBelow(const QModelIndex &idx) const override
+    /*reimp*/ [[nodiscard]] QModelIndex indexBelow(const QModelIndex &idx) const override
     {
         if (!idx.isValid())
             return QModelIndex();
         return idx.model()->index(idx.row() + 1, idx.column(), idx.parent());
     }
-    /*reimp*/ QModelIndex indexAbove(const QModelIndex &idx) const override
+    /*reimp*/ [[nodiscard]] QModelIndex indexAbove(const QModelIndex &idx) const override
     {
         if (!idx.isValid())
             return QModelIndex();
@@ -952,17 +939,17 @@ KDAB_SCOPED_UNITTEST_SIMPLE(KDGantt, GraphicsView, "test")
 {
     QStandardItemModel model;
 
-    QStandardItem *item = new QStandardItem();
+    auto *item = new QStandardItem();
     item->setData(KDGantt::TypeTask, KDGantt::ItemTypeRole);
     item->setData(QString::fromLatin1("Decide on new product"));
-    item->setData(QDateTime(QDate(2007, 3, 1)), KDGantt::StartTimeRole);
-    item->setData(QDateTime(QDate(2007, 3, 3)), KDGantt::EndTimeRole);
+    item->setData(QDate(2007, 3, 1).startOfDay(), KDGantt::StartTimeRole);
+    item->setData(QDate(2007, 3, 3).startOfDay(), KDGantt::EndTimeRole);
 
-    QStandardItem *item2 = new QStandardItem();
+    auto *item2 = new QStandardItem();
     item2->setData(KDGantt::TypeTask, KDGantt::ItemTypeRole);
     item2->setData(QString::fromLatin1("Educate personnel"));
-    item2->setData(QDateTime(QDate(2007, 3, 3)), KDGantt::StartTimeRole);
-    item2->setData(QDateTime(QDate(2007, 3, 6)), KDGantt::EndTimeRole);
+    item2->setData(QDate(2007, 3, 3).startOfDay(), KDGantt::StartTimeRole);
+    item2->setData(QDate(2007, 3, 6).startOfDay(), KDGantt::EndTimeRole);
 
     model.appendRow(item);
     model.appendRow(item2);
@@ -974,10 +961,11 @@ KDAB_SCOPED_UNITTEST_SIMPLE(KDGantt, GraphicsView, "test")
     graphicsView.setRowController(&rowController);
     graphicsView.setModel(&model);
 
-    // Now the interesting stuff - the items above are just for a "realistic environment"
+    // Now the interesting stuff - the items above are just for a "realistic
+    // environment"
 
     bool foreignItemDestroyed = false;
-    TestLineItem *foreignItem = new TestLineItem(&foreignItemDestroyed);
+    auto *foreignItem = new TestLineItem(&foreignItemDestroyed);
     graphicsView.scene()->addItem(foreignItem);
 
     assertFalse(foreignItemDestroyed);

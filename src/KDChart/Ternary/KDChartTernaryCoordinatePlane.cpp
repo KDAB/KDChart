@@ -47,9 +47,7 @@ TernaryCoordinatePlane::TernaryCoordinatePlane(Chart *parent)
 {
 }
 
-TernaryCoordinatePlane::~TernaryCoordinatePlane()
-{
-}
+TernaryCoordinatePlane::~TernaryCoordinatePlane() = default;
 
 void TernaryCoordinatePlane::init()
 {
@@ -78,10 +76,10 @@ void TernaryCoordinatePlane::layoutDiagrams()
     {
         QSizeF topleft(0.0, 0.0);
         QSizeF bottomRight(0.0, 0.0);
-        Q_FOREACH (AbstractDiagram *abstractDiagram, diagrams()) {
-            AbstractTernaryDiagram *diagram = qobject_cast<AbstractTernaryDiagram *>(abstractDiagram);
+        for (AbstractDiagram *abstractDiagram : diagrams()) {
+            auto *diagram = qobject_cast<AbstractTernaryDiagram *>(abstractDiagram);
             Q_ASSERT(diagram);
-            Q_FOREACH (TernaryAxis *axis, diagram->axes()) {
+            for (TernaryAxis *axis : diagram->axes()) {
                 QPair<QSizeF, QSizeF> margin = axis->requiredMargins();
                 topleft = topleft.expandedTo(margin.first);
                 bottomRight = bottomRight.expandedTo(margin.second);
@@ -111,7 +109,8 @@ void TernaryCoordinatePlane::layoutDiagrams()
     }
     // the rectangle has 1 as it's width, and TriangleHeight as it's
     // height - so this is how we translate that to widget coordinates:
-    d->xUnit = usableWidth / diagramNativeRectangle.width(); // only because we normalize the values to [0..1]
+    d->xUnit = usableWidth / diagramNativeRectangle.width(); // only because we normalize the
+                                                             // values to [0..1]
     d->yUnit = -usableHeight / diagramNativeRectangle.height();
 
     // now move zeroZeroPoint so that it does not include the tick marks
@@ -156,13 +155,13 @@ void TernaryCoordinatePlane::paint(QPainter *painter)
         ctx.setRectangle(drawArea);
 
         // paint the coordinate system rulers:
-        Q_ASSERT(d->grid != 0);
+        Q_ASSERT(d->grid != nullptr);
         d->grid->drawGrid(&ctx);
 
         // paint the diagrams:
-        for (int i = 0; i < diags.size(); i++) {
+        for (auto &diag : diags) {
             PainterSaver diagramPainterSaver(painter);
-            diags[i]->paint(&ctx);
+            diag->paint(&ctx);
         }
     }
 }
@@ -174,7 +173,7 @@ DataDimensionsList TernaryCoordinatePlane::getDataDimensionsList() const
 
 TernaryGrid *TernaryCoordinatePlane::grid() const
 {
-    TernaryGrid *ternaryGrid = static_cast<TernaryGrid *>(d->grid);
+    auto *ternaryGrid = static_cast<TernaryGrid *>(d->grid);
     Q_ASSERT(dynamic_cast<TernaryGrid *>(d->grid));
     return ternaryGrid;
 }

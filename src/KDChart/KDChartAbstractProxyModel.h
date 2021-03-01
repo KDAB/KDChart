@@ -37,17 +37,17 @@ class KDCHART_EXPORT AbstractProxyModel : public QAbstractProxyModel
 {
     Q_OBJECT
 public:
-    explicit AbstractProxyModel(QObject *parent = 0);
+    explicit AbstractProxyModel(QObject *parent = nullptr);
 
     /*! \reimpl */
-    QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override;
+    [[nodiscard]] QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override;
     /*! \reimpl */
-    QModelIndex mapToSource(const QModelIndex &proxyIndex) const override;
+    [[nodiscard]] QModelIndex mapToSource(const QModelIndex &proxyIndex) const override;
 
     /*! \reimpl */
-    QModelIndex index(int row, int col, const QModelIndex &index) const override;
+    [[nodiscard]] QModelIndex index(int row, int col, const QModelIndex &index) const override;
     /*! \reimpl */
-    QModelIndex parent(const QModelIndex &index) const override;
+    [[nodiscard]] QModelIndex parent(const QModelIndex &index) const override;
 };
 }
 

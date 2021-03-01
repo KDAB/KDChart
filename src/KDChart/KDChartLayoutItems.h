@@ -52,10 +52,10 @@ class PaintContext;
 class KDCHART_EXPORT AbstractLayoutItem : public QLayoutItem
 {
 public:
-    AbstractLayoutItem(Qt::Alignment itemAlignment = 0)
+    AbstractLayoutItem(Qt::Alignment itemAlignment = {})
         : QLayoutItem(itemAlignment)
-        , mParent(0)
-        , mParentLayout(0)
+        , mParent(nullptr)
+        , mParentLayout(nullptr)
     {
     }
 
@@ -108,7 +108,7 @@ public:
                    const TextAttributes &attributes,
                    const QObject *autoReferenceArea,
                    KDChartEnums::MeasureOrientation autoReferenceOrientation,
-                   Qt::Alignment alignment = 0);
+                   Qt::Alignment alignment = {});
 
     void setAutoReferenceArea(const QObject *area);
     const QObject *autoReferenceArea() const;
@@ -180,38 +180,38 @@ public:
                          const TextAttributes &attributes,
                          const QObject *autoReferenceArea,
                          KDChartEnums::MeasureOrientation autoReferenceOrientation,
-                         Qt::Alignment alignment = 0);
+                         Qt::Alignment alignment = {});
 
     ~TextBubbleLayoutItem() override;
 
     void setAutoReferenceArea(const QObject *area);
-    const QObject *autoReferenceArea() const;
+    [[nodiscard]] const QObject *autoReferenceArea() const;
 
     void setText(const QString &text);
-    QString text() const;
+    [[nodiscard]] QString text() const;
 
     void setTextAttributes(const TextAttributes &a);
-    TextAttributes textAttributes() const;
+    [[nodiscard]] TextAttributes textAttributes() const;
 
     /** pure virtual in QLayoutItem */
-    bool isEmpty() const override;
+    [[nodiscard]] bool isEmpty() const override;
     /** pure virtual in QLayoutItem */
-    Qt::Orientations expandingDirections() const override;
+    [[nodiscard]] Qt::Orientations expandingDirections() const override;
     /** pure virtual in QLayoutItem */
-    QSize maximumSize() const override;
+    [[nodiscard]] QSize maximumSize() const override;
     /** pure virtual in QLayoutItem */
-    QSize minimumSize() const override;
+    [[nodiscard]] QSize minimumSize() const override;
     /** pure virtual in QLayoutItem */
-    QSize sizeHint() const override;
+    [[nodiscard]] QSize sizeHint() const override;
     /** pure virtual in QLayoutItem */
     void setGeometry(const QRect &r) override;
     /** pure virtual in QLayoutItem */
-    QRect geometry() const override;
+    [[nodiscard]] QRect geometry() const override;
 
     void paint(QPainter *painter) override;
 
 protected:
-    int borderWidth() const;
+    [[nodiscard]] int borderWidth() const;
 
 private:
     TextLayoutItem *const m_text;
@@ -224,15 +224,15 @@ private:
 class KDCHART_EXPORT MarkerLayoutItem : public AbstractLayoutItem
 {
 public:
-    MarkerLayoutItem(AbstractDiagram *diagram, const MarkerAttributes &marker, const QBrush &brush, const QPen &pen, Qt::Alignment alignment = 0);
+    MarkerLayoutItem(AbstractDiagram *diagram, const MarkerAttributes &marker, const QBrush &brush, const QPen &pen, Qt::Alignment alignment = {});
 
-    Qt::Orientations expandingDirections() const override;
-    QRect geometry() const override;
-    bool isEmpty() const override;
-    QSize maximumSize() const override;
-    QSize minimumSize() const override;
+    [[nodiscard]] Qt::Orientations expandingDirections() const override;
+    [[nodiscard]] QRect geometry() const override;
+    [[nodiscard]] bool isEmpty() const override;
+    [[nodiscard]] QSize maximumSize() const override;
+    [[nodiscard]] QSize minimumSize() const override;
     void setGeometry(const QRect &r) override;
-    QSize sizeHint() const override;
+    [[nodiscard]] QSize sizeHint() const override;
 
     void paint(QPainter *) override;
 
@@ -254,18 +254,18 @@ private:
 class KDCHART_EXPORT LineLayoutItem : public AbstractLayoutItem
 {
 public:
-    LineLayoutItem(AbstractDiagram *diagram, int length, const QPen &pen, Qt::Alignment mLegendLineSymbolAlignment, Qt::Alignment alignment = 0);
+    LineLayoutItem(AbstractDiagram *diagram, int length, const QPen &pen, Qt::Alignment mLegendLineSymbolAlignment, Qt::Alignment alignment = {});
 
-    Qt::Orientations expandingDirections() const override;
-    QRect geometry() const override;
-    bool isEmpty() const override;
-    QSize maximumSize() const override;
-    QSize minimumSize() const override;
+    [[nodiscard]] Qt::Orientations expandingDirections() const override;
+    [[nodiscard]] QRect geometry() const override;
+    [[nodiscard]] bool isEmpty() const override;
+    [[nodiscard]] QSize maximumSize() const override;
+    [[nodiscard]] QSize minimumSize() const override;
     void setGeometry(const QRect &r) override;
-    QSize sizeHint() const override;
+    [[nodiscard]] QSize sizeHint() const override;
 
     void setLegendLineSymbolAlignment(Qt::Alignment legendLineSymbolAlignment);
-    virtual Qt::Alignment legendLineSymbolAlignment() const;
+    [[nodiscard]] virtual Qt::Alignment legendLineSymbolAlignment() const;
 
     void paint(QPainter *) override;
 
@@ -293,15 +293,15 @@ public:
                              const MarkerAttributes &marker,
                              const QBrush &markerBrush,
                              const QPen &markerPen,
-                             Qt::Alignment alignment = 0);
+                             Qt::Alignment alignment = {});
 
-    Qt::Orientations expandingDirections() const override;
-    QRect geometry() const override;
-    bool isEmpty() const override;
-    QSize maximumSize() const override;
-    QSize minimumSize() const override;
+    [[nodiscard]] Qt::Orientations expandingDirections() const override;
+    [[nodiscard]] QRect geometry() const override;
+    [[nodiscard]] bool isEmpty() const override;
+    [[nodiscard]] QSize maximumSize() const override;
+    [[nodiscard]] QSize minimumSize() const override;
     void setGeometry(const QRect &r) override;
-    QSize sizeHint() const override;
+    [[nodiscard]] QSize sizeHint() const override;
 
     void paint(QPainter *) override;
 
@@ -325,13 +325,13 @@ class KDCHART_EXPORT HorizontalLineLayoutItem : public AbstractLayoutItem
 public:
     HorizontalLineLayoutItem();
 
-    Qt::Orientations expandingDirections() const override;
-    QRect geometry() const override;
-    bool isEmpty() const override;
-    QSize maximumSize() const override;
-    QSize minimumSize() const override;
+    [[nodiscard]] Qt::Orientations expandingDirections() const override;
+    [[nodiscard]] QRect geometry() const override;
+    [[nodiscard]] bool isEmpty() const override;
+    [[nodiscard]] QSize maximumSize() const override;
+    [[nodiscard]] QSize minimumSize() const override;
     void setGeometry(const QRect &r) override;
-    QSize sizeHint() const override;
+    [[nodiscard]] QSize sizeHint() const override;
 
     void paint(QPainter *) override;
 
@@ -348,13 +348,13 @@ class KDCHART_EXPORT VerticalLineLayoutItem : public AbstractLayoutItem
 public:
     VerticalLineLayoutItem();
 
-    Qt::Orientations expandingDirections() const override;
-    QRect geometry() const override;
-    bool isEmpty() const override;
-    QSize maximumSize() const override;
-    QSize minimumSize() const override;
+    [[nodiscard]] Qt::Orientations expandingDirections() const override;
+    [[nodiscard]] QRect geometry() const override;
+    [[nodiscard]] bool isEmpty() const override;
+    [[nodiscard]] QSize maximumSize() const override;
+    [[nodiscard]] QSize minimumSize() const override;
     void setGeometry(const QRect &r) override;
-    QSize sizeHint() const override;
+    [[nodiscard]] QSize sizeHint() const override;
 
     void paint(QPainter *) override;
 

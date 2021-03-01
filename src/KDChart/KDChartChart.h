@@ -33,34 +33,36 @@ Simplified(*) overview of object ownership in a chart:
 
                 Chart is-a QWidget
                  |
-          n CoordinatePlanes is-a AbstractArea is-a AbstractLayoutItem is-a QLayoutItem
+          n CoordinatePlanes is-a AbstractArea is-a AbstractLayoutItem is-a
+QLayoutItem
                  |
             n Diagrams is-a QAbstractItemView is-a QWidget
               /   |   \
-  AbstractGrid    |   Axes (can be shared between diagrams) is-a AbstractArea is-a... QLayoutItem
- (no base class)  |
-                Legends is-a AbstractAreaWidget is-a QWidget
+  AbstractGrid    |   Axes (can be shared between diagrams) is-a AbstractArea
+is-a... QLayoutItem (no base class)  | Legends is-a AbstractAreaWidget is-a
+QWidget
 
 (*) less important classes, including base classes, removed.
 
 
 Layout rules:
 
-In principle, every size or existence change in one of the objects listed above must be propagated
-to all other objects. This could change their size.
-There are also settings changes that invalidate the size of other components, where the size changes
-are detected and propagated.
+In principle, every size or existence change in one of the objects listed above
+must be propagated to all other objects. This could change their size. There are
+also settings changes that invalidate the size of other components, where the
+size changes are detected and propagated.
 
 
 Painting call tree (simplified):
 
 Chart::paint() (from users) / paintEvent() (from framework)
 ChartPrivate::paintAll()-----------------------------------------------\
-CoordinatePlane::paintAll() (from AbstractArea)--------\               Axis::paintAll()-\
-CoordinatePlane::paint() (from AbstractLayoutItem)     Grid::drawGrid()                 Axis::paint()
-Diagram::paint( PaintContext* paintContext )
+CoordinatePlane::paintAll() (from AbstractArea)--------\ Axis::paintAll()-\
+CoordinatePlane::paint() (from AbstractLayoutItem)     Grid::drawGrid()
+Axis::paint() Diagram::paint( PaintContext* paintContext )
 
-Note that grids are painted from the coordinate plane, not from the diagram as ownership would suggest.
+Note that grids are painted from the coordinate plane, not from the diagram as
+ownership would suggest.
 
 */
 
@@ -73,9 +75,9 @@ class AbstractCoordinatePlane;
 class HeaderFooter;
 class Legend;
 
-typedef QList<AbstractCoordinatePlane *> CoordinatePlaneList;
-typedef QList<HeaderFooter *> HeaderFooterList;
-typedef QList<Legend *> LegendList;
+using CoordinatePlaneList = QList<AbstractCoordinatePlane *>;
+using HeaderFooterList = QList<HeaderFooter *>;
+using LegendList = QList<Legend *>;
 
 /**
  * @class Chart KDChartChart.h KDChartChart
@@ -85,19 +87,20 @@ typedef QList<Legend *> LegendList;
  * and various optional elements such as legends, axes, text boxes, headers
  * or footers. It takes ownership of all these elements when they are assigned
  * to it. Each diagram is associated with a coordinate plane, of which the chart
- * can have more than one. The coordinate planes (and thus the associated diagrams)
- * can be laid out in various ways.
+ * can have more than one. The coordinate planes (and thus the associated
+ * diagrams) can be laid out in various ways.
  *
  * The Chart class makes heavy use of the Qt Interview framework for model/view
- * programming, and thus requires data to be presented to it in a QAbstractItemModel
- * compatible way. For many simple charts, especially if the visualized data is
- * static, KDChart::Widget provides an abstracted interface, that hides the complexity
- * of Interview to a large extent.
+ * programming, and thus requires data to be presented to it in a
+ * QAbstractItemModel compatible way. For many simple charts, especially if the
+ * visualized data is static, KDChart::Widget provides an abstracted interface,
+ * that hides the complexity of Interview to a large extent.
  */
 class KDCHART_EXPORT Chart : public QWidget
 {
     Q_OBJECT
-    // KD Chart 3.0: leading is inter-line distance of text. this here is MARGIN or SPACING.
+    // KD Chart 3.0: leading is inter-line distance of text. this here is MARGIN
+    // or SPACING.
     Q_PROPERTY(int globalLeadingTop READ globalLeadingTop WRITE setGlobalLeadingTop)
     Q_PROPERTY(int globalLeadingBottom READ globalLeadingBottom WRITE setGlobalLeadingBottom)
     Q_PROPERTY(int globalLeadingLeft READ globalLeadingLeft WRITE setGlobalLeadingLeft)
@@ -107,7 +110,7 @@ class KDCHART_EXPORT Chart : public QWidget
     KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET(Chart)
 
 public:
-    explicit Chart(QWidget *parent = 0);
+    explicit Chart(QWidget *parent = nullptr);
     ~Chart() override;
 
     /**
@@ -118,11 +121,12 @@ public:
      * the user from creating sharing graphs that are not layoutable in a
      * plane and still needs assistance from the user.
      */
-    bool useNewLayoutSystem() const;
+    [[nodiscard]] bool useNewLayoutSystem() const;
     void setUseNewLayoutSystem(bool value);
 
     /**
-      \brief Specify the frame attributes to be used, by default is it a thin black line.
+      \brief Specify the frame attributes to be used, by default is it a thin
+      black line.
 
       To hide the frame line, you could do something like this:
       \verbatim
@@ -134,15 +138,16 @@ public:
       \sa setBackgroundAttributes
       */
     void setFrameAttributes(const FrameAttributes &a);
-    FrameAttributes frameAttributes() const;
+    [[nodiscard]] FrameAttributes frameAttributes() const;
 
     /**
-      \brief Specify the background attributes to be used, by default there is no background.
+      \brief Specify the background attributes to be used, by default there is
+      no background.
 
       To set a light blue background, you could do something like this:
       \verbatim
-      KDChart::BackgroundAttributes backgroundAttrs( my_chart->backgroundAttributes() );
-      backgroundAttrs.setVisible( true );
+      KDChart::BackgroundAttributes backgroundAttrs(
+      my_chart->backgroundAttributes() ); backgroundAttrs.setVisible( true );
       backgroundAttrs.setBrush( QColor(0xd0,0xd0,0xff) );
       my_chart->setBackgroundAttributes( backgroundAttrs );
       \endverbatim
@@ -150,7 +155,7 @@ public:
       \sa setFrameAttributes
       */
     void setBackgroundAttributes(const BackgroundAttributes &a);
-    BackgroundAttributes backgroundAttributes() const;
+    [[nodiscard]] BackgroundAttributes backgroundAttributes() const;
 
     /**
      * Each chart must have at least one coordinate plane.
@@ -198,12 +203,13 @@ public:
      * the very first coordinate plane will be replaced. In case, there was no
      * plane yet, the new plane will just be added.
      *
-     * \note If you want to re-use the old coordinate plane, call takeCoordinatePlane and
-     * addCoordinatePlane, instead of using replaceCoordinatePlane.
+     * \note If you want to re-use the old coordinate plane, call
+     * takeCoordinatePlane and addCoordinatePlane, instead of using
+     * replaceCoordinatePlane.
      *
      * \sa addCoordinatePlane, takeCoordinatePlane
      */
-    void replaceCoordinatePlane(AbstractCoordinatePlane *plane, AbstractCoordinatePlane *oldPlane = 0);
+    void replaceCoordinatePlane(AbstractCoordinatePlane *plane, AbstractCoordinatePlane *oldPlane = nullptr);
 
     /**
      * Removes the coordinate plane from the chart, without deleting it.
@@ -248,23 +254,26 @@ public:
      * Replaces the old header (or footer, resp.), or appends the
      * new header or footer, it there is none yet.
      *
-     * @param headerFooter The header or footer to be used instead of the old one.
-     * This parameter must not be zero, or the method will do nothing.
+     * @param headerFooter The header or footer to be used instead of the old
+     * one. This parameter must not be zero, or the method will do nothing.
      *
-     * @param oldHeaderFooter The header or footer to be removed by the new one. This
-     * header or footer will be deleted automatically. If the parameter is omitted,
-     * the very first header or footer will be replaced. In case, there was no
-     * header and no footer yet, the new header or footer will just be added.
+     * @param oldHeaderFooter The header or footer to be removed by the new one.
+     * This header or footer will be deleted automatically. If the parameter is
+     * omitted, the very first header or footer will be replaced. In case, there
+     * was no header and no footer yet, the new header or footer will just be
+     * added.
      *
-     * \note If you want to re-use the old header or footer, call takeHeaderFooter and
-     * addHeaderFooter, instead of using replaceHeaderFooter.
+     * \note If you want to re-use the old header or footer, call
+     * takeHeaderFooter and addHeaderFooter, instead of using
+     * replaceHeaderFooter.
      *
      * \sa addHeaderFooter, takeHeaderFooter
      */
-    void replaceHeaderFooter(HeaderFooter *headerFooter, HeaderFooter *oldHeaderFooter = 0);
+    void replaceHeaderFooter(HeaderFooter *headerFooter, HeaderFooter *oldHeaderFooter = nullptr);
 
     /**
-     * Removes the header (or footer, resp.) from the chart, without deleting it.
+     * Removes the header (or footer, resp.) from the chart, without deleting
+     * it.
      *
      * The chart no longer owns the header or footer, so it is
      * the caller's responsibility to delete the header or footer.
@@ -316,7 +325,7 @@ public:
      *
      * \sa addLegend, takeLegend
      */
-    void replaceLegend(Legend *legend, Legend *oldLegend = 0);
+    void replaceLegend(Legend *legend, Legend *oldLegend = nullptr);
 
     /**
      * Removes the legend from the chart, without deleting it.
@@ -344,8 +353,9 @@ public:
      * as much free space as is needed for axes with overlaping content
      * at the respective sides.
      *
-     * \sa setGlobalLeadingTop, setGlobalLeadingBottom, setGlobalLeadingLeft, setGlobalLeadingRight
-     * \sa globalLeadingTop, globalLeadingBottom, globalLeadingLeft, globalLeadingRight
+     * \sa setGlobalLeadingTop, setGlobalLeadingBottom, setGlobalLeadingLeft,
+     * setGlobalLeadingRight \sa globalLeadingTop, globalLeadingBottom,
+     * globalLeadingLeft, globalLeadingRight
      */
     void setGlobalLeading(int left, int top, int right, int bottom);
 
@@ -366,7 +376,7 @@ public:
      *
      * \sa setGlobalLeading
      */
-    int globalLeadingLeft() const;
+    [[nodiscard]] int globalLeadingLeft() const;
 
     /**
      * Set the padding between the start of the widget and the start
@@ -385,7 +395,7 @@ public:
      *
      * \sa setGlobalLeading
      */
-    int globalLeadingTop() const;
+    [[nodiscard]] int globalLeadingTop() const;
 
     /**
      * Set the padding between the start of the widget and the start
@@ -404,7 +414,7 @@ public:
      *
      * \sa setGlobalLeading
      */
-    int globalLeadingRight() const;
+    [[nodiscard]] int globalLeadingRight() const;
 
     /**
      * Set the padding between the start of the widget and the start
@@ -423,15 +433,15 @@ public:
      *
      * \sa setGlobalLeading
      */
-    int globalLeadingBottom() const;
+    [[nodiscard]] int globalLeadingBottom() const;
 
     /**
      * Paints all the contents of the chart. Use this method to make KDChart
      * draw into your QPainter.
      *
      * \note Any global leading settings will be used by the paint method too,
-     * so make sure to set them to zero, if you want the drawing to have the exact
-     * size of the target rectangle.
+     * so make sure to set them to zero, if you want the drawing to have the
+     * exact size of the target rectangle.
      *
      * \param painter The painter to be drawn into.
      * \param target The rectangle to be filled by the Chart's drawing.
@@ -443,7 +453,8 @@ public:
     void reLayoutFloatingLegends();
 
 Q_SIGNALS:
-    /** Emitted upon change of a property of the Chart or any of its components. */
+    /** Emitted upon change of a property of the Chart or any of its components.
+     */
     void propertiesChanged();
     void finishedDrawing();
 
@@ -486,12 +497,14 @@ private:
      * This directory contains the header files and the source files of both,
      * the private and the public classes.
      *
-     * \note Only classes that have an include wrapper in the \c $KDCHARTDIR/include
+     * \note Only classes that have an include wrapper in the \c
+$KDCHARTDIR/include
      * directory are part of the supported API.
      * All other classes are to be considered as implemntation details, they
      * could be changed in future versions of KDChart without notice.
      *
-     * In other words: No class that is not mentioned in the \c $KDCHARTDIR/include
+     * In other words: No class that is not mentioned in the \c
+$KDCHARTDIR/include
      * directory may be directly used by your application.
      *
      * The recommended way to include classes of the KDChart API is including
@@ -507,66 +520,84 @@ private:
 }
 /**
  * @class QAbstractItemView "(do not include)"
- * @brief Class only listed here to document inheritance of some KDChart classes.
+ * @brief Class only listed here to document inheritance of some KDChart
+ * classes.
  *
  * Please consult the respective Qt documentation for details:
- * <A HREF="https://doc.qt.io/qt-5/qabstractitemview.html">https://doc.qt.io/qt-5/qabstractitemview.html</A>
+ * <A
+ * HREF="https://doc.qt.io/qt-5/qabstractitemview.html">https://doc.qt.io/qt-5/qabstractitemview.html</A>
  */
 /**
  * @class QAbstractProxyModel "(do not include)"
- * @brief Class only listed here to document inheritance of some KDChart classes.
+ * @brief Class only listed here to document inheritance of some KDChart
+ * classes.
  *
  * Please consult the respective Qt documentation for details:
- * <A HREF="https://doc.qt.io/qt-5/qabstractproxymodel.html">https://doc.qt.io/qt-5/qabstractproxymodel.html</A>
+ * <A
+ * HREF="https://doc.qt.io/qt-5/qabstractproxymodel.html">https://doc.qt.io/qt-5/qabstractproxymodel.html</A>
  */
 /**
  * @class QFrame "(do not include)"
- * @brief Class only listed here to document inheritance of some KDChart classes.
+ * @brief Class only listed here to document inheritance of some KDChart
+ * classes.
  *
  * Please consult the respective Qt documentation for details:
- * <A HREF="https://doc.qt.io/qt-5/qframe.html">https://doc.qt.io/qt-5/qframe.html</A>
+ * <A
+ * HREF="https://doc.qt.io/qt-5/qframe.html">https://doc.qt.io/qt-5/qframe.html</A>
  */
 /**
  * @class QObject "(do not include)"
- * @brief Class only listed here to document inheritance of some KDChart classes.
+ * @brief Class only listed here to document inheritance of some KDChart
+ * classes.
  *
  * Please consult the respective Qt documentation for details:
- * <A HREF="https://doc.qt.io/qt-5/qobject.html">https://doc.qt.io/qt-5/qobject.html</A>
+ * <A
+ * HREF="https://doc.qt.io/qt-5/qobject.html">https://doc.qt.io/qt-5/qobject.html</A>
  */
 /**
  * @class QSortFilterProxyModel "(do not include)"
- * @brief Class only listed here to document inheritance of some KDChart classes.
+ * @brief Class only listed here to document inheritance of some KDChart
+ * classes.
  *
  * Please consult the respective Qt documentation for details:
- * <A HREF="https://doc.qt.io/qt-5/qsortfilterproxymodel.html">https://doc.qt.io/qt-5/qsortfilterproxymodel.html</A>
+ * <A
+ * HREF="https://doc.qt.io/qt-5/qsortfilterproxymodel.html">https://doc.qt.io/qt-5/qsortfilterproxymodel.html</A>
  */
 /**
  * @class QWidget "(do not include)"
- * @brief Class only listed here to document inheritance of some KDChart classes.
+ * @brief Class only listed here to document inheritance of some KDChart
+ * classes.
  *
  * Please consult the respective Qt documentation for details:
- * <A HREF="https://doc.qt.io/qt-5/qwidget.html">https://doc.qt.io/qt-5/qwidget.html</A>
+ * <A
+ * HREF="https://doc.qt.io/qt-5/qwidget.html">https://doc.qt.io/qt-5/qwidget.html</A>
  */
 /**
  * @class QTextDocument "(do not include)"
- * @brief Class only listed here to document inheritance of some KDChart classes.
+ * @brief Class only listed here to document inheritance of some KDChart
+ * classes.
  *
  * Please consult the respective Qt documentation for details:
- * <A HREF="https://doc.qt.io/qt-5/qtextdocument.html">https://doc.qt.io/qt-5/qtextdocument.html</A>
+ * <A
+ * HREF="https://doc.qt.io/qt-5/qtextdocument.html">https://doc.qt.io/qt-5/qtextdocument.html</A>
  */
 /**
  * @class QLayoutItem "(do not include)"
- * @brief Class only listed here to document inheritance of some KDChart classes.
+ * @brief Class only listed here to document inheritance of some KDChart
+ * classes.
  *
  * Please consult the respective Qt documentation for details:
- * <A HREF="https://doc.qt.io/qt-5/qlayoutitem-members.html">https://doc.qt.io/qt-5/qlayoutitem-members.html</A>
+ * <A
+ * HREF="https://doc.qt.io/qt-5/qlayoutitem-members.html">https://doc.qt.io/qt-5/qlayoutitem-members.html</A>
  */
 /**
  * @class QGraphicsPolygonItem "(do not include)"
- * @brief Class only listed here to document inheritance of some KDChart classes.
+ * @brief Class only listed here to document inheritance of some KDChart
+ * classes.
  *
  * Please consult the respective Qt documentation for details:
- * <A HREF="https://doc.qt.io/qt-5/qgraphicspolygonitem.html">https://doc.qt.io/qt-5/qgraphicspolygonitem.html</A>
+ * <A
+ * HREF="https://doc.qt.io/qt-5/qgraphicspolygonitem.html">https://doc.qt.io/qt-5/qgraphicspolygonitem.html</A>
  */
 
 #endif

@@ -45,16 +45,16 @@ public:
     enum BackgroundPixmapMode { BackgroundPixmapModeNone, BackgroundPixmapModeCentered, BackgroundPixmapModeScaled, BackgroundPixmapModeStretched };
 
     void setVisible(bool visible);
-    bool isVisible() const;
+    [[nodiscard]] bool isVisible() const;
 
     void setBrush(const QBrush &brush);
-    QBrush brush() const;
+    [[nodiscard]] QBrush brush() const;
 
     void setPixmapMode(BackgroundPixmapMode mode);
-    BackgroundPixmapMode pixmapMode() const;
+    [[nodiscard]] BackgroundPixmapMode pixmapMode() const;
 
     void setPixmap(const QPixmap &backPixmap);
-    QPixmap pixmap() const;
+    [[nodiscard]] QPixmap pixmap() const;
 
     bool operator==(const BackgroundAttributes &) const;
     inline bool operator!=(const BackgroundAttributes &other) const
@@ -62,7 +62,7 @@ public:
         return !operator==(other);
     }
 
-    bool isEqualTo(const BackgroundAttributes &other, bool ignorePixmap = false) const;
+    [[nodiscard]] bool isEqualTo(const BackgroundAttributes &other, bool ignorePixmap = false) const;
 
 private:
     KDCHART_DECLARE_PRIVATE_BASE_VALUE(BackgroundAttributes)

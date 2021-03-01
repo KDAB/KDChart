@@ -106,7 +106,8 @@ private slots:
     void testBoxLayoutChildWidget()
     {
         QWidget *topLevelWidget = new QWidget(0);
-        // This time the layout is associated with a widget, like d->layout in KDChart::Chart.
+        // This time the layout is associated with a widget, like d->layout in
+        // KDChart::Chart.
         QBoxLayout *vLayout = new QVBoxLayout(topLevelWidget);
         MyLegendWidget *widget1 = new MyLegendWidget(topLevelWidget);
         MyWidgetItem *widgetItem = new MyWidgetItem(widget1);
@@ -116,21 +117,22 @@ private slots:
         QRect geom(100, 100, 800, 800);
         vLayout->setGeometry(geom);
         qDebug() << "widget1: " << widget1->geometry();
-        // int marg = topLevelWidget->style()->pixelMetric( QStyle::PM_DefaultTopLevelMargin );
-        int marg = vLayout->margin();
-        QCOMPARE(widget1->geometry(), geom.adjusted(marg, marg, -marg, -marg));
+        // int marg = topLevelWidget->style()->pixelMetric(
+        // QStyle::PM_DefaultTopLevelMargin );
+        const auto marg = vLayout->contentsMargins();
+        QCOMPARE(widget1->geometry(), geom.adjusted(marg.left(), marg.top(), -marg.right(), -marg.bottom()));
 
         geom = QRect(10, 10, 80, 80);
         vLayout->setGeometry(geom);
         qDebug() << "widget1: " << widget1->geometry();
-        QCOMPARE(widget1->geometry(), geom.adjusted(marg, marg, -marg, -marg));
+        QCOMPARE(widget1->geometry(), geom.adjusted(marg.left(), marg.top(), -marg.right(), -marg.bottom()));
 
         // And now let's show the widget for real
         geom = QRect(0, 0, 500, 100);
         topLevelWidget->resize(geom.size());
         topLevelWidget->show();
         QApplication::sendPostedEvents();
-        QRect expected = geom.adjusted(marg, marg, -marg, -marg);
+        QRect expected = geom.adjusted(marg.left(), marg.top(), -marg.right(), -marg.bottom());
         qDebug() << "widget1: " << widget1->frameGeometry() << "expecting" << expected;
         // this test is quite useless...
         // QCOMPARE( widget1->frameGeometry(), expected );

@@ -36,9 +36,9 @@ class DatasetSettings : public QWidget
     Q_PROPERTY(int datasetCount READ datasetCount WRITE setDatasetCount NOTIFY datasetCountChanged())
 
 public:
-    explicit DatasetSettings(KDChart::Chart *chart, QWidget *parent = 0);
+    explicit DatasetSettings(KDChart::Chart *chart, QWidget *parent = nullptr);
     ~DatasetSettings() override;
-    int datasetCount() const;
+    [[nodiscard]] int datasetCount() const;
 public Q_SLOTS:
     void setDatasetCount(int value);
     void indexChanged(int index);

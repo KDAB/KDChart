@@ -37,7 +37,7 @@ namespace KDChart
 Measure::Measure()
     : mValue(0.0)
     , mMode(KDChartEnums::MeasureCalculationModeAuto)
-    , mArea(0)
+    , mArea(nullptr)
     , mOrientation(KDChartEnums::MeasureOrientationAuto)
 {
     // this bloc left empty intentionally
@@ -46,7 +46,7 @@ Measure::Measure()
 Measure::Measure(qreal value, KDChartEnums::MeasureCalculationMode mode, KDChartEnums::MeasureOrientation orientation)
     : mValue(value)
     , mMode(mode)
-    , mArea(0)
+    , mArea(nullptr)
     , mOrientation(orientation)
 {
     // this bloc left empty intentionally
@@ -94,7 +94,8 @@ qreal Measure::calculatedValue(const QSizeF &autoSize, KDChartEnums::MeasureOrie
         case KDChartEnums::MeasureCalculationModeAutoOrientation:
             orientation = autoOrientation;
             break;
-        case KDChartEnums::MeasureCalculationModeAbsolute: // fall through intended
+        case KDChartEnums::MeasureCalculationModeAbsolute: // fall through
+                                                           // intended
         case KDChartEnums::MeasureCalculationModeRelative:
             break;
         }
@@ -107,7 +108,8 @@ qreal Measure::calculatedValue(const QSizeF &autoSize, KDChartEnums::MeasureOrie
             // qDebug() << ( area == autoArea ) << "size" << size;
             qreal referenceValue = 0;
             switch (orientation) {
-            case KDChartEnums::MeasureOrientationAuto: // fall through intended
+            case KDChartEnums::MeasureOrientationAuto: // fall through
+                                                       // intended
             case KDChartEnums::MeasureOrientationMinimum:
                 referenceValue = qMin(size.width(), size.height());
                 break;
@@ -135,26 +137,28 @@ qreal Measure::calculatedValue(const QObject *autoArea, KDChartEnums::MeasureOri
 const QSizeF Measure::sizeOfArea(const QObject *area) const
 {
     QSizeF size;
-    const CartesianCoordinatePlane *plane = dynamic_cast<const CartesianCoordinatePlane *>(area);
+    const auto *plane = dynamic_cast<const CartesianCoordinatePlane *>(area);
     if (false) {
         size = plane->visibleDiagramArea().size();
     } else {
-        const AbstractArea *kdcArea = dynamic_cast<const AbstractArea *>(area);
+        const auto *kdcArea = dynamic_cast<const AbstractArea *>(area);
         if (kdcArea) {
             size = kdcArea->geometry().size();
-            // qDebug() << "Measure::sizeOfArea() found kdcArea with size" << size;
+            // qDebug() << "Measure::sizeOfArea() found kdcArea with size" <<
+            // size;
         } else {
-            const QWidget *widget = dynamic_cast<const QWidget *>(area);
+            const auto *widget = dynamic_cast<const QWidget *>(area);
             if (widget) {
-                /* ATTENTION: Using the layout does not work: The Legend will never get the right size then!
-                const QLayout * layout = widget->layout();
-                if ( layout ) {
-                    size = layout->geometry().size();
-                    //qDebug() << "Measure::sizeOfArea() found widget with layout size" << size;
-                } else*/
+                /* ATTENTION: Using the layout does not work: The Legend will
+                never get the right size then! const QLayout * layout =
+                widget->layout(); if ( layout ) { size =
+                layout->geometry().size();
+                    //qDebug() << "Measure::sizeOfArea() found widget with
+                layout size" << size; } else*/
                 {
                     size = widget->geometry().size();
-                    // qDebug() << "Measure::sizeOfArea() found widget with size" << size;
+                    // qDebug() << "Measure::sizeOfArea() found widget with
+                    // size" << size;
                 }
             } else if (mMode != KDChartEnums::MeasureCalculationModeAbsolute) {
                 size = QSizeF(1.0, 1.0);
@@ -172,7 +176,7 @@ bool Measure::operator==(const Measure &r) const
 }
 
 GlobalMeasureScaling::GlobalMeasureScaling()
-    : m_paintDevice(0)
+    : m_paintDevice(nullptr)
 {
     mFactors.push(qMakePair(qreal(1.0), qreal(1.0)));
 }

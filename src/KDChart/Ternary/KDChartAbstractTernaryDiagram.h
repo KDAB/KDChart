@@ -41,7 +41,7 @@ class KDCHART_EXPORT AbstractTernaryDiagram : public AbstractDiagram
     KDCHART_DECLARE_DERIVED_DIAGRAM(AbstractTernaryDiagram, TernaryCoordinatePlane)
 
 public:
-    explicit AbstractTernaryDiagram(QWidget *parent = 0, TernaryCoordinatePlane *plane = 0);
+    explicit AbstractTernaryDiagram(QWidget *parent = nullptr, TernaryCoordinatePlane *plane = nullptr);
     ~AbstractTernaryDiagram() override;
 
     void resize(const QSizeF &area) override = 0;
@@ -49,10 +49,10 @@ public:
 
     virtual void addAxis(TernaryAxis *axis);
     virtual void takeAxis(TernaryAxis *axis);
-    virtual TernaryAxisList axes() const;
+    [[nodiscard]] virtual TernaryAxisList axes() const;
 
 protected:
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const override = 0;
+    [[nodiscard]] const QPair<QPointF, QPointF> calculateDataBoundaries() const override = 0;
 };
 
 }

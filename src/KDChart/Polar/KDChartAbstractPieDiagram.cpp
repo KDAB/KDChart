@@ -39,9 +39,7 @@ AbstractPieDiagram::Private::Private()
 {
 }
 
-AbstractPieDiagram::Private::~Private()
-{
-}
+AbstractPieDiagram::Private::~Private() = default;
 
 AbstractPieDiagram::AbstractPieDiagram(QWidget *parent, PolarCoordinatePlane *plane)
     : AbstractPolarDiagram(new Private(), parent, plane)
@@ -49,9 +47,7 @@ AbstractPieDiagram::AbstractPieDiagram(QWidget *parent, PolarCoordinatePlane *pl
     init();
 }
 
-AbstractPieDiagram::~AbstractPieDiagram()
-{
-}
+AbstractPieDiagram::~AbstractPieDiagram() = default;
 
 void AbstractPieDiagram::init()
 {
@@ -62,7 +58,8 @@ bool AbstractPieDiagram::compare(const AbstractPieDiagram *other) const
     if (other == this)
         return true;
     if (!other) {
-        // qDebug() << "AbstractPieDiagram::compare() cannot compare to Null pointer";
+        // qDebug() << "AbstractPieDiagram::compare() cannot compare to Null
+        // pointer";
         return false;
     }
     /*
@@ -93,7 +90,8 @@ qreal AbstractPieDiagram::granularity() const
 void AbstractPieDiagram::setStartPosition(int degrees)
 {
     Q_UNUSED(degrees);
-    qWarning() << "Deprecated AbstractPieDiagram::setStartPosition() called, setting ignored.";
+    qWarning() << "Deprecated AbstractPieDiagram::setStartPosition() called, "
+                  "setting ignored.";
 }
 
 int AbstractPieDiagram::startPosition() const
@@ -114,19 +112,19 @@ bool AbstractPieDiagram::autoRotateLabels() const
 
 void AbstractPieDiagram::setPieAttributes(const PieAttributes &attrs)
 {
-    d->attributesModel->setModelData(qVariantFromValue(attrs), PieAttributesRole);
+    d->attributesModel->setModelData(QVariant::fromValue(attrs), PieAttributesRole);
     emit layoutChanged(this);
 }
 
 void AbstractPieDiagram::setPieAttributes(int column, const PieAttributes &attrs)
 {
-    d->setDatasetAttrs(column, qVariantFromValue(attrs), PieAttributesRole);
+    d->setDatasetAttrs(column, QVariant::fromValue(attrs), PieAttributesRole);
     emit layoutChanged(this);
 }
 
 void AbstractPieDiagram::setPieAttributes(const QModelIndex &index, const PieAttributes &attrs)
 {
-    d->attributesModel->setData(index, qVariantFromValue(attrs), PieAttributesRole);
+    d->attributesModel->setData(index, QVariant::fromValue(attrs), PieAttributesRole);
     emit layoutChanged(this);
 }
 
@@ -150,19 +148,19 @@ PieAttributes AbstractPieDiagram::pieAttributes(const QModelIndex &index) const
 
 void AbstractPieDiagram::setThreeDPieAttributes(const ThreeDPieAttributes &tda)
 {
-    d->attributesModel->setModelData(qVariantFromValue(tda), ThreeDPieAttributesRole);
+    d->attributesModel->setModelData(QVariant::fromValue(tda), ThreeDPieAttributesRole);
     emit layoutChanged(this);
 }
 
 void AbstractPieDiagram::setThreeDPieAttributes(int column, const ThreeDPieAttributes &tda)
 {
-    d->setDatasetAttrs(column, qVariantFromValue(tda), ThreeDPieAttributesRole);
+    d->setDatasetAttrs(column, QVariant::fromValue(tda), ThreeDPieAttributesRole);
     emit layoutChanged(this);
 }
 
 void AbstractPieDiagram::setThreeDPieAttributes(const QModelIndex &index, const ThreeDPieAttributes &tda)
 {
-    model()->setData(index, qVariantFromValue(tda), ThreeDPieAttributesRole);
+    model()->setData(index, QVariant::fromValue(tda), ThreeDPieAttributesRole);
     emit layoutChanged(this);
 }
 

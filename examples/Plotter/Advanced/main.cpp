@@ -90,14 +90,14 @@ int main(int argc, char *argv[])
     plane1->setRubberBandZoomingEnabled(true);
 
     // create cartesian diagrams
-    KDChart::Plotter *plotter = new KDChart::Plotter;
+    auto *plotter = new KDChart::Plotter;
     plotter->setHidden(0, true);
     plotter->setAntiAliasing(false);
     plotter->setModel(&model);
     plane1->replaceDiagram(plotter);
 
     // customize grids
-    KDChart::CartesianCoordinatePlane *cp1 = static_cast<KDChart::CartesianCoordinatePlane *>(plane1);
+    auto *cp1 = static_cast<KDChart::CartesianCoordinatePlane *>(plane1);
     KDChart::GridAttributes gv = cp1->gridAttributes(Qt::Vertical);
     QPen gridPen(QColor(200, 100, 100));
     gridPen.setStyle(Qt::DashLine);
@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
     cp1->setGridAttributes(Qt::Vertical, gv);
 
     // axis
-    KDChart::CartesianAxis *xAxis = new KDChart::CartesianAxis(plotter);
+    auto *xAxis = new KDChart::CartesianAxis(plotter);
     xAxis->setPosition(KDChart::CartesianAxis::Bottom);
     xAxis->setTitleText("X-Title");
 
@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
     att.setFontSize(KDChart::Measure(16));
     xAxis->setTitleTextAttributes(att);
 
-    KDChart::CartesianAxis *y1Axis = new KDChart::CartesianAxis(plotter);
+    auto *y1Axis = new KDChart::CartesianAxis(plotter);
     y1Axis->setPosition(KDChart::CartesianAxis::Left);
     y1Axis->setTitleText("Y-Title");
 
@@ -137,7 +137,7 @@ int main(int argc, char *argv[])
     plotter->addAxis(y1Axis);
 
     // create legend
-    KDChart::Legend *legend = new KDChart::Legend(plotter, &chart);
+    auto *legend = new KDChart::Legend(plotter, &chart);
     chart.addLegend(legend);
     att = legend->textAttributes();
     f = att.font();
@@ -198,8 +198,8 @@ int main(int argc, char *argv[])
     plotter->setPen(1, Qt::NoPen);
 
     // Dataset 3 : MarkerCircle, (green outline, yellow inside), blue line
-    QColor SERIES_3_INSIDE = QColor("yellow");
-    QColor SERIES_3_LINE = QColor("navy");
+    auto SERIES_3_INSIDE = QColor("yellow");
+    auto SERIES_3_LINE = QColor("navy");
     attr = plotter->dataValueAttributes(2);
     mattr = attr.markerAttributes();
     mattr.setMarkerColor(SERIES_3_INSIDE);

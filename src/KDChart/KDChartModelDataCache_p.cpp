@@ -27,14 +27,12 @@
 using namespace KDChart::ModelDataCachePrivate;
 
 ModelSignalMapperConnector::ModelSignalMapperConnector(ModelSignalMapper &mapper)
-    : QObject(0)
+    : QObject(nullptr)
     , m_mapper(mapper)
 {
 }
 
-ModelSignalMapperConnector::~ModelSignalMapperConnector()
-{
-}
+ModelSignalMapperConnector::~ModelSignalMapperConnector() = default;
 
 void ModelSignalMapperConnector::connectSignals(QAbstractItemModel *model)
 {

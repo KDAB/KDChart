@@ -45,21 +45,24 @@ class KDGANTT_EXPORT AbstractGrid : public QObject
     friend class GraphicsScene;
 
 public:
-    AbstractGrid(QObject *parent = 0);
+    AbstractGrid(QObject *parent = nullptr);
     ~AbstractGrid() override;
 
-    QAbstractItemModel *model() const;
-    QModelIndex rootIndex() const;
+    [[nodiscard]] QAbstractItemModel *model() const;
+    [[nodiscard]] QModelIndex rootIndex() const;
 
-    virtual Span mapToChart(const QModelIndex &idx) const = 0;
-    virtual bool mapFromChart(const Span &span, const QModelIndex &idx, const QList<Constraint> &constraints = QList<Constraint>()) const = 0;
-    virtual qreal mapToChart(const QVariant &value) const;
-    virtual QVariant mapFromChart(qreal x) const;
-    bool isSatisfiedConstraint(const Constraint &c) const;
+    [[nodiscard]] virtual Span mapToChart(const QModelIndex &idx) const = 0;
+    [[nodiscard]] virtual bool mapFromChart(const Span &span, const QModelIndex &idx, const QList<Constraint> &constraints = QList<Constraint>()) const = 0;
+    [[nodiscard]] virtual qreal mapToChart(const QVariant &value) const;
+    [[nodiscard]] virtual QVariant mapFromChart(qreal x) const;
+    [[nodiscard]] bool isSatisfiedConstraint(const Constraint &c) const;
 
-    virtual void
-    paintGrid(QPainter *painter, const QRectF &sceneRect, const QRectF &exposedRect, AbstractRowController *rowController = 0, QWidget *widget = 0) = 0;
-    virtual void paintHeader(QPainter *painter, const QRectF &headerRect, const QRectF &exposedRect, qreal offset, QWidget *widget = 0) = 0;
+    virtual void paintGrid(QPainter *painter,
+                           const QRectF &sceneRect,
+                           const QRectF &exposedRect,
+                           AbstractRowController *rowController = nullptr,
+                           QWidget *widget = nullptr) = 0;
+    virtual void paintHeader(QPainter *painter, const QRectF &headerRect, const QRectF &exposedRect, qreal offset, QWidget *widget = nullptr) = 0;
 
 public Q_SLOTS:
     /*internal*/ virtual void setModel(QAbstractItemModel *model);

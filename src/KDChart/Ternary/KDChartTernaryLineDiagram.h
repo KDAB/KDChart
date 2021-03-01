@@ -38,14 +38,14 @@ class KDCHART_EXPORT TernaryLineDiagram : public AbstractTernaryDiagram
     KDCHART_DECLARE_DERIVED_DIAGRAM(TernaryLineDiagram, TernaryCoordinatePlane)
 
 public:
-    explicit TernaryLineDiagram(QWidget *parent = 0, TernaryCoordinatePlane *plane = 0);
+    explicit TernaryLineDiagram(QWidget *parent = nullptr, TernaryCoordinatePlane *plane = nullptr);
     ~TernaryLineDiagram() override;
 
     void resize(const QSizeF &area) override;
     void paint(PaintContext *paintContext) override;
 
 protected:
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    [[nodiscard]] const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
 };
 }
 

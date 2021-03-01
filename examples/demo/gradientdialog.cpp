@@ -112,10 +112,10 @@ void GradientDialog::Private::updateGradientDisplay()
     gradient.setStart(0, 0);
     gradient.setStart(1, 0);
     gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
-    Q_FOREACH (const QGradientStop &stop, m_gradient)
+    for (const QGradientStop &stop : qAsConst(m_gradient))
         gradient.setColorAt(stop.first, stop.second);
     QPalette palette = ui->gradientDisplay->palette();
-    palette.setBrush(QPalette::Background, gradient);
+    palette.setBrush(QPalette::Window, gradient);
     ui->gradientDisplay->setPalette(palette);
 }
 
@@ -125,9 +125,9 @@ void GradientDialog::Private::init()
     QStringList list;
     list << tr("stop1") << tr("stop2");
     ui->stopSelector->addItems(list);
-    QHBoxLayout *redLayout = new QHBoxLayout;
+    auto *redLayout = new QHBoxLayout;
     dynamic_cast<QVBoxLayout *>(ui->gradientStopBox->layout())->addLayout(redLayout);
-    QLabel *redLabel = new QLabel("R");
+    auto *redLabel = new QLabel("R");
     QFont redFont(redLabel->font());
     redFont.setUnderline(true);
     redLabel->setFont(redFont);
@@ -135,7 +135,7 @@ void GradientDialog::Private::init()
     redSlider = new ColorSlider(q);
     redSlider->setStartColor(Qt::black);
     redSlider->setEndColor(Qt::red);
-    QSpinBox *redSpin = new QSpinBox(q);
+    auto *redSpin = new QSpinBox(q);
     redSpin->setMinimum(0);
     redSpin->setMaximum(255);
     redSpin->setAccelerated(true);
@@ -145,9 +145,9 @@ void GradientDialog::Private::init()
     redLayout->addWidget(redSlider);
     redLayout->addWidget(redSpin);
 
-    QHBoxLayout *greenLayout = new QHBoxLayout;
+    auto *greenLayout = new QHBoxLayout;
     dynamic_cast<QVBoxLayout *>(ui->gradientStopBox->layout())->addLayout(greenLayout);
-    QLabel *greenLabel = new QLabel("G");
+    auto *greenLabel = new QLabel("G");
     QFont greenFont(greenLabel->font());
     greenFont.setUnderline(true);
     greenLabel->setFont(greenFont);
@@ -155,7 +155,7 @@ void GradientDialog::Private::init()
     greenSlider = new ColorSlider(q);
     greenSlider->setStartColor(Qt::black);
     greenSlider->setEndColor(Qt::green);
-    QSpinBox *greenSpin = new QSpinBox(q);
+    auto *greenSpin = new QSpinBox(q);
     greenSpin->setMinimum(0);
     greenSpin->setMaximum(255);
     greenSpin->setAccelerated(true);
@@ -165,9 +165,9 @@ void GradientDialog::Private::init()
     greenLayout->addWidget(greenSlider);
     greenLayout->addWidget(greenSpin);
 
-    QHBoxLayout *blueLayout = new QHBoxLayout;
+    auto *blueLayout = new QHBoxLayout;
     dynamic_cast<QVBoxLayout *>(ui->gradientStopBox->layout())->addLayout(blueLayout);
-    QLabel *blueLabel = new QLabel("B");
+    auto *blueLabel = new QLabel("B");
     QFont blueFont(blueLabel->font());
     blueFont.setUnderline(true);
     blueLabel->setFont(blueFont);
@@ -175,7 +175,7 @@ void GradientDialog::Private::init()
     blueSlider = new ColorSlider(q);
     blueSlider->setStartColor(Qt::black);
     blueSlider->setEndColor(Qt::blue);
-    QSpinBox *blueSpin = new QSpinBox(q);
+    auto *blueSpin = new QSpinBox(q);
     blueSpin->setMinimum(0);
     blueSpin->setMaximum(255);
     blueSpin->setAccelerated(true);
@@ -242,7 +242,7 @@ QGradient GradientDialog::gradient() const
     gradient.setStart(0, 0);
     gradient.setStart(1, 0);
     gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
-    Q_FOREACH (const QGradientStop &stop, d->m_gradient)
+    for (const QGradientStop &stop : qAsConst(d->m_gradient))
         gradient.setColorAt(stop.first, stop.second);
     return gradient;
 }
@@ -251,7 +251,7 @@ void GradientDialog::setGradient(const QGradient &gradient)
     d->m_gradient.clear();
     d->ui->stopSelector->clear();
     const QGradientStops stops = gradient.stops();
-    Q_FOREACH (const QGradientStop &stop, stops) {
+    for (const QGradientStop &stop : qAsConst(stops)) {
         d->m_gradient.append(stop);
     }
     QStringList newEntries;

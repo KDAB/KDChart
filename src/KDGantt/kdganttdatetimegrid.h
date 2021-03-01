@@ -42,64 +42,69 @@ public:
     DateTimeGrid();
     ~DateTimeGrid() override;
 
-    QDateTime startDateTime() const;
+    [[nodiscard]] QDateTime startDateTime() const;
     void setStartDateTime(const QDateTime &dt);
 
-    qreal dayWidth() const;
+    [[nodiscard]] qreal dayWidth() const;
     void setDayWidth(qreal);
 
-    qreal mapFromDateTime(const QDateTime &dt) const;
-    QDateTime mapToDateTime(qreal x) const;
+    [[nodiscard]] qreal mapFromDateTime(const QDateTime &dt) const;
+    [[nodiscard]] QDateTime mapToDateTime(qreal x) const;
 
     void setWeekStart(Qt::DayOfWeek);
-    Qt::DayOfWeek weekStart() const;
+    [[nodiscard]] Qt::DayOfWeek weekStart() const;
 
     void setFreeDays(const QSet<Qt::DayOfWeek> &fd);
-    QSet<Qt::DayOfWeek> freeDays() const;
+    [[nodiscard]] QSet<Qt::DayOfWeek> freeDays() const;
 
     void setFreeDaysBrush(const QBrush brush);
-    QBrush freeDaysBrush() const;
+    [[nodiscard]] QBrush freeDaysBrush() const;
 
     void setScale(Scale s);
-    Scale scale() const;
+    [[nodiscard]] Scale scale() const;
 
     void setUserDefinedLowerScale(DateTimeScaleFormatter *lower);
     void setUserDefinedUpperScale(DateTimeScaleFormatter *upper);
-    DateTimeScaleFormatter *userDefinedLowerScale() const;
-    DateTimeScaleFormatter *userDefinedUpperScale() const;
+    [[nodiscard]] DateTimeScaleFormatter *userDefinedLowerScale() const;
+    [[nodiscard]] DateTimeScaleFormatter *userDefinedUpperScale() const;
 
-    bool rowSeparators() const;
+    [[nodiscard]] bool rowSeparators() const;
     void setRowSeparators(bool enable);
 
     void setNoInformationBrush(const QBrush &brush);
-    QBrush noInformationBrush() const;
+    [[nodiscard]] QBrush noInformationBrush() const;
 
-    /*reimp*/ Span mapToChart(const QModelIndex &idx) const override;
-    /*reimp*/ bool mapFromChart(const Span &span, const QModelIndex &idx, const QList<Constraint> &constraints = QList<Constraint>()) const override;
-    /*reimp*/ qreal mapToChart(const QVariant &value) const override;
-    /*reimp*/ QVariant mapFromChart(qreal x) const override;
-    /*reimp*/ void
-    paintGrid(QPainter *painter, const QRectF &sceneRect, const QRectF &exposedRect, AbstractRowController *rowController = 0, QWidget *widget = 0) override;
-    /*reimp*/ void paintHeader(QPainter *painter, const QRectF &headerRect, const QRectF &exposedRect, qreal offset, QWidget *widget = 0) override;
+    /*reimp*/ [[nodiscard]] Span mapToChart(const QModelIndex &idx) const override;
+    /*reimp*/ bool mapFromChart(const Span &span,
+                                const QModelIndex &idx,
+                                const QList<Constraint> &constraints = QList<Constraint>()) const override; // not really const
+    /*reimp*/ [[nodiscard]] qreal mapToChart(const QVariant &value) const override;
+    /*reimp*/ [[nodiscard]] QVariant mapFromChart(qreal x) const override;
+    /*reimp*/ void paintGrid(QPainter *painter,
+                             const QRectF &sceneRect,
+                             const QRectF &exposedRect,
+                             AbstractRowController *rowController = nullptr,
+                             QWidget *widget = nullptr) override;
+    /*reimp*/ void paintHeader(QPainter *painter, const QRectF &headerRect, const QRectF &exposedRect, qreal offset, QWidget *widget = nullptr) override;
 
 protected:
-    virtual void paintHourScaleHeader(QPainter *painter, const QRectF &headerRect, const QRectF &exposedRect, qreal offset, QWidget *widget = 0);
-    virtual void paintDayScaleHeader(QPainter *painter, const QRectF &headerRect, const QRectF &exposedRect, qreal offset, QWidget *widget = 0);
-    virtual void paintWeekScaleHeader(QPainter *painter, const QRectF &headerRect, const QRectF &exposedRect, qreal offset, QWidget *widget = 0);
-    virtual void paintMonthScaleHeader(QPainter *painter, const QRectF &headerRect, const QRectF &exposedRect, qreal offset, QWidget *widget = 0);
+    virtual void paintHourScaleHeader(QPainter *painter, const QRectF &headerRect, const QRectF &exposedRect, qreal offset, QWidget *widget = nullptr);
+    virtual void paintDayScaleHeader(QPainter *painter, const QRectF &headerRect, const QRectF &exposedRect, qreal offset, QWidget *widget = nullptr);
+    virtual void paintWeekScaleHeader(QPainter *painter, const QRectF &headerRect, const QRectF &exposedRect, qreal offset, QWidget *widget = nullptr);
+    virtual void paintMonthScaleHeader(QPainter *painter, const QRectF &headerRect, const QRectF &exposedRect, qreal offset, QWidget *widget = nullptr);
 
     virtual void paintUserDefinedHeader(QPainter *painter,
                                         const QRectF &headerRect,
                                         const QRectF &exposedRect,
                                         qreal offset,
                                         const DateTimeScaleFormatter *formatter,
-                                        QWidget *widget = 0);
+                                        QWidget *widget = nullptr);
 
     virtual void drawDayBackground(QPainter *painter, const QRectF &rect, const QDate &date);
     virtual void drawDayForeground(QPainter *painter, const QRectF &rect, const QDate &date);
 
-    QRectF computeRect(const QDateTime &from, const QDateTime &to, const QRectF &rect) const;
-    QPair<QDateTime, QDateTime> dateTimeRange(const QRectF &rect) const;
+    [[nodiscard]] QRectF computeRect(const QDateTime &from, const QDateTime &to, const QRectF &rect) const;
+    [[nodiscard]] QPair<QDateTime, QDateTime> dateTimeRange(const QRectF &rect) const;
 
     /* reimp */ void drawBackground(QPainter *paint, const QRectF &rect) override;
     /* reimp */ void drawForeground(QPainter *paint, const QRectF &rect) override;
@@ -118,15 +123,15 @@ public:
 
     DateTimeScaleFormatter &operator=(const DateTimeScaleFormatter &other);
 
-    QString format() const;
-    Range range() const;
-    Qt::Alignment alignment() const;
+    [[nodiscard]] QString format() const;
+    [[nodiscard]] Range range() const;
+    [[nodiscard]] Qt::Alignment alignment() const;
 
-    virtual QDateTime nextRangeBegin(const QDateTime &datetime) const;
-    virtual QDateTime currentRangeBegin(const QDateTime &datetime) const;
+    [[nodiscard]] virtual QDateTime nextRangeBegin(const QDateTime &datetime) const;
+    [[nodiscard]] virtual QDateTime currentRangeBegin(const QDateTime &datetime) const;
 
-    QString format(const QDateTime &datetime) const;
-    virtual QString text(const QDateTime &datetime) const;
+    [[nodiscard]] QString format(const QDateTime &datetime) const;
+    [[nodiscard]] virtual QString text(const QDateTime &datetime) const;
 };
 }
 

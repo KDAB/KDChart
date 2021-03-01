@@ -28,13 +28,11 @@
 using namespace KDChart;
 
 AbstractCartesianDiagram::Private::Private()
-    : referenceDiagram(0)
+    : referenceDiagram(nullptr)
 {
 }
 
-AbstractCartesianDiagram::Private::~Private()
-{
-}
+AbstractCartesianDiagram::Private::~Private() = default;
 
 bool AbstractCartesianDiagram::compare(const AbstractCartesianDiagram *other) const
 {
@@ -59,7 +57,7 @@ AbstractCartesianDiagram::AbstractCartesianDiagram(QWidget *parent, CartesianCoo
 
 KDChart::AbstractCartesianDiagram::~AbstractCartesianDiagram()
 {
-    Q_FOREACH (CartesianAxis *axis, d->axesList) {
+    for (CartesianAxis *axis : qAsConst(d->axesList)) {
         axis->deleteObserver(this);
     }
     d->axesList.clear();
@@ -91,7 +89,7 @@ void AbstractCartesianDiagram::takeAxis(CartesianAxis *axis)
     if (idx != -1)
         d->axesList.takeAt(idx);
     axis->deleteObserver(this);
-    axis->setParentWidget(0);
+    axis->setParentWidget(nullptr);
     layoutPlanes();
 }
 
@@ -170,16 +168,19 @@ void AbstractCartesianDiagram::setAttributesModel(AttributesModel *model)
 
 void AbstractCartesianDiagram::connectAttributesModel(AttributesModel *newModel)
 {
-    // The compressor must receive model signals before the diagram because the diagram will ask the
-    // compressor for data upon receiving dataChanged() et al. from the model, at which point the
-    // compressor must be up to date already.
-    // Starting from Qt 4.6, the invocation order of slots is guaranteed to be equal to connection
-    // order (and probably was before).
-    // This is our opportunity to connect to the AttributesModel before the AbstractDiagram does.
+    // The compressor must receive model signals before the diagram because the
+    // diagram will ask the compressor for data upon receiving dataChanged() et
+    // al. from the model, at which point the compressor must be up to date
+    // already. Starting from Qt 4.6, the invocation order of slots is
+    // guaranteed to be equal to connection order (and probably was before).
+    // This is our opportunity to connect to the AttributesModel before the
+    // AbstractDiagram does.
 
-    // ### A better design would be to properly recognize that the compressor is the real data interface
-    // for Cartesian diagrams and make diagrams listen to updates from the *compressor*, not the model.
-    // However, this would change the outside interface of AbstractCartesianDiagram which would be bad.
-    // So we're stuck with the complication of this slot and the corresponding signal.
+    // ### A better design would be to properly recognize that the compressor is
+    // the real data interface for Cartesian diagrams and make diagrams listen
+    // to updates from the *compressor*, not the model. However, this would
+    // change the outside interface of AbstractCartesianDiagram which would be
+    // bad. So we're stuck with the complication of this slot and the
+    // corresponding signal.
     d->compressor.setModel(newModel);
 }

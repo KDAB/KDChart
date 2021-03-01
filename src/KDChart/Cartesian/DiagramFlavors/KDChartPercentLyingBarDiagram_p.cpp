@@ -54,7 +54,8 @@ const QPair<QPointF, QPointF> PercentLyingBarDiagram::calculateDataBoundaries() 
         for ( int row = 0; row < rowCount; ++row )
         {
             // Ordinate should begin at 0 the max value being the 100% pos
-            const QModelIndex idx = diagram()->model()->index( row, col, diagram()->rootIndex() );
+            const QModelIndex idx = diagram()->model()->index( row, col,
+    diagram()->rootIndex() );
             // only positive values are handled
             qreal value = diagram()->model()->data( idx ).toReal();
             if ( value > 0 )
@@ -71,7 +72,8 @@ const QPair<QPointF, QPointF> PercentLyingBarDiagram::calculateDataBoundaries() 
     const QPointF bottomLeft(QPointF(yMin, xMin));
     const QPointF topRight(QPointF(yMax, xMax));
 
-    // qDebug() << "BarDiagram::calculateDataBoundaries () returns ( " << bottomLeft << topRight <<")";
+    // qDebug() << "BarDiagram::calculateDataBoundaries () returns ( " <<
+    // bottomLeft << topRight <<")";
     return QPair<QPointF, QPointF>(bottomLeft, topRight);
 }
 
@@ -200,7 +202,7 @@ void PercentLyingBarDiagram::paint(PaintContext *ctx)
             point.setX(point.x() - barHeight);
 
             const QRectF rect = QRectF(point, QSizeF(barHeight, barWidth)).translated(1, 0);
-            m_private->addLabel(&lpc, sourceIndex, 0, PositionPoints(rect), Position::North, Position::South, value);
+            m_private->addLabel(&lpc, sourceIndex, nullptr, PositionPoints(rect), Position::North, Position::South, value);
             paintBars(ctx, sourceIndex, rect, maxDepth);
         }
     }

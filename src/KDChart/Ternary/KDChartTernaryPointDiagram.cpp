@@ -48,9 +48,7 @@ TernaryPointDiagram::TernaryPointDiagram(QWidget *parent, TernaryCoordinatePlane
     setDatasetDimensionInternal(3); // the third column is implicit
 }
 
-TernaryPointDiagram::~TernaryPointDiagram()
-{
-}
+TernaryPointDiagram::~TernaryPointDiagram() = default;
 
 void TernaryPointDiagram::init()
 {
@@ -69,13 +67,13 @@ void TernaryPointDiagram::paint(PaintContext *paintContext)
     d->paint(paintContext);
 
     // sanity checks:
-    if (model() == 0)
+    if (model() == nullptr)
         return;
 
     QPainter *p = paintContext->painter();
     PainterSaver s(p);
 
-    TernaryCoordinatePlane *plane = static_cast<TernaryCoordinatePlane *>(paintContext->coordinatePlane());
+    auto *plane = static_cast<TernaryCoordinatePlane *>(paintContext->coordinatePlane());
     Q_ASSERT(plane);
 
     qreal x, y, z;
@@ -110,7 +108,8 @@ void TernaryPointDiagram::paint(PaintContext *paintContext)
                     QPointF diagramLocation = translate(tPunkt);
                     QPointF widgetLocation = plane->translate(diagramLocation);
 
-                    paintMarker(p, model()->index(row, column, rootIndex()), widgetLocation); // checked
+                    paintMarker(p, model()->index(row, column, rootIndex()),
+                                widgetLocation); // checked
                     QString text = tr("(%1, %2, %3)").arg(x * 100, 0, 'f', 0).arg(y * 100, 0, 'f', 0).arg(z * 100, 0, 'f', 0);
                     d->paintDataValueText(p, attrs, widgetLocation, true, text, true);
                 } else {

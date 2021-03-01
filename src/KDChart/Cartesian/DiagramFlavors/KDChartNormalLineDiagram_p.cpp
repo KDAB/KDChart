@@ -64,7 +64,7 @@ void NormalLineDiagram::paintWithLines(PaintContext *ctx)
 {
     reverseMapper().clear();
     Q_ASSERT(dynamic_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane()));
-    CartesianCoordinatePlane *plane = static_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane());
+    auto *plane = static_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane());
     const int columnCount = compressor().modelDataColumns();
     const int rowCount = compressor().modelDataRows();
     if (columnCount == 0 || rowCount == 0)
@@ -82,7 +82,8 @@ void NormalLineDiagram::paintWithLines(PaintContext *ctx)
         CartesianDiagramDataCompressor::DataPoint lastPoint;
         qreal lastAreaBoundingValue = 0;
 
-        // Get min. y value, used as lower or upper bounding for area highlighting
+        // Get min. y value, used as lower or upper bounding for area
+        // highlighting
         const qreal minYValue = qMin(plane->visibleDataRange().bottom(), plane->visibleDataRange().top());
 
         CartesianDiagramDataCompressor::CachePosition previousCellPosition;
@@ -105,7 +106,8 @@ void NormalLineDiagram::paintWithLines(PaintContext *ctx)
                 const CartesianDiagramDataCompressor::CachePosition areaBoundingCachePosition(row, laCell.areaBoundingDataset());
                 areaBoundingValue = compressor().data(areaBoundingCachePosition).value;
             } else {
-                // Use min. y value (i.e. zero line in most cases) if no bounding dataset is set
+                // Use min. y value (i.e. zero line in most cases) if no
+                // bounding dataset is set
                 areaBoundingValue = minYValue;
             }
 
@@ -139,7 +141,8 @@ void NormalLineDiagram::paintWithLines(PaintContext *ctx)
                 // add label
                 m_private->addLabel(&lpc, sourceIndex, &position, pts, Position::NorthWest, Position::NorthWest, point.value);
 
-                // add line and area, if switched on and we have a current and previous value
+                // add line and area, if switched on and we have a current and
+                // previous value
                 if (!ISNAN(lastPoint.value)) {
                     lineList.append(LineAttributesInfo(sourceIndex, a, b));
 
@@ -166,7 +169,7 @@ void NormalLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
 {
     reverseMapper().clear();
     Q_ASSERT(dynamic_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane()));
-    CartesianCoordinatePlane *plane = static_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane());
+    auto *plane = static_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane());
     const int columnCount = compressor().modelDataColumns();
     const int rowCount = compressor().modelDataRows();
     if (columnCount == 0 || rowCount == 0)
@@ -184,7 +187,8 @@ void NormalLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
         CartesianDiagramDataCompressor::DataPoint lastPoint;
         qreal lastAreaBoundingValue = 0;
 
-        // Get min. y value, used as lower or upper bounding for area highlighting
+        // Get min. y value, used as lower or upper bounding for area
+        // highlighting
         const qreal minYValue = qMin(plane->visibleDataRange().bottom(), plane->visibleDataRange().top());
 
         CartesianDiagramDataCompressor::CachePosition previousCellPosition;
@@ -207,7 +211,8 @@ void NormalLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
                 const CartesianDiagramDataCompressor::CachePosition areaBoundingCachePosition(row, laCell.areaBoundingDataset());
                 areaBoundingValue = compressor().data(areaBoundingCachePosition).value;
             } else {
-                // Use min. y value (i.e. zero line in most cases) if no bounding dataset is set
+                // Use min. y value (i.e. zero line in most cases) if no
+                // bounding dataset is set
                 areaBoundingValue = minYValue;
             }
 
@@ -241,20 +246,22 @@ void NormalLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
                 // add label
                 m_private->addLabel(&lpc, sourceIndex, &position, pts, Position::NorthWest, Position::NorthWest, point.value);
 
-                // add line and area, if switched on and we have a current and previous value
+                // add line and area, if switched on and we have a current and
+                // previous value
                 if (!ISNAN(lastPoint.value)) {
                     lineList.append(LineAttributesInfo(sourceIndex, a, b));
 
                     if (laCell.displayArea()) {
                         QPainterPath path;
 
-                        // TODO: revert back to lambdas when we stop caring about pre-C++11
-                        // auto dataAt = [&] ( int i ) {
+                        // TODO: revert back to lambdas when we stop caring
+                        // about pre-C++11 auto dataAt = [&] ( int i ) {
                         //     if ( i < 0 || i >= rowCount ) {
                         //         return QPointF( NAN, NAN );
                         //     } else {
-                        //         const auto data = compressor().data( { i, column } );
-                        //         return QPointF( plane->translate( QPointF( data.key + offset, data.value ) ) );
+                        //         const auto data = compressor().data( { i,
+                        //         column } ); return QPointF( plane->translate(
+                        //         QPointF( data.key + offset, data.value ) ) );
                         //     }
                         // };
                         struct dataAtLambda {
@@ -297,7 +304,8 @@ void NormalLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
                                                     ctx,
                                                     attributesModel()->mapToSource(lastPoint.index),
                                                     QList<QPainterPath>() << path,
-                                                    laCell.transparency()); // TODO: change to {path} in C++11
+                                                    laCell.transparency()); // TODO: change to {path} in
+                                                                            // C++11
                     }
                 }
             }

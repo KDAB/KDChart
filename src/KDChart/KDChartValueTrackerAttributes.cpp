@@ -83,7 +83,7 @@ ValueTrackerAttributes &ValueTrackerAttributes::operator=(const ValueTrackerAttr
 ValueTrackerAttributes::~ValueTrackerAttributes()
 {
     delete _d;
-    _d = 0;
+    _d = nullptr;
 }
 
 bool ValueTrackerAttributes::operator==(const ValueTrackerAttributes &r) const

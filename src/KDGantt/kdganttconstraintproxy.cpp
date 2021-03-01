@@ -36,9 +36,7 @@ ConstraintProxy::ConstraintProxy(QObject *parent)
 {
 }
 
-ConstraintProxy::~ConstraintProxy()
-{
-}
+ConstraintProxy::~ConstraintProxy() = default;
 
 void ConstraintProxy::setSourceModel(ConstraintModel *src)
 {
@@ -97,7 +95,7 @@ void ConstraintProxy::copyFromSource()
         if (!m_source)
             return;
         const QList<Constraint> lst = m_source->constraints();
-        Q_FOREACH (const Constraint &c, lst) {
+        for (const Constraint &c : qAsConst(lst)) {
             Constraint temp(m_proxy->mapFromSource(c.startIndex()), m_proxy->mapFromSource(c.endIndex()), c.type(), c.relationType(), c.dataMap());
             m_destination->addConstraint(temp);
         }

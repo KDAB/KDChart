@@ -44,7 +44,7 @@ class TESTTOOLS_EXPORT TableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    TableModel(QObject *parent = 0);
+    TableModel(QObject *parent = nullptr);
     ~TableModel() override;
 
     /** Return header data from the model.
@@ -53,13 +53,13 @@ public:
         exposed as model data, that means, the first model row and column will
         start at index (0, 0).
     */
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    [[nodiscard]] QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
@@ -94,7 +94,7 @@ public:
      *
      * @sa loadFromCSV
      */
-    const QString titleText() const
+    [[nodiscard]] const QString titleText() const
     {
         return m_titleText;
     }
@@ -129,8 +129,8 @@ public:
         m_dataHasVerticalHeaders = value;
     }
     /**
-     * setSupplyHeaderData(false) allows to prevent the model from supplying header data,
-     * even if parsing found any
+     * setSupplyHeaderData(false) allows to prevent the model from supplying
+     * header data, even if parsing found any
      */
     void setSupplyHeaderData(bool value)
     {

@@ -36,10 +36,11 @@ class Chart;
 class GridAttributes;
 class DataDimension;
 
-typedef QList<DataDimension> DataDimensionsList;
+using DataDimensionsList = QList<DataDimension>;
 
 /**
- * @brief Base class common for all coordinate planes, CartesianCoordinatePlane, PolarCoordinatePlane, TernaryCoordinatePlane
+ * @brief Base class common for all coordinate planes, CartesianCoordinatePlane,
+ * PolarCoordinatePlane, TernaryCoordinatePlane
  */
 class KDCHART_EXPORT AbstractCoordinatePlane : public AbstractArea
 {
@@ -53,7 +54,7 @@ public:
     enum AxesCalcMode { Linear, Logarithmic };
 
 protected:
-    explicit AbstractCoordinatePlane(Chart *parent = 0);
+    explicit AbstractCoordinatePlane(Chart *parent = nullptr);
 
 public:
     ~AbstractCoordinatePlane() override;
@@ -83,7 +84,7 @@ public:
      *
      * \sa addDiagram, takeDiagram
      */
-    virtual void replaceDiagram(AbstractDiagram *diagram, AbstractDiagram *oldDiagram = 0);
+    virtual void replaceDiagram(AbstractDiagram *diagram, AbstractDiagram *oldDiagram = nullptr);
 
     /**
      * Removes the diagram from the plane, without deleting it.
@@ -108,7 +109,7 @@ public:
     /**
      * @return The list of diagrams associated with this coordinate plane.
      */
-    ConstAbstractDiagramList diagrams() const;
+    [[nodiscard]] ConstAbstractDiagramList diagrams() const;
 
     /**
      * Distribute the available space among the diagrams and axes.
@@ -121,12 +122,12 @@ public:
      * @param diagramPoint The point in value coordinates.
      * @returns The translated point.
      */
-    virtual const QPointF translate(const QPointF &diagramPoint) const = 0;
+    [[nodiscard]] virtual const QPointF translate(const QPointF &diagramPoint) const = 0;
 
     /**
      * @return Whether zooming with a rubber band using the mouse is enabled.
      */
-    bool isRubberBandZoomingEnabled() const;
+    [[nodiscard]] bool isRubberBandZoomingEnabled() const;
 
     /**
      * Enables or disables zooming with a rubber band using the mouse.
@@ -137,7 +138,7 @@ public:
      * @return The zoom factor in horizontal direction, that is applied
      * to all coordinate transformations.
      */
-    virtual qreal zoomFactorX() const
+    [[nodiscard]] virtual qreal zoomFactorX() const
     {
         return 1.0;
     }
@@ -146,7 +147,7 @@ public:
      * @return The zoom factor in vertical direction, that is applied
      * to all coordinate transformations.
      */
-    virtual qreal zoomFactorY() const
+    [[nodiscard]] virtual qreal zoomFactorY() const
     {
         return 1.0;
     }
@@ -185,7 +186,7 @@ public:
      * @return The center point (in value coordinates) of the
      * coordinate plane, that is used for zoom operations.
      */
-    virtual QPointF zoomCenter() const
+    [[nodiscard]] virtual QPointF zoomCenter() const
     {
         return QPointF(0.0, 0.0);
     }
@@ -218,7 +219,7 @@ public:
      * \sa setGlobalGridAttributes
      * \sa CartesianCoordinatePlane::gridAttributes
      */
-    GridAttributes globalGridAttributes() const;
+    [[nodiscard]] GridAttributes globalGridAttributes() const;
 
     /**
      * Returns the dimensions used for drawing the grid lines.
@@ -252,43 +253,44 @@ public:
     /**
      * There are two ways, in which planes can be caused to interact, in
      * where they are put layouting wise: The first is the reference plane. If
-     * such a reference plane is set, on a plane, it will use the same cell in the
-     * layout as that one. In addition to this, planes can share an axis. In that case
-     * they will be laid out in relation to each other as suggested by the position
-     * of the axis. If, for example Plane1 and Plane2 share an axis at position Left,
-     * that will result in the layout: Axis Plane1 Plane 2, vertically. If Plane1
-     * also happens to be Plane2's reference plane, both planes are drawn over each
-     * other. The reference plane concept allows two planes to share the same space
-     * even if neither has any axis, and in case there are shared axis, it is used
-     * to decided, whether the planes should be painted on top of each other or
-     * laid out vertically or horizontally next to each other.
+     * such a reference plane is set, on a plane, it will use the same cell in
+     * the layout as that one. In addition to this, planes can share an axis. In
+     * that case they will be laid out in relation to each other as suggested by
+     * the position of the axis. If, for example Plane1 and Plane2 share an axis
+     * at position Left, that will result in the layout: Axis Plane1 Plane 2,
+     * vertically. If Plane1 also happens to be Plane2's reference plane, both
+     * planes are drawn over each other. The reference plane concept allows two
+     * planes to share the same space even if neither has any axis, and in case
+     * there are shared axis, it is used to decided, whether the planes should
+     * be painted on top of each other or laid out vertically or horizontally
+     * next to each other.
      * @return The reference coordinate plane associated with this one.
      */
-    AbstractCoordinatePlane *referenceCoordinatePlane() const;
+    [[nodiscard]] AbstractCoordinatePlane *referenceCoordinatePlane() const;
 
     /**
      * @return Whether this plane should have spacers in the corners
      * formed by the presence of axes.
      */
-    bool isCornerSpacersEnabled() const;
+    [[nodiscard]] bool isCornerSpacersEnabled() const;
 
     /**
      * Enables or disables the use of spacers in the plane corners.
      */
     void setCornerSpacersEnabled(bool enable);
 
-    virtual AbstractCoordinatePlane *sharedAxisMasterPlane(QPainter *p = 0); // KDChart 3: const method?
+    virtual AbstractCoordinatePlane *sharedAxisMasterPlane(QPainter *p = nullptr); // KDChart 3: const method?
 
     /** pure virtual in QLayoutItem */
-    bool isEmpty() const override;
+    [[nodiscard]] bool isEmpty() const override;
     /** pure virtual in QLayoutItem */
-    Qt::Orientations expandingDirections() const override;
+    [[nodiscard]] Qt::Orientations expandingDirections() const override;
     /** pure virtual in QLayoutItem */
-    QSize maximumSize() const override;
+    [[nodiscard]] QSize maximumSize() const override;
     /** pure virtual in QLayoutItem */
-    QSize minimumSize() const override;
+    [[nodiscard]] QSize minimumSize() const override;
     /** pure virtual in QLayoutItem */
-    QSize sizeHint() const override;
+    [[nodiscard]] QSize sizeHint() const override;
     /** pure virtual in QLayoutItem
      *
      * \note Do not call this function directly, unless you know
@@ -297,7 +299,7 @@ public:
      */
     void setGeometry(const QRect &r) override;
     /** pure virtual in QLayoutItem */
-    QRect geometry() const override;
+    [[nodiscard]] QRect geometry() const override;
 
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseDoubleClickEvent(QMouseEvent *event);
@@ -309,30 +311,30 @@ public:
      */
     void setParent(Chart *parent);
     Chart *parent();
-    const Chart *parent() const;
+    [[nodiscard]] const Chart *parent() const;
 
     /**
      * Tests, if a point is visible on the coordinate plane.
      *
-     * \note Before calling this function the point must have been translated into coordinate plane space.
+     * \note Before calling this function the point must have been translated
+     * into coordinate plane space.
      */
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-    const bool isVisiblePoint(const QPointF &point) const;
-#else
-    bool isVisiblePoint(const QPointF &point) const;
-#endif
+    [[nodiscard]] bool isVisiblePoint(const QPointF &point) const;
 
 public Q_SLOTS:
     /**
-     * Calling update() on the plane triggers the global KDChart::Chart::update()
+     * Calling update() on the plane triggers the global
+     * KDChart::Chart::update()
      */
     void update();
     /**
-     * Calling relayout() on the plane triggers the global KDChart::Chart::slotRelayout()
+     * Calling relayout() on the plane triggers the global
+     * KDChart::Chart::slotRelayout()
      */
     void relayout();
     /**
-     * Calling layoutPlanes() on the plane triggers the global KDChart::Chart::slotLayoutPlanes()
+     * Calling layoutPlanes() on the plane triggers the global
+     * KDChart::Chart::slotLayoutPlanes()
      */
     void layoutPlanes();
     /**
@@ -350,10 +352,12 @@ Q_SIGNALS:
     /** Emitted when plane needs to trigger the Chart's layouting. */
     void needRelayout();
 
-    /** Emitted when plane needs to trigger the Chart's layouting of the coord. planes. */
+    /** Emitted when plane needs to trigger the Chart's layouting of the coord.
+     * planes. */
     void needLayoutPlanes();
 
-    /** Emitted upon change of a property of the Coordinate Plane or any of its components. */
+    /** Emitted upon change of a property of the Coordinate Plane or any of its
+     * components. */
     void propertiesChanged();
 
     void boundariesChanged();
@@ -375,17 +379,17 @@ Q_SIGNALS:
     void viewportCoordinateSystemChanged();
 
 protected:
-    virtual DataDimensionsList getDataDimensionsList() const = 0;
+    [[nodiscard]] virtual DataDimensionsList getDataDimensionsList() const = 0;
 
     // KDCHART_DECLARE_PRIVATE_DERIVED( AbstractCoordinatePlane )
 };
 
 /**
- * \brief Helper class for one dimension of data, e.g. for the rows in a data model,
- * or for the labels of an axis, or for the vertical lines in a grid.
+ * \brief Helper class for one dimension of data, e.g. for the rows in a data
+ * model, or for the labels of an axis, or for the vertical lines in a grid.
  *
- * isCalculated specifies whether this dimension's values are calculated or counted.
- * (counted == "Item 1", "Item 2", "Item 3" ...)
+ * isCalculated specifies whether this dimension's values are calculated or
+ * counted. (counted == "Item 1", "Item 2", "Item 3" ...)
  *
  * sequence is the GranularitySequence, as specified at for the respective
  * coordinate plane.
@@ -393,8 +397,9 @@ protected:
  * Step width is an optional parameter, to be omitted (or set to Zero, resp.)
  * if the step width is unknown.
  *
- * The default c'tor just gets you counted values from 1..10, using step width 1,
- * used by the CartesianGrid, when showing an empty plane without any diagrams.
+ * The default c'tor just gets you counted values from 1..10, using step width
+ * 1, used by the CartesianGrid, when showing an empty plane without any
+ * diagrams.
  */
 class DataDimension
 {
@@ -432,7 +437,7 @@ public:
      * Note that this value can be negative, e.g. indicating axis labels
      * going in reversed direction.
      */
-    qreal distance() const
+    [[nodiscard]] qreal distance() const
     {
         return end - start;
     }

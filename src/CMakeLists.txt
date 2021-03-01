@@ -1,13 +1,13 @@
 set(QT_USE_QTXML TRUE)
 set(QT_USE_QTSVG TRUE)
 
-include(${QT_USE_FILE})
+# include(${QT_USE_FILE})
 
-if(Qt5Core_FOUND)
-  find_package(Qt5PrintSupport REQUIRED)
-  list(APPEND QT_LIBRARIES Qt5::PrintSupport)
-  include_directories(${Qt5PrintSupport_INCLUDE_DIRS})
-endif()
+# if(Qt5Core_FOUND)
+#   find_package(Qt5PrintSupport REQUIRED)
+#   list(APPEND QT_LIBRARIES Qt5::PrintSupport)
+#   include_directories(${Qt5PrintSupport_INCLUDE_DIRS})
+# endif()
 
 add_definitions(-DQT_NO_KEYWORDS -DQT_NO_CAST_FROM_BYTEARRAY -Demit=)
 
@@ -16,12 +16,12 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(FORMS
   KDChart/KDChartDatasetSelector.ui
 )
-qt4_wrap_ui(KDCHART_UI ${FORMS})
+qt_wrap_ui(KDCHART_UI ${FORMS})
 
 set(RESOURCES
     KDChart/KDAB_kdchart_LeveyJennings_resources.qrc
 )
-qt4_add_resources(KDCHART_RES ${RESOURCES})
+qt_add_resources(KDCHART_RES ${RESOURCES})
 
 if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/KDChart)
   file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/KDChart)

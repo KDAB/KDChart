@@ -31,11 +31,9 @@ class PercentPlotter : public Plotter::PlotterType
 {
 public:
     explicit PercentPlotter(Plotter *);
-    ~PercentPlotter() override
-    {
-    }
-    Plotter::PlotType type() const override;
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    ~PercentPlotter() override = default;
+    [[nodiscard]] Plotter::PlotType type() const override;
+    [[nodiscard]] const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paint(PaintContext *ctx) override;
 };
 }

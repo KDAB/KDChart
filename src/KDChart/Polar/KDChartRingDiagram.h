@@ -38,7 +38,7 @@ class KDCHART_EXPORT RingDiagram : public AbstractPieDiagram
     KDCHART_DECLARE_DERIVED_DIAGRAM(RingDiagram, PolarCoordinatePlane)
 
 public:
-    explicit RingDiagram(QWidget *parent = 0, PolarCoordinatePlane *plane = 0);
+    explicit RingDiagram(QWidget *parent = nullptr, PolarCoordinatePlane *plane = nullptr);
     ~RingDiagram() override;
 
 protected:
@@ -52,16 +52,16 @@ public:
 
     // Implement AbstractPolarDiagram
     /** \reimpl */
-    qreal valueTotals() const override;
+    [[nodiscard]] qreal valueTotals() const override;
     /** \reimpl */
-    qreal numberOfValuesPerDataset() const override;
-    qreal numberOfDatasets() const override;
+    [[nodiscard]] qreal numberOfValuesPerDataset() const override;
+    [[nodiscard]] qreal numberOfDatasets() const override;
     /** \reimpl */
-    qreal numberOfGridRings() const override;
+    [[nodiscard]] qreal numberOfGridRings() const override;
 
-    qreal valueTotals(int dataset) const;
+    [[nodiscard]] qreal valueTotals(int dataset) const;
 
-    virtual RingDiagram *clone() const;
+    [[nodiscard]] virtual RingDiagram *clone() const;
 
     /**
      * Returns true if both diagrams have the same settings.
@@ -69,14 +69,14 @@ public:
     bool compare(const RingDiagram *other) const;
 
     void setRelativeThickness(bool relativeThickness);
-    bool relativeThickness() const;
+    [[nodiscard]] bool relativeThickness() const;
 
     virtual void setExpandWhenExploded(bool expand);
-    virtual bool expandWhenExploded() const;
+    [[nodiscard]] virtual bool expandWhenExploded() const;
 
 protected:
     /** \reimpl */
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    [[nodiscard]] const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paintEvent(QPaintEvent *) override;
     void resizeEvent(QResizeEvent *) override;
 

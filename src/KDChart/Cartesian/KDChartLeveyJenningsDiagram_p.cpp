@@ -43,8 +43,8 @@ LeveyJenningsDiagram::Private::Private(const Private &rhs)
 
 void LeveyJenningsDiagram::Private::setYAxisRange() const
 {
-    CartesianCoordinatePlane *const plane = static_cast<CartesianCoordinatePlane *>(diagram->coordinatePlane());
-    if (plane == 0)
+    auto *const plane = static_cast<CartesianCoordinatePlane *>(diagram->coordinatePlane());
+    if (plane == nullptr)
         return;
 
     plane->setVerticalRange(QPair<qreal, qreal>(expectedMeanValue - 4 * expectedStandardDeviation, expectedMeanValue + 4 * expectedStandardDeviation));

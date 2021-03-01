@@ -96,9 +96,9 @@ bool AbstractGrid::isSatisfiedConstraint(const Constraint &c) const
 }
 
 /*!
- * Implement this to map from \a value to the corresponding location in the view.
- * Return a negative value if \a value cannot be mapped.
- * The default implementation returns -1.0.
+ * Implement this to map from \a value to the corresponding location in the
+ * view. Return a negative value if \a value cannot be mapped. The default
+ * implementation returns -1.0.
  */
 qreal AbstractGrid::mapToChart(const QVariant &value) const
 {
@@ -121,14 +121,15 @@ QVariant AbstractGrid::mapFromChart(qreal x) const
  * the corresponding item in the view.
  */
 
-/*!\fn virtual bool AbstractGrid::mapFromChart( const Span& span, const QModelIndex& idx, const QList<Constraint>& constraints ) const
- * Implement this to update the model data based on the location of the item. Check
- * against the \a constraints list to make sure no hard constraints are violated by
- * writing back to the model.
- * \returns true if the update succeeded.
+/*!\fn virtual bool AbstractGrid::mapFromChart( const Span& span, const
+ * QModelIndex& idx, const QList<Constraint>& constraints ) const Implement this
+ * to update the model data based on the location of the item. Check against the
+ * \a constraints list to make sure no hard constraints are violated by writing
+ * back to the model. \returns true if the update succeeded.
  */
 
-/*!\fn virtual void AbstractGrid::paintGrid( QPainter* painter, const QRectF& sceneRect, const QRectF& exposedRect, AbstractRowController* rowController=0,
+/*!\fn virtual void AbstractGrid::paintGrid( QPainter* painter, const QRectF&
+ * sceneRect, const QRectF& exposedRect, AbstractRowController* rowController=0,
  * QWidget* widget=0 )
  *
  * Implement this to paint the background of the view -- typically
@@ -140,7 +141,8 @@ QVariant AbstractGrid::mapFromChart(qreal x) const
  * \param widget -- the widget used by the view -- may be 0.
  */
 
-/*!\fn virtual void AbstractGrid::paintHeader( QPainter* painter, const QRectF& headerRect, const QRectF& exposedRect, qreal offset, QWidget* widget=0 )
+/*!\fn virtual void AbstractGrid::paintHeader( QPainter* painter, const QRectF&
+ * headerRect, const QRectF& exposedRect, qreal offset, QWidget* widget=0 )
  *
  * Implement this to paint the header part of the view.
  * \param painter -- the QPainter to paint with.

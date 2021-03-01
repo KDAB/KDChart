@@ -38,7 +38,7 @@ public:
     explicit HeaderWidget(GraphicsView *parent);
     ~HeaderWidget() override;
 
-    GraphicsView *view() const
+    [[nodiscard]] GraphicsView *view() const
     {
         return qobject_cast<GraphicsView *>(parent());
     }

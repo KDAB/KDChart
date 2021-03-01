@@ -27,11 +27,7 @@
 
 #include <QColorDialog>
 
-#if QT_VERSION < 0x050000
-#include <QtGui/QCleanlooksStyle>
-#else
 #include <QStyleFactory>
-#endif
 
 #include <QFileDialog>
 
@@ -53,7 +49,7 @@ class DiagramSettings::Private : public QObject
 {
     Q_OBJECT
 public:
-    Private(Chart *chart = 0, DiagramSettings *q = 0);
+    Private(Chart *chart = nullptr, DiagramSettings *q = nullptr);
     ~Private() override;
     void init();
     void setThreeDData(const AbstractThreeDAttributes &attr);
@@ -76,9 +72,7 @@ DiagramSettings::Private::Private(Chart *chart, DiagramSettings *q)
 {
 }
 
-DiagramSettings::Private::~Private()
-{
-}
+DiagramSettings::Private::~Private() = default;
 
 void DiagramSettings::Private::changeAutoGradient()
 {
@@ -88,9 +82,9 @@ void DiagramSettings::Private::changeAutoGradient()
 void DiagramSettings::Private::changeThreeD()
 {
     if (m_chart && m_chart->coordinatePlane() && m_chart->coordinatePlane()->diagram()) {
-        BarDiagram *bars = qobject_cast<BarDiagram *>(m_chart->coordinatePlane()->diagram());
-        LineDiagram *lines = qobject_cast<LineDiagram *>(m_chart->coordinatePlane()->diagram());
-        PieDiagram *pie = qobject_cast<PieDiagram *>(m_chart->coordinatePlane()->diagram());
+        auto *bars = qobject_cast<BarDiagram *>(m_chart->coordinatePlane()->diagram());
+        auto *lines = qobject_cast<LineDiagram *>(m_chart->coordinatePlane()->diagram());
+        auto *pie = qobject_cast<PieDiagram *>(m_chart->coordinatePlane()->diagram());
         if (bars) {
             ThreeDBarAttributes td(bars->threeDBarAttributes());
             td.setEnabled(ui->threeDSelector->checkState() == Qt::Checked);
@@ -133,7 +127,8 @@ void DiagramSettings::Private::changeBackgroundColor()
             palette.setBrush(QPalette::Button, color);
             ui->diagramBackground->setPalette(palette);
         } else if (ui->textureBtn->isChecked()) {
-            // QBrush setBrush = m_chart->coordinatePlane()->diagram()->brush( index );
+            // QBrush setBrush = m_chart->coordinatePlane()->diagram()->brush(
+            // index );
             QImage texture;
 
             const QString filename = QFileDialog::getOpenFileName(qq, tr("Choose Texture"), QString(), tr("Images (*.png *.xpm *.jpg)"));
@@ -180,11 +175,7 @@ void DiagramSettings::Private::init()
 {
     ui->setupUi(qq);
 #ifdef Q_OS_LINUX
-#if QT_VERSION < 0x050000
-    ui->diagramBackground->setStyle(new QCleanlooksStyle);
-#else
     ui->diagramBackground->setStyle(QStyleFactory::create(QStringLiteral("cleanlooks")));
-#endif
 #endif
 
     connect(ui->threeDSelector, SIGNAL(toggled(bool)), this, SLOT(changeThreeD()));
@@ -218,9 +209,9 @@ DiagramSettings::~DiagramSettings()
 void DiagramSettings::refreshSettings()
 {
     if (d->m_chart && d->m_chart->coordinatePlane() && d->m_chart->coordinatePlane()->diagram()) {
-        BarDiagram *bars = qobject_cast<BarDiagram *>(d->m_chart->coordinatePlane()->diagram());
-        LineDiagram *lines = qobject_cast<LineDiagram *>(d->m_chart->coordinatePlane()->diagram());
-        PieDiagram *pie = qobject_cast<PieDiagram *>(d->m_chart->coordinatePlane()->diagram());
+        auto *bars = qobject_cast<BarDiagram *>(d->m_chart->coordinatePlane()->diagram());
+        auto *lines = qobject_cast<LineDiagram *>(d->m_chart->coordinatePlane()->diagram());
+        auto *pie = qobject_cast<PieDiagram *>(d->m_chart->coordinatePlane()->diagram());
 
         if (bars) {
             const AbstractThreeDAttributes &td = bars->threeDBarAttributes();

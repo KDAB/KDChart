@@ -46,25 +46,25 @@ public:
 
     enum ConstraintDataRole { ValidConstraintPen = Qt::UserRole, InvalidConstraintPen };
 
-    typedef QMap<int, QVariant> DataMap;
+    using DataMap = QMap<int, QVariant>;
 
     Constraint();
     Constraint(const QModelIndex &idx1, const QModelIndex &idx2, Type type = TypeSoft, RelationType relType = FinishStart, const DataMap &datamap = DataMap());
     Constraint(const Constraint &other);
     ~Constraint();
 
-    Type type() const;
-    RelationType relationType() const;
-    QModelIndex startIndex() const;
-    QModelIndex endIndex() const;
+    [[nodiscard]] Type type() const;
+    [[nodiscard]] RelationType relationType() const;
+    [[nodiscard]] QModelIndex startIndex() const;
+    [[nodiscard]] QModelIndex endIndex() const;
 
     void setData(int role, const QVariant &value);
-    QVariant data(int role) const;
+    [[nodiscard]] QVariant data(int role) const;
 
     void setDataMap(const QMap<int, QVariant> &datamap);
-    QMap<int, QVariant> dataMap() const;
+    [[nodiscard]] QMap<int, QVariant> dataMap() const;
 
-    bool compareIndexes(const Constraint &other) const;
+    [[nodiscard]] bool compareIndexes(const Constraint &other) const;
 
     Constraint &operator=(const Constraint &other);
     bool operator==(const Constraint &other) const;
@@ -74,9 +74,9 @@ public:
         return !operator==(other);
     }
 
-    uint hash() const;
+    [[nodiscard]] uint hash() const;
 #ifndef QT_NO_DEBUG_STREAM
-    QDebug debug(QDebug dbg) const;
+    [[nodiscard]] QDebug debug(QDebug dbg) const;
 #endif
 
 private:

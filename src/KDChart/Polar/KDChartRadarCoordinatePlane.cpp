@@ -31,9 +31,7 @@ KDChart::RadarCoordinatePlane::RadarCoordinatePlane(Chart *parent)
     : PolarCoordinatePlane(new Private(), parent)
 {
 }
-KDChart::RadarCoordinatePlane::~RadarCoordinatePlane()
-{
-}
+KDChart::RadarCoordinatePlane::~RadarCoordinatePlane() = default;
 
 void KDChart::RadarCoordinatePlane::setTextAttributes(const KDChart::TextAttributes &attr)
 {

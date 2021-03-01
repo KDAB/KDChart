@@ -28,7 +28,7 @@
 #include <QTreeView>
 #include <QWidget>
 
-#include <math.h>
+#include <cmath>
 
 #include <KDChartChart>
 #include <KDChartPlotter>
@@ -40,25 +40,25 @@ class ChartWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ChartWidget(QWidget *parent = 0)
+    explicit ChartWidget(QWidget *parent = nullptr)
         : QWidget(parent)
         , m_counter(0)
     {
-        QSplitter *splitter = new QSplitter(this);
-        QHBoxLayout *l = new QHBoxLayout(this);
+        auto *splitter = new QSplitter(this);
+        auto *l = new QHBoxLayout(this);
         setLayout(l);
         l->addWidget(splitter);
 
-        QWidget *leftWidget = new QWidget(splitter);
-        QVBoxLayout *leftLayout = new QVBoxLayout(leftWidget);
+        auto *leftWidget = new QWidget(splitter);
+        auto *leftLayout = new QVBoxLayout(leftWidget);
         leftWidget->setLayout(leftLayout);
 
-        QPushButton *button = new QPushButton("Animate", leftWidget);
+        auto *button = new QPushButton("Animate", leftWidget);
         leftLayout->addWidget(button);
         button->setCheckable(true);
         connect(button, SIGNAL(toggled(bool)), this, SLOT(buttonToggled(bool)));
 
-        QTreeView *tv = new QTreeView(leftWidget);
+        auto *tv = new QTreeView(leftWidget);
         leftLayout->addWidget(tv);
 
         m_chart = new KDChart::Chart(splitter);
@@ -70,17 +70,17 @@ public:
             m_model->setData(m_model->index(i, 1), sin(i / 10.0) * 10);
         }
 
-        TimeChartModel *proxy = new TimeChartModel(this);
+        auto *proxy = new TimeChartModel(this);
         proxy->setSourceModel(m_model);
         proxy->setVisibleRange(QDateTime(QDate(2010, 2, 1), QTime()), QDateTime(QDate(2010, 3, 31), QTime()));
 
-        KDChart::Plotter *plotter = new KDChart::Plotter;
+        auto *plotter = new KDChart::Plotter;
         m_chart->coordinatePlane()->replaceDiagram(plotter);
 
         tv->setModel(proxy);
         tv->show();
 
-        TimeAxis *axis = new TimeAxis(plotter);
+        auto *axis = new TimeAxis(plotter);
         axis->setPosition(TimeAxis::Bottom);
         plotter->addAxis(axis);
 
@@ -98,11 +98,11 @@ public:
 private slots:
     void slotTimeout()
     {
-        // An ugly hack to prevent the QAbstractItemModel from emitting dataChanged
-        // for every single call to setData which would result in a full relayout
-        // every time. Thats horrible for performance and what we do is to prevent
-        // QAbstractItemModel to emit dataChanged, collect what data changed and
-        // emit the signal at the end ourself.
+        // An ugly hack to prevent the QAbstractItemModel from emitting
+        // dataChanged for every single call to setData which would result in a
+        // full relayout every time. Thats horrible for performance and what we
+        // do is to prevent QAbstractItemModel to emit dataChanged, collect what
+        // data changed and emit the signal at the end ourself.
         m_model->blockSignals(true);
         QModelIndexList indexes;
 
@@ -140,9 +140,9 @@ private:
 };
 
 /**
- * This example demonstrates how to use time-based plots with timestamp-value data points
- * based on seconds and how to use a proxy model for defining the plotted "window" of the
- * measurement data.
+ * This example demonstrates how to use time-based plots with timestamp-value
+ * data points based on seconds and how to use a proxy model for defining the
+ * plotted "window" of the measurement data.
  */
 int main(int argc, char *argv[])
 {

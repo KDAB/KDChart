@@ -31,11 +31,9 @@ class PercentLyingBarDiagram : public BarDiagram::BarDiagramType
 {
 public:
     explicit PercentLyingBarDiagram(BarDiagram *);
-    ~PercentLyingBarDiagram() override
-    {
-    }
-    BarDiagram::BarType type() const override;
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    ~PercentLyingBarDiagram() override = default;
+    [[nodiscard]] BarDiagram::BarType type() const override;
+    [[nodiscard]] const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paint(PaintContext *ctx) override;
 };
 

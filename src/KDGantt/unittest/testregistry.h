@@ -54,7 +54,7 @@ public:
 
     /*! runs all tests in all groups.
        @return the number of failed tests (if any) */
-    unsigned int run() const;
+    [[nodiscard]] unsigned int run() const;
     /*! runs only tests in group \a group
         @return the number of failed tests (if any) */
     unsigned int run(const char *group) const;
@@ -67,7 +67,7 @@ class KDGANTT_EXPORT Runner
 {
 public:
     ~Runner();
-    unsigned int run(const char *group = 0) const;
+    unsigned int run(const char *group = nullptr) const;
 };
 
 }

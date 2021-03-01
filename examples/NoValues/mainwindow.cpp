@@ -38,7 +38,7 @@ using namespace KDChart;
 class EmptyModel : public QAbstractItemModel
 {
 public:
-    EmptyModel(QObject *parent = 0)
+    EmptyModel(QObject *parent = nullptr)
         : QAbstractItemModel(parent)
     {
         // qDebug() << "EmptyModel::EmptyModel()";
@@ -49,14 +49,14 @@ public:
         // qDebug() << "EmptyModel::~EmptyModel()";
     }
 
-    int columnCount(const QModelIndex &parent = QModelIndex()) const override
+    [[nodiscard]] int columnCount(const QModelIndex &parent = QModelIndex()) const override
     {
         Q_UNUSED(parent);
         // qDebug() << "EmptyModel::columnCount(...)";
         return 0;
     }
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override
+    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override
     {
         Q_UNUSED(parent);
         // qDebug() << "EmptyModel::rowCount(...)";
@@ -65,7 +65,7 @@ public:
 
     // NOTE: The following method will not be called by KD Chart,
     //       because the model is returning 0 for columnCount() / rowCount().
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override
     {
         Q_UNUSED(role);
         qDebug() << "EmptyModel::data(" << index.row() << index.column() << ")";
@@ -73,7 +73,7 @@ public:
         return QVariant();
     }
 
-    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override
+    [[nodiscard]] QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override
     {
         Q_UNUSED(row);
         Q_UNUSED(column);
@@ -82,7 +82,7 @@ public:
         return QModelIndex();
     }
 
-    QModelIndex parent(const QModelIndex &parent) const override
+    [[nodiscard]] QModelIndex parent(const QModelIndex &parent) const override
     {
         Q_UNUSED(parent);
         // qDebug() << "EmptyModel::parent(...)";
@@ -93,7 +93,7 @@ public:
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
-    QHBoxLayout *chartLayout = new QHBoxLayout(this);
+    auto *chartLayout = new QHBoxLayout(this);
     m_chart = new Chart();
     m_chart->setGlobalLeading(5, 5, 5, 5);
     chartLayout->addWidget(m_chart);
@@ -103,8 +103,8 @@ MainWindow::MainWindow(QWidget *parent)
     // Set up the diagram
     m_bars = new LineDiagram();
     m_bars->setModel(m_model);
-    CartesianAxis *xAxis = new CartesianAxis(m_bars);
-    CartesianAxis *yAxis = new CartesianAxis(m_bars);
+    auto *xAxis = new CartesianAxis(m_bars);
+    auto *yAxis = new CartesianAxis(m_bars);
     xAxis->setPosition(KDChart::CartesianAxis::Bottom);
     yAxis->setPosition(KDChart::CartesianAxis::Left);
     xAxis->setTitleText("Abscissa axis at the bottom");
@@ -114,7 +114,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_chart->coordinatePlane()->replaceDiagram(m_bars);
 
-    Legend *legend = new Legend(m_bars, m_chart);
+    auto *legend = new Legend(m_bars, m_chart);
     legend->setPosition(Position::South);
     legend->setAlignment(Qt::AlignCenter);
     legend->setShowLines(true);

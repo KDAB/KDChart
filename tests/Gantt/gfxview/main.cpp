@@ -155,8 +155,8 @@ int main(int argc, char **argv)
             item->setData(KDGantt::TypeTask, KDGantt::ItemTypeRole);
             item->setData(QDateTime::currentDateTime().addDays(2 * j).addMSecs(100000 * i), KDGantt::StartTimeRole);
             item->setData(QDateTime::currentDateTime().addDays(2 * j + 1).addMSecs(100000 * i), KDGantt::EndTimeRole);
-            item->setData(qVariantFromValue<int>(random_alignment()), Qt::TextAlignmentRole);
-            item->setData(qVariantFromValue<int>(random_position()), KDGantt::TextPositionRole);
+            item->setData(QVariant::fromValue<int>(random_alignment()), Qt::TextAlignmentRole);
+            item->setData(QVariant::fromValue<int>(random_position()), KDGantt::TextPositionRole);
             item->setFlags(item->flags() & ~Qt::ItemIsSelectable);
             //  item->appendColumn( QList<QStandardItem*>() << colitem );
             //}

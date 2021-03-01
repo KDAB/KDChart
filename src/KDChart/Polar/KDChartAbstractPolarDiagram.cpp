@@ -27,13 +27,9 @@
 
 using namespace KDChart;
 
-AbstractPolarDiagram::Private::Private()
-{
-}
+AbstractPolarDiagram::Private::Private() = default;
 
-AbstractPolarDiagram::Private::~Private()
-{
-}
+AbstractPolarDiagram::Private::~Private() = default;
 
 void AbstractPolarDiagram::init()
 {

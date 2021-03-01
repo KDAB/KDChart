@@ -48,9 +48,7 @@ KDTextDocument::KDTextDocument(const QString &text, QObject *p)
 {
 }
 
-KDTextDocument::~KDTextDocument()
-{
-}
+KDTextDocument::~KDTextDocument() = default;
 
 QSize KDTextDocument::sizeHint()
 {
@@ -65,11 +63,11 @@ QSize KDTextDocument::minimumSizeHint()
     QTextCursor cursor( this );
     if ( ! cursor.atEnd() )
         cursor.movePosition( QTextCursor::NextBlock );
-    qDebug() << "KDTextDocument::minimumSizeHint() found:" << cursor.block().text();
-    QSizeF s( documentLayout()->blockBoundingRect( cursor.block() ).size() );
-    qDebug() << "KDTextDocument::minimumSizeHint() found rect" << documentLayout()->blockBoundingRect( cursor.block());
-    return QSize( static_cast<int>(s.width()),
-                  static_cast<int>(s.height()) );
+    qDebug() << "KDTextDocument::minimumSizeHint() found:" <<
+    cursor.block().text(); QSizeF s( documentLayout()->blockBoundingRect(
+    cursor.block() ).size() ); qDebug() << "KDTextDocument::minimumSizeHint()
+    found rect" << documentLayout()->blockBoundingRect( cursor.block()); return
+    QSize( static_cast<int>(s.width()), static_cast<int>(s.height()) );
     */
 
     if (mHintValid)

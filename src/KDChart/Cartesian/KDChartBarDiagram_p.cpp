@@ -80,8 +80,7 @@ void BarDiagram::BarDiagramType::paintBars(PaintContext *ctx, const QModelIndex 
             bool drawIt = false;
             bool hasPointOutside = false;
             const QRectF r(ctx->rectangle().adjusted(0, -1, 1, 0));
-            KDAB_FOREACH(QPointF pt, topPoints)
-            {
+            for (QPointF pt : qAsConst(topPoints)) {
                 if (r.contains(pt)) {
                     drawIt = true;
                 } else {
@@ -166,11 +165,13 @@ void BarDiagram::BarDiagramType::calculateValueAndGapWidths(int rowCount,
 
     outSpaceBetweenBars += unitWidth * ba.barGapFactor();
 
-    // Pending Michel - minLimit: allow space between bars to be reduced until the bars are displayed next to each other.
-    // is that what we want?
-    // sebsauer; in the case e.g. CartesianCoordinatePlane::setHorizontalRangeReversed(true) was
-    // used to reverse the values, we deal with negative outSpaceBetweenBars and unitWidth here
-    // and since that's correct we don't like to lose e.g. the spacing here.
+    // Pending Michel - minLimit: allow space between bars to be reduced until
+    // the bars are displayed next to each other. is that what we want?
+    // sebsauer; in the case e.g.
+    // CartesianCoordinatePlane::setHorizontalRangeReversed(true) was used to
+    // reverse the values, we deal with negative outSpaceBetweenBars and
+    // unitWidth here and since that's correct we don't like to lose e.g. the
+    // spacing here.
     // if ( outSpaceBetweenBars < 0 )
     //    outSpaceBetweenBars = 0;
 

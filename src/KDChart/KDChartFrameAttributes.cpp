@@ -72,7 +72,7 @@ FrameAttributes &FrameAttributes::operator=(const FrameAttributes &r)
 FrameAttributes::~FrameAttributes()
 {
     delete _d;
-    _d = 0;
+    _d = nullptr;
 }
 
 bool FrameAttributes::operator==(const FrameAttributes &r) const

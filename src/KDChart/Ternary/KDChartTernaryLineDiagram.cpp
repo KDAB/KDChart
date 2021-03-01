@@ -57,12 +57,10 @@ TernaryLineDiagram::TernaryLineDiagram(QWidget *parent, TernaryCoordinatePlane *
     markerAttributes.setMarkerStyle(MarkerAttributes::MarkerCircle);
     markerAttributes.setVisible(true);
     dataValueAttributes.setMarkerAttributes(markerAttributes);
-    attributesModel()->setDefaultForRole(KDChart::DataValueLabelAttributesRole, qVariantFromValue(dataValueAttributes));
+    attributesModel()->setDefaultForRole(KDChart::DataValueLabelAttributesRole, QVariant::fromValue(dataValueAttributes));
 }
 
-TernaryLineDiagram::~TernaryLineDiagram()
-{
-}
+TernaryLineDiagram::~TernaryLineDiagram() = default;
 
 void TernaryLineDiagram::init()
 {
@@ -79,13 +77,13 @@ void TernaryLineDiagram::paint(PaintContext *paintContext)
 
     d->paint(paintContext);
     // sanity checks:
-    if (model() == 0)
+    if (model() == nullptr)
         return;
 
     QPainter *p = paintContext->painter();
     PainterSaver s(p);
 
-    TernaryCoordinatePlane *plane = (TernaryCoordinatePlane *)paintContext->coordinatePlane();
+    auto *plane = (TernaryCoordinatePlane *)paintContext->coordinatePlane();
     Q_ASSERT(plane);
 
     qreal x, y, z;
@@ -123,7 +121,8 @@ void TernaryLineDiagram::paint(PaintContext *paintContext)
                     if (row > 0) {
                         p->drawLine(start, widgetLocation);
                     }
-                    paintMarker(p, model()->index(row, column, rootIndex()), widgetLocation); // checked
+                    paintMarker(p, model()->index(row, column, rootIndex()),
+                                widgetLocation); // checked
                     start = widgetLocation;
                     // retrieve text and data value attributes
                     // FIXME use data model DisplayRole text

@@ -43,7 +43,7 @@ void KDAB::UnitTest::Test::_assertNotNull(const void *x, const char *expression,
     if (x)
         success();
     else
-        fail(file, line) << '"' << expression << "\" is NULL, expected non-NULL" << std::endl;
+        fail(file, line) << '"' << expression << "\" is NULL, expected non-NULL\n";
 }
 
 void KDAB::UnitTest::Test::_assertNull(const void *x, const char *expression, const char *file, unsigned int line)
@@ -51,18 +51,18 @@ void KDAB::UnitTest::Test::_assertNull(const void *x, const char *expression, co
     if (!x)
         success();
     else
-        fail(file, line) << '"' << expression << "\" is not NULL, expected NULL" << std::endl;
+        fail(file, line) << '"' << expression << "\" is not NULL, expected NULL\n";
 }
 
 #if 0
 void KDAB::UnitTest::Test::_assertIsNaN( qreal d, const char * expression, const char * file, unsigned int line ) {
     if ( std::isnan( d ) ) success();
-    else fail( file, line ) << '"' << expression << "\" yielded " << d << "; expected NaN" << std::endl;
+    else fail( file, line ) << '"' << expression << "\" yielded " << d << "; expected NaN\n";
 }
 
 void KDAB::UnitTest::Test::_assertIsNotNaN( qreal d, const char * expression, const char * file, unsigned int line ) {
     if ( !std::isnan( d ) ) success();
-    else fail( file, line ) << '"' << expression << "\" yielded nan; expected something else" << std::endl;
+    else fail( file, line ) << '"' << expression << "\" yielded nan; expected something else\n";
 }
 #endif
 
@@ -71,7 +71,7 @@ void KDAB::UnitTest::Test::_assertTrue(bool x, const char *expression, const cha
     if (x)
         success();
     else
-        fail(file, line) << '"' << expression << "\" != TRUE" << std::endl;
+        fail(file, line) << '"' << expression << "\" != TRUE\n";
 }
 
 void KDAB::UnitTest::Test::_assertFalse(bool x, const char *expression, const char *file, unsigned int line)
@@ -79,7 +79,7 @@ void KDAB::UnitTest::Test::_assertFalse(bool x, const char *expression, const ch
     if (!x)
         success();
     else
-        fail(file, line) << '"' << expression << "\" != FALSE" << std::endl;
+        fail(file, line) << '"' << expression << "\" != FALSE\n";
 }
 
 void KDAB::UnitTest::Test::_assertEqualWithEpsilons(float x1,
@@ -95,7 +95,7 @@ void KDAB::UnitTest::Test::_assertEqualWithEpsilons(float x1,
         success();
     else
         fail(file, line) << x1 << " (" << expr1 << ") deviates from expected " << x2 << " (" << expr2 << ") by more than " << prec << " (" << exprP
-                         << ") epsilons." << std::endl;
+                         << ") epsilons.\n";
 }
 
 void KDAB::UnitTest::Test::_assertEqualWithEpsilons(double x1,
@@ -111,7 +111,7 @@ void KDAB::UnitTest::Test::_assertEqualWithEpsilons(double x1,
         success();
     else
         fail(file, line) << x1 << " (" << expr1 << ") deviates from expected " << x2 << " (" << expr2 << ") by more than " << prec << " (" << exprP
-                         << ") epsilons." << std::endl;
+                         << ") epsilons.\n";
 }
 
 void KDAB::UnitTest::Test::_assertEqualWithEpsilons(long double x1,
@@ -127,7 +127,7 @@ void KDAB::UnitTest::Test::_assertEqualWithEpsilons(long double x1,
         success();
     else
         fail(file, line) << x1 << " (" << expr1 << ") deviates from expected " << x2 << " (" << expr2 << ") by more than " << prec << " (" << exprP
-                         << ") epsilons." << std::endl;
+                         << ") epsilons.\n";
 }
 
 std::ostream &KDAB::UnitTest::Test::fail(const char *file, unsigned int line)

@@ -75,7 +75,7 @@ void EntryDelegate::setReadOnly(const QModelIndex &index, bool readOnly)
     int row = index.row();
     QModelIndex parent = index.parent();
     QStandardItem *item;
-    const QStandardItemModel *model = qobject_cast<const QStandardItemModel *>(index.model());
+    const auto *model = qobject_cast<const QStandardItemModel *>(index.model());
     if (!model)
         return;
 

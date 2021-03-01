@@ -118,8 +118,8 @@ void AbstractArea::paintAll(QPainter &painter)
     paintBackground(painter, overlappingArea);
     paintFrame(painter, overlappingArea);
 
-    // temporarily adjust the widget size, to be sure all content gets calculated
-    // to fit into the inner rectangle
+    // temporarily adjust the widget size, to be sure all content gets
+    // calculated to fit into the inner rectangle
     const QRect oldGeometry(areaGeometry());
     QRect inner(innerRect());
     inner.moveTo(oldGeometry.left() + inner.left(), oldGeometry.top() + inner.top());

@@ -39,15 +39,15 @@ public:
     TreeViewRowController(QTreeView *tv, QAbstractProxyModel *proxy);
     ~TreeViewRowController() override;
 
-    /*reimp*/ int headerHeight() const override;
-    /*reimp*/ int maximumItemHeight() const override;
-    /*reimp*/ int totalHeight() const override;
-    /*reimp*/ bool isRowVisible(const QModelIndex &idx) const override;
-    /*reimp*/ bool isRowExpanded(const QModelIndex &idx) const override;
-    /*reimp*/ Span rowGeometry(const QModelIndex &idx) const override;
-    /*reimp*/ QModelIndex indexAt(int height) const override;
-    /*reimp*/ QModelIndex indexAbove(const QModelIndex &idx) const override;
-    /*reimp*/ QModelIndex indexBelow(const QModelIndex &idx) const override;
+    /*reimp*/ [[nodiscard]] int headerHeight() const override;
+    /*reimp*/ [[nodiscard]] int maximumItemHeight() const override;
+    /*reimp*/ [[nodiscard]] int totalHeight() const override;
+    /*reimp*/ [[nodiscard]] bool isRowVisible(const QModelIndex &idx) const override;
+    /*reimp*/ [[nodiscard]] bool isRowExpanded(const QModelIndex &idx) const override;
+    /*reimp*/ [[nodiscard]] Span rowGeometry(const QModelIndex &idx) const override;
+    /*reimp*/ [[nodiscard]] QModelIndex indexAt(int height) const override;
+    /*reimp*/ [[nodiscard]] QModelIndex indexAbove(const QModelIndex &idx) const override;
+    /*reimp*/ [[nodiscard]] QModelIndex indexBelow(const QModelIndex &idx) const override;
 };
 }
 

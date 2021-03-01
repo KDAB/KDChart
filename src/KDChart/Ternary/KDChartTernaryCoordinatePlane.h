@@ -39,25 +39,25 @@ class KDCHART_EXPORT TernaryCoordinatePlane : public AbstractCoordinatePlane
     KDCHART_DECLARE_PRIVATE_DERIVED_PARENT(TernaryCoordinatePlane, Chart *)
 
 public:
-    explicit TernaryCoordinatePlane(Chart *parent = 0);
+    explicit TernaryCoordinatePlane(Chart *parent = nullptr);
     ~TernaryCoordinatePlane() override;
 
     void addDiagram(AbstractDiagram *diagram) override;
 
     void layoutDiagrams() override;
 
-    const QPointF translate(const QPointF &diagramPoint) const override;
+    [[nodiscard]] const QPointF translate(const QPointF &diagramPoint) const override;
 
     void paint(QPainter *) override;
-    DataDimensionsList getDataDimensionsList() const override;
+    [[nodiscard]] DataDimensionsList getDataDimensionsList() const override;
 
     /** \reimpl */
-    QSize minimumSizeHint() const;
+    [[nodiscard]] QSize minimumSizeHint() const;
     /** \reimpl */
-    QSizePolicy sizePolicy() const;
+    [[nodiscard]] QSizePolicy sizePolicy() const;
 
 private:
-    TernaryGrid *grid() const;
+    [[nodiscard]] TernaryGrid *grid() const;
 };
 
 }

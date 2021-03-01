@@ -27,7 +27,7 @@
 #include <QDebug>
 #include <QPainter>
 
-FrameWidget::FrameWidget(QWidget *parent, Qt::WFlags f)
+FrameWidget::FrameWidget(QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f)
     , mChart(0)
 {

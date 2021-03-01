@@ -49,9 +49,7 @@ LineDiagram::Private::Private()
 {
 }
 
-LineDiagram::Private::~Private()
-{
-}
+LineDiagram::Private::~Private() = default;
 
 #define d d_func()
 
@@ -83,7 +81,7 @@ LineDiagram::~LineDiagram()
  */
 LineDiagram *LineDiagram::clone() const
 {
-    LineDiagram *newDiagram = new LineDiagram(new Private(*d));
+    auto *newDiagram = new LineDiagram(new Private(*d));
     newDiagram->setType(type());
     return newDiagram;
 }
@@ -152,7 +150,8 @@ void LineDiagram::setCenterDataPoints(bool center)
     }
 
     d->centerDataPoints = center;
-    // The actual data boundaries haven't changed, but the axis will have one more or less tick
+    // The actual data boundaries haven't changed, but the axis will have one
+    // more or less tick
     //  A      B    =\        A      B
     //  1......2    =/    1......2......3
     setDataBoundariesDirty();
@@ -180,7 +179,7 @@ bool LineDiagram::reverseDatasetOrder() const
  */
 void LineDiagram::setLineAttributes(const LineAttributes &la)
 {
-    d->attributesModel->setModelData(qVariantFromValue(la), LineAttributesRole);
+    d->attributesModel->setModelData(QVariant::fromValue(la), LineAttributesRole);
     emit propertiesChanged();
 }
 
@@ -189,7 +188,7 @@ void LineDiagram::setLineAttributes(const LineAttributes &la)
  */
 void LineDiagram::setLineAttributes(int column, const LineAttributes &la)
 {
-    d->setDatasetAttrs(column, qVariantFromValue(la), LineAttributesRole);
+    d->setDatasetAttrs(column, QVariant::fromValue(la), LineAttributesRole);
     emit propertiesChanged();
 }
 
@@ -207,12 +206,13 @@ void LineDiagram::resetLineAttributes(int column)
  */
 void LineDiagram::setLineAttributes(const QModelIndex &index, const LineAttributes &la)
 {
-    d->attributesModel->setData(d->attributesModel->mapFromSource(index), qVariantFromValue(la), LineAttributesRole);
+    d->attributesModel->setData(d->attributesModel->mapFromSource(index), QVariant::fromValue(la), LineAttributesRole);
     emit propertiesChanged();
 }
 
 /**
- * Remove any explicit line attributes settings that might have been specified before.
+ * Remove any explicit line attributes settings that might have been specified
+ * before.
  */
 void LineDiagram::resetLineAttributes(const QModelIndex &index)
 {
@@ -253,7 +253,7 @@ LineAttributes LineDiagram::lineAttributes(const QModelIndex &index) const
 void LineDiagram::setThreeDLineAttributes(const ThreeDLineAttributes &la)
 {
     setDataBoundariesDirty();
-    d->attributesModel->setModelData(qVariantFromValue(la), ThreeDLineAttributesRole);
+    d->attributesModel->setModelData(QVariant::fromValue(la), ThreeDLineAttributesRole);
     emit propertiesChanged();
 }
 
@@ -263,7 +263,7 @@ void LineDiagram::setThreeDLineAttributes(const ThreeDLineAttributes &la)
 void LineDiagram::setThreeDLineAttributes(int column, const ThreeDLineAttributes &la)
 {
     setDataBoundariesDirty();
-    d->setDatasetAttrs(column, qVariantFromValue(la), ThreeDLineAttributesRole);
+    d->setDatasetAttrs(column, QVariant::fromValue(la), ThreeDLineAttributesRole);
     emit propertiesChanged();
 }
 
@@ -273,7 +273,7 @@ void LineDiagram::setThreeDLineAttributes(int column, const ThreeDLineAttributes
 void LineDiagram::setThreeDLineAttributes(const QModelIndex &index, const ThreeDLineAttributes &la)
 {
     setDataBoundariesDirty();
-    d->attributesModel->setData(d->attributesModel->mapFromSource(index), qVariantFromValue(la), ThreeDLineAttributesRole);
+    d->attributesModel->setData(d->attributesModel->mapFromSource(index), QVariant::fromValue(la), ThreeDLineAttributesRole);
     emit propertiesChanged();
 }
 
@@ -319,7 +319,7 @@ qreal LineDiagram::threeDItemDepth(int column) const
  */
 void LineDiagram::setValueTrackerAttributes(const QModelIndex &index, const ValueTrackerAttributes &va)
 {
-    d->attributesModel->setData(d->attributesModel->mapFromSource(index), qVariantFromValue(va), KDChart::ValueTrackerAttributesRole);
+    d->attributesModel->setData(d->attributesModel->mapFromSource(index), QVariant::fromValue(va), KDChart::ValueTrackerAttributesRole);
     emit propertiesChanged();
 }
 
@@ -358,10 +358,13 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
         return QPair<QPointF, QPointF>(QPointF(0, 0), QPointF(0, 0));
 
     // note: calculateDataBoundaries() is ignoring the hidden flags.
-    //       That's not a bug but a feature: Hiding data does not mean removing them.
-    // For totally removing data from KD Chart's view people can use e.g. a proxy model ...
+    //       That's not a bug but a feature: Hiding data does not mean removing
+    //       them.
+    // For totally removing data from KD Chart's view people can use e.g. a
+    // proxy model ...
 
-    // calculate boundaries for different line types Normal - Stacked - Percent - Default Normal
+    // calculate boundaries for different line types Normal - Stacked - Percent
+    // - Default Normal
     return d->implementor->calculateDataBoundaries();
 }
 
@@ -403,20 +406,12 @@ void LineDiagram::resize(const QSizeF &size)
     QAbstractItemView::resize(size.toSize());
 }
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-const
-#endif
-    int
-    LineDiagram::numberOfAbscissaSegments() const
+int LineDiagram::numberOfAbscissaSegments() const
 {
     return d->attributesModel->rowCount(attributesModelRootIndex());
 }
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-const
-#endif
-    int
-    LineDiagram::numberOfOrdinateSegments() const
+int LineDiagram::numberOfOrdinateSegments() const
 {
     return d->attributesModel->columnCount(attributesModelRootIndex());
 }

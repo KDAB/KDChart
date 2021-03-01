@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     m_chart = new Chart();
     chartLayout->addWidget(m_chart);
 
@@ -318,8 +318,8 @@ void MainWindow::setAttributes(const KDChart::DataValueAttributes &da)
 }
 
 // just a convenience method:
-// In the combo box we have the text "( Default Value )" instead of "Unknown Position"
-// because by setting a position to unknown we get KD Chart to use the
+// In the combo box we have the text "( Default Value )" instead of "Unknown
+// Position" because by setting a position to unknown we get KD Chart to use the
 // diagram-specific default positions.
 const char *MainWindow::positionToScreenName(const Position &pos) const
 {

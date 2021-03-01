@@ -31,11 +31,9 @@ class PercentLineDiagram : public LineDiagram::LineDiagramType
 {
 public:
     explicit PercentLineDiagram(LineDiagram *);
-    ~PercentLineDiagram() override
-    {
-    }
-    LineDiagram::LineType type() const override;
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    ~PercentLineDiagram() override = default;
+    [[nodiscard]] LineDiagram::LineType type() const override;
+    [[nodiscard]] const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paint(PaintContext *ctx) override;
 
 private:

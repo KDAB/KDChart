@@ -61,7 +61,7 @@ class KDCHART_EXPORT AbstractAxis : public AbstractArea
     KDCHART_DECLARE_PRIVATE_DERIVED_PARENT(AbstractAxis, AbstractDiagram *)
 
 public:
-    explicit AbstractAxis(AbstractDiagram *diagram = 0);
+    explicit AbstractAxis(AbstractDiagram *diagram = nullptr);
     ~AbstractAxis() override;
 
     // FIXME implement when code os ready for it:
@@ -86,17 +86,17 @@ public:
      * automatically (or as it was taken from a QStringList provided
      * by you, resp.)
      *
-     * \note If you reimplement this method in a subclass of KDChartCartesianAxis,
-     * and your reimplementation's return value depends on data other than @p label
-     * (so KDChart will not know when it changes), you must manually ensure that
-     * layouts are adapted to any changed sizes of the axis labels. To do that,
-     * call KDChartCartesianAxis::layoutPlanes() from your reimplementation when
-     * you know that the external data changed and it will change label sizes -
-     * or when you cannot exclude that.
+     * \note If you reimplement this method in a subclass of
+     * KDChartCartesianAxis, and your reimplementation's return value depends on
+     * data other than @p label (so KDChart will not know when it changes), you
+     * must manually ensure that layouts are adapted to any changed sizes of the
+     * axis labels. To do that, call KDChartCartesianAxis::layoutPlanes() from
+     * your reimplementation when you know that the external data changed and it
+     * will change label sizes - or when you cannot exclude that.
      *
      * \return The text to be drawn. By default this is the same as \c label.
      */
-    virtual const QString customizedLabel(const QString &label) const;
+    [[nodiscard]] virtual const QString customizedLabel(const QString &label) const;
 
     /**
      * Returns true if both axes have the same settings.
@@ -126,7 +126,7 @@ public:
      * \sa AbstractCartesianDiagram::takeAxis()
      */
     void deleteObserver(AbstractDiagram *diagram);
-    const AbstractDiagram *diagram() const;
+    [[nodiscard]] const AbstractDiagram *diagram() const;
     bool observedBy(AbstractDiagram *diagram) const;
 
     /**
@@ -162,7 +162,7 @@ public:
 
       \sa setTextAttributes
     */
-    TextAttributes textAttributes() const;
+    [[nodiscard]] TextAttributes textAttributes() const;
 
     /**
       \brief Use this to specify the attributes used to paint the axis ruler
@@ -179,19 +179,20 @@ public:
 
       \sa setRulerAttributes
     */
-    RulerAttributes rulerAttributes() const;
+    [[nodiscard]] RulerAttributes rulerAttributes() const;
 
     /**
-      \brief Use this to specify your own set of strings, to be used as axis labels.
+      \brief Use this to specify your own set of strings, to be used as axis
+      labels.
 
       Labels specified via setLabels take precedence:
-      If a non-empty list is passed, KD Chart will use these strings as axis labels,
-      instead of calculating them.
+      If a non-empty list is passed, KD Chart will use these strings as axis
+      labels, instead of calculating them.
 
-      If you pass a smaller number of strings than the number of labels drawn at this
-      axis, KD Chart will repeat the strings until all labels are drawn.
-      As an example you could specify the seven days of the week as abscissa labels,
-      which would be repeatedly used then.
+      If you pass a smaller number of strings than the number of labels drawn at
+      this axis, KD Chart will repeat the strings until all labels are drawn. As
+      an example you could specify the seven days of the week as abscissa
+      labels, which would be repeatedly used then.
 
       By passing an empty QStringList you can reset the default behaviour.
 
@@ -200,15 +201,16 @@ public:
     void setLabels(const QStringList &list);
 
     /**
-      Returns a list of strings, that are used as axis labels, as set via setLabels.
+      Returns a list of strings, that are used as axis labels, as set via
+      setLabels.
 
       \sa setLabels
     */
-    QStringList labels() const;
+    [[nodiscard]] QStringList labels() const;
 
     /**
-      \brief Use this to specify your own set of strings, to be used as axis labels,
-      in case the normal labels are too long.
+      \brief Use this to specify your own set of strings, to be used as axis
+      labels, in case the normal labels are too long.
 
       \note Setting done via setShortLabels will be ignored, if you did not pass
       a non-empty string list via setLabels too!
@@ -220,24 +222,26 @@ public:
     void setShortLabels(const QStringList &list);
 
     /**
-      Returns a list of strings, that are used as axis labels, as set via setShortLabels.
+      Returns a list of strings, that are used as axis labels, as set via
+      setShortLabels.
 
       \note Setting done via setShortLabels will be ignored, if you did not pass
       a non-empty string list via setLabels too!
 
       \sa setShortLabels
     */
-    QStringList shortLabels() const;
+    [[nodiscard]] QStringList shortLabels() const;
 
     void setGeometry(const QRect &rect) override = 0;
-    QRect geometry() const override = 0;
+    [[nodiscard]] QRect geometry() const override = 0;
 
     /**
-        \brief Convenience function, returns the coordinate plane, in which this axis is used.
+        \brief Convenience function, returns the coordinate plane, in which this
+       axis is used.
 
         If the axis is not used in a coordinate plane, the return value is Zero.
      */
-    const AbstractCoordinatePlane *coordinatePlane() const;
+    [[nodiscard]] const AbstractCoordinatePlane *coordinatePlane() const;
 
 protected Q_SLOTS:
     /** called for initializing after the c'tor has completed */

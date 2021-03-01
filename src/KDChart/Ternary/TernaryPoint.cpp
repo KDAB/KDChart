@@ -90,7 +90,9 @@ QPointF translate(const TernaryPoint &point)
         QPointF result(bPosition + aPosition);
         return result;
     } else {
-        qWarning() << "TernaryPoint::translate(TernaryPoint): cannot translate invalid ternary points:" << point;
+        qWarning() << "TernaryPoint::translate(TernaryPoint): cannot translate "
+                      "invalid ternary points:"
+                   << point;
         return QPointF();
     }
 }

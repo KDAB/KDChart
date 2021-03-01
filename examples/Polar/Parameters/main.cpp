@@ -34,7 +34,7 @@ class ChartWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ChartWidget(QWidget *parent = 0)
+    explicit ChartWidget(QWidget *parent = nullptr)
         : QWidget(parent)
     {
         // initialize the ItemModel and fill in some data
@@ -48,13 +48,13 @@ public:
             }
         }
         // We need a Polar plane for the Polar type
-        PolarCoordinatePlane *polarPlane = new PolarCoordinatePlane(&m_chart);
+        auto *polarPlane = new PolarCoordinatePlane(&m_chart);
         // replace the default Cartesian plane with
         // our Polar plane
         m_chart.replaceCoordinatePlane(polarPlane);
 
         // assign the model to our polar diagram
-        PolarDiagram *diagram = new PolarDiagram;
+        auto *diagram = new PolarDiagram;
         diagram->setModel(&m_model);
 
         // Configure the plane's Background
@@ -128,14 +128,15 @@ public:
         m_chart.coordinatePlane()->replaceDiagram(diagram);
 
         // We want to have a nice gap around the polar diagram,
-        // but we also want to have the coord. plane's background cover that area,
-        // so we just use some zooming.
-        // NOTE: Setting a zoom factor must not be done before
-        //       a diagram has been specified and assigned to the coordinate plane!
+        // but we also want to have the coord. plane's background cover that
+        // area, so we just use some zooming. NOTE: Setting a zoom factor must
+        // not be done before
+        //       a diagram has been specified and assigned to the coordinate
+        //       plane!
         polarPlane->setZoomFactorX(0.9);
         polarPlane->setZoomFactorY(0.9);
 
-        QVBoxLayout *l = new QVBoxLayout(this);
+        auto *l = new QVBoxLayout(this);
         l->addWidget(&m_chart);
         m_chart.setGlobalLeadingTop(5);
         m_chart.setGlobalLeadingBottom(5);

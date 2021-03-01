@@ -41,11 +41,9 @@ class NormalPlotter : public Plotter::PlotterType
 {
 public:
     explicit NormalPlotter(Plotter *);
-    ~NormalPlotter() override
-    {
-    }
-    Plotter::PlotType type() const override;
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    ~NormalPlotter() override = default;
+    [[nodiscard]] Plotter::PlotType type() const override;
+    [[nodiscard]] const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paint(PaintContext *ctx) override;
 };
 }

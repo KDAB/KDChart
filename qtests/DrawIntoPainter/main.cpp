@@ -49,6 +49,6 @@ private:
     MainWindow mainWindow;
 };
 
-QTEST_MAIN(TestDrawIntoPainter);
+QTEST_MAIN(TestDrawIntoPainter)
 
 #include "main.moc"

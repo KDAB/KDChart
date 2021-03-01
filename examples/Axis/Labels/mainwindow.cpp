@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(m_chartFrame);
+    auto *chartLayout = new QHBoxLayout(m_chartFrame);
     m_chart = new KDChart::Chart;
     chartLayout->addWidget(m_chart);
 
@@ -52,12 +52,13 @@ MainWindow::MainWindow(QWidget *parent)
     m_xAxis = new KDChart::CartesianAxis(m_lines);
     KDChart::TextAttributes ta(m_xAxis->textAttributes());
 
-    AdjustedCartesianAxis *yAxis = new AdjustedCartesianAxis(m_lines);
+    auto *yAxis = new AdjustedCartesianAxis(m_lines);
     yAxis->setBounds(3, 6);
     m_xAxis->setPosition(KDChart::CartesianAxis::Bottom);
     yAxis->setPosition(KDChart::CartesianAxis::Left);
 
-// set the following to 0, to see the default Abscissa labels (== X headers, as read from the data file)
+// set the following to 0, to see the default Abscissa labels (== X headers, as
+// read from the data file)
 #if 1
     QStringList daysOfWeek;
     daysOfWeek << "Monday"
@@ -127,7 +128,7 @@ void MainWindow::annotationsToggled(bool showAnnotations)
 void MainWindow::gridLinesOnAnnotationsToggled(bool onAnnotations)
 {
     // Draw grid lines where the annotations are
-    KDChart::CartesianCoordinatePlane *plane = static_cast<KDChart::CartesianCoordinatePlane *>(m_chart->coordinatePlane());
+    auto *plane = static_cast<KDChart::CartesianCoordinatePlane *>(m_chart->coordinatePlane());
     KDChart::GridAttributes ga = plane->gridAttributes(Qt::Horizontal);
     ga.setLinesOnAnnotations(onAnnotations);
     plane->setGridAttributes(Qt::Horizontal, ga);

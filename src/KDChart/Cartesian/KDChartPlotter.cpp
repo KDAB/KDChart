@@ -34,9 +34,9 @@
 using namespace KDChart;
 
 Plotter::Private::Private()
-    : implementor(0)
-    , normalPlotter(0)
-    , percentPlotter(0)
+    : implementor(nullptr)
+    , normalPlotter(nullptr)
+    , percentPlotter(nullptr)
 {
 }
 
@@ -62,23 +62,22 @@ void Plotter::init()
     d->implementor = d->normalPlotter;
     QObject *test = d->implementor->plotterPrivate();
     connect(this, SIGNAL(boundariesChanged()), test, SLOT(changedProperties()));
-    // The signal is connected to the superclass's slot at this point because the connection happened
-    // in its constructor when "its type was not Plotter yet".
+    // The signal is connected to the superclass's slot at this point because
+    // the connection happened in its constructor when "its type was not Plotter
+    // yet".
     disconnect(this, SIGNAL(attributesModelAboutToChange(AttributesModel *, AttributesModel *)), this, SLOT(connectAttributesModel(AttributesModel *)));
     connect(this, SIGNAL(attributesModelAboutToChange(AttributesModel *, AttributesModel *)), this, SLOT(connectAttributesModel(AttributesModel *)));
     setDatasetDimensionInternal(2);
 }
 
-Plotter::~Plotter()
-{
-}
+Plotter::~Plotter() = default;
 
 /**
  * Creates an exact copy of this diagram.
  */
 Plotter *Plotter::clone() const
 {
-    Plotter *newDiagram = new Plotter(new Private(*d));
+    auto *newDiagram = new Plotter(new Private(*d));
     newDiagram->setType(type());
     return newDiagram;
 }
@@ -87,7 +86,7 @@ bool Plotter::compare(const Plotter *other) const
 {
     if (other == this)
         return true;
-    if (other == 0)
+    if (other == nullptr)
         return false;
     return // compare the base class
         (static_cast<const AbstractCartesianDiagram *>(this)->compare(other)) &&
@@ -97,15 +96,15 @@ bool Plotter::compare(const Plotter *other) const
 
 void Plotter::connectAttributesModel(AttributesModel *newModel)
 {
-    // Order of setting the AttributesModel in compressor and diagram is very important due to slot
-    // invocation order. Refer to the longer comment in
+    // Order of setting the AttributesModel in compressor and diagram is very
+    // important due to slot invocation order. Refer to the longer comment in
     // AbstractCartesianDiagram::connectAttributesModel() for details.
 
     if (useDataCompression() == Plotter::NONE) {
-        d->plotterCompressor.setModel(0);
+        d->plotterCompressor.setModel(nullptr);
         AbstractCartesianDiagram::connectAttributesModel(newModel);
     } else {
-        d->compressor.setModel(0);
+        d->compressor.setModel(nullptr);
         if (attributesModel() != d->plotterCompressor.model()) {
             d->plotterCompressor.setModel(attributesModel());
             connect(&d->plotterCompressor, SIGNAL(boundariesChanged()), this, SLOT(setDataBoundariesDirty()));
@@ -128,7 +127,7 @@ void Plotter::setUseDataCompression(Plotter::CompressionMode value)
     if (useDataCompression() != value) {
         d->implementor->setUseCompression(value);
         if (useDataCompression() != Plotter::NONE) {
-            d->compressor.setModel(NULL);
+            d->compressor.setModel(nullptr);
             if (attributesModel() != d->plotterCompressor.model())
                 d->plotterCompressor.setModel(attributesModel());
         }
@@ -206,7 +205,7 @@ Plotter::PlotType Plotter::type() const
  */
 void Plotter::setLineAttributes(const LineAttributes &la)
 {
-    d->attributesModel->setModelData(qVariantFromValue(la), LineAttributesRole);
+    d->attributesModel->setModelData(QVariant::fromValue(la), LineAttributesRole);
     emit propertiesChanged();
 }
 
@@ -215,7 +214,7 @@ void Plotter::setLineAttributes(const LineAttributes &la)
  */
 void Plotter::setLineAttributes(int column, const LineAttributes &la)
 {
-    d->setDatasetAttrs(column, qVariantFromValue(la), LineAttributesRole);
+    d->setDatasetAttrs(column, QVariant::fromValue(la), LineAttributesRole);
     emit propertiesChanged();
 }
 
@@ -233,12 +232,13 @@ void Plotter::resetLineAttributes(int column)
  */
 void Plotter::setLineAttributes(const QModelIndex &index, const LineAttributes &la)
 {
-    d->attributesModel->setData(d->attributesModel->mapFromSource(index), qVariantFromValue(la), LineAttributesRole);
+    d->attributesModel->setData(d->attributesModel->mapFromSource(index), QVariant::fromValue(la), LineAttributesRole);
     emit propertiesChanged();
 }
 
 /**
- * Remove any explicit line attributes settings that might have been specified before.
+ * Remove any explicit line attributes settings that might have been specified
+ * before.
  */
 void Plotter::resetLineAttributes(const QModelIndex &index)
 {
@@ -279,7 +279,7 @@ LineAttributes Plotter::lineAttributes(const QModelIndex &index) const
 void Plotter::setThreeDLineAttributes(const ThreeDLineAttributes &la)
 {
     setDataBoundariesDirty();
-    d->attributesModel->setModelData(qVariantFromValue(la), ThreeDLineAttributesRole);
+    d->attributesModel->setModelData(QVariant::fromValue(la), ThreeDLineAttributesRole);
     emit propertiesChanged();
 }
 
@@ -289,7 +289,7 @@ void Plotter::setThreeDLineAttributes(const ThreeDLineAttributes &la)
 void Plotter::setThreeDLineAttributes(int column, const ThreeDLineAttributes &la)
 {
     setDataBoundariesDirty();
-    d->setDatasetAttrs(column, qVariantFromValue(la), ThreeDLineAttributesRole);
+    d->setDatasetAttrs(column, QVariant::fromValue(la), ThreeDLineAttributesRole);
     emit propertiesChanged();
 }
 
@@ -299,7 +299,7 @@ void Plotter::setThreeDLineAttributes(int column, const ThreeDLineAttributes &la
 void Plotter::setThreeDLineAttributes(const QModelIndex &index, const ThreeDLineAttributes &la)
 {
     setDataBoundariesDirty();
-    d->attributesModel->setData(d->attributesModel->mapFromSource(index), qVariantFromValue(la), ThreeDLineAttributesRole);
+    d->attributesModel->setData(d->attributesModel->mapFromSource(index), QVariant::fromValue(la), ThreeDLineAttributesRole);
     emit propertiesChanged();
 }
 
@@ -346,7 +346,7 @@ qreal Plotter::threeDItemDepth(int column) const
  */
 void Plotter::setValueTrackerAttributes(const QModelIndex &index, const ValueTrackerAttributes &va)
 {
-    d->attributesModel->setData(d->attributesModel->mapFromSource(index), qVariantFromValue(va), KDChart::ValueTrackerAttributesRole);
+    d->attributesModel->setData(d->attributesModel->mapFromSource(index), QVariant::fromValue(va), KDChart::ValueTrackerAttributesRole);
     emit propertiesChanged();
 }
 
@@ -368,10 +368,13 @@ const QPair<QPointF, QPointF> Plotter::calculateDataBoundaries() const
         return QPair<QPointF, QPointF>(QPointF(0, 0), QPointF(0, 0));
 
     // note: calculateDataBoundaries() is ignoring the hidden flags.
-    //       That's not a bug but a feature: Hiding data does not mean removing them.
-    // For totally removing data from KD Chart's view people can use e.g. a proxy model ...
+    //       That's not a bug but a feature: Hiding data does not mean removing
+    //       them.
+    // For totally removing data from KD Chart's view people can use e.g. a
+    // proxy model ...
 
-    // calculate boundaries for different line types Normal - Stacked - Percent - Default Normal
+    // calculate boundaries for different line types Normal - Stacked - Percent
+    // - Default Normal
     return d->implementor->calculateDataBoundaries();
 }
 
@@ -427,15 +430,18 @@ void Plotter::setDataBoundariesDirty()
     AbstractCartesianDiagram::setDataBoundariesDirty();
     if (useDataCompression() == Plotter::DISTANCE || useDataCompression() == Plotter::BOTH) {
         calcMergeRadius();
-        // d->plotterCompressor.setMergeRadiusPercentage( d->mergeRadiusPercentage );
+        // d->plotterCompressor.setMergeRadiusPercentage(
+        // d->mergeRadiusPercentage );
     }
 }
 
 void Plotter::calcMergeRadius()
 {
-    CartesianCoordinatePlane *plane = dynamic_cast<CartesianCoordinatePlane *>(coordinatePlane());
+    auto *plane = dynamic_cast<CartesianCoordinatePlane *>(coordinatePlane());
     Q_ASSERT(plane);
-    // Q_ASSERT( plane->translate( plane->translateBack( plane->visibleDiagramArea().topLeft() ) ) == plane->visibleDiagramArea().topLeft() );
+    // Q_ASSERT( plane->translate( plane->translateBack(
+    // plane->visibleDiagramArea().topLeft() ) ) ==
+    // plane->visibleDiagramArea().topLeft() );
     QRectF range = plane->visibleDataRange();
     // qDebug() << range;
     const qreal radius = std::sqrt((range.x() + range.width()) * (range.y() + range.height()));
@@ -445,20 +451,12 @@ void Plotter::calcMergeRadius()
     d->plotterCompressor.setMergeRadius(radius * d->mergeRadiusPercentage);
 }
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-const
-#endif
-    int
-    Plotter::numberOfAbscissaSegments() const
+int Plotter::numberOfAbscissaSegments() const
 {
     return d->attributesModel->rowCount(attributesModelRootIndex());
 }
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-const
-#endif
-    int
-    Plotter::numberOfOrdinateSegments() const
+int Plotter::numberOfOrdinateSegments() const
 {
     return d->attributesModel->columnCount(attributesModelRootIndex());
 }

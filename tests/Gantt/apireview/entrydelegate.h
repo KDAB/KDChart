@@ -33,7 +33,7 @@ class ConstraintModel;
 class EntryDelegate : public QItemDelegate
 {
 public:
-    EntryDelegate(KDGantt::ConstraintModel *constraintModel, QObject *parent = 0);
+    EntryDelegate(KDGantt::ConstraintModel *constraintModel, QObject *parent = nullptr);
 
     bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
 

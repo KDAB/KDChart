@@ -44,33 +44,33 @@ class KDCHART_EXPORT TernaryAxis : public AbstractAxis
     KDCHART_DECLARE_PRIVATE_DERIVED_PARENT(TernaryAxis, AbstractDiagram *)
 
 public:
-    explicit TernaryAxis(AbstractTernaryDiagram *diagram = 0);
+    explicit TernaryAxis(AbstractTernaryDiagram *diagram = nullptr);
     ~TernaryAxis() override;
 
     void paintAll(QPainter &) override;
     void paint(QPainter *) override;
     void paintCtx(PaintContext *) override;
 
-    QRect geometry() const override;
+    [[nodiscard]] QRect geometry() const override;
     void setGeometry(const QRect &rect) override;
 
-    bool isEmpty() const override;
-    QSize minimumSize() const override;
-    QSize maximumSize() const override;
-    QSize sizeHint() const override;
-    Qt::Orientations expandingDirections() const override;
+    [[nodiscard]] bool isEmpty() const override;
+    [[nodiscard]] QSize minimumSize() const override;
+    [[nodiscard]] QSize maximumSize() const override;
+    [[nodiscard]] QSize sizeHint() const override;
+    [[nodiscard]] Qt::Orientations expandingDirections() const override;
 
-    virtual const Position position() const;
+    [[nodiscard]] virtual const Position position() const;
     virtual void setPosition(Position p);
 
     void setTitleText(const QString &text);
-    QString titleText() const;
+    [[nodiscard]] QString titleText() const;
     void setTitleTextAttributes(const TextAttributes &a);
-    TextAttributes titleTextAttributes() const;
+    [[nodiscard]] TextAttributes titleTextAttributes() const;
     void resetTitleTextAttributes();
-    bool hasDefaultTitleTextAttributes() const;
+    [[nodiscard]] bool hasDefaultTitleTextAttributes() const;
 
-    QPair<QSizeF, QSizeF> requiredMargins() const;
+    [[nodiscard]] QPair<QSizeF, QSizeF> requiredMargins() const;
 
 private:
     void updatePrerenderedLabels();
@@ -89,7 +89,7 @@ private:
     PrerenderedLabel *m_fifty;
 };
 
-typedef QList<TernaryAxis *> TernaryAxisList;
+using TernaryAxisList = QList<TernaryAxis *>;
 }
 
 #endif

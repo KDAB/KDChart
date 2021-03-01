@@ -47,14 +47,14 @@ void DatasetProxyModel::setDatasetRowDescriptionVector(const DatasetDescriptionV
 {
     Q_ASSERT_X(sourceModel(), "DatasetProxyModel::setDatasetRowDescriptionVector", "A source model must be set before the selection can be configured.");
     initializeDatasetDecriptors(configuration, sourceModel()->rowCount(mRootIndex), mRowSrcToProxyMap, mRowProxyToSrcMap);
-    clear(); // clear emits layoutChanged()
+    invalidate(); // clear emits layoutChanged()
 }
 
 void DatasetProxyModel::setDatasetColumnDescriptionVector(const DatasetDescriptionVector &configuration)
 {
     Q_ASSERT_X(sourceModel(), "DatasetProxyModel::setDatasetColumnDescriptionVector", "A source model must be set before the selection can be configured.");
     initializeDatasetDecriptors(configuration, sourceModel()->columnCount(mRootIndex), mColSrcToProxyMap, mColProxyToSrcMap);
-    clear(); // clear emits layoutChanged()
+    invalidate(); // clear emits layoutChanged()
 }
 
 void DatasetProxyModel::setDatasetDescriptionVectors(const DatasetDescriptionVector &rowConfig, const DatasetDescriptionVector &columnConfig)
@@ -113,12 +113,14 @@ QModelIndex DatasetProxyModel::mapToSource(const QModelIndex &proxyIndex) const
 
 bool DatasetProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &) const
 {
-    if (mRowSrcToProxyMap.isEmpty()) { // no row mapping set, all rows are passed down:
+    if (mRowSrcToProxyMap.isEmpty()) { // no row mapping set, all rows are
+                                       // passed down:
         return true;
     } else {
         Q_ASSERT(sourceModel());
         Q_ASSERT(mRowSrcToProxyMap.size() == sourceModel()->rowCount(mRootIndex));
-        if (mRowSrcToProxyMap[sourceRow] == -1) { // this row is explicitly not accepted:
+        if (mRowSrcToProxyMap[sourceRow] == -1) { // this row is explicitly not
+                                                  // accepted:
             return false;
         } else {
             Q_ASSERT(mRowSrcToProxyMap[sourceRow] >= 0 && mRowSrcToProxyMap[sourceRow] < mRowSrcToProxyMap.size());
@@ -129,12 +131,14 @@ bool DatasetProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &) con
 
 bool DatasetProxyModel::filterAcceptsColumn(int sourceColumn, const QModelIndex &) const
 {
-    if (mColSrcToProxyMap.isEmpty()) { // no column mapping set up yet, all columns are passed down:
+    if (mColSrcToProxyMap.isEmpty()) { // no column mapping set up yet, all
+                                       // columns are passed down:
         return true;
     } else {
         Q_ASSERT(sourceModel());
         Q_ASSERT(mColSrcToProxyMap.size() == sourceModel()->columnCount(mRootIndex));
-        if (mColSrcToProxyMap[sourceColumn] == -1) { // this column is explicitly not accepted:
+        if (mColSrcToProxyMap[sourceColumn] == -1) { // this column is
+                                                     // explicitly not accepted:
             return false;
         } else {
             Q_ASSERT(mColSrcToProxyMap[sourceColumn] >= 0 && mColSrcToProxyMap[sourceColumn] < mColSrcToProxyMap.size());
@@ -145,7 +149,8 @@ bool DatasetProxyModel::filterAcceptsColumn(int sourceColumn, const QModelIndex 
 
 int DatasetProxyModel::mapProxyRowToSource(const int &proxyRow) const
 {
-    if (mRowProxyToSrcMap.isEmpty()) { // if no row mapping is set, we pass down the row:
+    if (mRowProxyToSrcMap.isEmpty()) { // if no row mapping is set, we pass down
+                                       // the row:
         return proxyRow;
     } else {
         Q_ASSERT(proxyRow >= 0 && proxyRow < mRowProxyToSrcMap.size());
@@ -155,7 +160,8 @@ int DatasetProxyModel::mapProxyRowToSource(const int &proxyRow) const
 
 int DatasetProxyModel::mapProxyColumnToSource(const int &proxyColumn) const
 {
-    if (mColProxyToSrcMap.isEmpty()) { // if no column mapping is set, we pass down the column:
+    if (mColProxyToSrcMap.isEmpty()) { // if no column mapping is set, we pass
+                                       // down the column:
         return proxyColumn;
     } else {
         Q_ASSERT(proxyColumn >= 0 && proxyColumn < mColProxyToSrcMap.size());
@@ -189,7 +195,7 @@ void DatasetProxyModel::resetDatasetDescriptions()
     mRowProxyToSrcMap.clear();
     mColSrcToProxyMap.clear();
     mColProxyToSrcMap.clear();
-    clear();
+    invalidate();
 }
 
 QVariant DatasetProxyModel::data(const QModelIndex &index, int role) const
@@ -242,7 +248,8 @@ void DatasetProxyModel::initializeDatasetDecriptors(const DatasetDescriptionVect
                    "column index outside of source model");
         Q_ASSERT_X(outSourceToProxyMap[inConfiguration[index]] == -1,
                    "DatasetProxyModel::initializeDatasetDecriptors",
-                   "no duplicates allowed in mapping configuration, mapping has to be reversible");
+                   "no duplicates allowed in mapping configuration, mapping has to be "
+                   "reversible");
 
         outSourceToProxyMap[inConfiguration[index]] = index;
     }

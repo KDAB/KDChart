@@ -23,7 +23,8 @@
 #include "Model.h"
 
 #include <QDebug>
-#include <QTime>
+#include <QElapsedTimer>
+#include <QRandomGenerator>
 
 #define _USE_MATH_DEFINES // this should give us the M_PI constant
 #include <cmath>
@@ -112,9 +113,10 @@ void Model::appendPoints(int numPoints)
         m_data.append(nextFunctionValue());
     }
 
-    QTime stopWatch;
+    QElapsedTimer stopWatch;
     stopWatch.start();
-    endInsertRows(); // this immediately triggers the signals that cause the diagram to update
+    endInsertRows(); // this immediately triggers the signals that cause the
+                     // diagram to update
     qDebug() << "Adding" << numPoints << "data points to the existing" << m_data.count() - numPoints << "took" << stopWatch.elapsed() << "milliseconds";
 }
 
@@ -127,7 +129,8 @@ qreal Model::nextFunctionValue()
         fx = sin(m_x);
         break;
     case TriangleFunction: {
-        qreal x = fmod(m_x + 0.5 * M_PI, 2 * M_PI); // make it look like sine, only less round
+        qreal x = fmod(m_x + 0.5 * M_PI,
+                       2 * M_PI); // make it look like sine, only less round
         if (x < M_PI) {
             fx = -1.0 + x * (2.0 / M_PI);
         } else {
@@ -141,7 +144,7 @@ qreal Model::nextFunctionValue()
         break;
     }
     case NoiseFunction:
-        fx = -1.0 + qreal(qrand()) * 2.0 / qreal(RAND_MAX);
+        fx = -1.0 + qreal(QRandomGenerator::global()->generate()) * 2.0 / qreal(RAND_MAX);
         break;
     case SineOneDivFunction: {
         // we want this repeating and we want negative arguments, too.

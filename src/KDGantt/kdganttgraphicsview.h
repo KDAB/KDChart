@@ -66,24 +66,24 @@ class KDGANTT_EXPORT GraphicsView : public QGraphicsView
     Q_PRIVATE_SLOT(d, void slotItemClicked(const QModelIndex &idx))
     Q_PRIVATE_SLOT(d, void slotItemDoubleClicked(const QModelIndex &idx))
 public:
-    explicit GraphicsView(QWidget *parent = 0);
+    explicit GraphicsView(QWidget *parent = nullptr);
     ~GraphicsView() override;
 
-    QAbstractItemModel *model() const;
-    QAbstractProxyModel *summaryHandlingModel() const;
-    ConstraintModel *constraintModel() const;
-    QModelIndex rootIndex() const;
-    QItemSelectionModel *selectionModel() const;
-    AbstractRowController *rowController() const;
-    AbstractGrid *grid() const;
-    ItemDelegate *itemDelegate() const;
+    [[nodiscard]] QAbstractItemModel *model() const;
+    [[nodiscard]] QAbstractProxyModel *summaryHandlingModel() const;
+    [[nodiscard]] ConstraintModel *constraintModel() const;
+    [[nodiscard]] QModelIndex rootIndex() const;
+    [[nodiscard]] QItemSelectionModel *selectionModel() const;
+    [[nodiscard]] AbstractRowController *rowController() const;
+    [[nodiscard]] AbstractGrid *grid() const;
+    [[nodiscard]] ItemDelegate *itemDelegate() const;
 
-    bool isReadOnly() const;
+    [[nodiscard]] bool isReadOnly() const;
 
     void setHeaderContextMenuPolicy(Qt::ContextMenuPolicy);
-    Qt::ContextMenuPolicy headerContextMenuPolicy() const;
+    [[nodiscard]] Qt::ContextMenuPolicy headerContextMenuPolicy() const;
 
-    QModelIndex indexAt(const QPoint &pos) const;
+    [[nodiscard]] QModelIndex indexAt(const QPoint &pos) const;
 
     virtual void addConstraint(const QModelIndex &from, const QModelIndex &to, Qt::KeyboardModifiers modifiers);
 
@@ -127,7 +127,7 @@ protected:
 private:
     friend class View;
 
-    GraphicsItem *createItem(ItemType type) const;
+    [[nodiscard]] GraphicsItem *createItem(ItemType type) const;
 };
 }
 

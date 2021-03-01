@@ -45,9 +45,9 @@ set(PyKDGantt_SRC
 
 set(PyKDGantt_include_paths
   $<JOIN:$<TARGET_PROPERTY:kdchart,INTERFACE_INCLUDE_DIRECTORIES>,${PATH_SEP}>
-  $<JOIN:$<TARGET_PROPERTY:Qt5::Core,INTERFACE_INCLUDE_DIRECTORIES>,${PATH_SEP}>
-  $<JOIN:$<TARGET_PROPERTY:Qt5::Widgets,INTERFACE_INCLUDE_DIRECTORIES>,${PATH_SEP}>
-  $<JOIN:$<TARGET_PROPERTY:Qt5::PrintSupport,INTERFACE_INCLUDE_DIRECTORIES>,${PATH_SEP}>
+  $<JOIN:$<TARGET_PROPERTY:Qt6::Core,INTERFACE_INCLUDE_DIRECTORIES>,${PATH_SEP}>
+  $<JOIN:$<TARGET_PROPERTY:Qt6::Widgets,INTERFACE_INCLUDE_DIRECTORIES>,${PATH_SEP}>
+  $<JOIN:$<TARGET_PROPERTY:Qt6::PrintSupport,INTERFACE_INCLUDE_DIRECTORIES>,${PATH_SEP}>
 )
 
 set(PyKDGantt_typesystem_paths
@@ -62,9 +62,9 @@ set(PyKDGantt_target_include_directories
 
 set(PyKDGantt_target_link_libraries
   kdchart
-  Qt5::Core
-  Qt5::Widgets
-  Qt5::PrintSupport
+  Qt6::Core
+  Qt6::Widgets
+  Qt6::PrintSupport
 )
 
 set(PyKDGantt_DEPENDS

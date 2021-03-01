@@ -52,14 +52,8 @@ Constraint::Private::Private()
 }
 
 Constraint::Private::Private(const Private &other)
-    : QSharedData(other)
-    , start(other.start)
-    , end(other.end)
-    , type(other.type)
-    , relationType(other.relationType)
-    , data(other.data)
-{
-}
+
+    = default;
 
 /*! Constructor. Creates a dependency for \a idx2 on \a idx1.
  * \param type controls if the constraint is a soft one that
@@ -72,7 +66,8 @@ Constraint::Private::Private(const Private &other)
  * the AbstractGrid subclass used in the view.
  *
  * \param relationType defines how the tasks depends on each other.
- * relationType can be FinishStart (default), FinishFinish, StartStart or StartFinish.
+ * relationType can be FinishStart (default), FinishFinish, StartStart or
+ * StartFinish.
  */
 Constraint::Constraint(const QModelIndex &idx1,
                        const QModelIndex &idx2,
@@ -97,21 +92,14 @@ Constraint::Constraint()
 
 /*! Copy-Constructor. */
 Constraint::Constraint(const Constraint &other)
-    : d(other.d)
-{
-}
+
+    = default;
 
 /*! Destructor */
-Constraint::~Constraint()
-{
-}
+Constraint::~Constraint() = default;
 
 /*! Assignment operator. */
-Constraint &Constraint::operator=(const Constraint &other)
-{
-    d = other.d;
-    return *this;
-}
+Constraint &Constraint::operator=(const Constraint &other) = default;
 
 /*! This is unused for now. */
 Constraint::Type Constraint::type() const

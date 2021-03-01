@@ -82,18 +82,16 @@ public:
         delete upper;
     }
 
-    qreal dateTimeToChartX(const QDateTime &dt) const;
-    QDateTime chartXtoDateTime(qreal x) const;
+    [[nodiscard]] qreal dateTimeToChartX(const QDateTime &dt) const;
+    [[nodiscard]] QDateTime chartXtoDateTime(qreal x) const;
 
-    int tabHeight(const QString &txt, QWidget *widget = 0) const;
+    int tabHeight(const QString &txt, QWidget *widget = nullptr) const;
     void getAutomaticFormatters(DateTimeScaleFormatter **lower, DateTimeScaleFormatter **upper);
 
     class DateTextFormatter
     {
     public:
-        virtual ~DateTextFormatter()
-        {
-        }
+        virtual ~DateTextFormatter() = default;
         virtual QString format(const QDateTime &dt) = 0;
         virtual QRect textRect(qreal x, qreal offset, qreal dayWidth, const QRectF &headerRect, const QDateTime &dt) = 0;
     };
@@ -119,8 +117,8 @@ public:
                                        const DateTimeScaleFormatter *formatter,
                                        QWidget *widget);
 
-    Qt::PenStyle gridLinePenStyle(QDateTime dt, HeaderType headerType) const;
-    QDateTime adjustDateTimeForHeader(QDateTime dt, HeaderType headerType) const;
+    [[nodiscard]] Qt::PenStyle gridLinePenStyle(QDateTime dt, HeaderType headerType) const;
+    [[nodiscard]] QDateTime adjustDateTimeForHeader(QDateTime dt, HeaderType headerType) const;
 
     QDateTime startDateTime;
     QDateTime endDateTime;

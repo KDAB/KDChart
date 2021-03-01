@@ -46,15 +46,14 @@ public:
         : CartesianGrid()
     {
     }
-    ~LeveyJenningsGrid() override
-    {
-    }
+    ~LeveyJenningsGrid() override = default;
 
     void drawGrid(PaintContext *context) override;
 
 private:
-    DataDimensionsList calculateGrid(const DataDimensionsList &rawDataDimensions) const override;
-    DataDimension calculateGridXY(const DataDimension &rawDataDimension, Qt::Orientation orientation, bool adjustLower, bool adjustUpper) const override;
+    [[nodiscard]] DataDimensionsList calculateGrid(const DataDimensionsList &rawDataDimensions) const override;
+    [[nodiscard]] DataDimension
+    calculateGridXY(const DataDimension &rawDataDimension, Qt::Orientation orientation, bool adjustLower, bool adjustUpper) const override;
     void calculateStepWidth(qreal start_,
                             qreal end_,
                             const QList<qreal> &granularities,

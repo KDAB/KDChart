@@ -44,7 +44,8 @@ namespace KDChart
 {
 /**
  * \class Measure KDChartMeasure.h KDChartMeasure
- * \brief Measure is used to specify relative and absolute sizes in KDChart, e.g. font sizes.
+ * \brief Measure is used to specify relative and absolute sizes in KDChart,
+ * e.g. font sizes.
  *
  */
 
@@ -62,7 +63,7 @@ public:
     {
         mValue = val;
     }
-    qreal value() const
+    [[nodiscard]] qreal value() const
     {
         return mValue;
     }
@@ -71,7 +72,7 @@ public:
     {
         mMode = mode;
     }
-    KDChartEnums::MeasureCalculationMode calculationMode() const
+    [[nodiscard]] KDChartEnums::MeasureCalculationMode calculationMode() const
     {
         return mMode;
     }
@@ -89,7 +90,8 @@ public:
 
     /**
      * \brief This is a convenience method for specifying a value,
-     *  implicitly setting the calculation mode to MeasureCalculationModeAbsolute.
+     *  implicitly setting the calculation mode to
+MeasureCalculationModeAbsolute.
      *
      * Calling setAbsoluteValue( value ) is the same as calling
 \verbatim
@@ -115,7 +117,7 @@ public:
      * The returned reference area will be derived from AbstractArea
      * or QWidget or both.
      */
-    const QObject *referenceArea() const
+    [[nodiscard]] const QObject *referenceArea() const
     {
         return mArea;
     }
@@ -124,7 +126,7 @@ public:
     {
         mOrientation = orientation;
     }
-    KDChartEnums::MeasureOrientation referenceOrientation() const
+    [[nodiscard]] KDChartEnums::MeasureOrientation referenceOrientation() const
     {
         return mOrientation;
     }
@@ -134,7 +136,7 @@ public:
      * or from QWidget, so it can also be derived from AbstractAreaWidget.
      */
     qreal calculatedValue(const QObject *autoArea, KDChartEnums::MeasureOrientation autoOrientation) const;
-    qreal calculatedValue(const QSizeF &autoSize, KDChartEnums::MeasureOrientation autoOrientation) const;
+    [[nodiscard]] qreal calculatedValue(const QSizeF &autoSize, KDChartEnums::MeasureOrientation autoOrientation) const;
     const QSizeF sizeOfArea(const QObject *area) const;
 
     bool operator==(const Measure &) const;

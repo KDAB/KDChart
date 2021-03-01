@@ -44,9 +44,7 @@ CartesianGrid::CartesianGrid()
 {
 }
 
-CartesianGrid::~CartesianGrid()
-{
-}
+CartesianGrid::~CartesianGrid() = default;
 
 int CartesianGrid::minimalSteps() const
 {
@@ -70,21 +68,27 @@ void CartesianGrid::setMaximalSteps(int maxsteps)
 
 void CartesianGrid::drawGrid(PaintContext *context)
 {
-    CartesianCoordinatePlane *plane = qobject_cast<CartesianCoordinatePlane *>(context->coordinatePlane());
+    auto *plane = qobject_cast<CartesianCoordinatePlane *>(context->coordinatePlane());
     const GridAttributes gridAttrsX(plane->gridAttributes(Qt::Horizontal));
     const GridAttributes gridAttrsY(plane->gridAttributes(Qt::Vertical));
     if (!gridAttrsX.isGridVisible() && !gridAttrsX.isSubGridVisible() && !gridAttrsY.isGridVisible() && !gridAttrsY.isSubGridVisible()) {
         return;
     }
-    // This plane is used for translating the coordinates - not for the data boundaries
+    // This plane is used for translating the coordinates - not for the data
+    // boundaries
     QPainter *p = context->painter();
     PainterSaver painterSaver(p);
-    // sharedAxisMasterPlane() changes the painter's coordinate transformation(!)
+    // sharedAxisMasterPlane() changes the painter's coordinate
+    // transformation(!)
     plane = qobject_cast<CartesianCoordinatePlane *>(plane->sharedAxisMasterPlane(context->painter()));
-    Q_ASSERT_X(plane, "CartesianGrid::drawGrid", "Bad function call: PaintContext::coodinatePlane() NOT a cartesian plane.");
+    Q_ASSERT_X(plane,
+               "CartesianGrid::drawGrid",
+               "Bad function call: PaintContext::coodinatePlane() NOT a cartesian "
+               "plane.");
 
     // update the calculated mDataDimensions before using them
-    updateData(context->coordinatePlane()); // this, in turn, calls our calculateGrid().
+    updateData(context->coordinatePlane()); // this, in turn, calls our
+                                            // calculateGrid().
     Q_ASSERT_X(mDataDimensions.count() == 2, "CartesianGrid::drawGrid", "Error: updateData did not return exactly two dimensions.");
     if (!isBoundariesValid(mDataDimensions)) {
         return;
@@ -116,16 +120,16 @@ void CartesianGrid::drawGrid(PaintContext *context)
     }
 
     /* TODO features from old code:
-       - MAYBE coarsen the main grid when it gets crowded (do it in calculateGrid or here?)
-        if ( ! dimX.isCalculated ) {
-            while ( screenRangeX / numberOfUnitLinesX <= MinimumPixelsBetweenLines ) {
-                dimX.stepWidth *= 10.0;
-                dimX.subStepWidth *= 10.0;
-                numberOfUnitLinesX = qAbs( dimX.distance() / dimX.stepWidth );
+       - MAYBE coarsen the main grid when it gets crowded (do it in
+       calculateGrid or here?) if ( ! dimX.isCalculated ) { while ( screenRangeX
+       / numberOfUnitLinesX <= MinimumPixelsBetweenLines ) { dimX.stepWidth
+       *= 10.0; dimX.subStepWidth *= 10.0; numberOfUnitLinesX = qAbs(
+       dimX.distance() / dimX.stepWidth );
             }
         }
        - MAYBE deactivate the sub-grid when it gets crowded
-        if ( dimX.subStepWidth && (screenRangeX / (dimX.distance() / dimX.subStepWidth)
+        if ( dimX.subStepWidth && (screenRangeX / (dimX.distance() /
+       dimX.subStepWidth)
              <= MinimumPixelsBetweenLines) ) {
             // de-activating grid sub steps: not enough space
             dimX.subStepWidth = 0.0;
@@ -133,7 +137,8 @@ void CartesianGrid::drawGrid(PaintContext *context)
     */
 
     for (int i = 0; i < 2; i++) {
-        XySwitch xy(i == 1); // first iteration paints the X grid lines, second paints the Y grid lines
+        XySwitch xy(i == 1); // first iteration paints the X grid lines, second
+                             // paints the Y grid lines
         const GridAttributes &gridAttrs = xy(gridAttrsX, gridAttrsY);
         bool hasMajorLines = gridAttrs.isGridVisible();
         bool hasMinorLines = hasMajorLines && gridAttrs.isSubGridVisible();
@@ -177,8 +182,11 @@ DataDimensionsList CartesianGrid::calculateGrid(const DataDimensionsList &rawDat
 {
     Q_ASSERT_X(rawDataDimensions.count() == 2, "CartesianGrid::calculateGrid", "Error: calculateGrid() expects a list with exactly two entries.");
 
-    CartesianCoordinatePlane *plane = qobject_cast<CartesianCoordinatePlane *>(mPlane);
-    Q_ASSERT_X(plane, "CartesianGrid::calculateGrid", "Error: PaintContext::calculatePlane() called, but no cartesian plane set.");
+    auto *plane = qobject_cast<CartesianCoordinatePlane *>(mPlane);
+    Q_ASSERT_X(plane,
+               "CartesianGrid::calculateGrid",
+               "Error: PaintContext::calculatePlane() called, but no cartesian plane "
+               "set.");
 
     DataDimensionsList l(rawDataDimensions);
 #if 0
@@ -198,8 +206,10 @@ DataDimensionsList CartesianGrid::calculateGrid(const DataDimensionsList &rawDat
 
         const DataDimension dimX = calculateGridXY(l.first(), Qt::Horizontal, gridAttrsX.adjustLowerBoundToGrid(), gridAttrsX.adjustUpperBoundToGrid());
         if (dimX.stepWidth) {
-            // qDebug("CartesianGrid::calculateGrid()   l.last().start:  %f   l.last().end:  %f", l.last().start, l.last().end);
-            // qDebug("                                 l.first().start: %f   l.first().end: %f", l.first().start, l.first().end);
+            // qDebug("CartesianGrid::calculateGrid()   l.last().start:  %f
+            // l.last().end:  %f", l.last().start, l.last().end); qDebug("
+            // l.first().start: %f   l.first().end: %f", l.first().start,
+            // l.first().end);
 
             // one time for the min/max value
             const DataDimension minMaxY = calculateGridXY(l.last(), Qt::Vertical, gridAttrsY.adjustLowerBoundToGrid(), gridAttrsY.adjustUpperBoundToGrid());
@@ -219,16 +229,18 @@ DataDimensionsList CartesianGrid::calculateGrid(const DataDimensionsList &rawDat
                 l.last().end = minMaxY.end;
                 l.last().stepWidth = dimY.stepWidth;
                 l.last().subStepWidth = dimY.subStepWidth;
-                // qDebug() << "CartesianGrid::calculateGrid()  final grid y-range:" << l.last().end - l.last().start << "   step width:" << l.last().stepWidth
-                // << endl;
+                // qDebug() << "CartesianGrid::calculateGrid()  final grid
+                // y-range:" << l.last().end - l.last().start << "   step width:"
+                // << l.last().stepWidth << '\n';
                 // calculate some reasonable subSteps if the
                 // user did not set the sub grid but did set
                 // the stepWidth.
 
                 // FIXME (Johannes)
-                // the last (y) dimension is not always the dimension for the ordinate!
-                // since there's no way to check for the orientation of this dimension here,
-                // we cannot automatically assume substep values
+                // the last (y) dimension is not always the dimension for the
+                // ordinate! since there's no way to check for the orientation
+                // of this dimension here, we cannot automatically assume
+                // substep values
                 // if ( dimY.subStepWidth == 0 )
                 //    l.last().subStepWidth = dimY.stepWidth/2;
                 // else
@@ -264,7 +276,7 @@ qreal fastPow10(int x)
 
 DataDimension CartesianGrid::calculateGridXY(const DataDimension &rawDataDimension, Qt::Orientation orientation, bool adjustLower, bool adjustUpper) const
 {
-    CartesianCoordinatePlane *const plane = dynamic_cast<CartesianCoordinatePlane *>(mPlane);
+    auto *const plane = dynamic_cast<CartesianCoordinatePlane *>(mPlane);
     if ((orientation == Qt::Vertical && plane->autoAdjustVerticalRangeToData() >= 100)
         || (orientation == Qt::Horizontal && plane->autoAdjustHorizontalRangeToData() >= 100)) {
         adjustLower = false;
@@ -294,14 +306,17 @@ DataDimension CartesianGrid::calculateGridXY(const DataDimension &rawDataDimensi
                     granularities << 1.0 << 1.25 << 2.0 << 2.5 << 5.0;
                     break;
                 }
-                // qDebug("CartesianGrid::calculateGridXY()   dim.start: %f   dim.end: %f", dim.start, dim.end);
+                // qDebug("CartesianGrid::calculateGridXY()   dim.start: %f
+                // dim.end: %f", dim.start, dim.end);
                 calculateStepWidth(dim.start, dim.end, granularities, orientation, dim.stepWidth, dim.subStepWidth, adjustLower, adjustUpper);
             }
             // if needed, adjust start/end to match the step width:
-            // qDebug() << "CartesianGrid::calculateGridXY() has 1st linear range: min " << dim.start << " and max" << dim.end;
+            // qDebug() << "CartesianGrid::calculateGridXY() has 1st linear
+            // range: min " << dim.start << " and max" << dim.end;
 
             AbstractGrid::adjustLowerUpperRange(dim.start, dim.end, dim.stepWidth, adjustLower, adjustUpper);
-            // qDebug() << "CartesianGrid::calculateGridXY() returns linear range: min " << dim.start << " and max" << dim.end;
+            // qDebug() << "CartesianGrid::calculateGridXY() returns linear
+            // range: min " << dim.start << " and max" << dim.end;
         } else {
             // logarithmic calculation with negative values
             if (dim.end <= 0) {
@@ -361,7 +376,8 @@ DataDimension CartesianGrid::calculateGridXY(const DataDimension &rawDataDimensi
             }
         }
     } else {
-        // qDebug() << "CartesianGrid::calculateGridXY() returns stepWidth 1.0  !!";
+        // qDebug() << "CartesianGrid::calculateGridXY() returns stepWidth 1.0
+        // !!";
         // Do not ignore the user configuration
         dim.stepWidth = dim.stepWidth ? dim.stepWidth : 1.0;
     }
@@ -379,7 +395,8 @@ static void calculateSteps(qreal start_,
                            bool adjustLower,
                            bool adjustUpper)
 {
-    // qDebug("-----------------------------------\nstart: %f   end: %f   power-of-ten: %i", start_, end_, power);
+    // qDebug("-----------------------------------\nstart: %f   end: %f
+    // power-of-ten: %i", start_, end_, power);
 
     qreal distance = 0.0;
     steps = 0.0;
@@ -397,12 +414,14 @@ static void calculateSteps(qreal start_,
         const qreal testDistance = qAbs(end - start);
         const qreal testSteps = testDistance / testStepWidth;
 
-        // qDebug() << "testDistance:" << testDistance << "  distance:" << distance;
+        // qDebug() << "testDistance:" << testDistance << "  distance:" <<
+        // distance;
         if ((minSteps <= testSteps) && (testSteps <= maxSteps) && ((steps == 0.0) || (testDistance <= distance))) {
             steps = testSteps;
             stepWidth = testStepWidth;
             distance = testDistance;
-            // qDebug( "start: %f   end: %f   step width: %f   steps: %f   distance: %f", start, end, stepWidth, steps, distance);
+            // qDebug( "start: %f   end: %f   step width: %f   steps: %f
+            // distance: %f", start, end, stepWidth, steps, distance);
         }
     }
 }
@@ -420,7 +439,7 @@ void CartesianGrid::calculateStepWidth(qreal start_,
 
     Q_ASSERT_X(granularities.count(), "CartesianGrid::calculateStepWidth", "Error: The list of GranularitySequence values is empty.");
     QList<qreal> list(granularities);
-    qSort(list);
+    std::sort(list.begin(), list.end());
 
     const qreal start = qMin(start_, end_);
     const qreal end = qMax(start_, end_);
@@ -448,7 +467,8 @@ void CartesianGrid::calculateStepWidth(qreal start_,
         --power;
     } while (steps == 0.0);
     ++power;
-    // qDebug( "steps calculated:  stepWidth: %f   steps: %f", stepWidth, steps);
+    // qDebug( "steps calculated:  stepWidth: %f   steps: %f", stepWidth,
+    // steps);
 
     // find the matching sub-grid line width in case it is
     // not set by the user
@@ -475,5 +495,6 @@ void CartesianGrid::calculateStepWidth(qreal start_,
             }
         }
     }
-    // qDebug("CartesianGrid::calculateStepWidth() found stepWidth %f (%f steps) and sub-stepWidth %f", stepWidth, steps, subStepWidth);
+    // qDebug("CartesianGrid::calculateStepWidth() found stepWidth %f (%f steps)
+    // and sub-stepWidth %f", stepWidth, steps, subStepWidth);
 }

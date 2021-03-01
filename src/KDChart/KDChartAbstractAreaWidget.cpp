@@ -150,12 +150,10 @@ void AbstractAreaWidget::paintAll(QPainter &painter)
         const QRect oldGeometry( areaGeometry() );
         const QRect inner( innerRect() );
         //qDebug() << "areaGeometry():" << oldGeometry
-        //         << "  contentsRect():" << contentsRect() << "  inner:" << inner;
-        if ( contentsRect() != inner ) {
-            //qDebug() << "old contentsRect():" << contentsRect() << "  new innerRect:" << inner;
-            setContentsMargins(
-                inner.left(),
-                inner.top(),
+        //         << "  contentsRect():" << contentsRect() << "  inner:" <<
+       inner; if ( contentsRect() != inner ) {
+            //qDebug() << "old contentsRect():" << contentsRect() << "  new
+       innerRect:" << inner; setContentsMargins( inner.left(), inner.top(),
                 oldGeometry.width() - inner.width() - 1,
                 oldGeometry.height() - inner.height() - 1 );
             //forceRebuild();

@@ -73,16 +73,18 @@ using namespace KDGantt;
 
 ItemDelegate::Private::Private()
 {
+    auto metrics = QFontMetrics(QApplication::font());
+
     // Brushes
-    QLinearGradient taskgrad(0., 0., 0., QApplication::fontMetrics().height());
+    QLinearGradient taskgrad(0., 0., 0., metrics.height());
     taskgrad.setColorAt(0., Qt::green);
     taskgrad.setColorAt(1., Qt::darkGreen);
 
-    QLinearGradient summarygrad(0., 0., 0., QApplication::fontMetrics().height());
+    QLinearGradient summarygrad(0., 0., 0., metrics.height());
     summarygrad.setColorAt(0., Qt::blue);
     summarygrad.setColorAt(1., Qt::darkBlue);
 
-    QLinearGradient eventgrad(0., 0., 0., QApplication::fontMetrics().height());
+    QLinearGradient eventgrad(0., 0., 0., metrics.height());
     eventgrad.setColorAt(0., Qt::red);
     eventgrad.setColorAt(1., Qt::darkRed);
 
@@ -113,7 +115,7 @@ QPen ItemDelegate::Private::constraintPen(const QPointF &start, const QPointF &e
     }
 
     // ... unless constraint.data() returned a valid pen for this case
-    if (dataPen.canConvert(QVariant::Pen)) {
+    if (dataPen.canConvert<QPen>()) {
         pen = dataPen.value<QPen>();
     }
 
@@ -216,7 +218,7 @@ Span ItemDelegate::itemBoundingSpan(const StyleOptionGanttItem &opt, const QMode
         itemRect = QRectF(itemRect.left() - itemRect.height() / 2., itemRect.top(), itemRect.height(), itemRect.height());
     }
 
-    int tw = opt.fontMetrics.width(txt);
+    int tw = opt.fontMetrics.horizontalAdvance(txt);
     tw += static_cast<int>(itemRect.height() / 2.);
     Span s;
     switch (opt.displayPosition) {
@@ -251,8 +253,9 @@ ItemDelegate::InteractionState ItemDelegate::interactionStateFor(const QPointF &
 
     QRectF itemRect(opt.itemRect);
 
-    // An event item is infinitely thin, basically just a line, because it has only one date instead of two.
-    // It is painted with an offset of -height/2, which is taken into account here.
+    // An event item is infinitely thin, basically just a line, because it has
+    // only one date instead of two. It is painted with an offset of -height/2,
+    // which is taken into account here.
     if (typ == TypeEvent)
         itemRect = QRectF(itemRect.topLeft() - QPointF(itemRect.height() / 2.0, 0), QSizeF(itemRect.height(), itemRect.height()));
 
@@ -289,7 +292,8 @@ void ItemDelegate::paintGanttItem(QPainter *painter, const StyleOptionGanttItem 
     boundingRect.setHeight(itemRect.height());
 
     // qDebug() << "itemRect="<<itemRect<<", boundingRect="<<boundingRect;
-    // qDebug() << painter->font() << opt.fontMetrics.height() << painter->device()->width() << painter->device()->height();
+    // qDebug() << painter->font() << opt.fontMetrics.height() <<
+    // painter->device()->width() << painter->device()->height();
 
     painter->save();
 
@@ -338,9 +342,11 @@ void ItemDelegate::paintGanttItem(QPainter *painter, const StyleOptionGanttItem 
             path.moveTo(r.topLeft());
             path.lineTo(r.topRight());
             path.lineTo(QPointF(r.right(), r.top() + 2. * deltaY));
-            // path.lineTo( QPointF( r.right()-3./2.*delta, r.top() + delta ) );
+            // path.lineTo( QPointF( r.right()-3./2.*delta, r.top() + delta
+            // ) );
             path.quadTo(QPointF(r.right() - deltaXBezierControl, r.top() + deltaY), QPointF(r.right() - deltaX, r.top() + deltaY));
-            // path.lineTo( QPointF( r.left()+3./2.*delta, r.top() + delta ) );
+            // path.lineTo( QPointF( r.left()+3./2.*delta, r.top() + delta )
+            // );
             path.lineTo(QPointF(r.left() + deltaX, r.top() + deltaY));
             path.quadTo(QPointF(r.left() + deltaXBezierControl, r.top() + deltaY), QPointF(r.left(), r.top() + 2. * deltaY));
             path.closeSubpath();

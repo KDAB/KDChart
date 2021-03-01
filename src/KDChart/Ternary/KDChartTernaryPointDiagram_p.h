@@ -51,20 +51,17 @@ class TernaryPointDiagram::Private : public AbstractTernaryDiagram::Private
 
 public:
     Private();
-    ~Private() override
-    {
-    }
+    ~Private() override = default;
 
     Private(const Private &rhs)
-        : AbstractTernaryDiagram::Private(rhs)
-    {
-    }
+
+        = default;
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM(TernaryPointDiagram, AbstractTernaryDiagram, TernaryCoordinatePlane)
 /*
-inline TernaryPointDiagram::TernaryPointDiagram( Private * p, TernaryCoordinatePlane* plane )
-  : AbstractTernaryDiagram( p, plane ) { init(); }
+inline TernaryPointDiagram::TernaryPointDiagram( Private * p,
+TernaryCoordinatePlane* plane ) : AbstractTernaryDiagram( p, plane ) { init(); }
 inline TernaryPointDiagram::Private * TernaryPointDiagram::d_func()
 { return static_cast<Private*>( AbstractTernaryDiagram::d_func() ); }
 inline const TernaryPointDiagram::Private * TernaryPointDiagram::d_func() const

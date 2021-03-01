@@ -50,13 +50,13 @@ public:
     enum Range { NormalRange, CriticalRange, OutOfRange };
 
     void setGridVisible(GridType type, bool visible);
-    bool isGridVisible(GridType type) const;
+    [[nodiscard]] bool isGridVisible(GridType type) const;
 
     void setGridPen(GridType type, const QPen &pen);
-    QPen gridPen(GridType type) const;
+    [[nodiscard]] QPen gridPen(GridType type) const;
 
     void setRangeBrush(Range range, const QBrush &brush);
-    QBrush rangeBrush(Range range) const;
+    [[nodiscard]] QBrush rangeBrush(Range range) const;
 
     bool operator==(const LeveyJenningsGridAttributes &) const;
     inline bool operator!=(const LeveyJenningsGridAttributes &other) const

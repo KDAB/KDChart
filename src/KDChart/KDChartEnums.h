@@ -69,22 +69,25 @@ public:
       This means: Smaller step width may not remove any grid lines, but it
       may add additional lines in between.
 
-      \li \c GranularitySequence_10_20 Step widths can be 1, or 2, but they never can be 2.5 nor 5, nor 1.25.
-      \li \c GranularitySequence_10_50 Step widths can be 1, or 5, but they never can be 2, nor 2.5, nor 1.25.
-      \li \c GranularitySequence_25_50 Step widths can be 2.5, or 5, but they never can be 1, nor 2, nor 1.25.
-      \li \c GranularitySequence_125_25 Step widths can be 1.25 or 2.5 but they never can be 1, nor 2, nor 5.
-      \li \c GranularitySequenceIrregular Step widths can be all of these values: 1, or 1.25, or 2, or 2.5, or 5.
+      \li \c GranularitySequence_10_20 Step widths can be 1, or 2, but they
+      never can be 2.5 nor 5, nor 1.25. \li \c GranularitySequence_10_50 Step
+      widths can be 1, or 5, but they never can be 2, nor 2.5, nor 1.25. \li \c
+      GranularitySequence_25_50 Step widths can be 2.5, or 5, but they never can
+      be 1, nor 2, nor 1.25. \li \c GranularitySequence_125_25 Step widths can
+      be 1.25 or 2.5 but they never can be 1, nor 2, nor 5. \li \c
+      GranularitySequenceIrregular Step widths can be all of these values: 1,
+      or 1.25, or 2, or 2.5, or 5.
 
       \note When ever possible, try to avoid using GranularitySequenceIrregular!
-      Allowing all possible step values, using this granularity sequence involves a
-      serious risk: Your users might be irritated due to 'jumping' grid lines, when step size
-      is changed from 2.5 to 2 (or vice versa, resp.).
-      In case you still want to use GranularitySequenceIrregular just make sure to NOT draw
-      any sub-grid lines, because in most cases you will get not-matching step widths for
-      the sub-grid.
-      In short: GranularitySequenceIrregular can safely be used if your data range is not
-      changing at all AND (b) you will not allow the coordinate plane to be zoomed
-      AND (c) you are not displaying any sub-grid lines.
+      Allowing all possible step values, using this granularity sequence
+      involves a serious risk: Your users might be irritated due to 'jumping'
+      grid lines, when step size is changed from 2.5 to 2 (or vice versa,
+      resp.). In case you still want to use GranularitySequenceIrregular just
+      make sure to NOT draw any sub-grid lines, because in most cases you will
+      get not-matching step widths for the sub-grid. In short:
+      GranularitySequenceIrregular can safely be used if your data range is not
+      changing at all AND (b) you will not allow the coordinate plane to be
+      zoomed AND (c) you are not displaying any sub-grid lines.
 
       Since you probably like having the value 1 as an allowed step width,
       the granularity sequence decision boils down to a boolean question:
@@ -151,10 +154,13 @@ public:
       Text layout policy: what to do if text that is to be drawn would
       cover neighboring text or neighboring areas.
 
-      \li \c LayoutJustOverwrite Just ignore the layout collision and write the text nevertheless.
-      \li \c LayoutPolicyRotate Try counter-clockwise rotation to make the text fit into the space.
-      \li \c LayoutPolicyShiftVertically Shift the text baseline upwards (or downwards, resp.) and draw a connector line between the text and its anchor.
-      \li \c LayoutPolicyShiftHorizontally Shift the text baseline to the left (or to the right, resp.) and draw a connector line between the text and its
+      \li \c LayoutJustOverwrite Just ignore the layout collision and write the
+      text nevertheless. \li \c LayoutPolicyRotate Try counter-clockwise
+      rotation to make the text fit into the space. \li \c
+      LayoutPolicyShiftVertically Shift the text baseline upwards (or downwards,
+      resp.) and draw a connector line between the text and its anchor. \li \c
+      LayoutPolicyShiftHorizontally Shift the text baseline to the left (or to
+      the right, resp.) and draw a connector line between the text and its
       anchor. \li \c LayoutPolicyShrinkFontSize Reduce the text font size.
 
       \sa KDChartParams::setPrintDataValues
@@ -199,19 +205,29 @@ public:
     };
 
     /**
-      Measure calculation mode: the way how the absolute value of a KDChart::Measure is determined during KD Chart's internal geometry calculation time.
+      Measure calculation mode: the way how the absolute value of a
+      KDChart::Measure is determined during KD Chart's internal geometry
+      calculation time.
 
-      KDChart::Measure values either are relative (calculated in relation to a given AbstractArea), or they are absolute (used as fixed values).
+      KDChart::Measure values either are relative (calculated in relation to a
+      given AbstractArea), or they are absolute (used as fixed values).
 
-      Values stored in relative measure always are interpreted as per-mille of a reference area's height (or width, resp.) depending on the orientation set for
-      the KDChart::Measure.
+      Values stored in relative measure always are interpreted as per-mille of a
+      reference area's height (or width, resp.) depending on the orientation set
+      for the KDChart::Measure.
 
-      \li \c MeasureCalculationModeAbsolute Value set by setValue() is absolute, to be used unchanged.
-      \li \c MeasureCalculationModeRelative Value is relative, the reference area is specified by setReferenceArea(), and orientation specified by
-      setOrientation(). \li \c MeasureCalculationModeAuto Value is relative, KD Chart will automatically determine which reference area to use, and it will
-      determine the orientation too. \li \c MeasureCalculationModeAutoArea Value is relative, Orientation is specified by setOrientation(), and KD Chart will
-      automatically determine which reference area to use. \li \c MeasureCalculationModeAutoOrientation Value is relative, Area is specified by
-      setReferenceArea(), and KD Chart will automatically determine which orientation to use.
+      \li \c MeasureCalculationModeAbsolute Value set by setValue() is absolute,
+      to be used unchanged. \li \c MeasureCalculationModeRelative Value is
+      relative, the reference area is specified by setReferenceArea(), and
+      orientation specified by setOrientation(). \li \c
+      MeasureCalculationModeAuto Value is relative, KD Chart will automatically
+      determine which reference area to use, and it will determine the
+      orientation too. \li \c MeasureCalculationModeAutoArea Value is relative,
+      Orientation is specified by setOrientation(), and KD Chart will
+      automatically determine which reference area to use. \li \c
+      MeasureCalculationModeAutoOrientation Value is relative, Area is specified
+      by setReferenceArea(), and KD Chart will automatically determine which
+      orientation to use.
 
       \sa KDChart::Measure::setCalculationMode
       */
@@ -271,18 +287,28 @@ public:
     }
 
     /**
-      Measure orientation mode: the way how the absolute value of a KDChart::Measure is determined during KD Chart's internal geometry calculation time.
+      Measure orientation mode: the way how the absolute value of a
+      KDChart::Measure is determined during KD Chart's internal geometry
+      calculation time.
 
-      KDChart::Measure values either are relative (calculated in relation to a given AbstractArea), or they are absolute (used as fixed values).
+      KDChart::Measure values either are relative (calculated in relation to a
+      given AbstractArea), or they are absolute (used as fixed values).
 
-      Values stored in relative measure take into account the width (and/or the height, resp.) of a so-called reference area,
-      that is either specified by KDChart::Measure::setReferenceArea, or determined by KD Chart automatically, respectively.
+      Values stored in relative measure take into account the width (and/or the
+      height, resp.) of a so-called reference area, that is either specified by
+      KDChart::Measure::setReferenceArea, or determined by KD Chart
+      automatically, respectively.
 
-      \li \c MeasureOrientationAuto Value is calculated, based upon the width (or on the height, resp.) of the reference area: KD Chart will automatically
-      determie an appropriate way. \li \c MeasureOrientationHorizontal Value is calculated, based upon the width of the reference area. \li \c
-      MeasureOrientationVertical Value is calculated, based upon the height of the reference area. \li \c MeasureOrientationMinimum Value is calculated, based
-      upon the width (or on the height, resp.) of the reference area - which ever is smaller. \li \c MeasureOrientationMaximum Value is calculated, based upon
-      the width (or on the height, resp.) of the reference area - which ever is smaller.
+      \li \c MeasureOrientationAuto Value is calculated, based upon the width
+      (or on the height, resp.) of the reference area: KD Chart will
+      automatically determie an appropriate way. \li \c
+      MeasureOrientationHorizontal Value is calculated, based upon the width of
+      the reference area. \li \c MeasureOrientationVertical Value is calculated,
+      based upon the height of the reference area. \li \c
+      MeasureOrientationMinimum Value is calculated, based upon the width (or on
+      the height, resp.) of the reference area - which ever is smaller. \li \c
+      MeasureOrientationMaximum Value is calculated, based upon the width (or on
+      the height, resp.) of the reference area - which ever is smaller.
 
       \sa KDChart::Measure::setOrientationMode
       */

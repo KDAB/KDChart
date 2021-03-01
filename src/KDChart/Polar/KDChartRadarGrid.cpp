@@ -93,7 +93,7 @@ void RadarGrid::drawGrid(PaintContext *context)
 {
     const QBrush backupBrush(context->painter()->brush());
     context->painter()->setBrush(QBrush());
-    RadarCoordinatePlane *plane = dynamic_cast<RadarCoordinatePlane *>(context->coordinatePlane());
+    auto *plane = dynamic_cast<RadarCoordinatePlane *>(context->coordinatePlane());
     Q_ASSERT(plane);
     Q_ASSERT(plane->diagram());
     QPair<QPointF, QPointF> boundaries = plane->diagram()->dataBoundaries();
@@ -125,7 +125,8 @@ void RadarGrid::drawGrid(PaintContext *context)
     // distance between two axis lines
     const qreal step = (r - qAbs(min)) / (dgr->numberOfGridRings());
 
-    // calculate the height needed for text to be displayed at the bottom and top of the chart
+    // calculate the height needed for text to be displayed at the bottom and
+    // top of the chart
     QPointF topLeft = context->rectangle().topLeft();
     Q_ASSERT(plane->diagram()->model());
     TextAttributes ta = plane->textAttributes();
@@ -151,14 +152,14 @@ void RadarGrid::drawGrid(PaintContext *context)
         origin += offset;
         origin = scaleToRealPosition(QPointF(min, 0), context->rectangle(), destRect, *plane);
 
-        const qreal aWidth = metric.width(QString::fromLatin1("A"));
+        const qreal aWidth = metric.horizontalAdvance(QString::fromLatin1("A"));
         const QLineF startLine(origin, scaleToRealPosition(QPointF(r - qAbs(min), 0), context->rectangle(), destRect, *plane));
         for (int i = 0; i < model->rowCount(); ++i) {
             const QLineF currentLine(origin, scaleToRealPosition(QPointF(r - qAbs(min), i), context->rectangle(), destRect, *plane));
             const int angle = (int)startLine.angleTo(currentLine) % 360;
             const qreal angleTest = qAbs(angle - 180);
             const QString data = model->headerData(i, Qt::Vertical).toString();
-            const qreal xOffset = metric.width(data) / 2.0;
+            const qreal xOffset = metric.horizontalAdvance(data) / 2.0;
             if (angleTest < 5.0)
                 context->painter()->drawText(currentLine.pointAt(1) + QPointF(-xOffset, labelHeight + qAbs(min)), data);
             else if (qAbs(angleTest - 180) < 5.0)
@@ -187,7 +188,7 @@ void RadarGrid::drawGrid(PaintContext *context)
             const QString text = QString::number(i * stepWidth);
             const QPointF translatedPoint = scaleToRealPosition(QPointF(i * step - qAbs(min), 0), context->rectangle(), destRect, *plane);
             const QFontMetrics metric(ta.font() /*QFont( "Arial", 10 )*/);
-            const qreal textLength = metric.width(text);
+            const qreal textLength = metric.horizontalAdvance(text);
             const qreal textHeight = metric.height() / 2.0;
             QPointF textOffset(textLength, -textHeight);
             textOffset = scaleToRect(textOffset, context->rectangle(), destRect);

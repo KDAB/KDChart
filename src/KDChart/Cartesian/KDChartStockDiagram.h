@@ -43,71 +43,66 @@ class KDCHART_EXPORT StockDiagram : public AbstractCartesianDiagram
 public:
     enum Type { HighLowClose, OpenHighLowClose, Candlestick };
 
-    explicit StockDiagram(QWidget *parent = 0, CartesianCoordinatePlane *plane = 0);
+    explicit StockDiagram(QWidget *parent = nullptr, CartesianCoordinatePlane *plane = nullptr);
     ~StockDiagram() override;
 
     void setType(Type type);
-    Type type() const;
+    [[nodiscard]] Type type() const;
 
     void setStockBarAttributes(const StockBarAttributes &attr);
-    StockBarAttributes stockBarAttributes() const;
+    [[nodiscard]] StockBarAttributes stockBarAttributes() const;
 
     void setStockBarAttributes(int column, const StockBarAttributes &attr);
-    StockBarAttributes stockBarAttributes(int column) const;
+    [[nodiscard]] StockBarAttributes stockBarAttributes(int column) const;
 
     void setThreeDBarAttributes(const ThreeDBarAttributes &attr);
-    ThreeDBarAttributes threeDBarAttributes() const;
+    [[nodiscard]] ThreeDBarAttributes threeDBarAttributes() const;
 
     void setThreeDBarAttributes(int column, const ThreeDBarAttributes &attr);
-    ThreeDBarAttributes threeDBarAttributes(int column) const;
+    [[nodiscard]] ThreeDBarAttributes threeDBarAttributes(int column) const;
 
     void setLowHighLinePen(const QPen &pen);
-    QPen lowHighLinePen() const;
+    [[nodiscard]] QPen lowHighLinePen() const;
 
     void setLowHighLinePen(int column, const QPen &pen);
-    QPen lowHighLinePen(int column) const;
+    [[nodiscard]] QPen lowHighLinePen(int column) const;
 
     void setUpTrendCandlestickBrush(const QBrush &brush);
-    QBrush upTrendCandlestickBrush() const;
+    [[nodiscard]] QBrush upTrendCandlestickBrush() const;
 
     void setDownTrendCandlestickBrush(const QBrush &brush);
-    QBrush downTrendCandlestickBrush() const;
+    [[nodiscard]] QBrush downTrendCandlestickBrush() const;
 
     void setUpTrendCandlestickBrush(int column, const QBrush &brush);
-    QBrush upTrendCandlestickBrush(int column) const;
+    [[nodiscard]] QBrush upTrendCandlestickBrush(int column) const;
 
     void setDownTrendCandlestickBrush(int column, const QBrush &brush);
-    QBrush downTrendCandlestickBrush(int column) const;
+    [[nodiscard]] QBrush downTrendCandlestickBrush(int column) const;
 
     void setUpTrendCandlestickPen(const QPen &pen);
-    QPen upTrendCandlestickPen() const;
+    [[nodiscard]] QPen upTrendCandlestickPen() const;
 
     void setDownTrendCandlestickPen(const QPen &pen);
-    QPen downTrendCandlestickPen() const;
+    [[nodiscard]] QPen downTrendCandlestickPen() const;
 
     void setUpTrendCandlestickPen(int column, const QPen &pen);
-    QPen upTrendCandlestickPen(int column) const;
+    [[nodiscard]] QPen upTrendCandlestickPen(int column) const;
 
     void setDownTrendCandlestickPen(int column, const QPen &pen);
-    QPen downTrendCandlestickPen(int column) const;
+    [[nodiscard]] QPen downTrendCandlestickPen(int column) const;
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-    virtual const int numberOfAbscissaSegments() const;
-    virtual const int numberOfOrdinateSegments() const;
-#else
-    int numberOfAbscissaSegments() const override;
-    int numberOfOrdinateSegments() const override;
-#endif
+    [[nodiscard]] int numberOfAbscissaSegments() const override;
+    [[nodiscard]] int numberOfOrdinateSegments() const override;
 
     void paint(PaintContext *paintContext) override;
 
     void resize(const QSizeF &size) override;
 
-    qreal threeDItemDepth(int column) const override;
-    qreal threeDItemDepth(const QModelIndex &index) const override;
+    [[nodiscard]] qreal threeDItemDepth(int column) const override;
+    [[nodiscard]] qreal threeDItemDepth(const QModelIndex &index) const override;
 
 protected:
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    [[nodiscard]] const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
 };
 
 } // Namespace KDChart

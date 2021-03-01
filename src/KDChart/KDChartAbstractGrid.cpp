@@ -36,7 +36,7 @@ static qreal _trunc(qreal v)
 }
 
 AbstractGrid::AbstractGrid()
-    : mPlane(0)
+    : mPlane(nullptr)
 {
     // this bloc left empty intentionally
 }
@@ -55,7 +55,8 @@ DataDimensionsList AbstractGrid::updateData(AbstractCoordinatePlane *plane)
 {
     if (plane) {
         const DataDimensionsList rawDataDimensions(plane->getDataDimensionsList());
-        // ### this could be dangerous becaus calculateGrid() looks at some data we are not checking
+        // ### this could be dangerous becaus calculateGrid() looks at some data
+        // we are not checking
         //     for changes here.
         if (mCachedRawDataDimensions.empty() || (rawDataDimensions != mCachedRawDataDimensions)) {
             mCachedRawDataDimensions = rawDataDimensions;
@@ -78,8 +79,8 @@ bool AbstractGrid::isBoundariesValid(const QPair<QPointF, QPointF> &b)
 
 bool AbstractGrid::isBoundariesValid(const DataDimensionsList &l)
 {
-    for (int i = 0; i < l.size(); ++i)
-        if (!isValueValid(l.at(i).start) || !isValueValid(l.at(i).end))
+    for (const auto &i : l)
+        if (!isValueValid(i.start) || !isValueValid(i.end))
             return false;
     return true;
 }

@@ -31,22 +31,22 @@ private slots:
 
     void testMainWindow()
     {
-        QTime t;
+        QElapsedTimer t;
         t.start();
 
         MainWindow mainWindow;
 
-        qDebug("time constructor: %d ms", t.elapsed());
+        qDebug("time constructor: %lld ms", t.elapsed());
 
         mainWindow.show();
         QTimer::singleShot(0, qApp, SLOT(quit()));
 
-        qDebug("time show(): %d ms", t.elapsed());
+        qDebug("time show(): %lld ms", t.elapsed());
         // uncomment to see it blink:
         // QTest::qWait( 10000 );
     }
 };
 
-QTEST_MAIN(TestParamVsParam);
+QTEST_MAIN(TestParamVsParam)
 
 #include "main.moc"

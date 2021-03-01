@@ -82,7 +82,7 @@ QSize Legend::minimumSizeHint() const
 
 void Legend::setModel(QAbstractItemModel *model)
 {
-    if (this->model() != 0) {
+    if (this->model() != nullptr) {
         disconnect(this->model(), SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(modelDataChanged()));
         disconnect(this->model(), SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(modelDataChanged()));
         disconnect(this->model(), SIGNAL(columnsRemoved(QModelIndex, int, int)), this, SLOT(modelDataChanged()));
@@ -91,7 +91,7 @@ void Legend::setModel(QAbstractItemModel *model)
     QAbstractItemView::setModel(model);
     d->proxyModel.setSourceModel(model);
 
-    if (this->model() != 0) {
+    if (this->model() != nullptr) {
         connect(this->model(), SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(modelDataChanged()));
         connect(this->model(), SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(modelDataChanged()));
         connect(this->model(), SIGNAL(columnsRemoved(QModelIndex, int, int)), this, SLOT(modelDataChanged()));
@@ -110,7 +110,7 @@ void Legend::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
     // no model, no legend...
-    if (model() == 0)
+    if (model() == nullptr)
         return;
 
     QPainter p(viewport());
@@ -142,8 +142,8 @@ QRect Legend::drawItem(QPainter *painter, const QModelIndex &index, const QPoint
     int yPos = pos.y();
 
     if (index.isValid() && index.model() == &d->proxyModel) {
-        ItemDelegate *const delegate = qobject_cast<ItemDelegate *>(itemDelegate(index));
-        assert(delegate != 0);
+        auto *const delegate = qobject_cast<ItemDelegate *>(itemDelegateForIndex(index));
+        assert(delegate != nullptr);
         const QRect r(pos, measureItem(index, false));
         StyleOptionGanttItem opt = getStyleOption(index);
         opt.rect = r;
@@ -172,20 +172,20 @@ QRect Legend::drawItem(QPainter *painter, const QModelIndex &index, const QPoint
     return QRect(pos, QPoint(xPos, yPos));
 }
 
-/*! Calculates the needed space for the legend item at \a index and, if \a recursive is true,
- *  all child items.
+/*! Calculates the needed space for the legend item at \a index and, if \a
+ * recursive is true, all child items.
  */
 QSize Legend::measureItem(const QModelIndex &index, bool recursive) const
 {
-    if (model() == 0)
+    if (model() == nullptr)
         return QSize();
 
     QSize baseSize;
-    if (index.model() != 0) {
+    if (index.model() != nullptr) {
         QFontMetrics fm((index.model()->data(index, Qt::FontRole)).value<QFont>());
         const QString text = index.model()->data(index, LegendRole).toString();
         if (!text.isEmpty())
-            baseSize += QSize(fm.width(text) + fm.height() + 2, fm.height() + 2);
+            baseSize += QSize(fm.horizontalAdvance(text) + fm.height() + 2, fm.height() + 2);
     }
 
     if (!recursive)

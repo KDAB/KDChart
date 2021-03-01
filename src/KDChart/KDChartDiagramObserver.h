@@ -48,21 +48,23 @@ public:
     /**
      * Constructs a new observer observing the given diagram.
      */
-    explicit DiagramObserver(AbstractDiagram *diagram, QObject *parent = 0);
+    explicit DiagramObserver(AbstractDiagram *diagram, QObject *parent = nullptr);
     ~DiagramObserver() override;
 
-    const AbstractDiagram *diagram() const;
+    [[nodiscard]] const AbstractDiagram *diagram() const;
     AbstractDiagram *diagram();
 
 Q_SIGNALS:
     /** This signal is emitted immediately before the diagram is
      * being destroyed. */
     void diagramDestroyed(AbstractDiagram *diagram);
-    /** Emitted when a diagram is being destroyed, but before its data is invalidated **/
+    /** Emitted when a diagram is being destroyed, but before its data is
+     * invalidated **/
     void diagramAboutToBeDestroyed(AbstractDiagram *diagram);
     /** This signal is emitted whenever the data of the diagram changes. */
     void diagramDataChanged(AbstractDiagram *diagram);
-    /** This signal is emitted whenever any of the data of the diagram was set (un)hidden. */
+    /** This signal is emitted whenever any of the data of the diagram was set
+     * (un)hidden. */
     void diagramDataHidden(AbstractDiagram *diagram);
     /** This signal is emitted whenever the attributes of the diagram change. */
     void diagramAttributesChanged(AbstractDiagram *diagram);

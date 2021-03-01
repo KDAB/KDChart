@@ -49,14 +49,11 @@ class TernaryLineDiagram::Private : public AbstractTernaryDiagram::Private
 
 public:
     Private();
-    ~Private() override
-    {
-    }
+    ~Private() override = default;
 
     Private(const Private &rhs)
-        : AbstractTernaryDiagram::Private(rhs)
-    {
-    }
+
+        = default;
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM(TernaryLineDiagram, AbstractTernaryDiagram, TernaryCoordinatePlane)

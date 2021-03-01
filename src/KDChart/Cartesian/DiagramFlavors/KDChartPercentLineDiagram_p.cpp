@@ -91,7 +91,8 @@ void PercentLineDiagram::paintWithLines(PaintContext *ctx)
     LabelPaintCache lpc;
     LineAttributesInfoList lineList;
 
-    // FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked and ::Percent
+    // FIXME(khz): add LineAttributes::MissingValuesPolicy support for
+    // LineDiagram::Stacked and ::Percent
 
     qreal maxValue = 100; // always 100%
     qreal sumValues = 0;
@@ -166,7 +167,7 @@ void PercentLineDiagram::paintWithLines(PaintContext *ctx)
                 stackedValues = stackedValues / percentSumValues.at(row) * maxValue;
             else
                 stackedValues = 0.0;
-            // qDebug() << stackedValues << endl;
+            // qDebug() << stackedValues << '\n';
             QPointF nextPoint = ctx->coordinatePlane()->translate(QPointF(diagram()->centerDataPoints() ? point.key + 0.5 : point.key, stackedValues));
             points << nextPoint;
 
@@ -201,7 +202,8 @@ void PercentLineDiagram::paintWithLines(PaintContext *ctx)
                     laPreviousCell = laCell;
                     indexPreviousCell = sourceIndex;
                 } else {
-                    // qDebug() << "no area shown for row"<<iRow<<"  column"<<iColumn;
+                    // qDebug() << "no area shown for row"<<iRow<<"
+                    // column"<<iColumn;
                 }
             } else {
                 ptNorthEast = ptNorthWest;
@@ -246,7 +248,8 @@ void PercentLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
     LabelPaintCache lpc;
     LineAttributesInfoList lineList;
 
-    // FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked and ::Percent
+    // FIXME(khz): add LineAttributes::MissingValuesPolicy support for
+    // LineDiagram::Stacked and ::Percent
 
     qreal maxValue = 100; // always 100%
     qreal sumValues = 0;
@@ -292,16 +295,18 @@ void PercentLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
             //         return NAN;
             //     }
             //
-            //     const CartesianDiagramDataCompressor::CachePosition position( row, col );
-            //     const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+            //     const CartesianDiagramDataCompressor::CachePosition position(
+            //     row, col ); const CartesianDiagramDataCompressor::DataPoint
+            //     point = compressor().data( position );
             //
             //     return !ISNAN( point.value ) ? point.value
-            //          : policy == LineAttributes::MissingValuesAreBridged ? interpolateMissingValue( position )
-            //          : NAN;
+            //          : policy == LineAttributes::MissingValuesAreBridged ?
+            //          interpolateMissingValue( position ) : NAN;
             // };
             //
             // auto safeAddPositive = [] ( qreal accumulator, qreal newValue ) {
-            //     return ISNAN( newValue ) || newValue <= 0 ? accumulator : accumulator + newValue;
+            //     return ISNAN( newValue ) || newValue <= 0 ? accumulator :
+            //     accumulator + newValue;
             // };
 
             struct valueAtLambda {
@@ -365,8 +370,11 @@ void PercentLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
             nextKey = row + 1;
 
             // TODO: revert back to lambdas when we stop caring about pre-C++11
-            // auto dataAt = [&] ( const QVector<qreal>& source, qreal key, int index ) {
-            //     return ctx->coordinatePlane()->translate( QPointF( diagram()->centerDataPoints() ? key + 0.5 : key, source[index] ) );
+            // auto dataAt = [&] ( const QVector<qreal>& source, qreal key, int
+            // index ) {
+            //     return ctx->coordinatePlane()->translate( QPointF(
+            //     diagram()->centerDataPoints() ? key + 0.5 : key,
+            //     source[index] ) );
             // };
             struct dataAtLambda {
                 dataAtLambda(PaintContext *ctx, PercentLineDiagram *_this)
@@ -420,7 +428,8 @@ void PercentLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
                     laPreviousCell = laCell;
                     indexPreviousCell = sourceIndex;
                 } else {
-                    // qDebug() << "no area shown for row"<<iRow<<"  column"<<iColumn;
+                    // qDebug() << "no area shown for row"<<iRow<<"
+                    // column"<<iColumn;
                 }
             } else {
                 ptNorthEast = ptNorthWest;

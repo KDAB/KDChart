@@ -82,20 +82,18 @@ public:
         : m_private(d->d_func())
     {
     }
-    virtual ~BarDiagramType()
-    {
-    }
-    virtual BarDiagram::BarType type() const = 0;
-    virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const = 0;
+    virtual ~BarDiagramType() = default;
+    [[nodiscard]] virtual BarDiagram::BarType type() const = 0;
+    [[nodiscard]] virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const = 0;
     virtual void paint(PaintContext *ctx) = 0;
-    BarDiagram *diagram() const;
+    [[nodiscard]] BarDiagram *diagram() const;
 
 protected:
     // make some elements of m_private available to derived classes:
-    AttributesModel *attributesModel() const;
-    QModelIndex attributesModelRootIndex() const;
+    [[nodiscard]] AttributesModel *attributesModel() const;
+    [[nodiscard]] QModelIndex attributesModelRootIndex() const;
     ReverseMapper &reverseMapper();
-    CartesianDiagramDataCompressor &compressor() const;
+    [[nodiscard]] CartesianDiagramDataCompressor &compressor() const;
 
     void paintBars(PaintContext *ctx, const QModelIndex &index, const QRectF &bar, qreal maxDepth);
     void calculateValueAndGapWidths(int rowCount, int colCount, qreal groupWidth, qreal &barWidth, qreal &spaceBetweenBars, qreal &spaceBetweenGroups);

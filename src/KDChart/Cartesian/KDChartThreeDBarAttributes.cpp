@@ -57,9 +57,7 @@ ThreeDBarAttributes &ThreeDBarAttributes::operator=(const ThreeDBarAttributes &r
     return *this;
 }
 
-ThreeDBarAttributes::~ThreeDBarAttributes()
-{
-}
+ThreeDBarAttributes::~ThreeDBarAttributes() = default;
 
 void ThreeDBarAttributes::init()
 {

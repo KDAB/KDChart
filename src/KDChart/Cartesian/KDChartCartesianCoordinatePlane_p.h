@@ -52,9 +52,7 @@ class CartesianCoordinatePlane::Private : public AbstractCoordinatePlane::Privat
 
 public:
     explicit Private();
-    ~Private() override
-    {
-    }
+    ~Private() override = default;
 
     void initialize() override
     {
@@ -72,10 +70,9 @@ public:
     bool isVisiblePoint(const AbstractCoordinatePlane *plane, const QPointF &point) const override
     {
         QPointF p = point;
-        const CartesianCoordinatePlane *const ref =
-            qobject_cast<const CartesianCoordinatePlane *>(const_cast<AbstractCoordinatePlane *>(plane)->sharedAxisMasterPlane());
-        const CartesianCoordinatePlane *const cartPlane = dynamic_cast<const CartesianCoordinatePlane *>(plane);
-        if (ref != 0 && ref != cartPlane) {
+        const auto *const ref = qobject_cast<const CartesianCoordinatePlane *>(const_cast<AbstractCoordinatePlane *>(plane)->sharedAxisMasterPlane());
+        const auto *const cartPlane = dynamic_cast<const CartesianCoordinatePlane *>(plane);
+        if (ref != nullptr && ref != cartPlane) {
             const QPointF logical = ref->translateBack(point) - cartPlane->visibleDataRange().topLeft() + ref->visibleDataRange().topLeft();
             p = ref->translate(logical);
         }
@@ -108,18 +105,20 @@ public:
     qreal verticalMin;
     qreal verticalMax;
 
-    // autoAdjustHorizontalRangeToData determines if and how much the horizontal range is adjusted.
-    // A value of 100 means that the fixed horizontal range will be used (e.g. set by the user),
-    // otherwise the value will be the percentage of the diagram's horizontal range that is to be
-    // left empty (i.e., it resembles the 'gap' between the horizontal extrema and the border of the
-    // diagram).
+    // autoAdjustHorizontalRangeToData determines if and how much the horizontal
+    // range is adjusted. A value of 100 means that the fixed horizontal range
+    // will be used (e.g. set by the user), otherwise the value will be the
+    // percentage of the diagram's horizontal range that is to be left empty
+    // (i.e., it resembles the 'gap' between the horizontal extrema and the
+    // border of the diagram).
     unsigned int autoAdjustHorizontalRangeToData;
 
-    // autoAdjustVerticalRangeToData determines if and how much the vertical range is adjusted.
-    // A value of 100 means that the fixed vertical range will be used (e.g. set by the user),
-    // otherwise the value will be the percentage of the diagram's vertical range that is to be
-    // left empty (i.e., it resembles the 'gap' between the vertical extrema and the border of the
-    // diagram).
+    // autoAdjustVerticalRangeToData determines if and how much the vertical
+    // range is adjusted. A value of 100 means that the fixed vertical range
+    // will be used (e.g. set by the user), otherwise the value will be the
+    // percentage of the diagram's vertical range that is to be left empty
+    // (i.e., it resembles the 'gap' between the vertical extrema and the border
+    // of the diagram).
     unsigned int autoAdjustVerticalRangeToData;
     bool autoAdjustGridToZoom;
 

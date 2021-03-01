@@ -30,7 +30,7 @@
 #include "KDChartPainterSaver_p.h"
 #include "KDChartPolarDiagram.h"
 
-#include <math.h>
+#include <cmath>
 
 #include <QFont>
 #include <QList>
@@ -85,7 +85,8 @@ void PolarCoordinatePlane::paint(QPainter *painter)
     ctx.setCoordinatePlane(this);
     ctx.setRectangle(geometry() /*d->contentRect*/);
 
-    // 1. ask (only!) PolarDiagrams if they need additional space for data labels / data comments
+    // 1. ask (only!) PolarDiagrams if they need additional space for data
+    // labels / data comments
 
     const qreal oldZoomX = zoomFactorX();
     const qreal oldZoomY = zoomFactorY();
@@ -95,7 +96,7 @@ void PolarCoordinatePlane::paint(QPainter *painter)
         d->currentTransformation = &(d->coordinateTransformations[i]);
         qreal zoomX;
         qreal zoomY;
-        PolarDiagram *polarDia = dynamic_cast<PolarDiagram *>(diags[i]);
+        auto *polarDia = dynamic_cast<PolarDiagram *>(diags[i]);
         if (polarDia) {
             polarDia->paint(&ctx, true, zoomX, zoomY);
             d->newZoomX = qMin(d->newZoomX, zoomX);
@@ -105,7 +106,7 @@ void PolarCoordinatePlane::paint(QPainter *painter)
 
     if (d->newZoomX != oldZoomX || d->newZoomY != oldZoomY) {
         // qDebug() << "new zoom:" << d->newZoomY << " old zoom:" << oldZoomY;
-        d->currentTransformation = 0; // not painting anymore until we get called again
+        d->currentTransformation = nullptr; // not painting anymore until we get called again
         QMetaObject::invokeMethod(this, "adjustZoomAndRepaint", Qt::QueuedConnection);
         return;
     }
@@ -116,11 +117,12 @@ void PolarCoordinatePlane::paint(QPainter *painter)
     d->currentTransformation = &d->coordinateTransformations.first();
     d->grid->drawGrid(&ctx);
 
-    // paint the diagrams which will re-use their DataValueTextInfoList(s) filled in step 1:
+    // paint the diagrams which will re-use their DataValueTextInfoList(s)
+    // filled in step 1:
     for (int i = 0; i < diags.size(); i++) {
         d->currentTransformation = &(d->coordinateTransformations[i]);
         PainterSaver painterSaver(painter);
-        PolarDiagram *polarDia = dynamic_cast<PolarDiagram *>(diags[i]);
+        auto *polarDia = dynamic_cast<PolarDiagram *>(diags[i]);
         if (polarDia) {
             qreal dummy1, dummy2;
             polarDia->paint(&ctx, false, dummy1, dummy2);
@@ -128,7 +130,7 @@ void PolarCoordinatePlane::paint(QPainter *painter)
             diags[i]->paint(&ctx);
         }
     }
-    d->currentTransformation = 0;
+    d->currentTransformation = nullptr;
 }
 
 void PolarCoordinatePlane::adjustZoomAndRepaint()
@@ -159,20 +161,22 @@ void PolarCoordinatePlane::layoutDiagrams()
     // FIXME distribute space according to options:
     const qreal oldStartPosition = startPosition();
     d->coordinateTransformations.clear();
-    Q_FOREACH (AbstractDiagram *diagram, diagrams()) {
-        AbstractPolarDiagram *polarDiagram = dynamic_cast<AbstractPolarDiagram *>(diagram);
+    for (AbstractDiagram *diagram : diagrams()) {
+        auto *polarDiagram = dynamic_cast<AbstractPolarDiagram *>(diagram);
         Q_ASSERT(polarDiagram);
         QPair<QPointF, QPointF> dataBoundariesPair = polarDiagram->dataBoundaries();
 
         const qreal angleUnit = 360 / polarDiagram->valueTotals();
-        // qDebug() << "--------------------------------------------------------";
+        // qDebug() <<
+        // "--------------------------------------------------------";
         const qreal radius = qAbs(dataBoundariesPair.first.y()) + dataBoundariesPair.second.y();
         // qDebug() << radius <<"="<<dataBoundariesPair.second.y();
         const qreal diagramWidth = radius * 2; // == height
         const qreal planeWidth = d->contentRect.width();
         const qreal planeHeight = d->contentRect.height();
         const qreal radiusUnit = qMin(planeWidth, planeHeight) / diagramWidth;
-        // qDebug() << radiusUnit <<"=" << "qMin( "<<planeWidth<<","<< planeHeight <<") / "<<diagramWidth;
+        // qDebug() << radiusUnit <<"=" << "qMin( "<<planeWidth<<","<<
+        // planeHeight <<") / "<<diagramWidth;
         QPointF coordinateOrigin = QPointF(planeWidth / 2, planeHeight / 2);
         coordinateOrigin += d->contentRect.topLeft();
 
@@ -190,25 +194,25 @@ void PolarCoordinatePlane::layoutDiagrams()
 
 const QPointF PolarCoordinatePlane::translate(const QPointF &diagramPoint) const
 {
-    Q_ASSERT_X(d->currentTransformation != 0, "PolarCoordinatePlane::translate", "Only call translate() from within paint().");
+    Q_ASSERT_X(d->currentTransformation != nullptr, "PolarCoordinatePlane::translate", "Only call translate() from within paint().");
     return d->currentTransformation->translate(diagramPoint);
 }
 
 const QPointF PolarCoordinatePlane::translatePolar(const QPointF &diagramPoint) const
 {
-    Q_ASSERT_X(d->currentTransformation != 0, "PolarCoordinatePlane::translate", "Only call translate() from within paint().");
+    Q_ASSERT_X(d->currentTransformation != nullptr, "PolarCoordinatePlane::translate", "Only call translate() from within paint().");
     return d->currentTransformation->translatePolar(diagramPoint);
 }
 
 qreal PolarCoordinatePlane::angleUnit() const
 {
-    Q_ASSERT_X(d->currentTransformation != 0, "PolarCoordinatePlane::angleUnit", "Only call angleUnit() from within paint().");
+    Q_ASSERT_X(d->currentTransformation != nullptr, "PolarCoordinatePlane::angleUnit", "Only call angleUnit() from within paint().");
     return d->currentTransformation->angleUnit;
 }
 
 qreal PolarCoordinatePlane::radiusUnit() const
 {
-    Q_ASSERT_X(d->currentTransformation != 0, "PolarCoordinatePlane::radiusUnit", "Only call radiusUnit() from within paint().");
+    Q_ASSERT_X(d->currentTransformation != nullptr, "PolarCoordinatePlane::radiusUnit", "Only call radiusUnit() from within paint().");
     return d->currentTransformation->radiusUnit;
 }
 

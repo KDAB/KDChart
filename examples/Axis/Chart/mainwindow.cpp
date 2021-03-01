@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     m_chart = new Chart();
     m_chart->setGlobalLeading(10, 10, 10, 10);
     chartLayout->addWidget(m_chart);
@@ -49,8 +49,8 @@ MainWindow::MainWindow(QWidget *parent)
     m_lines->setModel(&m_model);
 
     // create and position axis
-    CartesianAxis *topAxis = new CartesianAxis(m_lines);
-    CartesianAxis *leftAxis = new CartesianAxis(m_lines);
+    auto *topAxis = new CartesianAxis(m_lines);
+    auto *leftAxis = new CartesianAxis(m_lines);
     RulerAttributes rulerAttr = topAxis->rulerAttributes();
     rulerAttr.setTickMarkPen(0.9999999, QPen(Qt::red));
     rulerAttr.setTickMarkPen(2.0, QPen(Qt::green));
@@ -58,14 +58,15 @@ MainWindow::MainWindow(QWidget *parent)
     rulerAttr.setShowMinorTickMarks(true);
     // rulerAttr.setShowMajorTickMarks(false);
     topAxis->setRulerAttributes(rulerAttr);
-    CartesianAxis *rightAxis = new CartesianAxis(m_lines);
-    CartesianAxis *bottomAxis = new CartesianAxis(m_lines);
+    auto *rightAxis = new CartesianAxis(m_lines);
+    auto *bottomAxis = new CartesianAxis(m_lines);
     topAxis->setPosition(CartesianAxis::Top);
     leftAxis->setPosition(CartesianAxis::Left);
     rightAxis->setPosition(CartesianAxis::Right);
     bottomAxis->setPosition(CartesianAxis::Bottom);
 
-// set the margin that should be used between the displayed labels and the ticks to zero
+// set the margin that should be used between the displayed labels and the ticks
+// to zero
 #if 0
     RulerAttributes ra = bottomAxis->rulerAttributes();
     ra.setLabelMargin( 0 );

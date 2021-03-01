@@ -42,14 +42,10 @@ namespace ModelDataCachePrivate
 class KDCHART_EXPORT ModelSignalMapper
 {
 protected:
-    ModelSignalMapper()
-    {
-    }
+    ModelSignalMapper() = default;
 
 public:
-    virtual ~ModelSignalMapper()
-    {
-    }
+    virtual ~ModelSignalMapper() = default;
     virtual void resetModel() = 0;
     virtual void columnsInserted(const QModelIndex &, int, int) = 0;
     virtual void columnsRemoved(const QModelIndex &, int, int) = 0;
@@ -103,14 +99,12 @@ class ModelDataCache : public ModelDataCachePrivate::ModelSignalMapper
 {
 public:
     ModelDataCache()
-        : m_model(0)
+        : m_model(nullptr)
         , m_connector(*this)
     {
     }
 
-    ~ModelDataCache() override
-    {
-    }
+    ~ModelDataCache() override = default;
 
     T data(const QModelIndex &index) const
     {
@@ -120,7 +114,8 @@ public:
 
         if (index.row() >= m_data.count()) {
             qWarning(
-                "KDChart didn't receive signal rowsInserted, resetModel or layoutChanged, "
+                "KDChart didn't receive signal rowsInserted, resetModel "
+                "or layoutChanged, "
                 "but an index with a row outside of the known bounds.");
 
             // apparently, data were added behind our back (w/o signals)
@@ -130,7 +125,8 @@ public:
 
         if (index.column() >= m_data.first().count()) {
             qWarning(
-                "KDChart didn't got signal columnsInserted, resetModel or layoutChanged, "
+                "KDChart didn't got signal columnsInserted, resetModel or "
+                "layoutChanged, "
                 "but an index with a column outside of the known bounds.");
 
             // apparently, data were added behind our back (w/o signals)
@@ -160,12 +156,12 @@ public:
 
     void setModel(QAbstractItemModel *model)
     {
-        if (m_model != 0)
+        if (m_model != nullptr)
             m_connector.disconnectSignals(m_model);
 
         m_model = model;
 
-        if (m_model != 0)
+        if (m_model != nullptr)
             m_connector.connectSignals(m_model);
 
         modelReset();
@@ -196,7 +192,7 @@ protected:
 
     T fetchFromModel(int row, int column, int role) const
     {
-        Q_ASSERT(m_model != 0);
+        Q_ASSERT(m_model != nullptr);
 
         const QModelIndex index = m_model->index(row, column, m_rootIndex);
         const QVariant data = index.data(role);
@@ -210,7 +206,7 @@ protected:
 
     void columnsInserted(const QModelIndex &parent, int start, int end) override
     {
-        Q_ASSERT(m_model != 0);
+        Q_ASSERT(m_model != nullptr);
         Q_ASSERT(parent.model() == m_model || !parent.isValid());
 
         if (parent != m_rootIndex)
@@ -230,7 +226,7 @@ protected:
 
     void columnsRemoved(const QModelIndex &parent, int start, int end) override
     {
-        Q_ASSERT(m_model != 0);
+        Q_ASSERT(m_model != nullptr);
         Q_ASSERT(parent.model() == m_model || !parent.isValid());
 
         if (parent != m_rootIndex)
@@ -251,7 +247,7 @@ protected:
     {
         if (!m_model)
             return;
-        Q_ASSERT(m_model != 0);
+        Q_ASSERT(m_model != nullptr);
         Q_ASSERT(topLeft.parent() == bottomRight.parent());
 
         if (!topLeft.isValid() || !bottomRight.isValid() || topLeft.parent() != m_rootIndex)
@@ -287,7 +283,7 @@ protected:
         m_data.clear();
         m_cacheValid.clear();
 
-        if (m_model == 0)
+        if (m_model == nullptr)
             return;
 
         m_data.fill(QVector<T>(m_model->columnCount(m_rootIndex)), m_model->rowCount(m_rootIndex));
@@ -299,7 +295,7 @@ protected:
 
     void rowsInserted(const QModelIndex &parent, int start, int end) override
     {
-        Q_ASSERT(m_model != 0);
+        Q_ASSERT(m_model != nullptr);
         Q_ASSERT(parent.model() == m_model || !parent.isValid());
 
         if (parent != m_rootIndex || start >= m_model->rowCount(m_rootIndex))
@@ -317,7 +313,7 @@ protected:
 
     void rowsRemoved(const QModelIndex &parent, int start, int end) override
     {
-        Q_ASSERT(m_model != 0);
+        Q_ASSERT(m_model != nullptr);
         Q_ASSERT(parent.model() == m_model || !parent.isValid());
 
         if (parent != m_rootIndex || start >= m_data.count())
@@ -335,7 +331,7 @@ protected:
     void resetModel() override
     {
         // no need to disconnect, this is a response to SIGNAL( destroyed() )
-        m_model = 0;
+        m_model = nullptr;
         modelReset();
     }
 

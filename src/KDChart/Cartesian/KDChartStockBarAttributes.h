@@ -41,10 +41,10 @@ public:
     ~StockBarAttributes();
 
     void setCandlestickWidth(qreal width);
-    qreal candlestickWidth() const;
+    [[nodiscard]] qreal candlestickWidth() const;
 
     void setTickLength(qreal length);
-    qreal tickLength() const;
+    [[nodiscard]] qreal tickLength() const;
 
     bool operator==(const StockBarAttributes &) const;
     inline bool operator!=(const StockBarAttributes &other) const
@@ -59,7 +59,7 @@ private:
     {
         return _d;
     }
-    const Private *d_func() const
+    [[nodiscard]] const Private *d_func() const
     {
         return _d;
     }

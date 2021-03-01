@@ -51,10 +51,10 @@ public:
     class BarDiagramType;
     friend class BarDiagramType;
 
-    explicit BarDiagram(QWidget *parent = 0, CartesianCoordinatePlane *plane = 0);
+    explicit BarDiagram(QWidget *parent = nullptr, CartesianCoordinatePlane *plane = nullptr);
     ~BarDiagram() override;
 
-    virtual BarDiagram *clone() const;
+    [[nodiscard]] virtual BarDiagram *clone() const;
     /**
      * Returns true if both diagrams have the same settings.
      */
@@ -68,39 +68,31 @@ public:
     };
 
     void setType(const BarType type);
-    BarType type() const;
+    [[nodiscard]] BarType type() const;
 
     void setOrientation(Qt::Orientation orientation);
-    Qt::Orientation orientation() const;
+    [[nodiscard]] Qt::Orientation orientation() const;
 
     void setBarAttributes(const BarAttributes &a);
     void setBarAttributes(int column, const BarAttributes &a);
     void setBarAttributes(const QModelIndex &index, const BarAttributes &a);
 
-    BarAttributes barAttributes() const;
-    BarAttributes barAttributes(int column) const;
-    BarAttributes barAttributes(const QModelIndex &index) const;
+    [[nodiscard]] BarAttributes barAttributes() const;
+    [[nodiscard]] BarAttributes barAttributes(int column) const;
+    [[nodiscard]] BarAttributes barAttributes(const QModelIndex &index) const;
 
     void setThreeDBarAttributes(const ThreeDBarAttributes &a);
     void setThreeDBarAttributes(int column, const ThreeDBarAttributes &a);
     void setThreeDBarAttributes(const QModelIndex &index, const ThreeDBarAttributes &a);
-    ThreeDBarAttributes threeDBarAttributes() const;
-    ThreeDBarAttributes threeDBarAttributes(int column) const;
-    ThreeDBarAttributes threeDBarAttributes(const QModelIndex &index) const;
+    [[nodiscard]] ThreeDBarAttributes threeDBarAttributes() const;
+    [[nodiscard]] ThreeDBarAttributes threeDBarAttributes(int column) const;
+    [[nodiscard]] ThreeDBarAttributes threeDBarAttributes(const QModelIndex &index) const;
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
     // implement AbstractCartesianDiagram
     /** \reimpl */
-    const int numberOfAbscissaSegments() const;
+    [[nodiscard]] int numberOfAbscissaSegments() const override;
     /** \reimpl */
-    const int numberOfOrdinateSegments() const;
-#else
-    // implement AbstractCartesianDiagram
-    /** \reimpl */
-    int numberOfAbscissaSegments() const override;
-    /** \reimpl */
-    int numberOfOrdinateSegments() const override;
-#endif
+    [[nodiscard]] int numberOfOrdinateSegments() const override;
 
 protected:
     void paint(PaintContext *paintContext) override;
@@ -109,10 +101,10 @@ public:
     void resize(const QSizeF &area) override;
 
 protected:
-    qreal threeDItemDepth(const QModelIndex &index) const override;
-    qreal threeDItemDepth(int column) const override;
+    [[nodiscard]] qreal threeDItemDepth(const QModelIndex &index) const override;
+    [[nodiscard]] qreal threeDItemDepth(int column) const override;
     /** \reimpl */
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    [[nodiscard]] const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paintEvent(QPaintEvent *) override;
     void resizeEvent(QResizeEvent *) override;
 

@@ -55,7 +55,8 @@ static qreal slightlyLessThan(qreal r)
         // scale down the epsilon somewhat arbitrarily
         return r - std::numeric_limits<qreal>::epsilon() * 1e-6;
     }
-    // scale the epsilon so that it (hopefully) changes at least the least significant bit of r
+    // scale the epsilon so that it (hopefully) changes at least the least
+    // significant bit of r
     qreal diff = qAbs(r) * std::numeric_limits<qreal>::epsilon() * 2.0;
     return r - diff;
 }
@@ -73,9 +74,9 @@ static int numSignificantDecimalPlaces(qreal floatNumber)
     return ret;
 }
 
-// Feature idea: In case of numeric labels, consider limiting the possible values of majorThinningFactor
-// to something like {1, 2, 5} * 10^n. Or even better, something that achieves round values in the
-// remaining labels.
+// Feature idea: In case of numeric labels, consider limiting the possible
+// values of majorThinningFactor to something like {1, 2, 5} * 10^n. Or even
+// better, something that achieves round values in the remaining labels.
 
 TickIterator::TickIterator(CartesianAxis *a, CartesianCoordinatePlane *plane, uint majorThinningFactor, bool omitLastTick)
     : m_axis(a)
@@ -83,13 +84,15 @@ TickIterator::TickIterator(CartesianAxis *a, CartesianCoordinatePlane *plane, ui
     , m_majorLabelCount(0)
     , m_type(NoTick)
 {
-    // deal with the things that are specific to axes (like annotations), before the generic init().
+    // deal with the things that are specific to axes (like annotations), before
+    // the generic init().
     const CartesianAxis::Private *axisPriv = CartesianAxis::Private::get(a);
     XySwitch xy(axisPriv->isVertical());
     m_dimension = xy(plane->gridDimensionsList().first(), plane->gridDimensionsList().last());
     if (omitLastTick) {
-        // In bar and stock charts the last X tick is a fencepost with no associated value, which is
-        // convenient for grid painting. Here we have to manually exclude it to avoid overpainting.
+        // In bar and stock charts the last X tick is a fencepost with no
+        // associated value, which is convenient for grid painting. Here we have
+        // to manually exclude it to avoid overpainting.
         m_dimension.end -= m_dimension.stepWidth;
     }
 
@@ -99,7 +102,7 @@ TickIterator::TickIterator(CartesianAxis *a, CartesianCoordinatePlane *plane, ui
     const qreal inf = std::numeric_limits<qreal>::infinity();
 
     if (m_customTicks.count()) {
-        qSort(m_customTicks.begin(), m_customTicks.end());
+        std::sort(m_customTicks.begin(), m_customTicks.end());
         m_customTickIndex = 0;
         m_customTick = m_customTicks.at(m_customTickIndex);
     } else {
@@ -115,11 +118,13 @@ TickIterator::TickIterator(CartesianAxis *a, CartesianCoordinatePlane *plane, ui
     m_manualLabelIndex = m_manualLabelTexts.isEmpty() ? -1 : 0;
 
     if (!m_dimension.isCalculated) {
-        // ### depending on the data, it is difficult to impossible to choose anchors (where ticks
-        //     corresponding to the header labels are) on the ordinate or even the abscissa with
-        //     2-dimensional data. this should be somewhat mitigated by isCalculated only being false
-        //     when header data labels should work, at least that seems to be what the code that sets up
-        //     the dimensions is trying to do.
+        // ### depending on the data, it is difficult to impossible to choose
+        // anchors (where ticks
+        //     corresponding to the header labels are) on the ordinate or even
+        //     the abscissa with 2-dimensional data. this should be somewhat
+        //     mitigated by isCalculated only being false when header data
+        //     labels should work, at least that seems to be what the code that
+        //     sets up the dimensions is trying to do.
         QStringList dataHeaderLabels;
         AbstractDiagram *const dia = plane->diagram();
         dataHeaderLabels = dia->itemRowLabels();
@@ -128,7 +133,8 @@ TickIterator::TickIterator(CartesianAxis *a, CartesianCoordinatePlane *plane, ui
             const int anchorCount = model->rowCount(QModelIndex());
             if (anchorCount == dataHeaderLabels.count()) {
                 for (int i = 0; i < anchorCount; i++) {
-                    // ### ordinal number as anchor point generally only works for 1-dimensional data
+                    // ### ordinal number as anchor point generally only works
+                    // for 1-dimensional data
                     m_dataHeaderLabels.insert(qreal(i), dataHeaderLabels.at(i));
                 }
             }
@@ -144,15 +150,17 @@ TickIterator::TickIterator(CartesianAxis *a, CartesianCoordinatePlane *plane, ui
 static QMap<qreal, QString> allAxisAnnotations(const AbstractCoordinatePlane *plane, bool isY)
 {
     QMap<qreal, QString> annotations;
-    Q_FOREACH (const AbstractDiagram *diagram, plane->diagrams()) {
-        const AbstractCartesianDiagram *cd = qobject_cast<const AbstractCartesianDiagram *>(diagram);
+    for (const AbstractDiagram *diagram : plane->diagrams()) {
+        const auto *cd = qobject_cast<const AbstractCartesianDiagram *>(diagram);
         if (!cd) {
             continue;
         }
-        Q_FOREACH (const CartesianAxis *axis, cd->axes()) {
+        for (const CartesianAxis *axis : cd->axes()) {
             const CartesianAxis::Private *axisPriv = CartesianAxis::Private::get(axis);
             if (axisPriv->isVertical() == isY) {
-                annotations.unite(axisPriv->annotations);
+                // TODO: check whether this is ok - was unite - should be insert
+                // or QMultiMap
+                annotations.insert(axisPriv->annotations);
             }
         }
     }
@@ -165,7 +173,7 @@ TickIterator::TickIterator(bool isY,
                            bool hasMajorTicks,
                            bool hasMinorTicks,
                            CartesianCoordinatePlane *plane)
-    : m_axis(0)
+    : m_axis(nullptr)
     , m_dimension(dimension)
     , m_majorThinningFactor(1)
     , m_majorLabelCount(0)
@@ -194,8 +202,8 @@ void TickIterator::init(bool isY, bool hasMajorTicks, bool hasMinorTicks, Cartes
     GridAttributes gridAttributes = plane->gridAttributes(xy(Qt::Horizontal, Qt::Vertical));
     m_isLogarithmic = m_dimension.calcMode == AbstractCoordinatePlane::Logarithmic;
     if (!m_isLogarithmic) {
-        // adjustedLowerUpperRange() is intended for use with linear scaling; specifically it would
-        // round lower bounds < 1 to 0.
+        // adjustedLowerUpperRange() is intended for use with linear scaling;
+        // specifically it would round lower bounds < 1 to 0.
 
         const bool fixedRange = xy(plane->autoAdjustHorizontalRangeToData(), plane->autoAdjustVerticalRangeToData()) >= 100;
         const bool adjustLower = gridAttributes.adjustLowerBoundToGrid() && !fixedRange;
@@ -204,18 +212,19 @@ void TickIterator::init(bool isY, bool hasMajorTicks, bool hasMinorTicks, Cartes
 
         m_decimalPlaces = numSignificantDecimalPlaces(m_dimension.stepWidth);
     } else {
-        // the number of significant decimal places for each label naturally varies with logarithmic scaling
+        // the number of significant decimal places for each label naturally
+        // varies with logarithmic scaling
         m_decimalPlaces = -1;
     }
 
     const qreal inf = std::numeric_limits<qreal>::infinity();
 
-    // try to place m_position just in front of the first tick to be drawn so that operator++()
-    // can be used to find the first tick
+    // try to place m_position just in front of the first tick to be drawn so
+    // that operator++() can be used to find the first tick
     if (m_isLogarithmic) {
         if (ISNAN(m_dimension.start) || ISNAN(m_dimension.end)) {
-            // this can happen in a spurious paint operation before everything is set up;
-            // just bail out to avoid an infinite loop in that case.
+            // this can happen in a spurious paint operation before everything
+            // is set up; just bail out to avoid an infinite loop in that case.
             m_dimension.start = 0.0;
             m_dimension.end = 0.0;
             m_position = inf;
@@ -264,12 +273,14 @@ void TickIterator::computeMajorTickLabel(int decimalPlaces)
     if (m_manualLabelIndex >= 0) {
         m_text = m_manualLabelTexts[m_manualLabelIndex++];
         if (m_manualLabelIndex >= m_manualLabelTexts.count()) {
-            // manual label texts repeat if there are less label texts than ticks on an axis
+            // manual label texts repeat if there are less label texts than
+            // ticks on an axis
             m_manualLabelIndex = 0;
         }
         m_type = m_majorThinningFactor > 1 ? MajorTickManualShort : MajorTickManualLong;
     } else {
-        // if m_axis is null, we are dealing with grid lines. grid lines never need labels.
+        // if m_axis is null, we are dealing with grid lines. grid lines never
+        // need labels.
         if (m_axis && (m_majorLabelCount++ % m_majorThinningFactor) == 0) {
             QMap<qreal, QString>::ConstIterator it = m_dataHeaderLabels.lowerBound(slightlyLessThan(m_position));
 
@@ -277,7 +288,8 @@ void TickIterator::computeMajorTickLabel(int decimalPlaces)
                 m_text = it.value();
                 m_type = MajorTickHeaderDataLabel;
             } else {
-                // 'f' to avoid exponential notation for large numbers, consistent with data value text
+                // 'f' to avoid exponential notation for large numbers,
+                // consistent with data value text
                 if (decimalPlaces < 0) {
                     decimalPlaces = numSignificantDecimalPlaces(m_position);
                 }
@@ -298,7 +310,8 @@ void TickIterator::operator++()
     }
     const qreal inf = std::numeric_limits<qreal>::infinity();
 
-    // make sure to find the next tick at a value strictly greater than m_position
+    // make sure to find the next tick at a value strictly greater than
+    // m_position
 
     if (!m_annotations.isEmpty()) {
         QMap<qreal, QString>::ConstIterator it = m_annotations.upperBound(m_position);
@@ -310,10 +323,12 @@ void TickIterator::operator++()
             m_position = inf;
         }
     } else if (!m_isLogarithmic && m_dimension.stepWidth * 1e6 < qMax(qAbs(m_dimension.start), qAbs(m_dimension.end))) {
-        // If the step width is too small to increase m_position at all, we get an infinite loop.
-        // This usually happens when m_dimension.start == m_dimension.end and both are very large.
-        // When start == end, the step width defaults to 1, and it doesn't scale with start or end.
-        // So currently, we bail and show no tick at all for empty ranges > 10^6, but at least we don't hang.
+        // If the step width is too small to increase m_position at all, we get
+        // an infinite loop. This usually happens when m_dimension.start ==
+        // m_dimension.end and both are very large. When start == end, the step
+        // width defaults to 1, and it doesn't scale with start or end. So
+        // currently, we bail and show no tick at all for empty ranges > 10^6,
+        // but at least we don't hang.
         m_position = inf;
     } else {
         // advance the calculated ticks
@@ -347,8 +362,10 @@ void TickIterator::operator++()
         if (isHigherPrecedence(m_customTick, m_majorTick) && isHigherPrecedence(m_customTick, m_minorTick)) {
             m_position = m_customTick;
             computeMajorTickLabel(-1);
-            // override the MajorTick type here because those tick's labels are collision-tested, which we don't want
-            // for custom ticks. they may be arbitrarily close to other ticks, causing excessive label thinning.
+            // override the MajorTick type here because those tick's labels are
+            // collision-tested, which we don't want for custom ticks. they may
+            // be arbitrarily close to other ticks, causing excessive label
+            // thinning.
             if (m_type == MajorTick) {
                 m_type = CustomTick;
             }
@@ -386,12 +403,11 @@ CartesianAxis::~CartesianAxis()
     // when we remove the first axis it will unregister itself and
     // propagate the next one to the primary, thus the while loop
     while (d->mDiagram) {
-        AbstractCartesianDiagram *cd = qobject_cast<AbstractCartesianDiagram *>(d->mDiagram);
+        auto *cd = qobject_cast<AbstractCartesianDiagram *>(d->mDiagram);
         cd->takeAxis(this);
     }
-    KDAB_FOREACH(AbstractDiagram * diagram, d->secondaryDiagrams)
-    {
-        AbstractCartesianDiagram *cd = qobject_cast<AbstractCartesianDiagram *>(diagram);
+    for (AbstractDiagram *diagram : qAsConst(d->secondaryDiagrams)) {
+        auto *cd = qobject_cast<AbstractCartesianDiagram *>(diagram);
         cd->takeAxis(this);
     }
 }
@@ -471,18 +487,15 @@ void CartesianAxis::setPosition(Position p)
         return;
     }
     d->position = p;
-    // Invalidating size is not always necessary if both old and new positions are horizontal or both
-    // vertical, but in practice there could be small differences due to who-knows-what, so always adapt
-    // to the possibly new size. Changing position is expensive anyway.
+    // Invalidating size is not always necessary if both old and new positions
+    // are horizontal or both vertical, but in practice there could be small
+    // differences due to who-knows-what, so always adapt to the possibly new
+    // size. Changing position is expensive anyway.
     setCachedSizeDirty();
     layoutPlanes();
 }
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-const
-#endif
-    CartesianAxis::Position
-    CartesianAxis::position() const
+CartesianAxis::Position CartesianAxis::position() const
 {
     return d->position;
 }
@@ -500,15 +513,15 @@ void CartesianAxis::layoutPlanes()
 
 static bool referenceDiagramIsBarDiagram(const AbstractDiagram *diagram)
 {
-    const AbstractCartesianDiagram *dia = qobject_cast<const AbstractCartesianDiagram *>(diagram);
+    const auto *dia = qobject_cast<const AbstractCartesianDiagram *>(diagram);
     if (dia && dia->referenceDiagram())
         dia = dia->referenceDiagram();
-    return qobject_cast<const BarDiagram *>(dia) != 0;
+    return qobject_cast<const BarDiagram *>(dia) != nullptr;
 }
 
 static bool referenceDiagramNeedsCenteredAbscissaTicks(const AbstractDiagram *diagram)
 {
-    const AbstractCartesianDiagram *dia = qobject_cast<const AbstractCartesianDiagram *>(diagram);
+    const auto *dia = qobject_cast<const AbstractCartesianDiagram *>(diagram);
     if (dia && dia->referenceDiagram())
         dia = dia->referenceDiagram();
     if (qobject_cast<const BarDiagram *>(dia))
@@ -516,7 +529,7 @@ static bool referenceDiagramNeedsCenteredAbscissaTicks(const AbstractDiagram *di
     if (qobject_cast<const StockDiagram *>(dia))
         return true;
 
-    const LineDiagram *lineDiagram = qobject_cast<const LineDiagram *>(dia);
+    const auto *lineDiagram = qobject_cast<const LineDiagram *>(dia);
     return lineDiagram && lineDiagram->centerDataPoints();
 }
 
@@ -544,8 +557,9 @@ void CartesianAxis::paint(QPainter *painter)
     ctx.setRectangle(QRectF(areaGeometry()));
     PainterSaver painterSaver(painter);
 
-    // enable clipping only when required due to zoom, because it slows down painting
-    // (the alternative to clipping when zoomed in requires much more work to paint just the right area)
+    // enable clipping only when required due to zoom, because it slows down
+    // painting (the alternative to clipping when zoomed in requires much more
+    // work to paint just the right area)
     const qreal zoomFactor = d->isVertical() ? plane->zoomFactorY() : plane->zoomFactorX();
     if (zoomFactor > 1.0) {
         painter->setClipRegion(
@@ -645,8 +659,11 @@ void CartesianAxis::paintCtx(PaintContext *context)
 {
     Q_ASSERT_X(d->diagram(), "CartesianAxis::paint", "Function call not allowed: The axis is not assigned to any diagram.");
 
-    CartesianCoordinatePlane *plane = dynamic_cast<CartesianCoordinatePlane *>(context->coordinatePlane());
-    Q_ASSERT_X(plane, "CartesianAxis::paint", "Bad function call: PaintContext::coordinatePlane() NOT a cartesian plane.");
+    auto *plane = dynamic_cast<CartesianCoordinatePlane *>(context->coordinatePlane());
+    Q_ASSERT_X(plane,
+               "CartesianAxis::paint",
+               "Bad function call: PaintContext::coordinatePlane() NOT a cartesian "
+               "plane.");
 
     // note: Not having any data model assigned is no bug
     //       but we can not draw an axis then either.
@@ -660,11 +677,13 @@ void CartesianAxis::paintCtx(PaintContext *context)
 
     QPainter *const painter = context->painter();
 
-    // determine the position of the axis (also required for labels) and paint it
+    // determine the position of the axis (also required for labels) and paint
+    // it
 
     qreal transversePosition = signalingNaN; // in data space
-    // the next one describes an additional shift in screen space; it is unfortunately required to
-    // make axis sharing work, which uses the areaGeometry() to override the position of the axis.
+    // the next one describes an additional shift in screen space; it is
+    // unfortunately required to make axis sharing work, which uses the
+    // areaGeometry() to override the position of the axis.
     qreal transverseScreenSpaceShift = signalingNaN;
     {
         // determine the unadulterated position in screen space
@@ -673,8 +692,9 @@ void CartesianAxis::paintCtx(PaintContext *context)
         DataDimension dimY = plane->gridDimensionsList().last();
         QPointF start(dimX.start, dimY.start);
         QPointF end(dimX.end, dimY.end);
-        // consider this: you can turn a diagonal line into a horizontal or vertical line on any
-        // edge by changing just one of its four coordinates.
+        // consider this: you can turn a diagonal line into a horizontal or
+        // vertical line on any edge by changing just one of its four
+        // coordinates.
         switch (position()) {
         case CartesianAxis::Bottom:
             end.setY(dimY.start);
@@ -695,8 +715,8 @@ void CartesianAxis::paintCtx(PaintContext *context)
         QPointF transStart = plane->translate(start);
         QPointF transEnd = plane->translate(end);
 
-        // an externally set areaGeometry() moves the axis position transversally; the shift is
-        // nonzero only when this is a shared axis
+        // an externally set areaGeometry() moves the axis position
+        // transversally; the shift is nonzero only when this is a shared axis
 
         const QRect geo = areaGeometry();
         switch (position()) {
@@ -731,9 +751,10 @@ void CartesianAxis::paintCtx(PaintContext *context)
     RulerAttributes rulerAttr = rulerAttributes();
 
     int labelThinningFactor = 1;
-    // TODO: label thinning also when grid line distance < 4 pixels, not only when labels collide
-    TextLayoutItem *tickLabel = new TextLayoutItem(QString(), labelTA, plane->parent(), KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft);
-    TextLayoutItem *prevTickLabel = new TextLayoutItem(QString(), labelTA, plane->parent(), KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft);
+    // TODO: label thinning also when grid line distance < 4 pixels, not only
+    // when labels collide
+    auto *tickLabel = new TextLayoutItem(QString(), labelTA, plane->parent(), KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft);
+    auto *prevTickLabel = new TextLayoutItem(QString(), labelTA, plane->parent(), KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft);
     QPointF prevTickLabelPos;
     enum { Layout = 0, Painting, Done };
     for (int step = labelTA.isVisible() ? Layout : Painting; step < Done; step++) {
@@ -756,7 +777,8 @@ void CartesianAxis::paintCtx(PaintContext *context)
             qreal tickLen = it.type() == TickIterator::CustomTick ? d->customTickLength : tickLength(it.type() == TickIterator::MinorTick);
             geoXy.lvalue(tickEnd.ry(), tickEnd.rx()) += isOutwardsPositive ? tickLen : -tickLen;
 
-            // those adjustments are required to paint the ticks exactly on the axis and of the right length
+            // those adjustments are required to paint the ticks exactly on the
+            // axis and of the right length
             if (position() == Top) {
                 onAxis.ry() += 1;
                 tickEnd.ry() += 1;
@@ -776,7 +798,8 @@ void CartesianAxis::paintCtx(PaintContext *context)
             }
 
             if (it.text().isEmpty() || !labelTA.isVisible()) {
-                // the following code in the loop is only label painting, so skip it
+                // the following code in the loop is only label painting, so
+                // skip it
                 continue;
             }
 
@@ -787,7 +810,8 @@ void CartesianAxis::paintCtx(PaintContext *context)
                 // add unit prefixes and suffixes, then customize
                 text = d->customizedLabelText(text, geoXy(Qt::Horizontal, Qt::Vertical), it.position());
             } else if (it.type() == TickIterator::MajorTickHeaderDataLabel) {
-                // unit prefixes and suffixes have already been added in this case - only customize
+                // unit prefixes and suffixes have already been added in this
+                // case - only customize
                 text = customizedLabel(text);
             }
 
@@ -796,7 +820,8 @@ void CartesianAxis::paintCtx(PaintContext *context)
             QPolygon labelPoly = tickLabel->boundingPolygon();
             Q_ASSERT(labelPoly.count() == 4);
 
-            // for alignment, find the label polygon edge "most parallel" and closest to the axis
+            // for alignment, find the label polygon edge "most parallel" and
+            // closest to the axis
 
             int axisAngle = 0;
             switch (position()) {
@@ -815,8 +840,9 @@ void CartesianAxis::paintCtx(PaintContext *context)
             default:
                 Q_ASSERT(false);
             }
-            // the left axis is not actually pointing down and the top axis not actually pointing
-            // left, but their corresponding closest edges of a rectangular unrotated label polygon are.
+            // the left axis is not actually pointing down and the top axis not
+            // actually pointing left, but their corresponding closest edges of
+            // a rectangular unrotated label polygon are.
 
             int relAngle = axisAngle - labelTA.rotation() + 45;
             if (relAngle < 0) {
@@ -832,7 +858,8 @@ void CartesianAxis::paintCtx(PaintContext *context)
             if (labelMargin < 0) {
                 labelMargin = QFontMetricsF(tickLabel->realFont()).height() * 0.5;
             }
-            labelMargin -= tickLabel->marginWidth(); // make up for the margin that's already there
+            labelMargin -= tickLabel->marginWidth(); // make up for the margin
+                                                     // that's already there
 
             switch (position()) {
             case Left:
@@ -857,9 +884,11 @@ void CartesianAxis::paintCtx(PaintContext *context)
 
             // collision check the current label against the previous one
 
-            // like in the old code, we don't shorten or decimate labels if they are already the
-            // manual short type, or if they are the manual long type and on the vertical axis
-            // ### they can still collide though, especially when they're rotated!
+            // like in the old code, we don't shorten or decimate labels if they
+            // are already the manual short type, or if they are the manual long
+            // type and on the vertical axis
+            // ### they can still collide though, especially when they're
+            // rotated!
             if (step == Layout) {
                 int spaceSavingRotation = geoXy(270, 0);
                 bool canRotate = labelTA.autoRotate() && labelTA.rotation() != spaceSavingRotation;
@@ -890,9 +919,9 @@ void CartesianAxis::paintCtx(PaintContext *context)
         }
     }
     delete tickLabel;
-    tickLabel = 0;
+    tickLabel = nullptr;
     delete prevTickLabel;
-    prevTickLabel = 0;
+    prevTickLabel = nullptr;
 
     if (!titleText().isEmpty()) {
         d->drawTitleText(painter, plane, geometry());
@@ -944,7 +973,7 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
         return QSize();
     }
 
-    CartesianCoordinatePlane *plane = dynamic_cast<CartesianCoordinatePlane *>(diagram()->coordinatePlane());
+    auto *plane = dynamic_cast<CartesianCoordinatePlane *>(diagram()->coordinatePlane());
     Q_ASSERT(plane);
     QObject *refArea = plane->parent();
     const bool centerTicks = referenceDiagramNeedsCenteredAbscissaTicks(diagram()) && axis()->isAbscissa();
@@ -953,13 +982,15 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
     // - label thinning (expensive, not worst case and we want worst case)
     // - label autorotation (expensive, obscure feature(?))
     // - axis length (it is determined by the plane / diagram / chart anyway)
-    // - the title's influence on axis length; this one might be TODO. See KDCH-863.
+    // - the title's influence on axis length; this one might be TODO. See
+    // KDCH-863.
 
     XySwitch geoXy(isVertical());
     qreal size = 0; // this is the size transverse to the axis direction
 
-    // the following variables describe how much the first and last label stick out over the axis
-    // area, so that the geometry of surrounding layout items can be adjusted to make room.
+    // the following variables describe how much the first and last label stick
+    // out over the axis area, so that the geometry of surrounding layout items
+    // can be adjusted to make room.
     qreal startOverhang = 0.0;
     qreal endOverhang = 0.0;
 
@@ -992,7 +1023,8 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                     // add unit prefixes and suffixes, then customize
                     text = customizedLabelText(text, geoXy(Qt::Horizontal, Qt::Vertical), it.position());
                 } else if (it.type() == TickIterator::MajorTickHeaderDataLabel) {
-                    // unit prefixes and suffixes have already been added in this case - only customize
+                    // unit prefixes and suffixes have already been added in
+                    // this case - only customize
                     text = axis()->customizedLabel(text);
                 }
                 tickLabel.setText(text);
@@ -1009,7 +1041,8 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                 if (labelMargin < 0) {
                     labelMargin = QFontMetricsF(tickLabel.realFont()).height() * 0.5;
                 }
-                labelMargin -= tickLabel.marginWidth(); // make up for the margin that's already there
+                labelMargin -= tickLabel.marginWidth(); // make up for the margin that's
+                                                        // already there
             }
             qreal tickLength = it.type() == TickIterator::CustomTick ? customTickLength : axis()->tickLength(it.type() == TickIterator::MinorTick);
             size = qMax(size, tickLength + labelMargin + labelSizeTransverse);
@@ -1023,7 +1056,8 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
         pt = plane->translate(QPointF(dimX.end, dimY.end));
         const qreal highestPosition = geoXy(pt.x(), pt.y());
 
-        // the geoXy( 1.0, -1.0 ) here is necessary because Qt's y coordinate is inverted
+        // the geoXy( 1.0, -1.0 ) here is necessary because Qt's y coordinate is
+        // inverted
         startOverhang = qMax(0.0, (lowestPosition - lowestLabelPosition) * geoXy(1.0, -1.0) + lowestLabelLongitudinalSize * 0.5);
         endOverhang = qMax(0.0, (highestLabelPosition - highestPosition) * geoXy(1.0, -1.0) + highestLabelLongitudinalSize * 0.5);
     }
@@ -1038,11 +1072,13 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
         TextLayoutItem title(axis()->titleText(), titleTA, refArea, KDChartEnums::MeasureOrientationMinimum, Qt::AlignHCenter | Qt::AlignVCenter);
 
         QFontMetricsF titleFM(title.realFont(), GlobalMeasureScaling::paintDevice());
-        size += geoXy(titleFM.height() * 0.33, titleFM.averageCharWidth() * 0.55); // spacing
+        size += geoXy(titleFM.height() * 0.33,
+                      titleFM.averageCharWidth() * 0.55); // spacing
         size += geoXy(title.sizeHint().height(), title.sizeHint().width());
     }
 
-    // the size parallel to the axis direction is not determined by us, so we just return 1
+    // the size parallel to the axis direction is not determined by us, so we
+    // just return 1
     return QSize(geoXy(1, int(size)), geoXy(int(size), 1));
 }
 

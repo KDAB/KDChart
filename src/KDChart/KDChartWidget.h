@@ -32,9 +32,7 @@
 
 QT_BEGIN_NAMESPACE
 template<typename T>
-class QVector;
-template<typename T1, typename T2>
-struct QPair;
+class QList;
 QT_END_NAMESPACE
 
 namespace KDChart
@@ -74,19 +72,20 @@ public:
      *
      * \param parent the widget parent; passed on to QWidget
      */
-    explicit Widget(QWidget *parent = 0);
+    explicit Widget(QWidget *parent = nullptr);
 
     /** Destructor. */
     ~Widget() override;
-    /** Sets the data in the given column using a QVector of qreal for the Y values. */
-    void setDataset(int column, const QVector<qreal> &data, const QString &title = QString());
-    /** Sets the data in the given column using a QVector of QPairs
+    /** Sets the data in the given column using a QList of qreal for the Y
+     * values. */
+    void setDataset(int column, const QList<qreal> &data, const QString &title = QString());
+    /** Sets the data in the given column using a QList of QPairs
      *  of qreal for the (X, Y) values. */
-    void setDataset(int column, const QVector<QPair<qreal, qreal>> &data, const QString &title = QString());
+    void setDataset(int column, const QList<std::pair<qreal, qreal>> &data, const QString &title = QString());
     /** Sets the Y value data for a given cell. */
     void setDataCell(int row, int column, qreal data);
-    /** Sets the data for a given column using an (X, Y) QPair of qreals. */
-    void setDataCell(int row, int column, QPair<qreal, qreal> data);
+    /** Sets the data for a given column using an (X, Y) std::pair of qreals. */
+    void setDataCell(int row, int column, std::pair<qreal, qreal> data);
     /** Resets all data. */
     void resetData();
 
@@ -104,13 +103,13 @@ public Q_SLOTS:
 
 public:
     /** Returns the left leading (border). */
-    int globalLeadingLeft() const;
+    [[nodiscard]] int globalLeadingLeft() const;
     /** Returns the top leading (border). */
-    int globalLeadingTop() const;
+    [[nodiscard]] int globalLeadingTop() const;
     /** Returns the right leading (border). */
-    int globalLeadingRight() const;
+    [[nodiscard]] int globalLeadingRight() const;
     /** Returns the bottom leading (border). */
-    int globalLeadingBottom() const;
+    [[nodiscard]] int globalLeadingBottom() const;
 
     /** Returns the first of all headers. */
     HeaderFooter *firstHeaderFooter();
@@ -134,16 +133,18 @@ public:
      * This parameter must not be zero, or the method will do nothing.
      *
      * @param oldHeader The header or footer to be removed by the new one. This
-     * header or footer will be deleted automatically. If the parameter is omitted,
-     * the very first header or footer will be replaced. In case, there was no
-     * header and no footer yet, the new header or footer will just be added.
+     * header or footer will be deleted automatically. If the parameter is
+     * omitted, the very first header or footer will be replaced. In case, there
+     * was no header and no footer yet, the new header or footer will just be
+     * added.
      *
-     * \note If you want to re-use the old header or footer, call takeHeaderFooter and
-     * addHeaderFooter, instead of using replaceHeaderFooter.
+     * \note If you want to re-use the old header or footer, call
+     * takeHeaderFooter and addHeaderFooter, instead of using
+     * replaceHeaderFooter.
      *
      * \sa addHeaderFooter, takeHeaderFooter
      */
-    void replaceHeaderFooter(HeaderFooter *header, HeaderFooter *oldHeader = 0);
+    void replaceHeaderFooter(HeaderFooter *header, HeaderFooter *oldHeader = nullptr);
 
     /** Remove the header (or footer, resp.) from the widget,
      * without deleting it.
@@ -164,38 +165,39 @@ public:
     /** Adds a new, already existing, legend. */
     void addLegend(Legend *legend);
 
-    void replaceLegend(Legend *legend, Legend *oldLegend = 0);
+    void replaceLegend(Legend *legend, Legend *oldLegend = nullptr);
     void takeLegend(Legend *legend);
 
     /** Returns a pointer to the current diagram. */
     AbstractDiagram *diagram();
 
-    /** If the current diagram is a BarDiagram, it is returnd; otherwise 0 is returned.
-     * This function provides type-safe casting.
+    /** If the current diagram is a BarDiagram, it is returnd; otherwise 0 is
+     * returned. This function provides type-safe casting.
      */
     BarDiagram *barDiagram();
-    /** If the current diagram is a LineDiagram, it is returnd; otherwise 0 is returned.
-     * This function provides type-safe casting.
+    /** If the current diagram is a LineDiagram, it is returnd; otherwise 0 is
+     * returned. This function provides type-safe casting.
      */
     LineDiagram *lineDiagram();
-    /** If the current diagram is a LineDiagram, it is returnd; otherwise 0 is returned.
-     * This function provides type-safe casting.
+    /** If the current diagram is a LineDiagram, it is returnd; otherwise 0 is
+     * returned. This function provides type-safe casting.
      *
-     * \note Do not use lineDiagram for multi-dimensional diagrams, but use plotter instead
+     * \note Do not use lineDiagram for multi-dimensional diagrams, but use
+     * plotter instead
      *
      * \sa plotter
      */
     Plotter *plotter();
-    /** If the current diagram is a Plotter, it is returnd; otherwise 0 is returned.
-     * This function provides type-safe casting.
+    /** If the current diagram is a Plotter, it is returnd; otherwise 0 is
+     * returned. This function provides type-safe casting.
      */
     PieDiagram *pieDiagram();
-    /** If the current diagram is a RingDiagram, it is returnd; otherwise 0 is returned.
-     * This function provides type-safe casting.
+    /** If the current diagram is a RingDiagram, it is returnd; otherwise 0 is
+     * returned. This function provides type-safe casting.
      */
     RingDiagram *ringDiagram();
-    /** If the current diagram is a PolarDiagram, it is returnd; otherwise 0 is returned.
-     * This function provides type-safe casting.
+    /** If the current diagram is a PolarDiagram, it is returnd; otherwise 0 is
+     * returned. This function provides type-safe casting.
      */
     PolarDiagram *polarDiagram();
 
@@ -205,13 +207,14 @@ public:
     enum ChartType { NoType, Bar, Line, Plot, Pie, Ring, Polar };
 
     /** Returns the type of the chart. */
-    ChartType type() const;
+    [[nodiscard]] ChartType type() const;
 
-    /** Sub type values, matching the values defines for the respective Diagram classes. */
+    /** Sub type values, matching the values defines for the respective Diagram
+     * classes. */
     enum SubType { Normal, Stacked, Percent, Rows };
 
     /** Returns the sub-type of the chart. */
-    SubType subType() const;
+    [[nodiscard]] SubType subType() const;
 
 public Q_SLOTS:
     /** Sets the type of the chart. */

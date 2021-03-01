@@ -88,34 +88,33 @@ public:
     {
         m_private->init();
     }
-    virtual ~PlotterType()
-    {
-    }
-    virtual Plotter::PlotType type() const = 0;
-    virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const = 0;
+    virtual ~PlotterType() = default;
+    [[nodiscard]] virtual Plotter::PlotType type() const = 0;
+    [[nodiscard]] virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const = 0;
     virtual void paint(PaintContext *ctx) = 0;
-    Plotter *diagram() const;
+    [[nodiscard]] Plotter *diagram() const;
 
-    Plotter::CompressionMode useCompression() const;
+    [[nodiscard]] Plotter::CompressionMode useCompression() const;
     void setUseCompression(Plotter::CompressionMode value);
-    PlotterDiagramCompressor &plotterCompressor() const;
+    [[nodiscard]] PlotterDiagramCompressor &plotterCompressor() const;
 
-    Plotter::Private *plotterPrivate() const
+    [[nodiscard]] Plotter::Private *plotterPrivate() const
     {
         return m_private;
     }
 
 protected:
     // make some elements of m_private available to derived classes:
-    AttributesModel *attributesModel() const;
-    QModelIndex attributesModelRootIndex() const;
+    [[nodiscard]] AttributesModel *attributesModel() const;
+    [[nodiscard]] QModelIndex attributesModelRootIndex() const;
     ReverseMapper &reverseMapper();
-    CartesianDiagramDataCompressor &compressor() const;
+    [[nodiscard]] CartesianDiagramDataCompressor &compressor() const;
 
-    int datasetDimension() const;
+    [[nodiscard]] int datasetDimension() const;
 
     Plotter::Private *m_private;
-    // TODO: do we need them or not? (currently unused, but maybe there are supposed to be several
+    // TODO: do we need them or not? (currently unused, but maybe there are
+    // supposed to be several
     //       compressors
     PlotterDiagramCompressor m_plotterCompressor;
     Plotter::CompressionMode m_useCompression;

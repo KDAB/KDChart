@@ -93,8 +93,10 @@ public:
         }
         model.appendRow(QList<QStandardItem *>() << new MyStandardItem(QString::fromLatin1("No data")));
 
-        // cmodel.addConstraint( KDGantt::Constraint( proxyModel.index( 0, 3 ), proxyModel.index( 10, 3 ) ) );
-        // cmodel.addConstraint( KDGantt::Constraint( proxyModel.index( 10, 3 ), proxyModel.index( 5, 3 ) ) );
+        // cmodel.addConstraint( KDGantt::Constraint( proxyModel.index( 0, 3 ),
+        // proxyModel.index( 10, 3 ) ) ); cmodel.addConstraint(
+        // KDGantt::Constraint( proxyModel.index( 10, 3 ), proxyModel.index( 5, 3
+        // ) ) );
         QModelIndex pidx = model.index(0, 0);
         pidx = model.index(0, 0, pidx);
         cmodel.addConstraint(KDGantt::Constraint(model.index(0, 0, pidx), model.index(1, 0, pidx)));

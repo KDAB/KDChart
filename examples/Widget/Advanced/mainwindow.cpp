@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     widget = new Widget(chartFrame);
     chartLayout->addWidget(widget);
 
@@ -82,7 +82,8 @@ void MainWindow::addDataset()
     if (vec.count() != rows) {
         QMessageBox::warning(this,
                              "Wrong number of values entered!",
-                             QString("You have entered %1 values,<br>but the data model needs %2 ones."
+                             QString("You have entered %1 values,<br>but the data model needs "
+                                     "%2 ones."
                                      "<br><br>Note: Use <b>;</b> to separate the values!")
                                  .arg(vec.count(), rows));
     } else {

@@ -43,9 +43,7 @@ PieDiagram::Private::Private()
 {
 }
 
-PieDiagram::Private::~Private()
-{
-}
+PieDiagram::Private::~Private() = default;
 
 #define d d_func()
 
@@ -55,9 +53,7 @@ PieDiagram::PieDiagram(QWidget *parent, PolarCoordinatePlane *plane)
     init();
 }
 
-PieDiagram::~PieDiagram()
-{
-}
+PieDiagram::~PieDiagram() = default;
 
 void PieDiagram::init()
 {
@@ -100,7 +96,8 @@ const QPair<QPointF, QPointF> PieDiagram::calculateDataBoundaries() const
 
     QPointF bottomLeft(QPointF(0, 0));
     QPointF topRight;
-    // If we explode, we need extra space for the slice that has the largest explosion distance.
+    // If we explode, we need extra space for the slice that has the largest
+    // explosion distance.
     if (attrs.explode()) {
         const int colCount = columnCount();
         qreal maxExplode = 0.0;
@@ -181,7 +178,8 @@ void PieDiagram::calcPieSize(const QRectF &contentsRect)
 {
     d->size = qMin(contentsRect.width(), contentsRect.height());
 
-    // if any slice explodes, the whole pie needs additional space so we make the basic size smaller
+    // if any slice explodes, the whole pie needs additional space so we make
+    // the basic size smaller
     qreal maxExplode = 0.0;
     const int colCount = columnCount();
     for (int j = 0; j < colCount; ++j) {
@@ -195,7 +193,8 @@ void PieDiagram::calcPieSize(const QRectF &contentsRect)
     }
 }
 
-// this is the rect of the top surface of the pie, i.e. excluding the "3D" rim effect.
+// this is the rect of the top surface of the pie, i.e. excluding the "3D" rim
+// effect.
 QRectF PieDiagram::twoDPieRect(const QRectF &contentsRect, const ThreeDPieAttributes &threeDAttrs) const
 {
     QRectF pieRect;
@@ -239,7 +238,8 @@ void PieDiagram::placeLabels(PaintContext *paintContext)
     const ThreeDPieAttributes threeDAttrs(threeDPieAttributes());
     const int colCount = columnCount();
 
-    d->reverseMapper.clear(); // on first call, this sets up the internals of the ReverseMapper.
+    d->reverseMapper.clear(); // on first call, this sets up the internals of
+                              // the ReverseMapper.
 
     calcSliceAngles();
     if (d->startAngles.isEmpty()) {
@@ -248,7 +248,8 @@ void PieDiagram::placeLabels(PaintContext *paintContext)
 
     calcPieSize(paintContext->rectangle());
 
-    // keep resizing the pie until the labels and the pie fit into paintContext->rectangle()
+    // keep resizing the pie until the labels and the pie fit into
+    // paintContext->rectangle()
 
     bool tryAgain = true;
     while (tryAgain) {
@@ -276,14 +277,16 @@ void PieDiagram::placeLabels(PaintContext *paintContext)
             // see by how many pixels the text is clipped on each side
             qreal right = qMax(qreal(0.0), textBoundingRect.right() - clipRect.right());
             qreal left = qMax(qreal(0.0), clipRect.left() - textBoundingRect.left());
-            // attention here - y coordinates in Qt are inverted compared to the convention in maths
+            // attention here - y coordinates in Qt are inverted compared to the
+            // convention in maths
             qreal top = qMax(qreal(0.0), clipRect.top() - textBoundingRect.top());
             qreal bottom = qMax(qreal(0.0), textBoundingRect.bottom() - clipRect.bottom());
             qreal maxOverhang = qMax(qMax(right, left), qMax(top, bottom));
 
             if (maxOverhang > 0.0) {
-                // subtract 2x as much because every side only gets half of the total diameter reduction
-                // and we have to make up for the overhang on one particular side.
+                // subtract 2x as much because every side only gets half of the
+                // total diameter reduction and we have to make up for the
+                // overhang on one particular side.
                 d->size -= qMin(d->size, maxOverhang * (qreal)2.0);
                 tryAgain = true;
             }
@@ -307,11 +310,13 @@ static int wraparound(int i, int size)
 void PieDiagram::shuffleLabels(QRectF *textBoundingRect)
 {
     // things that could be improved here:
-    // - use a variable number (chosen using angle information) of neighbors to check
+    // - use a variable number (chosen using angle information) of neighbors to
+    // check
     // - try harder to arrange the labels to look nice
 
     // ideas:
-    // - leave labels that don't collide alone (only if they their offset is zero)
+    // - leave labels that don't collide alone (only if they their offset is
+    // zero)
     // - use a graphics view for collision detection
 
     LabelPaintCache &lpc = d->labelPaintCache;
@@ -354,13 +359,14 @@ void PieDiagram::shuffleLabels(QRectF *textBoundingRect)
                 }
             }
         }
-        direction *= -1.07; // this can "overshoot", but avoids getting trapped in local minimums
+        direction *= -1.07; // this can "overshoot", but avoids getting trapped
+                            // in local minimums
         modified = modified || lastRoundModified;
     }
 
     if (modified) {
-        for (int i = 0; i < lpc.paintReplay.size(); i++) {
-            *textBoundingRect |= lpc.paintReplay[i].labelArea.boundingRect();
+        for (auto &i : lpc.paintReplay) {
+            *textBoundingRect |= i.labelArea.boundingRect();
         }
     }
 }
@@ -387,12 +393,12 @@ static QLineF labelAttachmentLine(const QPointF &center, const QPointF &start, c
 {
     Q_ASSERT(label.elementCount() == 5);
 
-    // start is assumed to lie on the outer rim of the slice(!), making it possible to derive the
-    // radius of the pie
+    // start is assumed to lie on the outer rim of the slice(!), making it
+    // possible to derive the radius of the pie
     const qreal pieRadius = QLineF(center, start).length();
 
-    // don't draw a line at all when the label is connected to its slice due to at least one of its
-    // corners falling inside the slice.
+    // don't draw a line at all when the label is connected to its slice due to
+    // at least one of its corners falling inside the slice.
     for (int i = 0; i < 4; i++) { // point 4 is just a duplicate of point 0
         if (QLineF(label.elementAt(i), center).length() < pieRadius) {
             return QLineF();
@@ -432,7 +438,8 @@ static QLineF labelAttachmentLine(const QPointF &center, const QPointF &start, c
     // This tends to look a bit better than not doing it *shrug*
     ret.setP2((start + center) / 2.0);
 
-    // make the line end at the rim of the slice (not 100% accurate because the line is not precisely radial)
+    // make the line end at the rim of the slice (not 100% accurate because the
+    // line is not precisely radial)
     qreal p1Radius = QLineF(ret.p1(), center).length();
     ret.setLength(p1Radius - pieRadius);
 
@@ -453,8 +460,9 @@ void PieDiagram::paintInternal(PaintContext *paintContext)
     const ThreeDPieAttributes threeDAttrs(threeDPieAttributes());
     const int colCount = columnCount();
 
-    // Paint from back to front ("painter's algorithm") - first draw the backmost slice,
-    // then the slices on the left and right from back to front, then the frontmost one.
+    // Paint from back to front ("painter's algorithm") - first draw the
+    // backmost slice, then the slices on the left and right from back to front,
+    // then the frontmost one.
 
     QRectF pieRect = twoDPieRect(paintContext->rectangle(), threeDAttrs);
     const int backmostSlice = findSliceAt(90, colCount);
@@ -490,20 +498,22 @@ void PieDiagram::paintInternal(PaintContext *paintContext)
         currentRightSlice = findRightSlice(currentRightSlice, colCount);
     }
 
-    // if the backmost slice is not the frontmost slice, we draw the frontmost one last
+    // if the backmost slice is not the frontmost slice, we draw the frontmost
+    // one last
     if (backmostSlice != frontmostSlice || !threeDPieAttributes().isEnabled()) {
         drawSlice(paintContext->painter(), pieRect, frontmostSlice);
     }
 
     d->paintDataValueTextsAndMarkers(paintContext, d->labelPaintCache, false, false);
-    // it's safer to do this at the beginning of placeLabels, but we can save some memory here.
+    // it's safer to do this at the beginning of placeLabels, but we can save
+    // some memory here.
     d->forgetAlreadyPaintedDataValues();
-    // ### maybe move this into AbstractDiagram, also make ReverseMapper deal better with multiple polygons
+    // ### maybe move this into AbstractDiagram, also make ReverseMapper deal
+    // better with multiple polygons
     const QPointF center = paintContext->rectangle().center();
     const PainterSaver painterSaver(paintContext->painter());
     paintContext->painter()->setBrush(Qt::NoBrush);
-    KDAB_FOREACH(const LabelPaintInfo &pi, d->labelPaintCache.paintReplay)
-    {
+    for (const LabelPaintInfo &pi : qAsConst(d->labelPaintCache.paintReplay)) {
         // we expect the PainterPath to be a rectangle
         if (pi.labelArea.elementCount() != 5) {
             continue;
@@ -642,8 +652,9 @@ void PieDiagram::addSliceLabel(LabelPaintCache *lpc, const QRectF &drawPosition,
     const qreal sum = valueTotals();
 
     // Position points are calculated relative to the slice.
-    // They are calculated as if the slice was 'standing' on its tip and the rim was up,
-    // so North is the middle (also highest part) of the rim and South is the tip of the slice.
+    // They are calculated as if the slice was 'standing' on its tip and the rim
+    // was up, so North is the middle (also highest part) of the rim and South
+    // is the tip of the slice.
 
     const QPointF south = drawPosition.center();
     const QPointF southEast = south;
@@ -679,13 +690,14 @@ void PieDiagram::addSliceLabel(LabelPaintCache *lpc, const QRectF &drawPosition,
         if (favoriteTextAngle > 90.0 && favoriteTextAngle < 270.0) {
             favoriteTextAngle = favoriteTextAngle - 180.0;
         }
-        // negative angles can have special meaning in addLabel; otherwise they work fine
+        // negative angles can have special meaning in addLabel; otherwise they
+        // work fine
         if (favoriteTextAngle <= 0.0) {
             favoriteTextAngle += 360.0;
         }
     }
 
-    d->addLabel(lpc, index, 0, points, Position::Center, Position::Center, angleLen * sum / 360, favoriteTextAngle);
+    d->addLabel(lpc, index, nullptr, points, Position::Center, Position::Center, angleLen * sum / 360, favoriteTextAngle);
 }
 
 static bool doSpansOverlap(qreal s1Start, qreal s1End, qreal s2Start, qreal s2End)
@@ -779,8 +791,8 @@ void PieDiagram::draw3DEffect(QPainter *painter, const QRectF &drawPosition, uin
 }
 
 /**
-  Internal method that draws the cut surface of a slice (think of a real pie cut into slices)
-  in 3D mode, for surfaces that are facing the observer.
+  Internal method that draws the cut surface of a slice (think of a real pie cut
+  into slices) in 3D mode, for surfaces that are facing the observer.
 
   \param painter the QPainter to draw in
   \param rect the position to draw at
@@ -801,7 +813,8 @@ void PieDiagram::draw3dCutSurface(QPainter *painter, const QRectF &rect, qreal t
 }
 
 /**
-  Internal method that draws the outer rim of a slice when the rim is facing the observer.
+  Internal method that draws the outer rim of a slice when the rim is facing the
+  observer.
 
   \param painter the QPainter to draw in
   \param rect the position to draw at
@@ -856,7 +869,8 @@ void PieDiagram::draw3dOuterRim(QPainter *painter, const QRectF &rect, qreal thr
 }
 
 /**
-  Internal method that finds the slice that is located at the position specified by \c angle.
+  Internal method that finds the slice that is located at the position specified
+  by \c angle.
 
   \param angle the angle at which to search for a slice
   \return the number of the slice found

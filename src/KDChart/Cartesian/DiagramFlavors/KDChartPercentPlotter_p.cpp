@@ -123,8 +123,8 @@ void PercentPlotter::paint(PaintContext *ctx)
     // the x-values
     QList<qreal> xValues = diagramValues.keys();
     // make sure it's sorted
-    qSort(xValues);
-    Q_FOREACH (const qreal xValue, xValues) {
+    std::sort(xValues.begin(), xValues.end());
+    for (const qreal xValue : qAsConst(xValues)) {
         // the y-values to the current x-value
         QVector<QPair<Value, QModelIndex>> &yValues = diagramValues[xValue];
         Q_ASSERT(yValues.count() == colCount);
@@ -155,7 +155,8 @@ void PercentPlotter::paint(PaintContext *ctx)
                     }
                 }
 
-                // interpolate out of them (left and/or right might be invalid, but this doesn't matter here)
+                // interpolate out of them (left and/or right might be invalid,
+                // but this doesn't matter here)
                 const qreal leftX = left.first.first;
                 const qreal rightX = right.first.first;
                 const qreal leftY = left.first.second;
@@ -229,7 +230,7 @@ void PercentPlotter::paint(PaintContext *ctx)
             }
             // add the pieces to painting if this is not hidden:
             if (!point.hidden /*&& !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) */) {
-                m_private->addLabel(&lpc, sourceIndex, 0, pts, Position::NorthWest, Position::NorthWest, value);
+                m_private->addLabel(&lpc, sourceIndex, nullptr, pts, Position::NorthWest, Position::NorthWest, value);
                 if (!ISNAN(lastPoint.key) && !ISNAN(lastPoint.value)) {
                     PaintingHelpers::paintAreas(m_private, ctx, attributesModel()->mapToSource(lastPoint.index), areas, laCell.transparency());
                     lineList.append(LineAttributesInfo(sourceIndex, a, b));

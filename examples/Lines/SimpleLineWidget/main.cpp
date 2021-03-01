@@ -59,7 +59,7 @@ int main(int argc, char **argv)
     widget.lineDiagram()->setBrush(1, brush);
 
     // set up a legend
-    Legend *legend = new Legend(&widget);
+    auto *legend = new Legend(&widget);
     legend->setPosition(Position::East);
     legend->setAlignment(Qt::AlignCenter);
     legend->setOrientation(Qt::Vertical);

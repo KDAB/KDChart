@@ -43,9 +43,7 @@ RingDiagram::Private::Private()
 {
 }
 
-RingDiagram::Private::~Private()
-{
-}
+RingDiagram::Private::~Private() = default;
 
 #define d d_func()
 
@@ -55,9 +53,7 @@ RingDiagram::RingDiagram(QWidget *parent, PolarCoordinatePlane *plane)
     init();
 }
 
-RingDiagram::~RingDiagram()
-{
-}
+RingDiagram::~RingDiagram() = default;
 
 void RingDiagram::init()
 {
@@ -113,7 +109,8 @@ const QPair<QPointF, QPointF> RingDiagram::calculateDataBoundaries() const
 
     QPointF bottomLeft(0, 0);
     QPointF topRight;
-    // If we explode, we need extra space for the pie slice that has the largest explosion distance.
+    // If we explode, we need extra space for the pie slice that has the largest
+    // explosion distance.
     if (attrs.explode()) {
         const int rCount = rowCount();
         const int colCount = columnCount();
@@ -167,7 +164,8 @@ void RingDiagram::paint(PaintContext *ctx)
     const int rCount = rowCount();
     const int colCount = columnCount();
 
-    // QRectF contentsRect = PolarCoordinatePlane::Private::contentsRect( polarCoordinatePlane() );
+    // QRectF contentsRect = PolarCoordinatePlane::Private::contentsRect(
+    // polarCoordinatePlane() );
     QRectF contentsRect = ctx->rectangle();
     if (contentsRect.isEmpty())
         return;
@@ -269,7 +267,8 @@ void RingDiagram::resize(const QSizeF &)
 }
 
 /**
-  Internal method that draws the top surface of one of the slices in a ring chart.
+  Internal method that draws the top surface of one of the slices in a ring
+  chart.
 
   \param painter the QPainter to draw in
   \param dataset the dataset to draw the slice for

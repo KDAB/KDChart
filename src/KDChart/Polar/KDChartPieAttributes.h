@@ -55,7 +55,7 @@ public:
     void setExplode(bool explode);
 
     /** @return whether the respective pie piece(s) will be exploded.  */
-    bool explode() const;
+    [[nodiscard]] bool explode() const;
 
     /** Set the explode factor.
      * The explode factor is a qreal between 0 and 1, and is interpreted
@@ -66,10 +66,10 @@ public:
     void setExplodeFactor(qreal factor);
 
     /** @return the explode factor set by setExplode or by setExplodeFactor. */
-    qreal explodeFactor() const;
+    [[nodiscard]] qreal explodeFactor() const;
 
     void setGapFactor(bool circular, qreal factor);
-    qreal gapFactor(bool circular) const;
+    [[nodiscard]] qreal gapFactor(bool circular) const;
 
     bool operator==(const PieAttributes &) const;
     inline bool operator!=(const PieAttributes &other) const

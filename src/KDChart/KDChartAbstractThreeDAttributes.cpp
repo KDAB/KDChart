@@ -61,7 +61,7 @@ AbstractThreeDAttributes &AbstractThreeDAttributes::operator=(const AbstractThre
 AbstractThreeDAttributes::~AbstractThreeDAttributes()
 {
     delete _d;
-    _d = 0;
+    _d = nullptr;
 }
 
 bool AbstractThreeDAttributes::operator==(const AbstractThreeDAttributes &r) const

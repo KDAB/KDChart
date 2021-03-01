@@ -77,17 +77,14 @@ bool AbstractDiagram::compare(const AbstractDiagram *other) const
         (horizontalScrollBarPolicy() == other->horizontalScrollBarPolicy()) && (verticalScrollBarPolicy() == other->verticalScrollBarPolicy()) &&
         // compare QFrame properties
         (frameShadow() == other->frameShadow()) && (frameShape() == other->frameShape()) &&
-        // frameWidth is a read-only property defined by the style, it should not be in here:
-        // (frameWidth()   == other->frameWidth()) &&
+        // frameWidth is a read-only property defined by the style, it should
+        // not be in here: (frameWidth()   == other->frameWidth()) &&
         (lineWidth() == other->lineWidth()) && (midLineWidth() == other->midLineWidth()) &&
         // compare QAbstractItemView properties
-        (alternatingRowColors() == other->alternatingRowColors()) && (hasAutoScroll() == other->hasAutoScroll()) &&
-#if QT_VERSION > 0x040199
-        (dragDropMode() == other->dragDropMode()) && (dragDropOverwriteMode() == other->dragDropOverwriteMode())
-        && (horizontalScrollMode() == other->horizontalScrollMode()) && (verticalScrollMode() == other->verticalScrollMode()) &&
-#endif
-        (dragEnabled() == other->dragEnabled()) && (editTriggers() == other->editTriggers()) && (iconSize() == other->iconSize())
-        && (selectionBehavior() == other->selectionBehavior()) && (selectionMode() == other->selectionMode())
+        (alternatingRowColors() == other->alternatingRowColors()) && (hasAutoScroll() == other->hasAutoScroll()) && (dragDropMode() == other->dragDropMode())
+        && (dragDropOverwriteMode() == other->dragDropOverwriteMode()) && (horizontalScrollMode() == other->horizontalScrollMode())
+        && (verticalScrollMode() == other->verticalScrollMode()) && (dragEnabled() == other->dragEnabled()) && (editTriggers() == other->editTriggers())
+        && (iconSize() == other->iconSize()) && (selectionBehavior() == other->selectionBehavior()) && (selectionMode() == other->selectionMode())
         && (showDropIndicator() == other->showDropIndicator()) && (tabKeyNavigation() == other->tabKeyNavigation())
         && (textElideMode() == other->textElideMode()) &&
         // compare all of the properties stored in the attributes model
@@ -149,10 +146,10 @@ void AbstractDiagram::setSelectionModel(QItemSelectionModel *newSelectionModel)
     emit modelsChanged();
 }
 
-/*! Sets an external AttributesModel on this diagram. By default, a diagram has it's
-  own internal set of attributes, but an external one can be set. This can be used to
-  share attributes between several diagrams. The diagram does not take ownership of the
-  attributesmodel.
+/*! Sets an external AttributesModel on this diagram. By default, a diagram has
+  it's own internal set of attributes, but an external one can be set. This can
+  be used to share attributes between several diagrams. The diagram does not
+  take ownership of the attributesmodel.
 
   @param amodel The AttributesModel to use for this diagram.
 */
@@ -168,7 +165,8 @@ void AbstractDiagram::setAttributesModel(AttributesModel *amodel)
     if (qobject_cast<PrivateAttributesModel *>(amodel)) {
         qWarning(
             "KDChart::AbstractDiagram::setAttributesModel() failed: "
-            "Trying to set an attributesmodel that is private to another diagram.");
+            "Trying to set an attributesmodel that is private to another "
+            "diagram.");
         return;
     }
 
@@ -209,8 +207,8 @@ void AbstractDiagram::setAttributesModelRootIndex(const QModelIndex &idx)
     scheduleDelayedItemsLayout();
 }
 
-/*! returns a QModelIndex pointing into the AttributesModel that corresponds to the
-  root index of the diagram. */
+/*! returns a QModelIndex pointing into the AttributesModel that corresponds to
+  the root index of the diagram. */
 QModelIndex AbstractDiagram::attributesModelRootIndex() const
 {
     if (!d->attributesModelRootIndex.isValid())
@@ -232,11 +230,7 @@ void AbstractDiagram::doItemsLayout()
     QAbstractItemView::doItemsLayout();
 }
 
-#if QT_VERSION < 0x050000
-void AbstractDiagram::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
-#else
 void AbstractDiagram::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &)
-#endif
 {
     Q_UNUSED(topLeft);
     Q_UNUSED(bottomRight);
@@ -247,19 +241,19 @@ void AbstractDiagram::dataChanged(const QModelIndex &topLeft, const QModelIndex 
 
 void AbstractDiagram::setHidden(const QModelIndex &index, bool hidden)
 {
-    d->attributesModel->setData(conditionallyMapFromSource(index), qVariantFromValue(hidden), DataHiddenRole);
+    d->attributesModel->setData(conditionallyMapFromSource(index), QVariant::fromValue(hidden), DataHiddenRole);
     emit dataHidden();
 }
 
 void AbstractDiagram::setHidden(int dataset, bool hidden)
 {
-    d->setDatasetAttrs(dataset, qVariantFromValue(hidden), DataHiddenRole);
+    d->setDatasetAttrs(dataset, QVariant::fromValue(hidden), DataHiddenRole);
     emit dataHidden();
 }
 
 void AbstractDiagram::setHidden(bool hidden)
 {
-    d->attributesModel->setModelData(qVariantFromValue(hidden), DataHiddenRole);
+    d->attributesModel->setModelData(QVariant::fromValue(hidden), DataHiddenRole);
     emit dataHidden();
 }
 
@@ -288,13 +282,13 @@ bool AbstractDiagram::isHidden(const QModelIndex &index) const
 
 void AbstractDiagram::setDataValueAttributes(const QModelIndex &index, const DataValueAttributes &a)
 {
-    d->attributesModel->setData(conditionallyMapFromSource(index), qVariantFromValue(a), DataValueLabelAttributesRole);
+    d->attributesModel->setData(conditionallyMapFromSource(index), QVariant::fromValue(a), DataValueLabelAttributesRole);
     emit propertiesChanged();
 }
 
 void AbstractDiagram::setDataValueAttributes(int dataset, const DataValueAttributes &a)
 {
-    d->setDatasetAttrs(dataset, qVariantFromValue(a), DataValueLabelAttributesRole);
+    d->setDatasetAttrs(dataset, QVariant::fromValue(a), DataValueLabelAttributesRole);
     emit propertiesChanged();
 }
 
@@ -309,11 +303,12 @@ DataValueAttributes AbstractDiagram::dataValueAttributes(int dataset) const
     The following did not work!
     (khz, 2008-01-25)
     If there was some attrs specified for the 0-th cells of a dataset,
-    then this logic would return the cell's settings instead of the header settings:
+    then this logic would return the cell's settings instead of the header
+    settings:
 
     return qVariantValue<DataValueAttributes>(
-        attributesModel()->data( attributesModel()->mapFromSource(columnToIndex( column )),
-        KDChart::DataValueLabelAttributesRole ) );
+        attributesModel()->data( attributesModel()->mapFromSource(columnToIndex(
+    column )), KDChart::DataValueLabelAttributesRole ) );
     */
 
     const QVariant headerAttrs(d->datasetAttrs(dataset, KDChart::DataValueLabelAttributesRole));
@@ -329,7 +324,7 @@ DataValueAttributes AbstractDiagram::dataValueAttributes(const QModelIndex &inde
 
 void AbstractDiagram::setDataValueAttributes(const DataValueAttributes &a)
 {
-    d->attributesModel->setModelData(qVariantFromValue(a), DataValueLabelAttributesRole);
+    d->attributesModel->setModelData(QVariant::fromValue(a), DataValueLabelAttributesRole);
     emit propertiesChanged();
 }
 
@@ -410,7 +405,7 @@ void AbstractDiagram::paintMarker(QPainter *painter, const DataValueAttributes &
 
     const PainterSaver painterSaver(painter);
     // the size of the marker - unscaled
-    const QSizeF maSize(ma.markerSize().width() / painter->matrix().m11(), ma.markerSize().height() / painter->matrix().m22());
+    const QSizeF maSize(ma.markerSize().width() / painter->transform().m11(), ma.markerSize().height() / painter->transform().m22());
     QBrush indexBrush(brush(index));
     QPen indexPen(ma.pen());
     if (ma.markerColor().isValid())
@@ -446,7 +441,7 @@ void AbstractDiagram::paintMarker(QPainter *painter,
     const bool isFourPixels = (markerAttributes.markerStyle() == MarkerAttributes::Marker4Pixels);
     if (isFourPixels || (markerAttributes.markerStyle() == MarkerAttributes::Marker1Pixel)) {
         // for high-performance point charts with tiny point markers:
-        painter->setPen(PrintingParameters::scalePen(QPen(brush.color().light())));
+        painter->setPen(PrintingParameters::scalePen(QPen(brush.color().lighter())));
         if (isFourPixels) {
             const qreal x = pos.x();
             const qreal y = pos.y();
@@ -478,7 +473,7 @@ void AbstractDiagram::paintMarker(QPainter *painter,
                 grad.setColorAt(0.95, drawColor.darker(250));
                 grad.setColorAt(1.00, drawColor.darker(200));
                 QBrush newBrush(grad);
-                newBrush.setMatrix(brush.matrix());
+                newBrush.setTransform(brush.transform());
                 painter->setBrush(newBrush);
             }
             painter->drawEllipse(QRectF(0 - maSize.height() / 2, 0 - maSize.width() / 2, maSize.height(), maSize.width()));
@@ -530,8 +525,8 @@ void AbstractDiagram::paintMarker(QPainter *painter,
             p[9] = QPointF(-w05, h02);
             p[10] = QPointF(-w05, -h02);
             p[11] = QPointF(-w02, -h02);
-            for (int i = 0; i < 12; ++i)
-                crossPoints << p[i];
+            for (auto &i : p)
+                crossPoints << i;
             crossPoints << p[0];
             painter->drawPolygon(crossPoints);
             break;
@@ -594,19 +589,19 @@ void AbstractDiagram::paintMarkers(QPainter *painter)
 
 void AbstractDiagram::setPen(const QModelIndex &index, const QPen &pen)
 {
-    attributesModel()->setData(conditionallyMapFromSource(index), qVariantFromValue(pen), DatasetPenRole);
+    attributesModel()->setData(conditionallyMapFromSource(index), QVariant::fromValue(pen), DatasetPenRole);
     emit propertiesChanged();
 }
 
 void AbstractDiagram::setPen(const QPen &pen)
 {
-    attributesModel()->setModelData(qVariantFromValue(pen), DatasetPenRole);
+    attributesModel()->setModelData(QVariant::fromValue(pen), DatasetPenRole);
     emit propertiesChanged();
 }
 
 void AbstractDiagram::setPen(int dataset, const QPen &pen)
 {
-    d->setDatasetAttrs(dataset, qVariantFromValue(pen), DatasetPenRole);
+    d->setDatasetAttrs(dataset, QVariant::fromValue(pen), DatasetPenRole);
     emit propertiesChanged();
 }
 
@@ -630,19 +625,19 @@ QPen AbstractDiagram::pen(const QModelIndex &index) const
 
 void AbstractDiagram::setBrush(const QModelIndex &index, const QBrush &brush)
 {
-    attributesModel()->setData(conditionallyMapFromSource(index), qVariantFromValue(brush), DatasetBrushRole);
+    attributesModel()->setData(conditionallyMapFromSource(index), QVariant::fromValue(brush), DatasetBrushRole);
     emit propertiesChanged();
 }
 
 void AbstractDiagram::setBrush(const QBrush &brush)
 {
-    attributesModel()->setModelData(qVariantFromValue(brush), DatasetBrushRole);
+    attributesModel()->setModelData(QVariant::fromValue(brush), DatasetBrushRole);
     emit propertiesChanged();
 }
 
 void AbstractDiagram::setBrush(int dataset, const QBrush &brush)
 {
-    d->setDatasetAttrs(dataset, qVariantFromValue(brush), DatasetBrushRole);
+    d->setDatasetAttrs(dataset, QVariant::fromValue(brush), DatasetBrushRole);
     emit propertiesChanged();
 }
 
@@ -710,7 +705,8 @@ void AbstractDiagram::setUnitSuffix(const QString &suffix, Qt::Orientation orien
  * Returns the unit prefix for a special value
  * @param column the value which's prefix is requested
  * @param orientation the orientation of the axis
- * @param fallback if true, the global prefix is return when no specific one is set for that value
+ * @param fallback if true, the global prefix is return when no specific one is
+ * set for that value
  * @return the unit prefix
  */
 QString AbstractDiagram::unitPrefix(int column, Qt::Orientation orientation, bool fallback) const
@@ -733,7 +729,8 @@ QString AbstractDiagram::unitPrefix(Qt::Orientation orientation) const
  * Returns the unit suffix for a special value
  * @param column the value which's suffix is requested
  * @param orientation the orientation of the axis
- * @param fallback if true, the global suffix is return when no specific one is set for that value
+ * @param fallback if true, the global suffix is return when no specific one is
+ * set for that value
  * @return the unit suffix
  */
 QString AbstractDiagram::unitSuffix(int column, Qt::Orientation orientation, bool fallback) const
@@ -788,8 +785,7 @@ void AbstractDiagram::setSelection(const QRect &rect, QItemSelectionModel::Selec
 {
     const QModelIndexList indexes = d->indexesIn(rect);
     QItemSelection selection;
-    KDAB_FOREACH(const QModelIndex &index, indexes)
-    {
+    for (const QModelIndex &index : qAsConst(indexes)) {
         selection.append(QItemSelectionRange(index));
     }
     selectionModel()->select(selection, command);
@@ -798,8 +794,7 @@ void AbstractDiagram::setSelection(const QRect &rect, QItemSelectionModel::Selec
 QRegion AbstractDiagram::visualRegionForSelection(const QItemSelection &selection) const
 {
     QPolygonF polygon;
-    KDAB_FOREACH(const QModelIndex &index, selection.indexes())
-    {
+    for (const QModelIndex &index : selection.indexes()) {
         polygon << d->reverseMapper.polygon(index.row(), index.column());
     }
     return polygon.isEmpty() ? QRegion() : QRegion(polygon.toPolygon());
@@ -830,10 +825,12 @@ QStringList AbstractDiagram::itemRowLabels() const
 {
     QStringList ret;
     if (model()) {
-        // qDebug() << "AbstractDiagram::itemRowLabels(): " << attributesModel()->rowCount(attributesModelRootIndex()) << "entries";
+        // qDebug() << "AbstractDiagram::itemRowLabels(): " <<
+        // attributesModel()->rowCount(attributesModelRootIndex()) << "entries";
         const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
         for (int i = 0; i < rowCount; ++i) {
-            // qDebug() << "item row label: " << attributesModel()->headerData( i, Qt::Vertical, Qt::DisplayRole ).toString();
+            // qDebug() << "item row label: " << attributesModel()->headerData(
+            // i, Qt::Vertical, Qt::DisplayRole ).toString();
             ret << unitPrefix(i, Qt::Horizontal, true) + attributesModel()->headerData(i, Qt::Vertical, Qt::DisplayRole).toString()
                     + unitSuffix(i, Qt::Horizontal, true);
         }
@@ -911,7 +908,8 @@ int AbstractDiagram::datasetDimension() const
 void AbstractDiagram::setDatasetDimension(int dimension)
 {
     Q_UNUSED(dimension);
-    qDebug() << "Setting the dataset dimension using AbstractDiagram::setDatasetDimension is "
+    qDebug() << "Setting the dataset dimension using "
+                "AbstractDiagram::setDatasetDimension is "
                 "obsolete. Use the specific diagram types instead.";
 }
 
@@ -930,7 +928,8 @@ void AbstractDiagram::setDatasetDimensionInternal(int dimension)
 qreal AbstractDiagram::valueForCell(int row, int column) const
 {
     if (!d->attributesModel->hasIndex(row, column, attributesModelRootIndex())) {
-        qWarning() << "AbstractDiagram::valueForCell(): Requesting value for invalid index!";
+        qWarning() << "AbstractDiagram::valueForCell(): Requesting value for "
+                      "invalid index!";
         return std::numeric_limits<qreal>::quiet_NaN();
     }
     return d->attributesModel->data(d->attributesModel->index(row, column, attributesModelRootIndex())).toReal(); // checked

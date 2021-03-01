@@ -79,8 +79,8 @@ void TextArea::paintAll(QPainter &painter)
     paintBackground(painter, geometry());
     paintFrame(painter, geometry());
 
-    // temporarily adjust the widget size, to be sure all content gets calculated
-    // to fit into the inner rectangle
+    // temporarily adjust the widget size, to be sure all content gets
+    // calculated to fit into the inner rectangle
     const QRect oldGeometry(areaGeometry());
     QRect inner(innerRect());
     inner.moveTo(oldGeometry.left() + inner.left(), oldGeometry.top() + inner.top());

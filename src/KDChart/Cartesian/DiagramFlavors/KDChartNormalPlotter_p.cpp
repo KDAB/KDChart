@@ -71,17 +71,24 @@ void NormalPlotter::paint(PaintContext *ctx)
 
                 if (ISNAN(point.key) || ISNAN(point.value)) {
                     switch (policy) {
-                    case LineAttributes::MissingValuesAreBridged: // we just bridge both values
+                    case LineAttributes::MissingValuesAreBridged: // we just
+                                                                  // bridge
+                                                                  // both
+                                                                  // values
                         continue;
-                    case LineAttributes::MissingValuesShownAsZero: // fall-through since that attribute makes no sense for the plotter
-                    case LineAttributes::MissingValuesHideSegments: // fall-through since they're just hidden
+                    case LineAttributes::MissingValuesShownAsZero: // fall-through since that
+                                                                   // attribute makes no
+                                                                   // sense for the plotter
+                    case LineAttributes::MissingValuesHideSegments: // fall-through since
+                                                                    // they're just hidden
                     default:
                         lastPoint = PlotterDiagramCompressor::DataPoint();
                         continue;
                     }
                 }
 
-                // data area painting: a and b are prev / current data points, c and d are on the null line
+                // data area painting: a and b are prev / current data points, c
+                // and d are on the null line
                 const QPointF b(plane->translate(QPointF(point.key, point.value)));
 
                 if (!point.hidden && PaintingHelpers::isFinite(b)) {
@@ -91,7 +98,7 @@ void NormalPlotter::paint(PaintContext *ctx)
 
                     // data point label
                     const PositionPoints pts = PositionPoints(b, a, d, c);
-                    m_private->addLabel(&lpc, sourceIndex, 0, pts, Position::NorthWest, Position::NorthWest, point.value);
+                    m_private->addLabel(&lpc, sourceIndex, nullptr, pts, Position::NorthWest, Position::NorthWest, point.value);
 
                     const bool lineValid = a.toPoint() != b.toPoint() && PaintingHelpers::isFinite(a);
                     if (lineValid) {
@@ -131,17 +138,24 @@ void NormalPlotter::paint(PaintContext *ctx)
 
                 if (ISNAN(point.key) || ISNAN(point.value)) {
                     switch (policy) {
-                    case LineAttributes::MissingValuesAreBridged: // we just bridge both values
+                    case LineAttributes::MissingValuesAreBridged: // we just
+                                                                  // bridge
+                                                                  // both
+                                                                  // values
                         continue;
-                    case LineAttributes::MissingValuesShownAsZero: // fall-through since that attribute makes no sense for the plotter
-                    case LineAttributes::MissingValuesHideSegments: // fall-through since they're just hidden
+                    case LineAttributes::MissingValuesShownAsZero: // fall-through since that
+                                                                   // attribute makes no
+                                                                   // sense for the plotter
+                    case LineAttributes::MissingValuesHideSegments: // fall-through since
+                                                                    // they're just hidden
                     default:
                         lastPoint = CartesianDiagramDataCompressor::DataPoint();
                         continue;
                     }
                 }
 
-                // data area painting: a and b are prev / current data points, c and d are on the null line
+                // data area painting: a and b are prev / current data points, c
+                // and d are on the null line
                 const QPointF b(plane->translate(QPointF(point.key, point.value)));
 
                 if (!point.hidden && PaintingHelpers::isFinite(b)) {
@@ -151,7 +165,7 @@ void NormalPlotter::paint(PaintContext *ctx)
 
                     // data point label
                     const PositionPoints pts = PositionPoints(b, a, d, c);
-                    m_private->addLabel(&lpc, sourceIndex, 0, pts, Position::NorthWest, Position::NorthWest, point.value);
+                    m_private->addLabel(&lpc, sourceIndex, nullptr, pts, Position::NorthWest, Position::NorthWest, point.value);
 
                     const bool lineValid = a.toPoint() != b.toPoint() && PaintingHelpers::isFinite(a);
                     if (lineValid) {

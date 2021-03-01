@@ -46,54 +46,53 @@ using namespace KDChart;
 class TransposeProxyModel : public QAbstractProxyModel
 {
 public:
-    explicit TransposeProxyModel(QObject *parent = 0)
+    explicit TransposeProxyModel(QObject *parent = nullptr)
         : QAbstractProxyModel(parent)
     {
     }
-    ~TransposeProxyModel() override
-    {
-    }
-    QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override
+    ~TransposeProxyModel() override = default;
+    [[nodiscard]] QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override
     {
         return index(sourceIndex.column(), sourceIndex.row());
     }
-    QModelIndex mapToSource(const QModelIndex &proxyIndex) const override
+    [[nodiscard]] QModelIndex mapToSource(const QModelIndex &proxyIndex) const override
     {
         return sourceModel()->index(proxyIndex.column(), proxyIndex.row());
     }
-    QModelIndex index(int r, int c, const QModelIndex &ind = QModelIndex()) const override
+    [[nodiscard]] QModelIndex index(int r, int c, const QModelIndex &ind = QModelIndex()) const override
     {
         Q_UNUSED(ind)
         return createIndex(r, c);
     }
-    QModelIndex parent(const QModelIndex &) const override
+    [[nodiscard]] QModelIndex parent(const QModelIndex &) const override
     {
         return QModelIndex();
     }
-    int rowCount(const QModelIndex &) const override
+    [[nodiscard]] int rowCount(const QModelIndex &) const override
     {
         return sourceModel()->columnCount();
     }
-    int columnCount(const QModelIndex &) const override
+    [[nodiscard]] int columnCount(const QModelIndex &) const override
     {
         return sourceModel()->rowCount();
     }
-    QVariant data(const QModelIndex &ind, int role) const override
+    [[nodiscard]] QVariant data(const QModelIndex &ind, int role) const override
     {
         return sourceModel()->data(mapToSource(ind), role);
     }
 };
 
 /**
- * The example that creates the SQL-model, adds data to it and display the data in a model.
+ * The example that creates the SQL-model, adds data to it and display the data
+ * in a model.
  */
 class ChartWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ChartWidget(QWidget *parent = 0)
+    explicit ChartWidget(QWidget *parent = nullptr)
         : QWidget(parent)
-        , m_model(0)
+        , m_model(nullptr)
     {
         QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
         db.setHostName("localhost");
@@ -104,7 +103,9 @@ public:
         Q_ASSERT(ok);
         Q_UNUSED(ok) // release mode
 
-        QSqlQuery createTableQuery = db.exec("CREATE TABLE IF NOT EXISTS MyTable (col1 INT NOT NULL PRIMARY KEY, col2 INT);");
+        QSqlQuery createTableQuery = db.exec(
+            "CREATE TABLE IF NOT EXISTS MyTable (col1 INT NOT NULL "
+            "PRIMARY KEY, col2 INT);");
         Q_ASSERT(!createTableQuery.lastError().isValid());
 
         m_model = new QSqlTableModel(this, db);
@@ -121,7 +122,7 @@ public:
         for (int row = 0; row < 3; ++row) {
             QSqlRecord rec;
             for (int column = 0; column < 2; ++column) {
-                QSqlField field(column == 0 ? "col1" : "col2", QVariant::Int);
+                QSqlField field(column == 0 ? "col1" : "col2", QMetaType::fromType<int>());
                 field.setValue(row + 1 * column);
                 rec.append(field);
             }
@@ -129,16 +130,16 @@ public:
             Q_ASSERT(ok);
         }
 
-        BarDiagram *diagram = new BarDiagram;
+        auto *diagram = new BarDiagram;
 
-        TransposeProxyModel *proxymodel = new TransposeProxyModel(this);
+        auto *proxymodel = new TransposeProxyModel(this);
         proxymodel->setSourceModel(m_model);
         diagram->setModel(proxymodel);
 
         m_chart.coordinatePlane()->replaceDiagram(diagram);
 
         // Add at one Header and set it up
-        HeaderFooter *header = new HeaderFooter(&m_chart);
+        auto *header = new HeaderFooter(&m_chart);
         header->setPosition(Position::North);
         header->setText("A Simple Bar Chart");
         m_chart.addHeaderFooter(header);
@@ -156,7 +157,7 @@ public:
         hfa.setVisible(true);
         header->setFrameAttributes(hfa);
 
-        QVBoxLayout *l = new QVBoxLayout(this);
+        auto *l = new QVBoxLayout(this);
         l->addWidget(&m_chart);
         setLayout(l);
     }

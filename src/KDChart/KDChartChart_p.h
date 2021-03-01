@@ -53,11 +53,12 @@ class AbstractAreaWidget;
 class CartesianAxis;
 
 /*
-  struct PlaneInfo can't be declared inside Chart::Private, otherwise MSVC.net says:
-  qhash.h(195) : error C2248: 'KDChart::Chart::Private' : cannot access protected class declared in class 'KDChart::Chart'
-  KDChartChart_p.h(58) : see declaration of 'KDChart::Chart::Private'
-  KDChartChart.h(61) : see declaration of 'KDChart::Chart'
-  KDChartChart.cpp(262) : see reference to class template instantiation 'QHash<Key,T>' being compiled, with
+  struct PlaneInfo can't be declared inside Chart::Private, otherwise MSVC.net
+  says: qhash.h(195) : error C2248: 'KDChart::Chart::Private' : cannot access
+  protected class declared in class 'KDChart::Chart' KDChartChart_p.h(58) : see
+  declaration of 'KDChart::Chart::Private' KDChartChart.h(61) : see declaration
+  of 'KDChart::Chart' KDChartChart.cpp(262) : see reference to class template
+  instantiation 'QHash<Key,T>' being compiled, with
             Key=KDChart::AbstractCoordinatePlane *,
             T=KDChart::Chart::Private::PlaneInfo
 */
@@ -66,14 +67,14 @@ class CartesianAxis;
  */
 struct PlaneInfo {
     PlaneInfo()
-        : referencePlane(0)
+        : referencePlane(nullptr)
         , horizontalOffset(1)
         , verticalOffset(1)
-        , gridLayout(0)
-        , topAxesLayout(0)
-        , bottomAxesLayout(0)
-        , leftAxesLayout(0)
-        , rightAxesLayout(0)
+        , gridLayout(nullptr)
+        , topAxesLayout(nullptr)
+        , bottomAxesLayout(nullptr)
+        , leftAxesLayout(nullptr)
+        , rightAxesLayout(nullptr)
     {
     }
     AbstractCoordinatePlane *referencePlane;
@@ -88,11 +89,11 @@ struct PlaneInfo {
 
 struct LayoutGraphNode {
     LayoutGraphNode()
-        : diagramPlane(0)
-        , leftSuccesor(0)
-        , bottomSuccesor(0)
-        , sharedSuccesor(0)
-        , gridLayout(0)
+        : diagramPlane(nullptr)
+        , leftSuccesor(nullptr)
+        , bottomSuccesor(nullptr)
+        , sharedSuccesor(nullptr)
+        , gridLayout(nullptr)
         , topAxesLayout(false)
         , bottomAxesLayout(false)
         , leftAxesLayout(false)
@@ -153,12 +154,14 @@ public:
     bool isFloatingLegendsLayoutDirty;
     bool isPlanesLayoutDirty;
 
-    // since we do not want to derive Chart from AbstractAreaBase, we store the attributes
-    // here and call two static painting methods to draw the background and frame.
+    // since we do not want to derive Chart from AbstractAreaBase, we store the
+    // attributes here and call two static painting methods to draw the
+    // background and frame.
     KDChart::FrameAttributes frameAttributes;
     KDChart::BackgroundAttributes backgroundAttributes;
 
-    // ### wrong names, "leading" means inter-line distance of text. spacing? margin?
+    // ### wrong names, "leading" means inter-line distance of text. spacing?
+    // margin?
     int globalLeadingLeft, globalLeadingRight, globalLeadingTop, globalLeadingBottom;
 
     QList<AbstractCoordinatePlane *> mouseClickedPlanes;
@@ -171,12 +174,13 @@ public:
 
     void createLayouts();
     void updateDirtyLayouts();
-    void reapplyInternalLayouts(); // TODO: see if this can be merged with updateDirtyLayouts()
+    void reapplyInternalLayouts(); // TODO: see if this can be merged with
+                                   // updateDirtyLayouts()
     void paintAll(QPainter *painter);
 
     struct AxisInfo {
         AxisInfo()
-            : plane(0)
+            : plane(nullptr)
         {
         }
         AbstractCoordinatePlane *plane;

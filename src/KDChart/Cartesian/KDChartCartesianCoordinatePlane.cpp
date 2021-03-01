@@ -36,6 +36,7 @@
 #include <KDABLibFakes>
 
 #include <QApplication>
+#include <QElapsedTimer>
 #include <QFont>
 #include <QList>
 #include <QPainter>
@@ -125,7 +126,7 @@ void CartesianCoordinatePlane::paint(QPainter *painter)
                 continue;
             }
             bool doDumpPaintTime = AbstractDiagram::Private::get(diags[i])->doDumpPaintTime;
-            QTime stopWatch;
+            QElapsedTimer stopWatch;
             if (doDumpPaintTime) {
                 stopWatch.start();
             }
@@ -154,9 +155,11 @@ QRectF CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams() const
     qreal minY = 0;
     qreal maxY = 0;
     bool bStarting = true;
-    Q_FOREACH (const AbstractDiagram *diagram, diagrams()) {
+    for (const AbstractDiagram *diagram : diagrams()) {
         QPair<QPointF, QPointF> dataBoundariesPair = diagram->dataBoundaries();
-        // qDebug() << "CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams()\ngets diagram->dataBoundaries: " << dataBoundariesPair.first <<
+        // qDebug() <<
+        // "CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams()\ngets
+        // diagram->dataBoundaries: " << dataBoundariesPair.first <<
         // dataBoundariesPair.second;
         if (bStarting || dataBoundariesPair.first.x() < minX)
             minX = dataBoundariesPair.first.x();
@@ -168,8 +171,10 @@ QRectF CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams() const
             maxY = dataBoundariesPair.second.y();
         bStarting = false;
     }
-    // qDebug() << "CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams()\nreturns data boundaries: " << QRectF( QPointF(minX, minY), QSizeF(maxX -
-    // minX, maxY - minY) );
+    // qDebug() <<
+    // "CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams()\nreturns
+    // data boundaries: " << QRectF( QPointF(minX, minY), QSizeF(maxX - minX,
+    // maxY - minY) );
     QRectF dataBoundingRect;
     dataBoundingRect.setBottomLeft(QPointF(minX, minY));
     dataBoundingRect.setTopRight(QPointF(maxX, maxY));
@@ -195,7 +200,8 @@ QRectF CartesianCoordinatePlane::adjustedToMaxEmptyInnerPercentage(const QRectF 
             }
         }
     }
-    // ### this doesn't seem to take into account that Qt's y coordinate is inverted
+    // ### this doesn't seem to take into account that Qt's y coordinate is
+    // inverted
     if ((axesCalcModeY() != Logarithmic || r.bottom() < 0.0) && percentY > 0 && percentY != 100) {
         const bool isPositive = r.bottom() >= 0;
         if ((r.top() >= 0) == isPositive) {
@@ -265,25 +271,27 @@ QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
 
 DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
 {
-    const AbstractCartesianDiagram *dgr = diagrams().isEmpty() ? 0 : qobject_cast<const AbstractCartesianDiagram *>(diagrams().first());
+    const AbstractCartesianDiagram *dgr = diagrams().isEmpty() ? nullptr : qobject_cast<const AbstractCartesianDiagram *>(diagrams().first());
     if (dgr && dgr->referenceDiagram()) {
         dgr = dgr->referenceDiagram();
     }
-    const BarDiagram *barDiagram = qobject_cast<const BarDiagram *>(dgr);
-    const StockDiagram *stockDiagram = qobject_cast<const StockDiagram *>(dgr);
+    const auto *barDiagram = qobject_cast<const BarDiagram *>(dgr);
+    const auto *stockDiagram = qobject_cast<const StockDiagram *>(dgr);
 
     // note:
-    // It does make sense to retrieve the orientation from the first diagram. This is because
-    // a coordinate plane can either be for horizontal *or* for vertical diagrams. Both at the
-    // same time won't work, and thus the orientation for all diagrams is the same as for the first one.
-    const Qt::Orientation diagramOrientation = barDiagram != 0 ? barDiagram->orientation() : Qt::Vertical;
+    // It does make sense to retrieve the orientation from the first diagram.
+    // This is because a coordinate plane can either be for horizontal *or* for
+    // vertical diagrams. Both at the same time won't work, and thus the
+    // orientation for all diagrams is the same as for the first one.
+    const Qt::Orientation diagramOrientation = barDiagram != nullptr ? barDiagram->orientation() : Qt::Vertical;
     const bool diagramIsVertical = diagramOrientation == Qt::Vertical;
 
     DataDimensionsList l;
     if (dgr) {
         const QRectF r(calculateRawDataBoundingRect());
-        // We do not access d->gridAttributesHorizontal/Vertical here, but we use the getter function,
-        // to get the global attrs, if no special ones have been set for the given orientation.
+        // We do not access d->gridAttributesHorizontal/Vertical here, but we
+        // use the getter function, to get the global attrs, if no special ones
+        // have been set for the given orientation.
         const GridAttributes gaH(gridAttributes(Qt::Horizontal));
         const GridAttributes gaV(gridAttributes(Qt::Vertical));
         // append the first dimension: for Abscissa axes
@@ -312,11 +320,12 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
 QRectF CartesianCoordinatePlane::drawingArea() const
 {
     // the rectangle the diagrams cover in the *plane*:
-    // We reserve 1px on each side for antialiased drawing, and respect the way QPainter calculates
-    // the width of a painted rect (the size is the rectangle size plus the pen width). The latter
-    // accounts for another pixel that we subtract from height and width.
-    // This way, most clipping for regular pens should be avoided. When pens with a width larger
-    // than 1 are used, this may not be sufficient.
+    // We reserve 1px on each side for antialiased drawing, and respect the way
+    // QPainter calculates the width of a painted rect (the size is the
+    // rectangle size plus the pen width). The latter accounts for another pixel
+    // that we subtract from height and width. This way, most clipping for
+    // regular pens should be avoided. When pens with a width larger than 1 are
+    // used, this may not be sufficient.
     return QRectF(areaGeometry()).adjusted(1.0, 1.0, -2.0, -2.0);
 }
 
@@ -367,7 +376,8 @@ void CartesianCoordinatePlane::layoutDiagrams()
 
     // TODO: isometric scaling for zooming?
 
-    // the plane area might have changed, so the zoom values might also be changed
+    // the plane area might have changed, so the zoom values might also be
+    // changed
     handleFixedDataCoordinateSpaceRelation(physicalArea);
 
     d->coordinateTransformation.updateTransform(logArea, physicalArea);
@@ -410,16 +420,18 @@ void CartesianCoordinatePlane::handleFixedDataCoordinateSpaceRelation(const QRec
         return;
     }
 
-    // note that the pinned size can be invalid even after setting it, if geometry wasn't valid.
-    // this is relevant for the cooperation between this method, setFixedDataCoordinateSpaceRelation(),
-    // and handleFixedDataCoordinateSpaceRelation().
+    // note that the pinned size can be invalid even after setting it, if
+    // geometry wasn't valid. this is relevant for the cooperation between this
+    // method, setFixedDataCoordinateSpaceRelation(), and
+    // handleFixedDataCoordinateSpaceRelation().
     if (!d->fixedDataCoordinateSpaceRelationPinnedSize.isValid()) {
         d->fixedDataCoordinateSpaceRelationPinnedSize = geometry.size();
         d->fixedDataCoordinateSpaceRelationPinnedZoom = ZoomParameters(zoomFactorX(), zoomFactorY(), zoomCenter());
         return;
     }
 
-    // if the plane size was changed, change zoom factors to keep the diagram size constant
+    // if the plane size was changed, change zoom factors to keep the diagram
+    // size constant
     if (d->fixedDataCoordinateSpaceRelationPinnedSize != geometry.size()) {
         const qreal widthScaling = d->fixedDataCoordinateSpaceRelationPinnedSize.width() / geometry.width();
         const qreal heightScaling = d->fixedDataCoordinateSpaceRelationPinnedSize.height() / geometry.height();
@@ -429,7 +441,8 @@ void CartesianCoordinatePlane::handleFixedDataCoordinateSpaceRelation(const QRec
 
         const QPointF newCenter = QPointF(d->fixedDataCoordinateSpaceRelationPinnedZoom.xCenter / widthScaling,
                                           d->fixedDataCoordinateSpaceRelationPinnedZoom.yCenter / heightScaling);
-        // Use these internal methods to avoid sending the propertiesChanged signal more than once
+        // Use these internal methods to avoid sending the propertiesChanged
+        // signal more than once
         bool changed = false;
         if (doneSetZoomFactorY(newZoomY))
             changed = true;
@@ -570,7 +583,7 @@ void CartesianCoordinatePlane::setAxesCalcModes(AxesCalcMode mode)
         d->coordinateTransformation.axesCalcModeX = mode;
         emit propertiesChanged();
         emit viewportCoordinateSystemChanged();
-        Q_FOREACH (AbstractDiagram *diag, diagrams())
+        for (AbstractDiagram *diag : diagrams())
             slotLayoutChanged(diag);
     }
 }
@@ -755,11 +768,7 @@ void CartesianCoordinatePlane::setAutoAdjustGridToZoom(bool autoAdjust)
     }
 }
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-const
-#endif
-    bool
-    CartesianCoordinatePlane::autoAdjustGridToZoom() const
+bool CartesianCoordinatePlane::autoAdjustGridToZoom() const
 {
     return d->autoAdjustGridToZoom;
 }
@@ -767,21 +776,20 @@ const
 AbstractCoordinatePlane *CartesianCoordinatePlane::sharedAxisMasterPlane(QPainter *painter)
 {
     CartesianCoordinatePlane *plane = this;
-    AbstractCartesianDiagram *diag = dynamic_cast<AbstractCartesianDiagram *>(plane->diagram());
-    const CartesianAxis *sharedAxis = 0;
-    if (diag != 0) {
+    auto *diag = dynamic_cast<AbstractCartesianDiagram *>(plane->diagram());
+    const CartesianAxis *sharedAxis = nullptr;
+    if (diag != nullptr) {
         const CartesianAxisList axes = diag->axes();
-        KDAB_FOREACH(const CartesianAxis *a, axes)
-        {
-            CartesianCoordinatePlane *p = const_cast<CartesianCoordinatePlane *>(dynamic_cast<const CartesianCoordinatePlane *>(a->coordinatePlane()));
-            if (p != 0 && p != this) {
+        for (const CartesianAxis *a : qAsConst(axes)) {
+            auto *p = const_cast<CartesianCoordinatePlane *>(dynamic_cast<const CartesianCoordinatePlane *>(a->coordinatePlane()));
+            if (p != nullptr && p != this) {
                 plane = p;
                 sharedAxis = a;
             }
         }
     }
 
-    if (plane == this || painter == 0)
+    if (plane == this || painter == nullptr)
         return plane;
 
     const QPointF zero = QPointF(0, 0);
@@ -855,8 +863,8 @@ void CartesianCoordinatePlane::setGeometry(const QRect &rectangle)
     d->geometry = rectangle;
     if (d->isometricScaling) {
         const int hfw = heightForWidth(rectangle.width());
-        // same scaling for x and y means a fixed aspect ratio, which is enforced here
-        // always shrink the too large dimension
+        // same scaling for x and y means a fixed aspect ratio, which is
+        // enforced here always shrink the too large dimension
         if (hfw < rectangle.height()) {
             d->geometry.setHeight(hfw);
         } else {
@@ -866,7 +874,7 @@ void CartesianCoordinatePlane::setGeometry(const QRect &rectangle)
 
     AbstractCoordinatePlane::setGeometry(d->geometry);
 
-    Q_FOREACH (AbstractDiagram *diagram, diagrams()) {
+    for (AbstractDiagram *diagram : diagrams()) {
         diagram->resize(d->geometry.size());
     }
 }
@@ -884,9 +892,11 @@ bool CartesianCoordinatePlane::hasHeightForWidth() const
 
 int CartesianCoordinatePlane::heightForWidth(int w) const
 {
-    // ### using anything for dataRect that depends on geometry will close a feedback loop which
-    //     prevents the geometry from stabilizing. specifically, visibleDataRange() depends on
-    //     drawingArea(), and no good will come out of using it here.
+    // ### using anything for dataRect that depends on geometry will close a
+    // feedback loop which
+    //     prevents the geometry from stabilizing. specifically,
+    //     visibleDataRange() depends on drawingArea(), and no good will come
+    //     out of using it here.
     QRectF dataRect = logicalArea();
     return qRound(qreal(w) * qAbs(qreal(dataRect.height()) / qreal(dataRect.width())));
 }
@@ -895,7 +905,8 @@ QSize CartesianCoordinatePlane::sizeHint() const
 {
     QSize sh = AbstractCoordinatePlane::sizeHint();
     if (d->isometricScaling) {
-        // not sure why the next line doesn't cause an infinite loop, but it improves initial size allocation
+        // not sure why the next line doesn't cause an infinite loop, but it
+        // improves initial size allocation
         sh = d->geometry.size();
         sh.setHeight(heightForWidth(sh.width()));
     }

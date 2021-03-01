@@ -41,7 +41,7 @@ class ChartWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ChartWidget(QWidget *parent = 0)
+    explicit ChartWidget(QWidget *parent = nullptr)
         : QWidget(parent)
     {
         m_model.insertRows(0, 2, QModelIndex());
@@ -53,15 +53,15 @@ public:
             }
         }
 
-        BarDiagram *diagram = new BarDiagram;
+        auto *diagram = new BarDiagram;
         diagram->setModel(&m_model);
 
         /*
          * AXIS
          */
 
-        CartesianAxis *xAxis = new CartesianAxis(diagram);
-        CartesianAxis *yAxis = new CartesianAxis(diagram);
+        auto *xAxis = new CartesianAxis(diagram);
+        auto *yAxis = new CartesianAxis(diagram);
         xAxis->setPosition(KDChart::CartesianAxis::Bottom);
         yAxis->setPosition(KDChart::CartesianAxis::Left);
         diagram->addAxis(xAxis);
@@ -113,7 +113,7 @@ public:
 
         // m_chart.coordinatePlane() returns an abstract plane.
         // We need to cast in order to be able set our own boundaries.
-        CartesianCoordinatePlane *plane1 = static_cast<CartesianCoordinatePlane *>(m_chart.coordinatePlane());
+        auto *plane1 = static_cast<CartesianCoordinatePlane *>(m_chart.coordinatePlane());
 
         plane1->setVerticalRange(QPair<qreal, qreal>(0.0, 100.0));
         plane1->replaceDiagram(diagram);
@@ -123,7 +123,7 @@ public:
          */
 
         // Add at one Header and set it up
-        HeaderFooter *header = new HeaderFooter(&m_chart);
+        auto *header = new HeaderFooter(&m_chart);
         header->setPosition(Position::North);
         header->setText("A Bar Chart with Adjusted Vertical Range");
         m_chart.addHeaderFooter(header);
@@ -180,7 +180,7 @@ public:
         // Assign your grid to the plane
         plane1->setGridAttributes(Qt::Vertical, ga);
 
-        QVBoxLayout *l = new QVBoxLayout(this);
+        auto *l = new QVBoxLayout(this);
         m_chart.setGlobalLeadingTop(5);
         l->addWidget(&m_chart);
         setLayout(l);

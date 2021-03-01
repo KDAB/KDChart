@@ -31,11 +31,9 @@ class StackedLineDiagram : public LineDiagram::LineDiagramType
 {
 public:
     explicit StackedLineDiagram(LineDiagram *);
-    ~StackedLineDiagram() override
-    {
-    }
-    LineDiagram::LineType type() const override;
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    ~StackedLineDiagram() override = default;
+    [[nodiscard]] LineDiagram::LineType type() const override;
+    [[nodiscard]] const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paint(PaintContext *ctx) override;
 
 private:

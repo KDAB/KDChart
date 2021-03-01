@@ -31,13 +31,13 @@ class ColorSlider : public QAbstractSlider
     Q_PROPERTY(QColor startColor READ startColor WRITE setStartColor NOTIFY startColorChanged)
     Q_PROPERTY(QColor endColor READ endColor WRITE setStartColor NOTIFY endColorChanged)
 public:
-    explicit ColorSlider(QWidget *parent = 0);
+    explicit ColorSlider(QWidget *parent = nullptr);
     ~ColorSlider() override;
-    QColor startColor() const;
+    [[nodiscard]] QColor startColor() const;
     void setStartColor(const QColor &color);
-    QColor endColor() const;
+    [[nodiscard]] QColor endColor() const;
     void setEndColor(const QColor &color);
-    QSize sizeHint() const override;
+    [[nodiscard]] QSize sizeHint() const override;
 
 protected:
     void paintEvent(QPaintEvent *event) override;

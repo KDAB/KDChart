@@ -24,13 +24,9 @@
 #define PLOTTERDIAGRAMCOMPRESSOR_H
 
 #include <QtCore/QAbstractItemModel>
-#include <QtCore/QObject>
-#if QT_VERSION < 0x050000
-#include <QtCore/QWeakPointer>
-#else
-#include <QtCore/QPointer>
-#endif
 #include <QtCore/QDateTime>
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QVector>
 
 #include <cmath>
@@ -83,7 +79,7 @@ public:
     public:
         Iterator(int dataSet, PlotterDiagramCompressor *parent);
         ~Iterator();
-        bool isValid() const;
+        [[nodiscard]] bool isValid() const;
         Iterator &operator++();
         Iterator operator++(int);
         Iterator &operator+=(int value);
@@ -100,11 +96,7 @@ public:
 
     private:
         void handleSlopeForward(const DataPoint &dp);
-#if QT_VERSION < 0x050000
-        QWeakPointer<PlotterDiagramCompressor> m_parent;
-#else
         QPointer<PlotterDiagramCompressor> m_parent;
-#endif
         QVector<DataPoint> m_buffer;
         int m_index;
         int m_dataset;
@@ -113,7 +105,7 @@ public:
         QDateTime m_timeOfCreation;
     };
 
-    typedef QVector<DataPoint> DataPointVector;
+    using DataPointVector = QVector<DataPoint>;
     class CachePosition
     {
     public:
@@ -135,22 +127,22 @@ public:
             return first == rhs.first && second == rhs.second;
         }
     };
-    explicit PlotterDiagramCompressor(QObject *parent = 0);
+    explicit PlotterDiagramCompressor(QObject *parent = nullptr);
     ~PlotterDiagramCompressor() override;
     Iterator begin(int dataSet);
     Iterator end(int dataSet);
     void setMergeRadius(qreal radius);
     void setMergeRadiusPercentage(qreal radius);
     void setModel(QAbstractItemModel *model);
-    QAbstractItemModel *model() const;
-    DataPoint data(const CachePosition &pos) const;
-    int rowCount() const;
-    int datasetCount() const;
+    [[nodiscard]] QAbstractItemModel *model() const;
+    [[nodiscard]] DataPoint data(const CachePosition &pos) const;
+    [[nodiscard]] int rowCount() const;
+    [[nodiscard]] int datasetCount() const;
     void setCompressionModel(CompressionMode value);
     void setMaxSlopeChange(qreal value);
-    qreal maxSlopeChange() const;
+    [[nodiscard]] qreal maxSlopeChange() const;
     void cleanCache();
-    QPair<QPointF, QPointF> dataBoundaries() const;
+    [[nodiscard]] QPair<QPointF, QPointF> dataBoundaries() const;
     void setForcedDataBoundaries(const QPair<qreal, qreal> &bounds, Qt::Orientation direction);
 Q_SIGNALS:
     void boundariesChanged();

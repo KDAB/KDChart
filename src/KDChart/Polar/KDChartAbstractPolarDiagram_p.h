@@ -87,8 +87,8 @@ inline AbstractPolarDiagram::AbstractPolarDiagram(
     : AbstractDiagram( p, parent, plane ) { init(); }
 inline AbstractPolarDiagram::Private * AbstractPolarDiagram::d_func()
 { return static_cast<Private*>( AbstractDiagram::d_func() ); }
-inline const AbstractPolarDiagram::Private * AbstractPolarDiagram::d_func() const
-{ return static_cast<const Private*>( AbstractDiagram::d_func() ); }
+inline const AbstractPolarDiagram::Private * AbstractPolarDiagram::d_func()
+const { return static_cast<const Private*>( AbstractDiagram::d_func() ); }
 */
 
 }

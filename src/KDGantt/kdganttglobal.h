@@ -264,7 +264,8 @@ protected:                                                                      
 
 #if defined(Q_OS_WIN) && defined(QT_DLL)
 #if defined(_MSC_VER) && _MSC_VER >= 1300
-// workaround old msvc bug 309801 (link under support.microsoft.com no longer exists)
+// workaround old msvc bug 309801 (link under support.microsoft.com no longer
+// exists)
 #include <QPointF>
 #include <QVector>
 template class Q_DECL_IMPORT QVector<QPointF>;
@@ -300,24 +301,15 @@ public:
         , m_length(length)
     {
     }
-    inline Span(const Span &other)
-        : m_start(other.m_start)
-        , m_length(other.m_length)
-    {
-    }
+    inline Span(const Span &other) = default;
 
-    inline Span &operator=(const Span &other)
-    {
-        m_start = other.m_start;
-        m_length = other.m_length;
-        return *this;
-    }
+    inline Span &operator=(const Span &other) = default;
 
     inline void setStart(qreal start)
     {
         m_start = start;
     }
-    inline qreal start() const
+    [[nodiscard]] inline qreal start() const
     {
         return m_start;
     }
@@ -325,7 +317,7 @@ public:
     {
         m_length = m_start - end;
     }
-    inline qreal end() const
+    [[nodiscard]] inline qreal end() const
     {
         return m_start + m_length;
     }
@@ -334,21 +326,21 @@ public:
     {
         m_length = length;
     }
-    inline qreal length() const
+    [[nodiscard]] inline qreal length() const
     {
         return m_length;
     }
 
-    inline bool isValid() const
+    [[nodiscard]] inline bool isValid() const
     {
         return m_start >= 0.;
     }
 
-    inline bool equals(const Span &other) const
+    [[nodiscard]] inline bool equals(const Span &other) const
     {
         return m_start == other.m_start && m_length == other.m_length;
     }
-    inline Span expandedTo(const Span &other) const
+    [[nodiscard]] inline Span expandedTo(const Span &other) const
     {
         const qreal new_start = qMin(start(), other.start());
         return Span(new_start, (end() < other.end()) ? other.end() - new_start : end() - new_start);
@@ -381,7 +373,7 @@ public:
     {
         m_start = start;
     }
-    inline QDateTime start() const
+    [[nodiscard]] inline QDateTime start() const
     {
         return m_start;
     }
@@ -390,14 +382,14 @@ public:
     {
         m_end = end;
     }
-    inline QDateTime end() const
+    [[nodiscard]] inline QDateTime end() const
     {
         return m_end;
     }
 
-    bool isValid() const;
+    [[nodiscard]] bool isValid() const;
 
-    bool equals(const DateTimeSpan &other) const;
+    [[nodiscard]] bool equals(const DateTimeSpan &other) const;
 };
 
 inline bool operator==(const DateTimeSpan &s1, const DateTimeSpan &s2)

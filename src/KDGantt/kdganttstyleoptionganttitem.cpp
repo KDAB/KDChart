@@ -24,18 +24,18 @@
 
 using namespace KDGantt;
 
-/*!\class KDGantt::StyleOptionGanttItem kdganttstyleoptionganttitem.h KDGanttStyleOptionGanttItem
- * \ingroup KDGantt
- * \brief QStyleOption subclass for gantt items.
+/*!\class KDGantt::StyleOptionGanttItem kdganttstyleoptionganttitem.h
+ * KDGanttStyleOptionGanttItem \ingroup KDGantt \brief QStyleOption subclass for
+ * gantt items.
  */
 
-typedef QStyleOptionViewItem BASE;
+using BASE = QStyleOptionViewItem;
 
 /*! Constructor. Sets grid to 0. */
 StyleOptionGanttItem::StyleOptionGanttItem()
     : BASE()
     , displayPosition(Left)
-    , grid(0)
+    , grid(nullptr)
 {
     type = QStyleOption::SO_CustomBase + 89;
     version = 1;

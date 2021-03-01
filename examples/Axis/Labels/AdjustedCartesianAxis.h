@@ -33,20 +33,20 @@ class AdjustedCartesianAxis : public KDChart::CartesianAxis
     Q_DISABLE_COPY(AdjustedCartesianAxis)
 
 public:
-    explicit AdjustedCartesianAxis(KDChart::AbstractCartesianDiagram *diagram = 0);
+    explicit AdjustedCartesianAxis(KDChart::AbstractCartesianDiagram *diagram = nullptr);
 
-    const QString customizedLabel(const QString &label) const override;
+    [[nodiscard]] const QString customizedLabel(const QString &label) const override;
 
     void setBounds(qreal lower, qreal upper)
     {
         m_lowerBound = lower;
         m_upperBound = upper;
     }
-    qreal lowerBound() const
+    [[nodiscard]] qreal lowerBound() const
     {
         return m_lowerBound;
     }
-    qreal upperBound() const
+    [[nodiscard]] qreal upperBound() const
     {
         return m_upperBound;
     }

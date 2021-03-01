@@ -36,12 +36,13 @@ class KDGANTT_EXPORT ConstraintModel : public QObject
     Q_OBJECT
     KDGANTT_DECLARE_PRIVATE_DERIVED_PARENT(ConstraintModel, QObject *)
 public:
-    explicit ConstraintModel(QObject *parent = 0);
+    explicit ConstraintModel(QObject *parent = nullptr);
     ~ConstraintModel() override;
 
     /**
-     * Subclassing ConstraintModel and overriding addConstraint() and removeConstraint() can provide
-     * re-entrancy issues in the ConstraintModel<->ConstraintProxy interaction. Therefore it is recommed
+     * Subclassing ConstraintModel and overriding addConstraint() and
+     * removeConstraint() can provide re-entrancy issues in the
+     * ConstraintModel<->ConstraintProxy interaction. Therefore it is recommed
      * to better subclass GraphicsView and override addConstraint() there.
      */
     virtual void addConstraint(const Constraint &c);
@@ -50,12 +51,12 @@ public:
     void clear();
     void cleanup();
 
-    QList<Constraint> constraints() const;
+    [[nodiscard]] QList<Constraint> constraints() const;
 
-    bool hasConstraint(const Constraint &c) const;
-    inline bool hasConstraint(const QModelIndex &s, const QModelIndex &e) const;
+    [[nodiscard]] bool hasConstraint(const Constraint &c) const;
+    [[nodiscard]] inline bool hasConstraint(const QModelIndex &s, const QModelIndex &e) const;
 
-    QList<Constraint> constraintsForIndex(const QModelIndex &) const;
+    [[nodiscard]] QList<Constraint> constraintsForIndex(const QModelIndex &) const;
 
 Q_SIGNALS:
     void constraintAdded(const KDGantt::Constraint &);

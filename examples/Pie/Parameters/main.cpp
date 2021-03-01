@@ -36,7 +36,7 @@ class ChartWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ChartWidget(QWidget *parent = 0)
+    explicit ChartWidget(QWidget *parent = nullptr)
         : QWidget(parent)
     {
         m_model.insertRows(0, 1, QModelIndex());
@@ -47,20 +47,21 @@ public:
                 m_model.setData(index, QVariant(row + 1 * column + 1));
 
                 // this shows the index as static comments:
-                // m_model.setData(index, QString("row: %1,  column: %2").arg(row).arg(column), KDChart::CommentRole);
+                // m_model.setData(index, QString("row: %1,  column:
+                // %2").arg(row).arg(column), KDChart::CommentRole);
 
                 // this shows the index as volatile tooltips:
                 m_model.setData(index, QString("row: %1,  column: %2").arg(row).arg(column), Qt::ToolTipRole);
             }
         }
         // We need a Polar plane for the Pie type
-        PolarCoordinatePlane *polarPlane = new PolarCoordinatePlane(&m_chart);
+        auto *polarPlane = new PolarCoordinatePlane(&m_chart);
         // replace the default Cartesian plane with
         // our Polar plane
         m_chart.replaceCoordinatePlane(polarPlane);
 
         // assign the model to our pie diagram
-        PieDiagram *diagram = new PieDiagram;
+        auto *diagram = new PieDiagram;
         diagram->setModel(&m_model);
 
         // Configure some Pie specifical attributes
@@ -113,7 +114,7 @@ public:
         // Assign our diagram to the Chart
         m_chart.coordinatePlane()->replaceDiagram(diagram);
 
-        QVBoxLayout *l = new QVBoxLayout(this);
+        auto *l = new QVBoxLayout(this);
         l->addWidget(&m_chart);
         setLayout(l);
     }

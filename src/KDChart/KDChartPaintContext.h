@@ -44,13 +44,13 @@ public:
     PaintContext();
     ~PaintContext();
 
-    const QRectF rectangle() const;
+    [[nodiscard]] const QRectF rectangle() const;
     void setRectangle(const QRectF &rect);
 
-    QPainter *painter() const;
+    [[nodiscard]] QPainter *painter() const;
     void setPainter(QPainter *painter);
 
-    AbstractCoordinatePlane *coordinatePlane() const;
+    [[nodiscard]] AbstractCoordinatePlane *coordinatePlane() const;
     void setCoordinatePlane(AbstractCoordinatePlane *plane);
 
 private:
@@ -60,7 +60,7 @@ private:
     {
         return _d;
     }
-    const Private *d_func() const
+    [[nodiscard]] const Private *d_func() const
     {
         return _d;
     }

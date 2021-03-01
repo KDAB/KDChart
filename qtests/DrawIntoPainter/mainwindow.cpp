@@ -36,8 +36,8 @@
 #include <KDChartThreeDLineAttributes>
 
 #include <QDebug>
+#include <QElapsedTimer>
 #include <QPainter>
-#include <QTime>
 
 using namespace KDChart;
 
@@ -49,8 +49,8 @@ static void drawIntoPixmap(QPixmap &pix, const QSize &size, KDChart::Chart *char
     chart->paint(&painter, QRect(0, 0, size.width(), size.height()));
 }
 
-// When set, this example uses FrameWidget which uses Chart::paint to paint itself.
-// When not set, this example uses a Chart widget directly.
+// When set, this example uses FrameWidget which uses Chart::paint to paint
+// itself. When not set, this example uses a Chart widget directly.
 #define USE_FRAME_WIDGET 1
 
 MainWindow::MainWindow(QWidget *parent)
@@ -165,12 +165,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::updateData(QString data)
 {
-    QTime t;
+    QElapsedTimer t;
     t.start();
 
     m_model.loadFromCSV(data);
 
-    qDebug("Time for loading data %s: %d ms", data.toLatin1().constData(), t.elapsed());
+    qDebug("Time for loading data %s: %lld ms", data.toLatin1().constData(), t.elapsed());
     t.restart();
 
     QSize size1 = QSize(200, 200);
@@ -178,12 +178,12 @@ void MainWindow::updateData(QString data)
     drawIntoPixmap(m_pix1, size1, m_chart);
     drawIntoPixmap(m_pix2, size2, m_chart);
 
-    qDebug("Time for drawing pixmap %s: %d ms", data.toLatin1().constData(), t.elapsed());
+    qDebug("Time for drawing pixmap %s: %lld ms", data.toLatin1().constData(), t.elapsed());
     t.restart();
 
     m_lines->setModel(&m_model);
 
-    qDebug("Time for setting model %s: %d ms", data.toLatin1().constData(), t.elapsed());
+    qDebug("Time for setting model %s: %lld ms", data.toLatin1().constData(), t.elapsed());
     t.restart();
 
     m_smallChart1->setPixmap(m_pix1);
@@ -192,7 +192,7 @@ void MainWindow::updateData(QString data)
     m_smallChart1->show();
     m_smallChart2->show();
 
-    qDebug("Time for setting pixmap %s: %d ms", data.toLatin1().constData(), t.elapsed());
+    qDebug("Time for setting pixmap %s: %lld ms", data.toLatin1().constData(), t.elapsed());
     t.restart();
 }
 
@@ -218,7 +218,7 @@ void MainWindow::on_paintValuesCB_toggled(bool checked)
     // testing
     const int colCount = m_lines->model()->columnCount();
     for (int iColumn = 0; iColumn < colCount; ++iColumn) {
-        QBrush brush = qVariantValue<QBrush>(m_lines->model()->headerData(iColumn, Qt::Vertical, DatasetBrushRole));
+        QBrush brush = m_lines->model()->headerData(iColumn, Qt::Vertical, DatasetBrushRole).value<QBrush>();
         DataValueAttributes a = m_lines->dataValueAttributes(iColumn);
         if (!paintMarkersCB->isChecked()) {
             MarkerAttributes ma = a.markerAttributes();
@@ -297,11 +297,7 @@ void MainWindow::on_paintMarkersCB_toggled(bool checked)
     }
     }
     ma.setMarkerSize(QSize(markersWidthSB->value(), markersHeightSB->value()));
-
-    if (checked)
-        ma.setVisible(true);
-    else
-        ma.setVisible(false);
+    ma.setVisible(checked);
 
     a.setMarkerAttributes(ma);
     a.setVisible(true);
@@ -323,7 +319,7 @@ void MainWindow::on_paintMarkersCB_toggled(bool checked)
         }
         for (int j = 0; j < rowCount; ++j) {
             QModelIndex index = m_lines->model()->index(j, iColumn, QModelIndex());
-            QBrush brush = qVariantValue<QBrush>(m_lines->model()->headerData(iColumn, Qt::Vertical, DatasetBrushRole));
+            QBrush brush = m_lines->model()->headerData(iColumn, Qt::Vertical, DatasetBrushRole).value<QBrush>();
             qreal value = m_lines->model()->data(index).toReal();
             /* Set a specific color - marker for a specific value */
             if (value == 8) {

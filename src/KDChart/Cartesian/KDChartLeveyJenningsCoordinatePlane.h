@@ -46,19 +46,19 @@ class KDCHART_EXPORT LeveyJenningsCoordinatePlane : public CartesianCoordinatePl
     friend class LeveyJenningsGrid;
 
 public:
-    explicit LeveyJenningsCoordinatePlane(Chart *parent = 0);
+    explicit LeveyJenningsCoordinatePlane(Chart *parent = nullptr);
     ~LeveyJenningsCoordinatePlane() override;
 
     void addDiagram(AbstractDiagram *diagram) override;
 
-    LeveyJenningsGridAttributes gridAttributes() const;
+    [[nodiscard]] LeveyJenningsGridAttributes gridAttributes() const;
     void setGridAttributes(const LeveyJenningsGridAttributes &attr);
 
 protected:
-    const QPointF translateBack(const QPointF &screenPoint) const;
+    [[nodiscard]] const QPointF translateBack(const QPointF &screenPoint) const;
 
 private:
-    LeveyJenningsGrid *grid() const;
+    [[nodiscard]] LeveyJenningsGrid *grid() const;
 };
 
 }

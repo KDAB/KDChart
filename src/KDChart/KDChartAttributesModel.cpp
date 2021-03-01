@@ -72,7 +72,7 @@ AttributesModel::Private::Private()
 
 #define d d_func()
 
-AttributesModel::AttributesModel(QAbstractItemModel *model, QObject *parent /* = 0 */)
+AttributesModel::AttributesModel(QAbstractItemModel *model, QObject *parent /* = nullptr */)
     : AbstractProxyModel(parent)
     , _d(new Private)
 {
@@ -83,7 +83,7 @@ AttributesModel::AttributesModel(QAbstractItemModel *model, QObject *parent /* =
 AttributesModel::~AttributesModel()
 {
     delete _d;
-    _d = 0;
+    _d = nullptr;
 }
 
 void AttributesModel::initFrom(const AttributesModel *other)
@@ -262,9 +262,10 @@ QVariant AttributesModel::defaultHeaderData(int section, Qt::Orientation orienta
     case KDChart::DatasetBrushRole:
         return d->palette.getBrush(dataset);
     case KDChart::DatasetPenRole:
-        // if no per model override was set, use the (possibly default) color set for the brush
+        // if no per model override was set, use the (possibly default)
+        // color set for the brush
         if (!modelData(role).isValid()) {
-            QBrush brush = headerData(section, orientation, DatasetBrushRole).value<QBrush>();
+            auto brush = headerData(section, orientation, DatasetBrushRole).value<QBrush>();
             return QPen(brush.color());
         }
     default:
@@ -332,7 +333,8 @@ QVariant AttributesModel::data(const QModelIndex &index, int role) const
             }
         }
     }
-    // check if there is something set for the column (dataset), or at global level
+    // check if there is something set for the column (dataset), or at global
+    // level
     if (index.isValid()) {
         return data(index.column(), role); // includes automatic fallback to default
     }
@@ -487,7 +489,7 @@ int AttributesModel::columnCount(const QModelIndex &index) const
 
 void AttributesModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
-    if (this->sourceModel() != 0) {
+    if (this->sourceModel() != nullptr) {
         disconnect(this->sourceModel(),
                    SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
                    this,
@@ -516,7 +518,7 @@ void AttributesModel::setSourceModel(QAbstractItemModel *sourceModel)
         disconnect(this->sourceModel(), SIGNAL(layoutChanged()), this, SIGNAL(layoutChanged()));
     }
     QAbstractProxyModel::setSourceModel(sourceModel);
-    if (this->sourceModel() != NULL) {
+    if (this->sourceModel() != nullptr) {
         connect(this->sourceModel(),
                 SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
                 this,

@@ -44,7 +44,7 @@ public:
     void createConstraintItem(const Constraint &c);
     void deleteConstraintItem(ConstraintGraphicsItem *citem);
     void deleteConstraintItem(const Constraint &c);
-    ConstraintGraphicsItem *findConstraintItem(const Constraint &c) const;
+    [[nodiscard]] ConstraintGraphicsItem *findConstraintItem(const Constraint &c) const;
 
     void recursiveUpdateMultiItem(const Span &span, const QModelIndex &idx);
 

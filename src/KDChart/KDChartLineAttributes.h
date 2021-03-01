@@ -35,21 +35,23 @@ class KDCHART_EXPORT LineAttributes
 {
 public:
     /**
-      \brief MissingValuesPolicy specifies how a missing value will be shown in a line diagram.
+      \brief MissingValuesPolicy specifies how a missing value will be shown in
+      a line diagram.
 
-      Missing value is assumed if the data cell contains a QVariant that can not be
-      interpreted as a qreal, or if the data cell is hidden while its dataset is not hidden.
+      Missing value is assumed if the data cell contains a QVariant that can not
+      be interpreted as a qreal, or if the data cell is hidden while its dataset
+      is not hidden.
 
-      \li \c MissingValuesAreBridged the default: No markers will be shown for missing values
-      but the line will be bridged if there is at least one valid cell before and after
-      the missing value(s), otherwise the segment will be hidden.
-      \li \c MissingValuesHideSegments Line segments starting with a missing value will
-      not be shown, and no markers will be shown for missing values, so this will look like
-      a piece of the line is missing.
-      \li \c MissingValuesShownAsZero Missing value(s) will be treated like normal zero values,
-      and markers will shown for them too, so there will be no visible difference between a
-      zero value and a missing value.
-      \li \c MissingValuesPolicyIgnored (internal value, do not use)
+      \li \c MissingValuesAreBridged the default: No markers will be shown for
+      missing values but the line will be bridged if there is at least one valid
+      cell before and after the missing value(s), otherwise the segment will be
+      hidden. \li \c MissingValuesHideSegments Line segments starting with a
+      missing value will not be shown, and no markers will be shown for missing
+      values, so this will look like a piece of the line is missing. \li \c
+      MissingValuesShownAsZero Missing value(s) will be treated like normal zero
+      values, and markers will shown for them too, so there will be no visible
+      difference between a zero value and a missing value. \li \c
+      MissingValuesPolicyIgnored (internal value, do not use)
 
       */
     enum MissingValuesPolicy { MissingValuesAreBridged, MissingValuesHideSegments, MissingValuesShownAsZero, MissingValuesPolicyIgnored };
@@ -62,23 +64,23 @@ public:
 
     /* line chart and area chart - all types */
     void setMissingValuesPolicy(MissingValuesPolicy policy);
-    MissingValuesPolicy missingValuesPolicy() const;
+    [[nodiscard]] MissingValuesPolicy missingValuesPolicy() const;
 
     /* area chart - all types */
     /**
-     * Sets the lower or upper (depending on the displayed value being positive or
-     * negative, resp.) bounding line (i.e., the dataset with the line data). The area
-     * is then drawn between this line and the line of the specified dataset.
-     * Pass -1 to draw the area between this line and the zero line.
+     * Sets the lower or upper (depending on the displayed value being positive
+     * or negative, resp.) bounding line (i.e., the dataset with the line data).
+     * The area is then drawn between this line and the line of the specified
+     * dataset. Pass -1 to draw the area between this line and the zero line.
      */
     void setAreaBoundingDataset(int dataset);
-    int areaBoundingDataset() const;
+    [[nodiscard]] int areaBoundingDataset() const;
 
     void setDisplayArea(bool display);
-    bool displayArea() const;
+    [[nodiscard]] bool displayArea() const;
     /*allows viewing the covered areas*/
     void setTransparency(uint alpha);
-    uint transparency() const;
+    [[nodiscard]] uint transparency() const;
 
     bool operator==(const LineAttributes &) const;
     inline bool operator!=(const LineAttributes &other) const

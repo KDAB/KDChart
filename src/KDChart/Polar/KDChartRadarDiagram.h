@@ -44,7 +44,7 @@ class KDCHART_EXPORT RadarDiagram : public AbstractPolarDiagram
     KDCHART_DECLARE_DERIVED_DIAGRAM(RadarDiagram, RadarCoordinatePlane)
 
 public:
-    explicit RadarDiagram(QWidget *parent = 0, RadarCoordinatePlane *plane = 0);
+    explicit RadarDiagram(QWidget *parent = nullptr, RadarCoordinatePlane *plane = nullptr);
     ~RadarDiagram() override;
 
     virtual void paint(PaintContext *paintContext, bool calculateListAndReturnScale, qreal &newZoomX, qreal &newZoomY);
@@ -52,11 +52,11 @@ public:
     void resize(const QSizeF &area) override;
 
     /** \reimpl */
-    qreal valueTotals() const override;
+    [[nodiscard]] qreal valueTotals() const override;
     /** \reimpl */
-    qreal numberOfValuesPerDataset() const override;
+    [[nodiscard]] qreal numberOfValuesPerDataset() const override;
     /** \reimpl */
-    qreal numberOfGridRings() const override;
+    [[nodiscard]] qreal numberOfGridRings() const override;
 
     /**
      * if val is true the diagram will mirror the diagram datapoints
@@ -64,14 +64,14 @@ public:
     void setReverseData(bool val);
     bool reverseData();
 
-    virtual RadarDiagram *clone() const;
+    [[nodiscard]] virtual RadarDiagram *clone() const;
 
     /**
      * Close each of the data series by connecting the last point to its
      * respective start point
      */
     void setCloseDatasets(bool closeDatasets);
-    bool closeDatasets() const;
+    [[nodiscard]] bool closeDatasets() const;
 
     /**
      * Fill the areas of the radar chart with there respective color defined
@@ -80,12 +80,12 @@ public:
      * not be filled with any color. If set to 1.0 then the areas will be
      * solid filled and are not transparent.
      */
-    qreal fillAlpha() const;
+    [[nodiscard]] qreal fillAlpha() const;
     void setFillAlpha(qreal alphaF);
 
 protected:
     /** \reimpl */
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    [[nodiscard]] const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paintEvent(QPaintEvent *) override;
     void resizeEvent(QResizeEvent *) override;
     void paint(PaintContext *paintContext) override;

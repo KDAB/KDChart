@@ -41,7 +41,7 @@ class KDCHART_EXPORT AbstractPieDiagram : public AbstractPolarDiagram
     KDCHART_DECLARE_DERIVED_DIAGRAM(AbstractPieDiagram, PolarCoordinatePlane)
 
 public:
-    explicit AbstractPieDiagram(QWidget *parent = 0, PolarCoordinatePlane *plane = 0);
+    explicit AbstractPieDiagram(QWidget *parent = nullptr, PolarCoordinatePlane *plane = nullptr);
     ~AbstractPieDiagram() override;
 
     /**
@@ -51,40 +51,43 @@ public:
 
     /** Set the granularity: the smaller the granularity the more your diagram
      * segments will show facettes instead of rounded segments.
-     * \param value the granularity value between 0.05 (one twentieth of a degree)
-     * and 36.0 (one tenth of a full circle), other values will be interpreted as 1.0.
+     * \param value the granularity value between 0.05 (one twentieth of a
+     * degree) and 36.0 (one tenth of a full circle), other values will be
+     * interpreted as 1.0.
      */
     void setGranularity(qreal value);
 
     /** @return the granularity. */
-    qreal granularity() const;
+    [[nodiscard]] qreal granularity() const;
 
-    /** \deprecated Use PolarCoordinatePlane::setStartPosition( qreal degrees ) instead. */
+    /** \deprecated Use PolarCoordinatePlane::setStartPosition( qreal degrees )
+     * instead. */
     void setStartPosition(int degrees);
     /** \deprecated Use qreal PolarCoordinatePlane::startPosition instead. */
-    int startPosition() const;
+    [[nodiscard]] int startPosition() const;
 
-    /** If this property is set, and if a pie's TextAttributes have no rotation set, its labels will
-     * automatically be rotated according to the pie's angle.
+    /** If this property is set, and if a pie's TextAttributes have no rotation
+     * set, its labels will automatically be rotated according to the pie's
+     * angle.
      */
     void setAutoRotateLabels(bool autoRotate);
     /** \see setAutoRotateLabels( bool autoRotate )
      */
-    bool autoRotateLabels() const;
+    [[nodiscard]] bool autoRotateLabels() const;
 
     void setPieAttributes(const PieAttributes &a);
     void setPieAttributes(int column, const PieAttributes &a);
     void setPieAttributes(const QModelIndex &index, const PieAttributes &a);
-    PieAttributes pieAttributes() const;
-    PieAttributes pieAttributes(int column) const;
-    PieAttributes pieAttributes(const QModelIndex &index) const;
+    [[nodiscard]] PieAttributes pieAttributes() const;
+    [[nodiscard]] PieAttributes pieAttributes(int column) const;
+    [[nodiscard]] PieAttributes pieAttributes(const QModelIndex &index) const;
 
     void setThreeDPieAttributes(const ThreeDPieAttributes &a);
     void setThreeDPieAttributes(int column, const ThreeDPieAttributes &a);
     void setThreeDPieAttributes(const QModelIndex &index, const ThreeDPieAttributes &a);
-    ThreeDPieAttributes threeDPieAttributes() const;
-    ThreeDPieAttributes threeDPieAttributes(int column) const;
-    ThreeDPieAttributes threeDPieAttributes(const QModelIndex &index) const;
+    [[nodiscard]] ThreeDPieAttributes threeDPieAttributes() const;
+    [[nodiscard]] ThreeDPieAttributes threeDPieAttributes(int column) const;
+    [[nodiscard]] ThreeDPieAttributes threeDPieAttributes(const QModelIndex &index) const;
 }; // End of class KDChartAbstractPieDiagram
 
 }

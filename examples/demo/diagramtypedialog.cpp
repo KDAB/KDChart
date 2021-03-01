@@ -96,15 +96,15 @@ void DiagramTypeDialog::Private::createPlanes()
     m_planes[DiagramTypeDialog::Bar] = m_chart->coordinatePlane();
     m_planes[DiagramTypeDialog::LyingBar] = m_chart->coordinatePlane();
 
-    CartesianCoordinatePlane *linePlane = new CartesianCoordinatePlane;
+    auto *linePlane = new CartesianCoordinatePlane;
     linePlane->addDiagram(new LineDiagram);
     m_planes[DiagramTypeDialog::Line] = linePlane;
 
-    CartesianCoordinatePlane *plotterPlane = new CartesianCoordinatePlane;
+    auto *plotterPlane = new CartesianCoordinatePlane;
     plotterPlane->addDiagram(new KDChart::Plotter);
     m_planes[DiagramTypeDialog::Plotter] = plotterPlane;
 
-    PolarCoordinatePlane *piePlane = new PolarCoordinatePlane;
+    auto *piePlane = new PolarCoordinatePlane;
     piePlane->addDiagram(new PieDiagram);
     m_planes[DiagramTypeDialog::Pie] = piePlane;
 }
@@ -118,10 +118,10 @@ void DiagramTypeDialog::Private::typeChanged(int index)
     if (m_planes.contains(type)) {
         ui.subtypeSelector->setEnabled(true);
         if (type == DiagramTypeDialog::LyingBar) {
-            BarDiagram *diag = qobject_cast<BarDiagram *>(m_planes[type]->diagram());
+            auto *diag = qobject_cast<BarDiagram *>(m_planes[type]->diagram());
             diag->setOrientation(Qt::Horizontal);
         } else if (type == DiagramTypeDialog::Bar) {
-            BarDiagram *diag = qobject_cast<BarDiagram *>(m_planes[type]->diagram());
+            auto *diag = qobject_cast<BarDiagram *>(m_planes[type]->diagram());
             diag->setOrientation(Qt::Vertical);
         } else if (type == DiagramTypeDialog::Pie)
             ui.subtypeSelector->setEnabled(false);
@@ -143,14 +143,14 @@ void DiagramTypeDialog::Private::subtypeChanged(int index)
     switch (type) {
     case (DiagramTypeDialog::Bar):
     case (DiagramTypeDialog::LyingBar): {
-        BarDiagram *bar = qobject_cast<BarDiagram *>(m_planes[type]->diagram());
+        auto *bar = qobject_cast<BarDiagram *>(m_planes[type]->diagram());
         Q_ASSERT(bar);
         bar->setType(static_cast<BarDiagram::BarType>(index));
         m_typemap[type] = static_cast<DiagramTypeDialog::Subtype>(index);
         break;
     }
     case (DiagramTypeDialog::Line): {
-        LineDiagram *line = qobject_cast<LineDiagram *>(m_planes[type]->diagram());
+        auto *line = qobject_cast<LineDiagram *>(m_planes[type]->diagram());
         Q_ASSERT(line);
         line->setType(static_cast<LineDiagram::LineType>(index));
         m_typemap[type] = static_cast<DiagramTypeDialog::Subtype>(index);

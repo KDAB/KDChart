@@ -128,14 +128,10 @@ public:
             return 1;
         case QPaintDevice::PdmPhysicalDpiY:
             return 1;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
         case QPaintDevice::PdmDevicePixelRatio:
             return 1;
-#endif
-#if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
         case QPaintDevice::PdmDevicePixelRatioScaled:
             return 1;
-#endif
         }
         return 1;
     }

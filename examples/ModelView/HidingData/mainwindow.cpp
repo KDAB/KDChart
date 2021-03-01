@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     m_chart = new Chart();
     m_chart->setGlobalLeading(20, 20, 20, 20);
     chartLayout->addWidget(m_chart);
@@ -58,8 +58,8 @@ MainWindow::MainWindow(QWidget *parent)
     // Register the data model at the diagram
     m_lines->setModel(m_model);
     // Add axes to the diagram
-    CartesianAxis *xAxis = new CartesianAxis(m_lines);
-    CartesianAxis *yAxis = new CartesianAxis(m_lines);
+    auto *xAxis = new CartesianAxis(m_lines);
+    auto *yAxis = new CartesianAxis(m_lines);
     xAxis->setPosition(KDChart::CartesianAxis::Bottom);
     yAxis->setPosition(KDChart::CartesianAxis::Left);
     m_lines->addAxis(xAxis);
@@ -74,7 +74,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_chart->coordinatePlane()->replaceDiagram(m_lines);
 
     // Add a legend
-    Legend *legend = new Legend(m_lines, m_chart);
+    auto *legend = new Legend(m_lines, m_chart);
     legend->setPosition(Position::South);
     legend->setAlignment(Qt::AlignCenter);
     legend->setShowLines(true);
@@ -128,7 +128,7 @@ void MainWindow::openFile(const QString &path)
                 if (!line.isEmpty()) {
                     m_model->insertRows(row, 1, QModelIndex());
 
-                    QStringList pieces = line.split(',', QString::SkipEmptyParts);
+                    QStringList pieces = line.split(',', Qt::SkipEmptyParts);
                     m_model->setData(m_model->index(row, 0, QModelIndex()), pieces.value(0));
                     m_model->setData(m_model->index(row, 1, QModelIndex()), pieces.value(1));
                     m_model->setData(m_model->index(row, 2, QModelIndex()), pieces.value(2));

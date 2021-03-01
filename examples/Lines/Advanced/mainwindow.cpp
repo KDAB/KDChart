@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_curColumn = -1;
     m_curOpacity = 0;
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     m_chart = new Chart();
     chartLayout->addWidget(m_chart);
 
@@ -51,8 +51,8 @@ MainWindow::MainWindow(QWidget *parent)
     m_lines = new LineDiagram(this);
     m_lines->setModel(&m_model);
 
-    CartesianAxis *xAxis = new CartesianAxis(m_lines);
-    CartesianAxis *yAxis = new CartesianAxis(m_lines);
+    auto *xAxis = new CartesianAxis(m_lines);
+    auto *yAxis = new CartesianAxis(m_lines);
     xAxis->setPosition(KDChart::CartesianAxis::Bottom);
     yAxis->setPosition(KDChart::CartesianAxis::Left);
     m_lines->addAxis(xAxis);
@@ -61,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_chart->coordinatePlane()->replaceDiagram(m_lines);
     m_chart->setGlobalLeading(20, 20, 20, 20);
     // Instantiate the timer
-    QTimer *timer = new QTimer(this);
+    auto *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(slot_timerFired()));
     timer->start(30);
 
@@ -81,7 +81,7 @@ bool MainWindow::eventFilter(QObject *target, QEvent *event)
         if (event->type() == QEvent::MouseMove) {
             // When the mouse is over a data-point then fetch that data-point
             // that belongs to the mouse-position and print the data value.
-            QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+            auto *mouseEvent = static_cast<QMouseEvent *>(event);
             QPointF pos = mouseEvent->pos();
             QModelIndex index = m_lines->indexAt(pos.toPoint());
             if (index.isValid()) {

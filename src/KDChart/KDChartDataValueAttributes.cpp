@@ -80,7 +80,8 @@ DataValueAttributes::Private::Private()
     textAttributes.setMinimalFontSize(me);
     textAttributes.setRotation(-45);
 
-    // we set the Position to unknown: so the diagrams can take their own decisions
+    // we set the Position to unknown: so the diagrams can take their own
+    // decisions
     positiveRelPos.setReferencePosition(Position::Unknown);
     negativeRelPos.setReferencePosition(Position::Unknown);
 
@@ -117,7 +118,7 @@ DataValueAttributes &DataValueAttributes::operator=(const DataValueAttributes &r
 DataValueAttributes::~DataValueAttributes()
 {
     delete _d;
-    _d = 0;
+    _d = nullptr;
 }
 
 bool DataValueAttributes::operator==(const DataValueAttributes &r) const
@@ -140,7 +141,7 @@ const DataValueAttributes &DataValueAttributes::defaultAttributes()
 /*static*/
 const QVariant &DataValueAttributes::defaultAttributesAsVariant()
 {
-    static const QVariant theDefaultDataValueAttributesVariant = qVariantFromValue(defaultAttributes());
+    static const QVariant theDefaultDataValueAttributesVariant = QVariant::fromValue(defaultAttributes());
     return theDefaultDataValueAttributesVariant;
 }
 

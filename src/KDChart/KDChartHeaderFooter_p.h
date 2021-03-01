@@ -61,11 +61,8 @@ public:
     ~Private() override;
 
     Private(const Private &rhs)
-        : TextArea::Private(rhs)
-        , type(rhs.type)
-        , position(rhs.position)
-    {
-    }
+
+        = default;
 
     void updateTextDoc();
 

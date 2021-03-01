@@ -50,7 +50,7 @@ class KDCHART_EXPORT Palette : public QObject
 {
     Q_OBJECT
 public:
-    explicit Palette(QObject *parent = 0);
+    explicit Palette(QObject *parent = nullptr);
     Palette(const Palette &);
     Palette &operator=(const Palette &);
 
@@ -64,10 +64,10 @@ public:
 
     /** @return whether this represents a valid palette. For a palette to be
      * valid it needs to have at least one brush associated. */
-    bool isValid() const;
+    [[nodiscard]] bool isValid() const;
 
     /** @return the number of brushed in the palette.  */
-    int size() const;
+    [[nodiscard]] int size() const;
 
     /** Adds \a brush to the palette. If no \a position is specified, the
      * brush is appended.
@@ -78,7 +78,7 @@ public:
      * Query the palette for a brush at the specified position. If the
      * position exceeds the size of the palette, it wraps around.
      */
-    QBrush getBrush(int position) const;
+    [[nodiscard]] QBrush getBrush(int position) const;
 
     /** Remove the brush at position \a position, if there is one.  */
     void removeBrush(int position);

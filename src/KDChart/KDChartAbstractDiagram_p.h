@@ -80,9 +80,7 @@ public:
 class LabelPaintCache
 {
 public:
-    LabelPaintCache()
-    {
-    }
+    LabelPaintCache() = default;
     ~LabelPaintCache()
     {
         clear();
@@ -96,7 +94,7 @@ public:
     QVector<LabelPaintInfo> paintReplay;
 
 private:
-    LabelPaintCache(LabelPaintCache &other); // no copies
+    LabelPaintCache(LabelPaintCache &other) = delete; // no copies
 };
 
 /**
@@ -143,14 +141,14 @@ public:
                                        const LabelPaintCache &cache,
                                        bool paintMarkers,
                                        bool justCalculateRect = false,
-                                       QRectF *cumulatedBoundingRect = 0);
+                                       QRectF *cumulatedBoundingRect = nullptr);
 
     void paintDataValueText(QPainter *painter,
                             const QModelIndex &index,
                             const QPointF &pos,
                             qreal value,
                             bool justCalculateRect = false,
-                            QRectF *cumulatedBoundingRect = 0);
+                            QRectF *cumulatedBoundingRect = nullptr);
 
     void paintDataValueText(QPainter *painter,
                             const DataValueAttributes &attrs,
@@ -158,7 +156,7 @@ public:
                             bool valueIsPositive,
                             const QString &text,
                             bool justCalculateRect = false,
-                            QRectF *cumulatedBoundingRect = 0);
+                            QRectF *cumulatedBoundingRect = nullptr);
 
     inline int datasetCount() const
     {
@@ -190,8 +188,9 @@ public:
     void resetDatasetAttrs(int dataset, int role);
 
     /**
-     * Whether the diagram is transposed (X and Y swapped), which has the same effect as rotating
-     * the diagram 90° clockwise and inverting the (then vertical) X coordinate.
+     * Whether the diagram is transposed (X and Y swapped), which has the same
+     * effect as rotating the diagram 90° clockwise and inverting the (then
+     * vertical) X coordinate.
      */
     bool isTransposed() const;
 
@@ -255,8 +254,8 @@ public:
     QPointF nextValue;
 };
 
-typedef QVector<LineAttributesInfo> LineAttributesInfoList;
-typedef QVectorIterator<LineAttributesInfo> LineAttributesInfoListIterator;
+using LineAttributesInfoList = QVector<LineAttributesInfo>;
+using LineAttributesInfoListIterator = QVectorIterator<LineAttributesInfo>;
 
 }
 #endif /* KDCHARTDIAGRAM_P_H */

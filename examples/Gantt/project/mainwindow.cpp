@@ -60,9 +60,9 @@ class ItemTypeComboBox : public QComboBox
     Q_OBJECT
     Q_PROPERTY(KDGantt::ItemType itemType READ itemType WRITE setItemType)
 public:
-    explicit ItemTypeComboBox(QWidget *parent = 0);
+    explicit ItemTypeComboBox(QWidget *parent = nullptr);
 
-    KDGantt::ItemType itemType() const;
+    [[nodiscard]] KDGantt::ItemType itemType() const;
 public slots:
     void setItemType(KDGantt::ItemType typ);
 };
@@ -88,7 +88,7 @@ void ItemTypeComboBox::setItemType(KDGantt::ItemType typ)
 class MyItemDelegate : public KDGantt::ItemDelegate
 {
 public:
-    explicit MyItemDelegate(QObject *parent = 0);
+    explicit MyItemDelegate(QObject *parent = nullptr);
 
     /*reimp*/ QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &idx) const override;
     /*reimp*/ void setEditorData(QWidget *editor, const QModelIndex &index) const override;
@@ -134,7 +134,7 @@ void MyItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, co
 void MyItemDelegate::drawDisplay(QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect, const QString &text) const
 {
     // qDebug() << "MyItemDelegate::drawDisplay(" <<painter<<rect<<text<<")";
-    KDGantt::ItemType typ = static_cast<KDGantt::ItemType>(text.toInt());
+    auto typ = static_cast<KDGantt::ItemType>(text.toInt());
     QString str;
     switch (typ) {
     case KDGantt::TypeTask:
@@ -160,17 +160,16 @@ void MyItemDelegate::drawDisplay(QPainter *painter, const QStyleOptionViewItem &
 class DateTimeGrid : public KDGantt::DateTimeGrid
 {
 public:
-    DateTimeGrid(QObject *parent = 0)
+    DateTimeGrid(QObject *parent = nullptr)
     {
         setParent(parent);
         setFreeDays(QSet<Qt::DayOfWeek>());
         setFreeDaysBrush(QBrush(Qt::NoBrush));
     }
-    ~DateTimeGrid() override
-    {
-    }
+    ~DateTimeGrid() override = default;
 
-    // virtual void paintUserDefinedHeader(QPainter* painter, const QRectF& headerRect, const QRectF& exposedRect, qreal offset, const
+    // virtual void paintUserDefinedHeader(QPainter* painter, const QRectF&
+    // headerRect, const QRectF& exposedRect, qreal offset, const
     // KDGantt::DateTimeScaleFormatter* formatter, QWidget* widget = 0);
     void drawBackground(QPainter *painter, const QRectF &rect) override;
     void drawForeground(QPainter *painter, const QRectF &rect) override;
@@ -209,8 +208,9 @@ void DateTimeGrid::drawForeground(QPainter *painter, const QRectF &rect)
     font.setPixelSize(r.width() / 5);
 
     QFontMetrics fm(font);
-    int width = fm.width(text);
-    int height = fm.boundingRect(text).height();
+    const auto bounding = fm.boundingRect(text);
+    int width = bounding.width();
+    int height = bounding.height();
 
     painter->translate(r.center());
     painter->translate(-width / 2, height / 2);
@@ -220,13 +220,15 @@ void DateTimeGrid::drawForeground(QPainter *painter, const QRectF &rect)
     painter->restore();
 }
 /*
-void DateTimeGrid::paintUserDefinedHeader( QPainter* painter, const QRectF& headerRect, const QRectF& exposedRect, qreal offset, const
+void DateTimeGrid::paintUserDefinedHeader( QPainter* painter, const QRectF&
+headerRect, const QRectF& exposedRect, qreal offset, const
 KDGantt::DateTimeScaleFormatter* formatter, QWidget* widget)
 {
-    const QStyle* const style = widget ? widget->style() : QApplication::style();
+    const QStyle* const style = widget ? widget->style() :
+QApplication::style();
 
-    QDateTime dt = formatter->currentRangeBegin( mapToDateTime( offset + exposedRect.left() ) ).toUTC();
-    qreal x = mapFromDateTime( dt );
+    QDateTime dt = formatter->currentRangeBegin( mapToDateTime( offset +
+exposedRect.left() ) ).toUTC(); qreal x = mapFromDateTime( dt );
 
     while ( x < exposedRect.right() + offset ) {
         const QDateTime next = formatter->nextRangeBegin( dt );
@@ -234,7 +236,8 @@ KDGantt::DateTimeScaleFormatter* formatter, QWidget* widget)
 
         QStyleOptionHeader opt;
         if ( widget ) opt.init( widget );
-        opt.rect = QRectF( x - offset+1, headerRect.top(), qMax( 1., nextx-x-1 ), headerRect.height() ).toAlignedRect();
+        opt.rect = QRectF( x - offset+1, headerRect.top(), qMax( 1., nextx-x-1
+), headerRect.height() ).toAlignedRect();
         //opt.state = QStyle::State_Raised | QStyle::State_Enabled;
         opt.textAlignment = formatter->alignment();
         opt.text = formatter->text( dt );
@@ -265,16 +268,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_view->setGrid(new DateTimeGrid(this));
 
-    // QItemEditorCreatorBase *creator = new QItemEditorCreator<ItemTypeComboBox>("itemType");
-    // QItemEditorFactory* factory = new QItemEditorFactory;
-    // factory->registerEditor( QVariant( KDGantt::TypeTask ).type(), creator );
+    // QItemEditorCreatorBase *creator = new
+    // QItemEditorCreator<ItemTypeComboBox>("itemType"); QItemEditorFactory*
+    // factory = new QItemEditorFactory; factory->registerEditor( QVariant(
+    // KDGantt::TypeTask ).type(), creator );
     // m_view->itemDelegate()->setItemEditorFactory( factory );
 
     setCentralWidget(m_view);
 
     QMenuBar *mb = menuBar();
 
-    QMenu *fileMenu = new QMenu(tr("&File"));
+    auto *fileMenu = new QMenu(tr("&File"));
 
 #ifndef QT_NO_PRINTER
     fileMenu->addAction(tr("&Save as PDF..."), this, SLOT(slotFileSavePdf()));
@@ -286,7 +290,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     mb->addMenu(fileMenu);
 
-    QMenu *toolsMenu = new QMenu(tr("&Tools"));
+    auto *toolsMenu = new QMenu(tr("&Tools"));
 
     toolsMenu->addAction(tr("&New Item"), this, SLOT(slotToolsNewItem()));
     toolsMenu->addAction(tr("&Add Item"), this, SLOT(slotToolsAppendItem()));
@@ -307,8 +311,11 @@ MainWindow::MainWindow(QWidget *parent)
     slotToolsNewItem();
     slotToolsNewItem();
     for (int i = 0; i < 3; ++i) {
-        m_model->setData(m_model->index(i,2,QModelIndex()), qVariantFromValue(QDateTime::currentDateTime().addDays(i)), KDGantt::StartTimeRole);
-        m_model->setData(m_model->index(i,3,QModelIndex()), qVariantFromValue(QDateTime::currentDateTime().addDays(i+1)), KDGantt::EndTimeRole);
+        m_model->setData(m_model->index(i,2,QModelIndex()),
+    QVariant::fromValue(QDateTime::currentDateTime().addDays(i)),
+    KDGantt::StartTimeRole); m_model->setData(m_model->index(i,3,QModelIndex()),
+    QVariant::fromValue(QDateTime::currentDateTime().addDays(i+1)),
+    KDGantt::EndTimeRole);
     }
     m_view->setConstraintModel(new KDGantt::ConstraintModel(m_view));
     m_view->constraintModel()->addConstraint(KDGantt::Constraint(m_model->index(0,0,QModelIndex()),m_model->index(1,0,QModelIndex())));
@@ -321,18 +328,18 @@ SavePdfDialog::SavePdfDialog(QWidget *parent)
 {
     setModal(true);
     setWindowTitle(tr("Save as PDF"));
-    QVBoxLayout *l = new QVBoxLayout(this);
+    auto *l = new QVBoxLayout(this);
     setLayout(l);
 
-    QHBoxLayout *fileLayout = new QHBoxLayout(this);
+    auto *fileLayout = new QHBoxLayout(this);
     l->addLayout(fileLayout);
-    QLabel *fileLabel = new QLabel(tr("File:"), this);
+    auto *fileLabel = new QLabel(tr("File:"), this);
     fileLayout->addWidget(fileLabel);
     m_fileEdit = new QLineEdit(this);
     fileLabel->setBuddy(m_fileEdit);
     m_fileEdit->setText(QFileInfo(QDir::homePath(), "gantt.pdf").absoluteFilePath());
     fileLayout->addWidget(m_fileEdit);
-    QPushButton *m_fileButton = new QPushButton("...", this);
+    auto *m_fileButton = new QPushButton("...", this);
     connect(m_fileButton, SIGNAL(clicked()), this, SLOT(fileButtonClicked()));
     fileLayout->addWidget(m_fileButton);
 
@@ -344,7 +351,7 @@ SavePdfDialog::SavePdfDialog(QWidget *parent)
     m_columnLabels->setChecked(true);
     l->addWidget(m_columnLabels);
 
-    QDialogButtonBox *btnBox = new QDialogButtonBox(this);
+    auto *btnBox = new QDialogButtonBox(this);
     btnBox->setStandardButtons(QDialogButtonBox::Save | QDialogButtonBox::Cancel);
     connect(btnBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(btnBox, SIGNAL(rejected()), this, SLOT(reject()));
@@ -375,9 +382,9 @@ void MainWindow::slotFileSavePdf()
     const bool drawColumnLabels = dialog.m_columnLabels->isChecked();
 
     QPrinter printer(QPrinter::HighResolution);
-    printer.setOrientation(QPrinter::Landscape);
+    printer.setPageOrientation(QPageLayout::Landscape);
     printer.setColorMode(QPrinter::Color);
-    printer.setPageMargins(0.2, 0.2, 0.2, 0.2, QPrinter::Point);
+    printer.setPageMargins(QMarginsF{0.2, 0.2, 0.2, 0.2}, QPageLayout::Point);
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(file);
     m_view->print(&printer, drawRowLabels, drawColumnLabels);
@@ -388,7 +395,7 @@ void MainWindow::slotFilePrint()
 {
 #ifndef QT_NO_PRINTER
     QPrinter printer(QPrinter::HighResolution);
-    printer.setOrientation(QPrinter::Landscape);
+    printer.setPageOrientation(QPageLayout::Landscape);
     printer.setColorMode(QPrinter::Color);
     QPrintDialog dialog(&printer, this);
     if (dialog.exec() != QDialog::Accepted)
@@ -427,8 +434,9 @@ void MainWindow::slotToolsAppendItem()
 
 void MainWindow::slotCollapseAll()
 {
-    // don't use the treeview's collapseAll/expandAll methods but use the one provided by the
-    // view cause that one will take care to update everyt6hing as needed.
+    // don't use the treeview's collapseAll/expandAll methods but use the one
+    // provided by the view cause that one will take care to update everyt6hing
+    // as needed.
     // QTreeView* view = qobject_cast<QTreeView*>( m_view->leftView() );
     // view->collapseAll();
 
@@ -439,8 +447,9 @@ void MainWindow::slotCollapseAll()
 
 void MainWindow::slotExpandAll()
 {
-    // don't use the treeview's collapseAll/expandAll methods but use the one provided by the
-    // view cause that one will take care to update everyt6hing as needed.
+    // don't use the treeview's collapseAll/expandAll methods but use the one
+    // provided by the view cause that one will take care to update everyt6hing
+    // as needed.
     // QTreeView* view = qobject_cast<QTreeView*>( m_view->leftView() );
     // view->expandAll();
 

@@ -34,26 +34,26 @@ class KDGANTT_EXPORT ForwardingProxyModel : public QAbstractProxyModel
     Q_OBJECT
     Q_DISABLE_COPY(ForwardingProxyModel)
 public:
-    explicit ForwardingProxyModel(QObject *parent = 0);
+    explicit ForwardingProxyModel(QObject *parent = nullptr);
     ~ForwardingProxyModel() override;
 
-    /*reimp*/ QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override;
-    /*reimp*/ QModelIndex mapToSource(const QModelIndex &proxyIndex) const override;
+    /*reimp*/ [[nodiscard]] QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override;
+    /*reimp*/ [[nodiscard]] QModelIndex mapToSource(const QModelIndex &proxyIndex) const override;
 
     /*reimp*/ void setSourceModel(QAbstractItemModel *model) override;
 
-    /*reimp*/ QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
-    /*reimp*/ QModelIndex parent(const QModelIndex &idx) const override;
+    /*reimp*/ [[nodiscard]] QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
+    /*reimp*/ [[nodiscard]] QModelIndex parent(const QModelIndex &idx) const override;
 
-    /*reimp*/ int rowCount(const QModelIndex &idx = QModelIndex()) const override;
-    /*reimp*/ int columnCount(const QModelIndex &idx = QModelIndex()) const override;
+    /*reimp*/ [[nodiscard]] int rowCount(const QModelIndex &idx = QModelIndex()) const override;
+    /*reimp*/ [[nodiscard]] int columnCount(const QModelIndex &idx = QModelIndex()) const override;
 
     /*reimp*/ bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
-    /*reimp*/ QMimeData *mimeData(const QModelIndexList &indexes) const override;
+    /*reimp*/ [[nodiscard]] QMimeData *mimeData(const QModelIndexList &indexes) const override;
     /*reimp*/ bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
-    /*reimp*/ QStringList mimeTypes() const override;
-    /*reimp*/ Qt::DropActions supportedDropActions() const override;
+    /*reimp*/ [[nodiscard]] QStringList mimeTypes() const override;
+    /*reimp*/ [[nodiscard]] Qt::DropActions supportedDropActions() const override;
 
 protected Q_SLOTS:
     virtual void sourceModelAboutToBeReset();

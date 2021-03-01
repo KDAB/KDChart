@@ -38,9 +38,9 @@ int main(int argc, char **argv)
             if (argv[i] && *argv[i])
                 failed += r.run(argv[i]);
             else {
-                std::cerr << argv[0] << ": skipping empty group name" << std::endl;
+                std::cerr << argv[0] << ": skipping empty group name\n";
             }
     }
-    std::cout << failed << " tests failed." << std::endl;
+    std::cout << failed << " tests failed.\n";
     return failed;
 }

@@ -50,12 +50,12 @@ namespace
 class HeaderView : public QHeaderView
 {
 public:
-    explicit HeaderView(QWidget *parent = 0)
+    explicit HeaderView(QWidget *parent = nullptr)
         : QHeaderView(Qt::Horizontal, parent)
     {
     }
 
-    QSize sizeHint() const override
+    [[nodiscard]] QSize sizeHint() const override
     {
         QSize s = QHeaderView::sizeHint();
         s.rheight() *= 2;
@@ -71,9 +71,7 @@ KDGanttTreeView::KDGanttTreeView(QAbstractProxyModel *proxy, QWidget *parent)
     setHeader(new HeaderView);
 }
 
-KDGanttTreeView::~KDGanttTreeView()
-{
-}
+KDGanttTreeView::~KDGanttTreeView() = default;
 
 void KDGanttTreeView::expandAll(QModelIndex index)
 {
@@ -102,9 +100,9 @@ void KDGanttTreeView::collapseAll(QModelIndex index)
 View::Private::Private(View *v)
     : q(v)
     , splitter(v)
-    , rowController(0)
+    , rowController(nullptr)
     , gfxview(new GraphicsView(&splitter))
-    , model(0)
+    , model(nullptr)
 {
     // init();
 }
@@ -116,7 +114,7 @@ View::Private::~Private()
 
 void View::Private::init()
 {
-    KDGanttTreeView *tw = new KDGanttTreeView(&ganttProxyModel, &splitter);
+    auto *tw = new KDGanttTreeView(&ganttProxyModel, &splitter);
     tw->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     tw->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 
@@ -127,8 +125,8 @@ void View::Private::init()
 
     tw->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
-    QVBoxLayout *layout = new QVBoxLayout(q);
-    layout->setMargin(0);
+    auto *layout = new QVBoxLayout(q);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(&splitter);
     q->setLayout(layout);
 
@@ -155,7 +153,7 @@ void View::Private::updateScene()
     if (!model)
         return;
 
-    if (QTreeView *tw = qobject_cast<QTreeView *>(leftWidget)) {
+    if (auto *tw = qobject_cast<QTreeView *>(leftWidget)) {
         QModelIndex idx = ganttProxyModel.mapFromSource(model->index(0, 0, leftWidget->rootIndex()));
         do {
             gfxview->updateRow(idx);
@@ -171,7 +169,7 @@ void View::Private::updateScene()
 
 void View::Private::slotCollapsed(const QModelIndex &_idx)
 {
-    QTreeView *tw = qobject_cast<QTreeView *>(leftWidget);
+    auto *tw = qobject_cast<QTreeView *>(leftWidget);
     if (!tw)
         return;
 
@@ -208,7 +206,8 @@ void View::Private::slotExpanded(const QModelIndex &_idx)
 {
     QModelIndex idx(ganttProxyModel.mapFromSource(_idx));
     do {
-        // qDebug() << "Updating row" << idx << idx.data( Qt::DisplayRole ).toString();
+        // qDebug() << "Updating row" << idx << idx.data( Qt::DisplayRole
+        // ).toString();
         gfxview->updateRow(idx);
     } while ((idx = gfxview->rowController()->indexBelow(idx)) != QModelIndex() && gfxview->rowController()->isRowVisible(idx));
     gfxview->updateSceneRect();
@@ -225,14 +224,16 @@ void View::Private::slotVerticalScrollValueChanged(int val)
 
 void View::Private::slotLeftWidgetVerticalRangeChanged(int min, int max)
 {
-    // qDebug() << "View::Private::slotLeftWidgetVerticalRangeChanged("<<min<<max<<")";
+    // qDebug() <<
+    // "View::Private::slotLeftWidgetVerticalRangeChanged("<<min<<max<<")";
     gfxview->verticalScrollBar()->setRange(min, max);
     gfxview->updateSceneRect();
 }
 
 void View::Private::slotGfxViewVerticalRangeChanged(int min, int max)
 {
-    // qDebug() << "View::Private::slotGfxViewVerticalRangeChanged("<<min<<max<<")";
+    // qDebug() <<
+    // "View::Private::slotGfxViewVerticalRangeChanged("<<min<<max<<")";
     if (!leftWidget.isNull() && !gfxview.isNull()) {
         int leftMin = leftWidget->verticalScrollBar()->minimum();
         int leftMax = leftWidget->verticalScrollBar()->maximum();
@@ -348,11 +349,11 @@ QAbstractItemView *View::leftView()
     return d->leftWidget;
 }
 
-/*! Set the GraphicsView to be used for this View. It only makes sense to call this
- * if you need to subclass GraphicsView.
+/*! Set the GraphicsView to be used for this View. It only makes sense to call
+ * this if you need to subclass GraphicsView.
  *
- * NOTE: _Only_ call this right after creating the View, before setting a model or any other
- * attributes.
+ * NOTE: _Only_ call this right after creating the View, before setting a model
+ * or any other attributes.
  */
 void View::setGraphicsView(GraphicsView *gv)
 {
@@ -382,7 +383,8 @@ GraphicsView *View::graphicsView()
 }
 
 /*!
- * \returns a pointer to the QSplitter that manages the left view and graphicsView
+ * \returns a pointer to the QSplitter that manages the left view and
+ * graphicsView
  */
 const QSplitter *View::splitter() const
 {
@@ -444,13 +446,13 @@ void View::setGrid(AbstractGrid *grid)
 
 void View::expandAll(QModelIndex index)
 {
-    KDGanttTreeView *tw = qobject_cast<KDGanttTreeView *>(leftView());
+    auto *tw = qobject_cast<KDGanttTreeView *>(leftView());
     tw->expandAll(index);
 }
 
 void View::collapseAll(QModelIndex index)
 {
-    KDGanttTreeView *tw = qobject_cast<KDGanttTreeView *>(leftView());
+    auto *tw = qobject_cast<KDGanttTreeView *>(leftView());
     tw->collapseAll(index);
 }
 
@@ -522,11 +524,11 @@ QAbstractProxyModel *View::ganttProxyModel()
 void View::ensureVisible(const QModelIndex &index)
 {
     QGraphicsView *view = graphicsView();
-    KDGantt::GraphicsScene *scene = static_cast<KDGantt::GraphicsScene *>(view->scene());
+    auto *scene = static_cast<KDGantt::GraphicsScene *>(view->scene());
     if (!scene)
         return;
 
-    KDGantt::SummaryHandlingProxyModel *model = static_cast<KDGantt::SummaryHandlingProxyModel *>(scene->summaryHandlingModel());
+    auto *model = static_cast<KDGantt::SummaryHandlingProxyModel *>(scene->summaryHandlingModel());
 
     const QModelIndex pidx = d->ganttProxyModel.mapFromSource(index);
     const QModelIndex idx = model->mapFromSource(pidx);
@@ -580,8 +582,8 @@ void View::print(QPrinter *printer, qreal start, qreal end, bool drawRowLabels, 
     graphicsView()->print(printer, start, end, drawRowLabels, drawColumnLabels);
 }
 
-/*! Render the GanttView inside the rectangle \a target using the painter \a painter.
- * If \a drawRowLabels is true (the default), each row will have it's
+/*! Render the GanttView inside the rectangle \a target using the painter \a
+ * painter. If \a drawRowLabels is true (the default), each row will have it's
  * label printed on the left side. If \a drawColumnLabels is true (the
  * default), each column will have it's label printed at the
  * top side.
@@ -591,8 +593,8 @@ void View::print(QPainter *painter, const QRectF &target, bool drawRowLabels, bo
     d->gfxview->print(painter, target, drawRowLabels, drawColumnLabels);
 }
 
-/*! Render the GanttView inside the rectangle \a target using the painter \a painter.
- * If \a drawRowLabels is true (the default), each row will have it's
+/*! Render the GanttView inside the rectangle \a target using the painter \a
+ * painter. If \a drawRowLabels is true (the default), each row will have it's
  * label printed on the left side. If \a drawColumnLabels is true (the
  * default), each column will have it's label printed at the
  * top side.
@@ -619,7 +621,7 @@ void View::print(QPainter *painter, qreal start, qreal end, const QRectF &target
 
 KDAB_SCOPED_UNITTEST_SIMPLE(KDGantt, View, "test")
 {
-    View view(0);
+    View view(nullptr);
 #if 0 // GUI tests do not work well on the server
     QTimer::singleShot( 1000, qApp, SLOT( quit() ) );
     view.show();

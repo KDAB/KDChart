@@ -66,7 +66,7 @@ public:
     /**
      * \return Whether the text is visible.
      */
-    bool isVisible() const;
+    [[nodiscard]] bool isVisible() const;
 
     /**
      * Set the font to be used for rendering the text.
@@ -83,7 +83,7 @@ public:
     /**
      * \return The font that is used for rendering text.
      */
-    QFont font() const;
+    [[nodiscard]] QFont font() const;
 
     /**
      * Set the size of the font used for rendering text.
@@ -95,7 +95,7 @@ public:
     /**
      * \return The measure used for the font size.
      */
-    Measure fontSize() const;
+    [[nodiscard]] Measure fontSize() const;
 
     /**
      * Set the minimal size of the font used for rendering text.
@@ -107,7 +107,7 @@ public:
     /**
      * \return The measure used for the minimal font size.
      */
-    Measure minimalFontSize() const;
+    [[nodiscard]] Measure minimalFontSize() const;
 
     /**
      * \brief Returns the font size that is used at drawing time.
@@ -116,7 +116,7 @@ public:
      * font size as it is used for rendering text, taking into account
      * any measures that were set via setFontSize and/or setMinimalFontSize.
      */
-    qreal calculatedFontSize(const QSizeF &referenceSize, KDChartEnums::MeasureOrientation autoReferenceOrientation) const;
+    [[nodiscard]] qreal calculatedFontSize(const QSizeF &referenceSize, KDChartEnums::MeasureOrientation autoReferenceOrientation) const;
 
     /**
      * \brief Returns the font size that is used at drawing time.
@@ -125,13 +125,7 @@ public:
      * font size as it is used for rendering text, taking into account
      * any measures that were set via setFontSize and/or setMinimalFontSize.
      */
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-    const qreal calculatedFontSize(
-#else
-    qreal calculatedFontSize(
-#endif
-        const QObject *autoReferenceArea,
-        KDChartEnums::MeasureOrientation autoReferenceOrientation) const;
+    qreal calculatedFontSize(const QObject *autoReferenceArea, KDChartEnums::MeasureOrientation autoReferenceOrientation) const;
 
     /**
      * \brief Returns the font in the size that is used at drawing time.
@@ -145,7 +139,7 @@ public:
     /**
      * \return Whether the text has an absolute font size set.
      */
-    bool hasAbsoluteFontSize() const;
+    [[nodiscard]] bool hasAbsoluteFontSize() const;
 
     /**
      * Set whether the text should be automatically rotated as
@@ -158,7 +152,7 @@ public:
      * \return Whether text is automatically rotated when space is
      * tight.
      */
-    bool autoRotate() const;
+    [[nodiscard]] bool autoRotate() const;
 
     /**
      * Set whether the text should automatically be shrunk if
@@ -171,7 +165,7 @@ public:
      * \return Whether text is automatically shrunk if space is
      * tight.
      */
-    bool autoShrink() const;
+    [[nodiscard]] bool autoShrink() const;
 
     /**
      * Set the rotation angle to use for the text.
@@ -186,12 +180,12 @@ public:
      */
     void setRotation(int rotation);
     void resetRotation();
-    bool hasRotation() const;
+    [[nodiscard]] bool hasRotation() const;
 
     /**
      * \return The rotation angle used for rendering the text.
      */
-    int rotation() const;
+    [[nodiscard]] int rotation() const;
 
     /**
      * Set the pen to use for rendering the text.
@@ -202,13 +196,13 @@ public:
     /**
      * \return The pen used for rendering the text.
      */
-    QPen pen() const;
+    [[nodiscard]] QPen pen() const;
 
     /**
      * \return The document used for the drawing the text or NULL if the
      * default document is used.
      */
-    QTextDocument *textDocument() const;
+    [[nodiscard]] QTextDocument *textDocument() const;
 
     /**
      * Sets the document to use for the text. The previous document is deleted.

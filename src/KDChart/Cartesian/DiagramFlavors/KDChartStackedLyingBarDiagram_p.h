@@ -31,11 +31,9 @@ class StackedLyingBarDiagram : public BarDiagram::BarDiagramType
 {
 public:
     explicit StackedLyingBarDiagram(BarDiagram *);
-    ~StackedLyingBarDiagram() override
-    {
-    }
-    BarDiagram::BarType type() const override;
-    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    ~StackedLyingBarDiagram() override = default;
+    [[nodiscard]] BarDiagram::BarType type() const override;
+    [[nodiscard]] const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paint(PaintContext *ctx) override;
 };
 

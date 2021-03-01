@@ -53,7 +53,7 @@ void PolarGrid::drawGrid(PaintContext *context)
 
     const QBrush backupBrush(context->painter()->brush());
     context->painter()->setBrush(QBrush());
-    PolarCoordinatePlane *plane = dynamic_cast<PolarCoordinatePlane *>(context->coordinatePlane());
+    auto *plane = dynamic_cast<PolarCoordinatePlane *>(context->coordinatePlane());
     Q_ASSERT_X(plane, "PolarGrid::drawGrid", "Bad function call: PaintContext::coodinatePlane() NOT a polar plane.");
 
     const GridAttributes gridAttrsCircular(plane->gridAttributes(true));

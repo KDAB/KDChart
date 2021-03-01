@@ -43,16 +43,16 @@ public:
     ~FrameAttributes();
 
     void setVisible(bool visible);
-    bool isVisible() const;
+    [[nodiscard]] bool isVisible() const;
 
     void setPen(const QPen &pen);
-    QPen pen() const;
+    [[nodiscard]] QPen pen() const;
 
     void setCornerRadius(qreal radius);
-    qreal cornerRadius() const;
+    [[nodiscard]] qreal cornerRadius() const;
 
     void setPadding(int padding);
-    int padding() const;
+    [[nodiscard]] int padding() const;
 
     bool operator==(const FrameAttributes &) const;
     inline bool operator!=(const FrameAttributes &other) const
