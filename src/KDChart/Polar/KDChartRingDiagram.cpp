@@ -103,7 +103,7 @@ bool RingDiagram::expandWhenExploded() const
 const QPair<QPointF, QPointF> RingDiagram::calculateDataBoundaries() const
 {
     if (!checkInvariants(true))
-        return QPair<QPointF, QPointF>(QPointF(0, 0), QPointF(0, 0));
+        return {QPointF(0, 0), QPointF(0, 0)};
 
     const PieAttributes attrs(pieAttributes());
 
@@ -134,7 +134,7 @@ const QPair<QPointF, QPointF> RingDiagram::calculateDataBoundaries() const
     } else {
         topRight = QPointF(1.0, 1.0);
     }
-    return QPair<QPointF, QPointF>(bottomLeft, topRight);
+    return {bottomLeft, topRight};
 }
 
 void RingDiagram::paintEvent(QPaintEvent *)

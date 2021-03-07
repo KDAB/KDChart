@@ -365,7 +365,7 @@ void Plotter::resizeEvent(QResizeEvent *)
 const QPair<QPointF, QPointF> Plotter::calculateDataBoundaries() const
 {
     if (!checkInvariants(true))
-        return QPair<QPointF, QPointF>(QPointF(0, 0), QPointF(0, 0));
+        return {QPointF(0, 0), QPointF(0, 0)};
 
     // note: calculateDataBoundaries() is ignoring the hidden flags.
     //       That's not a bug but a feature: Hiding data does not mean removing

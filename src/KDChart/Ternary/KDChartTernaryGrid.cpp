@@ -197,7 +197,7 @@ QPair<QSizeF, QSizeF> TernaryGrid::requiredMargins() const
     //              << ", FullMarkerDistanceBA:" << FullMarkerDistanceBA
     //              << ", FullMarkerDistanceAC:" << FullMarkerDistanceAC
     //              << ", RelMarkerLength:" << RelMarkerLength;
-    return QPair<QSizeF, QSizeF>(QSizeF(leftMargin, topMargin), QSizeF(leftMargin, bottomMargin));
+    return {QSizeF(leftMargin, topMargin), QSizeF(leftMargin, bottomMargin)};
 }
 
 const QVector<TickInfo> &TernaryGrid::tickInfo() const

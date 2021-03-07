@@ -368,5 +368,5 @@ const QPair<QPointF, QPointF> StockDiagram::calculateDataBoundaries() const
                                             // have negative values?
         }
     }
-    return QPair<QPointF, QPointF>(QPointF(xMin, yMin), QPointF(xMax, yMax));
+    return {QPointF(xMin, yMin), QPointF(xMax, yMax)};
 }

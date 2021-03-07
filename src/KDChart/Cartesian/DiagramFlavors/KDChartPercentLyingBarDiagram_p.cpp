@@ -74,7 +74,7 @@ const QPair<QPointF, QPointF> PercentLyingBarDiagram::calculateDataBoundaries() 
 
     // qDebug() << "BarDiagram::calculateDataBoundaries () returns ( " <<
     // bottomLeft << topRight <<")";
-    return QPair<QPointF, QPointF>(bottomLeft, topRight);
+    return {bottomLeft, topRight};
 }
 
 void PercentLyingBarDiagram::paint(PaintContext *ctx)

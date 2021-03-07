@@ -55,7 +55,7 @@ const QPair<QPointF, QPointF> PercentLineDiagram::calculateDataBoundaries() cons
 
     QPointF bottomLeft(QPointF(xMin, yMin));
     QPointF topRight(QPointF(xMax, yMax));
-    return QPair<QPointF, QPointF>(bottomLeft, topRight);
+    return {bottomLeft, topRight};
 }
 
 void PercentLineDiagram::paint(PaintContext *ctx)

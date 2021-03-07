@@ -326,7 +326,7 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries() const
                                 static_cast<int>(this->size().height() * coordinatePlane()->zoomFactorY()));
 
     if (!checkInvariants(true)) {
-        return QPair<QPointF, QPointF>(QPointF(0, 0), QPointF(0, 0));
+        return {QPointF(0, 0), QPointF(0, 0)};
     }
 
     // note: calculateDataBoundaries() is ignoring the hidden flags.

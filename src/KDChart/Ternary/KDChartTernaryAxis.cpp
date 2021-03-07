@@ -272,5 +272,5 @@ QPair<QSizeF, QSizeF> TernaryAxis::requiredMargins() const
     }
     //     qDebug() << "TernaryAxis::requiredMargins:" << topleft <<
     //     bottomRight;
-    return QPair<QSizeF, QSizeF>(topleft, bottomRight);
+    return {topleft, bottomRight};
 }

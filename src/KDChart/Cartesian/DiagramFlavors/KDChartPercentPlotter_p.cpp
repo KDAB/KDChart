@@ -67,7 +67,7 @@ const QPair<QPointF, QPointF> PercentPlotter::calculateDataBoundaries() const
 
     const QPointF bottomLeft(QPointF(xMin, yMin));
     const QPointF topRight(QPointF(xMax, yMax));
-    return QPair<QPointF, QPointF>(bottomLeft, topRight);
+    return {bottomLeft, topRight};
 }
 
 class Value

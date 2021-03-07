@@ -87,7 +87,7 @@ const QPair<QPointF, QPointF> NormalLyingBarDiagram::calculateDataBoundaries() c
     const QPointF bottomLeft(QPointF(yMin, xMin));
     const QPointF topRight(QPointF(yMax, xMax));
 
-    return QPair<QPointF, QPointF>(bottomLeft, topRight);
+    return {bottomLeft, topRight};
 }
 
 void NormalLyingBarDiagram::paint(PaintContext *ctx)

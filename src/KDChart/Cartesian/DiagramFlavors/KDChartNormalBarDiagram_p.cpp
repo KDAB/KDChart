@@ -92,7 +92,7 @@ const QPair<QPointF, QPointF> NormalBarDiagram::calculateDataBoundaries() const
         }
     }
 
-    return QPair<QPointF, QPointF>(QPointF(xMin, yMin), QPointF(xMax, yMax));
+    return {QPointF(xMin, yMin), QPointF(xMax, yMax)};
 }
 
 void NormalBarDiagram::paint(PaintContext *ctx)

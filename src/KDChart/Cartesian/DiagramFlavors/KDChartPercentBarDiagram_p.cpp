@@ -66,7 +66,7 @@ const QPair<QPointF, QPointF> PercentBarDiagram::calculateDataBoundaries() const
         }
     }
 
-    return QPair<QPointF, QPointF>(QPointF(xMin, yMin), QPointF(xMax, yMax + usedDepth * 0.3));
+    return {QPointF(xMin, yMin), QPointF(xMax, yMax + usedDepth * 0.3)};
 }
 
 void PercentBarDiagram::paint(PaintContext *ctx)

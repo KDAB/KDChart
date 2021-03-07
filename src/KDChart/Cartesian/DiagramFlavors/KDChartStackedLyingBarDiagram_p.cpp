@@ -89,7 +89,7 @@ const QPair<QPointF, QPointF> StackedLyingBarDiagram::calculateDataBoundaries() 
         }
     }
 
-    return QPair<QPointF, QPointF>(QPointF(yMin, xMin), QPointF(yMax, xMax));
+    return {QPointF(yMin, xMin), QPointF(yMax, xMax)};
 }
 
 void StackedLyingBarDiagram::paint(PaintContext *ctx)

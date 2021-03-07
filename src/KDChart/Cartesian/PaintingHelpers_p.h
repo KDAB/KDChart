@@ -105,8 +105,8 @@ inline QPair<QPointF, QPointF> splineChunk(qreal tension, QPointF before, QPoint
 
 inline void addSplineChunkTo(QPainterPath &path, qreal tension, QPointF before, QPointF a, QPointF b, QPointF after, SplineDirection splineDirection)
 {
-    const QPair<QPointF, QPointF> chunk = splineChunk(tension, before, a, b, after, splineDirection);
-    path.cubicTo(chunk.first, chunk.second, b);
+    const auto [left, right] = splineChunk(tension, before, a, b, after, splineDirection);
+    path.cubicTo(left, right, b);
 }
 
 }

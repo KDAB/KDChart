@@ -86,7 +86,7 @@ const QPair<QPointF, QPointF> StackedLineDiagram::calculateDataBoundaries() cons
     const QPointF bottomLeft(xMin, yMin);
     const QPointF topRight(xMax, yMax);
 
-    return QPair<QPointF, QPointF>(bottomLeft, topRight);
+    return {bottomLeft, topRight};
 }
 
 void StackedLineDiagram::paint(PaintContext *ctx)

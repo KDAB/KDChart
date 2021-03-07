@@ -93,7 +93,7 @@ PolarDiagram *PolarDiagram::clone() const
 const QPair<QPointF, QPointF> PolarDiagram::calculateDataBoundaries() const
 {
     if (!checkInvariants(true))
-        return QPair<QPointF, QPointF>(QPointF(0, 0), QPointF(0, 0));
+        return {QPointF(0, 0), QPointF(0, 0)};
     const int rowCount = model()->rowCount(rootIndex());
     const int colCount = model()->columnCount(rootIndex());
     qreal xMin = 0.0;
@@ -108,7 +108,7 @@ const QPair<QPointF, QPointF> PolarDiagram::calculateDataBoundaries() const
     }
     QPointF bottomLeft(QPointF(xMin, yMin));
     QPointF topRight(QPointF(xMax, yMax));
-    return QPair<QPointF, QPointF>(bottomLeft, topRight);
+    return {bottomLeft, topRight};
 }
 
 void PolarDiagram::paintEvent(QPaintEvent *)

@@ -416,7 +416,7 @@ const QPair<QPointF, QPointF> LeveyJenningsDiagram::calculateDataBoundaries() co
     const QPointF bottomLeft(QPointF(0, yMin));
     const QPointF topRight(QPointF(xMax, yMax));
 
-    return QPair<QPointF, QPointF>(bottomLeft, topRight);
+    return {bottomLeft, topRight};
 }
 
 /**

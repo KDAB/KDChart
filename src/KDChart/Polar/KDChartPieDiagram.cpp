@@ -90,7 +90,7 @@ bool PieDiagram::isLabelCollisionAvoidanceEnabled() const
 const QPair<QPointF, QPointF> PieDiagram::calculateDataBoundaries() const
 {
     if (!checkInvariants(true) || model()->rowCount() < 1)
-        return QPair<QPointF, QPointF>(QPointF(0, 0), QPointF(0, 0));
+        return {QPointF(0, 0), QPointF(0, 0)};
 
     const PieAttributes attrs(pieAttributes());
 
@@ -109,7 +109,7 @@ const QPair<QPointF, QPointF> PieDiagram::calculateDataBoundaries() const
     } else {
         topRight = QPointF(1.0, 1.0);
     }
-    return QPair<QPointF, QPointF>(bottomLeft, topRight);
+    return {bottomLeft, topRight};
 }
 
 void PieDiagram::paintEvent(QPaintEvent *)
