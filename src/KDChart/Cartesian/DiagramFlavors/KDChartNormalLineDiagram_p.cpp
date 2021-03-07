@@ -179,6 +179,8 @@ void NormalLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
     LabelPaintCache lpc;
     LineAttributesInfoList lineList;
 
+    const auto mainSplineDirection = plane->isHorizontalRangeReversed() ? ReverseSplineDirection : NormalSplineDirection;
+
     const int step = rev ? -1 : 1;
     const int end = rev ? -1 : columnCount;
     for ( int column = rev ? columnCount - 1 : 0; column != end; column += step ) {
@@ -292,7 +294,7 @@ void NormalLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
 
                         path.moveTo( a );
 
-                        addSplineChunkTo( path, tension, dataAt( row - 2 ), a, b, dataAt( row + 1 ) );
+                        addSplineChunkTo( path, tension, dataAt( row - 2 ), a, b, dataAt( row + 1 ), mainSplineDirection );
 
                         path.lineTo( d );
                         path.lineTo( c );

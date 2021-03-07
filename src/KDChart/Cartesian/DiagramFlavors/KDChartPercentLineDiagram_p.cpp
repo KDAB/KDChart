@@ -244,6 +244,11 @@ void PercentLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
     const int columnCount = compressor().modelDataColumns();
     const int rowCount = compressor().modelDataRows();
 
+    Q_ASSERT(dynamic_cast<CartesianCoordinatePlane*>(ctx->coordinatePlane()));
+    const auto plane = static_cast<CartesianCoordinatePlane*>(ctx->coordinatePlane());
+    const auto mainSplineDirection = plane->isHorizontalRangeReversed() ? ReverseSplineDirection : NormalSplineDirection;
+    const auto reverseSplineDirection = plane->isHorizontalRangeReversed() ? NormalSplineDirection : ReverseSplineDirection;
+
 // FIXME integrade column index retrieval to compressor:
     int maxFound = 0;
 //    {   // find the last column number that is not hidden
@@ -437,7 +442,7 @@ void PercentLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
                     const QPointF ptAfterNorthEast =
                         row < rowCount - 1 ? dataAt( stackedValuesTop, point.key + 2, 3 )
                                            : ptNorthEast;
-                    addSplineChunkTo( path, tension, ptBeforeNorthWest, ptNorthWest, ptNorthEast, ptAfterNorthEast );
+                    addSplineChunkTo( path, tension, ptBeforeNorthWest, ptNorthWest, ptNorthEast, ptAfterNorthEast, mainSplineDirection );
 
                     path.lineTo( ptNorthEast );
                     path.lineTo( ptSouthEast );
@@ -448,7 +453,7 @@ void PercentLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
                     const QPointF ptAfterSouthEast =
                         row < rowCount - 1 ? dataAt( stackedValuesBottom, point.key + 2, 3 )
                                            : ptSouthEast;
-                    addSplineChunkTo( path, tension, ptAfterSouthEast, ptSouthEast, ptSouthWest, ptBeforeSouthWest, ReverseSplineDirection );
+                    addSplineChunkTo( path, tension, ptAfterSouthEast, ptSouthEast, ptSouthWest, ptBeforeSouthWest, reverseSplineDirection );
 
                     areas << path;
                     laPreviousCell = laCell;
