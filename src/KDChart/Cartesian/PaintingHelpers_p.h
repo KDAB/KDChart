@@ -87,27 +87,25 @@ inline QPointF splineNode(qreal tension, QPointF before, QPointF current, QPoint
 
 enum SplineDirection { NormalSplineDirection, ReverseSplineDirection };
 
-inline QPair<QPointF, QPointF>
-splineChunk(qreal tension, QPointF before, QPointF a, QPointF b, QPointF after, SplineDirection direction = NormalSplineDirection)
+inline QPair<QPointF, QPointF> splineChunk(qreal tension, QPointF before, QPointF a, QPointF b, QPointF after, SplineDirection splineDirection)
 {
     QPointF nodeLeft = a;
     QPointF nodeRight = b;
 
     if (!ISNAN(before.y())) {
-        nodeLeft = splineNode(tension, before, a, b, direction == NormalSplineDirection ? LeftSplineNodePosition : RightSplineNodePosition);
+        nodeLeft = splineNode(tension, before, a, b, splineDirection == NormalSplineDirection ? LeftSplineNodePosition : RightSplineNodePosition);
     }
 
     if (!ISNAN(after.y())) {
-        nodeRight = splineNode(tension, a, b, after, direction != NormalSplineDirection ? LeftSplineNodePosition : RightSplineNodePosition);
+        nodeRight = splineNode(tension, a, b, after, splineDirection != NormalSplineDirection ? LeftSplineNodePosition : RightSplineNodePosition);
     }
 
     return qMakePair(nodeLeft, nodeRight);
 }
 
-inline void
-addSplineChunkTo(QPainterPath &path, qreal tension, QPointF before, QPointF a, QPointF b, QPointF after, SplineDirection direction = NormalSplineDirection)
+inline void addSplineChunkTo(QPainterPath &path, qreal tension, QPointF before, QPointF a, QPointF b, QPointF after, SplineDirection splineDirection)
 {
-    const QPair<QPointF, QPointF> chunk = splineChunk(tension, before, a, b, after, direction);
+    const QPair<QPointF, QPointF> chunk = splineChunk(tension, before, a, b, after, splineDirection);
     path.cubicTo(chunk.first, chunk.second, b);
 }
 

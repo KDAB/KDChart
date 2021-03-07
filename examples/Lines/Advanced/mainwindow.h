@@ -44,7 +44,7 @@ private:
 
 private slots:
 
-    void on_lineTypeCB_currentIndexChanged(const QString &text);
+    void on_lineTypeCB_currentTextChanged(const QString &text);
     void on_paintValuesCB_toggled(bool checked);
     void on_centerDataPointsCB_toggled(bool checked);
     void on_threeDModeCB_toggled(bool checked);

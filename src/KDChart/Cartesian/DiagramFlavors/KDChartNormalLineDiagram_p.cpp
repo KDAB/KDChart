@@ -180,6 +180,8 @@ void NormalLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
     LabelPaintCache lpc;
     LineAttributesInfoList lineList;
 
+    const auto mainSplineDirection = plane->isHorizontalRangeReversed() ? ReverseSplineDirection : NormalSplineDirection;
+
     const int step = rev ? -1 : 1;
     const int end = rev ? -1 : columnCount;
     for (int column = rev ? columnCount - 1 : 0; column != end; column += step) {
@@ -254,48 +256,18 @@ void NormalLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
                     if (laCell.displayArea()) {
                         QPainterPath path;
 
-                        // TODO: revert back to lambdas when we stop caring
-                        // about pre-C++11 auto dataAt = [&] ( int i ) {
-                        //     if ( i < 0 || i >= rowCount ) {
-                        //         return QPointF( NAN, NAN );
-                        //     } else {
-                        //         const auto data = compressor().data( { i,
-                        //         column } ); return QPointF( plane->translate(
-                        //         QPointF( data.key + offset, data.value ) ) );
-                        //     }
-                        // };
-                        struct dataAtLambda {
-                            dataAtLambda(int rowCount, int column, int offset, CartesianCoordinatePlane *plane, NormalLineDiagram *_this)
-                                : rowCount(rowCount)
-                                , column(column)
-                                , offset(offset)
-                                , plane(plane)
-                                , _this(_this)
-                            {
-                            }
-
-                            int rowCount;
-                            int column;
-                            int offset;
-                            CartesianCoordinatePlane *plane;
-                            NormalLineDiagram *_this;
-
-                            QPointF operator()(int i) const
-                            {
-                                if (i < 0 || i >= rowCount) {
-                                    return QPointF(NAN, NAN);
-                                } else {
-                                    const KDChart::CartesianDiagramDataCompressor::DataPoint data =
-                                        _this->compressor().data(CartesianDiagramDataCompressor::CachePosition(i, column));
-                                    return QPointF(plane->translate(QPointF(data.key + offset, data.value)));
-                                }
+                        auto dataAt = [&](int i) {
+                            if (i < 0 || i >= rowCount) {
+                                return QPointF(NAN, NAN);
+                            } else {
+                                const auto data = compressor().data({i, column});
+                                return QPointF(plane->translate(QPointF(data.key + offset, data.value)));
                             }
                         };
-                        dataAtLambda dataAt(rowCount, column, offset, plane, this);
 
                         path.moveTo(a);
 
-                        addSplineChunkTo(path, tension, dataAt(row - 2), a, b, dataAt(row + 1));
+                        addSplineChunkTo(path, tension, dataAt(row - 2), a, b, dataAt(row + 1), mainSplineDirection);
 
                         path.lineTo(d);
                         path.lineTo(c);

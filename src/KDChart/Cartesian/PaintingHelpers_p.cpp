@@ -52,7 +52,7 @@ const QPointF project(const QPointF &point, const ThreeDLineAttributes &tdAttrib
     return QPointF(point.x() * cos(yrad) + tdAttributes.depth() * sin(yrad), point.y() * cos(xrad) - tdAttributes.depth() * sin(xrad));
 }
 
-QPainterPath fitPoints(const QPolygonF &points, qreal tension)
+QPainterPath fitPoints(const QPolygonF &points, qreal tension, SplineDirection splineDirection)
 {
     QPainterPath path;
     path.moveTo(points.at(0));
@@ -81,7 +81,7 @@ QPainterPath fitPoints(const QPolygonF &points, qreal tension)
     dataAtLambda dataAt(points, count);
 
     for (int i = 1; i < count; ++i) {
-        addSplineChunkTo(path, tension, dataAt(i - 2), points.at(i - 1), points.at(i), dataAt(i + 1));
+        addSplineChunkTo(path, tension, dataAt(i - 2), points.at(i - 1), points.at(i), dataAt(i + 1), splineDirection);
     }
 
     return path;
@@ -94,7 +94,7 @@ void paintPolyline(PaintContext *ctx, const QBrush &brush, const QPen &pen, cons
     ctx->painter()->drawPolyline(points);
 }
 
-void paintSpline(PaintContext *ctx, const QBrush &brush, const QPen &pen, const QPolygonF &points, qreal tension)
+void paintSpline(PaintContext *ctx, const QBrush &brush, const QPen &pen, const QPolygonF &points, qreal tension, SplineDirection splineDirection)
 {
     if (points.size() < 3) {
         paintPolyline(ctx, brush, pen, points);
@@ -105,7 +105,7 @@ void paintSpline(PaintContext *ctx, const QBrush &brush, const QPen &pen, const 
     ctx->painter()->setBrush(QBrush());
     ctx->painter()->setPen(PrintingParameters::scalePen(QPen(pen.color(), pen.width(), pen.style(), Qt::FlatCap, Qt::MiterJoin)));
 
-    ctx->painter()->drawPath(fitPoints(points, tension));
+    ctx->painter()->drawPath(fitPoints(points, tension, splineDirection));
 }
 
 void paintThreeDLines(PaintContext *ctx,
@@ -239,15 +239,19 @@ static ValueTrackerAttributes valueTrackerAttributes(AbstractDiagram *diagram, c
 void paintObject(AbstractDiagram::Private *diagramPrivate, PaintContext *ctx, const QBrush &brush, const QPen &pen, const QPolygonF &points)
 {
     qreal tension = 0;
+    SplineDirection splineDirection = NormalSplineDirection;
 
     if (auto *lineDiagram = dynamic_cast<LineDiagram::Private *>(diagramPrivate)) {
         tension = lineDiagram->tension;
+        Q_ASSERT(dynamic_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane()));
+        const auto plane = static_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane());
+        splineDirection = plane->isHorizontalRangeReversed() ? ReverseSplineDirection : NormalSplineDirection;
     }
 
     if (qFuzzyIsNull(tension)) {
         paintPolyline(ctx, brush, pen, points);
     } else {
-        paintSpline(ctx, brush, pen, points, tension);
+        paintSpline(ctx, brush, pen, points, tension, splineDirection);
     }
 }
 

@@ -92,7 +92,7 @@ bool MainWindow::eventFilter(QObject *target, QEvent *event)
     return QWidget::eventFilter(target, event);
 }
 
-void MainWindow::on_lineTypeCB_currentIndexChanged(const QString &text)
+void MainWindow::on_lineTypeCB_currentTextChanged(const QString &text)
 {
     if (text == "Normal")
         m_lines->setType(LineDiagram::Normal);
