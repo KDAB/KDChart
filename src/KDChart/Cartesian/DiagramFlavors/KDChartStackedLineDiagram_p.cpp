@@ -334,14 +334,14 @@ void StackedLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
                     path.moveTo(ptNorthWest);
 
                     const QPointF ptBeforeNorthWest = row > 0 ? dataAt(stackedValuesTop, point.key - 1, 0) : ptNorthWest;
-                    const QPointF ptAfterNorthEast = row < rowCount - 1 ? dataAt(stackedValuesTop, point.key + 2, 3) : ptNorthEast;
+                    const QPointF ptAfterNorthEast = row < rowCount - 2 ? dataAt(stackedValuesTop, point.key + 2, 3) : ptNorthEast;
                     addSplineChunkTo(path, tension, ptBeforeNorthWest, ptNorthWest, ptNorthEast, ptAfterNorthEast, mainSplineDirection);
 
                     path.lineTo(ptNorthEast);
                     path.lineTo(ptSouthEast);
 
                     const QPointF ptBeforeSouthWest = row > 0 ? dataAt(stackedValuesBottom, point.key - 1, 0) : ptSouthWest;
-                    const QPointF ptAfterSouthEast = row < rowCount - 1 ? dataAt(stackedValuesBottom, point.key + 2, 3) : ptSouthEast;
+                    const QPointF ptAfterSouthEast = row < rowCount - 2 ? dataAt(stackedValuesBottom, point.key + 2, 3) : ptSouthEast;
                     addSplineChunkTo(path, tension, ptAfterSouthEast, ptSouthEast, ptSouthWest, ptBeforeSouthWest, reverseSplineDirection);
 
                     areas << path;
