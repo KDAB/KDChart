@@ -265,7 +265,7 @@ void NormalLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
                         //     }
                         // };
                         struct dataAtLambda {
-                            dataAtLambda( int rowCount, int column, int offset, CartesianCoordinatePlane* plane, NormalLineDiagram* _this )
+                            dataAtLambda( int rowCount, int column, qreal offset, CartesianCoordinatePlane* plane, NormalLineDiagram* _this )
                                 : rowCount( rowCount )
                                 , column( column )
                                 , offset( offset )
@@ -276,7 +276,7 @@ void NormalLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
 
                             int rowCount;
                             int column;
-                            int offset;
+                            qreal offset;
                             CartesianCoordinatePlane* plane;
                             NormalLineDiagram* _this;
 
