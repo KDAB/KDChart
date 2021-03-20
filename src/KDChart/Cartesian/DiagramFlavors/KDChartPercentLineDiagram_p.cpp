@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2020 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2021 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
@@ -295,38 +295,28 @@ void PercentLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
 
     for ( int column = 0; column < columnCount; ++column )
     {
+        CartesianDiagramDataCompressor::CachePosition previousCellPosition;
+
         //display area can be set by dataset ( == column) and/or by cell
         LineAttributes laPreviousCell; // by default no area is drawn
         QModelIndex indexPreviousCell;
         QList<QPainterPath> areas;
 
-        for ( int row = 0; row < rowCount; ++row )
-        {
+        for ( int row = 0; row < rowCount; ++row ) {
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
             CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
+
             const LineAttributes laCell = diagram()->lineAttributes( sourceIndex );
             const bool bDisplayCellArea = laCell.displayArea();
 
             const LineAttributes::MissingValuesPolicy policy = laCell.missingValuesPolicy();
 
+            if ( ISNAN( point.value ) && policy == LineAttributes::MissingValuesShownAsZero )
+                point.value = 0.0;
+
             // TODO: revert back to lambdas when we stop caring about pre-C++11
-            // auto valueAt = [&] ( int row, int col ) -> qreal {
-            //     if ( row < 0 || row >= rowCount ) {
-            //         return NAN;
-            //     }
-            //
-            //     const CartesianDiagramDataCompressor::CachePosition position( row, col );
-            //     const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-            //
-            //     return !ISNAN( point.value ) ? point.value
-            //          : policy == LineAttributes::MissingValuesAreBridged ? interpolateMissingValue( position )
-            //          : NAN;
-            // };
-            //
-            // auto safeAddPositive = [] ( qreal accumulator, qreal newValue ) {
-            //     return ISNAN( newValue ) || newValue <= 0 ? accumulator : accumulator + newValue;
-            // };
+            // See the Qt6 port
 
             struct valueAtLambda {
                 valueAtLambda( int rowCount, PercentLineDiagram* _this, LineAttributes::MissingValuesPolicy policy )
@@ -358,43 +348,34 @@ void PercentLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
             valueAtLambda valueAt( rowCount, this, policy );
 
 
-            struct safeAddPositiveLambda {
+            struct safeAddLambda {
                 qreal operator() (qreal accumulator, qreal newValue) const
                 {
-                    return ISNAN( newValue ) || newValue <= 0 ? accumulator : accumulator + newValue;
+                    return ISNAN( newValue ) ? accumulator : accumulator + newValue;
                 }
             };
-            safeAddPositiveLambda safeAddPositive;
+            safeAddLambda safeAdd;
 
             qreal nextKey = 0;
             QVector<qreal> stackedValuesTop( 4, 0.0 );
             QVector<qreal> stackedValuesBottom( 4, 0.0 );
 
-            if ( ! qFuzzyIsNull( percentSumValues.at( row ) ) ) {
-                for ( int currentRow = 0; currentRow < 4; ++currentRow ) {
-                    stackedValuesTop[currentRow] = safeAddPositive( stackedValuesTop[currentRow], valueAt( row - 1 + currentRow, column ) );
-                }
+            for ( int currentRow = 0; currentRow < 4; ++currentRow ) {
+                stackedValuesTop[currentRow] = safeAdd( stackedValuesTop[currentRow], valueAt( row - 1 + currentRow, column ) );
+            }
 
-                for ( int column2 = column - 1; column2 >= 0; --column2 )
-                {
-                    for ( int currentRow = 0; currentRow < 4; ++currentRow ) {
-                        stackedValuesTop[currentRow] = safeAddPositive( stackedValuesTop[currentRow], valueAt( row - 1 + currentRow, column2 ) );
-                        stackedValuesBottom[currentRow] = safeAddPositive( stackedValuesBottom[currentRow], valueAt( row - 1 + currentRow, column2 ) );
-                    }
-                }
-
+            for ( int column2 = column - 1; column2 >= 0; --column2 )
+            {
                 for ( int currentRow = 0; currentRow < 4; ++currentRow ) {
-                    stackedValuesTop[currentRow] /= percentSumValues.at( row ) / maxValue;
-                    stackedValuesBottom[currentRow] /= percentSumValues.at( row ) / maxValue;
+                    stackedValuesTop[currentRow] = safeAdd( stackedValuesTop[currentRow], valueAt( row - 1 + currentRow, column2 ) );
+                    stackedValuesBottom[currentRow] = safeAdd( stackedValuesBottom[currentRow], valueAt( row - 1 + currentRow, column2 ) );
                 }
             }
 
             nextKey = row + 1;
 
             // TODO: revert back to lambdas when we stop caring about pre-C++11
-            // auto dataAt = [&] ( const QVector<qreal>& source, qreal key, int index ) {
-            //     return ctx->coordinatePlane()->translate( QPointF( diagram()->centerDataPoints() ? key + 0.5 : key, source[index] ) );
-            // };
+            // See the Qt6 port
             struct dataAtLambda {
                 dataAtLambda( PaintContext* ctx, PercentLineDiagram* _this )
                     : ctx( ctx )
@@ -405,26 +386,28 @@ void PercentLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
                 PaintContext* ctx;
                 PercentLineDiagram* _this;
 
-                QPointF operator() ( const QVector<qreal>& source, qreal key, int index ) const
+                QPointF operator() ( const QVector<qreal>& source, qreal key, int index, qreal scale ) const
                 {
-                    return ctx->coordinatePlane()->translate( QPointF( _this->diagram()->centerDataPoints() ? key + 0.5 : key, source[index] ) );
+                    return ctx->coordinatePlane()->translate( QPointF( _this->diagram()->centerDataPoints() ? key + 0.5 : key, source[index] * scale ) );
                 }
             };
             dataAtLambda dataAt( ctx, this );
 
-            const QPointF ptNorthWest = dataAt( stackedValuesTop, point.key, 1 );
+            const auto scale = qFuzzyIsNull( percentSumValues.at( row ) ) ? 0 : maxValue / percentSumValues.at( row );
+            const QPointF ptNorthWest = dataAt( stackedValuesTop, point.key, 1, scale );
             const QPointF ptSouthWest =
-                    bDisplayCellArea ? dataAt( stackedValuesBottom, point.key, 1 )
+                    bDisplayCellArea ? dataAt( stackedValuesBottom, point.key, 1, scale )
                                      : ptNorthWest;
 
             QPointF ptNorthEast;
             QPointF ptSouthEast;
 
             if ( row + 1 < rowCount ) {
-                ptNorthEast = dataAt( stackedValuesTop, nextKey, 2 );
+                const auto nextScale = qFuzzyIsNull ( percentSumValues.at( row + 1 ) ) ? 0 : maxValue / percentSumValues.at ( row + 1 );
+                ptNorthEast = dataAt( stackedValuesTop, nextKey, 2, nextScale );
                 lineList.append( LineAttributesInfo( sourceIndex, ptNorthWest, ptNorthEast ) );
                 ptSouthEast =
-                    bDisplayCellArea ? dataAt( stackedValuesBottom, nextKey, 2 )
+                    bDisplayCellArea ? dataAt( stackedValuesBottom, nextKey, 2, nextScale )
                                      : ptNorthEast;
 
                 if ( areas.count() && laCell != laPreviousCell ) {
@@ -437,10 +420,10 @@ void PercentLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
                     path.moveTo( ptNorthWest );
 
                     const QPointF ptBeforeNorthWest =
-                        row > 0 ? dataAt( stackedValuesTop, point.key - 1, 0 )
+                        row > 0 ? dataAt( stackedValuesTop, point.key - 1, 0, scale )
                                 : ptNorthWest;
                     const QPointF ptAfterNorthEast =
-                        row < rowCount - 1 ? dataAt( stackedValuesTop, point.key + 2, 3 )
+                        row < rowCount - 2 ? dataAt( stackedValuesTop, point.key + 2, 3, nextScale )
                                            : ptNorthEast;
                     addSplineChunkTo( path, tension, ptBeforeNorthWest, ptNorthWest, ptNorthEast, ptAfterNorthEast, mainSplineDirection );
 
@@ -448,10 +431,10 @@ void PercentLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
                     path.lineTo( ptSouthEast );
 
                     const QPointF ptBeforeSouthWest =
-                        row > 0 ? dataAt( stackedValuesBottom, point.key - 1, 0 )
+                        row > 0 ? dataAt( stackedValuesBottom, point.key - 1, 0, scale )
                                 : ptSouthWest;
                     const QPointF ptAfterSouthEast =
-                        row < rowCount - 1 ? dataAt( stackedValuesBottom, point.key + 2, 3 )
+                        row < rowCount - 2 ? dataAt( stackedValuesBottom, point.key + 2, 3, nextScale )
                                            : ptSouthEast;
                     addSplineChunkTo( path, tension, ptAfterSouthEast, ptSouthEast, ptSouthWest, ptBeforeSouthWest, reverseSplineDirection );
 
@@ -466,12 +449,10 @@ void PercentLineDiagram::paintWithSplines( PaintContext* ctx, qreal tension )
                 ptSouthEast = ptSouthWest;
             }
 
+            const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
             if ( !ISNAN( point.value ) )
-            {
-                const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
                 m_private->addLabel( &lpc, sourceIndex, &position, pts, Position::NorthWest,
                                      Position::NorthWest, point.value );
-            }
         }
         if ( areas.count() ) {
             PaintingHelpers::paintAreas( m_private, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
