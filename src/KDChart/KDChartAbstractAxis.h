@@ -62,7 +62,7 @@ namespace KDChart {
         KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( AbstractAxis, AbstractDiagram* )
 
     public:
-        explicit AbstractAxis( AbstractDiagram* diagram = 0 );
+        explicit AbstractAxis( AbstractDiagram* diagram = nullptr );
         ~AbstractAxis() override;
 
         // FIXME implement when code os ready for it:

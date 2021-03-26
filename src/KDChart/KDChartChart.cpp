@@ -191,7 +191,7 @@ public:
     {
         QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
         if ( isEmpty() ) {
-            return Qt::Orientations(0);
+            return {};
         }
         Qt::Orientations e = w->sizePolicy().expandingDirections();
         return e;
@@ -265,7 +265,7 @@ void Chart::Private::slotUnregisterDestroyedPlane( AbstractCoordinatePlane* plan
     coordinatePlanes.removeAll( plane );
     Q_FOREACH ( AbstractCoordinatePlane* p, coordinatePlanes ) {
         if ( p->referenceCoordinatePlane() == plane) {
-            p->setReferenceCoordinatePlane( 0 );
+            p->setReferenceCoordinatePlane( nullptr );
         }
     }
     plane->layoutPlanes();
@@ -274,16 +274,16 @@ void Chart::Private::slotUnregisterDestroyedPlane( AbstractCoordinatePlane* plan
 Chart::Private::Private( Chart* chart_ )
     : chart( chart_ )
     , useNewLayoutSystem( false )
-    , layout( 0 )
-    , vLayout( 0 )
-    , planesLayout( 0 )
-    , headerLayout( 0 )
-    , footerLayout( 0 )
-    , dataAndLegendLayout( 0 )
-    , leftOuterSpacer( 0 )
-    , rightOuterSpacer( 0 )
-    , topOuterSpacer( 0 )
-    , bottomOuterSpacer( 0 )
+    , layout( nullptr )
+    , vLayout( nullptr )
+    , planesLayout( nullptr )
+    , headerLayout( nullptr )
+    , footerLayout( nullptr )
+    , dataAndLegendLayout( nullptr )
+    , leftOuterSpacer( nullptr )
+    , rightOuterSpacer( nullptr )
+    , topOuterSpacer( nullptr )
+    , bottomOuterSpacer( nullptr )
     , isFloatingLegendsLayoutDirty( true )
     , isPlanesLayoutDirty( true )
     , globalLeadingLeft( 0 )
@@ -294,7 +294,7 @@ Chart::Private::Private( Chart* chart_ )
     for ( int row = 0; row < 3; ++row ) {
         for ( int column = 0; column < 3; ++column ) {
             for ( int i = 0; i < 2; i++ ) {
-                innerHdFtLayouts[ i ][ row ][ column ] = 0;
+                innerHdFtLayouts[ i ][ row ][ column ] = nullptr;
             }
         }
     }
@@ -628,7 +628,7 @@ QHash<AbstractCoordinatePlane*, PlaneInfo> Chart::Private::buildPlaneLayoutInfos
         }
         // Create a new grid layout for each plane that has no reference.
         p = planeInfos[plane];
-        if ( p.referencePlane == 0 ) {
+        if ( p.referencePlane == nullptr ) {
             p.gridLayout = new QGridLayout();
             p.gridLayout->setMargin( 0 );
             planeInfos[plane] = p;
@@ -645,7 +645,7 @@ void Chart::Private::slotLayoutPlanes()
     if ( planesLayout && dataAndLegendLayout )
         dataAndLegendLayout->removeItem( planesLayout );
 
-    const bool hadPlanesLayout = planesLayout != 0;
+    const bool hadPlanesLayout = planesLayout != nullptr;
     int left, top, right, bottom;
     if ( hadPlanesLayout )
         planesLayout->getContentsMargins(&left, &top, &right, &bottom);
@@ -709,10 +709,10 @@ void Chart::Private::slotLayoutPlanes()
                         {
                             gridPlaneLayout->addItem( curColComponent->diagramPlane, row + planeRowOffset, col + planeColOffset, 2, 2 );
                             curColComponent->diagramPlane->setParentLayout( gridPlaneLayout );
-                            QHBoxLayout *leftLayout = 0;
-                            QHBoxLayout *rightLayout = 0;
-                            QVBoxLayout *topLayout = 0;
-                            QVBoxLayout *bottomLayout = 0;
+                            QHBoxLayout *leftLayout = nullptr;
+                            QHBoxLayout *rightLayout = nullptr;
+                            QVBoxLayout *topLayout = nullptr;
+                            QVBoxLayout *bottomLayout = nullptr;
                             if ( curComponent->sharedSuccesor )
                             {
                                 gridPlaneLayout->addItem( curColComponent->sharedSuccesor->diagramPlane, row + planeRowOffset, col + planeColOffset, 2, 2 );
@@ -858,7 +858,7 @@ void Chart::Private::slotLayoutPlanes()
              * column of the shared grid. */
             planeLayoutItems << plane;
             plane->setParentLayout( planeLayout );
-            planeLayout->addItem( plane, row, column, 1, 1, 0 );
+            planeLayout->addItem( plane, row, column, 1, 1, {} );
             //qDebug() << "Chart slotLayoutPlanes() calls planeLayout->addItem("<< row << column << ")";
             planeLayout->setRowStretch( row, 2 );
             planeLayout->setColumnStretch( column, 2 );
@@ -870,7 +870,7 @@ void Chart::Private::slotLayoutPlanes()
                     continue;  // FIXME what about polar ?
                 }
 
-                if ( pi.referencePlane != 0 )
+                if ( pi.referencePlane != nullptr )
                 {
                     pi.topAxesLayout = planeInfos[ pi.referencePlane ].topAxesLayout;
                     pi.bottomAxesLayout = planeInfos[ pi.referencePlane ].bottomAxesLayout;
@@ -879,32 +879,32 @@ void Chart::Private::slotLayoutPlanes()
                 }
 
                 // collect all axes of a kind into sublayouts
-                if ( pi.topAxesLayout == 0 )
+                if ( pi.topAxesLayout == nullptr )
                 {
                     pi.topAxesLayout = new QVBoxLayout;
                     pi.topAxesLayout->setMargin( 0 );
                     pi.topAxesLayout->setObjectName( QString::fromLatin1( "topAxesLayout" ) );
                 }
-                if ( pi.bottomAxesLayout == 0 )
+                if ( pi.bottomAxesLayout == nullptr )
                 {
                     pi.bottomAxesLayout = new QVBoxLayout;
                     pi.bottomAxesLayout->setMargin( 0 );
                     pi.bottomAxesLayout->setObjectName( QString::fromLatin1( "bottomAxesLayout" ) );
                 }
-                if ( pi.leftAxesLayout == 0 )
+                if ( pi.leftAxesLayout == nullptr )
                 {
                     pi.leftAxesLayout = new QHBoxLayout;
                     pi.leftAxesLayout->setMargin( 0 );
                     pi.leftAxesLayout->setObjectName( QString::fromLatin1( "leftAxesLayout" ) );
                 }
-                if ( pi.rightAxesLayout == 0 )
+                if ( pi.rightAxesLayout == nullptr )
                 {
                     pi.rightAxesLayout = new QHBoxLayout;
                     pi.rightAxesLayout->setMargin( 0 );
                     pi.rightAxesLayout->setObjectName( QString::fromLatin1( "rightAxesLayout" ) );
                 }
 
-                if ( pi.referencePlane != 0 )
+                if ( pi.referencePlane != nullptr )
                 {
                     planeInfos[ pi.referencePlane ].topAxesLayout = pi.topAxesLayout;
                     planeInfos[ pi.referencePlane ].bottomAxesLayout = pi.bottomAxesLayout;
@@ -1209,7 +1209,7 @@ AbstractCoordinatePlane* Chart::coordinatePlane()
 {
     if ( d->coordinatePlanes.isEmpty() ) {
         qWarning() << "Chart::coordinatePlane: warning: no coordinate plane defined.";
-        return 0;
+        return nullptr;
     } else {
         return d->coordinatePlanes.first();
     }
@@ -1266,10 +1266,10 @@ void Chart::takeCoordinatePlane( AbstractCoordinatePlane* plane )
     const int idx = d->coordinatePlanes.indexOf( plane );
     if ( idx != -1 ) {
         d->coordinatePlanes.takeAt( idx );
-        disconnect( plane, 0, d, 0 );
-        disconnect( plane, 0, this, 0 );
+        disconnect( plane, nullptr, d, nullptr );
+        disconnect( plane, nullptr, this, nullptr );
         plane->removeFromParentLayout();
-        plane->setParent( 0 );
+        plane->setParent( nullptr );
         d->mouseClickedPlanes.removeAll(plane);
     }
     d->slotLayoutPlanes();
@@ -1344,7 +1344,7 @@ void Chart::paint( QPainter* painter, const QRect& target )
     GlobalMeasureScaling::setPaintDevice( painter->device() );
 
     // Output on a widget
-    if ( dynamic_cast< QWidget* >( painter->device() ) != 0 ) {
+    if ( dynamic_cast< QWidget* >( painter->device() ) != nullptr ) {
         GlobalMeasureScaling::setFactors( qreal( target.width() ) / qreal( geometry().size().width() ),
                                           qreal( target.height() ) / qreal( geometry().size().height() ) );
     } else {
@@ -1510,7 +1510,7 @@ void Chart::takeHeaderFooter( HeaderFooter* headerFooter )
 
     d->headerFooters.takeAt( idx );
     headerFooter->removeFromParentLayout();
-    headerFooter->setParentLayout( 0 );
+    headerFooter->setParentLayout( nullptr );
     d->textLayoutItems.remove( d->textLayoutItems.indexOf( headerFooter ) );
 
     d->slotResizePlanes();
@@ -1525,7 +1525,7 @@ void Chart::Private::slotHeaderFooterPositionChanged( HeaderFooter* hf )
 HeaderFooter* Chart::headerFooter()
 {
     if ( d->headerFooters.isEmpty() ) {
-        return 0;
+        return nullptr;
     } else {
         return d->headerFooters.first();
     }
@@ -1671,10 +1671,10 @@ void Chart::takeLegend( Legend* legend )
     }
 
     d->legends.takeAt( idx );
-    disconnect( legend, 0, d, 0 );
-    disconnect( legend, 0, this, 0 );
+    disconnect( legend, nullptr, d, nullptr );
+    disconnect( legend, nullptr, this, nullptr );
     // the following removes the legend from its layout and destroys its MyWidgetItem (the link to the layout)
-    legend->setParent( 0 );
+    legend->setParent( nullptr );
 
     d->slotResizePlanes();
     emit propertiesChanged();

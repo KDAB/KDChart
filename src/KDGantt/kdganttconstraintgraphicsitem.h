@@ -35,7 +35,7 @@ namespace KDGantt {
         enum { Type = UserType + 43 };
 
         explicit ConstraintGraphicsItem( const Constraint& c,
-                                         QGraphicsItem* parent = 0, GraphicsScene* scene = 0 );
+                                         QGraphicsItem* parent = nullptr, GraphicsScene* scene = nullptr );
         ~ConstraintGraphicsItem() override;
 
         /*reimp*/ int type() const override;
@@ -45,7 +45,7 @@ namespace KDGantt {
 
         /*reimp*/ QRectF boundingRect() const override;
         /*reimp*/ void paint( QPainter* painter, const QStyleOptionGraphicsItem* option,
-                              QWidget* widget = 0 ) override;
+                              QWidget* widget = nullptr ) override;
 
         inline const Constraint& constraint() const { return m_constraint; }
         Constraint proxyConstraint() const;

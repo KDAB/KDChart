@@ -30,7 +30,7 @@ namespace KDGantt {
         Q_OBJECT
         KDGANTT_DECLARE_PRIVATE_BASE_POLYMORPHIC( SummaryHandlingProxyModel )
     public:
-        explicit SummaryHandlingProxyModel( QObject* parent=0 );
+        explicit SummaryHandlingProxyModel( QObject* parent=nullptr );
         ~SummaryHandlingProxyModel() override;
 
         /*reimp*/ void setSourceModel( QAbstractItemModel* model ) override;

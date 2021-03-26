@@ -53,8 +53,8 @@ namespace KDChart {
     public:
         AbstractLayoutItem( Qt::Alignment itemAlignment = 0 ) :
             QLayoutItem( itemAlignment ),
-            mParent( 0 ),
-            mParentLayout( 0 ) {}
+            mParent( nullptr ),
+            mParentLayout( nullptr ) {}
 
         /**
          * Default impl: just call paint.

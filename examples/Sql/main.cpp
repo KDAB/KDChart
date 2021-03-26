@@ -45,7 +45,7 @@ using namespace KDChart;
  */
 class TransposeProxyModel : public QAbstractProxyModel{
 public:
-  explicit TransposeProxyModel(QObject* parent = 0) : QAbstractProxyModel(parent) {}
+  explicit TransposeProxyModel(QObject* parent = nullptr) : QAbstractProxyModel(parent) {}
   ~TransposeProxyModel() override {}
   QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const override { return index(sourceIndex.column(), sourceIndex.row()); }
   QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const override { return sourceModel()->index(proxyIndex.column(), proxyIndex.row()); }
@@ -62,9 +62,9 @@ public:
 class ChartWidget : public QWidget {
   Q_OBJECT
 public:
-  explicit ChartWidget(QWidget* parent=0)
+  explicit ChartWidget(QWidget* parent=nullptr)
     : QWidget(parent)
-    , m_model(0)
+    , m_model(nullptr)
   {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setHostName("localhost");

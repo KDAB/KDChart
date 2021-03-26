@@ -52,7 +52,7 @@ class KDCHART_EXPORT LeveyJenningsDiagram : public LineDiagram
 
 
 public:
-    explicit LeveyJenningsDiagram( QWidget* parent = 0, LeveyJenningsCoordinatePlane* plane = 0 );
+    explicit LeveyJenningsDiagram( QWidget* parent = nullptr, LeveyJenningsCoordinatePlane* plane = nullptr );
     ~LeveyJenningsDiagram() override;
 
     LineDiagram * clone() const override;

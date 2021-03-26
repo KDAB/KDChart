@@ -74,10 +74,10 @@ LabelPaintInfo::LabelPaintInfo( const LabelPaintInfo& other )
 }
 
 AbstractDiagram::Private::Private()
-  : diagram( 0 )
+  : diagram( nullptr )
   , doDumpPaintTime( false )
-  , plane( 0 )
-  , attributesModel( new PrivateAttributesModel(0,0) )
+  , plane( nullptr )
+  , attributesModel( new PrivateAttributesModel(nullptr,nullptr) )
   , allowOverlappingDataValueTexts( false )
   , antiAliasing( true )
   , percent( false )
@@ -156,10 +156,10 @@ void AbstractDiagram::Private::setAttributesModel( AttributesModel* amodel )
 }
 
 AbstractDiagram::Private::Private( const AbstractDiagram::Private& rhs ) :
-    diagram( 0 ),
+    diagram( nullptr ),
     doDumpPaintTime( rhs.doDumpPaintTime ),
     // Do not copy the plane
-    plane( 0 ),
+    plane( nullptr ),
     attributesModelRootIndex( QModelIndex() ),
     attributesModel( rhs.attributesModel ),
     allowOverlappingDataValueTexts( rhs.allowOverlappingDataValueTexts ),
@@ -168,7 +168,7 @@ AbstractDiagram::Private::Private( const AbstractDiagram::Private& rhs ) :
     datasetDimension( rhs.datasetDimension ),
     mCachedFontMetrics( rhs.cachedFontMetrics() )
 {
-    attributesModel = new PrivateAttributesModel( 0, 0);
+    attributesModel = new PrivateAttributesModel( nullptr, nullptr);
     attributesModel->initFrom( rhs.attributesModel );
 }
 

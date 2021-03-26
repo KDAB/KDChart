@@ -39,7 +39,7 @@ class KDCHART_EXPORT RingDiagram : public AbstractPieDiagram
 
 public:
     explicit RingDiagram(
-        QWidget* parent = 0, PolarCoordinatePlane* plane = 0 );
+        QWidget* parent = nullptr, PolarCoordinatePlane* plane = nullptr );
     ~RingDiagram() override;
 
 protected:

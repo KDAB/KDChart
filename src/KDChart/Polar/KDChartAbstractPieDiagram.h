@@ -41,7 +41,7 @@ class KDCHART_EXPORT AbstractPieDiagram : public AbstractPolarDiagram
 
 public:
     explicit AbstractPieDiagram(
-        QWidget* parent = 0, PolarCoordinatePlane* plane = 0 );
+        QWidget* parent = nullptr, PolarCoordinatePlane* plane = nullptr );
     ~AbstractPieDiagram() override;
 
     /**

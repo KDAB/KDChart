@@ -314,19 +314,19 @@ void StockDiagram::Private::drawOHLCBar( int dataset, const CartesianDiagramData
 
     LabelPaintCache lpc;
     if ( !open.hidden ) {
-        addLabel( &lpc, diagram->attributesModel()->mapToSource( open.index ), 0,
+        addLabel( &lpc, diagram->attributesModel()->mapToSource( open.index ), nullptr,
                             PositionPoints( leftOpenPoint ), Position::South, Position::South, open.value );
     }
     if ( !high.hidden ) {
-        addLabel( &lpc, diagram->attributesModel()->mapToSource( high.index ), 0,
+        addLabel( &lpc, diagram->attributesModel()->mapToSource( high.index ), nullptr,
                             PositionPoints( highPoint ), Position::South, Position::South, high.value );
     }
     if ( !low.hidden ) {
-        addLabel( &lpc, diagram->attributesModel()->mapToSource( low.index ), 0,
+        addLabel( &lpc, diagram->attributesModel()->mapToSource( low.index ), nullptr,
                             PositionPoints( lowPoint ), Position::South, Position::South, low.value );
     }
     if ( !close.hidden ) {
-        addLabel( &lpc, diagram->attributesModel()->mapToSource( close.index ), 0,
+        addLabel( &lpc, diagram->attributesModel()->mapToSource( close.index ), nullptr,
                             PositionPoints( rightClosePoint ), Position::South, Position::South, close.value );
     }
     paintDataValueTextsAndMarkers( context, lpc, false );
@@ -438,20 +438,20 @@ void StockDiagram::Private::drawCandlestick( int /*dataset*/, const CartesianDia
 
     LabelPaintCache lpc;
     if ( !low.hidden )
-        addLabel( &lpc, diagram->attributesModel()->mapToSource( low.index ), 0,
+        addLabel( &lpc, diagram->attributesModel()->mapToSource( low.index ), nullptr,
                   PositionPoints( lowPoint ), Position::South, Position::South, low.value );
     if ( drawCandlestick ) {
         // Both, the open as well as the close value are represented by this candlestick
         reverseMapper.addPolygon( row, openValueColumn(), drawnPolygon );
         reverseMapper.addPolygon( row, closeValueColumn(), drawnPolygon );
 
-        addLabel( &lpc, diagram->attributesModel()->mapToSource( open.index ), 0,
+        addLabel( &lpc, diagram->attributesModel()->mapToSource( open.index ), nullptr,
                   PositionPoints( candlestick.bottomRight() ), Position::South, Position::South, open.value );
-        addLabel( &lpc, diagram->attributesModel()->mapToSource( close.index ), 0,
+        addLabel( &lpc, diagram->attributesModel()->mapToSource( close.index ), nullptr,
                   PositionPoints( candlestick.topRight() ), Position::South, Position::South, close.value );
     }
     if ( !high.hidden )
-        addLabel( &lpc, diagram->attributesModel()->mapToSource( high.index ), 0,
+        addLabel( &lpc, diagram->attributesModel()->mapToSource( high.index ), nullptr,
                   PositionPoints( highPoint ), Position::South, Position::South, high.value );
 
     paintDataValueTextsAndMarkers( context, lpc, false );

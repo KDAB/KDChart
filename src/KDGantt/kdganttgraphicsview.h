@@ -65,7 +65,7 @@ namespace KDGantt {
         Q_PRIVATE_SLOT( d, void slotItemDoubleClicked( const QModelIndex& idx ) )
     public:
 
-        explicit GraphicsView( QWidget* parent=0 );
+        explicit GraphicsView( QWidget* parent=nullptr );
         ~GraphicsView() override;
 
         QAbstractItemModel* model() const;

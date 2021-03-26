@@ -208,7 +208,7 @@ void RadarDiagram::paint( PaintContext* ctx,
                 QModelIndex index = model()->index( iRow, iCol, rootIndex() ); // checked
                 const qreal value = model()->data( index ).toReal();
                 QPointF point = scaleToRealPosition( QPointF( value, iRow ), ctx->rectangle(), destRect, *ctx->coordinatePlane() );
-                d->addLabel( &d->labelPaintCache, index, 0, PositionPoints( point ),
+                d->addLabel( &d->labelPaintCache, index, nullptr, PositionPoints( point ),
                              Position::Center, Position::Center, value );
             }
         }

@@ -39,7 +39,7 @@ namespace KDChart {
 Measure::Measure()
   : mValue( 0.0 ),
     mMode( KDChartEnums::MeasureCalculationModeAuto ),
-    mArea( 0 ),
+    mArea( nullptr ),
     mOrientation( KDChartEnums::MeasureOrientationAuto )
 {
     // this bloc left empty intentionally
@@ -50,7 +50,7 @@ Measure::Measure( qreal value,
     KDChartEnums::MeasureOrientation orientation )
   : mValue( value ),
     mMode( mode ),
-    mArea( 0 ),
+    mArea( nullptr ),
     mOrientation( orientation )
 {
     // this bloc left empty intentionally
@@ -186,7 +186,7 @@ bool Measure::operator==( const Measure& r ) const
 }
 
 GlobalMeasureScaling::GlobalMeasureScaling() :
-    m_paintDevice( 0 )
+    m_paintDevice( nullptr )
 {
     mFactors.push( qMakePair(qreal(1.0), qreal(1.0)) );
 }

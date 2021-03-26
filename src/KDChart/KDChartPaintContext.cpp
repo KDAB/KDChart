@@ -40,8 +40,8 @@ public:
     AbstractCoordinatePlane* plane;
 
     Private()
-        : painter( 0 )
-        , plane ( 0 )
+        : painter( nullptr )
+        , plane ( nullptr )
     {}
 };
 

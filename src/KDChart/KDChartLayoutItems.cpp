@@ -220,7 +220,7 @@ KDChart::TextLayoutItem::TextLayoutItem()
     , mText()
     , mTextAlignment( Qt::AlignLeft )
     , mAttributes()
-    , mAutoReferenceArea( 0 )
+    , mAutoReferenceArea( nullptr )
     , mAutoReferenceOrientation( KDChartEnums::MeasureOrientationHorizontal )
     , cachedSizeHint() // default this to invalid to force just-in-time calculation before first use of sizeHint()
     , cachedFontSize( 0.0 )
@@ -297,7 +297,7 @@ KDChart::TextAttributes KDChart::TextLayoutItem::textAttributes() const
 
 Qt::Orientations KDChart::TextLayoutItem::expandingDirections() const
 {
-    return 0; // Grow neither vertically nor horizontally
+    return {}; // Grow neither vertically nor horizontally
 }
 
 QRect KDChart::TextLayoutItem::geometry() const
@@ -451,7 +451,7 @@ int KDChart::TextLayoutItem::marginWidth() const
 
 int KDChart::TextLayoutItem::marginWidth( const QSize& textSize ) const
 {
-    return qMin ( QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, 0, 0 ),
+    return qMin ( QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, nullptr, nullptr ),
                   // decrease frame size if the text is small
                   textSize.height() * 2 / 3 );
 }
@@ -641,7 +641,7 @@ KDChart::MarkerLayoutItem::MarkerLayoutItem( KDChart::AbstractDiagram* diagram,
 
 Qt::Orientations KDChart::MarkerLayoutItem::expandingDirections() const
 {
-    return 0; // Grow neither vertically nor horizontally
+    return {}; // Grow neither vertically nor horizontally
 }
 
 QRect KDChart::MarkerLayoutItem::geometry() const
@@ -736,7 +736,7 @@ KDChart::LineLayoutItem::LineLayoutItem( KDChart::AbstractDiagram* diagram,
 
 Qt::Orientations KDChart::LineLayoutItem::expandingDirections() const
 {
-    return 0; // Grow neither vertically nor horizontally
+    return {}; // Grow neither vertically nor horizontally
 }
 
 QRect KDChart::LineLayoutItem::geometry() const
@@ -835,7 +835,7 @@ KDChart::LineWithMarkerLayoutItem::LineWithMarkerLayoutItem(
 
 Qt::Orientations KDChart::LineWithMarkerLayoutItem::expandingDirections() const
 {
-    return 0; // Grow neither vertically nor horizontally
+    return {}; // Grow neither vertically nor horizontally
 }
 
 QRect KDChart::LineWithMarkerLayoutItem::geometry() const
@@ -895,7 +895,7 @@ KDChart::AutoSpacerLayoutItem::AutoSpacerLayoutItem(
 
 Qt::Orientations KDChart::AutoSpacerLayoutItem::expandingDirections() const
 {
-    return 0; // Grow neither vertically nor horizontally
+    return {}; // Grow neither vertically nor horizontally
 }
 
 QRect KDChart::AutoSpacerLayoutItem::geometry() const
@@ -931,7 +931,7 @@ static void updateCommonBrush( QBrush& commonBrush, bool& bStart, const KDChart:
             ! area.frameAttributes().isVisible() &&
             ba.isVisible() &&
             ba.pixmapMode() == KDChart::BackgroundAttributes::BackgroundPixmapModeNone &&
-            ba.brush().gradient() == 0 );
+            ba.brush().gradient() == nullptr );
     if ( bStart ) {
         bStart = false;
         commonBrush = hasSimpleBrush ? ba.brush() : QBrush();

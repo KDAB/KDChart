@@ -70,7 +70,7 @@ void  TernaryPointDiagram::paint (PaintContext *paintContext)
     d->paint( paintContext );
 
     // sanity checks:
-    if ( model() == 0 ) return;
+    if ( model() == nullptr ) return;
 
     QPainter* p = paintContext->painter();
     PainterSaver s( p );

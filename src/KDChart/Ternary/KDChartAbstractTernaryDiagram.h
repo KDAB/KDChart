@@ -42,8 +42,8 @@ namespace KDChart {
                                          TernaryCoordinatePlane )
 
     public:
-        explicit AbstractTernaryDiagram ( QWidget* parent = 0,
-                                          TernaryCoordinatePlane* plane = 0 );
+        explicit AbstractTernaryDiagram ( QWidget* parent = nullptr,
+                                          TernaryCoordinatePlane* plane = nullptr );
         ~AbstractTernaryDiagram() override;
 
         void resize (const QSizeF &area) override = 0;

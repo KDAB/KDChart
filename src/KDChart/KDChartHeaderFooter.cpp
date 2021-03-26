@@ -92,7 +92,7 @@ void HeaderFooter::init()
   */
 HeaderFooter * HeaderFooter::clone() const
 {
-    HeaderFooter* headerFooter = new HeaderFooter( new Private( *d ), 0 );
+    HeaderFooter* headerFooter = new HeaderFooter( new Private( *d ), nullptr );
     headerFooter->setType( type() );
     headerFooter->setPosition( position() );
     headerFooter->setText( text() );

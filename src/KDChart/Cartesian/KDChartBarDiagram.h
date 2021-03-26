@@ -52,7 +52,7 @@ public:
     friend class BarDiagramType;
 
     explicit BarDiagram(
-        QWidget* parent = 0, CartesianCoordinatePlane* plane = 0 );
+        QWidget* parent = nullptr, CartesianCoordinatePlane* plane = nullptr );
     ~BarDiagram() override;
 
     virtual BarDiagram * clone() const;

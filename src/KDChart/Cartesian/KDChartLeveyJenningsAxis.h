@@ -59,7 +59,7 @@ namespace KDChart {
           *
           * \sa AbstractCartesianDiagram::addAxis
           */
-        explicit LeveyJenningsAxis ( LeveyJenningsDiagram* diagram = 0 );
+        explicit LeveyJenningsAxis ( LeveyJenningsDiagram* diagram = nullptr );
         ~LeveyJenningsAxis() override;
 
         LeveyJenningsGridAttributes::GridType type() const;

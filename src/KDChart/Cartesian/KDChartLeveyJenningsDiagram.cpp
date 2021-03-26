@@ -313,7 +313,7 @@ float LeveyJenningsDiagram::calculatedStandardDeviation() const
 
 void LeveyJenningsDiagram::setModel( QAbstractItemModel* model )
 {
-    if ( this->model() != 0 )
+    if ( this->model() != nullptr )
     {
         disconnect( this->model(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex& ) ),
                                    this, SLOT( calculateMeanAndStandardDeviation() ) );
@@ -331,7 +331,7 @@ void LeveyJenningsDiagram::setModel( QAbstractItemModel* model )
                                    this, SLOT( calculateMeanAndStandardDeviation() ) );
     }
     LineDiagram::setModel( model );
-    if ( this->model() != 0 )
+    if ( this->model() != nullptr )
     {
         connect( this->model(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex& ) ),
                                 this, SLOT( calculateMeanAndStandardDeviation() ) );

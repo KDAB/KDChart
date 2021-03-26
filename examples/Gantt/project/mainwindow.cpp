@@ -59,7 +59,7 @@ class ItemTypeComboBox : public QComboBox {
     Q_OBJECT
     Q_PROPERTY( KDGantt::ItemType itemType READ itemType WRITE setItemType )
 public:
-    explicit ItemTypeComboBox( QWidget* parent=0 );
+    explicit ItemTypeComboBox( QWidget* parent=nullptr );
 
     KDGantt::ItemType itemType() const;
 public slots:
@@ -86,7 +86,7 @@ void ItemTypeComboBox::setItemType( KDGantt::ItemType typ )
 
 class MyItemDelegate : public KDGantt::ItemDelegate {
 public:
-    explicit MyItemDelegate( QObject* parent=0 );
+    explicit MyItemDelegate( QObject* parent=nullptr );
 
     /*reimp*/ QWidget* createEditor( QWidget* parent,
                                      const QStyleOptionViewItem& option,
@@ -157,7 +157,7 @@ void MyItemDelegate::drawDisplay( QPainter* painter, const QStyleOptionViewItem&
 class DateTimeGrid : public KDGantt::DateTimeGrid
 {
 public:
-    DateTimeGrid(QObject* parent=0) {
+    DateTimeGrid(QObject* parent=nullptr) {
         setParent(parent);
         setFreeDays( QSet<Qt::DayOfWeek>() );
         setFreeDaysBrush( QBrush( Qt::NoBrush ) );

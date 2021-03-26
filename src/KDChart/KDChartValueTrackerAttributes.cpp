@@ -81,7 +81,7 @@ ValueTrackerAttributes & ValueTrackerAttributes::operator=( const ValueTrackerAt
 
 ValueTrackerAttributes::~ValueTrackerAttributes()
 {
-    delete _d; _d = 0;
+    delete _d; _d = nullptr;
 }
 
 

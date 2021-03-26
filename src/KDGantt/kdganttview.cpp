@@ -48,7 +48,7 @@ using namespace KDGantt;
 namespace {
     class HeaderView : public QHeaderView {
     public:
-        explicit HeaderView( QWidget* parent=0 ) : QHeaderView( Qt::Horizontal, parent ) {
+        explicit HeaderView( QWidget* parent=nullptr ) : QHeaderView( Qt::Horizontal, parent ) {
         }
 
         QSize sizeHint() const override { QSize s = QHeaderView::sizeHint(); s.rheight() *= 2; return s; }
@@ -93,9 +93,9 @@ void KDGanttTreeView::collapseAll(QModelIndex index)
 View::Private::Private(View* v)
     : q(v),
       splitter(v),
-      rowController(0),
+      rowController(nullptr),
       gfxview( new GraphicsView( &splitter ) ),
-      model(0)
+      model(nullptr)
 {
     //init();
 }
@@ -624,7 +624,7 @@ void View::print( QPainter* painter, qreal start, qreal end, const QRectF& targe
 #include <QListView>
 
 KDAB_SCOPED_UNITTEST_SIMPLE( KDGantt, View, "test" ) {
-    View view( 0 );
+    View view( nullptr );
 #if 0 // GUI tests do not work well on the server
     QTimer::singleShot( 1000, qApp, SLOT( quit() ) );
     view.show();

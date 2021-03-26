@@ -685,7 +685,7 @@ void PieDiagram::addSliceLabel( LabelPaintCache* lpc, const QRectF& drawPosition
         }
     }
 
-    d->addLabel( lpc, index, 0, points, Position::Center, Position::Center,
+    d->addLabel( lpc, index, nullptr, points, Position::Center, Position::Center,
                  angleLen * sum / 360, favoriteTextAngle );
 }
 
