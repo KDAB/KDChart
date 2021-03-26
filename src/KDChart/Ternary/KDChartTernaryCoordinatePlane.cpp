@@ -166,7 +166,7 @@ void TernaryCoordinatePlane::paint( QPainter* painter )
         ctx.setRectangle ( drawArea );
 
         // paint the coordinate system rulers:
-        Q_ASSERT( d->grid != 0 );
+        Q_ASSERT( d->grid != nullptr );
         d->grid->drawGrid( &ctx );
 
         // paint the diagrams:

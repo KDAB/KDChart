@@ -96,7 +96,7 @@ class PolarCoordinatePlane::Private : public AbstractCoordinatePlane::Private
     friend class PolarCoordinatePlane;
 public:
     explicit Private()
-        : currentTransformation(0)
+        : currentTransformation(nullptr)
         , initialResizeEventReceived(false )
         , hasOwnGridAttributesCircular ( false )
         , hasOwnGridAttributesSagittal ( false )

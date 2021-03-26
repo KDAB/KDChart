@@ -128,7 +128,7 @@ namespace KDChart {
             SamplingSeven
         };
 
-        explicit CartesianDiagramDataCompressor( QObject* parent = 0 );
+        explicit CartesianDiagramDataCompressor( QObject* parent = nullptr );
 
         // input: model, chart resolution, approximation mode
         void setModel( QAbstractItemModel* );

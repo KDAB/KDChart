@@ -183,7 +183,7 @@ public:
      * padding settings should affect the position of the data value texts' reference points.
      * \sa calculatedPoint, setReferenceArea, setReferencePosition, setHorizontalPadding, setVerticalPadding
      */
-    const QPointF referencePoint(qreal* polarDegrees=0) const;
+    const QPointF referencePoint(qreal* polarDegrees=nullptr) const;
 
     /**
      * \brief Calculate a point, accordin to the reference area/position and the padding.

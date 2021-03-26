@@ -85,7 +85,7 @@ BarAttributes& BarAttributes::operator= ( const BarAttributes& r )
 
 BarAttributes::~BarAttributes()
 {
-    delete _d; _d = 0;
+    delete _d; _d = nullptr;
 }
 
 

@@ -45,7 +45,7 @@ namespace KDChart {
         KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( TernaryAxis, AbstractDiagram* )
 
     public:
-        explicit TernaryAxis ( AbstractTernaryDiagram* diagram = 0 );
+        explicit TernaryAxis ( AbstractTernaryDiagram* diagram = nullptr );
         ~TernaryAxis() override;
 
         void  paintAll( QPainter &) override;

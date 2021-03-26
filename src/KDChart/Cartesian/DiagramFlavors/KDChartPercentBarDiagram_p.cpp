@@ -194,7 +194,7 @@ void PercentBarDiagram::paint( PaintContext* ctx )
             const qreal barHeight = previousPoint.y() - point.y();
 
             const QRectF rect( point, QSizeF( barWidth, barHeight ) );
-            m_private->addLabel( &lpc, sourceIndex, 0, PositionPoints( rect ), Position::North,
+            m_private->addLabel( &lpc, sourceIndex, nullptr, PositionPoints( rect ), Position::North,
                                 Position::South, value );
             paintBars( ctx, sourceIndex, rect, maxDepth );
         }

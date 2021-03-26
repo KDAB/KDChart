@@ -75,7 +75,7 @@ LineAttributes& LineAttributes::operator= ( const LineAttributes& r )
 
 LineAttributes::~LineAttributes()
 {
-    delete _d; _d = 0;
+    delete _d; _d = nullptr;
 }
 
 bool LineAttributes::operator==( const LineAttributes& r ) const

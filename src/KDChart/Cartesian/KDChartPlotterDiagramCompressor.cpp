@@ -92,7 +92,7 @@ PlotterDiagramCompressor::Iterator::~Iterator()
 
 bool PlotterDiagramCompressor::Iterator::isValid() const
 {
-    if ( m_parent == 0 )
+    if ( m_parent == nullptr )
         return false;
     return m_dataset >= 0 && m_index >= 0 && m_parent.data()->rowCount() > m_index;
 }
@@ -413,7 +413,7 @@ void PlotterDiagramCompressor::Iterator::invalidate()
 
 PlotterDiagramCompressor::Private::Private( PlotterDiagramCompressor *parent )
     : m_parent( parent )
-    , m_model( 0 )
+    , m_model( nullptr )
     , m_mergeRadius( 0.1 )
     , m_maxSlopeRadius( 0.1 )
     , m_boundary( qMakePair( QPointF( std::numeric_limits<qreal>::quiet_NaN(), std::numeric_limits<qreal>::quiet_NaN() )
@@ -427,7 +427,7 @@ PlotterDiagramCompressor::Private::Private( PlotterDiagramCompressor *parent )
 
 void PlotterDiagramCompressor::Private::setModelToZero()
 {
-    m_model = 0;
+    m_model = nullptr;
 }
 
 inline bool inBoundary( const QPair< qreal, qreal > &bounds, qreal value )
@@ -795,7 +795,7 @@ PlotterDiagramCompressor::PlotterDiagramCompressor(QObject *parent)
 PlotterDiagramCompressor::~PlotterDiagramCompressor()
 {
     delete d;
-    d = 0;
+    d = nullptr;
 }
 
 void PlotterDiagramCompressor::setForcedDataBoundaries( const QPair< qreal, qreal > &bounds, Qt::Orientation direction )

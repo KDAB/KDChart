@@ -29,7 +29,7 @@
 using namespace KDChart;
 
 AbstractCartesianDiagram::Private::Private()
-    : referenceDiagram( 0 )
+    : referenceDiagram( nullptr )
 {
 }
 
@@ -96,7 +96,7 @@ void AbstractCartesianDiagram::takeAxis( CartesianAxis *axis )
     if ( idx != -1 )
         d->axesList.takeAt( idx );
     axis->deleteObserver( this );
-    axis->setParentWidget( 0 );
+    axis->setParentWidget( nullptr );
     layoutPlanes();
 }
 

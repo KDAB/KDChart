@@ -149,7 +149,7 @@ namespace UnitTest {
   template <typename T_Test>
   class GenericFactory : public TestFactory {
   public:
-    GenericFactory( const char * group=0 ) {
+    GenericFactory( const char * group=nullptr ) {
       TestRegistry::instance()->registerTestFactory( this, group );
     }
     Test * create() const override { return new T_Test(); }

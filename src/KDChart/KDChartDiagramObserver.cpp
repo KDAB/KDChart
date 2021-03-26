@@ -102,8 +102,8 @@ void DiagramObserver::slotDestroyed(QObject*)
     //qDebug() << this << "emits signal\n"
     //        "    emit diagramDestroyed(" <<  m_diagram << ")";
     AbstractDiagram* diag = m_diagram;
-    disconnect( m_diagram, 0, this, 0);
-    m_diagram = 0;
+    disconnect( m_diagram, nullptr, this, nullptr);
+    m_diagram = nullptr;
     emit diagramDestroyed( diag );
 }
 

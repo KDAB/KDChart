@@ -53,7 +53,7 @@ namespace KDChart {
         enum AxesCalcMode { Linear, Logarithmic };
 
     protected:
-        explicit AbstractCoordinatePlane( Chart* parent = 0 );
+        explicit AbstractCoordinatePlane( Chart* parent = nullptr );
 
     public:
         ~AbstractCoordinatePlane() override;
@@ -83,7 +83,7 @@ namespace KDChart {
          *
          * \sa addDiagram, takeDiagram
          */
-        virtual void replaceDiagram( AbstractDiagram* diagram, AbstractDiagram* oldDiagram = 0 );
+        virtual void replaceDiagram( AbstractDiagram* diagram, AbstractDiagram* oldDiagram = nullptr );
 
         /**
          * Removes the diagram from the plane, without deleting it.
@@ -255,7 +255,7 @@ namespace KDChart {
          */
         void setCornerSpacersEnabled( bool enable );
 
-        virtual AbstractCoordinatePlane* sharedAxisMasterPlane( QPainter* p = 0 ); // KDChart 3: const method?
+        virtual AbstractCoordinatePlane* sharedAxisMasterPlane( QPainter* p = nullptr ); // KDChart 3: const method?
 
 
         /** pure virtual in QLayoutItem */

@@ -302,7 +302,7 @@ void CartesianDiagramDataCompressor::setModel( QAbstractItemModel* model )
         return;
     }
 
-    if ( m_model != 0 ) {
+    if ( m_model != nullptr ) {
         disconnect( m_model, SIGNAL( headerDataChanged( Qt::Orientation, int, int ) ),
                  this, SLOT( slotModelHeaderDataChanged( Qt::Orientation, int, int ) ) );
         disconnect( m_model, SIGNAL( dataChanged( QModelIndex, QModelIndex ) ),
@@ -327,12 +327,12 @@ void CartesianDiagramDataCompressor::setModel( QAbstractItemModel* model )
                  this, SLOT( slotColumnsAboutToBeRemoved( QModelIndex, int, int ) ) );
         disconnect( m_model, SIGNAL( modelReset() ),
                     this, SLOT( rebuildCache() ) );
-        m_model = 0;
+        m_model = nullptr;
     }
 
     m_modelCache.setModel( model );
 
-    if ( model != 0 ) {
+    if ( model != nullptr ) {
         m_model = model;
         connect( m_model, SIGNAL( headerDataChanged( Qt::Orientation, int, int ) ),
                  SLOT( slotModelHeaderDataChanged( Qt::Orientation, int, int ) ) );

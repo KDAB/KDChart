@@ -41,7 +41,7 @@ class FrameWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit FrameWidget( QWidget * parent = 0, Qt::WFlags f = {} );
+    explicit FrameWidget( QWidget * parent = nullptr, Qt::WFlags f = {} );
 
     void paintEvent( QPaintEvent* ) override;
 

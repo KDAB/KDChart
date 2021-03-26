@@ -92,7 +92,7 @@ TextAttributes & TextAttributes::operator=( const TextAttributes& r )
 
 TextAttributes::~TextAttributes()
 {
-    delete _d; _d = 0;
+    delete _d; _d = nullptr;
 }
 
 

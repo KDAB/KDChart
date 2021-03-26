@@ -29,7 +29,7 @@
 
 FrameWidget::FrameWidget( QWidget* parent, Qt::WFlags f )
     : QWidget( parent, f )
-    , mChart( 0 )
+    , mChart( nullptr )
 {
     // this bloc left empty intentionally
 }

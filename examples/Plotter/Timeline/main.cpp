@@ -39,7 +39,7 @@
 class ChartWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit ChartWidget(QWidget* parent = 0) : QWidget(parent), m_counter(0) {
+    explicit ChartWidget(QWidget* parent = nullptr) : QWidget(parent), m_counter(0) {
         QSplitter* splitter = new QSplitter(this);
         QHBoxLayout* l = new QHBoxLayout(this);
         setLayout(l);

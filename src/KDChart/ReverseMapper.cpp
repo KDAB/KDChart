@@ -36,20 +36,20 @@
 using namespace KDChart;
 
 ReverseMapper::ReverseMapper()
-    : m_scene( 0 )
-    , m_diagram( 0 )
+    : m_scene( nullptr )
+    , m_diagram( nullptr )
 {
 }
 
 ReverseMapper::ReverseMapper( AbstractDiagram* diagram )
-    : m_scene( 0 )
+    : m_scene( nullptr )
     , m_diagram( diagram )
 {
 }
 
 ReverseMapper::~ReverseMapper()
 {
-    delete m_scene; m_scene = 0;
+    delete m_scene; m_scene = nullptr;
 }
 
 void ReverseMapper::setDiagram( AbstractDiagram* diagram )

@@ -34,9 +34,9 @@
 using namespace KDChart;
 
 Plotter::Private::Private()
-    : implementor( 0 )
-    , normalPlotter( 0 )
-    , percentPlotter( 0 )
+    : implementor( nullptr )
+    , normalPlotter( nullptr )
+    , percentPlotter( nullptr )
 {
 }
 
@@ -91,7 +91,7 @@ bool Plotter::compare( const Plotter* other ) const
 {
     if ( other == this )
         return true;
-    if ( other == 0 )
+    if ( other == nullptr )
         return false;
     return  // compare the base class
             ( static_cast< const AbstractCartesianDiagram* >( this )->compare( other ) ) &&
@@ -107,12 +107,12 @@ void Plotter::connectAttributesModel( AttributesModel* newModel )
 
     if ( useDataCompression() == Plotter::NONE )
     {
-        d->plotterCompressor.setModel( 0 );
+        d->plotterCompressor.setModel( nullptr );
         AbstractCartesianDiagram::connectAttributesModel( newModel );
     }
     else
     {
-        d->compressor.setModel( 0 );
+        d->compressor.setModel( nullptr );
         if ( attributesModel() != d->plotterCompressor.model() )
         {
             d->plotterCompressor.setModel( attributesModel() );
@@ -141,7 +141,7 @@ void Plotter::setUseDataCompression( Plotter::CompressionMode value )
         d->implementor->setUseCompression( value );
         if ( useDataCompression() != Plotter::NONE )
         {
-            d->compressor.setModel( NULL );
+            d->compressor.setModel( nullptr );
             if ( attributesModel() != d->plotterCompressor.model() )                
                 d->plotterCompressor.setModel( attributesModel() );
         }

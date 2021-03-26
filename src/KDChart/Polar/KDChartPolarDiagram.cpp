@@ -166,7 +166,7 @@ void PolarDiagram::paint( PaintContext* ctx,
                 QPointF point = coordinatePlane()->translate(
                         QPointF( value, iRow ) ) + ctx->rectangle().topLeft();
                 //qDebug() << point;
-                d->addLabel( &d->labelPaintCache, index, 0, PositionPoints( point ),
+                d->addLabel( &d->labelPaintCache, index, nullptr, PositionPoints( point ),
                              Position::Center, Position::Center, value );
             }
         }

@@ -55,8 +55,8 @@ public:
 
 MainWindow::MainWindow( QWidget* parent, Qt::WindowFlags flags )
     : QMainWindow( parent, flags ),
-      smallLegend( 0 ),
-      detailedLegend( 0 ),
+      smallLegend( nullptr ),
+      detailedLegend( nullptr ),
       ui( new Ui::MainWindow )
 {
     ui->setupUi( this );

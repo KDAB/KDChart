@@ -41,7 +41,7 @@ class KDCHART_EXPORT HeaderFooter : public TextArea
     KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( HeaderFooter, Chart* )
 
 public:
-    HeaderFooter( Chart* parent = 0 );
+    HeaderFooter( Chart* parent = nullptr );
     ~HeaderFooter() override;
 
     virtual HeaderFooter * clone() const;

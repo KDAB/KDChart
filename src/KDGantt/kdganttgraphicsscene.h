@@ -49,7 +49,7 @@ namespace KDGantt {
         Q_OBJECT
         KDGANTT_DECLARE_PRIVATE_BASE_POLYMORPHIC( GraphicsScene )
     public:
-        explicit GraphicsScene( QObject* parent=0 );
+        explicit GraphicsScene( QObject* parent=nullptr );
         ~GraphicsScene() override;
 
         //qreal dateTimeToSceneX( const QDateTime& dt ) const;

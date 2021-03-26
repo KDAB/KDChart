@@ -98,7 +98,7 @@ namespace KDChart
     {
     public:
         ModelDataCache()
-            : m_model( 0 ),
+            : m_model( nullptr ),
               m_connector( *this )
         {
         }
@@ -158,12 +158,12 @@ namespace KDChart
 
         void setModel( QAbstractItemModel* model )
         {
-            if ( m_model != 0 )
+            if ( m_model != nullptr )
                 m_connector.disconnectSignals( m_model );
 
             m_model = model;
 
-            if ( m_model != 0 )
+            if ( m_model != nullptr )
                 m_connector.connectSignals( m_model );
 
             modelReset();
@@ -194,7 +194,7 @@ namespace KDChart
 
         T fetchFromModel( int row, int column, int role ) const
         {
-            Q_ASSERT( m_model != 0 );
+            Q_ASSERT( m_model != nullptr );
 
             const QModelIndex index = m_model->index( row, column, m_rootIndex );
             const QVariant data = index.data( role );
@@ -209,7 +209,7 @@ namespace KDChart
 
         void columnsInserted( const QModelIndex& parent, int start, int end ) override
         {
-            Q_ASSERT( m_model != 0 );
+            Q_ASSERT( m_model != nullptr );
             Q_ASSERT( parent.model() == m_model || !parent.isValid() );
 
             if ( parent != m_rootIndex )
@@ -230,7 +230,7 @@ namespace KDChart
 
         void columnsRemoved( const QModelIndex& parent, int start, int end ) override
         {
-            Q_ASSERT( m_model != 0 );
+            Q_ASSERT( m_model != nullptr );
             Q_ASSERT( parent.model() == m_model || !parent.isValid() );
 
             if ( parent != m_rootIndex )
@@ -252,7 +252,7 @@ namespace KDChart
         {
             if ( !m_model )
                 return;
-            Q_ASSERT( m_model != 0 );
+            Q_ASSERT( m_model != nullptr );
             Q_ASSERT( topLeft.parent() == bottomRight.parent() );
 
             if ( !topLeft.isValid() || !bottomRight.isValid() || topLeft.parent() != m_rootIndex )
@@ -290,7 +290,7 @@ namespace KDChart
             m_data.clear();
             m_cacheValid.clear();
 
-            if ( m_model == 0 )
+            if ( m_model == nullptr )
                 return;
 
             m_data.fill( QVector< T >( m_model->columnCount( m_rootIndex ) ), m_model->rowCount( m_rootIndex ) );
@@ -302,7 +302,7 @@ namespace KDChart
 
         void rowsInserted( const QModelIndex& parent, int start, int end ) override
         {
-            Q_ASSERT( m_model != 0 );
+            Q_ASSERT( m_model != nullptr );
             Q_ASSERT( parent.model() == m_model || !parent.isValid() );
 
             if ( parent != m_rootIndex || start >= m_model->rowCount(m_rootIndex) )
@@ -320,7 +320,7 @@ namespace KDChart
 
         void rowsRemoved( const QModelIndex& parent, int start, int end ) override
         {
-            Q_ASSERT( m_model != 0 );
+            Q_ASSERT( m_model != nullptr );
             Q_ASSERT( parent.model() == m_model || !parent.isValid() );
 
             if ( parent != m_rootIndex || start >= m_data.count() )
@@ -338,7 +338,7 @@ namespace KDChart
         void resetModel() override
         {
             // no need to disconnect, this is a response to SIGNAL( destroyed() )
-            m_model = 0;
+            m_model = nullptr;
             modelReset();
         }
 

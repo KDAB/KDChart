@@ -61,7 +61,7 @@ namespace KDChart {
         explicit inline AbstractDiagram(
             Private *p, QWidget* parent, AbstractCoordinatePlane* plane );
         explicit AbstractDiagram (
-            QWidget* parent = 0, AbstractCoordinatePlane* plane = 0 );
+            QWidget* parent = nullptr, AbstractCoordinatePlane* plane = nullptr );
     public:
         ~AbstractDiagram() override;
 
@@ -734,7 +734,7 @@ namespace KDChart {
     class PrivateAttributesModel : public AttributesModel {
         Q_OBJECT
     public:
-        explicit PrivateAttributesModel( QAbstractItemModel* model, QObject * parent = 0 )
+        explicit PrivateAttributesModel( QAbstractItemModel* model, QObject * parent = nullptr )
             : AttributesModel(model,parent) {}
     };
 }

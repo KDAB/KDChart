@@ -172,7 +172,7 @@ void NormalLyingBarDiagram::paint( PaintContext* ctx )
                                         QPointF( 0, barWidth );
 
             const QRectF rect = QRectF( topLeft, bottomRight ).translated( 1.0, offset );
-            m_private->addLabel( &lpc, sourceIndex, 0, PositionPoints( rect ), Position::North,
+            m_private->addLabel( &lpc, sourceIndex, nullptr, PositionPoints( rect ), Position::North,
                                  Position::South, point.value );
             paintBars( ctx, sourceIndex, rect, maxDepth );
 

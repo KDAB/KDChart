@@ -86,7 +86,7 @@ namespace KDGantt {
         qreal dateTimeToChartX( const QDateTime& dt ) const;
         QDateTime chartXtoDateTime( qreal x ) const;
 
-        int tabHeight( const QString& txt, QWidget* widget = 0 ) const;
+        int tabHeight( const QString& txt, QWidget* widget = nullptr ) const;
         void getAutomaticFormatters( DateTimeScaleFormatter** lower, DateTimeScaleFormatter** upper);
 
         class DateTextFormatter {

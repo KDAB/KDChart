@@ -55,7 +55,7 @@ namespace KDGantt {
 
     public:
 
-        explicit View(QWidget* parent=0);
+        explicit View(QWidget* parent=nullptr);
         ~View() override;
 
         QAbstractItemModel* model() const;

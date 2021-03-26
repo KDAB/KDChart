@@ -29,7 +29,7 @@
 class ChartWidget : public QWidget {
   Q_OBJECT
 public:
-  explicit ChartWidget(QWidget* parent=0)
+  explicit ChartWidget(QWidget* parent=nullptr)
     : QWidget(parent)
   {
 
