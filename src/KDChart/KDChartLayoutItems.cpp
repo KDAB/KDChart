@@ -297,7 +297,7 @@ KDChart::TextAttributes KDChart::TextLayoutItem::textAttributes() const
 
 Qt::Orientations KDChart::TextLayoutItem::expandingDirections() const
 {
-    return 0; // Grow neither vertically nor horizontally
+    return {}; // Grow neither vertically nor horizontally
 }
 
 QRect KDChart::TextLayoutItem::geometry() const
@@ -641,7 +641,7 @@ KDChart::MarkerLayoutItem::MarkerLayoutItem( KDChart::AbstractDiagram* diagram,
 
 Qt::Orientations KDChart::MarkerLayoutItem::expandingDirections() const
 {
-    return 0; // Grow neither vertically nor horizontally
+    return {}; // Grow neither vertically nor horizontally
 }
 
 QRect KDChart::MarkerLayoutItem::geometry() const
@@ -736,7 +736,7 @@ KDChart::LineLayoutItem::LineLayoutItem( KDChart::AbstractDiagram* diagram,
 
 Qt::Orientations KDChart::LineLayoutItem::expandingDirections() const
 {
-    return 0; // Grow neither vertically nor horizontally
+    return {}; // Grow neither vertically nor horizontally
 }
 
 QRect KDChart::LineLayoutItem::geometry() const
@@ -835,7 +835,7 @@ KDChart::LineWithMarkerLayoutItem::LineWithMarkerLayoutItem(
 
 Qt::Orientations KDChart::LineWithMarkerLayoutItem::expandingDirections() const
 {
-    return 0; // Grow neither vertically nor horizontally
+    return {}; // Grow neither vertically nor horizontally
 }
 
 QRect KDChart::LineWithMarkerLayoutItem::geometry() const
@@ -895,7 +895,7 @@ KDChart::AutoSpacerLayoutItem::AutoSpacerLayoutItem(
 
 Qt::Orientations KDChart::AutoSpacerLayoutItem::expandingDirections() const
 {
-    return 0; // Grow neither vertically nor horizontally
+    return {}; // Grow neither vertically nor horizontally
 }
 
 QRect KDChart::AutoSpacerLayoutItem::geometry() const

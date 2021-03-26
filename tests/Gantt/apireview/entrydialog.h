@@ -42,7 +42,7 @@ class EntryDialog : public QDialog {
     Q_OBJECT
 
 public:
-    EntryDialog( const QAbstractItemModel* model, QWidget* parent = 0, Qt::WindowFlags f = 0 );
+    EntryDialog( const QAbstractItemModel* model, QWidget* parent = 0, Qt::WindowFlags f = {} );
     void initFrom( const QModelIndex& index, const KDGantt::ConstraintModel* constraintModel );
     
     QString name() const;

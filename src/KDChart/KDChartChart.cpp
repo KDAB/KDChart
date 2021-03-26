@@ -156,7 +156,7 @@ using namespace KDChart;
 class MyWidgetItem : public QWidgetItem
 {
 public:
-    explicit MyWidgetItem(QWidget *w, Qt::Alignment alignment = 0)
+    explicit MyWidgetItem(QWidget *w, Qt::Alignment alignment = {})
         : QWidgetItem( w )
     {
         setAlignment( alignment );
@@ -191,7 +191,7 @@ public:
     {
         QWidget* w = const_cast< MyWidgetItem * >( this )->widget();
         if ( isEmpty() ) {
-            return Qt::Orientations(0);
+            return {};
         }
         Qt::Orientations e = w->sizePolicy().expandingDirections();
         return e;
@@ -858,7 +858,7 @@ void Chart::Private::slotLayoutPlanes()
              * column of the shared grid. */
             planeLayoutItems << plane;
             plane->setParentLayout( planeLayout );
-            planeLayout->addItem( plane, row, column, 1, 1, 0 );
+            planeLayout->addItem( plane, row, column, 1, 1 );
             //qDebug() << "Chart slotLayoutPlanes() calls planeLayout->addItem("<< row << column << ")";
             planeLayout->setRowStretch( row, 2 );
             planeLayout->setColumnStretch( column, 2 );
