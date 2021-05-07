@@ -38,7 +38,7 @@ Get Involved
 ============
 KDAB will happily accept external contributions, but substantial
 contributions will require a signed Copyright Assignment Agreement
-(see doc/KDChart-CopyrightAssignmentForm.docx).
+(see doc/KDChart-CopyrightAssignmentForm.pdf).
 
 Email info@kdab.com for more information about the Copyright Assignment Agreement.
 
