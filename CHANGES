@@ -1,15 +1,22 @@
 Release Highlights
 ==================
 
-** WARNING ** Version 2.7.x will be the last to support Qt4 **
-
 Version 3.0.0 (unreleased):
 ---------------------------
- * (remove Qt4 support)
+ * (support Qt6 and Qt6 Python bindings)
  * (require C++11)
+ * (remove qmake buildsystem)
 
-Version 2.7.3:
---------------
+Version 2.8.0 (unreleased):
+---------------------------
+ * (remove Qt4 support)
+ * (deprecate qmake buildsystem)
+ * (REUSE)
+
+Version 2.7.3 (unreleased):
+---------------------------
+ * Last version supporting Qt4
+ * CMake buildsystem - increase min version to 2.8.12 (2.8.7 is deprecated by KitWare)
  * CMake buildsystem - fix library versioning for RelWithDebInfo on Windows
 
 Version 2.7.2:
