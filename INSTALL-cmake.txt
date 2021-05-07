@@ -83,3 +83,15 @@ On systems with both Qt4 and Qt5 available, the CMake buildsystem will always
 attempt to use Qt5. To force a Qt build, pass -DKDChart_ENFORCE_QT4_BUILD=true
 to CMake, as in:
   % cmake -DKDChart_ENFORCE_QT4_BUILD=true
+
+== Using ==
+From your CMake project, add
+
+    find_package(KDChart CONFIG REQUIRED)
+
+and link to the imported target KDChart::kdchart.
+That's all you need to do (the imported target also brings in the include directories)
+
+You may also need to point the CMAKE_MODULE_PATH environment variable depending
+on where you installed KDChart.
+
