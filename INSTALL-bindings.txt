@@ -7,7 +7,7 @@ You need these:
  - Qt 5.12 or higher
  - QtForPython provided by the Qt project.
 
-For QtForPython you install must use the exact same Qt version you are using when building KD Chart.
+For QtForPython you must use the exact same Qt version used when building KD Chart.
 
 As this time, you cannot get shiboken2-generator because the wheels are not on PyPi.
 To use the wheels do this:
@@ -36,3 +36,25 @@ might require setting the `PYTHONPATH` env variable to point to that path when
 running applications.  Alternatively, configure the bindings install location by
 passing (for example) `-DKDChart_BINDINGS_INSTALL_PREFIX=/usr/lib/python3.8/site-packages`
 to CMake (adjust to the python path on your system).
+
+Build Issues:
+ * If you see errors like "Unable to locate Clang's built-in include directory"
+   then first make sure you have llvm installed.  If you still have problems try
+   setting the environment variable LLVM_INSTALL_DIR to point to your llvm installation.
+   Examples:
+     export LLVM_INSTALL_DIR=/usr/local/opt/llvm-11
+     set "LLVM_INSTALL_DIR=C:\Program Files\LLVM" (Windows)
+
+ * When building the examples you may encounter errors loading shared libraries from shiboken2_generator.
+   Try:
+     export LD_LIBRARY_PATH=/usr/local/lib/python/dist-packages/PySide2/Qt/lib (linux)
+       or
+     export DYLD_LIBRARY_PATH=/usr/local/lib/python/dist-packages/PySide2/Qt/lib (Mac)
+     (adjust to wherever your PySide is installed)
+
+ * On Windows the libclang.dll that ship with QtForPython is not compatible with MSVC2019.
+   To fix this, copy the libclang.dll that comes with llvm into shiboken2, like so:
+     cd C:\Python37\Lib\site-packages\shiboken2_generator
+     copy libclang.dll libclang.dll.save
+     copy "C:\Program Files\llvm\bin\libclang.dll" libclang.dll
+     (eg. Python3 installation in C:\Python37 and llvm in c:\Program Files\llvm. adjust as needed)
