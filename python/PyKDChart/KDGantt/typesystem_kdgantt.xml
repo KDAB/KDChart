@@ -3,6 +3,9 @@
     <load-typesystem name="typesystem_widgets.xml" generate="no"/>
 
     <namespace-type name="KDGantt" generate="no">
+        <modify-function signature="operator!=(KDGantt::Span,KDGantt::Span)" remove="all"/>
+        <modify-function signature="operator==(KDGantt::Span,KDGantt::Span)" remove="all"/>
+        
         <enum-type name="ItemDataRole" />
         <enum-type name="ItemType" />
     
