@@ -18,6 +18,7 @@ Version 2.7.3 (unreleased):
  * Last version supporting Qt4
  * CMake buildsystem - increase min version to 2.8.12 (2.8.7 is deprecated by KitWare)
  * CMake buildsystem - fix library versioning for RelWithDebInfo on Windows
+ * Python bindings fixed for new PySide2 version
 
 Version 2.7.2:
 --------------
