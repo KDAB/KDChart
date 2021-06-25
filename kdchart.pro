@@ -1,6 +1,7 @@
 include( variables.pri )
 
 CONFIG += ordered
+QMAKE_CXXFLAGS += -std=c++11
 
 TEMPLATE=subdirs
 SUBDIRS = src include

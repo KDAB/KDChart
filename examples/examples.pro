@@ -22,8 +22,11 @@ SUBDIRS = tools \
           Polar \
           RealTime \
           SharedAbscissa \
-          Sql \
           Stock \
           TernaryCharts \
           Widget \
           Zoom
+
+!wasm: {
+    SUBDIRS += Sql
+}
