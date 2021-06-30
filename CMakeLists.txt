@@ -3,9 +3,9 @@
 # Pass the following variables to cmake to control the build:
 # (See INSTALL-cmake.txt for more information)
 #
-# -DKDChart_ENFORCE_QT4_BUILD=[true|false]
-#  Force building against Qt4, even if Qt5 is found.
-#  Default=false
+# -DKDChart_QT6=[true|false]
+#  Build against Qt6 rather than Qt5
+#  Default=false (Qt5 will be used even if Qt6 is available)
 #
 # -DKDChart_STATIC=[true|false]
 #  Build static versions of the libraries
@@ -27,7 +27,7 @@
 #  Alternative install path for Python bindings.
 #  Default=CMAKE_INSTALL_PREFIX
 #
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.1)
 cmake_policy(SET CMP0020 NEW)
 cmake_policy(SET CMP0025 NEW)
 
@@ -41,19 +41,7 @@ endif()
 
 project(KDChart CXX)
 
-option(
-  ${PROJECT_NAME}_ENFORCE_QT4_BUILD
-  "Enable if you want to enforce a build with Qt4"
-  OFF
-)
-
-if(CMAKE_VERSION VERSION_LESS "3.1")
-  if(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
-  endif()
-else()
-  set(CMAKE_CXX_STANDARD 14)
-endif()
+option(${PROJECT_NAME}_QT6 "Build against Qt 6" OFF)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_MODULE_PATH}")
 
@@ -77,37 +65,28 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 include(InstallLocation)
 
 # try Qt5 first, and prefer that (if found), but only if not disabled via option
-if(NOT ${PROJECT_NAME}_ENFORCE_QT4_BUILD)
-  find_package(Qt5Core QUIET)
-endif()
-
-if(Qt5Core_FOUND)
-  find_package(Qt5Network REQUIRED)
-  find_package(Qt5Widgets CONFIG)
-  set(QT_LIBRARIES Qt5::Core)
-  set(QT_USE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Qt5Portability.cmake")
-
-  if(Qt5_POSITION_INDEPENDENT_CODE)
-    if(CMAKE_VERSION VERSION_LESS 2.8.9)
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-    elseif(NOT CMAKE_VERSION VERSION_LESS 2.8.11)
-      if(Qt5Core_VERSION VERSION_LESS 5.1)
-        set_property(TARGET Qt5::Core PROPERTY INTERFACE_POSITION_INDEPENDENT_CODE ON)
-      endif()
-    else()
-      set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-    endif()
-  endif()
-
+if(${PROJECT_NAME}_QT6)
+  set(QT_MIN_VERSION "6.0.0")
+  find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Widgets Network PrintSupport Xml Svg Test)
+  set(QT_MAJOR_VERSION 6)
+  list(APPEND QT_LIBRARIES Qt6::Widgets Qt6::Network Qt6::PrintSupport Qt6::Xml Qt6::Svg Qt6::Test)
+  set(${PROJECT_NAME}_LIBRARY_QTID "-qt6")
 else()
-  find_package(Qt4 4.7 QUIET REQUIRED QtCore QtMain)
-
-  # Workaround qt4 moc bug, see https://bugzilla.redhat.com/show_bug.cgi?id=1396755
-  add_definitions(-D_SYS_SYSMACROS_H_OUTER)
+  set(QT_MIN_VERSION "5.15.0") # at least Qt::endl is needed
+  find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Widgets Network PrintSupport Xml Svg Test)
+  set(QT_MAJOR_VERSION 5)
+  list(APPEND QT_LIBRARIES Qt5::Widgets Qt5::Network Qt5::PrintSupport Qt5::Xml Qt5::Svg Qt5::Test)
+  set(${PROJECT_NAME}_LIBRARY_QTID "")
 endif()
+
+# extra optional modules
+find_package(Qt${QT_MAJOR_VERSION}Sql)
 
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
 set(CMAKE_AUTOMOC TRUE)
+set(CMAKE_AUTOUIC TRUE)
+set(CMAKE_AUTORCC TRUE)
+
 
 add_definitions(-DQT_NO_CAST_TO_ASCII -DQT_NO_CAST_FROM_ASCII -DQBA_NO_CAST_TO_VOID -DQBA_NO_CAST_TO_ASCII -DQT_NO_STL -DQT_FATAL_ASSERT)
 add_definitions(-DUSE_EXCEPTIONS)
@@ -166,11 +145,7 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
 
   install(FILES LICENSE.GPL.txt LICENSE.txt LICENSE.US.txt README.txt README-commercial.txt kdchart.pri DESTINATION ${INSTALL_DOC_DIR})
 
-  if(CMAKE_VERSION VERSION_LESS 2.8.8)
-    include("${CMAKE_SOURCE_DIR}/cmake/CMakePackageConfigHelpers.cmake")
-  else()
-    include(CMakePackageConfigHelpers)
-  endif()
+  include(CMakePackageConfigHelpers)
 
   write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/KDChart/KDChartConfigVersion.cmake"
     VERSION ${${PROJECT_NAME}_VERSION}
