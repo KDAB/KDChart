@@ -8,6 +8,7 @@ build-*
 *.o
 *.app
 *.user
+*.orig
 *.rej
 
 moc_*.cpp
