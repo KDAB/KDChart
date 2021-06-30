@@ -611,8 +611,9 @@ void View::print( QPainter* painter, qreal start, qreal end, const QRectF& targe
               drawColumnLabels);
 }
 
-
 #include "moc_kdganttview.cpp"
+
+#undef d
 
 #ifndef KDAB_NO_UNIT_TESTS
 #include "unittest/test.h"
