@@ -105,7 +105,7 @@ private slots:
         vLayout->setGeometry( geom );
         qDebug() << "widget1: " << widget1->geometry();
         // int marg = topLevelWidget->style()->pixelMetric( QStyle::PM_DefaultTopLevelMargin );
-        int marg = vLayout->margin();
+        int marg = vLayout->contentsMargins().left();
         QCOMPARE( widget1->geometry(), geom.adjusted(marg,marg,-marg,-marg) );
 
         geom = QRect( 10, 10, 80, 80 );
