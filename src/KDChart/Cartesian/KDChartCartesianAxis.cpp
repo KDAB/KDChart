@@ -142,9 +142,9 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
     init( xy.isY, hasMajorTicks, hasMinorTicks, plane );
 }
 
-static QMap< qreal, QString > allAxisAnnotations( const AbstractCoordinatePlane *plane, bool isY )
+static QMultiMap< qreal, QString > allAxisAnnotations( const AbstractCoordinatePlane *plane, bool isY )
 {
-    QMap< qreal, QString > annotations;
+    QMultiMap< qreal, QString > annotations;
     Q_FOREACH( const AbstractDiagram *diagram, plane->diagrams() ) {
         const AbstractCartesianDiagram *cd = qobject_cast< const AbstractCartesianDiagram* >( diagram );
         if ( !cd ) {
@@ -303,7 +303,7 @@ void TickIterator::operator++()
     // make sure to find the next tick at a value strictly greater than m_position
 
     if ( !m_annotations.isEmpty() ) {
-        QMap< qreal, QString >::ConstIterator it = m_annotations.upperBound( m_position );
+        auto it = m_annotations.upperBound( m_position );
         if ( it != m_annotations.constEnd() ) {
             m_position = it.key();
             m_text = it.value();
@@ -1126,12 +1126,12 @@ int CartesianAxis::tickLength( bool subUnitTicks ) const
     return subUnitTicks ? rulerAttr.minorTickMarkLength() : rulerAttr.majorTickMarkLength();
 }
 
-QMap< qreal, QString > CartesianAxis::annotations() const
+QMultiMap< qreal, QString > CartesianAxis::annotations() const
 {
     return d->annotations;
 }
 
-void CartesianAxis::setAnnotations( const QMap< qreal, QString >& annotations )
+void CartesianAxis::setAnnotations( const QMultiMap< qreal, QString >& annotations )
 {
     if ( d->annotations == annotations )
         return;

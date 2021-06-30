@@ -71,10 +71,10 @@ MainWindow::MainWindow( QWidget* parent ) :
     ticks.append( 15 );
     xAxis->setCustomTicks(ticks);
 
-    QMap< qreal, QString > annotations;
-    annotations[ 5 ] = "Five";
-    annotations[ 10 ] = "Ten";
-    annotations[ 15 ] = "Fifteen";
+    QMultiMap< qreal, QString > annotations;
+    annotations.insert( 5, "Five");
+    annotations.insert( 10, "Ten");
+    annotations.insert( 15, "Fifteen");
     xAxis->setAnnotations( annotations );
 
     xAxis->setPosition( KDChart::CartesianAxis::Top );

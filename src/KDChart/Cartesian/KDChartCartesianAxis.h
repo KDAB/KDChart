@@ -135,11 +135,11 @@ namespace KDChart {
          * If you use annotations, the normal ticks and values will be invisible.
          * To unset the annotations, pass an empty QMap.
          */
-        void setAnnotations( const QMap< qreal, QString >& annotations );
+        void setAnnotations( const QMultiMap< qreal, QString >& annotations );
         /**
          * Returns the currently set axis annotations.
          */
-        QMap< qreal, QString > annotations() const;
+        QMultiMap< qreal, QString > annotations() const;
 
         /**
          * Sets custom ticks on the axis.

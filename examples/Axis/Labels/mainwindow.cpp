@@ -106,13 +106,13 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 void MainWindow::annotationsToggled( bool showAnnotations )
 {
-    QMap< qreal, QString > annotations;
+    QMultiMap< qreal, QString > annotations;
     if ( showAnnotations ) {
         // set custom axis labels at custom positions
-        annotations[ 0.5 ] = "Left";
-        annotations[ 3.5 ] = "Center";
-        annotations[ 4.2 ] = "Off Center";
-        annotations[ 6.5 ] = "Right";
+        annotations.insert( 0.5, "Left" );
+        annotations.insert( 3.5, "Center");
+        annotations.insert( 4.2, "Off Center");
+        annotations.insert( 6.5, "Right");
     }
     m_xAxis->setAnnotations( annotations );
     m_chart->update();
