@@ -81,7 +81,7 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
             bool drawIt = false;
             bool hasPointOutside = false;
             const QRectF r( ctx->rectangle().adjusted( 0, -1, 1, 0 ) );
-            KDAB_FOREACH( QPointF pt, topPoints ) {
+            Q_FOREACH( QPointF pt, topPoints ) {
                 if ( r.contains( pt ) ) {
                     drawIt = true;
                 } else {

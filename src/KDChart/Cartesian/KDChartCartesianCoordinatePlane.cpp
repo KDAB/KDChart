@@ -788,7 +788,7 @@ AbstractCoordinatePlane* CartesianCoordinatePlane::sharedAxisMasterPlane( QPaint
     if ( diag != nullptr )
     {
         const CartesianAxisList axes = diag->axes();
-        KDAB_FOREACH( const CartesianAxis* a, axes )
+        Q_FOREACH( const CartesianAxis* a, axes )
         {
             CartesianCoordinatePlane* p = const_cast< CartesianCoordinatePlane* >(
                                               dynamic_cast< const CartesianCoordinatePlane* >( a->coordinatePlane() ) );

@@ -266,7 +266,7 @@ void Legend::paint( QPainter* painter )
 uint Legend::datasetCount() const
 {
     int modelLabelsCount = 0;
-    KDAB_FOREACH ( DiagramObserver* observer, d->observers ) {
+    Q_FOREACH ( DiagramObserver* observer, d->observers ) {
         AbstractDiagram* diagram = observer->diagram();
         Q_ASSERT( diagram->datasetLabels().count() == diagram->datasetBrushes().count() );
         modelLabelsCount += diagram->datasetLabels().count();

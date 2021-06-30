@@ -423,7 +423,7 @@ static CoordinatePlaneList findSharingAxisDiagrams( AbstractCoordinatePlane* pla
         return CoordinatePlaneList();
 
     QList< CartesianAxis* > axes;
-    KDAB_FOREACH( CartesianAxis* axis, diagram->axes() ) {
+    Q_FOREACH( CartesianAxis* axis, diagram->axes() ) {
         if ( ( type == Chart::Private::Ordinate &&
               ( axis->position() == CartesianAxis::Left || axis->position() == CartesianAxis::Right ) )
             ||
@@ -650,11 +650,11 @@ void Chart::Private::slotLayoutPlanes()
     if ( hadPlanesLayout )
         planesLayout->getContentsMargins(&left, &top, &right, &bottom);
 
-    KDAB_FOREACH( AbstractLayoutItem* plane, planeLayoutItems ) {
+    Q_FOREACH( AbstractLayoutItem* plane, planeLayoutItems ) {
         plane->removeFromParentLayout();
     }
     //TODO they should get a correct parent, but for now it works
-    KDAB_FOREACH( AbstractLayoutItem* plane, planeLayoutItems ) {
+    Q_FOREACH( AbstractLayoutItem* plane, planeLayoutItems ) {
         if ( dynamic_cast< AutoSpacerLayoutItem* >( plane ) )
             delete plane;
     }
@@ -830,7 +830,7 @@ void Chart::Private::slotLayoutPlanes()
          * gets their own. See buildPlaneLayoutInfos() for more details. */
         QHash<AbstractCoordinatePlane*, PlaneInfo> planeInfos = buildPlaneLayoutInfos();
         QHash<AbstractAxis*, AxisInfo> axisInfos;
-        KDAB_FOREACH( AbstractCoordinatePlane* plane, coordinatePlanes ) {
+        Q_FOREACH( AbstractCoordinatePlane* plane, coordinatePlanes ) {
             Q_ASSERT( planeInfos.contains(plane) );
             PlaneInfo& pi = planeInfos[ plane ];
             const int column = pi.horizontalOffset;
@@ -862,7 +862,7 @@ void Chart::Private::slotLayoutPlanes()
             //qDebug() << "Chart slotLayoutPlanes() calls planeLayout->addItem("<< row << column << ")";
             planeLayout->setRowStretch( row, 2 );
             planeLayout->setColumnStretch( column, 2 );
-            KDAB_FOREACH( AbstractDiagram* abstractDiagram, plane->diagrams() )
+            Q_FOREACH( AbstractDiagram* abstractDiagram, plane->diagrams() )
             {
                 AbstractCartesianDiagram* diagram =
                     qobject_cast< AbstractCartesianDiagram* >( abstractDiagram );
@@ -913,7 +913,7 @@ void Chart::Private::slotLayoutPlanes()
                 }
 
                 //pi.leftAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
-                KDAB_FOREACH( CartesianAxis* axis, diagram->axes() ) {
+                Q_FOREACH( CartesianAxis* axis, diagram->axes() ) {
                     if ( axisInfos.contains( axis ) ) {
                         continue; // already laid out this one
                     }
@@ -1074,7 +1074,7 @@ void Chart::Private::slotResizePlanes()
         layout->activate();
     }
     // Adapt diagram drawing to the new size
-    KDAB_FOREACH (AbstractCoordinatePlane* plane, coordinatePlanes ) {
+    Q_FOREACH (AbstractCoordinatePlane* plane, coordinatePlanes ) {
         plane->layoutDiagrams();
     }
 }
@@ -1119,13 +1119,13 @@ void Chart::Private::paintAll( QPainter* painter )
 
     chart->reLayoutFloatingLegends();
 
-    KDAB_FOREACH( AbstractLayoutItem* planeLayoutItem, planeLayoutItems ) {
+    Q_FOREACH( AbstractLayoutItem* planeLayoutItem, planeLayoutItems ) {
         planeLayoutItem->paintAll( *painter );
     }
-    KDAB_FOREACH( TextArea* textLayoutItem, textLayoutItems ) {
+    Q_FOREACH( TextArea* textLayoutItem, textLayoutItems ) {
         textLayoutItem->paintAll( *painter );
     }
-    KDAB_FOREACH( Legend *legend, legends ) {
+    Q_FOREACH( Legend *legend, legends ) {
         const bool hidden = legend->isHidden() && legend->testAttribute( Qt::WA_WState_ExplicitShowHide );
         if ( !hidden ) {
             //qDebug() << "painting legend at " << legend->geometry();
@@ -1405,7 +1405,7 @@ void Chart::resizeEvent ( QResizeEvent* event )
 
 void Chart::reLayoutFloatingLegends()
 {
-    KDAB_FOREACH( Legend *legend, d->legends ) {
+    Q_FOREACH( Legend *legend, d->legends ) {
         const bool hidden = legend->isHidden() && legend->testAttribute( Qt::WA_WState_ExplicitShowHide );
         if ( legend->position().isFloating() && !hidden ) {
             // resize the legend
@@ -1694,7 +1694,7 @@ void Chart::mousePressEvent( QMouseEvent* event )
 {
     const QPoint pos = mapFromGlobal( event->globalPos() );
 
-    KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
+    Q_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
         if ( plane->geometry().contains( event->pos() ) && plane->diagrams().size() > 0 ) {
             QMouseEvent ev( QEvent::MouseButtonPress, pos, event->globalPos(),
                             event->button(), event->buttons(), event->modifiers() );
@@ -1708,7 +1708,7 @@ void Chart::mouseDoubleClickEvent( QMouseEvent* event )
 {
     const QPoint pos = mapFromGlobal( event->globalPos() );
 
-    KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
+    Q_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
         if ( plane->geometry().contains( event->pos() ) && plane->diagrams().size() > 0 ) {
             QMouseEvent ev( QEvent::MouseButtonPress, pos, event->globalPos(),
                             event->button(), event->buttons(), event->modifiers() );
@@ -1726,7 +1726,7 @@ void Chart::mouseMoveEvent( QMouseEvent* event )
         QSet< AbstractCoordinatePlane* >::fromList( d->mouseClickedPlanes );
 #endif
 
-    KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
+    Q_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
         if ( plane->geometry().contains( event->pos() ) && plane->diagrams().size() > 0 ) {
             eventReceivers.insert( plane );
         }
@@ -1734,7 +1734,7 @@ void Chart::mouseMoveEvent( QMouseEvent* event )
 
     const QPoint pos = mapFromGlobal( event->globalPos() );
 
-    KDAB_FOREACH( AbstractCoordinatePlane* plane, eventReceivers ) {
+    Q_FOREACH( AbstractCoordinatePlane* plane, eventReceivers ) {
         QMouseEvent ev( QEvent::MouseMove, pos, event->globalPos(),
                          event->button(), event->buttons(), event->modifiers() );
         plane->mouseMoveEvent( &ev );
@@ -1750,7 +1750,7 @@ void Chart::mouseReleaseEvent( QMouseEvent* event )
         QSet< AbstractCoordinatePlane* >::fromList( d->mouseClickedPlanes );
 #endif
 
-    KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
+    Q_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
         if ( plane->geometry().contains( event->pos() ) && plane->diagrams().size() > 0 ) {
             eventReceivers.insert( plane );
         }
@@ -1758,7 +1758,7 @@ void Chart::mouseReleaseEvent( QMouseEvent* event )
 
     const QPoint pos = mapFromGlobal( event->globalPos() );
 
-    KDAB_FOREACH( AbstractCoordinatePlane* plane, eventReceivers ) {
+    Q_FOREACH( AbstractCoordinatePlane* plane, eventReceivers ) {
         QMouseEvent ev( QEvent::MouseButtonRelease, pos, event->globalPos(),
                          event->button(), event->buttons(), event->modifiers() );
         plane->mouseReleaseEvent( &ev );
@@ -1772,8 +1772,8 @@ bool Chart::event( QEvent* event )
     if ( event->type() == QEvent::ToolTip ) {
         const QHelpEvent* const helpEvent = static_cast< QHelpEvent* >( event );
         for (int stage = 0; stage < 2; ++stage) {
-            KDAB_FOREACH( const AbstractCoordinatePlane* const plane, d->coordinatePlanes ) {
-                KDAB_FOREACH( const AbstractDiagram* diagram, plane->diagrams() ) {
+            Q_FOREACH( const AbstractCoordinatePlane* const plane, d->coordinatePlanes ) {
+                Q_FOREACH( const AbstractDiagram* diagram, plane->diagrams() ) {
 
                     QModelIndex index;
                     if (stage == 0) {

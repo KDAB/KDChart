@@ -501,7 +501,7 @@ void PieDiagram::paintInternal( PaintContext* paintContext )
     const QPointF center = paintContext->rectangle().center();
     const PainterSaver painterSaver( paintContext->painter() );
     paintContext->painter()->setBrush( Qt::NoBrush );
-    KDAB_FOREACH( const LabelPaintInfo &pi, d->labelPaintCache.paintReplay ) {
+    Q_FOREACH( const LabelPaintInfo &pi, d->labelPaintCache.paintReplay ) {
         // we expect the PainterPath to be a rectangle
         if ( pi.labelArea.elementCount() != 5 ) {
             continue;
