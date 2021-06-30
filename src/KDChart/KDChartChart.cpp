@@ -1719,7 +1719,12 @@ void Chart::mouseDoubleClickEvent( QMouseEvent* event )
 
 void Chart::mouseMoveEvent( QMouseEvent* event )
 {
-    QSet< AbstractCoordinatePlane* > eventReceivers = QSet< AbstractCoordinatePlane* >::fromList( d->mouseClickedPlanes );
+    auto eventReceivers =
+#if QT_VERSION > QT_VERSION_CHECK(5, 14, 0)
+        QSet< AbstractCoordinatePlane* >( d->mouseClickedPlanes.begin(), d->mouseClickedPlanes.end() );
+#else
+        QSet< AbstractCoordinatePlane* >::fromList( d->mouseClickedPlanes );
+#endif
 
     KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
         if ( plane->geometry().contains( event->pos() ) && plane->diagrams().size() > 0 ) {
@@ -1738,7 +1743,12 @@ void Chart::mouseMoveEvent( QMouseEvent* event )
 
 void Chart::mouseReleaseEvent( QMouseEvent* event )
 {
-    QSet< AbstractCoordinatePlane* > eventReceivers = QSet< AbstractCoordinatePlane* >::fromList( d->mouseClickedPlanes );
+    auto eventReceivers =
+#if QT_VERSION > QT_VERSION_CHECK(5, 14, 0)
+        QSet< AbstractCoordinatePlane* >( d->mouseClickedPlanes.begin(), d->mouseClickedPlanes.end() );
+#else
+        QSet< AbstractCoordinatePlane* >::fromList( d->mouseClickedPlanes );
+#endif
 
     KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
         if ( plane->geometry().contains( event->pos() ) && plane->diagrams().size() > 0 ) {

@@ -469,9 +469,18 @@ void GraphicsScene::removeItem( const QModelIndex& idx )
         // there is a good chance there will be reentrant calls
         d->items.erase( it );
         {
+            const auto startConstraints = item->startConstraints();
+            const auto endConstraints = item->endConstraints();
             // Remove any constraintitems attached
-            const QSet<ConstraintGraphicsItem*> clst = QSet<ConstraintGraphicsItem*>::fromList( item->startConstraints() ) +
-                                                       QSet<ConstraintGraphicsItem*>::fromList( item->endConstraints() );
+            const QSet<ConstraintGraphicsItem*> clst =
+#if QT_VERSION > QT_VERSION_CHECK(5, 14, 0)
+                QSet<ConstraintGraphicsItem*>( startConstraints.begin(), startConstraints.end() ) +
+                QSet<ConstraintGraphicsItem*>( endConstraints.begin(), endConstraints.end() );
+#else
+                QSet<ConstraintGraphicsItem*>::fromList( startConstraints ) +
+                QSet<ConstraintGraphicsItem*>::fromList( endConstraints );
+#endif
+
             Q_FOREACH( ConstraintGraphicsItem* citem, clst ) {
                 d->deleteConstraintItem( citem );
             }
