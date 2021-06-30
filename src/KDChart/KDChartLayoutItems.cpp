@@ -187,7 +187,7 @@ void KDChart::TextBubbleLayoutItem::paint( QPainter* painter )
     const QBrush oldBrush = painter->brush();
     painter->setPen( Qt::black );
     painter->setBrush( QColor( 255, 255, 220 ) );
-    painter->drawRoundRect( geometry(), 10 );
+    painter->drawRoundedRect( geometry(), 10, 25 ); // KDAB_QT6_PORT: Double check if '25' is correct
     painter->setPen( oldPen );
     painter->setBrush( oldBrush );
     m_text->paint( painter );
@@ -1008,7 +1008,7 @@ void KDChart::AutoSpacerLayoutItem::paint( QPainter* painter )
         const QPoint oldBrushOrigin( painter->brushOrigin() );
         const QBrush oldBrush( painter->brush() );
         const QPen   oldPen( painter->pen() );
-        const QPointF newTopLeft( painter->deviceMatrix().map( p1 ) );
+        const QPointF newTopLeft( painter->deviceTransform().map( p1 ) );
         painter->setBrushOrigin( newTopLeft );
         painter->setBrush( mCommonBrush );
         painter->setPen( Qt::NoPen );

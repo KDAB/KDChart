@@ -40,7 +40,7 @@
 #include <QList>
 #include <QtDebug>
 #include <QPainter>
-#include <QTime>
+#include <QElapsedTimer>
 
 
 using namespace KDChart;
@@ -130,7 +130,7 @@ void CartesianCoordinatePlane::paint( QPainter* painter )
                 continue;
             }
             bool doDumpPaintTime = AbstractDiagram::Private::get( diags[ i ] )->doDumpPaintTime;
-            QTime stopWatch;
+            QElapsedTimer stopWatch;
             if ( doDumpPaintTime ) {
                 stopWatch.start();
             }

@@ -103,7 +103,7 @@ void Legend::init()
     setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
 
     d->layout = new QGridLayout( this );
-    d->layout->setMargin( 2 );
+    d->layout->setContentsMargins( 2, 2, 2, 2 );
     d->layout->setSpacing( d->spacing );
 
     const Measure normalFontSizeTitle( 12, KDChartEnums::MeasureCalculationModeAbsolute );

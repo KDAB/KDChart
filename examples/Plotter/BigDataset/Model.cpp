@@ -23,7 +23,7 @@
 #include "Model.h"
 
 #include <QDebug>
-#include <QTime>
+#include <QElapsedTimer>
 #include <QRandomGenerator>
 
 #define _USE_MATH_DEFINES // this should give us the M_PI constant
@@ -114,7 +114,7 @@ void Model::appendPoints( int numPoints )
         m_data.append( nextFunctionValue() );
     }
 
-    QTime stopWatch;
+    QElapsedTimer stopWatch;
     stopWatch.start();
     endInsertRows(); // this immediately triggers the signals that cause the diagram to update
     qDebug() << "Adding" << numPoints << "data points to the existing" << m_data.count() - numPoints

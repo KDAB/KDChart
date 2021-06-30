@@ -26,14 +26,10 @@
 #include "KDChartGlobal.h"
 
 #include <QWidget>
+#include <QtContainerFwd>
 
 #include "KDChartEnums.h"
 #include "KDChartHeaderFooter.h"
-
-QT_BEGIN_NAMESPACE
-template <typename T> class QVector;
-template <typename T1, typename T2> struct QPair;
-QT_END_NAMESPACE
 
 namespace KDChart {
 

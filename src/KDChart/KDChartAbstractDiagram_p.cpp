@@ -591,7 +591,7 @@ void AbstractDiagram::Private::paintDataValueText(
 QModelIndex AbstractDiagram::Private::indexAt( const QPoint& point ) const
 {
     QModelIndexList l = indexesAt( point );
-    qSort( l );
+    std::sort( l.begin(), l.end() );
     if ( !l.isEmpty() )
         return l.first();
     else

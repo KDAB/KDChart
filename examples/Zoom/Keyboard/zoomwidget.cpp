@@ -65,7 +65,7 @@ void ZoomWidget::mousePressEvent( QMouseEvent * e )
 
 void ZoomWidget::wheelEvent( QWheelEvent* e )
 {
-    qreal delta = static_cast<qreal>( e->delta() ) / 120.0 / 10.0;
+    qreal delta = static_cast<qreal>( e->angleDelta().y() ) / 120.0 / 10.0;
     coordinatePlane()->setZoomFactorX( coordinatePlane()->zoomFactorX() + delta );
     coordinatePlane()->setZoomFactorY( coordinatePlane()->zoomFactorY() + delta );
 /* new:

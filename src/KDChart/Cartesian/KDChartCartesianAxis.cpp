@@ -100,7 +100,7 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
     const qreal inf = std::numeric_limits< qreal >::infinity();
 
     if ( m_customTicks.count() ) {
-        qSort( m_customTicks.begin(), m_customTicks.end() );
+        std::sort( m_customTicks.begin(), m_customTicks.end() );
         m_customTickIndex = 0;
         m_customTick = m_customTicks.at( m_customTickIndex );
     } else {

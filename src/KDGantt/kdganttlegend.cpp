@@ -192,7 +192,7 @@ QSize Legend::measureItem( const QModelIndex& index, bool recursive ) const
         QFontMetrics fm( ( index.model()->data( index, Qt::FontRole ) ).value< QFont >() );
         const QString text = index.model()->data( index, LegendRole ).toString();
         if ( !text.isEmpty() )
-            baseSize += QSize( fm.width( text ) + fm.height() + 2, fm.height() + 2 );
+            baseSize += QSize( fm.horizontalAdvance( text ) + fm.height() + 2, fm.height() + 2 );
     }
 
     if ( !recursive )

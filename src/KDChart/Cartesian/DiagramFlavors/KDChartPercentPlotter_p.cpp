@@ -130,7 +130,7 @@ void PercentPlotter::paint( PaintContext* ctx )
     // the x-values
     QList< qreal > xValues = diagramValues.keys();
     // make sure it's sorted
-    qSort( xValues );
+    std::sort( xValues.begin(), xValues.end() );
     Q_FOREACH( const qreal xValue, xValues )
     {
         // the y-values to the current x-value

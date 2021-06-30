@@ -390,13 +390,13 @@ void MainWindow::on_savePDF_clicked()
         return;
     qDebug() << "Painting into PDF";
     QPrinter printer( QPrinter::HighResolution );
-    printer.setOrientation( QPrinter::Landscape );
+    printer.setPageOrientation( QPageLayout::Landscape );
     printer.setOutputFormat( QPrinter::PdfFormat );
     printer.setOutputFileName( file );
-    paintMarkers( paintMarkersCB->isChecked(), printer.pageRect().size() );
+    paintMarkers( paintMarkersCB->isChecked(), printer.pageLayout().paintRectPixels(printer.resolution()).size() );
     QPainter painter;
     painter.begin( &printer );
-    m_chart->paint( &painter, printer.pageRect() );
+    m_chart->paint( &painter, printer.pageLayout().paintRectPixels(printer.resolution()) );
     painter.end();
     paintMarkers( paintMarkersCB->isChecked(), m_chart->geometry().size() );
     qDebug() << "Painting into PDF - done";

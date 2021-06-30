@@ -207,7 +207,7 @@ void DateTimeGrid::drawForeground(QPainter* painter, const QRectF& rect)
     font.setPixelSize(r.width()/5);
 
     QFontMetrics fm(font);
-    int width = fm.width(text);
+    int width = fm.horizontalAdvance(text);
     int height = fm.boundingRect(text).height();
 
     painter->translate(r.center());
@@ -372,9 +372,9 @@ void MainWindow::slotFileSavePdf()
     const bool drawColumnLabels = dialog.m_columnLabels->isChecked();
 
     QPrinter printer(QPrinter::HighResolution);
-    printer.setOrientation(QPrinter::Landscape);
+    printer.setPageOrientation(QPageLayout::Landscape);
     printer.setColorMode(QPrinter::Color);
-    printer.setPageMargins(0.2, 0.2, 0.2, 0.2, QPrinter::Point);
+    printer.setPageMargins({0.2, 0.2, 0.2, 0.2}, QPageLayout::Point);
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(file);
     m_view->print(&printer, drawRowLabels, drawColumnLabels);
@@ -385,7 +385,7 @@ void MainWindow::slotFilePrint()
 {
 #ifndef QT_NO_PRINTER
     QPrinter printer(QPrinter::HighResolution);
-    printer.setOrientation(QPrinter::Landscape);
+    printer.setPageOrientation(QPageLayout::Landscape);
     printer.setColorMode(QPrinter::Color);
     QPrintDialog dialog(&printer, this);
     if (dialog.exec() != QDialog::Accepted)

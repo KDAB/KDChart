@@ -119,7 +119,7 @@ void View::Private::init()
     tw->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
     QVBoxLayout* layout = new QVBoxLayout(q);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(&splitter);
     q->setLayout(layout);
 

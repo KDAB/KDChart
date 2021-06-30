@@ -120,7 +120,7 @@ void GradientDialog::Private::updateGradientDisplay()
     Q_FOREACH( const QGradientStop &stop, m_gradient )
         gradient.setColorAt( stop.first, stop.second );
     QPalette palette = ui->gradientDisplay->palette();
-    palette.setBrush( QPalette::Background, gradient );
+    palette.setBrush( QPalette::Window, gradient );
     ui->gradientDisplay->setPalette( palette );
 }
 

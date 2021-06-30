@@ -444,8 +444,8 @@ void AbstractDiagram::paintMarker( QPainter* painter,
 
     const PainterSaver painterSaver( painter );
     // the size of the marker - unscaled
-    const QSizeF maSize( ma.markerSize().width() / painter->matrix().m11(),
-                         ma.markerSize().height() / painter->matrix().m22() );
+    const QSizeF maSize( ma.markerSize().width() / painter->transform().m11(),
+                         ma.markerSize().height() / painter->transform().m22() );
     QBrush indexBrush( brush( index ) );
     QPen indexPen( ma.pen() );
     if ( ma.markerColor().isValid() )
@@ -482,7 +482,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
     const bool isFourPixels = (markerAttributes.markerStyle() == MarkerAttributes::Marker4Pixels);
     if ( isFourPixels || (markerAttributes.markerStyle() == MarkerAttributes::Marker1Pixel) ) {
         // for high-performance point charts with tiny point markers:
-        painter->setPen( PrintingParameters::scalePen( QPen( brush.color().light() ) ) );
+        painter->setPen( PrintingParameters::scalePen( QPen( brush.color().lighter() ) ) );
         if ( isFourPixels ) {
             const qreal x = pos.x();
             const qreal y = pos.y();
@@ -518,7 +518,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                     grad.setColorAt( 0.95, drawColor.darker( 250 ) );
                     grad.setColorAt( 1.00, drawColor.darker( 200 ) );
                     QBrush newBrush( grad );
-                    newBrush.setMatrix( brush.matrix() );
+                    newBrush.setTransform( brush.transform() );
                     painter->setBrush( newBrush );
                 }
                 painter->drawEllipse( QRectF( 0 - maSize.height()/2, 0 - maSize.width()/2,

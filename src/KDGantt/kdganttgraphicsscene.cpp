@@ -672,7 +672,7 @@ void GraphicsScene::print( QPrinter* printer, bool drawRowLabels, bool drawColum
     Q_UNUSED( drawColumnLabels );
 #else
     QPainter painter( printer );
-    doPrint( &painter, printer->pageRect(), sceneRect().left(), sceneRect().right(), printer, drawRowLabels, drawColumnLabels );
+    doPrint( &painter, printer->pageLayout().paintRectPixels(printer->resolution()), sceneRect().left(), sceneRect().right(), printer, drawRowLabels, drawColumnLabels );
 #endif
 }
 
@@ -698,7 +698,7 @@ void GraphicsScene::print( QPrinter* printer, qreal start, qreal end, bool drawR
     Q_UNUSED( drawColumnLabels );
 #else
     QPainter painter( printer );
-    doPrint( &painter, printer->pageRect(), start, end, printer, drawRowLabels, drawColumnLabels );
+    doPrint( &painter, printer->pageLayout().paintRectPixels(printer->resolution()), start, end, printer, drawRowLabels, drawColumnLabels );
 #endif
 }
 
@@ -812,7 +812,7 @@ void GraphicsScene::doPrint( QPainter* painter, const QRectF& targetRect,
             item->setPos( 0, rg.start() );
         } while ( ( sidx = rowController()->indexBelow( sidx ) ).isValid() );
         // Add a little margin to textWidth
-        textWidth += QFontMetricsF(sceneFont).width( QString::fromLatin1( "X" ) );
+        textWidth += QFontMetricsF(sceneFont).horizontalAdvance( QString::fromLatin1( "X" ) );
         Q_FOREACH( QGraphicsTextItem* item, textLabels ) {
             item->setPos( scnRect.left()-textWidth, item->y() );
             item->show();
@@ -940,14 +940,14 @@ KDAB_SCOPED_UNITTEST_SIMPLE( KDGantt, GraphicsView, "test" ) {
     QStandardItem* item = new QStandardItem();
     item->setData( KDGantt::TypeTask, KDGantt::ItemTypeRole );
     item->setData( QString::fromLatin1( "Decide on new product" ) );
-    item->setData( QDateTime( QDate( 2007, 3, 1 ) ), KDGantt::StartTimeRole );
-    item->setData( QDateTime( QDate( 2007, 3, 3 ) ), KDGantt::EndTimeRole );
+    item->setData( QDate( 2007, 3, 1 ).startOfDay(), KDGantt::StartTimeRole );
+    item->setData( QDate( 2007, 3, 3 ).startOfDay(), KDGantt::EndTimeRole );
 
     QStandardItem* item2 = new QStandardItem();
     item2->setData( KDGantt::TypeTask, KDGantt::ItemTypeRole );
     item2->setData( QString::fromLatin1( "Educate personnel" ) );
-    item2->setData( QDateTime( QDate( 2007, 3, 3 ) ), KDGantt::StartTimeRole );
-    item2->setData( QDateTime( QDate( 2007, 3, 6 ) ), KDGantt::EndTimeRole );
+    item2->setData( QDate( 2007, 3, 3 ).startOfDay(), KDGantt::StartTimeRole );
+    item2->setData( QDate( 2007, 3, 6 ).startOfDay(), KDGantt::EndTimeRole );
 
     model.appendRow( item );
     model.appendRow( item2 );

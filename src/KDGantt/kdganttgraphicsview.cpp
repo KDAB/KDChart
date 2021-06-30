@@ -26,6 +26,7 @@
 #include "kdganttgraphicsitem.h"
 #include "kdganttconstraintmodel.h"
 
+#include <QActionGroup>
 #include <QMenu>
 #include <QPainter>
 #include <QPaintEvent>
