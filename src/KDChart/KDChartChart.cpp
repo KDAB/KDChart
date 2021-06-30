@@ -156,7 +156,7 @@ using namespace KDChart;
 class MyWidgetItem : public QWidgetItem
 {
 public:
-    explicit MyWidgetItem(QWidget *w, Qt::Alignment alignment = 0)
+    explicit MyWidgetItem(QWidget *w, Qt::Alignment alignment = {})
         : QWidgetItem( w )
     {
         setAlignment( alignment );

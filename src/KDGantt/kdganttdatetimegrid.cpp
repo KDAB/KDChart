@@ -607,8 +607,8 @@ bool DateTimeGrid::mapFromChart( const Span& span, const QModelIndex& idx,
         }
     }
 
-    return model()->setData( idx, qVariantFromValue(st), StartTimeRole )
-        && model()->setData( idx, qVariantFromValue(et), EndTimeRole );
+    return model()->setData( idx, QVariant::fromValue(st), StartTimeRole )
+        && model()->setData( idx, QVariant::fromValue(et), EndTimeRole );
 }
 
 Qt::PenStyle DateTimeGrid::Private::gridLinePenStyle( QDateTime dt, Private::HeaderType headerType ) const

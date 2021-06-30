@@ -151,7 +151,7 @@ const DataValueAttributes& DataValueAttributes::defaultAttributes()
 /*static*/
 const QVariant& DataValueAttributes::defaultAttributesAsVariant()
 {
-    static const QVariant theDefaultDataValueAttributesVariant = qVariantFromValue(defaultAttributes());
+    static const QVariant theDefaultDataValueAttributesVariant = QVariant::fromValue(defaultAttributes());
     return theDefaultDataValueAttributesVariant;
 }
 

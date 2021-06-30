@@ -235,7 +235,7 @@ QVariant ProjectModel::data( const QModelIndex& idx, int role ) const
         switch ( role ) {
         case Qt::DisplayRole:
         case Qt::EditRole:
-            return qVariantFromValue<int>( n->type() );
+            return QVariant::fromValue<int>( n->type() );
         }
     } else if ( idx.column() == 2 ) {
         switch ( role ) {

@@ -60,7 +60,7 @@ TernaryLineDiagram::TernaryLineDiagram ( QWidget* parent,
     dataValueAttributes.setMarkerAttributes( markerAttributes );
     attributesModel()->setDefaultForRole(
         KDChart::DataValueLabelAttributesRole,
-        qVariantFromValue( dataValueAttributes ) );
+        QVariant::fromValue( dataValueAttributes ) );
 }
 
 TernaryLineDiagram::~TernaryLineDiagram()

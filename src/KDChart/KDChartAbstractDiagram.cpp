@@ -265,20 +265,20 @@ void AbstractDiagram::setHidden( const QModelIndex & index, bool hidden )
 {
     d->attributesModel->setData(
         conditionallyMapFromSource( index ),
-        qVariantFromValue( hidden ),
+        QVariant::fromValue( hidden ),
         DataHiddenRole );
     emit dataHidden();
 }
 
 void AbstractDiagram::setHidden( int dataset, bool hidden )
 {
-    d->setDatasetAttrs( dataset, qVariantFromValue( hidden ), DataHiddenRole );
+    d->setDatasetAttrs( dataset, QVariant::fromValue( hidden ), DataHiddenRole );
     emit dataHidden();
 }
 
 void AbstractDiagram::setHidden( bool hidden )
 {
-    d->attributesModel->setModelData( qVariantFromValue( hidden ), DataHiddenRole );
+    d->attributesModel->setModelData( QVariant::fromValue( hidden ), DataHiddenRole );
     emit dataHidden();
 }
 
@@ -310,7 +310,7 @@ bool AbstractDiagram::isHidden( const QModelIndex & index ) const
 void AbstractDiagram::setDataValueAttributes( const QModelIndex & index,
                                               const DataValueAttributes & a )
 {
-    d->attributesModel->setData( conditionallyMapFromSource( index ), qVariantFromValue( a ),
+    d->attributesModel->setData( conditionallyMapFromSource( index ), QVariant::fromValue( a ),
                                  DataValueLabelAttributesRole );
     emit propertiesChanged();
 }
@@ -318,7 +318,7 @@ void AbstractDiagram::setDataValueAttributes( const QModelIndex & index,
 
 void AbstractDiagram::setDataValueAttributes( int dataset, const DataValueAttributes & a )
 {
-    d->setDatasetAttrs( dataset, qVariantFromValue( a ), DataValueLabelAttributesRole );
+    d->setDatasetAttrs( dataset, QVariant::fromValue( a ), DataValueLabelAttributesRole );
     emit propertiesChanged();
 }
 
@@ -356,7 +356,7 @@ DataValueAttributes AbstractDiagram::dataValueAttributes( const QModelIndex & in
 
 void AbstractDiagram::setDataValueAttributes( const DataValueAttributes & a )
 {
-    d->attributesModel->setModelData( qVariantFromValue( a ), DataValueLabelAttributesRole );
+    d->attributesModel->setModelData( QVariant::fromValue( a ), DataValueLabelAttributesRole );
     emit propertiesChanged();
 }
 
@@ -648,20 +648,20 @@ void AbstractDiagram::setPen( const QModelIndex& index, const QPen& pen )
 {
     attributesModel()->setData(
         conditionallyMapFromSource( index ),
-        qVariantFromValue( pen ), DatasetPenRole );
+        QVariant::fromValue( pen ), DatasetPenRole );
     emit propertiesChanged();
 }
 
 void AbstractDiagram::setPen( const QPen& pen )
 {
     attributesModel()->setModelData(
-        qVariantFromValue( pen ), DatasetPenRole );
+        QVariant::fromValue( pen ), DatasetPenRole );
     emit propertiesChanged();
 }
 
 void AbstractDiagram::setPen( int dataset, const QPen& pen )
 {
-    d->setDatasetAttrs( dataset, qVariantFromValue( pen ), DatasetPenRole );
+    d->setDatasetAttrs( dataset, QVariant::fromValue( pen ), DatasetPenRole );
     emit propertiesChanged();
 }
 
@@ -689,20 +689,20 @@ void AbstractDiagram::setBrush( const QModelIndex& index, const QBrush& brush )
 {
     attributesModel()->setData(
         conditionallyMapFromSource( index ),
-        qVariantFromValue( brush ), DatasetBrushRole );
+        QVariant::fromValue( brush ), DatasetBrushRole );
     emit propertiesChanged();
 }
 
 void AbstractDiagram::setBrush( const QBrush& brush )
 {
     attributesModel()->setModelData(
-        qVariantFromValue( brush ), DatasetBrushRole );
+        QVariant::fromValue( brush ), DatasetBrushRole );
     emit propertiesChanged();
 }
 
 void AbstractDiagram::setBrush( int dataset, const QBrush& brush )
 {
-    d->setDatasetAttrs( dataset, qVariantFromValue( brush ), DatasetBrushRole );
+    d->setDatasetAttrs( dataset, QVariant::fromValue( brush ), DatasetBrushRole );
     emit propertiesChanged();
 }
 

@@ -348,7 +348,7 @@ QVariant GraphicsItem::itemChange( GraphicsItemChange change, const QVariant& va
     } else if ( change==QGraphicsItem::ItemSelectedChange ) {
         if ( index().isValid() && !( index().model()->flags( index() ) & Qt::ItemIsSelectable ) ) {
             // Reject selection attempt
-            return qVariantFromValue( false );
+            return QVariant::fromValue( false );
         }
 
         if ( value.toBool() ) {

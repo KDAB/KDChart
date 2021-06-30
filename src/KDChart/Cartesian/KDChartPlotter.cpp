@@ -222,7 +222,7 @@ Plotter::PlotType Plotter::type() const
   */
 void Plotter::setLineAttributes( const LineAttributes& la )
 {
-    d->attributesModel->setModelData( qVariantFromValue( la ), LineAttributesRole );
+    d->attributesModel->setModelData( QVariant::fromValue( la ), LineAttributesRole );
     emit propertiesChanged();
 }
 
@@ -231,7 +231,7 @@ void Plotter::setLineAttributes( const LineAttributes& la )
   */
 void Plotter::setLineAttributes( int column, const LineAttributes& la )
 {
-    d->setDatasetAttrs( column, qVariantFromValue( la ), LineAttributesRole );
+    d->setDatasetAttrs( column, QVariant::fromValue( la ), LineAttributesRole );
     emit propertiesChanged();
 }
 
@@ -250,7 +250,7 @@ void Plotter::resetLineAttributes( int column )
 void Plotter::setLineAttributes( const QModelIndex & index, const LineAttributes& la )
 {
     d->attributesModel->setData( d->attributesModel->mapFromSource( index ),
-                                 qVariantFromValue( la ), LineAttributesRole );
+                                 QVariant::fromValue( la ), LineAttributesRole );
     emit propertiesChanged();
 }
 
@@ -298,7 +298,7 @@ LineAttributes Plotter::lineAttributes( const QModelIndex& index ) const
 void Plotter::setThreeDLineAttributes( const ThreeDLineAttributes& la )
 {
     setDataBoundariesDirty();
-    d->attributesModel->setModelData( qVariantFromValue( la ), ThreeDLineAttributesRole );
+    d->attributesModel->setModelData( QVariant::fromValue( la ), ThreeDLineAttributesRole );
     emit propertiesChanged();
 }
 
@@ -308,7 +308,7 @@ void Plotter::setThreeDLineAttributes( const ThreeDLineAttributes& la )
 void Plotter::setThreeDLineAttributes( int column, const ThreeDLineAttributes& la )
 {
     setDataBoundariesDirty();
-    d->setDatasetAttrs( column, qVariantFromValue( la ), ThreeDLineAttributesRole );
+    d->setDatasetAttrs( column, QVariant::fromValue( la ), ThreeDLineAttributesRole );
     emit propertiesChanged();
 }
 
@@ -318,7 +318,7 @@ void Plotter::setThreeDLineAttributes( int column, const ThreeDLineAttributes& l
 void Plotter::setThreeDLineAttributes( const QModelIndex& index, const ThreeDLineAttributes& la )
 {
     setDataBoundariesDirty();
-    d->attributesModel->setData( d->attributesModel->mapFromSource( index ), qVariantFromValue( la ),
+    d->attributesModel->setData( d->attributesModel->mapFromSource( index ), QVariant::fromValue( la ),
                                  ThreeDLineAttributesRole );
     emit propertiesChanged();
 }
@@ -368,7 +368,7 @@ qreal Plotter::threeDItemDepth( int column ) const
 void Plotter::setValueTrackerAttributes( const QModelIndex & index, const ValueTrackerAttributes & va )
 {
     d->attributesModel->setData( d->attributesModel->mapFromSource( index ),
-                                 qVariantFromValue( va ), KDChart::ValueTrackerAttributesRole );
+                                 QVariant::fromValue( va ), KDChart::ValueTrackerAttributesRole );
     emit propertiesChanged();
 }
 
