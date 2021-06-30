@@ -369,7 +369,7 @@ void GraphicsScene::Private::recursiveUpdateMultiItem( const Span& span, const Q
     item->updateItem( span, idx );
     QModelIndex child;
     int cr = 0;
-    while ( ( child = idx.child( cr, 0 ) ).isValid() ) {
+    while ( ( child = idx.model()->index( cr, 0, idx ) ).isValid() ) {
         recursiveUpdateMultiItem( span, child );
         ++cr;
     }
@@ -525,7 +525,7 @@ void GraphicsScene::deleteSubtree( const QModelIndex& _idx )
     const QModelIndex parent( idx.parent() );
     const int colcount = idx.model()->columnCount( parent );
     {for ( int i = 0; i < colcount; ++i ) {
-        removeItem( parent.child( idx.row(), i ) );
+        removeItem( parent.model()->index( idx.row(), i, parent ) );
     }}
     const int rowcount = summaryHandlingModel()->rowCount( _idx );
     {for ( int i = 0; i < rowcount; ++i ) {
