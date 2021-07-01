@@ -18,7 +18,7 @@ RESOURCES += KDChart/KDAB_kdchart_LeveyJennings_resources.qrc
 
 QT += svg
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += printsupport
+QT += printsupport
 
 FORMS += KDChart/KDChartDatasetSelector.ui
 
