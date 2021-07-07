@@ -607,8 +607,8 @@ bool DateTimeGrid::mapFromChart( const Span& span, const QModelIndex& idx,
         }
     }
 
-    return model()->setData( idx, qVariantFromValue(st), StartTimeRole )
-        && model()->setData( idx, qVariantFromValue(et), EndTimeRole );
+    return model()->setData( idx, QVariant::fromValue(st), StartTimeRole )
+        && model()->setData( idx, QVariant::fromValue(et), EndTimeRole );
 }
 
 Qt::PenStyle DateTimeGrid::Private::gridLinePenStyle( QDateTime dt, Private::HeaderType headerType ) const
@@ -785,7 +785,7 @@ void DateTimeGrid::paintGrid( QPainter* painter,
         d->paintVerticalLines( painter, sceneRect, exposedRect, widget, d->headerTypeForScale( scale() ) );
         break;
     case ScaleAuto: {
-        const qreal tabw = QApplication::fontMetrics().width( QLatin1String( "XXXXX" ) );
+        const qreal tabw = QApplication::fontMetrics().horizontalAdvance( QLatin1String( "XXXXX" ) );
         const qreal dayw = dayWidth();
         if ( dayw > 24*60*60*tabw ) {
 
@@ -847,7 +847,7 @@ int DateTimeGrid::Private::tabHeight( const QString& txt, QWidget* widget ) cons
 
 void DateTimeGrid::Private::getAutomaticFormatters( DateTimeScaleFormatter** lower, DateTimeScaleFormatter** upper)
 {
-    const qreal tabw = QApplication::fontMetrics().width( QLatin1String( "XXXXX" ) );
+    const qreal tabw = QApplication::fontMetrics().horizontalAdvance( QLatin1String( "XXXXX" ) );
     const qreal dayw = dayWidth;
     if ( dayw > 24*60*60*tabw ) {
         *lower = &minute_lower;
@@ -939,7 +939,7 @@ void DateTimeGrid::paintUserDefinedHeader( QPainter* painter,
         const qreal nextx = d->dateTimeToChartX( next );
 
         QStyleOptionHeader opt;
-        if ( widget ) opt.init( widget );
+        if ( widget ) opt.initFrom( widget );
         opt.rect = QRectF( x - offset+1, headerRect.top(), qMax<qreal>( 1., nextx-x-1 ), headerRect.height() ).toAlignedRect();
         opt.textAlignment = formatter->alignment();
         opt.text = formatter->text( dt );
@@ -995,7 +995,7 @@ void DateTimeGrid::Private::paintHeader( QPainter* painter,
           dt = dt.addSecs( offsetSeconds ), dt = dt.addDays( offsetDays ), dt = dt.addMonths( offsetMonths ),
           x = dateTimeToChartX( dt ) ) {
         QStyleOptionHeader opt;
-        if ( widget ) opt.init( widget );
+        if ( widget ) opt.initFrom( widget );
         opt.rect = formatter->textRect( x, offset, dayWidth, headerRect, dt );
         opt.text = formatter->format( dt );
         opt.textAlignment = Qt::AlignCenter;

@@ -25,15 +25,14 @@
 
 #include <QDebug>
 #include <Qt>
+#include <QtContainerFwd>
 #include <QMetaType>
 #include <QCoreApplication>
 #include "KDChartGlobal.h"
 #include "KDChartEnums.h"
 
 QT_BEGIN_NAMESPACE
-class QStringList;
 class QByteArray;
-template <typename T> class QList;
 QT_END_NAMESPACE
 
 namespace KDChart {

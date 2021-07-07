@@ -106,7 +106,7 @@ void PolarCoordinatePlane::paint ( QPainter* painter )
 
     if ( d->newZoomX != oldZoomX || d->newZoomY != oldZoomY ) {
         //qDebug() << "new zoom:" << d->newZoomY << " old zoom:" << oldZoomY;
-        d->currentTransformation = 0; // not painting anymore until we get called again
+        d->currentTransformation = nullptr; // not painting anymore until we get called again
         QMetaObject::invokeMethod( this, "adjustZoomAndRepaint", Qt::QueuedConnection );
         return;
     }
@@ -129,7 +129,7 @@ void PolarCoordinatePlane::paint ( QPainter* painter )
             diags[i]->paint( &ctx );
         }
     }
-    d->currentTransformation = 0;
+    d->currentTransformation = nullptr;
 }
 
 
@@ -195,28 +195,28 @@ void PolarCoordinatePlane::layoutDiagrams()
 
 const QPointF PolarCoordinatePlane::translate( const QPointF& diagramPoint ) const
 {
-    Q_ASSERT_X ( d->currentTransformation != 0, "PolarCoordinatePlane::translate",
+    Q_ASSERT_X ( d->currentTransformation != nullptr, "PolarCoordinatePlane::translate",
                  "Only call translate() from within paint()." );
     return  d->currentTransformation->translate ( diagramPoint );
 }
 
 const QPointF PolarCoordinatePlane::translatePolar( const QPointF& diagramPoint ) const
 {
-    Q_ASSERT_X ( d->currentTransformation != 0, "PolarCoordinatePlane::translate",
+    Q_ASSERT_X ( d->currentTransformation != nullptr, "PolarCoordinatePlane::translate",
                  "Only call translate() from within paint()." );
     return  d->currentTransformation->translatePolar ( diagramPoint );
 }
 
 qreal PolarCoordinatePlane::angleUnit() const
 {
-    Q_ASSERT_X ( d->currentTransformation != 0, "PolarCoordinatePlane::angleUnit",
+    Q_ASSERT_X ( d->currentTransformation != nullptr, "PolarCoordinatePlane::angleUnit",
                  "Only call angleUnit() from within paint()." );
     return  d->currentTransformation->angleUnit;
 }
 
 qreal PolarCoordinatePlane::radiusUnit() const
 {
-    Q_ASSERT_X ( d->currentTransformation != 0, "PolarCoordinatePlane::radiusUnit",
+    Q_ASSERT_X ( d->currentTransformation != nullptr, "PolarCoordinatePlane::radiusUnit",
                  "Only call radiusUnit() from within paint()." );
     return  d->currentTransformation->radiusUnit;
 }

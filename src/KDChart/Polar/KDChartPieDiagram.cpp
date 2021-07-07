@@ -501,7 +501,7 @@ void PieDiagram::paintInternal( PaintContext* paintContext )
     const QPointF center = paintContext->rectangle().center();
     const PainterSaver painterSaver( paintContext->painter() );
     paintContext->painter()->setBrush( Qt::NoBrush );
-    KDAB_FOREACH( const LabelPaintInfo &pi, d->labelPaintCache.paintReplay ) {
+    Q_FOREACH( const LabelPaintInfo &pi, d->labelPaintCache.paintReplay ) {
         // we expect the PainterPath to be a rectangle
         if ( pi.labelArea.elementCount() != 5 ) {
             continue;
@@ -685,7 +685,7 @@ void PieDiagram::addSliceLabel( LabelPaintCache* lpc, const QRectF& drawPosition
         }
     }
 
-    d->addLabel( lpc, index, 0, points, Position::Center, Position::Center,
+    d->addLabel( lpc, index, nullptr, points, Position::Center, Position::Center,
                  angleLen * sum / 360, favoriteTextAngle );
 }
 

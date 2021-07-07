@@ -94,7 +94,7 @@ GridAttributes & GridAttributes::operator=( const GridAttributes& r )
 
 GridAttributes::~GridAttributes()
 {
-    delete _d; _d = 0;
+    delete _d; _d = nullptr;
 }
 
 

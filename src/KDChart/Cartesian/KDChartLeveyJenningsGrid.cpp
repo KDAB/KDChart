@@ -195,7 +195,7 @@ void LeveyJenningsGrid::calculateStepWidth(
     Q_ASSERT_X ( granularities.count(), "CartesianGrid::calculateStepWidth",
                  "Error: The list of GranularitySequence values is empty." );
     QList<qreal> list( granularities );
-    qSort( list );
+    std::sort( list.begin(), list.end() );
 
     const qreal start = qMin( start_, end_);
     const qreal end   = qMax( start_, end_);

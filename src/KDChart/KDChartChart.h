@@ -108,7 +108,7 @@ namespace KDChart {
         KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET( Chart )
 
     public:
-        explicit Chart ( QWidget* parent = 0 );
+        explicit Chart ( QWidget* parent = nullptr );
         ~Chart() override;
 
         /**
@@ -205,7 +205,7 @@ namespace KDChart {
          * \sa addCoordinatePlane, takeCoordinatePlane
          */
         void replaceCoordinatePlane( AbstractCoordinatePlane* plane,
-                                     AbstractCoordinatePlane* oldPlane = 0 );
+                                     AbstractCoordinatePlane* oldPlane = nullptr );
 
         /**
          * Removes the coordinate plane from the chart, without deleting it.
@@ -264,7 +264,7 @@ namespace KDChart {
          * \sa addHeaderFooter, takeHeaderFooter
          */
         void replaceHeaderFooter ( HeaderFooter* headerFooter,
-                                   HeaderFooter* oldHeaderFooter = 0 );
+                                   HeaderFooter* oldHeaderFooter = nullptr );
 
         /**
          * Removes the header (or footer, resp.) from the chart, without deleting it.
@@ -319,7 +319,7 @@ namespace KDChart {
          *
          * \sa addLegend, takeLegend
          */
-        void replaceLegend ( Legend* legend, Legend* oldLegend = 0 );
+        void replaceLegend ( Legend* legend, Legend* oldLegend = nullptr );
 
         /**
          * Removes the legend from the chart, without deleting it.

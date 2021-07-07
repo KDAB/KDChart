@@ -29,19 +29,12 @@ namespace KDChart {
     class Chart;
 }
 
-QT_BEGIN_NAMESPACE
-namespace Qt
-{
-typedef WindowFlags WFlags;
-}
-QT_END_NAMESPACE
-
 class FrameWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit FrameWidget( QWidget * parent = 0, Qt::WFlags f = 0 );
+    explicit FrameWidget( QWidget * parent = nullptr, Qt::WindowFlags f = {} );
 
     void paintEvent( QPaintEvent* ) override;
 

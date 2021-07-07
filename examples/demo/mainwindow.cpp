@@ -60,7 +60,7 @@ class MainWindow::Private : public QObject
 public:
     int datasetCount() const;
     enum ChartType{ Bar, Line, Plotter, Polar, Pie };
-    Private( MainWindow *q = 0 );
+    Private( MainWindow *q = nullptr );
     Chart *m_chartWin;
     CartesianCoordinatePlane *m_cartPlane;
     TableModel *m_model;

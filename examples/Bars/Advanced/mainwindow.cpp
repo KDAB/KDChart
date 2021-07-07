@@ -219,7 +219,7 @@ void MainWindow::on_fixPlaneSizeCB_toggled( bool checked )
 {
     CartesianCoordinatePlane* plane =
         qobject_cast<CartesianCoordinatePlane*>( m_chart->coordinatePlane() );
-    if ( plane == 0 )
+    if ( plane == nullptr )
         return;
     plane->setFixedDataCoordinateSpaceRelation( checked );
     // just a little adjustment:

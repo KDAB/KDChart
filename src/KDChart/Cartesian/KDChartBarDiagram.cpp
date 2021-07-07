@@ -46,13 +46,13 @@ using namespace KDChart;
 
 BarDiagram::Private::Private()
     : orientation( Qt::Vertical )
-    , implementor( 0 )
-    , normalDiagram( 0 )
-    , stackedDiagram( 0 )
-    , percentDiagram( 0 )
-    , normalLyingDiagram( 0 )
-    , stackedLyingDiagram( 0 )
-    , percentLyingDiagram( 0 )
+    , implementor( nullptr )
+    , normalDiagram( nullptr )
+    , stackedDiagram( nullptr )
+    , percentDiagram( nullptr )
+    , normalLyingDiagram( nullptr )
+    , stackedLyingDiagram( nullptr )
+    , percentLyingDiagram( nullptr )
 {
 }
 
@@ -201,7 +201,7 @@ Qt::Orientation BarDiagram::orientation() const
   */
 void BarDiagram::setBarAttributes( const BarAttributes& ba )
 {
-    d->attributesModel->setModelData( qVariantFromValue( ba ), BarAttributesRole );
+    d->attributesModel->setModelData( QVariant::fromValue( ba ), BarAttributesRole );
     emit propertiesChanged();
 }
 
@@ -210,7 +210,7 @@ void BarDiagram::setBarAttributes( const BarAttributes& ba )
   */
 void BarDiagram::setBarAttributes( int column, const BarAttributes& ba )
 {
-    d->setDatasetAttrs( column, qVariantFromValue( ba ), BarAttributesRole );
+    d->setDatasetAttrs( column, QVariant::fromValue( ba ), BarAttributesRole );
     emit propertiesChanged();
 }
 
@@ -221,7 +221,7 @@ void BarDiagram::setBarAttributes( const QModelIndex& index, const BarAttributes
 {
     attributesModel()->setData(
         d->attributesModel->mapFromSource( index ),
-        qVariantFromValue( ba ),
+        QVariant::fromValue( ba ),
         BarAttributesRole );
     emit propertiesChanged();
 }
@@ -261,7 +261,7 @@ BarAttributes BarDiagram::barAttributes( const QModelIndex& index ) const
 void BarDiagram::setThreeDBarAttributes( const ThreeDBarAttributes& threeDAttrs )
 {
     setDataBoundariesDirty();
-    d->attributesModel->setModelData( qVariantFromValue( threeDAttrs ), ThreeDBarAttributesRole );
+    d->attributesModel->setModelData( QVariant::fromValue( threeDAttrs ), ThreeDBarAttributesRole );
     emit layoutChanged( this );
     emit propertiesChanged();
 }
@@ -272,7 +272,7 @@ void BarDiagram::setThreeDBarAttributes( const ThreeDBarAttributes& threeDAttrs 
 void BarDiagram::setThreeDBarAttributes( int column, const ThreeDBarAttributes& threeDAttrs )
 {
     setDataBoundariesDirty();
-    d->setDatasetAttrs( column,  qVariantFromValue( threeDAttrs ), ThreeDBarAttributesRole );
+    d->setDatasetAttrs( column,  QVariant::fromValue( threeDAttrs ), ThreeDBarAttributesRole );
     //emit layoutChanged( this );
     emit propertiesChanged();
 }
@@ -285,7 +285,7 @@ void BarDiagram::setThreeDBarAttributes( const QModelIndex& index, const ThreeDB
     setDataBoundariesDirty();
     d->attributesModel->setData(
         d->attributesModel->mapFromSource(index),
-        qVariantFromValue( threeDAttrs ),
+        QVariant::fromValue( threeDAttrs ),
         ThreeDBarAttributesRole );
     //emit layoutChanged( this );
     emit propertiesChanged();

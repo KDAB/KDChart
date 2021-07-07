@@ -44,7 +44,7 @@ namespace KDChart {
         struct CoordinateTransformation;
         typedef QList<CoordinateTransformation> CoordinateTransformationList;
 
-        explicit PolarCoordinatePlane ( Chart* parent = 0 );
+        explicit PolarCoordinatePlane ( Chart* parent = nullptr );
         ~PolarCoordinatePlane() override;
 
         void addDiagram ( AbstractDiagram* diagram ) override;

@@ -283,7 +283,7 @@ void paintElements( AbstractDiagram::Private *diagramPrivate, PaintContext* ctx,
     QBrush curBrush;
     QPen curPen;
     QPolygonF points;
-    KDAB_FOREACH ( const LineAttributesInfo& lineInfo, lineList ) {
+    Q_FOREACH ( const LineAttributesInfo& lineInfo, lineList ) {
         const QModelIndex& index = lineInfo.index;
         const ThreeDLineAttributes td = threeDLineAttributes( diagram, index );
 
@@ -322,7 +322,7 @@ void paintElements( AbstractDiagram::Private *diagramPrivate, PaintContext* ctx,
         paintObject( diagramPrivate, ctx, curBrush, curPen, points );
     }
 
-    KDAB_FOREACH ( const LineAttributesInfo& lineInfo, lineList ) {
+    Q_FOREACH ( const LineAttributesInfo& lineInfo, lineList ) {
         const ValueTrackerAttributes vt = valueTrackerAttributes( diagram, lineInfo.index );
         if ( vt.isEnabled() ) {
             PaintingHelpers::paintValueTracker( ctx, vt, lineInfo.nextValue );

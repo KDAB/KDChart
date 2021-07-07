@@ -34,7 +34,7 @@ using namespace KDChart;
 #define d d_func()
 
 AbstractAxis::Private::Private( AbstractDiagram* diagram, AbstractAxis* axis )
-    : observer( 0 )
+    : observer( nullptr )
     , mDiagram( diagram )
     , mAxis( axis )
 {
@@ -45,14 +45,14 @@ AbstractAxis::Private::Private( AbstractDiagram* diagram, AbstractAxis* axis )
 AbstractAxis::Private::~Private()
 {
     delete observer;
-    observer = 0;
+    observer = nullptr;
 }
 
 bool AbstractAxis::Private::setDiagram( AbstractDiagram* diagram_, bool delayedInit )
 {
     AbstractDiagram* diagram = delayedInit ? mDiagram : diagram_;
     if ( delayedInit ) {
-        mDiagram = 0;
+        mDiagram = nullptr;
     }
 
     // do not set a diagram again that was already set
@@ -72,7 +72,7 @@ bool AbstractAxis::Private::setDiagram( AbstractDiagram* diagram_, bool delayedI
             Q_ASSERT( con );
             bNewDiagramStored = true;
         } else {
-            observer = 0;
+            observer = nullptr;
         }
     } else {
         if ( diagram )
@@ -84,9 +84,9 @@ bool AbstractAxis::Private::setDiagram( AbstractDiagram* diagram_, bool delayedI
 void AbstractAxis::Private::unsetDiagram( AbstractDiagram* diagram )
 {
     if ( diagram == mDiagram ) {
-        mDiagram = 0;
+        mDiagram = nullptr;
         delete observer;
-        observer = 0;
+        observer = nullptr;
     } else {
         secondaryDiagrams.removeAll( diagram );
     }
@@ -119,7 +119,7 @@ AbstractAxis::AbstractAxis ( AbstractDiagram* diagram )
 
 AbstractAxis::~AbstractAxis()
 {
-    d->mDiagram = 0;
+    d->mDiagram = nullptr;
     d->secondaryDiagrams.clear();
 }
 
@@ -140,7 +140,7 @@ void AbstractAxis::delayedInit()
     // We call setDiagram() here, because the c'tor of Private
     // only has stored the pointers, but it did not call setDiagram().
     if ( d )
-        d->setDiagram( 0, true /* delayedInit */ );
+        d->setDiagram( nullptr, true /* delayedInit */ );
 }
 
 bool AbstractAxis::compare( const AbstractAxis* other ) const
@@ -243,7 +243,7 @@ const AbstractCoordinatePlane* AbstractAxis::coordinatePlane() const
 {
     if ( d->diagram() )
         return d->diagram()->coordinatePlane();
-    return 0;
+    return nullptr;
 }
 
 const AbstractDiagram * KDChart::AbstractAxis::diagram() const

@@ -100,7 +100,7 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
     const qreal inf = std::numeric_limits< qreal >::infinity();
 
     if ( m_customTicks.count() ) {
-        qSort( m_customTicks.begin(), m_customTicks.end() );
+        std::sort( m_customTicks.begin(), m_customTicks.end() );
         m_customTickIndex = 0;
         m_customTick = m_customTicks.at( m_customTickIndex );
     } else {
@@ -142,9 +142,9 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
     init( xy.isY, hasMajorTicks, hasMinorTicks, plane );
 }
 
-static QMap< qreal, QString > allAxisAnnotations( const AbstractCoordinatePlane *plane, bool isY )
+static QMultiMap< qreal, QString > allAxisAnnotations( const AbstractCoordinatePlane *plane, bool isY )
 {
-    QMap< qreal, QString > annotations;
+    QMultiMap< qreal, QString > annotations;
     Q_FOREACH( const AbstractDiagram *diagram, plane->diagrams() ) {
         const AbstractCartesianDiagram *cd = qobject_cast< const AbstractCartesianDiagram* >( diagram );
         if ( !cd ) {
@@ -162,7 +162,7 @@ static QMap< qreal, QString > allAxisAnnotations( const AbstractCoordinatePlane 
 
 TickIterator::TickIterator( bool isY, const DataDimension& dimension, bool useAnnotationsForTicks,
                             bool hasMajorTicks, bool hasMinorTicks, CartesianCoordinatePlane* plane )
-   : m_axis( 0 ),
+   : m_axis( nullptr ),
      m_dimension( dimension ),
      m_majorThinningFactor( 1 ),
      m_majorLabelCount( 0 ),
@@ -303,7 +303,7 @@ void TickIterator::operator++()
     // make sure to find the next tick at a value strictly greater than m_position
 
     if ( !m_annotations.isEmpty() ) {
-        QMap< qreal, QString >::ConstIterator it = m_annotations.upperBound( m_position );
+        auto it = m_annotations.upperBound( m_position );
         if ( it != m_annotations.constEnd() ) {
             m_position = it.key();
             m_text = it.value();
@@ -392,7 +392,7 @@ CartesianAxis::~CartesianAxis()
         AbstractCartesianDiagram *cd = qobject_cast< AbstractCartesianDiagram* >( d->mDiagram );
         cd->takeAxis( this );
     }
-    KDAB_FOREACH( AbstractDiagram *diagram, d->secondaryDiagrams ) {
+    Q_FOREACH( AbstractDiagram *diagram, d->secondaryDiagrams ) {
         AbstractCartesianDiagram *cd = qobject_cast< AbstractCartesianDiagram* >( diagram );
         cd->takeAxis( this );
     }
@@ -915,9 +915,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
         }
     }
     delete tickLabel;
-    tickLabel = 0;
+    tickLabel = nullptr;
     delete prevTickLabel;
-    prevTickLabel = 0;
+    prevTickLabel = nullptr;
 
     if ( ! titleText().isEmpty() ) {
         d->drawTitleText( painter, plane, geometry() );
@@ -1126,12 +1126,12 @@ int CartesianAxis::tickLength( bool subUnitTicks ) const
     return subUnitTicks ? rulerAttr.minorTickMarkLength() : rulerAttr.majorTickMarkLength();
 }
 
-QMap< qreal, QString > CartesianAxis::annotations() const
+QMultiMap< qreal, QString > CartesianAxis::annotations() const
 {
     return d->annotations;
 }
 
-void CartesianAxis::setAnnotations( const QMap< qreal, QString >& annotations )
+void CartesianAxis::setAnnotations( const QMultiMap< qreal, QString >& annotations )
 {
     if ( d->annotations == annotations )
         return;

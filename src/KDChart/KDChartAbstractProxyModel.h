@@ -37,7 +37,7 @@ namespace KDChart
     {
         Q_OBJECT
     public:
-        explicit AbstractProxyModel( QObject* parent = 0 );
+        explicit AbstractProxyModel( QObject* parent = nullptr );
 
         /*! \reimpl */ 
         QModelIndex mapFromSource( const QModelIndex & sourceIndex ) const override;

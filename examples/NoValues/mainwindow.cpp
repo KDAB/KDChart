@@ -39,7 +39,7 @@ using namespace KDChart;
 class EmptyModel : public QAbstractItemModel
 {
 public:
-    EmptyModel( QObject* parent = 0 )
+    EmptyModel( QObject* parent = nullptr )
         : QAbstractItemModel( parent )
     {
         //qDebug() << "EmptyModel::EmptyModel()";

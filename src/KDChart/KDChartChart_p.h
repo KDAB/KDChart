@@ -67,14 +67,14 @@ class CartesianAxis;
  */
 struct PlaneInfo {
     PlaneInfo()
-        : referencePlane( 0 ),
+        : referencePlane( nullptr ),
           horizontalOffset( 1 ),
           verticalOffset( 1 ),
-          gridLayout( 0 ),
-          topAxesLayout( 0 ),
-          bottomAxesLayout( 0 ),
-          leftAxesLayout( 0 ),
-          rightAxesLayout( 0 )
+          gridLayout( nullptr ),
+          topAxesLayout( nullptr ),
+          bottomAxesLayout( nullptr ),
+          leftAxesLayout( nullptr ),
+          rightAxesLayout( nullptr )
     {}
     AbstractCoordinatePlane *referencePlane;
     int horizontalOffset;
@@ -89,11 +89,11 @@ struct PlaneInfo {
 struct LayoutGraphNode
 {
     LayoutGraphNode()
-        : diagramPlane( 0 )
-        , leftSuccesor( 0 )
-        , bottomSuccesor( 0 )
-        , sharedSuccesor( 0 )
-        , gridLayout( 0 )
+        : diagramPlane( nullptr )
+        , leftSuccesor( nullptr )
+        , bottomSuccesor( nullptr )
+        , sharedSuccesor( nullptr )
+        , gridLayout( nullptr )
         , topAxesLayout( false )
         , bottomAxesLayout( false )
         , leftAxesLayout( false )
@@ -177,7 +177,7 @@ class Chart::Private : public QObject
 
         struct AxisInfo {
             AxisInfo()
-                :plane(0)
+                :plane(nullptr)
             {}
             AbstractCoordinatePlane *plane;
         };

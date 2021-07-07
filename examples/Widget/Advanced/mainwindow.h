@@ -34,7 +34,7 @@ class MainWindow : public QWidget, private Ui::MainWindow
     Q_OBJECT
 
 public:
-    MainWindow( QWidget* parent = NULL );
+    MainWindow( QWidget* parent = nullptr );
 
     KDChart::Widget* widget;
 

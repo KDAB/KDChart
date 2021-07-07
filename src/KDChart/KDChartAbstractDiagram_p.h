@@ -135,14 +135,14 @@ namespace KDChart {
                                             const LabelPaintCache& cache,
                                             bool paintMarkers,
                                             bool justCalculateRect=false,
-                                            QRectF* cumulatedBoundingRect=0 );
+                                            QRectF* cumulatedBoundingRect=nullptr );
 
         void paintDataValueText( QPainter* painter,
                                  const QModelIndex& index,
                                  const QPointF& pos,
                                  qreal value,
                                  bool justCalculateRect=false,
-                                 QRectF* cumulatedBoundingRect=0 );
+                                 QRectF* cumulatedBoundingRect=nullptr );
 
         void paintDataValueText( QPainter* painter,
                                  const DataValueAttributes& attrs,
@@ -150,7 +150,7 @@ namespace KDChart {
                                  bool valueIsPositive,
                                  const QString& text,
                                  bool justCalculateRect=false,
-                                 QRectF* cumulatedBoundingRect=0 );
+                                 QRectF* cumulatedBoundingRect=nullptr );
 
         inline int datasetCount() const
         {

@@ -60,7 +60,7 @@ TernaryLineDiagram::TernaryLineDiagram ( QWidget* parent,
     dataValueAttributes.setMarkerAttributes( markerAttributes );
     attributesModel()->setDefaultForRole(
         KDChart::DataValueLabelAttributesRole,
-        qVariantFromValue( dataValueAttributes ) );
+        QVariant::fromValue( dataValueAttributes ) );
 }
 
 TernaryLineDiagram::~TernaryLineDiagram()
@@ -82,7 +82,7 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
 
     d->paint( paintContext );
     // sanity checks:
-    if ( model() == 0 ) return;
+    if ( model() == nullptr ) return;
 
     QPainter* p = paintContext->painter();
     PainterSaver s( p );

@@ -53,7 +53,7 @@ public:
     class PlotterType;
     friend class PlotterType;
 
-    explicit Plotter( QWidget* parent = 0, CartesianCoordinatePlane* plane = 0 );
+    explicit Plotter( QWidget* parent = nullptr, CartesianCoordinatePlane* plane = nullptr );
     ~Plotter() override;
 
     virtual Plotter* clone() const;

@@ -48,7 +48,7 @@ namespace KDChart {
        /**
          * Constructs a new observer observing the given diagram.
          */
-        explicit DiagramObserver( AbstractDiagram * diagram, QObject* parent = 0 );
+        explicit DiagramObserver( AbstractDiagram * diagram, QObject* parent = nullptr );
         ~DiagramObserver() override;
 
         const AbstractDiagram* diagram() const;

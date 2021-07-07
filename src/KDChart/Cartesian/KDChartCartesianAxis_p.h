@@ -71,7 +71,7 @@ public:
     QString customizedLabelText( const QString& text, Qt::Orientation orientation, qreal value ) const;
     bool isVertical() const;
 
-    QMap< qreal, QString > annotations;
+    QMultiMap< qreal, QString > annotations;
 
 private:
     friend class TickIterator;
@@ -160,7 +160,7 @@ private:
     DataDimension m_dimension; // upper and lower bounds
     int m_decimalPlaces; // for numeric labels
     bool m_isLogarithmic;
-    QMap< qreal, QString > m_annotations;
+    QMultiMap< qreal, QString > m_annotations;
     QMap< qreal, QString > m_dataHeaderLabels;
     QList< qreal > m_customTicks;
     QStringList m_manualLabelTexts;

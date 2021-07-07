@@ -130,7 +130,7 @@ void PercentPlotter::paint( PaintContext* ctx )
     // the x-values
     QList< qreal > xValues = diagramValues.keys();
     // make sure it's sorted
-    qSort( xValues );
+    std::sort( xValues.begin(), xValues.end() );
     Q_FOREACH( const qreal xValue, xValues )
     {
         // the y-values to the current x-value
@@ -249,7 +249,7 @@ void PercentPlotter::paint( PaintContext* ctx )
             }
             // add the pieces to painting if this is not hidden:
             if ( !point.hidden /*&& !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) */) {
-                m_private->addLabel( &lpc, sourceIndex, 0, pts, Position::NorthWest,
+                m_private->addLabel( &lpc, sourceIndex, nullptr, pts, Position::NorthWest,
                                      Position::NorthWest, value );
                 if ( !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) )
                 {

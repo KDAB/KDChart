@@ -66,16 +66,16 @@ using namespace KDGantt;
 
 GraphicsScene::Private::Private( GraphicsScene* _q )
     : q( _q ),
-      dragSource( 0 ),
+      dragSource( nullptr ),
       itemDelegate( new ItemDelegate( _q ) ),
-      rowController( 0 ),
+      rowController( nullptr ),
       grid( &default_grid ),
       readOnly( false ),
       isPrinting( false ),
       drawColumnLabels( true ),
       labelsWidth( 0.0 ),
       summaryHandlingModel( new SummaryHandlingProxyModel( _q ) ),
-      selectionModel( 0 )
+      selectionModel( nullptr )
 {
     default_grid.setStartDateTime( QDateTime::currentDateTime().addDays( -1 ) );
 }
@@ -110,7 +110,7 @@ void GraphicsScene::Private::createConstraintItem( const Constraint& c )
 void GraphicsScene::Private::deleteConstraintItem( ConstraintGraphicsItem *citem )
 {
     //qDebug()<<"GraphicsScene::Private::deleteConstraintItem citem="<<citem;
-    if ( citem == 0 ) {
+    if ( citem == nullptr ) {
         return;
     }
     Constraint c = citem->constraint();
@@ -156,7 +156,7 @@ ConstraintGraphicsItem* GraphicsScene::Private::findConstraintItem( const Constr
             return *it;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 GraphicsScene::GraphicsScene( QObject* parent )
@@ -274,8 +274,8 @@ AbstractRowController* GraphicsScene::rowController() const
 
 void GraphicsScene::setGrid( AbstractGrid* grid )
 {
-    QAbstractItemModel* model = 0;
-    if ( grid == 0 ) grid = &d->default_grid;
+    QAbstractItemModel* model = nullptr;
+    if ( grid == nullptr ) grid = &d->default_grid;
     if ( d->grid ) {
         d->grid->disconnect( this );
         model = d->grid->model();
@@ -369,7 +369,7 @@ void GraphicsScene::Private::recursiveUpdateMultiItem( const Span& span, const Q
     item->updateItem( span, idx );
     QModelIndex child;
     int cr = 0;
-    while ( ( child = idx.child( cr, 0 ) ).isValid() ) {
+    while ( ( child = idx.model()->index( cr, 0, idx ) ).isValid() ) {
         recursiveUpdateMultiItem( span, child );
         ++cr;
     }
@@ -469,9 +469,18 @@ void GraphicsScene::removeItem( const QModelIndex& idx )
         // there is a good chance there will be reentrant calls
         d->items.erase( it );
         {
+            const auto startConstraints = item->startConstraints();
+            const auto endConstraints = item->endConstraints();
             // Remove any constraintitems attached
-            const QSet<ConstraintGraphicsItem*> clst = QSet<ConstraintGraphicsItem*>::fromList( item->startConstraints() ) +
-                                                       QSet<ConstraintGraphicsItem*>::fromList( item->endConstraints() );
+            const QSet<ConstraintGraphicsItem*> clst =
+#if QT_VERSION > QT_VERSION_CHECK(5, 14, 0)
+                QSet<ConstraintGraphicsItem*>( startConstraints.begin(), startConstraints.end() ) +
+                QSet<ConstraintGraphicsItem*>( endConstraints.begin(), endConstraints.end() );
+#else
+                QSet<ConstraintGraphicsItem*>::fromList( startConstraints ) +
+                QSet<ConstraintGraphicsItem*>::fromList( endConstraints );
+#endif
+
             Q_FOREACH( ConstraintGraphicsItem* citem, clst ) {
                 d->deleteConstraintItem( citem );
             }
@@ -483,7 +492,7 @@ void GraphicsScene::removeItem( const QModelIndex& idx )
 
 GraphicsItem* GraphicsScene::findItem( const QModelIndex& idx ) const
 {
-    if ( !idx.isValid() ) return 0;
+    if ( !idx.isValid() ) return nullptr;
     assert( idx.model() == summaryHandlingModel() );
     QHash<QPersistentModelIndex,GraphicsItem*>::const_iterator it = d->items.find( idx );
     return ( it != d->items.end() )?*it:0;
@@ -491,7 +500,7 @@ GraphicsItem* GraphicsScene::findItem( const QModelIndex& idx ) const
 
 GraphicsItem* GraphicsScene::findItem( const QPersistentModelIndex& idx ) const
 {
-    if ( !idx.isValid() ) return 0;
+    if ( !idx.isValid() ) return nullptr;
     assert( idx.model() == summaryHandlingModel() );
     QHash<QPersistentModelIndex,GraphicsItem*>::const_iterator it = d->items.find( idx );
     return ( it != d->items.end() )?*it:0;
@@ -525,7 +534,7 @@ void GraphicsScene::deleteSubtree( const QModelIndex& _idx )
     const QModelIndex parent( idx.parent() );
     const int colcount = idx.model()->columnCount( parent );
     {for ( int i = 0; i < colcount; ++i ) {
-        removeItem( parent.child( idx.row(), i ) );
+        removeItem( parent.model()->index( idx.row(), i, parent ) );
     }}
     const int rowcount = summaryHandlingModel()->rowCount( _idx );
     {for ( int i = 0; i < rowcount; ++i ) {
@@ -584,7 +593,7 @@ void GraphicsScene::drawBackground( QPainter* painter, const QRectF& _rect )
         QRectF headerRect( scn.topLeft()+QPointF( d->labelsWidth, 0 ),
                            QSizeF( scn.width()-d->labelsWidth, d->rowController->headerHeight() ));
 
-        d->grid->paintHeader( painter, headerRect, rect, 0, 0 );
+        d->grid->paintHeader( painter, headerRect, rect, 0, nullptr );
 
 #if 0
         /* We have to blank out the part of the header that is invisible during
@@ -663,7 +672,7 @@ void GraphicsScene::print( QPrinter* printer, bool drawRowLabels, bool drawColum
     Q_UNUSED( drawColumnLabels );
 #else
     QPainter painter( printer );
-    doPrint( &painter, printer->pageRect(), sceneRect().left(), sceneRect().right(), printer, drawRowLabels, drawColumnLabels );
+    doPrint( &painter, printer->pageLayout().paintRectPixels(printer->resolution()), sceneRect().left(), sceneRect().right(), printer, drawRowLabels, drawColumnLabels );
 #endif
 }
 
@@ -689,7 +698,7 @@ void GraphicsScene::print( QPrinter* printer, qreal start, qreal end, bool drawR
     Q_UNUSED( drawColumnLabels );
 #else
     QPainter painter( printer );
-    doPrint( &painter, printer->pageRect(), start, end, printer, drawRowLabels, drawColumnLabels );
+    doPrint( &painter, printer->pageLayout().paintRectPixels(printer->resolution()), start, end, printer, drawRowLabels, drawColumnLabels );
 #endif
 }
 
@@ -706,7 +715,7 @@ void GraphicsScene::print( QPainter* painter, const QRectF& _targetRect, bool dr
         targetRect = sceneRect();
     }
 
-    doPrint( painter, targetRect, sceneRect().left(), sceneRect().right(), 0, drawRowLabels, drawColumnLabels );
+    doPrint( painter, targetRect, sceneRect().left(), sceneRect().right(), nullptr, drawRowLabels, drawColumnLabels );
 }
 
 /*! Render the GanttView inside the rectangle \a target using the painter \a painter.
@@ -727,7 +736,7 @@ void GraphicsScene::print( QPainter* painter, qreal start, qreal end,
         targetRect = sceneRect();
     }
 
-    doPrint( painter, targetRect, start, end, 0, drawRowLabels, drawColumnLabels );
+    doPrint( painter, targetRect, start, end, nullptr, drawRowLabels, drawColumnLabels );
 }
 
 /*!\internal
@@ -803,7 +812,7 @@ void GraphicsScene::doPrint( QPainter* painter, const QRectF& targetRect,
             item->setPos( 0, rg.start() );
         } while ( ( sidx = rowController()->indexBelow( sidx ) ).isValid() );
         // Add a little margin to textWidth
-        textWidth += QFontMetricsF(sceneFont).width( QString::fromLatin1( "X" ) );
+        textWidth += QFontMetricsF(sceneFont).horizontalAdvance( QString::fromLatin1( "X" ) );
         Q_FOREACH( QGraphicsTextItem* item, textLabels ) {
             item->setPos( scnRect.left()-textWidth, item->y() );
             item->show();
@@ -931,14 +940,14 @@ KDAB_SCOPED_UNITTEST_SIMPLE( KDGantt, GraphicsView, "test" ) {
     QStandardItem* item = new QStandardItem();
     item->setData( KDGantt::TypeTask, KDGantt::ItemTypeRole );
     item->setData( QString::fromLatin1( "Decide on new product" ) );
-    item->setData( QDateTime( QDate( 2007, 3, 1 ) ), KDGantt::StartTimeRole );
-    item->setData( QDateTime( QDate( 2007, 3, 3 ) ), KDGantt::EndTimeRole );
+    item->setData( QDate( 2007, 3, 1 ).startOfDay(), KDGantt::StartTimeRole );
+    item->setData( QDate( 2007, 3, 3 ).startOfDay(), KDGantt::EndTimeRole );
 
     QStandardItem* item2 = new QStandardItem();
     item2->setData( KDGantt::TypeTask, KDGantt::ItemTypeRole );
     item2->setData( QString::fromLatin1( "Educate personnel" ) );
-    item2->setData( QDateTime( QDate( 2007, 3, 3 ) ), KDGantt::StartTimeRole );
-    item2->setData( QDateTime( QDate( 2007, 3, 6 ) ), KDGantt::EndTimeRole );
+    item2->setData( QDate( 2007, 3, 3 ).startOfDay(), KDGantt::StartTimeRole );
+    item2->setData( QDate( 2007, 3, 6 ).startOfDay(), KDGantt::EndTimeRole );
 
     model.appendRow( item );
     model.appendRow( item2 );

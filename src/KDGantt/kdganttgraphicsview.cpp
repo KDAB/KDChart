@@ -26,6 +26,7 @@
 #include "kdganttgraphicsitem.h"
 #include "kdganttconstraintmodel.h"
 
+#include <QActionGroup>
 #include <QMenu>
 #include <QPainter>
 #include <QPaintEvent>
@@ -88,14 +89,14 @@ void HeaderWidget::contextMenuEvent( QContextMenuEvent* event )
     QMenu contextMenu;
 
     DateTimeGrid* const grid = qobject_cast< DateTimeGrid* >( view()->grid() );
-    QAction* actionScaleAuto = 0;
-    QAction* actionScaleMonth = 0;
-    QAction* actionScaleWeek = 0;
-    QAction* actionScaleDay = 0;
-    QAction* actionScaleHour = 0;
-    QAction* actionZoomIn = 0;
-    QAction* actionZoomOut = 0;
-    if ( grid != 0 )
+    QAction* actionScaleAuto = nullptr;
+    QAction* actionScaleMonth = nullptr;
+    QAction* actionScaleWeek = nullptr;
+    QAction* actionScaleDay = nullptr;
+    QAction* actionScaleHour = nullptr;
+    QAction* actionZoomIn = nullptr;
+    QAction* actionZoomOut = nullptr;
+    if ( grid != nullptr )
     {
         QMenu* menuScale = new QMenu( tr( "Scale" ), &contextMenu );
         QActionGroup* scaleGroup = new QActionGroup( &contextMenu );
@@ -149,40 +150,40 @@ void HeaderWidget::contextMenuEvent( QContextMenuEvent* event )
     }
 
     const QAction* const action = contextMenu.exec( event->globalPos() );
-    if ( action == 0 ) {}
+    if ( action == nullptr ) {}
     else if ( action == actionScaleAuto )
     {
-        assert( grid != 0 );
+        assert( grid != nullptr );
         grid->setScale( DateTimeGrid::ScaleAuto );
     }
     else if ( action == actionScaleMonth )
     {
-        assert( grid != 0 );
+        assert( grid != nullptr );
         grid->setScale( DateTimeGrid::ScaleMonth );
     }
     else if ( action == actionScaleWeek )
     {
-        assert( grid != 0 );
+        assert( grid != nullptr );
         grid->setScale( DateTimeGrid::ScaleWeek );
     }
     else if ( action == actionScaleDay )
     {
-        assert( grid != 0 );
+        assert( grid != nullptr );
         grid->setScale( DateTimeGrid::ScaleDay );
     }
     else if ( action == actionScaleHour )
     {
-        assert( grid != 0 );
+        assert( grid != nullptr );
         grid->setScale( DateTimeGrid::ScaleHour );
     }
     else if ( action == actionZoomIn )
     {
-        assert( grid != 0 );
+        assert( grid != nullptr );
         grid->setDayWidth( qMax(0.1, grid->dayWidth() + grid->dayWidth() * 0.2) );
     }
     else if ( action == actionZoomOut )
     {
-        assert( grid != 0 );
+        assert( grid != nullptr );
         grid->setDayWidth( qMax(0.1, grid->dayWidth() - grid->dayWidth() * 0.2) );
     }
 
@@ -190,7 +191,7 @@ void HeaderWidget::contextMenuEvent( QContextMenuEvent* event )
 }
 
 GraphicsView::Private::Private( GraphicsView* _q )
-  : q( _q ), rowcontroller(0), headerwidget( _q )
+  : q( _q ), rowcontroller(nullptr), headerwidget( _q )
 {
 }
 
@@ -297,7 +298,7 @@ void GraphicsView::Private::slotItemClicked( const QModelIndex& idx )
 {
     QModelIndex sidx = idx;//scene.summaryHandlingModel()->mapToSource( idx );
     emit q->clicked( sidx );
-    if (q->style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, q))
+    if (q->style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, nullptr, q))
         emit q->activated( sidx );
 }
 
@@ -305,7 +306,7 @@ void GraphicsView::Private::slotItemDoubleClicked( const QModelIndex& idx )
 {
     QModelIndex sidx = idx;//scene.summaryHandlingModel()->mapToSource( idx );
     emit q->qrealClicked( sidx );
-    if (!q->style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, q))
+    if (!q->style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, nullptr, q))
         emit q->activated( sidx );
 }
 

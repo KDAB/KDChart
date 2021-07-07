@@ -55,8 +55,8 @@ TernaryAxis::TernaryAxis ( AbstractTernaryDiagram* diagram)
 
 TernaryAxis::~TernaryAxis()
 {
-    delete m_label; m_label = 0;
-    delete m_fifty; m_fifty = 0;
+    delete m_label; m_label = nullptr;
+    delete m_fifty; m_fifty = nullptr;
 }
 
 void  TernaryAxis::paintAll (QPainter &)

@@ -57,7 +57,7 @@ AbstractAreaBase::AbstractAreaBase() :
 
 AbstractAreaBase::~AbstractAreaBase()
 {
-    delete _d; _d = 0;
+    delete _d; _d = nullptr;
 }
 
 
@@ -124,7 +124,7 @@ void AbstractAreaBase::paintBackgroundAttributes( QPainter& painter, const QRect
     if ( Qt::NoBrush != attributes.brush().style() ) {
         KDChart::PainterSaver painterSaver( &painter );
         painter.setPen( Qt::NoPen );
-        const QPointF newTopLeft( painter.deviceMatrix().map( rect.topLeft() ) );
+        const QPointF newTopLeft( painter.deviceTransform().map( rect.topLeft() ) );
         painter.setBrushOrigin( newTopLeft );
         painter.setBrush( attributes.brush() );
         painter.drawRect( rect.adjusted( 0, 0, -1, -1 ) );
@@ -139,7 +139,7 @@ void AbstractAreaBase::paintBackgroundAttributes( QPainter& painter, const QRect
             ol.setY( rect.center().y() - attributes.pixmap().height()/ 2 );
             painter.drawPixmap( ol, attributes.pixmap() );
         } else {
-            QMatrix m;
+            QTransform m;
             qreal zW = (qreal)rect.width()  / (qreal)attributes.pixmap().width();
             qreal zH = (qreal)rect.height() / (qreal)attributes.pixmap().height();
             switch ( attributes.pixmapMode() ) {
@@ -188,7 +188,7 @@ void AbstractAreaBase::paintFrameAttributes( QPainter& painter, const QRect& rec
 
 void AbstractAreaBase::paintBackground( QPainter& painter, const QRect& rect )
 {
-    Q_ASSERT_X ( d != 0, "AbstractAreaBase::paintBackground()",
+    Q_ASSERT_X ( d != nullptr, "AbstractAreaBase::paintBackground()",
                 "Private class was not initialized!" );
 
     PainterSaver painterSaver( &painter );
@@ -204,7 +204,7 @@ void AbstractAreaBase::paintBackground( QPainter& painter, const QRect& rect )
 
 void AbstractAreaBase::paintFrame( QPainter& painter, const QRect& rect )
 {
-    Q_ASSERT_X ( d != 0, "AbstractAreaBase::paintFrame()",
+    Q_ASSERT_X ( d != nullptr, "AbstractAreaBase::paintFrame()",
                 "Private class was not initialized!" );
     paintFrameAttributes( painter, rect, d->frameAttributes );
 }

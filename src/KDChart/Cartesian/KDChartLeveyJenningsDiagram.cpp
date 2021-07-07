@@ -313,7 +313,7 @@ float LeveyJenningsDiagram::calculatedStandardDeviation() const
 
 void LeveyJenningsDiagram::setModel( QAbstractItemModel* model )
 {
-    if ( this->model() != 0 )
+    if ( this->model() != nullptr )
     {
         disconnect( this->model(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex& ) ),
                                    this, SLOT( calculateMeanAndStandardDeviation() ) );
@@ -331,7 +331,7 @@ void LeveyJenningsDiagram::setModel( QAbstractItemModel* model )
                                    this, SLOT( calculateMeanAndStandardDeviation() ) );
     }
     LineDiagram::setModel( model );
-    if ( this->model() != 0 )
+    if ( this->model() != nullptr )
     {
         connect( this->model(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex& ) ),
                                 this, SLOT( calculateMeanAndStandardDeviation() ) );
@@ -374,7 +374,7 @@ void LeveyJenningsDiagram::calculateMeanAndStandardDeviation() const
 
     qreal sum = 0.0;
     qreal sumSquares = 0.0;
-    KDAB_FOREACH( qreal value, values )
+    Q_FOREACH( qreal value, values )
     {
         sum += value;
         sumSquares += value * value;
@@ -430,8 +430,8 @@ const QPair<QPointF, QPointF> LeveyJenningsDiagram::calculateDataBoundaries() co
 
     // rounded down/up to the prev/next midnight (at least that's the default)
     const QPair< QDateTime, QDateTime > range = timeRange();
-    const unsigned int minTime = range.first.toTime_t();
-    const unsigned int maxTime = range.second.toTime_t();
+    const unsigned int minTime = range.first.toSecsSinceEpoch();
+    const unsigned int maxTime = range.second.toSecsSinceEpoch();
 
     const qreal xMin = minTime / static_cast< qreal >( 24 * 60 * 60 );
     const qreal xMax = maxTime / static_cast< qreal >( 24 * 60 * 60 ) - xMin;
@@ -462,7 +462,7 @@ QPair< QDateTime, QDateTime > LeveyJenningsDiagram::timeRange() const
         // round down/up to the prev/next midnight
         const QDate min = floorDay( begin );
         const QDate max = ceilDay( end );
-        return QPair< QDateTime, QDateTime >( QDateTime( min ), QDateTime( max ) );
+        return QPair< QDateTime, QDateTime >( min.startOfDay(), max.startOfDay() );
     }
     else if ( begin.secsTo( end ) > 3600 )
     {
@@ -493,18 +493,18 @@ void LeveyJenningsDiagram::setTimeRange( const QPair< QDateTime, QDateTime >& ti
  */
 void LeveyJenningsDiagram::drawChanges( PaintContext* ctx )
 {
-    const unsigned int minTime = timeRange().first.toTime_t();
+    const unsigned int minTime = timeRange().first.toSecsSinceEpoch();
 
-    KDAB_FOREACH( const QDateTime& dt, d->fluidicsPackChanges )
+    Q_FOREACH( const QDateTime& dt, d->fluidicsPackChanges )
     {
-        const qreal xValue = ( dt.toTime_t() - minTime ) / static_cast< qreal >( 24 * 60 * 60 );
+        const qreal xValue = ( dt.toSecsSinceEpoch() - minTime ) / static_cast< qreal >( 24 * 60 * 60 );
         const QPointF point( xValue, 0.0 );
         drawFluidicsPackChangedSymbol( ctx, point );
     }
 
-    KDAB_FOREACH( const QDateTime& dt, d->sensorChanges )
+    Q_FOREACH( const QDateTime& dt, d->sensorChanges )
     {
-        const qreal xValue = ( dt.toTime_t() - minTime ) / static_cast< qreal >( 24 * 60 * 60 );
+        const qreal xValue = ( dt.toSecsSinceEpoch() - minTime ) / static_cast< qreal >( 24 * 60 * 60 );
         const QPointF point( xValue, 0.0 );
         drawSensorChangedSymbol( ctx, point );
     }
@@ -531,7 +531,7 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
     const QAbstractItemModel& m = *model();
     const int rowCount = m.rowCount( rootIndex() );
 
-    const unsigned int minTime = timeRange().first.toTime_t();
+    const unsigned int minTime = timeRange().first.toSecsSinceEpoch();
 
     painter->setRenderHint( QPainter::Antialiasing, true );
 
@@ -555,7 +555,7 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
         const int lot = m.data( lotIndex ).toInt();
         const bool ok = m.data( okIndex ).toBool();
         const QDateTime time = m.data( timeIndex ).toDateTime();
-        const qreal xValue = ( time.toTime_t() - minTime ) / static_cast< qreal >( 24 * 60 * 60 );
+        const qreal xValue = ( time.toSecsSinceEpoch() - minTime ) / static_cast< qreal >( 24 * 60 * 60 );
 
         QVariant vExpectedMean = m.data( expectedMeanIndex );
         const qreal expectedMean = vExpectedMean.toReal();

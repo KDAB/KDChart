@@ -34,7 +34,7 @@ class DiagramSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit DiagramSettings( KDChart::Chart* chart, QWidget *parent = 0 );
+    explicit DiagramSettings( KDChart::Chart* chart, QWidget *parent = nullptr );
     ~DiagramSettings() override;
 
 public Q_SLOTS:

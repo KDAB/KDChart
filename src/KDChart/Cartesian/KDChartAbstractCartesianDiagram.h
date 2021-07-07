@@ -45,7 +45,7 @@ namespace KDChart {
         KDCHART_DECLARE_DERIVED_DIAGRAM( AbstractCartesianDiagram, CartesianCoordinatePlane )
 
     public:
-        explicit AbstractCartesianDiagram( QWidget* parent = 0, CartesianCoordinatePlane* plane = 0 );
+        explicit AbstractCartesianDiagram( QWidget* parent = nullptr, CartesianCoordinatePlane* plane = nullptr );
         ~AbstractCartesianDiagram() override;
 
         /**

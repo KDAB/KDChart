@@ -210,7 +210,7 @@ QList<Constraint> ConstraintModel::constraintsForIndex( const QModelIndex& idx )
         Q_FOREACH( const Constraint& c, d->constraints ) {
             if ( !c.startIndex().isValid() || !c.endIndex().isValid() ) result.insert( c );
         }
-        return result.toList();
+        return result.values();
     } else {
         QList<Constraint> result;
         Q_FOREACH( const Constraint& c, d->constraints ) {

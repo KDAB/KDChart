@@ -59,7 +59,7 @@ class ItemTypeComboBox : public QComboBox {
     Q_OBJECT
     Q_PROPERTY( KDGantt::ItemType itemType READ itemType WRITE setItemType )
 public:
-    explicit ItemTypeComboBox( QWidget* parent=0 );
+    explicit ItemTypeComboBox( QWidget* parent=nullptr );
 
     KDGantt::ItemType itemType() const;
 public slots:
@@ -86,7 +86,7 @@ void ItemTypeComboBox::setItemType( KDGantt::ItemType typ )
 
 class MyItemDelegate : public KDGantt::ItemDelegate {
 public:
-    explicit MyItemDelegate( QObject* parent=0 );
+    explicit MyItemDelegate( QObject* parent=nullptr );
 
     /*reimp*/ QWidget* createEditor( QWidget* parent,
                                      const QStyleOptionViewItem& option,
@@ -157,7 +157,7 @@ void MyItemDelegate::drawDisplay( QPainter* painter, const QStyleOptionViewItem&
 class DateTimeGrid : public KDGantt::DateTimeGrid
 {
 public:
-    DateTimeGrid(QObject* parent=0) {
+    DateTimeGrid(QObject* parent=nullptr) {
         setParent(parent);
         setFreeDays( QSet<Qt::DayOfWeek>() );
         setFreeDaysBrush( QBrush( Qt::NoBrush ) );
@@ -207,7 +207,7 @@ void DateTimeGrid::drawForeground(QPainter* painter, const QRectF& rect)
     font.setPixelSize(r.width()/5);
 
     QFontMetrics fm(font);
-    int width = fm.width(text);
+    int width = fm.horizontalAdvance(text);
     int height = fm.boundingRect(text).height();
 
     painter->translate(r.center());
@@ -304,8 +304,8 @@ MainWindow::MainWindow( QWidget* parent )
     slotToolsNewItem();
     slotToolsNewItem();
     for (int i = 0; i < 3; ++i) {
-        m_model->setData(m_model->index(i,2,QModelIndex()), qVariantFromValue(QDateTime::currentDateTime().addDays(i)), KDGantt::StartTimeRole);
-        m_model->setData(m_model->index(i,3,QModelIndex()), qVariantFromValue(QDateTime::currentDateTime().addDays(i+1)), KDGantt::EndTimeRole);
+        m_model->setData(m_model->index(i,2,QModelIndex()), QVariant::fromValue(QDateTime::currentDateTime().addDays(i)), KDGantt::StartTimeRole);
+        m_model->setData(m_model->index(i,3,QModelIndex()), QVariant::fromValue(QDateTime::currentDateTime().addDays(i+1)), KDGantt::EndTimeRole);
     }
     m_view->setConstraintModel(new KDGantt::ConstraintModel(m_view));
     m_view->constraintModel()->addConstraint(KDGantt::Constraint(m_model->index(0,0,QModelIndex()),m_model->index(1,0,QModelIndex())));
@@ -372,9 +372,9 @@ void MainWindow::slotFileSavePdf()
     const bool drawColumnLabels = dialog.m_columnLabels->isChecked();
 
     QPrinter printer(QPrinter::HighResolution);
-    printer.setOrientation(QPrinter::Landscape);
+    printer.setPageOrientation(QPageLayout::Landscape);
     printer.setColorMode(QPrinter::Color);
-    printer.setPageMargins(0.2, 0.2, 0.2, 0.2, QPrinter::Point);
+    printer.setPageMargins({0.2, 0.2, 0.2, 0.2}, QPageLayout::Point);
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(file);
     m_view->print(&printer, drawRowLabels, drawColumnLabels);
@@ -385,7 +385,7 @@ void MainWindow::slotFilePrint()
 {
 #ifndef QT_NO_PRINTER
     QPrinter printer(QPrinter::HighResolution);
-    printer.setOrientation(QPrinter::Landscape);
+    printer.setPageOrientation(QPageLayout::Landscape);
     printer.setColorMode(QPrinter::Color);
     QPrintDialog dialog(&printer, this);
     if (dialog.exec() != QDialog::Accepted)

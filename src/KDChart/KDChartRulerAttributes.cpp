@@ -264,7 +264,7 @@ RulerAttributes & RulerAttributes::operator=( const RulerAttributes& r )
 
 RulerAttributes::~RulerAttributes()
 {
-    delete _d; _d = 0;
+    delete _d; _d = nullptr;
 }
 
 bool RulerAttributes::operator==( const RulerAttributes& r ) const

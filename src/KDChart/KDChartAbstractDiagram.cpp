@@ -265,20 +265,20 @@ void AbstractDiagram::setHidden( const QModelIndex & index, bool hidden )
 {
     d->attributesModel->setData(
         conditionallyMapFromSource( index ),
-        qVariantFromValue( hidden ),
+        QVariant::fromValue( hidden ),
         DataHiddenRole );
     emit dataHidden();
 }
 
 void AbstractDiagram::setHidden( int dataset, bool hidden )
 {
-    d->setDatasetAttrs( dataset, qVariantFromValue( hidden ), DataHiddenRole );
+    d->setDatasetAttrs( dataset, QVariant::fromValue( hidden ), DataHiddenRole );
     emit dataHidden();
 }
 
 void AbstractDiagram::setHidden( bool hidden )
 {
-    d->attributesModel->setModelData( qVariantFromValue( hidden ), DataHiddenRole );
+    d->attributesModel->setModelData( QVariant::fromValue( hidden ), DataHiddenRole );
     emit dataHidden();
 }
 
@@ -310,7 +310,7 @@ bool AbstractDiagram::isHidden( const QModelIndex & index ) const
 void AbstractDiagram::setDataValueAttributes( const QModelIndex & index,
                                               const DataValueAttributes & a )
 {
-    d->attributesModel->setData( conditionallyMapFromSource( index ), qVariantFromValue( a ),
+    d->attributesModel->setData( conditionallyMapFromSource( index ), QVariant::fromValue( a ),
                                  DataValueLabelAttributesRole );
     emit propertiesChanged();
 }
@@ -318,7 +318,7 @@ void AbstractDiagram::setDataValueAttributes( const QModelIndex & index,
 
 void AbstractDiagram::setDataValueAttributes( int dataset, const DataValueAttributes & a )
 {
-    d->setDatasetAttrs( dataset, qVariantFromValue( a ), DataValueLabelAttributesRole );
+    d->setDatasetAttrs( dataset, QVariant::fromValue( a ), DataValueLabelAttributesRole );
     emit propertiesChanged();
 }
 
@@ -356,7 +356,7 @@ DataValueAttributes AbstractDiagram::dataValueAttributes( const QModelIndex & in
 
 void AbstractDiagram::setDataValueAttributes( const DataValueAttributes & a )
 {
-    d->attributesModel->setModelData( qVariantFromValue( a ), DataValueLabelAttributesRole );
+    d->attributesModel->setModelData( QVariant::fromValue( a ), DataValueLabelAttributesRole );
     emit propertiesChanged();
 }
 
@@ -444,8 +444,8 @@ void AbstractDiagram::paintMarker( QPainter* painter,
 
     const PainterSaver painterSaver( painter );
     // the size of the marker - unscaled
-    const QSizeF maSize( ma.markerSize().width() / painter->matrix().m11(),
-                         ma.markerSize().height() / painter->matrix().m22() );
+    const QSizeF maSize( ma.markerSize().width() / painter->transform().m11(),
+                         ma.markerSize().height() / painter->transform().m22() );
     QBrush indexBrush( brush( index ) );
     QPen indexPen( ma.pen() );
     if ( ma.markerColor().isValid() )
@@ -482,7 +482,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
     const bool isFourPixels = (markerAttributes.markerStyle() == MarkerAttributes::Marker4Pixels);
     if ( isFourPixels || (markerAttributes.markerStyle() == MarkerAttributes::Marker1Pixel) ) {
         // for high-performance point charts with tiny point markers:
-        painter->setPen( PrintingParameters::scalePen( QPen( brush.color().light() ) ) );
+        painter->setPen( PrintingParameters::scalePen( QPen( brush.color().lighter() ) ) );
         if ( isFourPixels ) {
             const qreal x = pos.x();
             const qreal y = pos.y();
@@ -518,7 +518,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                     grad.setColorAt( 0.95, drawColor.darker( 250 ) );
                     grad.setColorAt( 1.00, drawColor.darker( 200 ) );
                     QBrush newBrush( grad );
-                    newBrush.setMatrix( brush.matrix() );
+                    newBrush.setTransform( brush.transform() );
                     painter->setBrush( newBrush );
                 }
                 painter->drawEllipse( QRectF( 0 - maSize.height()/2, 0 - maSize.width()/2,
@@ -648,20 +648,20 @@ void AbstractDiagram::setPen( const QModelIndex& index, const QPen& pen )
 {
     attributesModel()->setData(
         conditionallyMapFromSource( index ),
-        qVariantFromValue( pen ), DatasetPenRole );
+        QVariant::fromValue( pen ), DatasetPenRole );
     emit propertiesChanged();
 }
 
 void AbstractDiagram::setPen( const QPen& pen )
 {
     attributesModel()->setModelData(
-        qVariantFromValue( pen ), DatasetPenRole );
+        QVariant::fromValue( pen ), DatasetPenRole );
     emit propertiesChanged();
 }
 
 void AbstractDiagram::setPen( int dataset, const QPen& pen )
 {
-    d->setDatasetAttrs( dataset, qVariantFromValue( pen ), DatasetPenRole );
+    d->setDatasetAttrs( dataset, QVariant::fromValue( pen ), DatasetPenRole );
     emit propertiesChanged();
 }
 
@@ -689,20 +689,20 @@ void AbstractDiagram::setBrush( const QModelIndex& index, const QBrush& brush )
 {
     attributesModel()->setData(
         conditionallyMapFromSource( index ),
-        qVariantFromValue( brush ), DatasetBrushRole );
+        QVariant::fromValue( brush ), DatasetBrushRole );
     emit propertiesChanged();
 }
 
 void AbstractDiagram::setBrush( const QBrush& brush )
 {
     attributesModel()->setModelData(
-        qVariantFromValue( brush ), DatasetBrushRole );
+        QVariant::fromValue( brush ), DatasetBrushRole );
     emit propertiesChanged();
 }
 
 void AbstractDiagram::setBrush( int dataset, const QBrush& brush )
 {
-    d->setDatasetAttrs( dataset, qVariantFromValue( brush ), DatasetBrushRole );
+    d->setDatasetAttrs( dataset, QVariant::fromValue( brush ), DatasetBrushRole );
     emit propertiesChanged();
 }
 
@@ -840,7 +840,7 @@ void AbstractDiagram::setSelection(const QRect& rect , QItemSelectionModel::Sele
 {
     const QModelIndexList indexes = d->indexesIn( rect );
     QItemSelection selection;
-    KDAB_FOREACH( const QModelIndex& index, indexes )
+    Q_FOREACH( const QModelIndex& index, indexes )
     {
         selection.append( QItemSelectionRange( index ) );
     }
@@ -850,7 +850,7 @@ void AbstractDiagram::setSelection(const QRect& rect , QItemSelectionModel::Sele
 QRegion AbstractDiagram::visualRegionForSelection(const QItemSelection &selection) const
 {
     QPolygonF polygon;
-    KDAB_FOREACH( const QModelIndex& index, selection.indexes() )
+    Q_FOREACH( const QModelIndex& index, selection.indexes() )
     {
         polygon << d->reverseMapper.polygon(index.row(), index.column());
     }

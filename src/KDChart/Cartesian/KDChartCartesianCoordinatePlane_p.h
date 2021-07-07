@@ -75,7 +75,7 @@ public:
                               const_cast< AbstractCoordinatePlane* >( plane )->sharedAxisMasterPlane() );
         const CartesianCoordinatePlane* const cartPlane =
             dynamic_cast< const CartesianCoordinatePlane* >( plane );
-        if ( ref != 0 && ref != cartPlane ) {
+        if ( ref != nullptr && ref != cartPlane ) {
             const QPointF logical = ref->translateBack( point ) - cartPlane->visibleDataRange().topLeft()
                                                                 + ref->visibleDataRange().topLeft();
             p = ref->translate( logical );

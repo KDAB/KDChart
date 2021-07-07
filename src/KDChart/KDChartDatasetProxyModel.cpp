@@ -51,7 +51,7 @@ void DatasetProxyModel::setDatasetRowDescriptionVector(
                 "A source model must be set before the selection can be configured." );
     initializeDatasetDecriptors( configuration, sourceModel()->rowCount(mRootIndex),
                                  mRowSrcToProxyMap,  mRowProxyToSrcMap );
-    clear(); // clear emits layoutChanged()
+    invalidate(); // clear emits layoutChanged()
 }
 
 void DatasetProxyModel::setDatasetColumnDescriptionVector(
@@ -61,7 +61,7 @@ void DatasetProxyModel::setDatasetColumnDescriptionVector(
                 "A source model must be set before the selection can be configured." );
     initializeDatasetDecriptors( configuration, sourceModel()->columnCount(mRootIndex),
                                  mColSrcToProxyMap, mColProxyToSrcMap );
-    clear(); // clear emits layoutChanged()
+    invalidate(); // clear emits layoutChanged()
 }
 
 void DatasetProxyModel::setDatasetDescriptionVectors(
@@ -210,7 +210,7 @@ void DatasetProxyModel::resetDatasetDescriptions()
     mRowProxyToSrcMap.clear();
     mColSrcToProxyMap.clear();
     mColProxyToSrcMap.clear();
-    clear();
+    invalidate();
 }
 
 QVariant DatasetProxyModel::data(const QModelIndex &index, int role) const

@@ -55,7 +55,7 @@ public:
     class LineDiagramType;
     friend class LineDiagramType;
 
-    explicit LineDiagram( QWidget* parent = 0, CartesianCoordinatePlane* plane = 0 );
+    explicit LineDiagram( QWidget* parent = nullptr, CartesianCoordinatePlane* plane = nullptr );
     ~LineDiagram() override;
 
     virtual LineDiagram * clone() const;

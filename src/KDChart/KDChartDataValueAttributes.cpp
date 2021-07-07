@@ -116,7 +116,7 @@ DataValueAttributes & DataValueAttributes::operator=( const DataValueAttributes&
 
 DataValueAttributes::~DataValueAttributes()
 {
-    delete _d; _d = 0;
+    delete _d; _d = nullptr;
 }
 
 
@@ -151,7 +151,7 @@ const DataValueAttributes& DataValueAttributes::defaultAttributes()
 /*static*/
 const QVariant& DataValueAttributes::defaultAttributesAsVariant()
 {
-    static const QVariant theDefaultDataValueAttributesVariant = qVariantFromValue(defaultAttributes());
+    static const QVariant theDefaultDataValueAttributesVariant = QVariant::fromValue(defaultAttributes());
     return theDefaultDataValueAttributesVariant;
 }
 

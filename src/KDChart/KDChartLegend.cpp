@@ -47,7 +47,7 @@
 using namespace KDChart;
 
 Legend::Private::Private() :
-    referenceArea( 0 ),
+    referenceArea( nullptr ),
     position( Position::East ),
     alignment( Qt::AlignCenter ),
     textAlignment( Qt::AlignCenter ),
@@ -103,7 +103,7 @@ void Legend::init()
     setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
 
     d->layout = new QGridLayout( this );
-    d->layout->setMargin( 2 );
+    d->layout->setContentsMargins( 2, 2, 2, 2 );
     d->layout->setSpacing( d->spacing );
 
     const Measure normalFontSizeTitle( 12, KDChartEnums::MeasureCalculationModeAbsolute );
@@ -199,7 +199,7 @@ Legend::LegendStyle Legend::legendStyle() const
   */
 Legend* Legend::clone() const
 {
-    Legend* legend = new Legend( new Private( *d ), 0 );
+    Legend* legend = new Legend( new Private( *d ), nullptr );
     legend->setTextAttributes( textAttributes() );
     legend->setTitleTextAttributes( titleTextAttributes() );
     legend->setFrameAttributes( frameAttributes() );
@@ -266,7 +266,7 @@ void Legend::paint( QPainter* painter )
 uint Legend::datasetCount() const
 {
     int modelLabelsCount = 0;
-    KDAB_FOREACH ( DiagramObserver* observer, d->observers ) {
+    Q_FOREACH ( DiagramObserver* observer, d->observers ) {
         AbstractDiagram* diagram = observer->diagram();
         Q_ASSERT( diagram->datasetLabels().count() == diagram->datasetBrushes().count() );
         modelLabelsCount += diagram->datasetLabels().count();
@@ -293,7 +293,7 @@ const QWidget* Legend::referenceArea() const
 AbstractDiagram* Legend::diagram() const
 {
     if ( d->observers.isEmpty() ) {
-        return 0;
+        return nullptr;
     }
     return d->observers.first()->diagram();
 }
@@ -885,10 +885,10 @@ QSizeF Legend::Private::maxMarkerSize( Legend *q, qreal fontHeight ) const
 }
 
 HDatasetItem::HDatasetItem()
-   : markerLine(0),
-     label(0),
-     separatorLine(0),
-     spacer(0)
+   : markerLine(nullptr),
+     label(nullptr),
+     separatorLine(nullptr),
+     spacer(nullptr)
 {}
 
 static void updateToplevelLayout(QWidget *w)
@@ -1151,11 +1151,11 @@ void Legend::Private::flowHDatasetItems( Legend *q )
         // those have no parents in the current layout, so they wouldn't get cleaned up otherwise
         if ( !spacerUsed ) {
             delete hdsItem->spacer;
-            hdsItem->spacer = 0;
+            hdsItem->spacer = nullptr;
         }
         if ( !separatorUsed ) {
             delete hdsItem->separatorLine;
-            hdsItem->separatorLine = 0;
+            hdsItem->separatorLine = nullptr;
         }
 
         currentLine->addItem( hdsItem->markerLine );

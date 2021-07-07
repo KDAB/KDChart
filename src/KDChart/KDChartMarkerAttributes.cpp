@@ -80,7 +80,7 @@ MarkerAttributes & MarkerAttributes::operator=( const MarkerAttributes& r )
 
 MarkerAttributes::~MarkerAttributes()
 {
-    delete _d; _d = 0;
+    delete _d; _d = nullptr;
 }
 
 #define d d_func()

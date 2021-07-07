@@ -39,7 +39,7 @@ KDAB::UnitTest::TestRegistry::TestRegistry()
 
 KDAB::UnitTest::TestRegistry::~TestRegistry() {}
 
-KDAB::UnitTest::TestRegistry * KDAB::UnitTest::TestRegistry::mSelf = 0;
+KDAB::UnitTest::TestRegistry * KDAB::UnitTest::TestRegistry::mSelf = nullptr;
 
 // static
 KDAB::UnitTest::TestRegistry * KDAB::UnitTest::TestRegistry::instance() {
@@ -50,7 +50,7 @@ KDAB::UnitTest::TestRegistry * KDAB::UnitTest::TestRegistry::instance() {
 
 // static
 void KDAB::UnitTest::TestRegistry::deleteInstance() {
-    delete mSelf; mSelf = 0;
+    delete mSelf; mSelf = nullptr;
 }
 
 void KDAB::UnitTest::TestRegistry::registerTestFactory( const TestFactory * tf, const char * group ) {

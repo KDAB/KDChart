@@ -38,7 +38,7 @@ namespace KDGantt {
     class KDGANTT_EXPORT ConstraintProxy : public QObject {
         Q_OBJECT
     public:
-        explicit ConstraintProxy( QObject* parent = 0 );
+        explicit ConstraintProxy( QObject* parent = nullptr );
         ~ConstraintProxy() override;
 
         void setSourceModel( ConstraintModel* src );

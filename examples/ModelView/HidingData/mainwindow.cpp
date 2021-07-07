@@ -132,7 +132,7 @@ void MainWindow::openFile(const QString &path)
 
                     m_model->insertRows(row, 1, QModelIndex());
 
-                    QStringList pieces = line.split(',', QString::SkipEmptyParts);
+                    QStringList pieces = line.split(',', Qt::SkipEmptyParts);
                     m_model->setData(m_model->index(row, 0, QModelIndex()), pieces.value(0));
                     m_model->setData(m_model->index(row, 1, QModelIndex()), pieces.value(1));
                     m_model->setData(m_model->index(row, 2, QModelIndex()), pieces.value(2));

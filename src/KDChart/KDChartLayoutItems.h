@@ -51,10 +51,10 @@ namespace KDChart {
     class KDCHART_EXPORT AbstractLayoutItem : public QLayoutItem
     {
     public:
-        AbstractLayoutItem( Qt::Alignment itemAlignment = 0 ) :
+        AbstractLayoutItem( Qt::Alignment itemAlignment = {} ) :
             QLayoutItem( itemAlignment ),
-            mParent( 0 ),
-            mParentLayout( 0 ) {}
+            mParent( nullptr ),
+            mParentLayout( nullptr ) {}
 
         /**
          * Default impl: just call paint.
@@ -104,7 +104,7 @@ namespace KDChart {
                         const TextAttributes& attributes,
                         const QObject* autoReferenceArea,
                         KDChartEnums::MeasureOrientation autoReferenceOrientation,
-                        Qt::Alignment alignment = 0 );
+                        Qt::Alignment alignment = {} );
 
         void setAutoReferenceArea( const QObject* area );
         const QObject* autoReferenceArea() const;
@@ -175,7 +175,7 @@ namespace KDChart {
                               const TextAttributes& attributes,
                               const QObject* autoReferenceArea,
                               KDChartEnums::MeasureOrientation autoReferenceOrientation,
-                              Qt::Alignment alignment = 0 );
+                              Qt::Alignment alignment = {} );
 
         ~TextBubbleLayoutItem() override;
 
@@ -223,7 +223,7 @@ namespace KDChart {
                               const MarkerAttributes& marker,
                               const QBrush& brush,
                               const QPen& pen,
-                              Qt::Alignment alignment = 0 );
+                              Qt::Alignment alignment = {} );
 
             Qt::Orientations expandingDirections() const override;
             QRect geometry() const override;
@@ -262,7 +262,7 @@ namespace KDChart {
                             int length,
                             const QPen& pen,
                             Qt::Alignment mLegendLineSymbolAlignment,
-                            Qt::Alignment alignment = 0 );
+                            Qt::Alignment alignment = {} );
 
             Qt::Orientations expandingDirections() const override;
             QRect geometry() const override;
@@ -305,7 +305,7 @@ namespace KDChart {
                                       const MarkerAttributes& marker,
                                       const QBrush& markerBrush,
                                       const QPen& markerPen,
-                                      Qt::Alignment alignment = 0 );
+                                      Qt::Alignment alignment = {} );
 
             Qt::Orientations expandingDirections() const override;
             QRect geometry() const override;

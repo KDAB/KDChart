@@ -88,7 +88,7 @@ public:
             if ( obs->diagram() == diagram )
                 return obs;
         }
-        return 0;
+        return nullptr;
     }
 
     void fetchPaintOptions( Legend *q );

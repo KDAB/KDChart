@@ -44,7 +44,7 @@ ListViewRowController::ListViewRowController( QListView* lv, QAbstractProxyModel
 
 ListViewRowController::~ListViewRowController()
 {
-    delete _d; _d = 0;
+    delete _d; _d = nullptr;
 }
 
 #define d d_func()

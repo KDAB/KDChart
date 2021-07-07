@@ -60,8 +60,8 @@ class KDCHART_EXPORT Legend : public AbstractAreaWidget
     KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET( Legend )
 
 public:
-    explicit Legend( QWidget* parent = 0 );
-    explicit Legend( KDChart::AbstractDiagram* diagram, QWidget* parent = 0 );
+    explicit Legend( QWidget* parent = nullptr );
+    explicit Legend( KDChart::AbstractDiagram* diagram, QWidget* parent = nullptr );
     ~Legend() override;
 
 
@@ -169,7 +169,7 @@ public:
       * \sa diagram, diagrams, addDiagram, removeDiagram, removeDiagrams, setDiagram
       */
     void replaceDiagram( KDChart::AbstractDiagram* newDiagram,
-                         KDChart::AbstractDiagram* oldDiagram = 0 );
+                         KDChart::AbstractDiagram* oldDiagram = nullptr );
 
     /** 
       * Returns the offset of the first dataset of \c diagram.
@@ -387,7 +387,7 @@ m_legend->setFloatingPosition( relativePosition );
 
     QSize minimumSizeHint() const override;
     QSize sizeHint() const override;
-    bool hasHeightForWidth() const; //override;
+    bool hasHeightForWidth() const override;
     int heightForWidth( int width ) const override;
     void needSizeHint() override;
     void resizeLayout( const QSize& size ) override;

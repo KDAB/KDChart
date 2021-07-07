@@ -96,7 +96,7 @@ bool BackgroundAttributes::isEqualTo(
 
 BackgroundAttributes::~BackgroundAttributes()
 {
-    delete _d; _d = 0;
+    delete _d; _d = nullptr;
 }
 
 

@@ -1,22 +1,3 @@
-set(QT_USE_QTSVG TRUE)
-set(QT_USE_QTSQL TRUE)
-
-include(${QT_USE_FILE})
-
-if(Qt5Core_FOUND)
-  find_package(Qt5Widgets REQUIRED)
-  list(APPEND QT_LIBRARIES Qt5::Widgets)
-  include_directories(${Qt5Widgets_INCLUDE_DIRS})
-
-  find_package(Qt5PrintSupport REQUIRED)
-  list(APPEND QT_LIBRARIES Qt5::PrintSupport)
-  include_directories(${Qt5PrintSupport_INCLUDE_DIRS})
-endif()
-
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOUIC TRUE)
-set(CMAKE_AUTORCC TRUE)
-
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 
 # Examples
@@ -70,7 +51,9 @@ add_subdirectory(Polar/Parameters)
 add_subdirectory(Polar/Simple)
 add_subdirectory(RealTime)
 add_subdirectory(SharedAbscissa/SeparateDiagrams)
-add_subdirectory(Sql)
+if (Qt${QT_MAJOR_VERSION}::Sql)
+  add_subdirectory(Sql)
+endif()
 add_subdirectory(Stock/Advanced)
 add_subdirectory(TernaryCharts/Advanced)
 add_subdirectory(Widget/Advanced)

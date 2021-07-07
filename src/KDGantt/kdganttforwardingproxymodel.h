@@ -32,7 +32,7 @@ namespace KDGantt {
         Q_OBJECT
         Q_DISABLE_COPY(ForwardingProxyModel)
     public:
-        explicit ForwardingProxyModel( QObject* parent=0 );
+        explicit ForwardingProxyModel( QObject* parent=nullptr );
         ~ForwardingProxyModel() override;
 
         /*reimp*/ QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const override;

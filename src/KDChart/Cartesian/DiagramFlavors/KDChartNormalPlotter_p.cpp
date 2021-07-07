@@ -96,7 +96,7 @@ void NormalPlotter::paint( PaintContext* ctx )
 
                     // data point label
                     const PositionPoints pts = PositionPoints( b, a, d, c );
-                    m_private->addLabel( &lpc, sourceIndex, 0, pts, Position::NorthWest,
+                    m_private->addLabel( &lpc, sourceIndex, nullptr, pts, Position::NorthWest,
                                          Position::NorthWest, point.value );
 
                     const bool lineValid = a.toPoint() != b.toPoint() && PaintingHelpers::isFinite( a );
@@ -165,7 +165,7 @@ void NormalPlotter::paint( PaintContext* ctx )
 
                     // data point label
                     const PositionPoints pts = PositionPoints( b, a, d, c );
-                    m_private->addLabel( &lpc, sourceIndex, 0, pts, Position::NorthWest,
+                    m_private->addLabel( &lpc, sourceIndex, nullptr, pts, Position::NorthWest,
                                          Position::NorthWest, point.value );
 
                     const bool lineValid = a.toPoint() != b.toPoint() && PaintingHelpers::isFinite( a );
