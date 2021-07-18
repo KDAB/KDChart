@@ -429,6 +429,9 @@ set(SOURCES
 
 # Check ld version script support
 include(CheckCXXSourceCompiles)
+if(NOT CMAKE_REQUIRED_FLAGS) # to make --warn-uninitialized happy
+  set(CMAKE_REQUIRED_FLAGS "")
+endif()
 set(CMAKE_REQUIRED_FLAGS_SAVE ${CMAKE_REQUIRED_FLAGS})
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS} "-Wl,--version-script=\"${CMAKE_CURRENT_SOURCE_DIR}/libkdchart.map\"")
 check_cxx_source_compiles("int main(void) { return 0; }" HAVE_LD_VERSION_SCRIPT)
