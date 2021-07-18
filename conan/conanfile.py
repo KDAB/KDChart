@@ -1,5 +1,5 @@
 #############################################################################
-## Copyright (C) 2010-2020 Klaralvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
+## Copyright (C) 2010-2021 Klaralvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
 ## All rights reserved.
 ##
 ## This file is part of the KD Chart library.
@@ -25,7 +25,7 @@ from conans import ConanFile, CMake, tools
 
 class KdchartConan(ConanFile):
     name = "KDChart"
-    version = "2.7.2"
+    version = "2.8.0"
     license = ("https://raw.githubusercontent.com/KDAB/KDChart/master/LICENSE.txt,"
                "https://raw.githubusercontent.com/KDAB/KDChart/master/LICENSE.GPL.txt")
     author = "Klaralvdalens Datakonsult AB (KDAB) info@kdab.com"
