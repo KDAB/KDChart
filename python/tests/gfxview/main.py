@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 ##
-## Copyright (C) 2019-2020 Klaralvdalens Datakonsult AB.  All rights reserved.
+## Copyright (C) 2019-2021 Klaralvdalens Datakonsult AB.  All rights reserved.
 ##
 ## This file is part of the KD Chart library.
 ##
