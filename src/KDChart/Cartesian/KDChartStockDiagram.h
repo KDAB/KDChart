@@ -94,7 +94,7 @@ public:
     void setDownTrendCandlestickPen( int column, const QPen &pen );
     QPen downTrendCandlestickPen( int column ) const;
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && defined(Q_COMPILER_MANGLES_RETURN_TYPE)
     virtual const int numberOfAbscissaSegments() const;
     virtual const int numberOfOrdinateSegments() const;
 #else

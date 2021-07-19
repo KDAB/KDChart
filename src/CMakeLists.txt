@@ -6,13 +6,6 @@ set(FORMS
 set(RESOURCES
   KDChart/KDAB_kdchart_LeveyJennings_resources.qrc
 )
-if (${QT_MAJOR_VERSION} EQUAL 5)
-  qt5_wrap_ui(KDCHART_UI ${FORMS})
-  qt5_add_resources(KDCHART_RES ${RESOURCES})
-else()
-  qt6_wrap_ui(KDCHART_UI ${FORMS})
-  qt6_add_resources(KDCHART_RES ${RESOURCES})
-endif()
 
 if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/KDChart)
   file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/KDChart)
@@ -437,7 +430,7 @@ set(CMAKE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS} "-Wl,--version-script=\"${CMAKE
 check_cxx_source_compiles("int main(void) { return 0; }" HAVE_LD_VERSION_SCRIPT)
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS_SAVE})
 
-add_library(kdchart ${KDChart_LIBRARY_MODE} ${SOURCES} ${KDCHART_UI} ${KDCHART_RES})
+add_library(kdchart ${KDChart_LIBRARY_MODE} ${SOURCES} ${FORMS} ${RESOURCES})
 set_target_properties(kdchart PROPERTIES
   SOVERSION ${${PROJECT_NAME}_SOVERSION}
   VERSION ${${PROJECT_NAME}_VERSION}

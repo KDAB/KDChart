@@ -29,7 +29,7 @@ function die {
 
 function check_license {
 
-    [ -d "$PACKSCRIPTS_DIR" ] && return 0 
+    [ -d "$PACKSCRIPTS_DIR" ] && return 0
     [ -f .license.accepted ] && return 0
 
     if [ -f "$SOURCE_DIR"/LICENSE.GPL.txt -a -f "$SOURCE_DIR"/LICENSE.US.txt -a -f "$SOURCE_DIR"/LICENSE.txt ] ; then
@@ -91,9 +91,10 @@ EOF
     done
 }
 
-if ! check_license ; then
-    die "You are not licensed to use this software."
-fi
+#Users please carefully consider your license requirements and use responsibly.
+#if ! check_license ; then
+#    die "You are not licensed to use this software."
+#fi
 
 function usage {
     [ -z "$1" ] || echo "$0: unknown option \"$1\"" 1>&2
@@ -230,7 +231,7 @@ if [ -n "$targetqmake" ] ; then
         fi
     fi
 else
-    for qmk in qmake qmake-qt5 qmake-qt4
+    for qmk in qmake qmake-qt5
     do
         which "$qmk" >/dev/null 2>&1
         if [ $? -eq 0 -a -z "$targetqmake" ] ; then
@@ -241,7 +242,7 @@ else
             fi
         fi
     done
-    [ -z "$targetqmake" ] && die "You need qmake or qmake-qt5 or qmake-qt4 in the PATH"
+    [ -z "$targetqmake" ] && die "You need qmake or qmake-qt5 in the PATH"
 fi
 
 

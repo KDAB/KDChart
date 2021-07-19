@@ -24,16 +24,6 @@
 
 using namespace KDGantt;
 
-/* Older Qt don't have this macro, so define it... */
-#ifndef QT_VERSION_CHECK
-#  define QT_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
-#endif
-
-/* Version check */
-#if QT_VERSION < QT_VERSION_CHECK(4,3,0)
-#  error "The minimum required version of Qt for KD Gantt is 4.3.0"
-#endif
-
 /*!\enum KDGantt::ItemDataRole
  *\ingroup KDGantt
  * The values of this enum are used for the special data roles

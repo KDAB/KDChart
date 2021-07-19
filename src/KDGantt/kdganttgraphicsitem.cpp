@@ -65,20 +65,6 @@ namespace {
         }
     };
 }
-#if QT_VERSION < 0x050000
-GraphicsItem::GraphicsItem( QGraphicsItem* parent, GraphicsScene* scene )
-    : BASE( parent, scene ),  m_isupdating( false )
-{
-  init();
-}
-
-GraphicsItem::GraphicsItem( const QModelIndex& idx, QGraphicsItem* parent,
-                                            GraphicsScene* scene )
-    : BASE( parent, scene ),  m_index( idx ), m_isupdating( false )
-{
-  init();
-}
-#else
 GraphicsItem::GraphicsItem( QGraphicsItem* parent, GraphicsScene* scene )
     : BASE( parent ),  m_isupdating( false )
 {
@@ -95,8 +81,6 @@ GraphicsItem::GraphicsItem( const QModelIndex& idx, QGraphicsItem* parent,
   if ( scene )
     scene->addItem( this );
 }
-#endif
-
 
 GraphicsItem::~GraphicsItem()
 {
@@ -104,15 +88,9 @@ GraphicsItem::~GraphicsItem()
 
 void GraphicsItem::init()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(4,4,0)
     setCacheMode( QGraphicsItem::DeviceCoordinateCache );
-#endif
     setFlags( ItemIsMovable|ItemIsSelectable|ItemIsFocusable );
-#if QT_VERSION < 0x050000
-    setAcceptsHoverEvents( true );
-#else
     setAcceptHoverEvents( true );
-#endif
     setHandlesChildEvents( true );
     setZValue( 100. );
     m_dragline = nullptr;

@@ -1,4 +1,4 @@
-CHECKSETS qt4,c++,foss
+CHECKSETS qt5,c++,foss
 
 #KDAB-specific checks
 EXTRA kdabcopyright
@@ -20,4 +20,4 @@ SKIP python/cmake/
 SKIP KDChartConfig\.cmake\.in
 
 #skip the borrowed code in the cmake subdir
-SKIP /cmake/CMakePackageConfigHelpers.cmake|/cmake/InstallLocation.cmake|/cmake/Qt5Portability.cmake|/cmake/ECMGenerateHeaders.cmake|/cmake/ECMGeneratePriFile.cmake|/cmake/ECMQueryQmake.cmake
+SKIP /cmake/CMakePackageConfigHelpers.cmake|/cmake/InstallLocation.cmake|/cmake/ECMGenerateHeaders.cmake|/cmake/ECMGeneratePriFile.cmake|/cmake/ECMQueryQmake.cmake

@@ -25,11 +25,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QAbstractItemModel>
-#if QT_VERSION < 0x050000
-#include <QtCore/QWeakPointer>
-#else
 #include <QtCore/QPointer>
-#endif
 #include <QtCore/QVector>
 #include <QtCore/QDateTime>
 
@@ -98,11 +94,7 @@ public:
         Iterator( int dataSet, PlotterDiagramCompressor *parent, QVector< DataPoint > buffer );
     private:
         void handleSlopeForward( const DataPoint &dp );
-#if QT_VERSION < 0x050000
-        QWeakPointer< PlotterDiagramCompressor > m_parent;
-#else
 	QPointer< PlotterDiagramCompressor > m_parent;
-#endif
         QVector< DataPoint > m_buffer;
         int m_index;
         int m_dataset;
@@ -134,7 +126,7 @@ public:
     explicit PlotterDiagramCompressor(QObject *parent = nullptr);
     ~PlotterDiagramCompressor() override;
     Iterator begin( int dataSet );
-    Iterator end( int dataSet );    
+    Iterator end( int dataSet );
     void setMergeRadius( qreal radius );
     void setMergeRadiusPercentage( qreal radius );
     void setModel( QAbstractItemModel *model );

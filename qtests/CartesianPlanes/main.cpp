@@ -34,14 +34,6 @@
 
 using namespace KDChart;
 
-#if QT_VERSION < 0x040200
-namespace QTest{
-template <> inline char *toString(const QPointF &p) {
-    return qstrdup(QString::fromLatin1("QPointF(%1,%2)").arg(p.x()).arg(p.y()).toLatin1().constData());
- }
-}
-#endif
-
 class NumericDataModel : public QStandardItemModel
 {
     Q_OBJECT

@@ -214,11 +214,7 @@ void GraphicsView::Private::slotGridChanged()
 
 void GraphicsView::Private::slotHorizontalScrollValueChanged( int val )
 {
-#if QT_VERSION >= 0x040300
     const QRectF viewRect = q->transform().mapRect( q->sceneRect() );
-#else
-    const QRectF viewRect = q->sceneRect();
-#endif
     headerwidget.scrollTo( val-q->horizontalScrollBar()->minimum()+static_cast<int>( viewRect.left() ) );
 }
 

@@ -44,11 +44,6 @@
 #include <algorithm>
 #include <cassert>
 
-/* Older Qt don't have this macro, so define it... */
-#ifndef QT_VERSION_CHECK
-#  define QT_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
-#endif
-
 // defines HAVE_PRINTER if support for printing should be included
 #ifdef _WIN32_WCE
     // There is no printer support under wince even if QT_NO_PRINTER is not set
@@ -605,11 +600,7 @@ void GraphicsScene::drawBackground( QPainter* painter, const QRectF& _rect )
         opt.rect = labelsTabRect.toRect();
         opt.text = QLatin1String("");
         opt.textAlignment = Qt::AlignCenter;
-#if QT_VERSION >= QT_VERSION_CHECK(4, 4, 0)
         style()->drawControl(QStyle::CE_Header, &opt, painter, 0);
-#else
-        QApplication::style()->drawControl(QStyle::CE_Header, &opt, painter, 0);
-#endif
 #endif
 
         scn.setTop( headerRect.bottom() );
@@ -749,7 +740,6 @@ void GraphicsScene::doPrint( QPainter* painter, const QRectF& targetRect,
     d->isPrinting = true;
     d->drawColumnLabels = drawColumnLabels;
     d->labelsWidth = 0.0;
-#if QT_VERSION >= QT_VERSION_CHECK(4, 4, 0)
     QFont sceneFont( font() );
 #ifdef HAVE_PRINTER
     if ( printer ) {
@@ -761,20 +751,6 @@ void GraphicsScene::doPrint( QPainter* painter, const QRectF& targetRect,
         else
             sceneFont.setPixelSize( font().pixelSize() );
     }
-#endif
-#else
-    QFont sceneFont( painter->font() );
-#ifdef HAVE_PRINTER
-    if ( printer ) {
-        sceneFont = QFont( painter->font(), printer );
-        if ( painter->font().pointSizeF() >= 0.0 )
-            sceneFont.setPointSizeF( painter->font().pointSizeF() );
-        else if ( painter->font().pointSize() >= 0 )
-            sceneFont.setPointSize( painter->font().pointSize() );
-        else
-            sceneFont.setPixelSize( painter->font().pixelSize() );
-    }
-#endif
 #endif
 
     QGraphicsTextItem dummyTextItem( QLatin1String("X") );

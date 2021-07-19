@@ -396,7 +396,7 @@ void BarDiagram::resize( const QSizeF& size )
     QAbstractItemView::resize( size.toSize() );
 }
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && defined(Q_COMPILER_MANGLES_RETURN_TYPE)
 const
 #endif
 int BarDiagram::numberOfAbscissaSegments () const
@@ -404,7 +404,7 @@ int BarDiagram::numberOfAbscissaSegments () const
     return d->attributesModel->rowCount(attributesModelRootIndex());
 }
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && defined(Q_COMPILER_MANGLES_RETURN_TYPE)
 const
 #endif
 int BarDiagram::numberOfOrdinateSegments () const

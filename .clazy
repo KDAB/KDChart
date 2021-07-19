@@ -3,6 +3,3 @@
 
 #clazy checks specification
 CHECKS level2
-
-#Turn-on Qt4 compatibility
-QT4

@@ -28,8 +28,12 @@
 #  Default=CMAKE_INSTALL_PREFIX
 #
 cmake_minimum_required(VERSION 3.1)
-cmake_policy(SET CMP0020 NEW)
-cmake_policy(SET CMP0025 NEW)
+if(POLICY CMP0020)
+  cmake_policy(SET CMP0020 NEW)
+endif()
+if(POLICY CMP0025)
+  cmake_policy(SET CMP0025 NEW)
+endif()
 
 set(KDAB_INSTALL True)
 if((NOT DEFINED ${USE_DEFAULT_INSTALL_LOCATION}) OR (NOT ${USE_DEFAULT_INSTALL_LOCATION}))
@@ -87,6 +91,7 @@ set(CMAKE_AUTOMOC TRUE)
 set(CMAKE_AUTOUIC TRUE)
 set(CMAKE_AUTORCC TRUE)
 
+set(CMAKE_CXX_STANDARD 14)
 
 add_definitions(-DQT_NO_CAST_TO_ASCII -DQT_NO_CAST_FROM_ASCII -DQBA_NO_CAST_TO_VOID -DQBA_NO_CAST_TO_ASCII -DQT_NO_STL -DQT_FATAL_ASSERT)
 add_definitions(-DUSE_EXCEPTIONS)
@@ -97,9 +102,9 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "SunOS")
   add_definitions(-DSUN7)
 endif()
 # Note: The following KDCHART_MASTER_CVS definition is used to distinguish
-#       between Klaraelvdalens Datakonsult AB Master CVS and other CVS
-#       repositories holding copies of the sources that might have to
-#       use special statements like include "KDFrame.moc" in the code.
+#       between KDAB Master CVS and other CVS repositories holding copies
+#       of the sources that might have to use special statements like
+#       include "KDFrame.moc" in the code.
 add_definitions(-DKDCHART_VERSION=200 -DKDCHART_MASTER_CVS)
 #  NOMINMAX avoids conflicting definitions of min and max
 #  _USE_MATH_DEFINES makes M_PI defined
