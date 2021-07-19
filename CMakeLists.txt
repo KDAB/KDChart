@@ -3,10 +3,6 @@
 # Pass the following variables to cmake to control the build:
 # (See INSTALL-cmake.txt for more information)
 #
-# -DKDChart_ENFORCE_QT4_BUILD=[true|false]
-#  Force building against Qt4, even if Qt5 is found.
-#  Default=false
-#
 # -DKDChart_STATIC=[true|false]
 #  Build static versions of the libraries
 #  Default=false
@@ -41,12 +37,6 @@ endif()
 
 project(KDChart CXX)
 
-option(
-  ${PROJECT_NAME}_ENFORCE_QT4_BUILD
-  "Enable if you want to enforce a build with Qt4"
-  OFF
-)
-
 if(CMAKE_VERSION VERSION_LESS "3.1")
   if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
@@ -76,34 +66,19 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 # setup default install locations
 include(InstallLocation)
 
-# try Qt5 first, and prefer that (if found), but only if not disabled via option
-if(NOT ${PROJECT_NAME}_ENFORCE_QT4_BUILD)
-  find_package(Qt5Core QUIET)
-endif()
+find_package(Qt5 CONFIG REQUIRED COMPONENTS Core Widgets Network Svg)
+set(QT_LIBRARIES Qt5::Core Qt5::Widgets Qt5::Network Qt5::Svg)
 
-if(Qt5Core_FOUND)
-  find_package(Qt5Network REQUIRED)
-  find_package(Qt5Widgets CONFIG)
-  set(QT_LIBRARIES Qt5::Core)
-  set(QT_USE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Qt5Portability.cmake")
-
-  if(Qt5_POSITION_INDEPENDENT_CODE)
-    if(CMAKE_VERSION VERSION_LESS 2.8.9)
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-    elseif(NOT CMAKE_VERSION VERSION_LESS 2.8.11)
-      if(Qt5Core_VERSION VERSION_LESS 5.1)
-        set_property(TARGET Qt5::Core PROPERTY INTERFACE_POSITION_INDEPENDENT_CODE ON)
-      endif()
-    else()
-      set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+if(Qt5_POSITION_INDEPENDENT_CODE)
+  if(CMAKE_VERSION VERSION_LESS 2.8.9)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+  elseif(NOT CMAKE_VERSION VERSION_LESS 2.8.11)
+    if(Qt5Core_VERSION VERSION_LESS 5.1)
+      set_property(TARGET Qt5::Core PROPERTY INTERFACE_POSITION_INDEPENDENT_CODE ON)
     endif()
+  else()
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
   endif()
-
-else()
-  find_package(Qt4 4.7 QUIET REQUIRED QtCore QtMain)
-
-  # Workaround qt4 moc bug, see https://bugzilla.redhat.com/show_bug.cgi?id=1396755
-  add_definitions(-D_SYS_SYSMACROS_H_OUTER)
 endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
@@ -118,9 +93,9 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "SunOS")
   add_definitions(-DSUN7)
 endif()
 # Note: The following KDCHART_MASTER_CVS definition is used to distinguish
-#       between Klaraelvdalens Datakonsult AB Master CVS and other CVS
-#       repositories holding copies of the sources that might have to
-#       use special statements like include "KDFrame.moc" in the code.
+#       between KDAB Master CVS and other CVS repositories holding copies
+#       of the sources that might have to use special statements like
+#       include "KDFrame.moc" in the code.
 add_definitions(-DKDCHART_VERSION=200 -DKDCHART_MASTER_CVS)
 #  NOMINMAX avoids conflicting definitions of min and max
 #  _USE_MATH_DEFINES makes M_PI defined

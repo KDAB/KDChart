@@ -1,17 +1,5 @@
-set(QT_USE_QTSVG TRUE)
-set(QT_USE_QTSQL TRUE)
-
-include(${QT_USE_FILE})
-
-if(Qt5Core_FOUND)
-  find_package(Qt5Widgets REQUIRED)
-  list(APPEND QT_LIBRARIES Qt5::Widgets)
-  include_directories(${Qt5Widgets_INCLUDE_DIRS})
-
-  find_package(Qt5PrintSupport REQUIRED)
-  list(APPEND QT_LIBRARIES Qt5::PrintSupport)
-  include_directories(${Qt5PrintSupport_INCLUDE_DIRS})
-endif()
+find_package(Qt5PrintSupport REQUIRED)
+list(APPEND QT_LIBRARIES Qt5::PrintSupport)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOUIC TRUE)

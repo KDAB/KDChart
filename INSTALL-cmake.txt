@@ -78,12 +78,6 @@ To build the testing harness, pass -DKDChart_TESTS=true to CMake, like so:
 
 Then run 'make test' to run the unit tests.
 
-== Force a Qt4 build ==
-On systems with both Qt4 and Qt5 available, the CMake buildsystem will always
-attempt to use Qt5. To force a Qt build, pass -DKDChart_ENFORCE_QT4_BUILD=true
-to CMake, as in:
-  % cmake -DKDChart_ENFORCE_QT4_BUILD=true
-
 == Using ==
 From your CMake project, add
 

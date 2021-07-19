@@ -1,5 +1,3 @@
-include(${QT_USE_FILE})
-
 if(Qt5Core_FOUND)
   find_package(Qt5Widgets REQUIRED)
   list(APPEND QT_LIBRARIES Qt5::Widgets)

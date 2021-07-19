@@ -1,12 +1,6 @@
-set(QT_USE_QTTEST TRUE)
 
-include(${QT_USE_FILE})
-
-if(Qt5Core_FOUND)
-  find_package(Qt5Widgets REQUIRED)
-  list(APPEND QT_LIBRARIES Qt5::Widgets)
-  include_directories(${Qt5Widgets_INCLUDE_DIRS})
-endif()
+find_package(Qt5Test REQUIRED)
+list(APPEND QT_LIBRARIES Qt5::Test)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOUIC TRUE)
