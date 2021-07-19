@@ -130,7 +130,7 @@ void Plotter::connectAttributesModel( AttributesModel* newModel )
 }
 
 Plotter::CompressionMode Plotter::useDataCompression() const
-{    
+{
     return d->implementor->useCompression();
 }
 
@@ -142,7 +142,7 @@ void Plotter::setUseDataCompression( Plotter::CompressionMode value )
         if ( useDataCompression() != Plotter::NONE )
         {
             d->compressor.setModel( NULL );
-            if ( attributesModel() != d->plotterCompressor.model() )                
+            if ( attributesModel() != d->plotterCompressor.model() )
                 d->plotterCompressor.setModel( attributesModel() );
         }
     }
@@ -468,7 +468,7 @@ void Plotter::calcMergeRadius()
     d->plotterCompressor.setMergeRadius( radius * d->mergeRadiusPercentage );
 }
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && defined(Q_COMPILER_MANGLES_RETURN_TYPE)
 const
 #endif
 int Plotter::numberOfAbscissaSegments () const
@@ -476,7 +476,7 @@ int Plotter::numberOfAbscissaSegments () const
     return d->attributesModel->rowCount( attributesModelRootIndex() );
 }
 
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && defined(Q_COMPILER_MANGLES_RETURN_TYPE)
 const
 #endif
 int Plotter::numberOfOrdinateSegments () const

@@ -109,7 +109,7 @@ namespace KDChart {
 
         /**
           * Allows to fix the lower bound of X axis to zero when diagram is in first quadrant.
-          * 
+          *
           * The default behavior is to lower x or y bound to be 0. If this behaviour is not wanted,
           * either \a CartesianCoordinatePlane::setHorizontalRange could be used instead of letting
           * KDChart auto-adjust the ranges, or this method can be used to disable this behavior.
@@ -358,7 +358,7 @@ namespace KDChart {
          *
          * \sa setAutoAdjustGridToZoom
          */
-#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && defined(Q_COMPILER_MANGLES_RETURN_TYPE)
         const bool autoAdjustGridToZoom() const;
 #else
         bool autoAdjustGridToZoom() const;

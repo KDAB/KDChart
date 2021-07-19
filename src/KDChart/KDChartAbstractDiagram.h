@@ -185,11 +185,7 @@ namespace KDChart {
         QRegion visualRegionForSelection(const QItemSelection &selection) const override;
         virtual QRegion visualRegion(const QModelIndex &index) const;
         /** \reimpl */
-#if QT_VERSION < 0x050000
-        virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-#else
         void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles = QVector<int>()) override;
-#endif
         /** \reimpl */
         void doItemsLayout() override;
 

@@ -212,11 +212,7 @@ void PrerenderedLabel::paint() const
         QMatrix matrix;
         matrix.translate( 0.5 * Width,  0.5 * Height );
         matrix.rotate( m_angle );
-#if QT_VERSION > 0x040199
         painter.setWorldMatrix( matrix );
-#else
-        painter.setMatrix( matrix );
-#endif
 
         painter.setPen( m_pen );
         painter.setBrush( m_brush );
@@ -318,8 +314,8 @@ QPointF PrerenderedLabel::referencePointLocation( KDChartEnums::PositionValue po
 
     case KDChartEnums::PositionUnknown: // intentional fall-through
     case KDChartEnums::PositionFloating: // intentional fall-through
-        return QPointF(); 
+        return QPointF();
     }
-    
+
     return QPointF();
 }
