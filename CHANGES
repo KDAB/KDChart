@@ -7,7 +7,7 @@ Version 2.8.0 (unreleased):
 ---------------------------
  * Support for Qt4 is removed
  * The qmake buildsystem is deprecated and will be removed in version 3.0
- * CMake buildsystem - increase min version to 2.8.12 (2.8.7 is deprecated by KitWare)
+ * CMake buildsystem - increase min version to 3.0.2
  * CMake buildsystem - fix library versioning for RelWithDebInfo on Windows
  * Python bindings fixed for new PySide2 version
 

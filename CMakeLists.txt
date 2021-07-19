@@ -23,7 +23,7 @@
 #  Alternative install path for Python bindings.
 #  Default=CMAKE_INSTALL_PREFIX
 #
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.0.2)
 cmake_policy(SET CMP0020 NEW)
 cmake_policy(SET CMP0025 NEW)
 
@@ -70,14 +70,8 @@ find_package(Qt5 CONFIG REQUIRED COMPONENTS Core Widgets Network Svg)
 set(QT_LIBRARIES Qt5::Core Qt5::Widgets Qt5::Network Qt5::Svg)
 
 if(Qt5_POSITION_INDEPENDENT_CODE)
-  if(CMAKE_VERSION VERSION_LESS 2.8.9)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-  elseif(NOT CMAKE_VERSION VERSION_LESS 2.8.11)
-    if(Qt5Core_VERSION VERSION_LESS 5.1)
-      set_property(TARGET Qt5::Core PROPERTY INTERFACE_POSITION_INDEPENDENT_CODE ON)
-    endif()
-  else()
-    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+  if(Qt5Core_VERSION VERSION_LESS 5.1)
+    set_property(TARGET Qt5::Core PROPERTY INTERFACE_POSITION_INDEPENDENT_CODE ON)
   endif()
 endif()
 
@@ -141,11 +135,7 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
 
   install(FILES LICENSE.GPL.txt LICENSE.txt LICENSE.US.txt README.txt README-commercial.txt kdchart.pri DESTINATION ${INSTALL_DOC_DIR})
 
-  if(CMAKE_VERSION VERSION_LESS 2.8.8)
-    include("${CMAKE_SOURCE_DIR}/cmake/CMakePackageConfigHelpers.cmake")
-  else()
-    include(CMakePackageConfigHelpers)
-  endif()
+  include(CMakePackageConfigHelpers)
 
   write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/KDChart/KDChartConfigVersion.cmake"
     VERSION ${${PROJECT_NAME}_VERSION}
