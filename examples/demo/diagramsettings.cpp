@@ -26,13 +26,7 @@
 #include "gradientdialog.h"
 
 #include <QColorDialog>
-
-#if QT_VERSION < 0x050000
-#include <QtGui/QCleanlooksStyle>
-#else
 #include <QStyleFactory>
-#endif
-
 #include <QFileDialog>
 
 #include <KDChart/KDChartThreeDBarAttributes>
@@ -196,11 +190,7 @@ void DiagramSettings::Private::init()
 {
     ui->setupUi( qq );
 #ifdef Q_OS_LINUX
-#if QT_VERSION < 0x050000
-    ui->diagramBackground->setStyle( new QCleanlooksStyle );
-#else
     ui->diagramBackground->setStyle( QStyleFactory::create( QStringLiteral( "cleanlooks" ) ) );
-#endif
 #endif
 
     connect( ui->threeDSelector, SIGNAL( toggled( bool ) ), this, SLOT( changeThreeD() ) );

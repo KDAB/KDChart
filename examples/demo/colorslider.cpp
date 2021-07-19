@@ -136,11 +136,7 @@ void ColorSlider::mousePressEvent(QMouseEvent *event )
     if ( event->button() == Qt::LeftButton )
     {
         d->m_dragging = true;
-#if QT_VERSION < 0x050000
-        const qreal relPos = qMin( (qreal)1.0, qMax( (qreal)0.0, event->posF().x() / rect().width() ) );
-#else
         const qreal relPos = qMin( (qreal)1.0, qMax( (qreal)0.0, event->localPos().x() / rect().width() ) );
-#endif
         setValue( (maximum() - minimum() ) * relPos );
     }
 }
@@ -150,11 +146,7 @@ void ColorSlider::mouseReleaseEvent(QMouseEvent *event )
     if ( event->button() != Qt::LeftButton )
     {
         d->m_dragging = false;
-#if QT_VERSION < 0x050000
-        const qreal relPos = qMin( (qreal)1.0, qMax( (qreal)0.0, event->posF().x() / rect().width() ) );
-#else
         const qreal relPos = qMin( (qreal)1.0, qMax( (qreal)0.0, event->localPos().x() / rect().width() ) );
-#endif
         setValue( (maximum() - minimum() ) * relPos );
     }
 }
@@ -163,11 +155,7 @@ void ColorSlider::mouseMoveEvent( QMouseEvent *event )
 {
     if ( d->m_dragging )
     {
-#if QT_VERSION < 0x050000
-        const qreal relPos = qMin( (qreal)1.0, qMax( (qreal)0.0, event->posF().x() / rect().width() ) );
-#else
         const qreal relPos = qMin( (qreal)1.0, qMax( (qreal)0.0, event->localPos().x() / rect().width() ) );
-#endif
         setValue( (maximum() - minimum() ) * relPos );
     }
 }
