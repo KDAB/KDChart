@@ -12,6 +12,6 @@ SOURCES += main.cpp \
 FORMS += mainwindow.ui \
          entrydialog.ui
 
-greaterThan(QT_MAJOR_VERSION, 4):QT += printsupport
+QT += printsupport
 
 message( "Building ''$$TARGET'' using LIBS ''$$LIBS''" )

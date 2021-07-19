@@ -7,6 +7,6 @@ SOURCES= main.cpp mainwindow.cpp framewidget.cpp
 FORMS  = mainwindow.ui
 RESOURCES = DrawIntoPainter.qrc
 
-greaterThan(QT_MAJOR_VERSION, 4):QT += printsupport
+QT += printsupport
 
 message( "Building ''$$TARGET'' using LIBS ''$$LIBS''" )

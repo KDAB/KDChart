@@ -7,7 +7,7 @@ INCLUDEPATH += . $${TOP_SOURCE_DIR}/include
 
 LIBS+= -L$${TOP_BUILD_DIR}/lib -l$$KDCHARTLIB
 
-greaterThan(QT_MAJOR_VERSION, 4):QT += printsupport
+QT += printsupport
 
 # Input
 SOURCES += main.cpp
