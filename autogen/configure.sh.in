@@ -231,7 +231,7 @@ if [ -n "$targetqmake" ] ; then
         fi
     fi
 else
-    for qmk in qmake qmake-qt5 qmake-qt4
+    for qmk in qmake qmake-qt5
     do
         which "$qmk" >/dev/null 2>&1
         if [ $? -eq 0 -a -z "$targetqmake" ] ; then
@@ -242,7 +242,7 @@ else
             fi
         fi
     done
-    [ -z "$targetqmake" ] && die "You need qmake or qmake-qt5 or qmake-qt4 in the PATH"
+    [ -z "$targetqmake" ] && die "You need qmake or qmake-qt5 in the PATH"
 fi
 
 

@@ -5,6 +5,10 @@ system('echo Instructions can be found in INSTALL-cmake.txt')
 system('echo ==================================================================================')
 system('echo')
 
+equals(QT_MAJOR_VERSION, 4) {
+   error("Qt4 is no longer supported. Please use Qt 5.0 or higher")
+}
+
 include( variables.pri )
 
 CONFIG += ordered
@@ -22,9 +26,6 @@ VERSION  = 2.8.0
 MAJOR_VERSION = 2
 
 QT_VERSION=$$[QT_VERSION]
-isEmpty(QT_VERSION) {
-    error("ERROR: qmake from Qt3 detected. Please use qmake from Qt4 or Qt5!")
-}
 
 unix:DEFAULT_INSTALL_PREFIX = /usr/local/KDAB/KDChart-$$VERSION
 win32:DEFAULT_INSTALL_PREFIX = "C:\KDAB\KDChart"-$$VERSION
