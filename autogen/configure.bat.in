@@ -17,6 +17,9 @@ set prefix=
 set unittests=no
 set static_qt=no
 
+rem Users please carefully consider your license requirements and use responsibly.
+goto :CheckLicenseComplete
+
 if exist %PACKSCRIPTS_DIR% (
     set unittests=yes
     goto :CheckLicenseComplete
@@ -141,7 +144,7 @@ if "%1" == "-static"   goto :Static
 if "%1" == "/static"   goto :Static
 
 if "%1" == "-qt_static"   goto :QT_Static
-if "%1" == "/qt_static"   goto :QT_Static	
+if "%1" == "/qt_static"   goto :QT_Static
 
 if "%1" == "-release"  goto :Release
 if "%1" == "/release"  goto :Release
@@ -198,7 +201,7 @@ rem   goto :usage
     set debug=no
 	set debug_and_release=no
     goto :OptionNoArg
-	
+
 :Debug_And_Release
 	set release=no
     set debug=no
@@ -331,7 +334,7 @@ echo       build static/shared libraries (default shared)
 echo.
 echo   -unittests / -no-unittests
 echo       enable/disable compiled-in unittests (default is disabled)
-echo 
+echo
 echo   -qmake ^<path^>
 echo       explicitly sets the qmake location, instead of using the
 echo       qmake in the path.

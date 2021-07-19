@@ -6,7 +6,7 @@ if sys.version_info[0] != 2:
   print ("  python2 autogen.py")
   sys.exit(0)
 
-from cpack import CPackGenerateConfiguration 
+from cpack import CPackGenerateConfiguration
 from configure import ConfigureScriptGenerator
 from header import ForwardHeaderGenerator
 
@@ -89,18 +89,18 @@ def autogen(project, version, subprojects, prefixed, forwardHeaderMap = {}, step
 	srcPath = os.path.join( sourceDirectory, "src" )
 
 	if subprojects and "generate-cpack" in steps:
-		forwardHeaderGenerator = ForwardHeaderGenerator( 
+		forwardHeaderGenerator = ForwardHeaderGenerator(
 			copy = True, path = sourceDirectory, includepath = includePath, srcpath = srcPath,
 			project = project, subprojects = subprojects, prefix = installPrefix, prefixed = prefixed,
-			additionalHeaders = forwardHeaderMap			
+			additionalHeaders = forwardHeaderMap
 		)
 		forwardHeaderGenerator.run()
 
 	print( "-- Auto-generation done." )
 
-	with file( ".license.accepted", 'a' ):
-		os.utime( ".license.accepted", None )
-	print( "-- License marked as accepted." )
+#	with file( ".license.accepted", 'a' ):
+#		os.utime( ".license.accepted", None )
+#	print( "-- License marked as accepted." )
 
 	print( "-- Wrote build files to: {0}".format( buildDirectory ) )
 	print( "-- Now running configure script." )
