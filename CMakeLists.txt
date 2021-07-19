@@ -24,8 +24,12 @@
 #  Default=CMAKE_INSTALL_PREFIX
 #
 cmake_minimum_required(VERSION 3.0.2)
-cmake_policy(SET CMP0020 NEW)
-cmake_policy(SET CMP0025 NEW)
+if(POLICY CMP0020)
+  cmake_policy(SET CMP0020 NEW)
+endif()
+if(POLICY CMP0025)
+  cmake_policy(SET CMP0025 NEW)
+endif()
 
 set(KDAB_INSTALL True)
 if((NOT DEFINED ${USE_DEFAULT_INSTALL_LOCATION}) OR (NOT ${USE_DEFAULT_INSTALL_LOCATION}))
