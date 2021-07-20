@@ -11,6 +11,8 @@ KD Chart targets C++ programmers who use Qt in their applications.
 
 For more information, see https://www.kdab.com/development-resources/qt-tools/kd-chart
 
+Try KD Chart in your web browser! visit https://demos.kdab.com/wasm/kdchart
+
 Using KD Chart
 ==============
 KD Chart requires Qt 4.x or later.
