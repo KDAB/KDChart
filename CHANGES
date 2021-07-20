@@ -1,10 +1,8 @@
 Release Highlights
 ==================
 
-** WARNING ** Version 2.7.2 was the final release with Qt4 support **
-
-Version 2.8.0 (unreleased):
----------------------------
+Version 2.8.0:
+--------------
  * Support for Qt4 is removed
  * The qmake buildsystem is deprecated and will be removed in version 3.0
  * CMake buildsystem - increase min version to 3.1.0
@@ -13,6 +11,7 @@ Version 2.8.0 (unreleased):
 
 Version 2.7.2:
 --------------
+** WARNING ** Version 2.7.2 is the final release with Qt4 support **
  * CMake buildsystem - option BUILD_PYTHON_BINDINGS => KDChart_PYTHON_BINDINGS
  * CMake buildsystem - option PYTHON_BINDINGS_INSTALL_PREFIX => KDChart_PYTHON_BINDINGS_INSTALL_PREFIX
  * Fix static linking examples and unittests in the CMake buildsystem

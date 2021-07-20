@@ -1,10 +1,12 @@
 These are the instructions for installing KD Chart using the CMake buildsystem.
 CMake version 3.1.0 or higher is required.
 
-The same source code compiles with either Qt 4 or Qt 5.
-
 Please see the comments at the top of CMakeLists.txt for
 the available configuration options you can pass to cmake.
+
+KD Chart 2.5.0 supports Qt version 4.x.
+KD Chart 2.5.1 to 2.7.x supports both Qt 4 and Qt 5.
+KD Chart 2.8.x supports Qt5 only.
 
 The installation directory defaults to c:\KDAB\KDChart-<version> on Windows
 and /usr/local/KDAB/KDChart-<version> on non-Windows.  You can change this
