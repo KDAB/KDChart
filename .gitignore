@@ -17,10 +17,6 @@ qrc_*.cpp
 
 *-e
 
-.qmake.cache
-.confqmake.cache
-.license.accepted
-
 kdchart/lib/
 kdchart/tests/Gantt/unittest/unittest
 kdchart/tests/Gantt/unittest/TestUnittests

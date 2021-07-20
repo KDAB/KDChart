@@ -8,8 +8,6 @@ EXCLUDE style,includes,strings,explicit,normalize,passbyvalue,operators,nullstrc
 #exclude more checks
 EXCLUDE qminmax,captruefalse,dpointer,inline,constref
 
-#skip autogen buildsystem
-SKIP /autogen/|/autogen.py|/genignore.py
 #nor examples
 SKIP /examples/
 #if you have a build subdir, skip it

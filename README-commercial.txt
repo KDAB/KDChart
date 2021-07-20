@@ -12,10 +12,9 @@ For more information, see https://www.kdab.com/development-resources/qt-tools/kd
 
 Using KD Chart
 ==============
-KD Chart requires Qt 4.x or later.
+KD Chart requires Qt5.15.0 or newer, and a compiler with C++14 support.
 
-See INSTALL.txt or INSTALL-cmake.txt for installation instructions.
-(Note that the qmake and CMake buildsystems are fully supported)
+See [INSTALL.txt](INSTALL.txt) for installation instructions using CMake.
 
 After reading the introductory overview files in doc/
 you will find more information at these places:

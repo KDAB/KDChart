@@ -1,52 +1,39 @@
-KD Chart 2.5.0 supports Qt version 4.x.
-KD Chart 2.5.1 to 2.7.x supports both Qt 4 and Qt 5.
-KD Chart 2.8.x supports Qt5 only.
+These are the instructions for installing KD Chart using the CMake buildsystem.
+CMake version 3.1.0 or higher is required.
 
-If you are using sources from github (via a git clone or a generated zip file), jump
-to section 1-bis). Commercial users, start at section 1).
+Qt Version support:
+ * KD Chart 2.5.0 or below requires Qt4
+ * KD Chart 2.5.1 to 2.7.2 requires Qt4 up to Qt5.15
+ * KD Chart 2.8.x removes Qt4 support (i.e Qt5 only)
+ * KD Chart 3.0 or above requires Qt5.15.0 up to Qt6.x
+   (inquire at info@kdab.com if support for older Qt5 version is needed)
 
-1) From the top directory of your KD Chart installation
-   run the "configure" scripts.
+Please see the comments at the top of CMakeLists.txt for
+the available configuration options you can pass to cmake.
 
-   On Windows use depending on the kind of build one of the following;
-     configure.bat -shared -debug
-     configure.bat -shared -release
+The installation directory defaults to c:\KDAB\KDChart-<version> on Windows
+and /usr/local/KDAB/KDChart-<version> on non-Windows.  You can change this
+location by passing the option -DCMAKE_INSTALL_PREFIX=/install/path to cmake.
 
-   On Unix or Mac use depending on the kind of build one of the following;
-     ./configure.sh -shared -debug
-     ./configure.sh -shared -release
+1) From the top directory of your KD Chart installation create a build directory:
 
-   To define the install-location use for example;
-     configure.bat -shared -debug -prefix c:/kdchart
-     ./configure.sh -shared -debug -prefix /opt/kdchart
+     mkdir build
 
-   NOTE: Don't use relative paths for the prefix, they will not work.
+   and change directory into that build directory:
 
-   If this succeeded, jump to step 2.
+     cd build
 
-1-bis) If you are building KD Chart from a github clone rather than a release tarball,
-   the configure.bat/configure.sh script doesn't exist (it's generated at release time),
-   you need to do this instead:
+2) Now run 'cmake' depending on the kind of build one of the following:
+     cmake -DCMAKE_BUILD_TYPE=Debug ..
+     cmake -DCMAKE_BUILD_TYPE=Release ..
+     cmake -DKDChart_STATIC=True -DCMAKE_BUILD_TYPE=Debug ..
+     cmake -DKDChart_STATIC=True -DCMAKE_BUILD_TYPE=Release ..
 
-   First, a working Python (version2) is required and must be found in your
-   execute path.  Either a 32-bit or 64-bit version of Python is fine, but run
-   python --version to make sure it is found and is python2 before continuing.
+   To define the install-location use for example:
+     cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=C:/kdchart ..
+     cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/opt/kdchart ..
 
-   Now run autogen.py to create the configure tool:
-
-   On Windows:
-     c:\python27\python autogen.py [options]
-   On Linux:
-     python2 autogen.py [options]
-
-   Pass the same options to autogen.py as you would for configure.sh/configure.bat
-   as shown above in step 1).
-
-   After running autogen.py, a configure.sh/configure.bat script will exist and
-   you can use that to re-configure later, as needed.  Then you can continue on
-   to the platform-specific setup instructions in step 2, 3 or 4.
-
-2) Unix
+3) Unix
 
    set your LD_LIBRARY_PATH to point to your KD Chart installation lib directory.
 
@@ -55,49 +42,55 @@ to section 1-bis). Commercial users, start at section 1).
     % export LD_LIBRARY_PATH
 
    The above must be added into your .bashrc or similar to remain. It may also of course
-   be run from a shell just before building software using KD Chart, but in this case your
-   settings will only be available for this shell.
+   be run from a shell just before building software using KD Reports, but in this case
+   your settings will only be available for this shell.
 
-   If you want to install the libraries under the "lib64" folder then
-   set the QMAKE_ARGS environment variable to "LIB_SUFFIX=64" like so:
-    % QMAKE_ARGS="LIB_SUFFIX=64"
-    % export QMAKE_ARGS
-
-3) MacOS
+4) MacOS
 
    Proceed as described above, but using DYLD_LIBRARY_PATH instead of LD_LIBRARY_PATH
 
-4) Windows
+5) Windows
 
    For running executables, add the path to the KD Chart dll (kdchart\bin) into your PATH.
    eg. set PATH=\path\to\kdchart\bin;%PATH%
 
-   For development, add the path to the KD Chart lib (kdchartlib) into your LIB environment.
+   For development, add the path to the KD Chart lib (kdchart\lib) into your LIB environment.
    eg. set LIB=\path\to\kdchart\lib;%LIB%
 
-5) Build everything by typing:
+6) Build everything by typing:
 
    From your top-level KD Chart directory run:
 
    % make    # Unix, Mac
    % nmake   # Windows
 
-   On Windows you can also use the Qt integration into Visual Studio:
-   open the toplevel kdchart.pro with "Qt / Open Solution from .pro file".
-   You still need to adjust the PATH environment variable in order to run the examples.
+7) (optionally:) Install KD Chart:
 
-6) (optionally:) Install KD Chart:
-
-   From your top-level KD Chart directory run:
+   From your top-level KD Reports directory run:
 
    % make install   # Unix, Mac
    % nmake install  # Windows
 
    This will copy the necessary files into the sub-directories of your installation path:
-   For Unix/Linux, Mac this is /usr/local/KDAB/KDChart-VERSION/
+   For Unix/Linux, Mac: /usr/local/KDAB/KDChart-VERSION/
    For Windows this is: C:\KDAB\KDChart-VERSION\
 
-   UNIX,Mac Note): Admin rights may be required for installing to /usr/local.
-         Run "sudo make install", to install with admin rights.
+8) Have a look at the examples applications. They will get you started with KD Chart.
 
-7) Have a look at the example applications to get you started with the KD Chart 2.x API.
+== Testing ==
+To build the testing harness, pass -DKDChart_TESTS=true to CMake, like so:
+  % cmake -DKDChart_TESTS=true
+
+Then run 'make test' to run the unit tests.
+
+== Using ==
+From your CMake project, add
+
+    find_package(KDChart CONFIG REQUIRED)
+
+and link to the imported target KDChart::kdchart.
+That's all you need to do (the imported target also brings in the include directories)
+
+You may also need to point the CMAKE_PREFIX_PATH environment variable depending
+on where you installed KDChart.
+
