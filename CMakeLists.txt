@@ -21,6 +21,8 @@
 #
 # -DKDChart_PYTHON_BINDINGS=[true|false]
 #  Build/Generate Python bindings.  Always false for Debug builds.
+#  (If your shiboken or pyside is installed in a non-standard locations
+#  try passing the SHIBOKEN_CUSTOM_PREFIX and PYSIDE2_CUSTOM_PREFIX variables.)
 #  Default=false
 #
 # -DKDChart_PYTHON_BINDINGS_INSTALL_PREFIX=[path]
@@ -42,7 +44,14 @@ endif()
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
   set(CMAKE_INSTALL_PREFIX "")
 endif()
+if(NOT DEFINED SHIBOKEN_CUSTOM_PREFIX) #look for shiboken in a custom location
+  set(SHIBOKEN_CUSTOM_PREFIX "")
+endif()
+if(NOT DEFINED PYSIDE2_CUSTOM_PREFIX) #look for pyside in a custom location
+  set(PYSIDE2_CUSTOM_PREFIX "")
+endif()
 
+# Allow using a non-KDAB install location
 set(KDAB_INSTALL True)
 if((NOT DEFINED ${USE_DEFAULT_INSTALL_LOCATION}) OR (NOT ${USE_DEFAULT_INSTALL_LOCATION}))
   if(NOT "${CMAKE_INSTALL_PREFIX}" STREQUAL "")
@@ -188,12 +197,17 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
   )
 
   # Generate .pri file for qmake users
-  include(ECMGeneratePriFile)
-  set(PROJECT_VERSION_STRING ${${PROJECT_NAME}_VERSION})
-  ecm_generate_pri_file(BASE_NAME ${PROJECT_NAME}
-                        LIB_NAME kdchart
-                        FILENAME_VAR pri_filename)
-  install(FILES ${pri_filename} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
+  #TODO: ECM does not support Qt6 yet
+  if(QT_MAJOR_VERSION EQUAL 5 AND
+    CMAKE_VERSION VERSION_GREATER "3.11.99" AND NOT CMAKE_CONFIGURATION_TYPES) # Not working with VS generator or older cmake versions
+    include(ECMGeneratePriFile)
+    set(PROJECT_VERSION_STRING ${${PROJECT_NAME}_VERSION})
+    ecm_generate_pri_file(BASE_NAME ${PROJECT_NAME}
+                          LIB_NAME kdchart
+                          FILENAME_VAR pri_filename
+    )
+    install(FILES ${pri_filename} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
+  endif()
 endif()
 
 add_subdirectory(src)
