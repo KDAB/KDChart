@@ -29,6 +29,7 @@
 #  Alternative install path for Python bindings.
 #  Default=CMAKE_INSTALL_PREFIX
 #
+
 cmake_minimum_required(VERSION 3.1)
 if(POLICY CMP0020)
   cmake_policy(SET CMP0020 NEW)
@@ -60,18 +61,13 @@ if((NOT DEFINED ${USE_DEFAULT_INSTALL_LOCATION}) OR (NOT ${USE_DEFAULT_INSTALL_L
   set(USE_DEFAULT_INSTALL_LOCATION ${KDAB_INSTALL} CACHE INTERNAL "Install to default KDAB Location" FORCE)
 endif()
 
-project(KDChart CXX)
-
-option(${PROJECT_NAME}_QT6 "Build against Qt 6" OFF)
-
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-
-option(${PROJECT_NAME}_STATIC "Build statically" OFF)
-option(${PROJECT_NAME}_TESTS "Build the tests" OFF)
-option(${PROJECT_NAME}_EXAMPLES "Build the examples" ON)
-option(${PROJECT_NAME}_PYTHON_BINDINGS "Build python bindings" OFF)
-if(${PROJECT_NAME}_PYTHON_BINDINGS AND (CMAKE_BUILD_TYPE MATCHES "^[Dd]eb" OR ${PROJECT_NAME}_STATIC))
-  message(FATAL_ERROR "** Python Bindings are disabled in debug or static builds.")
+if(${CMAKE_VERSION} VERSION_LESS "3.12.0")
+  project(KDChart LANGUAGES CXX)
+else()
+  project(KDChart
+          DESCRIPTION "A Qt-based library for creating business and scientific charts"
+          HOMEPAGE_URL "https://github.com/KDAB/KDChart"
+          LANGUAGES CXX)
 endif()
 
 set(${PROJECT_NAME}_VERSION_MAJOR 2)
@@ -80,10 +76,18 @@ set(${PROJECT_NAME}_VERSION_PATCH 50)
 set(${PROJECT_NAME}_VERSION ${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR}.${${PROJECT_NAME}_VERSION_PATCH})
 set(${PROJECT_NAME}_SOVERSION ${${PROJECT_NAME}_VERSION_MAJOR})
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+include(FeatureSummary)
 
-# setup default install locations
-include(InstallLocation)
+option(${PROJECT_NAME}_QT6 "Build against Qt 6" OFF)
+option(${PROJECT_NAME}_STATIC "Build statically" OFF)
+option(${PROJECT_NAME}_TESTS "Build the tests" OFF)
+option(${PROJECT_NAME}_EXAMPLES "Build the examples" ON)
+option(${PROJECT_NAME}_PYTHON_BINDINGS "Build python bindings" OFF)
+if(${PROJECT_NAME}_PYTHON_BINDINGS AND (CMAKE_BUILD_TYPE MATCHES "^[Dd]eb" OR ${PROJECT_NAME}_STATIC))
+  message(FATAL_ERROR "** Python Bindings are disabled in debug or static builds.")
+endif()
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # try Qt5 first, and prefer that (if found), but only if not disabled via option
 if(${PROJECT_NAME}_QT6)
@@ -139,6 +143,9 @@ if(${PROJECT_NAME}_STATIC)
 else()
   set(${PROJECT_NAME}_LIBRARY_MODE "SHARED")
 endif()
+
+# setup default install locations
+include(InstallLocation)
 
 if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
   set(${PROJECT_NAME}_IS_ROOT_PROJECT TRUE)
@@ -254,3 +261,5 @@ if(${PROJECT_NAME}_IS_ROOT_PROJECT)
   endif()
 
 endif()
+
+feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
