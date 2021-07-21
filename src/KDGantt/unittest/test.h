@@ -193,7 +193,7 @@ namespace UnitTest {
         class Class##Test : public KDAB::UnitTest::Test {  \
         public:                                                 \
             Class##Test() : Test( #Namespace "::" #Class ) {}    \
-            void run();                                         \
+            void run() override;                                \
         };                                                      \
     }                                                           \
     KDAB_EXPORT_SCOPED_UNITTEST( Namespace, Class##Test, Group ) \
