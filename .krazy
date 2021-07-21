@@ -18,4 +18,4 @@ SKIP python/cmake/
 SKIP KDChartConfig\.cmake\.in
 
 #skip the borrowed code in the cmake subdir
-SKIP /cmake/CMakePackageConfigHelpers.cmake|/cmake/InstallLocation.cmake|/cmake/ECMGenerateHeaders.cmake|/cmake/ECMGeneratePriFile.cmake|/cmake/ECMQueryQmake.cmake
+SKIP /cmake/InstallLocation.cmake|/cmake/ECM/
