@@ -16,11 +16,11 @@ KD Chart requires Qt5.15.0 or newer, and a compiler with C++14 support.
 
 See [INSTALL.txt](INSTALL.txt) for installation instructions using CMake.
 
-After reading the introductory overview files in doc/
+After reading the introductory overview files in docs/
 you will find more information at these places:
 
   * [detailed browsable API reference](https://docs.kdab.com/kdchart)
-  * [programmers manual with examples](doc/manual/kdchart.pdf)
+  * [programmers manual with examples](docs/manual/kdchart.pdf)
   * [our sorted example programs](examples/)
 
 Contact
@@ -37,7 +37,7 @@ Get Involved
 ============
 KDAB will happily accept external contributions, but substantial
 contributions will require a signed Copyright Assignment Agreement
-(see doc/KDChart-CopyrightAssignmentForm.pdf).
+(see docs/KDChart-CopyrightAssignmentForm.pdf).
 
 Email info@kdab.com for more information about the Copyright Assignment Agreement.
 
