@@ -63,7 +63,7 @@ unsigned int KDAB::UnitTest::TestRegistry::run() const {
   for ( std::map< std::string, std::vector<const TestFactory*> >::const_iterator g = mTests.begin() ; g != mTests.end() ; ++g ) {
     std::cerr << "===== GROUP \"" << g->first << "\" =========" << std::endl;
     for ( std::vector<const TestFactory*>::const_iterator it = g->second.begin() ; it != g->second.end() ; ++it ) {
-      std::auto_ptr<Test> t( (*it)->create() );
+      std::unique_ptr<Test> t( (*it)->create() );
       assert( t.get() );
       std::cerr << "  === \"" << t->name() << "\" ===" << std::endl;
       t->run();
@@ -86,7 +86,7 @@ unsigned int KDAB::UnitTest::TestRegistry::run( const char * group ) const {
   }
   std::cerr << "===== GROUP \"" << g->first << "\" =========" << std::endl;
   for ( std::vector<const TestFactory*>::const_iterator it = g->second.begin() ; it != g->second.end() ; ++it ) {
-    std::auto_ptr<Test> t( (*it)->create() );
+    std::unique_ptr<Test> t( (*it)->create() );
     assert( t.get() );
     std::cerr << "  === \"" << t->name() << "\" ===" << std::endl;
     t->run();
