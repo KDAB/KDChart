@@ -95,7 +95,7 @@ void ConstraintModel::init()
 }
 
 namespace {
-    struct compare_constraint_indexes_to : public std::unary_function<bool,Constraint> {
+    struct compare_constraint_indexes_to {
         compare_constraint_indexes_to( const Constraint& c )
             : m_c( c ) {
         }
