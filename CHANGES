@@ -5,7 +5,7 @@ Version 3.0.0 (unreleased):
 ---------------------------
  * Supports Qt6 in addition to Qt5
  * The qmake buildsystem (via autogen.py) is removed.
- * requires C++14 (as in -std=gnu++14)
+ * requires C++11
 
 Version 2.8.0 (unreleased):
 ---------------------------
