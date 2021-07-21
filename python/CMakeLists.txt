@@ -1,17 +1,5 @@
-set(PYKDCHART_VERSION_MAJOR ${KDChart_VERSION_MAJOR})
-set(PYKDCHART_VERSION_MINOR ${KDChart_VERSION_MAJOR})
-set(PYKDCHART_VERSION_PATCH ${KDChart_VERSION_MAJOR})
-set(PYKDCHART_VERSION "${PYKDCHART_VERSION_MAJOR}.${PYKDCHART_VERSION_MINOR}.${PYKDCHART_VERSION_PATCH}")
-set(PYKDCHART_VERSION_STRING "${FATCRM_VERSION}")
-set(PYKDCHART_MODULE_NAME "PyKDChart")
 
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Svg REQUIRED)
-find_package(Qt5PrintSupport REQUIRED)
-
-# Python
-find_package(Python3 ${PYTHON_VERSION} REQUIRED COMPONENTS Interpreter Development)
+find_package(Python3 3.6 REQUIRED COMPONENTS Interpreter Development)
 find_package(Shiboken2 REQUIRED)
 find_package(PySide2 ${Qt5Widgets_VERSION} EXACT REQUIRED)
 include(PySide2ModuleBuild)
