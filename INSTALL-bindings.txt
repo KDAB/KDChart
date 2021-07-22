@@ -1,8 +1,9 @@
-These are the instructions for installing KD Chart bindings using the CMake buildsystem.
+These are the instructions for installing KD Chart Python bindings using the CMake buildsystem.
 
 Starting with version 2.7.0 KD Chart can build Python3 bindings.
 
 You need these:
+ - a compiler with C++14 support
  - Python3.6 or higher
  - Qt 5.12 or higher
  - QtForPython provided by the Qt project.
