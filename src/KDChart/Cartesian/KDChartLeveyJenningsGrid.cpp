@@ -256,7 +256,7 @@ void LeveyJenningsGrid::calculateStepWidth(
 
 void LeveyJenningsGrid::drawGrid(PaintContext *context)
 {
-    // This plane is used for tranlating the coordinates - not for the data boundaries
+    // This plane is used for translating the coordinates - not for the data boundaries
     PainterSaver p(context->painter());
     LeveyJenningsCoordinatePlane *plane = qobject_cast<LeveyJenningsCoordinatePlane *>(
         mPlane->sharedAxisMasterPlane(context->painter()));

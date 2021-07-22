@@ -167,7 +167,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_chart->setFrameAttributes(faChart);
 
     // initialize attributes; this is necessary because we need to enable data value attributes before
-    // any of them (e.g. only markers) can be displayed. but if we enable data value attributs, a default
+    // any of them (e.g. only markers) can be displayed. but if we enable data value attributes, a default
     // data value text is included, even if we only wanted to set markers. so we enable DVA and then
     // individually disable the parts we don't want.
     on_paintValuesCB_toggled(false);

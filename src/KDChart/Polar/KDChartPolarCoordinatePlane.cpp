@@ -47,17 +47,17 @@ using namespace KDChart;
 PolarCoordinatePlane::PolarCoordinatePlane(Chart *parent)
     : AbstractCoordinatePlane(new Private(), parent)
 {
-    // this bloc left empty intentionally
+    // this block left empty intentionally
 }
 
 PolarCoordinatePlane::~PolarCoordinatePlane()
 {
-    // this bloc left empty intentionally
+    // this block left empty intentionally
 }
 
 void PolarCoordinatePlane::init()
 {
-    // this bloc left empty intentionally
+    // this block left empty intentionally
 }
 
 void PolarCoordinatePlane::addDiagram(AbstractDiagram *diagram)

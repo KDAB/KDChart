@@ -168,15 +168,15 @@ public:
     /** Returns a pointer to the current diagram. */
     AbstractDiagram *diagram();
 
-    /** If the current diagram is a BarDiagram, it is returnd; otherwise 0 is returned.
+    /** If the current diagram is a BarDiagram, it is returned; otherwise 0 is returned.
           * This function provides type-safe casting.
           */
     BarDiagram *barDiagram();
-    /** If the current diagram is a LineDiagram, it is returnd; otherwise 0 is returned.
+    /** If the current diagram is a LineDiagram, it is returned; otherwise 0 is returned.
          * This function provides type-safe casting.
          */
     LineDiagram *lineDiagram();
-    /** If the current diagram is a LineDiagram, it is returnd; otherwise 0 is returned.
+    /** If the current diagram is a LineDiagram, it is returned; otherwise 0 is returned.
          * This function provides type-safe casting.
          *
          * \note Do not use lineDiagram for multi-dimensional diagrams, but use plotter instead
@@ -184,15 +184,15 @@ public:
          * \sa plotter
          */
     Plotter *plotter();
-    /** If the current diagram is a Plotter, it is returnd; otherwise 0 is returned.
+    /** If the current diagram is a Plotter, it is returned; otherwise 0 is returned.
           * This function provides type-safe casting.
           */
     PieDiagram *pieDiagram();
-    /** If the current diagram is a RingDiagram, it is returnd; otherwise 0 is returned.
+    /** If the current diagram is a RingDiagram, it is returned; otherwise 0 is returned.
           * This function provides type-safe casting.
           */
     RingDiagram *ringDiagram();
-    /** If the current diagram is a PolarDiagram, it is returnd; otherwise 0 is returned.
+    /** If the current diagram is a PolarDiagram, it is returned; otherwise 0 is returned.
           * This function provides type-safe casting.
           */
     PolarDiagram *polarDiagram();

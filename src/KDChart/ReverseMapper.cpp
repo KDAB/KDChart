@@ -156,7 +156,7 @@ void ReverseMapper::addLine(int row, int column, const QPointF &from, const QPoi
         return;
     }
     // lines do not make good polygons to click on. we calculate a 2
-    // pixel wide rectangle, where the original line is excatly
+    // pixel wide rectangle, where the original line is exactly
     // centered in.
     // make a 3 pixel wide polygon from the line:
     static const QPointF pixel(1.0, 1.0);

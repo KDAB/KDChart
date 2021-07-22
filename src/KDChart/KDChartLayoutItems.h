@@ -357,7 +357,7 @@ private:
 };
 
 /**
-     * Layout item showing a vertial line
+     * Layout item showing a vertical line
      * \internal
      */
 class KDCHART_EXPORT VerticalLineLayoutItem : public AbstractLayoutItem

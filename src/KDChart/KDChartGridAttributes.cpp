@@ -76,7 +76,7 @@ GridAttributes::Private::Private()
 GridAttributes::GridAttributes()
     : _d(new Private())
 {
-    // this bloc left empty intentionally
+    // this block left empty intentionally
 }
 
 GridAttributes::GridAttributes(const GridAttributes &r)

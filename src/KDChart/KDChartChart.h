@@ -344,7 +344,7 @@ public:
          * overlapping top label of an Ordinate axis, resp.) that would not fit
          * into the normal axis area. This is \em no \em longer \em needed
          * because KD Chart now is using hidden auto-spacer items reserving
-         * as much free space as is needed for axes with overlaping content
+         * as much free space as is needed for axes with overlapping content
          * at the respective sides.
          *
          * \sa setGlobalLeadingTop, setGlobalLeadingBottom, setGlobalLeadingLeft, setGlobalLeadingRight
@@ -491,7 +491,7 @@ private:
      *
      * \note Only classes that have an include wrapper in the \c $KDCHARTDIR/include
      * directory are part of the supported API.
-     * All other classes are to be considered as implemntation details, they
+     * All other classes are to be considered as implementation details, they
      * could be changed in future versions of KDChart without notice.
      *
      * In other words: No class that is not mentioned in the \c $KDCHARTDIR/include

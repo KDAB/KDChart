@@ -136,7 +136,7 @@ void AbstractAreaWidget::paintIntoRect(QPainter &painter, const QRect &rect)
 
 void AbstractAreaWidget::forceRebuild()
 {
-    //bloc left empty intentionally
+    //block left empty intentionally
 }
 
 void AbstractAreaWidget::paintAll(QPainter &painter)

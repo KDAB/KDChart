@@ -146,7 +146,7 @@ public:
          * \note If you use user defined vertical ranges together with logarithmic scale, only
          * positive values are supported. If you set it to negative values, the result is undefined.
          *
-         * \param range a pair of values representing the smalles and the largest
+         * \param range a pair of values representing the smallest and the largest
          * horizontal value space coordinate displayed.
          *
          * \sa setAutoAdjustHorizontalRangeToData, setVerticalRange
@@ -183,7 +183,7 @@ public:
          * \note If you use user defined vertical ranges together with logarithmic scale, only
          * positive values are supported. If you set it to negative values, the result is undefined.
          *
-         * \param range a pair of values representing the smalles and the largest
+         * \param range a pair of values representing the smallest and the largest
          * vertical value space coordinate displayed.
          *
          * \sa setAutoAdjustVerticalRangeToData, setHorizontalRange

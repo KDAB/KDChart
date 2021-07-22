@@ -28,7 +28,7 @@ AdjustedCartesianAxis::AdjustedCartesianAxis(KDChart::AbstractCartesianDiagram *
     , m_lowerBound(0.0)
     , m_upperBound(0.0)
 {
-    // this bloc left empty intentionally
+    // this block left empty intentionally
 }
 
 const QString AdjustedCartesianAxis::customizedLabel(const QString &label) const

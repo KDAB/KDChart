@@ -120,7 +120,7 @@ public:
 
     // Unfortunately the following typecast from int to Options is needed
     // as the | operator is not defined yet, this will be done by
-    // the makro Q_DECLARE_OPERATORS_FOR_FLAGS( KDChart::Position::Options )
+    // the macro Q_DECLARE_OPERATORS_FOR_FLAGS( KDChart::Position::Options )
     // at the bottom of this file.
     static QList<QByteArray> names(Options options = Options(IncludeCenter | IncludeFloating));
     static QStringList printableNames(Options options = Options(IncludeCenter | IncludeFloating));

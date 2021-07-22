@@ -70,17 +70,17 @@ CartesianCoordinatePlane::Private::Private()
 CartesianCoordinatePlane::CartesianCoordinatePlane(Chart *parent)
     : AbstractCoordinatePlane(new Private(), parent)
 {
-    // this bloc left empty intentionally
+    // this block left empty intentionally
 }
 
 CartesianCoordinatePlane::~CartesianCoordinatePlane()
 {
-    // this bloc left empty intentionally
+    // this block left empty intentionally
 }
 
 void CartesianCoordinatePlane::init()
 {
-    // this bloc left empty intentionally
+    // this block left empty intentionally
 }
 
 

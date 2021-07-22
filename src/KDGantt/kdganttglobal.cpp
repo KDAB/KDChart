@@ -44,7 +44,7 @@ using namespace KDGantt;
  */
 
 /*!\enum KDGantt::ItemDataRole KDGantt::TaskCompletionRole
- * Task completetion percentage used by Task items. Should be an
+ * Task completion percentage used by Task items. Should be an
  * integer og a qreal between 0 and 100.
  */
 

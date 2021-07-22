@@ -83,7 +83,7 @@ public:
     QBrush areaBrush() const;
 
     /** Set the size of the markers. This includes both the arrows at
-             * the axises and the circle at the data point.
+             * the axes and the circle at the data point.
              * \param size The size of the markers
              */
     void setMarkerSize(const QSizeF &size);

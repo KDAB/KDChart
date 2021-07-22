@@ -93,7 +93,7 @@ Span TreeViewRowController::rowGeometry(const QModelIndex &_idx) const
 
 QModelIndex TreeViewRowController::indexAt(int height) const
 {
-    /* using indexAt( QPoint ) wont work here, since it does hit detection
+    /* using indexAt( QPoint ) won't work here, since it does hit detection
    *   against the actual item text/icon, so we would return wrong values
    *   for items with no text etc.
    *

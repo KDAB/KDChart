@@ -254,7 +254,7 @@ void View::Private::slotGfxViewVerticalRangeChanged(int min, int max)
  */
 
 /*! Constructor. Creates a View with parent \a parent,
- * a DateTimeGrid as default grid implementaion and no model etc.
+ * a DateTimeGrid as default grid implementation and no model etc.
  */
 View::View(QWidget *parent)
     : QWidget(parent)

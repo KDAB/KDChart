@@ -46,7 +46,7 @@ AbstractCoordinatePlane::Private::Private()
     , enableRubberBandZooming(false)
     , rubberBand(nullptr)
 {
-    // this bloc left empty intentionally
+    // this block left empty intentionally
 }
 
 
@@ -333,7 +333,7 @@ void KDChart::AbstractCoordinatePlane::mousePressEvent(QMouseEvent *event)
 void KDChart::AbstractCoordinatePlane::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::RightButton) {
-        // othewise the second click gets lost
+        // otherwise the second click gets lost
         // which is pretty annoying when zooming out fast
         mousePressEvent(event);
     }

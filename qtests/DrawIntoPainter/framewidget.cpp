@@ -31,7 +31,7 @@ FrameWidget::FrameWidget(QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f)
     , mChart(0)
 {
-    // this bloc left empty intentionally
+    // this block left empty intentionally
 }
 
 void FrameWidget::paintEvent(QPaintEvent *e)

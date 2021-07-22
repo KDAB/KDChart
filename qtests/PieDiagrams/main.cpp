@@ -62,7 +62,7 @@ private slots:
         //check segments
         const int cols = m_pie->model()->columnCount();
         QCOMPARE(m_pie->columnCount(), cols);
-        // create attribut
+        // create attribute
         PieAttributes pa(m_pie->pieAttributes());
         PieAttributes paCol(m_pie->pieAttributes());
 
@@ -104,7 +104,7 @@ private slots:
         const int cols = m_pie->model()->columnCount();
         QCOMPARE(m_pie->columnCount(), cols);
 
-        // create attribut
+        // create attribute
         ThreeDPieAttributes td(m_pie->threeDPieAttributes());
         ThreeDPieAttributes tdCol(m_pie->threeDPieAttributes());
         // modify at different level and compare

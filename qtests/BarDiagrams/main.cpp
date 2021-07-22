@@ -69,7 +69,7 @@ private slots:
         const int cols = m_bars->model()->columnCount();
         QCOMPARE(m_bars->numberOfOrdinateSegments(), cols);
         QModelIndex idx = m_model->index(rows - 3, cols - 3, QModelIndex());
-        // create attribut
+        // create attribute
         BarAttributes ba(m_bars->barAttributes());
         BarAttributes baCol(m_bars->barAttributes());
         BarAttributes baIndex(m_bars->barAttributes());
@@ -137,7 +137,7 @@ private slots:
         const int cols = m_bars->model()->columnCount();
         QCOMPARE(m_bars->numberOfOrdinateSegments(), cols);
         QModelIndex idx = m_model->index(rows - 3, cols - 3, QModelIndex());
-        // create attribut
+        // create attribute
         ThreeDBarAttributes td(m_bars->threeDBarAttributes());
         ThreeDBarAttributes tdCol(m_bars->threeDBarAttributes());
         ThreeDBarAttributes tdIndex(m_bars->threeDBarAttributes());

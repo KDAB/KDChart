@@ -234,5 +234,5 @@ QRect AbstractAreaBase::innerRect() const
 
 void AbstractAreaBase::positionHasChanged()
 {
-    // this bloc left empty intentionally
+    // this block left empty intentionally
 }

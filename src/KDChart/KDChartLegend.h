@@ -44,7 +44,7 @@ typedef QList<const AbstractDiagram *> ConstDiagramList;
   * legend per chart, using KDChart::Chart::addLegend().
   *
   * \note Legend is different from all other classes ofd KD Chart, since it can be
-  * displayed outside of the Chart's area.  If you want to, you can embedd the legend
+  * displayed outside of the Chart's area.  If you want to, you can embed the legend
   * into your own widget, or into another part of a bigger layout, into which you might
   * have inserted the Chart.
   *

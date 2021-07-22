@@ -63,7 +63,7 @@ TernaryGrid::~TernaryGrid()
 
 void TernaryGrid::drawGrid(PaintContext *context)
 {
-    static const int GridLineDistanceTreshold = 20; // <Treshold> pixels between each grid line
+    static const int GridLineDistanceTreshold = 20; // <Threshold> pixels between each grid line
 
     QPainter &painter = *context->painter(); // recover from pointer madness
     PainterSaver s(&painter); // can i have a reference based version of that?

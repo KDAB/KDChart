@@ -41,12 +41,12 @@ static qreal _trunc(qreal v)
 AbstractGrid::AbstractGrid()
     : mPlane(nullptr)
 {
-    //this bloc left empty intentionally
+    //this block left empty intentionally
 }
 
 AbstractGrid::~AbstractGrid()
 {
-    //this bloc left empty intentionally
+    //this block left empty intentionally
 }
 
 void AbstractGrid::setNeedRecalculate()
@@ -58,7 +58,7 @@ DataDimensionsList AbstractGrid::updateData(AbstractCoordinatePlane *plane)
 {
     if (plane) {
         const DataDimensionsList rawDataDimensions(plane->getDataDimensionsList());
-        // ### this could be dangerous becaus calculateGrid() looks at some data we are not checking
+        // ### this could be dangerous because calculateGrid() looks at some data we are not checking
         //     for changes here.
         if (mCachedRawDataDimensions.empty() || (rawDataDimensions != mCachedRawDataDimensions)) {
             mCachedRawDataDimensions = rawDataDimensions;

@@ -65,7 +65,7 @@ private slots:
         const int cols = m_lines->model()->columnCount();
         QCOMPARE(m_lines->numberOfOrdinateSegments(), cols);
         QModelIndex idx = m_model->index(rows - 3, cols - 3, QModelIndex());
-        // create attribut
+        // create attribute
         LineAttributes la(m_lines->lineAttributes());
         LineAttributes laCol(m_lines->lineAttributes());
         LineAttributes laIndex(m_lines->lineAttributes());
@@ -116,7 +116,7 @@ private slots:
         const int cols = m_lines->model()->columnCount();
         QCOMPARE(m_lines->numberOfOrdinateSegments(), cols);
         QModelIndex idx = m_model->index(rows - 3, cols - 3, QModelIndex());
-        // create attribut
+        // create attribute
         ThreeDLineAttributes td(m_lines->threeDLineAttributes());
         ThreeDLineAttributes tdCol(m_lines->threeDLineAttributes());
         ThreeDLineAttributes tdIndex(m_lines->threeDLineAttributes());

@@ -39,7 +39,7 @@ class AbstractDiagram;
 
 /**
      * \brief A DiagramObserver watches the associated diagram for
-     * changes and deletion and emits corresponsing signals.
+     * changes and deletion and emits corresponding signals.
      */
 class KDCHART_EXPORT DiagramObserver : public QObject
 {

@@ -68,7 +68,7 @@ public:
     // FIXME implement when code os ready for it:
     // virtual Area* clone() const = 0;
 
-    // FIXME (Mirko) readd when needed
+    // FIXME (Mirko) re-add when needed
     // void copyRelevantDetailsFrom( const KDChartAxis* axis );
 
     /*    virtual void paint( PaintContext* ) const = 0;

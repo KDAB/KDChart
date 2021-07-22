@@ -89,7 +89,7 @@ RulerAttributes::Private::Private()
 RulerAttributes::RulerAttributes()
     : _d(new Private())
 {
-    // this bloc left empty intentionally
+    // this block left empty intentionally
 }
 
 RulerAttributes::RulerAttributes(const RulerAttributes &r)
