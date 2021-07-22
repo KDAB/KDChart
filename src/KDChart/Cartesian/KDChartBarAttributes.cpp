@@ -27,7 +27,6 @@
 
 #define d d_func()
 
-
 using namespace KDChart;
 
 class BarAttributes::Private
@@ -49,7 +48,6 @@ private:
     qreal barGapFactor;
 };
 
-
 BarAttributes::Private::Private()
     : datasetGap(6)
     , useFixedDatasetGap(false)
@@ -62,7 +60,6 @@ BarAttributes::Private::Private()
     , barGapFactor(0.4)
 {
 }
-
 
 BarAttributes::BarAttributes()
     : _d(new Private())
@@ -90,7 +87,6 @@ BarAttributes::~BarAttributes()
     _d = nullptr;
 }
 
-
 bool BarAttributes::operator==(const BarAttributes &r) const
 {
     if (fixedDataValueGap() == r.fixedDataValueGap() && useFixedDataValueGap() == r.useFixedDataValueGap() && fixedValueBlockGap() == r.fixedValueBlockGap() && useFixedValueBlockGap() == r.useFixedValueBlockGap() && fixedBarWidth() == r.fixedBarWidth() && useFixedBarWidth() == r.useFixedBarWidth() && groupGapFactor() == r.groupGapFactor() && barGapFactor() == r.barGapFactor() && drawSolidExcessArrows() == r.drawSolidExcessArrows())
@@ -98,7 +94,6 @@ bool BarAttributes::operator==(const BarAttributes &r) const
     else
         return false;
 }
-
 
 void BarAttributes::setFixedDataValueGap(qreal gap)
 {

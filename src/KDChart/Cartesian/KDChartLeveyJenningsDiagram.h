@@ -50,15 +50,13 @@ class KDCHART_EXPORT LeveyJenningsDiagram : public LineDiagram
 
     KDCHART_DECLARE_DERIVED_DIAGRAM(LeveyJenningsDiagram, LeveyJenningsCoordinatePlane)
 
-
 public:
     explicit LeveyJenningsDiagram(QWidget *parent = nullptr, LeveyJenningsCoordinatePlane *plane = nullptr);
     ~LeveyJenningsDiagram() override;
 
     LineDiagram *clone() const override;
 
-    enum Symbol
-    {
+    enum Symbol {
         OkDataPoint,
         NotOkDataPoint,
         LotChanged,

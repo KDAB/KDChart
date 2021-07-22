@@ -23,7 +23,6 @@
 #ifndef KDCHARTRADARDIAGRAM_H
 #define KDCHARTRADARDIAGRAM_H
 
-
 #include "KDChartPosition.h"
 #include "KDChartPolarDiagram.h"
 #include "KDChartRadarCoordinatePlane.h"

@@ -36,10 +36,8 @@
 
 #define PI 3.141592653589793
 
-
 // enable the next line to see points instead of lines:
 // #define PLOTTED_POINTS
-
 
 int main(int argc, char **argv)
 {

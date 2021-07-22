@@ -549,7 +549,6 @@ void GraphicsScene::deleteSubtree(const QModelIndex &_idx)
     }
 }
 
-
 ConstraintGraphicsItem *GraphicsScene::findConstraintItem(const Constraint &c) const
 {
     return d->findConstraintItem(c);
@@ -848,7 +847,6 @@ void GraphicsScene::doPrint(QPainter *painter, const QRectF &targetRect,
 }
 
 #include "moc_kdganttgraphicsscene.cpp"
-
 
 #ifndef KDAB_NO_UNIT_TESTS
 #include "unittest/test.h"

@@ -28,7 +28,6 @@
 #include <KDChartLineDiagram>
 #include <KDChartLegend>
 
-
 #include <QDebug>
 #include <QPen>
 #include <QHBoxLayout>
@@ -63,7 +62,6 @@ public:
         //qDebug() << "EmptyModel::rowCount(...)";
         return 0;
     }
-
 
     // NOTE: The following method will not be called by KD Chart,
     //       because the model is returning 0 for columnCount() / rowCount().

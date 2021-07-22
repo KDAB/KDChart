@@ -60,5 +60,4 @@ private:
     QPainterPath *path;
 };
 
-
 #endif /* MAINWINDOW_H */

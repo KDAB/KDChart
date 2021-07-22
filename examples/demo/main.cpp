@@ -25,7 +25,6 @@
 #include <KDChart/KDChartChart>
 #include <KDChart/KDChartBarDiagram>
 
-
 //class ChartWidget : public QWidget {
 //  Q_OBJECT
 //public:

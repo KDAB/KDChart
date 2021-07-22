@@ -39,9 +39,7 @@
 #include <QStatusBar>
 #include <QApplication>
 
-
 using namespace KDChart;
-
 
 MainWindow::MainWindow()
 {
@@ -56,7 +54,6 @@ MainWindow::MainWindow()
     setupModel();
     initializeData();
     setupViews();
-
 
     connect(openAction, SIGNAL(triggered()), this, SLOT(openFile()));
     connect(saveAction, SIGNAL(triggered()), this, SLOT(saveFile()));

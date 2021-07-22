@@ -32,7 +32,6 @@
 
 using namespace KDChart;
 
-
 DataDimensionsList PolarGrid::calculateGrid(
     const DataDimensionsList &rawDataDimensions) const
 {
@@ -50,7 +49,6 @@ DataDimensionsList PolarGrid::calculateGrid(
 
     return l;
 }
-
 
 void PolarGrid::drawGrid(PaintContext *context)
 {
@@ -74,11 +72,9 @@ void PolarGrid::drawGrid(PaintContext *context)
     AbstractPolarDiagram *dgr = dynamic_cast<AbstractPolarDiagram *>(plane->diagrams().first());
     Q_ASSERT(dgr); // only polar diagrams are allowed here
 
-
     // Do not draw a grid for pie diagrams
     if (dynamic_cast<PieDiagram *>(plane->diagrams().first()))
         return;
-
 
     context->painter()->setPen(PrintingParameters::scalePen(QColor(Qt::lightGray)));
     const qreal min = dgr->dataBoundaries().first.y();
@@ -88,7 +84,7 @@ void PolarGrid::drawGrid(PaintContext *context)
     const qreal r = qAbs(min) + dgr->dataBoundaries().second.y(); // use the full extents
 
     if (gridAttrsSagittal.isGridVisible()) {
-        const int numberOfSpokes = ( int )(360 / plane->angleUnit());
+        const int numberOfSpokes = (int)(360 / plane->angleUnit());
         for (int i = 0; i < numberOfSpokes; ++i) {
             context->painter()->drawLine(origin, plane->translate(QPointF(r - qAbs(min), i)) + context->rectangle().topLeft());
         }
@@ -97,7 +93,7 @@ void PolarGrid::drawGrid(PaintContext *context)
     if (gridAttrsCircular.isGridVisible()) {
         const qreal startPos = plane->startPosition();
         plane->setStartPosition(0.0);
-        const int numberOfGridRings = ( int )dgr->numberOfGridRings();
+        const int numberOfGridRings = (int)dgr->numberOfGridRings();
         for (int j = 0; j < numberOfGridRings; ++j) {
             const qreal rad = min - ((j + 1) * r / numberOfGridRings);
 

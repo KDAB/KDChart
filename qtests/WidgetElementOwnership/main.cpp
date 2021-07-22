@@ -169,7 +169,6 @@ private slots:
         m_widget->setType(Widget::Line);
     }
 
-
     void testDiagramTypeSubType()
     {
         m_widget->setType(Widget::Line);

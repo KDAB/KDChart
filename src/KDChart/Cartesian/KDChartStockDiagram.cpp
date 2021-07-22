@@ -162,7 +162,6 @@ ThreeDBarAttributes StockDiagram::threeDBarAttributes(int column) const
     return threeDBarAttributes();
 }
 
-
 void StockDiagram::setLowHighLinePen(const QPen &pen)
 {
     d->lowHighLinePen = pen;
@@ -228,7 +227,6 @@ QBrush StockDiagram::downTrendCandlestickBrush(int column) const
         return d->downTrendCandlestickBrushes[column];
     return d->downTrendCandlestickBrush;
 }
-
 
 void StockDiagram::setUpTrendCandlestickPen(const QPen &pen)
 {
@@ -327,7 +325,6 @@ void StockDiagram::paint(PaintContext *context)
                 high = d->compressor.data(highPos);
                 close = d->compressor.data(closePos);
             }
-
 
             switch (d->type) {
             case HighLowClose:

@@ -39,8 +39,6 @@ class MainWindow : public QWidget, private Ui::MainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
 
-
-
 private slots:
     void on_zoomFactorSB_valueChanged(double factor);
     void on_adjustGridCB_toggled(bool checked);

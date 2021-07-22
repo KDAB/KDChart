@@ -50,7 +50,6 @@ class KDCHART_EXPORT LineDiagram : public AbstractCartesianDiagram
 
     KDCHART_DECLARE_DERIVED_DIAGRAM(LineDiagram, CartesianCoordinatePlane)
 
-
 public:
     class LineDiagramType;
     friend class LineDiagramType;
@@ -65,13 +64,11 @@ public:
      */
     bool compare(const LineDiagram *other) const;
 
-    enum LineType
-    {
+    enum LineType {
         Normal = 0,
         Stacked = 1,
         Percent = 2
     };
-
 
     void setType(const LineType type);
     LineType type() const;

@@ -26,7 +26,6 @@
 
 using namespace KDChart;
 
-
 class StockDiagram::Private::ThreeDPainter
 {
 public:
@@ -38,7 +37,7 @@ public:
     };
 
     ThreeDPainter(QPainter *p)
-        : painter(p) {};
+        : painter(p){};
 
     QPolygonF drawTwoDLine(const QLineF &line, const QPen &pen,
                            const ThreeDProperties &props);
@@ -221,7 +220,6 @@ QPolygonF StockDiagram::Private::ThreeDPainter::drawThreeDRect(const QRectF &rec
 
     return drawnPolygon;
 }
-
 
 StockDiagram::Private::Private()
     : AbstractCartesianDiagram::Private()

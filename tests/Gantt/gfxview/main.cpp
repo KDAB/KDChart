@@ -108,7 +108,7 @@ public:
 
 static Qt::Alignment random_alignment()
 {
-    int r = ( int )(3.0 * rand() / (RAND_MAX + 1.0));
+    int r = (int)(3.0 * rand() / (RAND_MAX + 1.0));
     switch (r) {
     case 0:
         return Qt::AlignTop;
@@ -122,7 +122,7 @@ static Qt::Alignment random_alignment()
 
 static KDGantt::StyleOptionGanttItem::Position random_position()
 {
-    int r = ( int )(3.0 * rand() / (RAND_MAX + 1.0));
+    int r = (int)(3.0 * rand() / (RAND_MAX + 1.0));
     switch (r) {
     case 0:
         return KDGantt::StyleOptionGanttItem::Left;
@@ -137,7 +137,6 @@ static KDGantt::StyleOptionGanttItem::Position random_position()
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
-
 
     KDGantt::GraphicsView *view = new KDGantt::GraphicsView;
     MyRowController *rowController = new MyRowController;

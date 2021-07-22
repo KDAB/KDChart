@@ -30,7 +30,6 @@
 
 #include <KDABLibFakes>
 
-
 using namespace KDChart;
 
 TextArea::Private::Private()
@@ -39,12 +38,10 @@ TextArea::Private::Private()
     // this block left empty intentionally
 }
 
-
 TextArea::Private::~Private()
 {
     // this block left empty intentionally
 }
-
 
 TextArea::TextArea()
     : QObject()
@@ -58,7 +55,6 @@ TextArea::~TextArea()
 {
     // this block left empty intentionally
 }
-
 
 void TextArea::init()
 {

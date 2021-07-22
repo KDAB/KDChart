@@ -32,7 +32,6 @@
 #include "KDChartRelativePosition.h"
 #include "KDChartAbstractAreaBase.h"
 
-
 QT_BEGIN_NAMESPACE
 class QPainter;
 class QString;
@@ -43,7 +42,6 @@ class TextAttributes;
 class BackgroundAttributes;
 class FrameAttributes;
 class PaintContext;
-
 
 /**
   * @class AbstractAreaBase KDChartAbstractAreaBase.h
@@ -99,7 +97,6 @@ public:
       * \sa AbstractArea, AbstractAreaWidget
       */
     void getFrameLeadings(int &left, int &top, int &right, int &bottom) const;
-
 
 protected:
     /** \internal

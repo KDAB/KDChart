@@ -34,8 +34,7 @@ namespace KDChart {
 class ChartGraphicsItem : public QGraphicsPolygonItem
 {
 public:
-    enum
-    {
+    enum {
         Type = UserType + 1
     };
 

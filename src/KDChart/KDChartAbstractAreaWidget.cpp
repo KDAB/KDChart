@@ -25,9 +25,7 @@
 
 #include <KDABLibFakes>
 
-
 using namespace KDChart;
-
 
 AbstractAreaWidget::Private::Private()
 {
@@ -38,7 +36,6 @@ AbstractAreaWidget::Private::~Private()
 {
     // this block left empty intentionally
 }
-
 
 void AbstractAreaWidget::Private::resizeLayout(
     AbstractAreaWidget *widget, const QSize &size)
@@ -61,7 +58,6 @@ void AbstractAreaWidget::Private::resizeLayout(
     // - which in turn is the place to resize the layout of that class.
     widget->resizeLayout(innerSize);
 }
-
 
 AbstractAreaWidget::AbstractAreaWidget(QWidget *parent)
     : QWidget(parent)

@@ -23,7 +23,6 @@
 #ifndef KDCHARTPERCENTBARDIAGRAM_P_H
 #define KDCHARTPERCENTBARDIAGRAM_P_H
 
-
 #include "KDChartBarDiagram_p.h"
 
 namespace KDChart {

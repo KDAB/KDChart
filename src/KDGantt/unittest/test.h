@@ -58,7 +58,7 @@ namespace UnitTest {
                 << "\"" #x "\" didn't throw \"" #E "\"" << std::endl;                   \
         } catch (E & ppq_ut_thrown) {                                                   \
             success();                                                                  \
-            ( void )ppq_ut_thrown;                                                      \
+            (void)ppq_ut_thrown;                                                        \
             code;                                                                       \
         } catch (...) {                                                                 \
             fail(__FILE__, __LINE__)                                                    \
@@ -83,82 +83,81 @@ namespace UnitTest {
         }                                                                               \
     } while (false)
 
-
-class Test
-{
-    const std::string mName;
-    unsigned int mFailed, mSucceeded;
-
-public:
-    Test(const std::string &name);
-    virtual ~Test()
+    class Test
     {
-    }
+        const std::string mName;
+        unsigned int mFailed, mSucceeded;
 
-    const std::string &name() const
-    {
-        return mName;
-    }
-    unsigned int failed() const
-    {
-        return mFailed;
-    }
-    unsigned int succeeded() const
-    {
-        return mSucceeded;
-    }
+    public:
+        Test(const std::string &name);
+        virtual ~Test()
+        {
+        }
 
-    virtual void run() = 0;
+        const std::string &name() const
+        {
+            return mName;
+        }
+        unsigned int failed() const
+        {
+            return mFailed;
+        }
+        unsigned int succeeded() const
+        {
+            return mSucceeded;
+        }
 
-protected:
-    void _assertNotNull(const void *x, const char *expression, const char *file, unsigned int line);
-    void _assertNull(const void *x, const char *expression, const char *file, unsigned int line);
+        virtual void run() = 0;
+
+    protected:
+        void _assertNotNull(const void *x, const char *expression, const char *file, unsigned int line);
+        void _assertNull(const void *x, const char *expression, const char *file, unsigned int line);
 #if 0
     void _assertIsNaN( qreal v, const char * expression, const char * file, unsigned int line );
     void _assertIsNotNaN( qreal v, const char * expression, const char * file, unsigned int line );
 #endif
-    void _assertTrue(bool x, const char *expression, const char *file, unsigned int line);
-    void _assertFalse(bool x, const char *expression, const char *file, unsigned int line);
+        void _assertTrue(bool x, const char *expression, const char *file, unsigned int line);
+        void _assertFalse(bool x, const char *expression, const char *file, unsigned int line);
 
-    void _assertEqualWithEpsilons(float x1, float x2, int prec, const char *expr1, const char *expr2, const char *exprPrec, const char *file, unsigned int line);
-    void _assertEqualWithEpsilons(double x1, double x2, int prec, const char *expr1, const char *expr2, const char *exprPrec, const char *file, unsigned int line);
-    void _assertEqualWithEpsilons(long double x1, long double x2, int prec, const char *expr1, const char *expr2, const char *exprPrec, const char *file, unsigned int line);
+        void _assertEqualWithEpsilons(float x1, float x2, int prec, const char *expr1, const char *expr2, const char *exprPrec, const char *file, unsigned int line);
+        void _assertEqualWithEpsilons(double x1, double x2, int prec, const char *expr1, const char *expr2, const char *exprPrec, const char *file, unsigned int line);
+        void _assertEqualWithEpsilons(long double x1, long double x2, int prec, const char *expr1, const char *expr2, const char *exprPrec, const char *file, unsigned int line);
 
-    template<typename T, typename S>
-    void _assertEqual(const T &x1, const S &x2, const char *expr1, const char *expr2, const char *file, unsigned int line)
-    {
-        if (x1 == x2)
-            this->success();
-        else {
-            this->fail(file, line) << '"' << expr1 << "\" yielded " << x1 << "; expected: " << x2 << "(\"" << expr2 << "\")" << std::endl;
+        template <typename T, typename S>
+        void _assertEqual(const T &x1, const S &x2, const char *expr1, const char *expr2, const char *file, unsigned int line)
+        {
+            if (x1 == x2)
+                this->success();
+            else {
+                this->fail(file, line) << '"' << expr1 << "\" yielded " << x1 << "; expected: " << x2 << "(\"" << expr2 << "\")" << std::endl;
+            }
         }
-    }
-    template<typename T, typename S>
-    void _assertNotEqual(const T &x1, const S &x2, const char *expr1, const char *expr2, const char *file, unsigned int line)
-    {
-        if (x1 != x2)
-            this->success();
-        else {
-            this->fail(file, line) << '"' << expr1 << "\" yielded " << x1 << "; expected something not equal to: " << x2 << "(\"" << expr2 << "\")" << std::endl;
+        template <typename T, typename S>
+        void _assertNotEqual(const T &x1, const S &x2, const char *expr1, const char *expr2, const char *file, unsigned int line)
+        {
+            if (x1 != x2)
+                this->success();
+            else {
+                this->fail(file, line) << '"' << expr1 << "\" yielded " << x1 << "; expected something not equal to: " << x2 << "(\"" << expr2 << "\")" << std::endl;
+            }
         }
-    }
 
-protected:
-    std::ostream &fail(const char *file, unsigned int line);
-    void success()
-    {
-        ++mSucceeded;
-    }
-};
+    protected:
+        std::ostream &fail(const char *file, unsigned int line);
+        void success()
+        {
+            ++mSucceeded;
+        }
+    };
 
-class TestFactory
-{
-public:
-    virtual ~TestFactory()
+    class TestFactory
     {
-    }
-    virtual Test *create() const = 0;
-};
+    public:
+        virtual ~TestFactory()
+        {
+        }
+        virtual Test *create() const = 0;
+    };
 
 }
 }
@@ -168,19 +167,19 @@ public:
 namespace KDAB {
 namespace UnitTest {
 
-template<typename T_Test>
-class GenericFactory : public TestFactory
-{
-public:
-    GenericFactory(const char *group = nullptr)
+    template <typename T_Test>
+    class GenericFactory : public TestFactory
     {
-        TestRegistry::instance()->registerTestFactory(this, group);
-    }
-    Test *create() const override
-    {
-        return new T_Test();
-    }
-};
+    public:
+        GenericFactory(const char *group = nullptr)
+        {
+            TestRegistry::instance()->registerTestFactory(this, group);
+        }
+        Test *create() const override
+        {
+            return new T_Test();
+        }
+    };
 
 }
 }
@@ -221,15 +220,15 @@ public:
 
 #define KDAB_SCOPED_UNITTEST_SIMPLE(Namespace, Class, Group)   \
     namespace Namespace {                                      \
-    class Class##Test : public KDAB::UnitTest::Test            \
-    {                                                          \
-    public:                                                    \
-        Class##Test()                                          \
-            : Test(#Namespace "::" #Class)                     \
+        class Class##Test : public KDAB::UnitTest::Test        \
         {                                                      \
-        }                                                      \
-        void run() override;                                   \
-    };                                                         \
+        public:                                                \
+            Class##Test()                                      \
+                : Test(#Namespace "::" #Class)                 \
+            {                                                  \
+            }                                                  \
+            void run() override;                               \
+        };                                                     \
     }                                                          \
     KDAB_EXPORT_SCOPED_UNITTEST(Namespace, Class##Test, Group) \
     void Namespace::Class##Test::run()

@@ -38,7 +38,6 @@
 #include "KDChartRadarCoordinatePlane.h"
 #include "KDChartRadarGrid.h"
 
-
 namespace KDChart {
 
 class RadarCoordinatePlane::Private : public PolarCoordinatePlane::Private
@@ -60,7 +59,6 @@ public:
         grid = new RadarGrid();
     }
 };
-
 
 KDCHART_IMPL_DERIVED_PLANE(RadarCoordinatePlane, PolarCoordinatePlane)
 

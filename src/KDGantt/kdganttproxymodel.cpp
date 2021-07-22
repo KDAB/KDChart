@@ -23,7 +23,6 @@
 #include "kdganttproxymodel.h"
 #include "kdganttproxymodel_p.h"
 
-
 using namespace KDGantt;
 
 typedef ForwardingProxyModel BASE;

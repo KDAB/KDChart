@@ -97,7 +97,6 @@ private slots:
         QCOMPARE(pt.y(), geo.center().y() + geo.size().height() / 1000.0 * vertRelative);
     }
 
-
     void cleanupTestCase()
     {
     }

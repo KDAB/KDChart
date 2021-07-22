@@ -31,7 +31,6 @@ ZoomWidget::ZoomWidget(QWidget *parent)
     setFocusPolicy(Qt::WheelFocus);
 }
 
-
 QPointF ZoomWidget::findNewZoomCenter(const QPoint &pos)
 {
     if (!height() || !width())
@@ -52,7 +51,6 @@ QPointF ZoomWidget::findNewZoomCenter(const QPoint &pos)
     return QPointF(zoomCenterX, zoomCenterY);
 }
 
-
 void ZoomWidget::mousePressEvent(QMouseEvent *e)
 {
     const QPointF zoomCenter(findNewZoomCenter(e->pos()));
@@ -62,7 +60,6 @@ void ZoomWidget::mousePressEvent(QMouseEvent *e)
         update();
     }
 }
-
 
 void ZoomWidget::wheelEvent(QWheelEvent *e)
 {

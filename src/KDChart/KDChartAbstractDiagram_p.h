@@ -55,7 +55,6 @@
 #include <QModelIndex>
 #include <QPainterPath>
 
-
 namespace KDChart {
 class LabelPaintInfo
 {
@@ -95,7 +94,6 @@ public:
 private:
     LabelPaintCache(LabelPaintCache &other); // no copies
 };
-
 
 /**
  * \internal
@@ -242,7 +240,6 @@ inline AbstractDiagram::AbstractDiagram(
     _d->init(plane);
     init();
 }
-
 
 class LineAttributesInfo
 {

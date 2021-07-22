@@ -23,7 +23,6 @@
 #include "KDChartRadarCoordinatePlane.h"
 #include "KDChartRadarCoordinatePlane_p.h"
 
-
 using namespace KDChart;
 
 #define d d_func()

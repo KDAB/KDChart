@@ -26,7 +26,6 @@
 
 #include <KDABLibFakes>
 
-
 using namespace KDChart;
 
 DatasetProxyModel::DatasetProxyModel(QObject *parent)

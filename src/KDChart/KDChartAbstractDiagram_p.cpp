@@ -43,7 +43,6 @@
 
 #include <KDABLibFakes>
 
-
 using namespace KDChart;
 
 LabelPaintInfo::LabelPaintInfo()

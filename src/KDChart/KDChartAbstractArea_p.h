@@ -43,7 +43,6 @@
 
 #include <KDABLibFakes>
 
-
 namespace KDChart {
 
 /**
@@ -57,7 +56,6 @@ public:
     explicit Private();
     ~Private() override;
 };
-
 
 inline AbstractArea::AbstractArea(Private *p)
     : QObject()

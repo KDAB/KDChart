@@ -28,7 +28,6 @@
 #include <KDChartDataValueAttributes>
 #include <KDChartThreeDLineAttributes>
 
-
 #include <QTimer>
 #include <QMouseEvent>
 

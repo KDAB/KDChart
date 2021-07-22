@@ -45,5 +45,4 @@ private:
     Private *d;
 };
 
-
 #endif /* MAINWINDOW_H */

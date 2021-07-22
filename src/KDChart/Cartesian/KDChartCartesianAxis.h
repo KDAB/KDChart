@@ -47,8 +47,7 @@ class KDCHART_EXPORT CartesianAxis : public AbstractAxis
     KDCHART_DECLARE_PRIVATE_DERIVED_PARENT(CartesianAxis, AbstractDiagram *)
 
 public:
-    enum Position
-    {
+    enum Position {
         Bottom,
         Top,
         Right,

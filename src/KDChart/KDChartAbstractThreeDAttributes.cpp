@@ -29,9 +29,7 @@
 
 #define d d_func()
 
-
 using namespace KDChart;
-
 
 AbstractThreeDAttributes::Private::Private()
     : enabled(false)
@@ -39,7 +37,6 @@ AbstractThreeDAttributes::Private::Private()
     , threeDBrushEnabled(false)
 {
 }
-
 
 AbstractThreeDAttributes::AbstractThreeDAttributes()
     : _d(new Private())
@@ -67,12 +64,10 @@ AbstractThreeDAttributes::~AbstractThreeDAttributes()
     _d = nullptr;
 }
 
-
 bool AbstractThreeDAttributes::operator==(const AbstractThreeDAttributes &r) const
 {
     return isEnabled() == r.isEnabled() && depth() == r.depth() && isThreeDBrushEnabled() == r.isThreeDBrushEnabled();
 }
-
 
 void AbstractThreeDAttributes::init()
 {
@@ -93,12 +88,10 @@ void AbstractThreeDAttributes::setDepth(qreal depth)
     d->depth = depth;
 }
 
-
 qreal AbstractThreeDAttributes::depth() const
 {
     return d->depth;
 }
-
 
 qreal AbstractThreeDAttributes::validDepth() const
 {

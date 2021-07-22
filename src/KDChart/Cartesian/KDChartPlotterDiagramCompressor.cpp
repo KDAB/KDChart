@@ -645,7 +645,6 @@ void PlotterDiagramCompressor::Private::rowsInserted(const QModelIndex & /*paren
     emit m_parent->rowCountChanged();
 }
 
-
 void PlotterDiagramCompressor::setCompressionModel(CompressionMode value)
 {
     Q_ASSERT(d);

@@ -51,5 +51,4 @@ private:
     KDChart::Plotter *m_plotter;
 };
 
-
 #endif /* MAINWINDOW_H */

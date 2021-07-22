@@ -180,7 +180,6 @@ void ProjectModel::Node::removeChild(Node *child)
     m_children.removeAll(child);
 }
 
-
 ProjectModel::ProjectModel(QObject *parent)
     : QAbstractItemModel(parent)
     , m_root(new Node)
@@ -408,7 +407,6 @@ bool ProjectModel::insertRows(int row, int count, const QModelIndex &parent)
     endInsertRows();
     return true;
 }
-
 
 Qt::ItemFlags ProjectModel::flags(const QModelIndex &idx) const
 {

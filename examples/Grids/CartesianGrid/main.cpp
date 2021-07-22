@@ -34,7 +34,6 @@
 #include <KDChartDataValueAttributes>
 #include <QApplication>
 
-
 using namespace KDChart;
 
 class ChartWidget : public QWidget
@@ -104,7 +103,6 @@ public:
         hfa.setVisible(true);
         header->setFrameAttributes(hfa);
 
-
         // diagram->coordinatePlane returns an abstract plane one.
         // if we want to specify the orientation we need to cast
         // as follow
@@ -165,7 +163,6 @@ public:
             a.setTextAttributes(ta);
             diagram->setDataValueAttributes(iColumn, a);
         }
-
 
         QVBoxLayout *l = new QVBoxLayout(this);
         l->addWidget(&m_chart);

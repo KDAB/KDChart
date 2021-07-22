@@ -33,5 +33,4 @@ public:
     const QString customizedLabel(const QString &label) const override;
 };
 
-
 #endif

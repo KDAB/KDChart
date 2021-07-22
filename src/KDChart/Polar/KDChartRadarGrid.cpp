@@ -32,7 +32,6 @@
 
 using namespace KDChart;
 
-
 DataDimensionsList RadarGrid::calculateGrid(
     const DataDimensionsList &rawDataDimensions) const
 {
@@ -114,11 +113,9 @@ void RadarGrid::drawGrid(PaintContext *context)
     AbstractPolarDiagram *dgr = dynamic_cast<AbstractPolarDiagram *>(plane->diagrams().first());
     Q_ASSERT(dgr); // only polar diagrams are allowed here
 
-
     // Do not draw a grid for pie diagrams
     if (dynamic_cast<PieDiagram *>(plane->diagrams().first()))
         return;
-
 
     context->painter()->setPen(PrintingParameters::scalePen(QColor(Qt::lightGray)));
     const qreal min = dgr->dataBoundaries().first.y();
@@ -134,7 +131,7 @@ void RadarGrid::drawGrid(PaintContext *context)
     QPointF topLeft = context->rectangle().topLeft();
     Q_ASSERT(plane->diagram()->model());
     TextAttributes ta = plane->textAttributes();
-    const int numberOfSpokes = ( int )(360 / plane->angleUnit());
+    const int numberOfSpokes = (int)(360 / plane->angleUnit());
     const qreal stepWidth = boundaries.second.y() / (dgr->numberOfGridRings());
     QRectF destRect = context->rectangle();
     if (ta.isVisible()) {
@@ -160,7 +157,7 @@ void RadarGrid::drawGrid(PaintContext *context)
         const QLineF startLine(origin, scaleToRealPosition(QPointF(r - qAbs(min), 0), context->rectangle(), destRect, *plane));
         for (int i = 0; i < model->rowCount(); ++i) {
             const QLineF currentLine(origin, scaleToRealPosition(QPointF(r - qAbs(min), i), context->rectangle(), destRect, *plane));
-            const int angle = ( int )startLine.angleTo(currentLine) % 360;
+            const int angle = (int)startLine.angleTo(currentLine) % 360;
             const qreal angleTest = qAbs(angle - 180);
             const QString data = model->headerData(i, Qt::Vertical).toString();
             const qreal xOffset = metric.horizontalAdvance(data) / 2.0;

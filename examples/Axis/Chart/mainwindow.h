@@ -38,12 +38,10 @@ class MainWindow : public QWidget, private Ui::MainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
 
-
 private:
     KDChart::Chart *m_chart;
     TableModel m_model;
     KDChart::BarDiagram *m_lines;
 };
-
 
 #endif /* MAINWINDOW_H */

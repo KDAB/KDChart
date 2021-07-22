@@ -45,7 +45,6 @@
 
 #include <KDABLibFakes>
 
-
 namespace KDChart {
 
 /**
@@ -81,7 +80,6 @@ protected:
     AbstractDiagram *mDiagram;
     AbstractAxis *mAxis;
 };
-
 
 inline AbstractAxis::AbstractAxis(Private *p, AbstractDiagram *diagram)
     : AbstractArea(p)

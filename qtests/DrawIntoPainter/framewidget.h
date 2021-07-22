@@ -29,7 +29,6 @@ namespace KDChart {
 class Chart;
 }
 
-
 class FrameWidget : public QWidget
 {
     Q_OBJECT
@@ -47,6 +46,5 @@ public:
 private:
     KDChart::Chart *mChart;
 };
-
 
 #endif /* FRAMEWIDGET_H */

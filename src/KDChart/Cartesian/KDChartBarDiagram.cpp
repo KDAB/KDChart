@@ -41,7 +41,6 @@
 #include "KDChartStackedLyingBarDiagram_p.h"
 #include "KDChartPercentLyingBarDiagram_p.h"
 
-
 using namespace KDChart;
 
 BarDiagram::Private::Private()
@@ -115,7 +114,6 @@ void BarDiagram::Private::setOrientationAndType(Qt::Orientation o, BarDiagram::B
 }
 
 #define d d_func()
-
 
 BarDiagram::BarDiagram(QWidget *parent, CartesianCoordinatePlane *plane)
     : AbstractCartesianDiagram(new Private(), parent, plane)

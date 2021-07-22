@@ -58,7 +58,6 @@ public:
     QPen lowHighLinePen;
     QMap<int, QPen> lowHighLinePens;
 
-
     void drawOHLCBar(int dataset, const CartesianDiagramDataCompressor::DataPoint &open,
                      const CartesianDiagramDataCompressor::DataPoint &high,
                      const CartesianDiagramDataCompressor::DataPoint &low,

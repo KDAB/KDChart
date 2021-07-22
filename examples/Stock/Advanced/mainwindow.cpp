@@ -97,7 +97,7 @@ void MainWindow::initValues()
     m_threeDBarAttributes.setUseShadowColors(false);
     threeDProperties->setChecked(m_threeDBarAttributes.isEnabled());
     perspectiveAngle->setValue(m_threeDBarAttributes.angle());
-    perspectiveDepth->setValue(( int )m_threeDBarAttributes.depth());
+    perspectiveDepth->setValue((int)m_threeDBarAttributes.depth());
     useShadowColors->setChecked(m_threeDBarAttributes.useShadowColors());
     m_diagram.setThreeDBarAttributes(m_threeDBarAttributes);
 }

@@ -108,7 +108,6 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
     return result;
 }
 
-
 bool TableModel::setData(const QModelIndex &index, const QVariant &value, int role /* = Qt::EditRole */)
 {
     Q_ASSERT(index.row() >= 0 && index.row() < rowCount());

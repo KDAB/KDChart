@@ -62,7 +62,6 @@ Widget::Private::~Private()
 {
 }
 
-
 /**
 * \class Widget KDChartWidget.h
 * \brief The KDChart widget for usage without Interwiev.
@@ -469,7 +468,7 @@ void Widget::setType(ChartType chartType, SubType chartSubType)
     }
 }
 
-template<class DiagramType, class Subtype>
+template <class DiagramType, class Subtype>
 void setSubtype(AbstractDiagram *_dia, Subtype st)
 {
     if (DiagramType *dia = qobject_cast<DiagramType *>(_dia)) {
@@ -583,7 +582,6 @@ Widget::SubType Widget::subType() const
     }
     return retVal;
 }
-
 
 /**
  * Checks whether the given width matches with the one used until now.

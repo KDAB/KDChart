@@ -40,7 +40,6 @@
 
 #include <KDABLibFakes>
 
-
 namespace KDChart {
 
 /**
@@ -136,8 +135,6 @@ public:
 
     qreal newZoomX, newZoomY;
 };
-
-
 
 KDCHART_IMPL_DERIVED_PLANE(PolarCoordinatePlane, AbstractCoordinatePlane)
 

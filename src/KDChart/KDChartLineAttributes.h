@@ -52,8 +52,7 @@ public:
       \li \c MissingValuesPolicyIgnored (internal value, do not use)
 
       */
-    enum MissingValuesPolicy
-    {
+    enum MissingValuesPolicy {
         MissingValuesAreBridged,
         MissingValuesHideSegments,
         MissingValuesShownAsZero,

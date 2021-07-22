@@ -82,7 +82,7 @@ void AxisSettings::Private::init()
 void AxisSettings::Private::currentIndexChanged(int index)
 {
     m_currentAxis = nullptr;
-    const CartesianAxis::Position pos = ( CartesianAxis::Position )ui.axisSelection->itemData(index).toInt();
+    const CartesianAxis::Position pos = (CartesianAxis::Position)ui.axisSelection->itemData(index).toInt();
     CartesianCoordinatePlane *plane = qobject_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane());
     AbstractCartesianDiagram *diag = qobject_cast<AbstractCartesianDiagram *>(m_chart->coordinatePlane()->diagram());
     if (plane && diag) {
@@ -117,7 +117,7 @@ void AxisSettings::Private::updateUiForCurrentAxis()
 
 void AxisSettings::Private::setVisible(bool value)
 {
-    const CartesianAxis::Position pos = ( CartesianAxis::Position )ui.axisSelection->itemData(ui.axisSelection->currentIndex()).toInt();
+    const CartesianAxis::Position pos = (CartesianAxis::Position)ui.axisSelection->itemData(ui.axisSelection->currentIndex()).toInt();
     CartesianCoordinatePlane *plane = qobject_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane());
     AbstractCartesianDiagram *diag = qobject_cast<AbstractCartesianDiagram *>(m_chart->coordinatePlane()->diagram());
     if (plane && diag) {

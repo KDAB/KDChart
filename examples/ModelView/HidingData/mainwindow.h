@@ -54,5 +54,4 @@ private:
     QAbstractItemModel *m_model;
 };
 
-
 #endif /* MAINWINDOW_H */

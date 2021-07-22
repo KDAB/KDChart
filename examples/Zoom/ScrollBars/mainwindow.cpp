@@ -72,7 +72,6 @@ MainWindow::MainWindow(QWidget *parent)
     m_legend->setAlignment(Qt::AlignTop);
 }
 
-
 void MainWindow::on_zoomFactorSB_valueChanged(double factor)
 {
     if (factor > 1) {

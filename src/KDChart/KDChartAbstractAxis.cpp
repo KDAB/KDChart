@@ -122,7 +122,6 @@ AbstractAxis::~AbstractAxis()
     d->secondaryDiagrams.clear();
 }
 
-
 void AbstractAxis::init()
 {
     Measure m(14, KDChartEnums::MeasureCalculationModeAuto, KDChartEnums::MeasureOrientationAuto);
@@ -154,12 +153,10 @@ bool AbstractAxis::compare(const AbstractAxis *other) const
     return (static_cast<const AbstractAreaBase *>(this)->compare(other)) && (textAttributes() == other->textAttributes()) && (labels() == other->labels()) && (shortLabels() == other->shortLabels());
 }
 
-
 const QString AbstractAxis::customizedLabel(const QString &label) const
 {
     return label;
 }
-
 
 void AbstractAxis::createObserver(AbstractDiagram *diagram)
 {
@@ -194,7 +191,6 @@ TextAttributes AbstractAxis::textAttributes() const
 {
     return d->textAttributes;
 }
-
 
 void AbstractAxis::setRulerAttributes(const RulerAttributes &a)
 {

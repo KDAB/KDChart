@@ -404,7 +404,6 @@ QSplitter *View::splitter()
     return &d->splitter;
 }
 
-
 /*! \returns the current model displayed by this view
  */
 QAbstractItemModel *View::model() const

@@ -357,7 +357,7 @@ void MainWindow::zoomFit()
     delta += start.time().msecsTo(end.time()) / (1000. * 24. * 60. * 60.);
 
     qDebug() << view_width << "/" << delta;
-    grid->setDayWidth(view_width / (std::max(( qreal )1., delta)));
+    grid->setDayWidth(view_width / (std::max((qreal)1., delta)));
     qDebug() << "daywidth set to" << grid->dayWidth();
     qDebug() << "start scroll to" << grid->mapToChart(start);
     ui->ganttView->graphicsView()->horizontalScrollBar()->setValue(grid->mapToChart(start));

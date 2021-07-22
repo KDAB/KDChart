@@ -43,7 +43,6 @@
 
 #include <KDABLibFakes>
 
-
 namespace KDChart {
 
 /**
@@ -70,7 +69,6 @@ public:
     void resizeLayout(AbstractAreaWidget *widget, const QSize &sz);
 };
 
-
 inline AbstractAreaWidget::AbstractAreaWidget(AbstractAreaWidget::Private *p, QWidget *parent)
     : QWidget(parent)
     , AbstractAreaBase(p)
@@ -85,7 +83,6 @@ inline const AbstractAreaWidget::Private *AbstractAreaWidget::d_func() const
 {
     return static_cast<const Private *>(AbstractAreaBase::d_func());
 }
-
 
 }
 

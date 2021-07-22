@@ -97,7 +97,6 @@ TextAttributes::~TextAttributes()
     _d = nullptr;
 }
 
-
 bool TextAttributes::operator==(const TextAttributes &r) const
 {
     // the following works around a bug in gcc 4.3.2
@@ -107,7 +106,6 @@ bool TextAttributes::operator==(const TextAttributes &r) const
     r_font.setStyleHint(myFont.styleHint(), myFont.styleStrategy());
     return (isVisible() == r.isVisible() && myFont == r_font && fontSize() == r.fontSize() && minimalFontSize() == r.minimalFontSize() && autoRotate() == r.autoRotate() && autoShrink() == r.autoShrink() && rotation() == r.rotation() && pen() == r.pen() && textDocument() == r.textDocument());
 }
-
 
 void TextAttributes::setVisible(bool visible)
 {
@@ -203,7 +201,6 @@ const QFont TextAttributes::calculatedFont(const QObject *autoReferenceArea,
 
     return d->cachedFont;
 }
-
 
 void TextAttributes::setAutoRotate(bool autoRotate)
 {

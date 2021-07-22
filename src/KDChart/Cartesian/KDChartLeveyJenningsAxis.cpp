@@ -226,14 +226,12 @@ void LeveyJenningsAxis::paintAsAbscissa(PaintContext *context)
     if (!drawLabels)
         return;
 
-
     const QPair<QDateTime, QDateTime> range = diag->timeRange();
 
     QPainter *const painter = context->painter();
     const PainterSaver ps(painter);
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setClipping(false);
-
 
     TextLayoutItem labelItem(range.first.date().toString(dateFormat()),
                              labelTA,
@@ -252,7 +250,6 @@ void LeveyJenningsAxis::paintAsAbscissa(PaintContext *context)
     float yPos = position() == Bottom ? geometry().bottom() - size.height() : geometry().top();
     labelItem.setGeometry(QRectF(QPointF(geometry().left() - origSize.width() / 2.0, yPos), size).toRect());
     labelItem.paint(painter);
-
 
     TextLayoutItem labelItem2(range.second.date().toString(dateFormat()),
                               labelTA,

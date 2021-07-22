@@ -42,7 +42,6 @@
 #include <QPainter>
 #include <QElapsedTimer>
 
-
 using namespace KDChart;
 
 #define d d_func()
@@ -83,7 +82,6 @@ void CartesianCoordinatePlane::init()
     // this block left empty intentionally
 }
 
-
 void CartesianCoordinatePlane::addDiagram(AbstractDiagram *diagram)
 {
     Q_ASSERT_X(dynamic_cast<AbstractCartesianDiagram *>(diagram),
@@ -95,7 +93,6 @@ void CartesianCoordinatePlane::addDiagram(AbstractDiagram *diagram)
 
     connect(diagram, SIGNAL(propertiesChanged()), this, SIGNAL(propertiesChanged()));
 }
-
 
 void CartesianCoordinatePlane::paint(QPainter *painter)
 {
@@ -144,7 +141,6 @@ void CartesianCoordinatePlane::paint(QPainter *painter)
     d->bPaintIsRunning = false;
 }
 
-
 void CartesianCoordinatePlane::slotLayoutChanged(AbstractDiagram *)
 {
     layoutDiagrams();
@@ -177,7 +173,6 @@ QRectF CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams() const
     dataBoundingRect.setTopRight(QPointF(maxX, maxY));
     return dataBoundingRect;
 }
-
 
 QRectF CartesianCoordinatePlane::adjustedToMaxEmptyInnerPercentage(
     const QRectF &r, unsigned int percentX, unsigned int percentY) const
@@ -218,7 +213,6 @@ QRectF CartesianCoordinatePlane::adjustedToMaxEmptyInnerPercentage(
     }
     return ret;
 }
-
 
 QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
 {
@@ -267,7 +261,6 @@ QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
     // qDebug() << Q_FUNC_INFO << dataBoundingRect;
     return dataBoundingRect;
 }
-
 
 DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
 {
@@ -327,7 +320,6 @@ QRectF CartesianCoordinatePlane::drawingArea() const
     // than 1 are used, this may not be sufficient.
     return QRectF(areaGeometry()).adjusted(1.0, 1.0, -2.0, -2.0);
 }
-
 
 QRectF CartesianCoordinatePlane::logicalArea() const
 {
@@ -562,7 +554,6 @@ qreal CartesianCoordinatePlane::zoomFactorY() const
 {
     return d->coordinateTransformation.zoom.yFactor;
 }
-
 
 CartesianCoordinatePlane::AxesCalcMode CartesianCoordinatePlane::axesCalcModeY() const
 {
@@ -801,7 +792,6 @@ AbstractCoordinatePlane *CartesianCoordinatePlane::sharedAxisMasterPlane(QPainte
     const QPointF tenX = QPointF(10, 0);
     const QPointF tenY = QPointF(0, 10);
 
-
     if (sharedAxis->isOrdinate()) {
         painter->translate(translate(zero).x(), 0.0);
         const qreal factor = (translate(tenX) - translate(zero)).x() / (plane->translate(tenX) - plane->translate(zero)).x();
@@ -814,7 +804,6 @@ AbstractCoordinatePlane *CartesianCoordinatePlane::sharedAxisMasterPlane(QPainte
         painter->scale(1.0, factor);
         painter->translate(0.0, -plane->translate(zero).y());
     }
-
 
     return plane;
 }

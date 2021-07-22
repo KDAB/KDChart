@@ -48,8 +48,7 @@ public:
 
     bool compare(const HeaderFooter &other) const;
 
-    enum HeaderFooterType
-    {
+    enum HeaderFooterType {
         Header,
         Footer
     };
@@ -69,6 +68,5 @@ Q_SIGNALS:
 }; // End of class HeaderFooter
 
 }
-
 
 #endif // KDCHARTHEADERFOOTER_H

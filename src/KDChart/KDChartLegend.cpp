@@ -74,9 +74,7 @@ Legend::Private::~Private()
     // this block left empty intentionally
 }
 
-
 #define d d_func()
-
 
 Legend::Legend(QWidget *parent)
     : AbstractAreaWidget(new Private(), parent)
@@ -133,7 +131,6 @@ void Legend::init()
     d->position = Position::NorthEast;
     d->alignment = Qt::AlignCenter;
 }
-
 
 QSize Legend::minimumSizeHint() const
 {
@@ -211,7 +208,6 @@ Legend *Legend::clone() const
     return legend;
 }
 
-
 bool Legend::compare(const Legend *other) const
 {
     if (other == this) {
@@ -223,7 +219,6 @@ bool Legend::compare(const Legend *other) const
 
     return (AbstractAreaBase::compare(other)) && (isVisible() == other->isVisible()) && (position() == other->position()) && (alignment() == other->alignment()) && (textAlignment() == other->textAlignment()) && (floatingPosition() == other->floatingPosition()) && (orientation() == other->orientation()) && (showLines() == other->showLines()) && (texts() == other->texts()) && (brushes() == other->brushes()) && (pens() == other->pens()) && (markerAttributes() == other->markerAttributes()) && (useAutomaticMarkerSize() == other->useAutomaticMarkerSize()) && (textAttributes() == other->textAttributes()) && (titleText() == other->titleText()) && (titleTextAttributes() == other->titleTextAttributes()) && (spacing() == other->spacing()) && (legendStyle() == other->legendStyle());
 }
-
 
 void Legend::paint(QPainter *painter)
 {
@@ -245,7 +240,6 @@ void Legend::paint(QPainter *painter)
 #endif
 }
 
-
 uint Legend::datasetCount() const
 {
     int modelLabelsCount = 0;
@@ -256,7 +250,6 @@ uint Legend::datasetCount() const
     }
     return modelLabelsCount;
 }
-
 
 void Legend::setReferenceArea(const QWidget *area)
 {
@@ -271,7 +264,6 @@ const QWidget *Legend::referenceArea() const
 {
     return d->referenceArea ? d->referenceArea : qobject_cast<const QWidget *>(parent());
 }
-
 
 AbstractDiagram *Legend::diagram() const
 {
@@ -438,7 +430,6 @@ void Legend::emitPositionChanged()
     emit positionChanged(this);
     emit propertiesChanged();
 }
-
 
 Position Legend::position() const
 {
@@ -627,7 +618,6 @@ const QMap<uint, QBrush> Legend::brushes() const
     return d->brushes;
 }
 
-
 void Legend::setBrushesFromDiagram(AbstractDiagram *diagram)
 {
     bool changed = false;
@@ -643,7 +633,6 @@ void Legend::setBrushesFromDiagram(AbstractDiagram *diagram)
         update();
     }
 }
-
 
 void Legend::setPen(uint dataset, const QPen &pen)
 {
@@ -668,7 +657,6 @@ const QMap<uint, QPen> Legend::pens() const
 {
     return d->pens;
 }
-
 
 void Legend::setMarkerAttributes(uint dataset, const MarkerAttributes &markerAttributes)
 {
@@ -695,7 +683,6 @@ const QMap<uint, MarkerAttributes> Legend::markerAttributes() const
 {
     return d->markerAttributes;
 }
-
 
 void Legend::setTextAttributes(const TextAttributes &a)
 {
@@ -793,8 +780,7 @@ void Legend::setSubduedColors(bool ordered)
         Q_ASSERT(pal.size() >= s_subduedColorsCount);
         static const int order[s_subduedColorsCount] = {
             0, 5, 10, 15, 2, 7, 12, 17, 4,
-            9, 14, 1, 6, 11, 16, 3, 8, 13
-        };
+            9, 14, 1, 6, 11, 16, 3, 8, 13};
         for (int i = 0; i < s_subduedColorsCount; i++) {
             setBrush(i, pal.getBrush(order[i]));
         }

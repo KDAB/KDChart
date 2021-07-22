@@ -44,7 +44,6 @@ private:
     int areaBoundingDataset;
 };
 
-
 LineAttributes::Private::Private()
     : missingValuesPolicy(MissingValuesAreBridged)
     , displayArea(false)
@@ -52,7 +51,6 @@ LineAttributes::Private::Private()
     , areaBoundingDataset(-1)
 {
 }
-
 
 LineAttributes::LineAttributes()
     : _d(new Private())

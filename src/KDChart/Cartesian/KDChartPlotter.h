@@ -49,8 +49,7 @@ class KDCHART_EXPORT Plotter : public AbstractCartesianDiagram
 public:
     // SLOPE enables a compression based on minimal slope changes
     // DISTANCE is still buggy and can fail, same for BOTH, NONE is the default mode
-    enum CompressionMode
-    {
+    enum CompressionMode {
         SLOPE,
         DISTANCE,
         BOTH,
@@ -69,12 +68,10 @@ public:
      */
     bool compare(const Plotter *other) const;
 
-    enum PlotType
-    {
+    enum PlotType {
         Normal = 0,
         Percent
     };
-
 
     void setType(const PlotType type);
     PlotType type() const;

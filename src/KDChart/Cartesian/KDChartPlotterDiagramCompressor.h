@@ -34,14 +34,12 @@
 
 namespace KDChart {
 
-
 class PlotterDiagramCompressor : public QObject
 {
     Q_OBJECT
     Q_ENUMS(CompressionMode)
 public:
-    enum CompressionMode
-    {
+    enum CompressionMode {
         SLOPE = 0,
         DISTANCE,
         BOTH

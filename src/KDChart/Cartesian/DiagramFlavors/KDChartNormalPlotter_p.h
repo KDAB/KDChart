@@ -23,7 +23,6 @@
 #ifndef KDCHARTNORMALPLOTTER_P_H
 #define KDCHARTNORMALPLOTTER_P_H
 
-
 //
 //  W A R N I N G
 //  -------------

@@ -71,6 +71,4 @@ public:
 KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::AbstractThreeDAttributes &);
 #endif /* QT_NO_DEBUG_STREAM */
 
-
-
 #endif // KDCHARTABSTRACTTHREEDATTRIBUTES_H

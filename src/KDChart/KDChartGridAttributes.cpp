@@ -72,7 +72,6 @@ GridAttributes::Private::Private()
     zeroPen.setCapStyle(Qt::FlatCap);
 }
 
-
 GridAttributes::GridAttributes()
     : _d(new Private())
 {
@@ -100,12 +99,10 @@ GridAttributes::~GridAttributes()
     _d = nullptr;
 }
 
-
 bool GridAttributes::operator==(const GridAttributes &r) const
 {
     return isGridVisible() == r.isGridVisible() && gridGranularitySequence() == r.gridGranularitySequence() && linesOnAnnotations() == r.linesOnAnnotations() && adjustLowerBoundToGrid() == r.adjustLowerBoundToGrid() && adjustUpperBoundToGrid() == r.adjustUpperBoundToGrid() && gridPen() == r.gridPen() && isSubGridVisible() == r.isSubGridVisible() && subGridPen() == r.subGridPen() && isOuterLinesVisible() == r.isOuterLinesVisible() && zeroLinePen() == r.zeroLinePen();
 }
-
 
 void GridAttributes::setGridVisible(bool visible)
 {
@@ -160,7 +157,6 @@ qreal GridAttributes::gridStepWidth() const
 {
     return d->stepWidth;
 }
-
 
 /**
   * Specifies the sub-step width to be used for calculating

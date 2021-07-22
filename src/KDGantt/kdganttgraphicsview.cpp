@@ -764,5 +764,4 @@ void GraphicsView::print(QPainter *painter, qreal start, qreal end,
     d->scene.print(painter, start, end, targetRect, drawRowLabels, drawColumnLabels);
 }
 
-
 #include "moc_kdganttgraphicsview.cpp"

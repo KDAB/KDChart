@@ -55,7 +55,6 @@ static QPixmap drawIntoPixmap(const QSize &size, KDChart::Chart *chart)
 // When not set, this example uses a Chart widget directly.
 #define USE_FRAME_WIDGET 1
 
-
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
@@ -186,7 +185,6 @@ void MainWindow::on_lineTypeCB_currentIndexChanged(const QString &text)
         qWarning(" Does not match any type");
 }
 
-
 void MainWindow::on_paintLegendCB_toggled(bool checked)
 {
     KDChart::Legend *legend = m_chart->legend();
@@ -216,7 +214,6 @@ void MainWindow::on_paintValuesCB_toggled(bool checked)
     }
 }
 
-
 void MainWindow::on_paintMarkersCB_toggled(bool checked)
 {
     paintMarkers(checked, QSize());
@@ -227,7 +224,6 @@ void MainWindow::on_markersStyleCB_currentIndexChanged(const QString &text)
     Q_UNUSED(text);
     on_paintMarkersCB_toggled(paintMarkersCB->isChecked());
 }
-
 
 void MainWindow::on_markersWidthSB_valueChanged(int i)
 {
@@ -242,7 +238,6 @@ void MainWindow::on_markersHeightSB_valueChanged(int i)
     markersWidthSB->setValue(markersHeightSB->value());
     on_paintMarkersCB_toggled(paintMarkersCB->isChecked());
 }
-
 
 void MainWindow::on_displayAreasCB_toggled(bool checked)
 {

@@ -164,7 +164,6 @@ public:
     void replaceLegend(Legend *legend, Legend *oldLegend = nullptr);
     void takeLegend(Legend *legend);
 
-
     /** Returns a pointer to the current diagram. */
     AbstractDiagram *diagram();
 
@@ -200,9 +199,7 @@ public:
     /** Returns a pointer to the current coordinate plane. */
     AbstractCoordinatePlane *coordinatePlane();
 
-
-    enum ChartType
-    {
+    enum ChartType {
         NoType,
         Bar,
         Line,
@@ -216,8 +213,7 @@ public:
     ChartType type() const;
 
     /** Sub type values, matching the values defines for the respective Diagram classes. */
-    enum SubType
-    {
+    enum SubType {
         Normal,
         Stacked,
         Percent,

@@ -52,11 +52,10 @@ KDTextDocument::~KDTextDocument()
 {
 }
 
-
 QSize KDTextDocument::sizeHint()
 {
     if (!mHintValid)
-        ( void )minimumSizeHint();
+        (void)minimumSizeHint();
     return mSizeHint;
 }
 
@@ -89,7 +88,6 @@ QSize KDTextDocument::minimumSizeHint()
     mMinimumSizeHint = sz;
     return sz;
 }
-
 
 QSize KDTextDocument::sizeForWidth(int w)
 {

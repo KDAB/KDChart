@@ -67,5 +67,4 @@ private:
     int m_currentSlice;
 };
 
-
 #endif /* MAINWINDOW_H */

@@ -81,5 +81,4 @@ private:
     TableModel m_model;
 };
 
-
 #endif /* MAINWINDOW_H */

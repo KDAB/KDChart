@@ -32,9 +32,7 @@
 
 #include <KDABLibFakes>
 
-
 namespace KDChart {
-
 
 Measure::Measure()
     : mValue(0.0)
@@ -76,7 +74,6 @@ Measure &Measure::operator=(const Measure &r)
 
     return *this;
 }
-
 
 qreal Measure::calculatedValue(const QSizeF &autoSize,
                                KDChartEnums::MeasureOrientation autoOrientation) const
@@ -133,13 +130,11 @@ qreal Measure::calculatedValue(const QSizeF &autoSize,
     }
 }
 
-
 qreal Measure::calculatedValue(const QObject *autoArea,
                                KDChartEnums::MeasureOrientation autoOrientation) const
 {
     return calculatedValue(sizeOfArea(autoArea), autoOrientation);
 }
-
 
 const QSizeF Measure::sizeOfArea(const QObject *area) const
 {
@@ -174,7 +169,6 @@ const QSizeF Measure::sizeOfArea(const QObject *area) const
     const QPair<qreal, qreal> factors = GlobalMeasureScaling::instance()->currentFactors();
     return QSizeF(size.width() * factors.first, size.height() * factors.second);
 }
-
 
 bool Measure::operator==(const Measure &r) const
 {

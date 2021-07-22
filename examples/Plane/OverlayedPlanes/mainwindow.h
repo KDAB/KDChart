@@ -58,5 +58,4 @@ private:
     KDChart::CartesianCoordinatePlane *plane2;
 };
 
-
 #endif /* MAINWINDOW_H */

@@ -41,7 +41,6 @@
 
 #include <KDABLibFakes>
 
-
 namespace KDChart {
 
 /**
@@ -86,7 +85,6 @@ public:
         const QRectF geo(plane->geometry());
         return geo.contains(p);
     }
-
 
     // the coordinate plane will calculate the coordinate transformation:
     CoordinateTransformation coordinateTransformation;
@@ -138,7 +136,6 @@ public:
     bool reverseVerticalPlane;
     bool reverseHorizontalPlane;
 };
-
 
 KDCHART_IMPL_DERIVED_PLANE(CartesianCoordinatePlane, AbstractCoordinatePlane)
 

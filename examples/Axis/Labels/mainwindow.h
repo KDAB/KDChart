@@ -54,5 +54,4 @@ private:
     KDChart::Legend *m_legend;
 };
 
-
 #endif /* MAINWINDOW_H */

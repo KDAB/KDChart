@@ -58,5 +58,4 @@ private:
     QMap<Qt::Alignment, QString> alignmentMap;
 };
 
-
 #endif /* MAINWINDOW_H */

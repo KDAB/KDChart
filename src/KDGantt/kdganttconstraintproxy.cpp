@@ -94,7 +94,6 @@ QAbstractProxyModel *ConstraintProxy::proxyModel() const
     return m_proxy;
 }
 
-
 void ConstraintProxy::copyFromSource()
 {
     if (m_destination) {

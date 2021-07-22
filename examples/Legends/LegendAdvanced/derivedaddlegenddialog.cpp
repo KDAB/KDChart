@@ -24,7 +24,6 @@
 
 #include <KDChartPosition>
 
-
 DerivedAddLegendDialog::DerivedAddLegendDialog(QWidget *parent)
     : QDialog(parent)
 {

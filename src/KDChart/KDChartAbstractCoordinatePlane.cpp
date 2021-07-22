@@ -49,7 +49,6 @@ AbstractCoordinatePlane::Private::Private()
     // this block left empty intentionally
 }
 
-
 AbstractCoordinatePlane::AbstractCoordinatePlane(KDChart::Chart *parent)
     : AbstractArea(new Private())
 {
@@ -125,7 +124,6 @@ void AbstractCoordinatePlane::takeDiagram(AbstractDiagram *diagram)
         update();
     }
 }
-
 
 AbstractDiagram *AbstractCoordinatePlane::diagram()
 {

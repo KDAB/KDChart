@@ -92,7 +92,6 @@ public:
 	    the source model */
     void setSourceRootIndex(const QModelIndex &rootIdx);
 
-
 public Q_SLOTS:
     /** Reset all dataset description.
             After that, the result of the proxying is an empty model (a new
@@ -124,7 +123,6 @@ protected:
     /** Decide whether the column is accepted. */
     bool filterAcceptsColumn(int sourceColumn,
                              const QModelIndex &) const override;
-
 
     /** Decide whether the row is accepted. */
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
@@ -182,6 +180,5 @@ private:
 };
 
 }
-
 
 #endif

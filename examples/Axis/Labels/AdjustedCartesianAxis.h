@@ -26,7 +26,6 @@
 #include <KDChartCartesianAxis>
 #include <KDChartGlobal>
 
-
 class AdjustedCartesianAxis : public KDChart::CartesianAxis
 {
     Q_OBJECT

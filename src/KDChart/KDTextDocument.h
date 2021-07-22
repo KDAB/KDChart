@@ -62,5 +62,4 @@ private:
     QSize mMinimumSizeHint;
 };
 
-
 #endif /* KDTEXTDOCUMENT_H */

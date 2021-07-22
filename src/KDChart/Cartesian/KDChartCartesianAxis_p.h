@@ -115,7 +115,6 @@ inline const CartesianAxis::Private *CartesianAxis::d_func() const
     return static_cast<const Private *>(AbstractAxis::d_func());
 }
 
-
 class XySwitch
 {
 public:
@@ -125,14 +124,14 @@ public:
     }
 
     // for rvalues
-    template<class T>
+    template <class T>
     T operator()(T x, T y) const
     {
         return isY ? y : x;
     }
 
     // lvalues
-    template<class T>
+    template <class T>
     T &lvalue(T &x, T &y) const
     {
         return isY ? y : x;
@@ -144,8 +143,7 @@ public:
 class TickIterator
 {
 public:
-    enum TickType
-    {
+    enum TickType {
         NoTick = 0,
         MajorTick,
         MajorTickHeaderDataLabel,

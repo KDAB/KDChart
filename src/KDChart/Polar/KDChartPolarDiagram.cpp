@@ -53,7 +53,6 @@ PolarDiagram::~PolarDiagram()
 {
 }
 
-
 void PolarDiagram::init()
 {
     setShowDelimitersAtPosition(Position::Unknown, false);
@@ -115,8 +114,6 @@ const QPair<QPointF, QPointF> PolarDiagram::calculateDataBoundaries() const
     QPointF topRight(QPointF(xMax, yMax));
     return QPair<QPointF, QPointF>(bottomLeft, topRight);
 }
-
-
 
 void PolarDiagram::paintEvent(QPaintEvent *)
 {

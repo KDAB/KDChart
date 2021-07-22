@@ -79,7 +79,6 @@ private slots:
         QVERIFY(m_polar->showLabelsAtPosition(Position::South) == true);
     }
 
-
     void cleanupTestCase()
     {
     }

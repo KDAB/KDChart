@@ -35,7 +35,6 @@
  *
  */
 
-
 namespace KDChart {
 
 class TextAttributes;
@@ -249,7 +248,6 @@ public:
     /**
    * \endcond
    */
-
 
     /**
    * \cond PLANNED_FOR_FUTURE

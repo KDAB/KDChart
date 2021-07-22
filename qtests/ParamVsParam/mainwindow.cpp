@@ -32,9 +32,7 @@
 #include <KDChartGridAttributes>
 #include <KDChartLineDiagram>
 
-
 using namespace KDChart;
-
 
 MainWindow::MainWindow(
     QWidget *p_parent)
@@ -74,13 +72,11 @@ MainWindow::MainWindow(
     addPlots();
 } // MainWindow::MainWindow()
 
-
 MainWindow::~MainWindow()
 {
     delete m_sourceModel;
     m_sourceModel = NULL;
 } // MainWindow::~MainWindow()
-
 
 void MainWindow::timeoutEditingFinished()
 {
@@ -89,7 +85,6 @@ void MainWindow::timeoutEditingFinished()
         m_sourceModel->setTimeout(m_timeoutLineEdit->text().toInt());
     }
 } // MainWindow::timeoutEditingFinished()
-
 
 void MainWindow::editingFinished()
 {
@@ -104,7 +99,6 @@ void MainWindow::editingFinished()
         m_sourceModel->startSampling();
     }
 } // MainWindow::editingFinished()
-
 
 void MainWindow::addPlots()
 {
@@ -155,7 +149,6 @@ void MainWindow::addPlots()
     } // for all columns
 } // MainWindow::addPlots()
 
-
 void MainWindow::removePlots()
 {
     while (m_paramVsParamGridLayout->count()) {
@@ -164,7 +157,6 @@ void MainWindow::removePlots()
         delete chart;
     }
 } // MainWindow::removePlots()
-
 
 void MainWindow::setMarkerAttributes(
     KDChart::LineDiagram *p_lineDiagram)

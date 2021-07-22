@@ -23,9 +23,7 @@
 #ifndef SUMGUI_MODELPARAMVSPARAMPLOT_H
 #define SUMGUI_MODELPARAMVSPARAMPLOT_H
 
-
 #include <QSortFilterProxyModel>
-
 
 class ModelParamVsParamPlot : public QSortFilterProxyModel
 {
@@ -52,6 +50,5 @@ private:
     int m_column1;
     int m_column2;
 }; // class ModelParamVsParamPlot
-
 
 #endif // SUMGUI_MODELPARAMVSPARAMPLOT_H

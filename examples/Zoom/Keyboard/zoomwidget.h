@@ -39,5 +39,4 @@ protected:
     void keyPressEvent(QKeyEvent *e) override;
 };
 
-
 #endif /* ZOOMWIDGET_H */

@@ -25,7 +25,6 @@
 #include <KDChartBarDiagram>
 #include <KDChartPosition>
 
-
 using namespace KDChart;
 
 int main(int argc, char **argv)

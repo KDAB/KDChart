@@ -42,8 +42,7 @@ class ConstraintGraphicsItem;
 class GraphicsItem : public QGraphicsItem
 {
 public:
-    enum
-    {
+    enum {
         Type = UserType + 42
     };
 

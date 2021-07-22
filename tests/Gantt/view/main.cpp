@@ -133,7 +133,6 @@ public:
         connect(&slider, SIGNAL(valueChanged(int)),
                 this, SLOT(slotZoom(int)));
 
-
         QPushButton *pb1 = new QPushButton(tr("Print Preview..."));
         QPushButton *pb2 = new QPushButton(tr("Print..."));
         l->addWidget(pb1);

@@ -56,7 +56,6 @@ AbstractDiagram *DiagramObserver::diagram()
     return m_diagram;
 }
 
-
 void DiagramObserver::init()
 {
     if (!m_diagram)
@@ -96,7 +95,6 @@ void DiagramObserver::init()
     m_model = m_diagram->model();
     m_attributesmodel = m_diagram->attributesModel();
 }
-
 
 void DiagramObserver::slotDestroyed(QObject *)
 {

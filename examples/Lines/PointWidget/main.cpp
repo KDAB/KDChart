@@ -25,8 +25,6 @@
 #include <KDChartLineDiagram>
 #include <KDChartDataValueAttributes>
 
-
-
 using namespace KDChart;
 
 int main(int argc, char **argv)

@@ -30,7 +30,6 @@
 #include <KDChartRelativePosition>
 #include <KDChartPosition>
 
-
 #include <QDebug>
 #include <QPainter>
 
@@ -62,7 +61,6 @@ MainWindow::MainWindow(QWidget *parent)
     scopeCommonRB->setChecked(true);
     paintValuesCB->setChecked(true);
 }
-
 
 void MainWindow::on_scopeOneBarRB_toggled(bool checked)
 {

@@ -66,5 +66,4 @@ protected:
     int usedDatasetWidth;
 };
 
-
 #endif // KDChartWidget_p_H

@@ -46,9 +46,7 @@ Plotter::Private::~Private()
     delete percentPlotter;
 }
 
-
 #define d d_func()
-
 
 Plotter::Plotter(QWidget *parent, CartesianCoordinatePlane *plane)
     : AbstractCartesianDiagram(new Private(), parent, plane)
@@ -392,7 +390,6 @@ const QPair<QPointF, QPointF> Plotter::calculateDataBoundaries() const
     // calculate boundaries for different line types Normal - Stacked - Percent - Default Normal
     return d->implementor->calculateDataBoundaries();
 }
-
 
 void Plotter::paintEvent(QPaintEvent *)
 {

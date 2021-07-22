@@ -171,7 +171,6 @@ QMap<int, QVariant> Constraint::dataMap() const
     return d->data;
 }
 
-
 bool Constraint::compareIndexes(const Constraint &other) const
 {
     return (d->start == other.startIndex() || (!d->start.isValid() && !other.startIndex().isValid()))

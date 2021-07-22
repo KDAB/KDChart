@@ -277,7 +277,6 @@ public:
          */
     unsigned int autoAdjustVerticalRangeToData() const;
 
-
     /**
          * Set the attributes to be used for grid lines drawn in horizontal
          * direction (or in vertical direction, resp.).
@@ -441,7 +440,6 @@ public:
 
     // reimplemented
     Qt::Orientations expandingDirections() const override;
-
 
 public Q_SLOTS:
     /**

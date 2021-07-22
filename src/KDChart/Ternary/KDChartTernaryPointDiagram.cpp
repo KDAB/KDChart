@@ -82,7 +82,6 @@ void TernaryPointDiagram::paint(PaintContext *paintContext)
 
     qreal x, y, z;
 
-
     // for some reason(?) TernaryPointDiagram is using per-diagram DVAs only:
     const DataValueAttributes attrs(dataValueAttributes());
 
@@ -100,11 +99,11 @@ void TernaryPointDiagram::paint(PaintContext *paintContext)
 
                 // retrieve data
                 x = qMax(model()->data(model()->index(row, column + 0, rootIndex())).toReal(), // checked
-                         ( qreal )0.0);
+                         (qreal)0.0);
                 y = qMax(model()->data(model()->index(row, column + 1, rootIndex())).toReal(), // checked
-                         ( qreal )0.0);
+                         (qreal)0.0);
                 z = qMax(model()->data(model()->index(row, column + 2, rootIndex())).toReal(), // checked
-                         ( qreal )0.0);
+                         (qreal)0.0);
 
                 // fix messed up data values (paint as much as possible)
                 qreal total = x + y + z;

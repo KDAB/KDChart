@@ -48,8 +48,7 @@ class KDCHART_EXPORT AttributesModel : public AbstractProxyModel
     Q_OBJECT
     KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC(AttributesModel)
 public:
-    enum PaletteType
-    {
+    enum PaletteType {
         PaletteTypeDefault = 0,
         PaletteTypeRainbow = 1,
         PaletteTypeSubdued = 2

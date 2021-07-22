@@ -360,12 +360,12 @@ void MainWindow::slotClicked(const QModelIndex &index)
     statusBar()->showMessage(tr("(%1,%2,_,%4) clicked")
                                  .arg(index.row())
                                  .arg(index.column())
-                                 .arg(( quint64 )index.model()));
+                                 .arg((quint64)index.model()));
 }
 void MainWindow::slotDoubleClicked(const QModelIndex &index)
 {
     statusBar()->showMessage(tr("(%1,%2,_,%4) qreal clicked")
                                  .arg(index.row())
                                  .arg(index.column())
-                                 .arg(( quint64 )index.model()));
+                                 .arg((quint64)index.model()));
 }

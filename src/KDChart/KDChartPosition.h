@@ -111,8 +111,7 @@ public:
     static const Position &Floating;
 
     // boolean flags: 1, 2, 4, 8, ...
-    enum Option
-    {
+    enum Option {
         IncludeCenter = 0x1,
         IncludeFloating = 0x2
     };
@@ -285,9 +284,7 @@ public:
 
 }; // End of class PositionPoints
 
-
 }
-
 
 #if !defined(QT_NO_DEBUG_STREAM)
 KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::Position &);

@@ -41,7 +41,6 @@
 
 #include <KDABLibFakes>
 
-
 class KDTextDocument;
 
 namespace KDChart {
@@ -89,6 +88,5 @@ inline const KDChart::HeaderFooter::Private *KDChart::HeaderFooter::d_func() con
 {
     return static_cast<const Private *>(TextArea::d_func());
 }
-
 
 #endif /* KDCHARTHEADERFOOTER_P_H */

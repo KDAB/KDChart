@@ -131,14 +131,12 @@ void PolarCoordinatePlane::paint(QPainter *painter)
     d->currentTransformation = nullptr;
 }
 
-
 void PolarCoordinatePlane::adjustZoomAndRepaint()
 {
     const qreal newZoom = qMin(d->newZoomX, d->newZoomY);
     setZoomFactors(newZoom, newZoom);
     update();
 }
-
 
 void PolarCoordinatePlane::resizeEvent(QResizeEvent *)
 {

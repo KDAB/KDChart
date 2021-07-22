@@ -31,7 +31,6 @@
 
 #include <QLabel>
 
-
 class GradientDialog::Private : public QObject
 {
     Q_OBJECT
@@ -60,8 +59,8 @@ GradientDialog::Private::Private(GradientDialog *qq)
     , ui(new Ui::GradientDialog)
     , q(qq)
 {
-    m_gradient << qMakePair(( qreal )0.0, QColor(Qt::red));
-    m_gradient << qMakePair(( qreal )1.0, QColor(Qt::blue));
+    m_gradient << qMakePair((qreal)0.0, QColor(Qt::red));
+    m_gradient << qMakePair((qreal)1.0, QColor(Qt::blue));
 }
 
 GradientDialog::Private::~Private()
@@ -93,7 +92,6 @@ void GradientDialog::Private::insertItem()
     const int index = ui->stopSelector->currentIndex() + 1;
     ui->stopSelector->setCurrentIndex(-1);
     m_gradient.insert(index, newStop);
-
 
     QStringList newItems;
     newItems << tr("stop %1").arg(m_currStopNr);

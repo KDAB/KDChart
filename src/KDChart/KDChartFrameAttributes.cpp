@@ -49,7 +49,6 @@ FrameAttributes::Private::Private()
 {
 }
 
-
 FrameAttributes::FrameAttributes()
     : _d(new Private())
 {
@@ -76,13 +75,10 @@ FrameAttributes::~FrameAttributes()
     _d = nullptr;
 }
 
-
 bool FrameAttributes::operator==(const FrameAttributes &r) const
 {
     return (isVisible() == r.isVisible() && pen() == r.pen() && cornerRadius() == r.cornerRadius() && padding() == r.padding());
 }
-
-
 
 void FrameAttributes::setVisible(bool visible)
 {

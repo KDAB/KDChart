@@ -68,7 +68,6 @@ QDebug operator<<(QDebug dbg, KDGantt::DateTimeScaleFormatter::Range range)
     return dbg;
 }
 
-
 /*!\class KDGantt::DateTimeGrid
  * \ingroup KDGantt
  *
@@ -886,7 +885,6 @@ void DateTimeGrid::Private::getAutomaticFormatters(DateTimeScaleFormatter **lowe
     }
 }
 
-
 void DateTimeGrid::paintHeader(QPainter *painter, const QRectF &headerRect, const QRectF &exposedRect,
                                qreal offset, QWidget *widget)
 {
@@ -1265,7 +1263,7 @@ QPair<QDateTime, QDateTime> DateTimeGrid::dateTimeRange(const QRectF &rect) cons
 
 void DateTimeGrid::drawBackground(QPainter *paint, const QRectF &rect)
 {
-    int offset = ( int )dayWidth();
+    int offset = (int)dayWidth();
 
     // Figure out the date at the extreme left
     QDate date = d->chartXtoDateTime(rect.left()).date();
@@ -1305,7 +1303,7 @@ void DateTimeGrid::drawBackground(QPainter *paint, const QRectF &rect)
 
 void DateTimeGrid::drawForeground(QPainter *paint, const QRectF &rect)
 {
-    int offset = ( int )dayWidth();
+    int offset = (int)dayWidth();
 
     // Figure out the date at the extreme left
     QDate date = d->chartXtoDateTime(rect.left()).date();

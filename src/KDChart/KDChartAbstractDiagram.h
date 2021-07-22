@@ -66,12 +66,10 @@ protected:
 public:
     ~AbstractDiagram() override;
 
-
     /**
          * Returns true if both diagrams have the same settings.
          */
     bool compare(const AbstractDiagram *other) const;
-
 
     /**
          * @brief Return the bottom left and top right data point, that the
@@ -206,7 +204,6 @@ public:
          */
     virtual void setCoordinatePlane(AbstractCoordinatePlane *plane);
 
-
     /**
          * Hide (or unhide, resp.) a data cell.
          *
@@ -274,7 +271,6 @@ public:
          * @return The hidden status for the given index.
          */
     bool isHidden(const QModelIndex &index) const;
-
 
     /**
          * Set the DataValueAttributes for the given index.
@@ -566,7 +562,6 @@ public:
          */
     QList<MarkerAttributes> datasetMarkers() const;
 
-
     /**
          * \deprecated
          *
@@ -578,7 +573,6 @@ public:
          * \see percentMode
          */
     void setPercentMode(bool percent);
-
 
     /**
          * \brief Returns whether this diagram is drawn in percent mode.

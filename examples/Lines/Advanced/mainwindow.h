@@ -70,5 +70,4 @@ private:
     int m_curOpacity;
 };
 
-
 #endif /* MAINWINDOW_H */

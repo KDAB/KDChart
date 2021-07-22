@@ -32,7 +32,6 @@
 #include <KDChartTextAttributes>
 #include <KDChartThreeDLineAttributes>
 
-
 using namespace KDChart;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -44,7 +43,6 @@ MainWindow::MainWindow(QWidget *parent)
     m_chart = new Chart();
     m_chart->setGlobalLeading(20, 20, 20, 20);
     chartLayout->addWidget(m_chart);
-
 
     // Initialize the model, and fill it with data
     const int rowCount = 8;

@@ -162,7 +162,6 @@ QRect Legend::drawItem(QPainter *painter, const QModelIndex &index, const QPoint
         yPos = r.bottom();
     }
 
-
     const int rowCount = d->proxyModel.rowCount(index);
     for (int row = 0; row < rowCount; ++row) {
         const QRect r = drawItem(painter, d->proxyModel.index(row, 0, index), QPoint(pos.x(), yPos));

@@ -31,7 +31,6 @@
 #include <KDChartThreeDBarAttributes>
 #include <KDChartBackgroundAttributes>
 
-
 #include <QDebug>
 #include <QPainter>
 
@@ -78,8 +77,6 @@ MainWindow::MainWindow(QWidget *parent)
     m_chart->setGlobalLeadingTop(20);
 }
 
-
-
 void MainWindow::on_barTypeCB_currentIndexChanged(const QString &text)
 {
     if (text == "Normal")
@@ -105,7 +102,6 @@ void MainWindow::on_barOrientationCB_currentIndexChanged(const QString &text)
 
     m_chart->update();
 }
-
 
 void MainWindow::on_paintValuesCB_toggled(bool checked)
 {
@@ -134,7 +130,6 @@ void MainWindow::on_paintValuesCB_toggled(bool checked)
 
     m_chart->update();
 }
-
 
 void MainWindow::on_paintThreeDBarsCB_toggled(bool checked)
 {

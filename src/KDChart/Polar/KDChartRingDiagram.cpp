@@ -192,7 +192,7 @@ void RingDiagram::paint(PaintContext *ctx)
         if (!d->expandWhenExploded) {
             maxOffsetInThisRow -= qreal(i);
         }
-        totalOffset += qMax(maxOffsetInThisRow, ( qreal )0.0);
+        totalOffset += qMax(maxOffsetInThisRow, (qreal)0.0);
         // FIXME: What if explode factor of inner ring is > 1.0 ?
         //if ( !d->expandWhenExploded )
         //      break;
@@ -202,7 +202,6 @@ void RingDiagram::paint(PaintContext *ctx)
     if (rCount > 0)
         totalOffset /= (rCount + 1);
     d->size /= (1.0 + totalOffset);
-
 
     qreal x = (contentsRect.width() == d->size) ? 0.0 : ((contentsRect.width() - d->size) / 2.0);
     qreal y = (contentsRect.height() == d->size) ? 0.0 : ((contentsRect.height() - d->size) / 2.0);
@@ -247,7 +246,7 @@ void RingDiagram::paint(PaintContext *ctx)
 }
 
 #if defined(Q_WS_WIN)
-#define trunc(x) (( int )(x))
+#define trunc(x) ((int)(x))
 #endif
 
 /**
@@ -418,7 +417,6 @@ void RingDiagram::drawPieSurface(QPainter *painter, uint dataset, uint slice, qr
         }
     }
 }
-
 
 /**
   * Auxiliary method returning a point to a given boundary

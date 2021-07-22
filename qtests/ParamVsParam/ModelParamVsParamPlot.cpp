@@ -26,15 +26,12 @@
 
 #include <KDChartGlobal>
 
-
 using namespace KDChart;
-
 
 static int nrOfValid(0);
 static int nrOfInvalid(0);
 static int nrOfQt(0);
 static int nrOfKDChart(0);
-
 
 ModelParamVsParamPlot::ModelParamVsParamPlot(
     QAbstractItemModel *p_sourceModel,
@@ -48,13 +45,11 @@ ModelParamVsParamPlot::ModelParamVsParamPlot(
     setSourceModel(p_sourceModel);
 } // ModelParamVsParamPlot::ModelParamVsParamPlot()
 
-
 int ModelParamVsParamPlot::columnCount(
     const QModelIndex & /*p_parent*/) const
 {
     return 2;
 } // ModelParamVsParamPlot::columnCount()
-
 
 QVariant ModelParamVsParamPlot::data(
     const QModelIndex &p_index,
@@ -96,7 +91,6 @@ QVariant ModelParamVsParamPlot::data(
 
     return ret;
 } // ModelParamVsParamPlot::data()
-
 
 bool ModelParamVsParamPlot::filterAcceptsColumn(
     int p_source_column,

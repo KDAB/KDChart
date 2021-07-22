@@ -39,8 +39,7 @@ class KDGANTT_EXPORT ItemDelegate : public QItemDelegate
     Q_OBJECT
     KDGANTT_DECLARE_PRIVATE_BASE_POLYMORPHIC(ItemDelegate)
 public:
-    enum InteractionState
-    {
+    enum InteractionState {
         State_None = 0,
         State_Move,
         State_ExtendLeft,

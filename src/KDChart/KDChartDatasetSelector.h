@@ -27,7 +27,6 @@
 
 #include "KDChartDatasetProxyModel.h"
 
-
 /**
  * \cond PRIVATE_API_DOCU
  *
@@ -71,7 +70,6 @@ private Q_SLOTS:
     void on_cbReverseRows_stateChanged(int);
     void on_cbReverseColumns_stateChanged(int);
     void on_groupBox_toggled(bool);
-
 
 private:
     void resetDisplayValues();

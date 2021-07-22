@@ -31,10 +31,7 @@
 #include <QStandardItemModel>
 #include <QTimer>
 
-
 using namespace KDChart;
-
-
 
 static const int nBubbles = 7;
 // we display seven bubbles using the following data structure:
@@ -62,12 +59,9 @@ static const DataType bubblesData[nBubbles] = {
     DataType(0.7, 0.3, 55),
     DataType(1.3, 2.0, 95),
     DataType(2.0, 1.0, 75),
-    DataType(1.4, 1.1, 85)
-};
+    DataType(1.4, 1.1, 85)};
 
 #define ROLE_SIZE Qt::UserRole + 1
-
-
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
@@ -105,7 +99,6 @@ MainWindow::MainWindow(QWidget *parent)
     setMarkerAttributes();
 }
 
-
 void MainWindow::initializeDataModel()
 {
     m_model = new QStandardItemModel(nBubbles, 2);
@@ -121,7 +114,6 @@ void MainWindow::initializeDataModel()
         m_model->setData(indexY, bubblesData[i].size, ROLE_SIZE);
     }
 }
-
 
 void MainWindow::setMarkerAttributes()
 {

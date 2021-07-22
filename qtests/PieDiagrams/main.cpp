@@ -56,7 +56,6 @@ private slots:
         QVERIFY(m_pie->granularity() == 2);
     }
 
-
     void testPieAttributesLevelSettings()
     {
         //check segments
@@ -119,7 +118,6 @@ private slots:
         QVERIFY(m_pie->threeDPieAttributes().depth() == -10);
         QVERIFY(m_pie->threeDPieAttributes(cols - 2).depth() == 25);
     }
-
 
     void testThreeDPieAttributesValueSettings()
     {

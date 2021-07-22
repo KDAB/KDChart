@@ -61,8 +61,7 @@ public:
     */
     bool compare(const BarDiagram *other) const;
 
-    enum BarType
-    {
+    enum BarType {
         Normal,
         Stacked,
         Percent,

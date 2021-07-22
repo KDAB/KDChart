@@ -152,5 +152,4 @@ private:
     bool m_supplyHeaderData;
 };
 
-
 #endif

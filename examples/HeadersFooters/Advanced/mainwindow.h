@@ -59,5 +59,4 @@ private:
     KDChart::LineDiagram *m_lines;
 };
 
-
 #endif /* MAINWINDOW_H */

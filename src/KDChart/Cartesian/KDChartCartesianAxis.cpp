@@ -249,7 +249,7 @@ bool TickIterator::areAlmostEqual(qreal r1, qreal r2) const
             // which needs this function to perform a reasonable comparison.
             span = qFuzzyIsNull(m_dimension.start) ? 1 : qAbs(m_dimension.start);
         }
-        return qAbs(r2 - r1) < ( span )*1e-6;
+        return qAbs(r2 - r1) < (span)*1e-6;
     } else {
         return qAbs(r2 - r1) < qMax(qAbs(r1), qAbs(r2)) * 0.01;
     }
@@ -405,7 +405,6 @@ void CartesianAxis::init()
     connect(this, SIGNAL(coordinateSystemChanged()), SLOT(coordinateSystemChanged()));
 }
 
-
 bool CartesianAxis::compare(const CartesianAxis *other) const
 {
     if (other == this) {
@@ -525,7 +524,7 @@ static bool referenceDiagramNeedsCenteredAbscissaTicks(const AbstractDiagram *di
 
 bool CartesianAxis::isAbscissa() const
 {
-    const Qt::Orientation diagramOrientation = referenceDiagramIsBarDiagram(d->diagram()) ? (( BarDiagram * )(d->diagram()))->orientation()
+    const Qt::Orientation diagramOrientation = referenceDiagramIsBarDiagram(d->diagram()) ? ((BarDiagram *)(d->diagram()))->orientation()
                                                                                           : Qt::Vertical;
     return diagramOrientation == Qt::Vertical ? position() == Bottom || position() == Top
                                               : position() == Left || position() == Right;
@@ -747,8 +746,7 @@ void CartesianAxis::paintCtx(PaintContext *context)
     TextLayoutItem *prevTickLabel = new TextLayoutItem(QString(), labelTA, plane->parent(),
                                                        KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft);
     QPointF prevTickLabelPos;
-    enum
-    {
+    enum {
         Layout = 0,
         Painting,
         Done
@@ -1011,8 +1009,8 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
             qreal labelMargin = 0.0;
             QString text = it.text();
             if (!text.isEmpty()) {
-                QPointF labelPosition = plane->translate(QPointF(geoXy(drawPos, ( qreal )1.0),
-                                                                 geoXy(( qreal )1.0, drawPos)));
+                QPointF labelPosition = plane->translate(QPointF(geoXy(drawPos, (qreal)1.0),
+                                                                 geoXy((qreal)1.0, drawPos)));
                 highestLabelPosition = geoXy(labelPosition.x(), labelPosition.y());
 
                 if (it.type() == TickIterator::MajorTick) {
@@ -1055,10 +1053,10 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
         endOverhang = qMax(0.0, (highestLabelPosition - highestPosition) * geoXy(1.0, -1.0) + highestLabelLongitudinalSize * 0.5);
     }
 
-    amountOfLeftOverlap = geoXy(startOverhang, ( qreal )0.0);
-    amountOfRightOverlap = geoXy(endOverhang, ( qreal )0.0);
-    amountOfBottomOverlap = geoXy(( qreal )0.0, startOverhang);
-    amountOfTopOverlap = geoXy(( qreal )0.0, endOverhang);
+    amountOfLeftOverlap = geoXy(startOverhang, (qreal)0.0);
+    amountOfRightOverlap = geoXy(endOverhang, (qreal)0.0);
+    amountOfBottomOverlap = geoXy((qreal)0.0, startOverhang);
+    amountOfTopOverlap = geoXy((qreal)0.0, endOverhang);
 
     const TextAttributes titleTA = titleTextAttributesWithAdjustedRotation();
     if (titleTA.isVisible() && !axis()->titleText().isEmpty()) {

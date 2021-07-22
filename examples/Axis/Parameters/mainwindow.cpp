@@ -112,7 +112,6 @@ void MainWindow::on_lineTypeCB_currentIndexChanged(const QString &text)
     m_chart->update();
 }
 
-
 void MainWindow::on_paintLegendCB_toggled(bool checked)
 {
     m_legend->setVisible(checked);
@@ -141,7 +140,6 @@ void MainWindow::on_paintValuesCB_toggled(bool checked)
     }
     m_chart->update();
 }
-
 
 void MainWindow::on_paintMarkersCB_toggled(bool checked)
 {
@@ -225,13 +223,11 @@ void MainWindow::on_paintMarkersCB_toggled(bool checked)
     m_chart->update();
 }
 
-
 void MainWindow::on_markersStyleCB_currentIndexChanged(const QString &text)
 {
     Q_UNUSED(text);
     on_paintMarkersCB_toggled(paintMarkersCB->isChecked());
 }
-
 
 void MainWindow::on_markersWidthSB_valueChanged(int i)
 {
@@ -247,7 +243,6 @@ void MainWindow::on_markersHeightSB_valueChanged(int /*i*/)
     if (paintMarkersCB->isChecked())
         on_paintMarkersCB_toggled(true);
 }
-
 
 void MainWindow::on_displayAreasCB_toggled(bool checked)
 {

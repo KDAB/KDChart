@@ -38,7 +38,6 @@
 
 #include <KDABLibFakes>
 
-
 namespace KDChart {
 
 /**

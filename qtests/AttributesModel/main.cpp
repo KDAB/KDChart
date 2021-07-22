@@ -149,7 +149,6 @@ private slots:
         QCOMPARE(b.isVisible(), false); // No sharing
     }
 
-
     void cleanupTestCase()
     {
         delete m_plane;

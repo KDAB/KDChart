@@ -70,7 +70,6 @@ MainWindow::MainWindow(QWidget *parent)
     m_chart->update();
 }
 
-
 void MainWindow::setupAddHeaderDialog(QDialog *dlg,
                                       Ui::AddHeaderDialog &conf) const
 {
@@ -84,7 +83,6 @@ void MainWindow::setupAddHeaderDialog(QDialog *dlg,
     for (int i = 0, end = qMin(labels.size(), names.size()); i != end; ++i)
         conf.positionCO->addItem(labels[i], names[i]);
 }
-
 
 void MainWindow::on_addHeaderPB_clicked()
 {
@@ -114,7 +112,6 @@ void MainWindow::on_addHeaderPB_clicked()
     }
 }
 
-
 void MainWindow::on_editHeaderPB_clicked()
 {
     if (headersTV->selectedItems().size() == 0)
@@ -143,8 +140,6 @@ void MainWindow::on_editHeaderPB_clicked()
     }
 }
 
-
-
 void MainWindow::on_removeHeaderPB_clicked()
 {
     if (headersTV->selectedItems().size() == 0)
@@ -168,7 +163,6 @@ void MainWindow::on_removeHeaderPB_clicked()
     }
     m_chart->update();
 }
-
 
 void MainWindow::on_headersTV_itemSelectionChanged()
 {

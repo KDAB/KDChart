@@ -95,7 +95,6 @@ QDebug operator<<(QDebug dbg, const KDGantt::StyleOptionGanttItem &s)
 
 #endif /* QT_NO_DEBUG_STREAM */
 
-
 /*!\enum KDGantt::StyleOptionGanttItem::Position
  * This enum is used to describe where the Qt::DisplayRole
  * (the label) should be located relative to the item itself.

@@ -23,7 +23,6 @@
 #ifndef KDCHARTPOLARDIAGRAM_H
 #define KDCHARTPOLARDIAGRAM_H
 
-
 #include "KDChartPosition.h"
 #include "KDChartAbstractPolarDiagram.h"
 
@@ -104,6 +103,5 @@ protected:
 }; // End of class PolarDiagram
 
 }
-
 
 #endif // KDCHARTPOLARDIAGRAM_H

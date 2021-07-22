@@ -38,7 +38,6 @@
 
 #include <KDABLibFakes>
 
-
 namespace KDChart {
 
 /**
@@ -58,6 +57,5 @@ private:
 KDCHART_DERIVED_PRIVATE_FOOTER(ThreeDPieAttributes, AbstractThreeDAttributes)
 
 }
-
 
 #endif // KDCHARTTHREEDPIEATTRIBUTES_P_H

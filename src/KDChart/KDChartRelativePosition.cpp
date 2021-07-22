@@ -52,7 +52,6 @@ private:
     qreal rotation;
 };
 
-
 RelativePosition::Private::Private()
     : area(nullptr)
     , alignment(Qt::AlignCenter)
@@ -63,8 +62,6 @@ RelativePosition::Private::Private()
 RelativePosition::Private::~Private()
 {
 }
-
-
 
 RelativePosition::RelativePosition()
     : _d(new Private)
@@ -168,7 +165,6 @@ qreal RelativePosition::rotation() const
     return d->rotation;
 }
 
-
 const QPointF RelativePosition::referencePoint(qreal *polarDegrees) const
 {
     bool useRect = (d->area != nullptr);
@@ -199,7 +195,6 @@ const QPointF RelativePosition::referencePoint(qreal *polarDegrees) const
     return pt;
 }
 
-
 const QPointF RelativePosition::calculatedPoint(const QSizeF &autoSize) const
 {
     const qreal dx = horizontalPadding().calculatedValue(autoSize, KDChartEnums::MeasureOrientationHorizontal);
@@ -219,14 +214,12 @@ const QPointF RelativePosition::calculatedPoint(const QSizeF &autoSize) const
     return pt;
 }
 
-
 bool RelativePosition::operator==(const RelativePosition &r) const
 {
     return d->area == r.referenceArea() && d->position == r.referencePosition() && d->alignment == r.alignment() && d->horizontalPadding == r.horizontalPadding() && d->verticalPadding == r.verticalPadding() && d->rotation == r.rotation();
 }
 
 #undef d
-
 
 #if !defined(QT_NO_DEBUG_STREAM)
 QDebug operator<<(QDebug dbg, const KDChart::RelativePosition &rp)

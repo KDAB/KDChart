@@ -31,7 +31,6 @@
 #include "KDChartTernaryCoordinatePlane.h"
 #include "KDChartAbstractTernaryDiagram.h"
 
-
 #include "KDChartLayoutItems.h"
 #include "KDChartTextLabelCache.h"
 
@@ -75,7 +74,7 @@ void TernaryAxis::paintCtx(PaintContext *paintContext)
 {
     QPainter *p = paintContext->painter();
     TernaryCoordinatePlane *plane =
-        ( TernaryCoordinatePlane * )paintContext->coordinatePlane();
+        (TernaryCoordinatePlane *)paintContext->coordinatePlane();
     // QObject* refArea = plane->parent();
     QRectF titleArea;
 

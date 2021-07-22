@@ -45,7 +45,6 @@ public:
     virtual bool isRowExpanded(const QModelIndex &idx) const = 0;
     virtual Span rowGeometry(const QModelIndex &idx) const = 0;
 
-
     virtual QModelIndex indexAt(int height) const = 0;
     virtual QModelIndex indexAbove(const QModelIndex &idx) const = 0;
     virtual QModelIndex indexBelow(const QModelIndex &idx) const = 0;

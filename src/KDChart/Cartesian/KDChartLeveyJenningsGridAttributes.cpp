@@ -59,7 +59,6 @@ LeveyJenningsGridAttributes::Private::Private()
     rangeBrushes[LeveyJenningsGridAttributes::OutOfRange] = QBrush(QColor(255, 128, 128));
 }
 
-
 LeveyJenningsGridAttributes::LeveyJenningsGridAttributes()
     : _d(new Private())
 {
@@ -87,7 +86,6 @@ LeveyJenningsGridAttributes::~LeveyJenningsGridAttributes()
     _d = nullptr;
 }
 
-
 bool LeveyJenningsGridAttributes::operator==(const LeveyJenningsGridAttributes &r) const
 {
     return isGridVisible(Expected) == r.isGridVisible(Expected) && isGridVisible(Calculated) == r.isGridVisible(Calculated) && gridPen(Expected) == r.gridPen(Expected) && gridPen(Calculated) == r.gridPen(Calculated);
@@ -102,7 +100,6 @@ QBrush LeveyJenningsGridAttributes::rangeBrush(Range range) const
 {
     return d->rangeBrushes[range];
 }
-
 
 void LeveyJenningsGridAttributes::setGridVisible(GridType type, bool visible)
 {

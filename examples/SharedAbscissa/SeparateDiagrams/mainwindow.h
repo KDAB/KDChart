@@ -54,5 +54,4 @@ private:
     //mutable KDChart::CartesianAxis yAxis;
 };
 
-
 #endif /* MAINWINDOW_H */

@@ -167,5 +167,4 @@ void AbstractGrid::drawForeground(QPainter *paint, const QRectF &rect)
     Q_UNUSED(rect);
 }
 
-
 #include "moc_kdganttabstractgrid.cpp"

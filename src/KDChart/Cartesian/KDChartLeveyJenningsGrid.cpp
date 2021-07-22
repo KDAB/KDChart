@@ -30,7 +30,6 @@
 
 #include <KDABLibFakes>
 
-
 using namespace KDChart;
 
 qreal fastPow10(int x);
@@ -98,7 +97,7 @@ DataDimensionsList LeveyJenningsGrid::calculateGrid(const DataDimensionsList &ra
 }
 
 #if defined(Q_WS_WIN)
-#define trunc(x) (( int )(x))
+#define trunc(x) ((int)(x))
 #endif
 
 DataDimension LeveyJenningsGrid::calculateGridXY(
@@ -296,7 +295,6 @@ void LeveyJenningsGrid::drawGrid(PaintContext *context)
     // then the calculated ones
     const float calcMeanValue = diag->calculatedMeanValue();
     const float calcStandardDeviation = diag->calculatedStandardDeviation();
-
 
     // draw the normal range
     QPointF topLeft = plane->translate(QPointF(dimX.start, meanValue - 2 * standardDeviation));

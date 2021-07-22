@@ -106,7 +106,6 @@ void PercentBarDiagram::paint(PaintContext *ctx)
     // is covered by the groups.
     qreal maxLimit = rowCount * (groupWidth + ((colCount - 1) * ba.fixedDataValueGap()));
 
-
     //Pending Michel: FixMe
     if (ba.useFixedDataValueGap()) {
         if (width > maxLimit)

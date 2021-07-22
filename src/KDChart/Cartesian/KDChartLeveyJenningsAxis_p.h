@@ -40,7 +40,6 @@
 
 #include <KDABLibFakes>
 
-
 namespace KDChart {
 
 /**

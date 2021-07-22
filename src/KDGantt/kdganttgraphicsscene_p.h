@@ -47,7 +47,6 @@ public:
 
     void recursiveUpdateMultiItem(const Span &span, const QModelIndex &idx);
 
-
     GraphicsScene *q;
 
     QHash<QPersistentModelIndex, GraphicsItem *> items;

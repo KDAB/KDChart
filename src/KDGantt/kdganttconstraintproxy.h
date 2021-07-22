@@ -50,7 +50,6 @@ public:
     ConstraintModel *destinationModel() const;
     QAbstractProxyModel *proxyModel() const;
 
-
 private Q_SLOTS:
 
     void slotSourceConstraintAdded(const KDGantt::Constraint &);

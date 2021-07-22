@@ -31,7 +31,6 @@
 
 #include <KDABLibFakes>
 
-
 using namespace KDChart;
 
 AbstractPieDiagram::Private::Private()
@@ -54,11 +53,9 @@ AbstractPieDiagram::~AbstractPieDiagram()
 {
 }
 
-
 void AbstractPieDiagram::init()
 {
 }
-
 
 bool AbstractPieDiagram::compare(const AbstractPieDiagram *other) const
 {
@@ -81,7 +78,6 @@ bool AbstractPieDiagram::compare(const AbstractPieDiagram *other) const
         (granularity() == other->granularity()) && (startPosition() == other->startPosition());
 }
 
-
 #define d d_func()
 
 void AbstractPieDiagram::setGranularity(qreal value)
@@ -95,7 +91,6 @@ qreal AbstractPieDiagram::granularity() const
         ? 1.0
         : d->granularity;
 }
-
 
 void AbstractPieDiagram::setStartPosition(int degrees)
 {
@@ -157,7 +152,6 @@ PieAttributes AbstractPieDiagram::pieAttributes(const QModelIndex &index) const
                                  PieAttributesRole)
         .value<PieAttributes>();
 }
-
 
 void AbstractPieDiagram::setThreeDPieAttributes(const ThreeDPieAttributes &tda)
 {

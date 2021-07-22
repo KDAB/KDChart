@@ -34,8 +34,7 @@ class AbstractGrid;
 class KDGANTT_EXPORT StyleOptionGanttItem : public QStyleOptionViewItem
 {
 public:
-    enum Position
-    {
+    enum Position {
         Left,
         Right,
         Center,
@@ -60,6 +59,5 @@ QDebug operator<<(QDebug dbg, KDGantt::StyleOptionGanttItem::Position p);
 QDebug operator<<(QDebug dbg, const KDGantt::StyleOptionGanttItem &s);
 
 #endif /* QT_NO_DEBUG_STREAM */
-
 
 #endif /* KDGANTTSTYLEOPTIONGANTTITEM_H */

@@ -27,7 +27,6 @@
 #include <KDChartCartesianAxis>
 #include <KDChartBarDiagram>
 
-
 #include <QDebug>
 #include <QPen>
 #include <QHBoxLayout>

@@ -72,9 +72,9 @@ QDebug operator<<(QDebug stream, const TernaryPoint &point)
     if (point.isValid()) {
         text.setFieldWidth(2);
         text.setPadChar(QLatin1Char('0'));
-        text << ( int )(point.a() * 100.0) << "%|"
-             << ( int )(point.b() * 100.0) << "%|"
-             << ( int )(point.c() * 100.0) << "%]";
+        text << (int)(point.a() * 100.0) << "%|"
+             << (int)(point.b() * 100.0) << "%|"
+             << (int)(point.c() * 100.0) << "%]";
     } else {
         text << "a=" << point.a() << " - b=" << point.b() << " - INVALID]";
     }

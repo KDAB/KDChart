@@ -32,7 +32,7 @@ class QSizeF;
 class QPen;
 class QPainterPath;
 class QDebug;
-template<typename T, typename K>
+template <typename T, typename K>
 class QMap;
 QT_END_NAMESPACE
 
@@ -50,8 +50,7 @@ public:
 
     ~MarkerAttributes();
 
-    enum MarkerStyle
-    {
+    enum MarkerStyle {
         MarkerCircle = 0,
         MarkerSquare = 1,
         MarkerDiamond = 2,

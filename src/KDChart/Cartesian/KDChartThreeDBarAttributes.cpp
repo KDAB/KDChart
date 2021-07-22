@@ -37,7 +37,6 @@ ThreeDBarAttributes::Private::Private()
 {
 }
 
-
 ThreeDBarAttributes::ThreeDBarAttributes()
     : AbstractThreeDAttributes(new Private())
 {
@@ -66,13 +65,10 @@ void ThreeDBarAttributes::init()
 {
 }
 
-
 bool ThreeDBarAttributes::operator==(const ThreeDBarAttributes &r) const
 {
     return (useShadowColors() == r.useShadowColors() && angle() == r.angle() && AbstractThreeDAttributes::operator==(r));
 }
-
-
 
 void ThreeDBarAttributes::setUseShadowColors(bool shadowColors)
 {
@@ -93,7 +89,6 @@ uint ThreeDBarAttributes::angle() const
 {
     return d->angle;
 }
-
 
 #if !defined(QT_NO_DEBUG_STREAM)
 QDebug operator<<(QDebug dbg, const KDChart::ThreeDBarAttributes &a)

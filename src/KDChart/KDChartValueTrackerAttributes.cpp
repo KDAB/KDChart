@@ -60,7 +60,6 @@ ValueTrackerAttributes::Private::Private()
     arrowBrush = linePen.color();
 }
 
-
 ValueTrackerAttributes::ValueTrackerAttributes()
     : _d(new Private())
 {
@@ -86,7 +85,6 @@ ValueTrackerAttributes::~ValueTrackerAttributes()
     delete _d;
     _d = nullptr;
 }
-
 
 bool ValueTrackerAttributes::operator==(const ValueTrackerAttributes &r) const
 {

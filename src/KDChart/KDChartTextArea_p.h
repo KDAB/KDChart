@@ -43,7 +43,6 @@
 
 #include <KDABLibFakes>
 
-
 namespace KDChart {
 
 /**
@@ -63,7 +62,6 @@ public:
         // Just for consistency
     }
 };
-
 
 inline TextArea::TextArea(Private *p)
     : QObject()

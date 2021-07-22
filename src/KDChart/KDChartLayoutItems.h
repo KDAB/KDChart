@@ -332,7 +332,6 @@ private:
     QPen mMarkerPen;
 };
 
-
 /**
      * Layout item showing a horizontal line
      * \internal

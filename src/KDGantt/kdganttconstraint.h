@@ -40,21 +40,18 @@ class KDGANTT_EXPORT Constraint
     class Private;
 
 public:
-    enum Type
-    {
+    enum Type {
         TypeSoft = 0,
         TypeHard = 1
     };
-    enum RelationType
-    {
+    enum RelationType {
         FinishStart = 0,
         FinishFinish = 1,
         StartStart = 2,
         StartFinish = 3
     };
 
-    enum ConstraintDataRole
-    {
+    enum ConstraintDataRole {
         ValidConstraintPen = Qt::UserRole,
         InvalidConstraintPen
     };

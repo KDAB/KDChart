@@ -151,8 +151,6 @@ private:
     KDChartEnums::MeasureOrientation mOrientation;
 }; // End of class Measure
 
-
-
 /**
  * Auxiliary class used by the KDChart::Measure and KDChart::Chart class.
  *

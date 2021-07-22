@@ -45,14 +45,12 @@ public:
 
     ~LeveyJenningsGridAttributes();
 
-    enum GridType
-    {
+    enum GridType {
         Expected,
         Calculated
     };
 
-    enum Range
-    {
+    enum Range {
         NormalRange,
         CriticalRange,
         OutOfRange

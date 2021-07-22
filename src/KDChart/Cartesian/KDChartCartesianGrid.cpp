@@ -177,7 +177,6 @@ void CartesianGrid::drawGrid(PaintContext *context)
     }
 }
 
-
 DataDimensionsList CartesianGrid::calculateGrid(const DataDimensionsList &rawDataDimensions) const
 {
     Q_ASSERT_X(rawDataDimensions.count() == 2, "CartesianGrid::calculateGrid",
@@ -273,7 +272,7 @@ qreal fastPow10(int x)
 }
 
 #ifdef Q_OS_WIN
-#define trunc(x) (( int )(x))
+#define trunc(x) ((int)(x))
 #endif
 
 DataDimension CartesianGrid::calculateGridXY(
@@ -388,7 +387,6 @@ DataDimension CartesianGrid::calculateGridXY(
     return dim;
 }
 
-
 static void calculateSteps(
     qreal start_, qreal end_, const QList<qreal> &list,
     int minSteps, int maxSteps,
@@ -424,7 +422,6 @@ static void calculateSteps(
         }
     }
 }
-
 
 void CartesianGrid::calculateStepWidth(
     qreal start_, qreal end_,

@@ -240,7 +240,6 @@ QPointF GraphicsItem::endConnector(int relationType) const
     return mapToScene(m_rect.left(), m_rect.top() + m_rect.height() / 2.);
 }
 
-
 void GraphicsItem::constraintsChanged()
 {
     if (!scene() || !scene()->itemDelegate())
@@ -282,9 +281,9 @@ void GraphicsItem::removeEndConstraint(ConstraintGraphicsItem *item)
 
 void GraphicsItem::updateConstraintItems()
 {
-    { // Workaround for multiple definition error with MSVC6
-      Q_FOREACH (ConstraintGraphicsItem *item, m_startConstraints) {
-          QPointF s = startConnector(item->constraint().relationType());
+    {// Workaround for multiple definition error with MSVC6
+     Q_FOREACH (ConstraintGraphicsItem *item, m_startConstraints){
+         QPointF s = startConnector(item->constraint().relationType());
     item->setStart(s);
 }
 }

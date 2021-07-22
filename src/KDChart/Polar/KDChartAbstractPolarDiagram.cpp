@@ -25,7 +25,6 @@
 
 #include <KDABLibFakes>
 
-
 using namespace KDChart;
 
 AbstractPolarDiagram::Private::Private()
@@ -47,7 +46,6 @@ AbstractPolarDiagram::AbstractPolarDiagram(
     : AbstractDiagram(new Private(), parent, plane)
 {
 }
-
 
 const PolarCoordinatePlane *AbstractPolarDiagram::polarCoordinatePlane() const
 {

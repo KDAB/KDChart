@@ -81,7 +81,6 @@ unsigned int KDAB::UnitTest::TestRegistry::run() const
     return failed;
 }
 
-
 unsigned int KDAB::UnitTest::TestRegistry::run(const char *group) const
 {
     assert(group);
@@ -116,6 +115,5 @@ unsigned int KDAB::UnitTest::Runner::run(const char *group) const
     else
         return TestRegistry::instance()->run();
 }
-
 
 #endif // KDAB_NO_UNIT_TESTS

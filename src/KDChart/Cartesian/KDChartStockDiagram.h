@@ -40,8 +40,7 @@ class KDCHART_EXPORT StockDiagram : public AbstractCartesianDiagram
     KDCHART_DECLARE_DERIVED_DIAGRAM(StockDiagram, CartesianCoordinatePlane)
 
 public:
-    enum Type
-    {
+    enum Type {
         HighLowClose,
         OpenHighLowClose,
         Candlestick

@@ -35,7 +35,6 @@
 
 #include <KDABLibFakes>
 
-
 using namespace KDChart;
 
 PieDiagram::Private::Private()
@@ -115,7 +114,6 @@ const QPair<QPointF, QPointF> PieDiagram::calculateDataBoundaries() const
     }
     return QPair<QPointF, QPointF>(bottomLeft, topRight);
 }
-
 
 void PieDiagram::paintEvent(QPaintEvent *)
 {
@@ -286,7 +284,7 @@ void PieDiagram::placeLabels(PaintContext *paintContext)
             if (maxOverhang > 0.0) {
                 // subtract 2x as much because every side only gets half of the total diameter reduction
                 // and we have to make up for the overhang on one particular side.
-                d->size -= qMin(d->size, maxOverhang * ( qreal )2.0);
+                d->size -= qMin(d->size, maxOverhang * (qreal)2.0);
                 tryAgain = true;
             }
         }
@@ -526,7 +524,7 @@ void PieDiagram::paintInternal(PaintContext *paintContext)
 }
 
 #if defined(Q_OS_WIN)
-#define trunc(x) (( int )(x))
+#define trunc(x) ((int)(x))
 #endif
 
 QRectF PieDiagram::explodedDrawPosition(const QRectF &drawPosition, uint slice) const
@@ -782,7 +780,6 @@ void PieDiagram::draw3DEffect(QPainter *painter, const QRectF &drawPosition, uin
     }
 }
 
-
 /**
   Internal method that draws the cut surface of a slice (think of a real pie cut into slices)
   in 3D mode, for surfaces that are facing the observer.
@@ -890,7 +887,6 @@ uint PieDiagram::findSliceAt(qreal angle, int colCount)
     return 0;
 }
 
-
 /**
   Internal method that finds the slice that is located to the left of \c slice.
 
@@ -910,7 +906,6 @@ uint PieDiagram::findLeftSlice(uint slice, int colCount)
     }
 }
 
-
 /**
   Internal method that finds the slice that is located to the right of \c slice.
 
@@ -925,7 +920,6 @@ uint PieDiagram::findRightSlice(uint slice, int colCount)
     }
     return rightSlice;
 }
-
 
 /**
   * Auxiliary method returning a point to a given boundary

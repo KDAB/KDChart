@@ -59,8 +59,7 @@ class MainWindow::Private : public QObject
     Q_PROPERTY(int datasetCount READ datasetCount NOTIFY datasetCountChanged)
 public:
     int datasetCount() const;
-    enum ChartType
-    {
+    enum ChartType {
         Bar,
         Line,
         Plotter,

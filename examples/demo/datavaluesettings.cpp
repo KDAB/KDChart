@@ -32,7 +32,6 @@
 #include <KDChartDataValueAttributes>
 #include <KDChart/KDChartAbstractDiagram>
 
-
 #include <QDebug>
 #include <QPainter>
 
@@ -146,7 +145,6 @@ void DataValueSettings::refresh()
 {
     d->populateWidgets();
 }
-
 
 void DataValueSettings::Private::on_scopeOneBarRB_toggled(bool checked)
 {

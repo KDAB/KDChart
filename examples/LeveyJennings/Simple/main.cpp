@@ -100,7 +100,6 @@ int main(int argc, char **argv)
     model.setData(model.index(4, 2), true);
     model.setData(model.index(4, 3), QDateTime::fromString("2007-07-08T09:00:00", Qt::ISODate));
 
-
     // Lot 2
     model.setData(model.index(5, 0), 2);
     model.setData(model.index(5, 1), 210);

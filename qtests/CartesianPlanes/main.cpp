@@ -31,7 +31,6 @@
 #include <KDChartPlotter>
 #include <KDChartGridAttributes>
 
-
 using namespace KDChart;
 
 class NumericDataModel : public QStandardItemModel
@@ -123,14 +122,13 @@ void TestCartesianPlanes::cleanup()
     delete m_chart;
 }
 
-
 void TestCartesianPlanes::testIntialOwnership()
 {
     AbstractCoordinatePlane *plane = m_chart->coordinatePlane();
     QCOMPARE(m_plane->referenceCoordinatePlane(), m_chart->coordinatePlane());
     m_chart->takeCoordinatePlane(0);
     delete plane;
-    QCOMPARE(m_plane->referenceCoordinatePlane(), ( AbstractCoordinatePlane * )0);
+    QCOMPARE(m_plane->referenceCoordinatePlane(), (AbstractCoordinatePlane *)0);
 }
 
 void TestCartesianPlanes::testDiagramOwnership()
@@ -291,7 +289,6 @@ void TestCartesianPlanes::testAxesCalcModesSettings()
     QCOMPARE(m_plane->axesCalcModeX(), AbstractCoordinatePlane::Linear);
     QCOMPARE(m_plane->axesCalcModeY(), AbstractCoordinatePlane::Linear);
 }
-
 
 QTEST_MAIN(TestCartesianPlanes)
 

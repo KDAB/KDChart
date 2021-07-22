@@ -43,7 +43,6 @@ public:
     explicit RadarCoordinatePlane(Chart *parent = nullptr);
     ~RadarCoordinatePlane() override;
 
-
     /**
          * Set the attributes to be used for axis captions.
          *

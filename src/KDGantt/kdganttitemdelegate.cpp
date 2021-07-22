@@ -39,7 +39,6 @@
         dbg << #x;                \
         break;
 
-
 QDebug operator<<(QDebug dbg, KDGantt::ItemDelegate::InteractionState state)
 {
     switch (state) {
@@ -214,7 +213,6 @@ Span ItemDelegate::itemBoundingSpan(const StyleOptionGanttItem &opt,
     const int typ = idx.model()->data(idx, ItemTypeRole).toInt();
     QRectF itemRect = opt.itemRect;
 
-
     if (typ == TypeEvent) {
         itemRect = QRectF(itemRect.left() - itemRect.height() / 2.,
                           itemRect.top(),
@@ -345,7 +343,7 @@ void ItemDelegate::paintGanttItem(QPainter *painter,
             QPainterPath path;
             const qreal deltaY = r.height() / 2.;
             const qreal deltaXBezierControl = .25 * qMin(r.width(), r.height());
-            const qreal deltaX = qMin(r.width() / ( qreal )2., r.height());
+            const qreal deltaX = qMin(r.width() / (qreal)2., r.height());
             path.moveTo(r.topLeft());
             path.lineTo(r.topRight());
             path.lineTo(QPointF(r.right(), r.top() + 2. * deltaY));
@@ -441,7 +439,6 @@ QRectF ItemDelegate::constraintBoundingRect(const QPointF &start, const QPointF 
     }
     return poly.boundingRect().adjusted(-PW, -PW, PW, PW);
 }
-
 
 /*! Paints the \a constraint between points \a start and \a end
  * using \a painter and \a opt.
@@ -652,6 +649,5 @@ QPolygonF ItemDelegate::startFinishArrow(const QPointF &start, const QPointF &en
          << QPointF(end.x() + TURN / 2., end.y() + TURN / 2.);
     return poly;
 }
-
 
 #include "moc_kdganttitemdelegate.cpp"

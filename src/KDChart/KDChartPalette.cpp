@@ -141,8 +141,6 @@ Palette::~Palette()
     _d = nullptr;
 }
 
-
-
 Palette::Palette(const Palette &r)
     : QObject()
     , _d(new Private(*r.d))

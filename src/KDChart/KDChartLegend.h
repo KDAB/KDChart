@@ -64,18 +64,14 @@ public:
     explicit Legend(KDChart::AbstractDiagram *diagram, QWidget *parent = nullptr);
     ~Legend() override;
 
-
-    enum LegendStyle
-    {
+    enum LegendStyle {
         MarkersOnly = 0,
         LinesOnly = 1,
         MarkersAndLines = 2
     };
 
-
     void setLegendStyle(LegendStyle style);
     LegendStyle legendStyle() const;
-
 
     virtual Legend *clone() const;
 
@@ -307,7 +303,6 @@ m_legend->setFloatingPosition( relativePosition );
     void setOrientation(Qt::Orientation orientation);
     Qt::Orientation orientation() const;
 
-
     void setSortOrder(Qt::SortOrder order);
     Qt::SortOrder sortOrder() const;
 
@@ -409,6 +404,5 @@ private Q_SLOTS:
 }; // End of class Legend
 
 }
-
 
 #endif // KDCHARTLEGEND_H

@@ -42,8 +42,7 @@ public:
 
     ~BackgroundAttributes();
 
-    enum BackgroundPixmapMode
-    {
+    enum BackgroundPixmapMode {
         BackgroundPixmapModeNone,
         BackgroundPixmapModeCentered,
         BackgroundPixmapModeScaled,

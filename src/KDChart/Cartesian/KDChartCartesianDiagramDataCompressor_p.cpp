@@ -622,8 +622,7 @@ void CartesianDiagramDataCompressor::calculateSampleStepWidth()
         53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101,
         151, 211, 313, 401, 503, 607, 701, 811, 911, 1009,
         10037, 12911, 16001, 20011, 50021,
-        100003, 137867, 199999, 500009, 707753, 1000003, 0
-    }; // ... after that, having a model at all becomes impractical
+        100003, 137867, 199999, 500009, 707753, 1000003, 0}; // ... after that, having a model at all becomes impractical
 
     // we want at least 17 samples per data point, using a prime step width
     const qreal WantedSamples = 17;

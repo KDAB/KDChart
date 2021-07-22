@@ -103,8 +103,7 @@ public:
     /*!
           * We need this because we have a header type for a year, but no such scale.
           */
-    enum HeaderType
-    {
+    enum HeaderType {
         HeaderHour,
         HeaderDay,
         HeaderWeek,

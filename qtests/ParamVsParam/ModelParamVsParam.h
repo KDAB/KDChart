@@ -23,10 +23,8 @@
 #ifndef SUMGUI_MODELPARAMVSPARAM_H
 #define SUMGUI_MODELPARAMVSPARAM_H
 
-
 #include <QStandardItemModel>
 #include <QTimer>
-
 
 class ModelParamVsParam : public QStandardItemModel
 {
@@ -53,6 +51,5 @@ private slots:
 private:
     QTimer m_timer;
 }; // class ModelParamVsParam
-
 
 #endif // SUMGUI_MODELPARAMVSPARAM_H

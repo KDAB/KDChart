@@ -32,7 +32,6 @@
 #include <KDABLibFakes>
 #include <QPainterPath>
 
-
 using namespace KDChart;
 
 AbstractAreaBase::Private::Private()
@@ -41,16 +40,13 @@ AbstractAreaBase::Private::Private()
     init();
 }
 
-
 AbstractAreaBase::Private::~Private()
 {
 }
 
-
 void AbstractAreaBase::Private::init()
 {
 }
-
 
 AbstractAreaBase::AbstractAreaBase()
     : _d(new Private())
@@ -63,11 +59,9 @@ AbstractAreaBase::~AbstractAreaBase()
     _d = nullptr;
 }
 
-
 void AbstractAreaBase::init()
 {
 }
-
 
 #define d d_func()
 
@@ -116,7 +110,6 @@ BackgroundAttributes AbstractAreaBase::backgroundAttributes() const
     return d->backgroundAttributes;
 }
 
-
 /* static */
 void AbstractAreaBase::paintBackgroundAttributes(QPainter &painter, const QRect &rect,
                                                  const KDChart::BackgroundAttributes &attributes)
@@ -142,8 +135,8 @@ void AbstractAreaBase::paintBackgroundAttributes(QPainter &painter, const QRect 
             painter.drawPixmap(ol, attributes.pixmap());
         } else {
             QTransform m;
-            qreal zW = ( qreal )rect.width() / ( qreal )attributes.pixmap().width();
-            qreal zH = ( qreal )rect.height() / ( qreal )attributes.pixmap().height();
+            qreal zW = (qreal)rect.width() / (qreal)attributes.pixmap().width();
+            qreal zH = (qreal)rect.height() / (qreal)attributes.pixmap().height();
             switch (attributes.pixmapMode()) {
             case BackgroundAttributes::BackgroundPixmapModeScaled: {
                 qreal z;
@@ -201,14 +194,12 @@ void AbstractAreaBase::paintBackground(QPainter &painter, const QRect &rect)
     paintBackgroundAttributes(painter, rect, d->backgroundAttributes);
 }
 
-
 void AbstractAreaBase::paintFrame(QPainter &painter, const QRect &rect)
 {
     Q_ASSERT_X(d != nullptr, "AbstractAreaBase::paintFrame()",
                "Private class was not initialized!");
     paintFrameAttributes(painter, rect, d->frameAttributes);
 }
-
 
 void AbstractAreaBase::getFrameLeadings(int &left, int &top, int &right, int &bottom) const
 {

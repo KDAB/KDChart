@@ -23,9 +23,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-
 #include <QWidget>
-
 
 class ModelParamVsParam;
 
@@ -37,7 +35,6 @@ QT_END_NAMESPACE
 namespace KDChart {
 class LineDiagram;
 };
-
 
 class MainWindow : public QWidget
 {
@@ -66,6 +63,5 @@ private:
     QLineEdit *m_nrOfSamplesLineEdit;
     QGridLayout *m_paramVsParamGridLayout;
 }; //	class	MainWindow
-
 
 #endif // MAINWINDOW_H

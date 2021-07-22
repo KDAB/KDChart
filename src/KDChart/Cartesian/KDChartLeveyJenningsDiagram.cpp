@@ -47,9 +47,7 @@ LeveyJenningsDiagram::Private::~Private()
 {
 }
 
-
 #define d d_func()
-
 
 LeveyJenningsDiagram::LeveyJenningsDiagram(QWidget *parent, LeveyJenningsCoordinatePlane *plane)
     : LineDiagram(new Private(), parent, plane)
@@ -642,7 +640,6 @@ void LeveyJenningsDiagram::drawLotChangeSymbol(PaintContext *ctx, const QPointF 
 {
     const QPointF transPos = ctx->coordinatePlane()->translate(
         QPointF(pos.x(), d->lotChangedPosition & Qt::AlignTop ? d->expectedMeanValue + 4 * d->expectedStandardDeviation : d->expectedMeanValue - 4 * d->expectedStandardDeviation));
-
 
     QPainter *const painter = ctx->painter();
     const PainterSaver ps(painter);

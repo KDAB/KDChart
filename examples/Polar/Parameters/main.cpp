@@ -64,7 +64,6 @@ public:
         pba.setVisible(true);
         polarPlane->setBackgroundAttributes(pba);
 
-
         // Configure some global / dataset / cell specific attributes:
 
         DataValueAttributes dva(diagram->dataValueAttributes());
@@ -98,7 +97,6 @@ public:
             diagram->setDataValueAttributes(iColumn, dva);
         }
 
-
         // Set the marker of one single cell differently to show
         // how per-cell marker attributes can be used:
         const QModelIndex index = diagram->model()->index(1, 2, QModelIndex());
@@ -126,8 +124,6 @@ public:
         relativePosition.setAlignment(Qt::AlignCenter);
         dva.setPositivePosition(relativePosition);
         diagram->setDataValueAttributes(index, dva);
-
-
 
         // Assign our diagram to the Chart
         m_chart.coordinatePlane()->replaceDiagram(diagram);

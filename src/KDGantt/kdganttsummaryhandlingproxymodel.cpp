@@ -311,10 +311,8 @@ KDAB_SCOPED_UNITTEST_SIMPLE(KDGantt, SummaryHandlingProxyModel, "test")
     topitem->appendRow(task1);
     topitem->appendRow(task2);
 
-
     QDateTime startdt = QDateTime::currentDateTime();
     QDateTime enddt = startdt.addDays(1);
-
 
     task1->setData(startdt, KDGantt::StartTimeRole);
     task1->setData(enddt, KDGantt::EndTimeRole);

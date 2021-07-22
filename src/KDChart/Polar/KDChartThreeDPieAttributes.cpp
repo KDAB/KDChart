@@ -36,7 +36,6 @@ ThreeDPieAttributes::Private::Private()
 {
 }
 
-
 ThreeDPieAttributes::ThreeDPieAttributes()
     : AbstractThreeDAttributes(new Private())
 {
@@ -66,7 +65,6 @@ void ThreeDPieAttributes::init()
 {
     setDepth(-10);
 }
-
 
 bool ThreeDPieAttributes::operator==(const ThreeDPieAttributes &r) const
 {

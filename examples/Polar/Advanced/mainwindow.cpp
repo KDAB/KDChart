@@ -62,7 +62,6 @@ MainWindow::MainWindow(QWidget *parent)
     setItemModelData();
 }
 
-
 void MainWindow::initKDChartClasses()
 {
     m_chart = new Chart();
@@ -91,7 +90,6 @@ void MainWindow::setItemModelData()
         }
     }
 }
-
 
 void MainWindow::on_startPositionSB_valueChanged(double pos)
 {

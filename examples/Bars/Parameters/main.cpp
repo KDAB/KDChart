@@ -96,7 +96,6 @@ ChartWidget::ChartWidget(QWidget *parent)
     setLayout(l);
 }
 
-
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);

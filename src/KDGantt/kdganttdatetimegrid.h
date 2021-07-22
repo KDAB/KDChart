@@ -37,8 +37,7 @@ class KDGANTT_EXPORT DateTimeGrid : public AbstractGrid
     Q_OBJECT
     KDGANTT_DECLARE_PRIVATE_DERIVED(DateTimeGrid)
 public:
-    enum Scale
-    {
+    enum Scale {
         ScaleAuto,
         ScaleHour,
         ScaleDay,
@@ -128,8 +127,7 @@ class KDGANTT_EXPORT DateTimeScaleFormatter
 {
     KDGANTT_DECLARE_PRIVATE_BASE_POLYMORPHIC(DateTimeScaleFormatter)
 public:
-    enum Range
-    {
+    enum Range {
         Second,
         Minute,
         Hour,
@@ -159,8 +157,6 @@ public:
     virtual QString text(const QDateTime &datetime) const;
 };
 }
-
-
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug KDGANTT_EXPORT operator<<(QDebug dbg, KDGantt::DateTimeScaleFormatter::Range);

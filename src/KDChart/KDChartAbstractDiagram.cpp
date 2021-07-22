@@ -66,7 +66,6 @@ void AbstractDiagram::init()
     d->reverseMapper.setDiagram(this);
 }
 
-
 bool AbstractDiagram::compare(const AbstractDiagram *other) const
 {
     if (other == this)
@@ -232,7 +231,6 @@ void AbstractDiagram::dataChanged(const QModelIndex &topLeft,
     scheduleDelayedItemsLayout();
 }
 
-
 void AbstractDiagram::setHidden(const QModelIndex &index, bool hidden)
 {
     d->attributesModel->setData(
@@ -278,7 +276,6 @@ bool AbstractDiagram::isHidden(const QModelIndex &index) const
     return isHidden(dataset);
 }
 
-
 void AbstractDiagram::setDataValueAttributes(const QModelIndex &index,
                                              const DataValueAttributes &a)
 {
@@ -286,7 +283,6 @@ void AbstractDiagram::setDataValueAttributes(const QModelIndex &index,
                                 DataValueLabelAttributesRole);
     emit propertiesChanged();
 }
-
 
 void AbstractDiagram::setDataValueAttributes(int dataset, const DataValueAttributes &a)
 {
@@ -369,7 +365,6 @@ bool AbstractDiagram::percentMode() const
     return d->percent;
 }
 
-
 void AbstractDiagram::paintDataValueText(QPainter *painter,
                                          const QModelIndex &index,
                                          const QPointF &pos,
@@ -377,7 +372,6 @@ void AbstractDiagram::paintDataValueText(QPainter *painter,
 {
     d->paintDataValueText(painter, index, pos, value);
 }
-
 
 void AbstractDiagram::paintDataValueTexts(QPainter *painter)
 {
@@ -404,7 +398,6 @@ void AbstractDiagram::paintDataValueTexts(QPainter *painter)
         }
     }
 }
-
 
 void AbstractDiagram::paintMarker(QPainter *painter,
                                   const DataValueAttributes &a,
@@ -610,7 +603,6 @@ void AbstractDiagram::paintMarkers(QPainter *painter)
         }
     }
 }
-
 
 void AbstractDiagram::setPen(const QModelIndex &index, const QPen &pen)
 {

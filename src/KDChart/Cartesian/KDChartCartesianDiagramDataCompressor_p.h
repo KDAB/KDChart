@@ -124,8 +124,7 @@ public:
     typedef QMap<QModelIndex, DataValueAttributes> AggregatedDataValueAttributes;
     typedef QMap<CartesianDiagramDataCompressor::CachePosition, AggregatedDataValueAttributes> DataValueAttributesCache;
 
-    enum ApproximationMode
-    {
+    enum ApproximationMode {
         // do not approximate, interpolate by averaging all
         // datapoints for a pixel
         Precise,
@@ -204,7 +203,6 @@ private:
     bool isCached(const CachePosition &) const;
     // set sample step width according to settings:
     void calculateSampleStepWidth();
-
 
     QPointer<QAbstractItemModel> m_model;
     QModelIndex m_rootIndex;

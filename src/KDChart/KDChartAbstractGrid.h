@@ -34,7 +34,6 @@ namespace KDChart {
 
 class PaintContext;
 
-
 /**
      * \internal
      *
@@ -51,7 +50,6 @@ public:
 
 protected:
     AbstractGrid();
-
 
 public:
     /** \brief Returns the cached result of data calculation.

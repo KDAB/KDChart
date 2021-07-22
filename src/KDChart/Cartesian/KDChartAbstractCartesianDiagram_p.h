@@ -42,7 +42,6 @@
 
 #include <KDABLibFakes>
 
-
 namespace KDChart {
 
 class CartesianCoordinatePlane;

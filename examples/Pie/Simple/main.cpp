@@ -26,7 +26,6 @@
 #include <KDChartPolarCoordinatePlane>
 #include <QPen>
 
-
 using namespace KDChart;
 
 int main(int argc, char **argv)
@@ -58,7 +57,7 @@ int main(int argc, char **argv)
     piePen.setWidth(3);
     piePen.setColor(Qt::white);
     widget.pieDiagram()->setPen(2, piePen);
-    (( PolarCoordinatePlane * )widget.coordinatePlane())->setStartPosition(90);
+    ((PolarCoordinatePlane *)widget.coordinatePlane())->setStartPosition(90);
 
     widget.show();
 

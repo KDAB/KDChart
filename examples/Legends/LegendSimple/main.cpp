@@ -26,7 +26,6 @@
 #include <KDChartPosition>
 #include <KDChartLegend>
 
-
 using namespace KDChart;
 
 int main(int argc, char **argv)
@@ -56,7 +55,6 @@ int main(int argc, char **argv)
     widget.legend()->setText(1, "Vector 2");
     widget.legend()->setText(2, "Vector 3");
     widget.legend()->setShowLines(true);
-
 
     widget.show();
 

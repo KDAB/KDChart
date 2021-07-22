@@ -26,7 +26,6 @@
 #include "KDChartTernaryCoordinatePlane.h"
 #include "KDChartAbstractTernaryDiagram.h"
 
-
 namespace KDChart {
 
 /**

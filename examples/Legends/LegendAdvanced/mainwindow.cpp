@@ -48,7 +48,6 @@ private:
     KDChart::Legend *m_legend;
 };
 
-
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
@@ -103,7 +102,6 @@ MainWindow::MainWindow(QWidget *parent)
     m_chart->update();
 }
 
-
 void MainWindow::initAddLegendDialog(DerivedAddLegendDialog &conf,
                                      Qt::Alignment alignment) const
 {
@@ -112,7 +110,6 @@ void MainWindow::initAddLegendDialog(DerivedAddLegendDialog &conf,
     // Note: Legend position can be Floating but it can not be Center
     const QStringList labels = KDChart::Position::printableNames(KDChart::Position::IncludeFloating);
     const QList<QByteArray> names = KDChart::Position::names(KDChart::Position::IncludeFloating);
-
 
     for (int i = 0, end = qMin(labels.size(), names.size()); i != end; ++i)
         conf.positionCO->addItem(labels[i], names[i]);
@@ -177,7 +174,6 @@ void MainWindow::on_addLegendPB_clicked()
         m_chart->update();
     }
 }
-
 
 void MainWindow::on_editLegendPB_clicked()
 {
@@ -244,8 +240,6 @@ void MainWindow::on_editLegendPB_clicked()
         m_chart->update();
     }
 }
-
-
 
 void MainWindow::on_removeLegendPB_clicked()
 {

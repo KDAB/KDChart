@@ -108,7 +108,6 @@ void ForwardingProxyModel::setSourceModel(QAbstractItemModel *model)
     connect(model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
             this, SLOT(sourceDataChanged(const QModelIndex &, const QModelIndex &)));
 
-
     connect(model, SIGNAL(columnsAboutToBeInserted(const QModelIndex &, int, int)),
             this, SLOT(sourceColumnsAboutToBeInserted(const QModelIndex &, int, int)));
     connect(model, SIGNAL(columnsInserted(const QModelIndex &, int, int)),

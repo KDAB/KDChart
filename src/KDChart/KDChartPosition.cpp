@@ -50,9 +50,7 @@ static const char *staticPositionNames[] = {
     QT_TRANSLATE_NOOP("Position", "South"),
     QT_TRANSLATE_NOOP("Position", "SouthWest"),
     QT_TRANSLATE_NOOP("Position", "West"),
-    QT_TRANSLATE_NOOP("Position", "Floating")
-};
-
+    QT_TRANSLATE_NOOP("Position", "Floating")};
 
 /**
  * \internal
@@ -85,7 +83,6 @@ const Position &Position::South = staticPositionSouth;
 const Position &Position::SouthWest = staticPositionSouthWest;
 const Position &Position::West = staticPositionWest;
 const Position &Position::Floating = staticPositionFloating;
-
 
 /**
  * Default constructor. Creates a new Position, defaulting it to Position::Unknown.
@@ -179,7 +176,6 @@ QString Position::printableName() const
     return tr(staticPositionNames[m_value]);
 }
 
-
 /**
  * \brief Returns a list of all string, corresponding to
  * the pre-defined positions.
@@ -232,12 +228,10 @@ bool Position::operator==(const Position &r) const
     return (value() == r.value());
 }
 
-
 bool Position::operator==(int value_) const
 {
     return (value() == value_);
 }
-
 
 #if !defined(QT_NO_DEBUG_STREAM)
 QDebug operator<<(QDebug dbg, const KDChart::Position &p)

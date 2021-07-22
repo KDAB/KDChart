@@ -31,7 +31,6 @@
 
 namespace KDChart {
 
-
 /**
   * @class TextArea KDChartTextArea.h
   * @brief A text area in the chart with a background, a frame, etc.
@@ -50,7 +49,6 @@ class KDCHART_EXPORT TextArea : public QObject, public AbstractAreaBase, public 
 
     Q_DISABLE_COPY(TextArea)
     KDCHART_DECLARE_PRIVATE_DERIVED(TextArea)
-
 
 public:
     ~TextArea() override;

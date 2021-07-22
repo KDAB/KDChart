@@ -119,7 +119,6 @@ private slots:
         QCOMPARE(m_chart->headerFooters().size(), 0);
     }
 
-
     void testLegendOwnership()
     {
         // check no legend
@@ -193,7 +192,6 @@ private slots:
         QCOMPARE(m_chart->globalLeadingRight(), 2);
         QCOMPARE(m_chart->globalLeadingBottom(), 2);
     }
-
 
     void testChartDeletion()
     {

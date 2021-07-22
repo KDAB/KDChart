@@ -44,7 +44,6 @@
 
 #include <KDABLibFakes>
 
-
 namespace KDChart {
 
 class PaintContext;

@@ -116,7 +116,6 @@ MainWindow::MainWindow(QWidget *parent)
     leftAxis->setTextAttributes(taLabels);
     bottomAxis->setTextAttributes(taLabels);
 
-
 // Set the following to 0, to see the default Abscissa labels
 // (== X headers, as read from the data file)
 #if 1

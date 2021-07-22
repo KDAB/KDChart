@@ -41,7 +41,6 @@ AbstractRowController::~AbstractRowController()
 {
 }
 
-
 /*!\fn virtual int AbstractRowController::headerHeight() const = 0
  * \returns The height of the header part of the view.
  *
@@ -62,7 +61,6 @@ AbstractRowController::~AbstractRowController()
  * screen are created. It is not harmful to always return true here,
  * but the View will not perform optimally.
  */
-
 
 /*!\fn virtual Span AbstractRowController::rowGeometry( const QModelIndex& idx ) const
  * \returns A Span consisting of the row offset and height for the row

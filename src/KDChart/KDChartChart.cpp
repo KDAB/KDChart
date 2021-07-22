@@ -118,10 +118,9 @@ static void dumpLayoutTree(QLayout *l)
 #endif
 
 static const Qt::Alignment s_gridAlignments[3][3] = { // [ row ][ column ]
-    { Qt::AlignTop | Qt::AlignLeft, Qt::AlignTop | Qt::AlignHCenter, Qt::AlignTop | Qt::AlignRight },
-    { Qt::AlignVCenter | Qt::AlignLeft, Qt::AlignVCenter | Qt::AlignHCenter, Qt::AlignVCenter | Qt::AlignRight },
-    { Qt::AlignBottom | Qt::AlignLeft, Qt::AlignBottom | Qt::AlignHCenter, Qt::AlignBottom | Qt::AlignRight }
-};
+    {Qt::AlignTop | Qt::AlignLeft, Qt::AlignTop | Qt::AlignHCenter, Qt::AlignTop | Qt::AlignRight},
+    {Qt::AlignVCenter | Qt::AlignLeft, Qt::AlignVCenter | Qt::AlignHCenter, Qt::AlignVCenter | Qt::AlignRight},
+    {Qt::AlignBottom | Qt::AlignLeft, Qt::AlignBottom | Qt::AlignHCenter, Qt::AlignBottom | Qt::AlignRight}};
 
 static void getRowAndColumnForPosition(KDChartEnums::PositionValue pos, int *row, int *column)
 {
@@ -324,8 +323,7 @@ Chart::Private::~Private()
 {
 }
 
-enum VisitorState
-{
+enum VisitorState {
     Visited,
     Unknown
 };
@@ -1410,7 +1408,6 @@ void Chart::reLayoutFloatingLegends()
         }
     }
 }
-
 
 void Chart::paintEvent(QPaintEvent *)
 {

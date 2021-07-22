@@ -116,8 +116,7 @@ private slots:
             Match(NullPoint, model.index(4, ColumnCount)),
             Match(NullPoint, model.index(RowCount, 0)),
             // sentinel
-            Match(CachePosition(0, 0), QModelIndex())
-        };
+            Match(CachePosition(0, 0), QModelIndex())};
 
         for (int i = 0; matches[i].index.isValid(); ++i) {
             QCOMPARE(matches[i].cachePosition, compressor.mapToCache(matches[i].index));
@@ -154,7 +153,6 @@ private slots:
                      "index list for a point outside the data space should be empty");
         }
     }
-
 
     void invalidateTest()
     {
@@ -209,7 +207,6 @@ private:
 
 const int CartesianDiagramDataCompressorTests::ColumnCount = 10;
 const int CartesianDiagramDataCompressorTests::RowCount = 1000;
-
 
 QTEST_MAIN(CartesianDiagramDataCompressorTests)
 

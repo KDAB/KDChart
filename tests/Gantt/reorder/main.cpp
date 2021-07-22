@@ -81,7 +81,7 @@ public:
                     : QVariant();
             case 1:
                 return (role == Qt::DisplayRole)
-                    ? QVariant::fromValue(( int )KDGantt::TypeTask)
+                    ? QVariant::fromValue((int)KDGantt::TypeTask)
                     : QVariant();
             case 2:
                 return (role == KDGantt::StartTimeRole || role == Qt::DisplayRole)
@@ -170,7 +170,6 @@ private:
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
-
 
     KDGantt::View *view = new KDGantt::View;
 

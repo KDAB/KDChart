@@ -31,7 +31,6 @@
 
 namespace KDChart {
 
-
 /**
   * @class AbstractArea KDChartAbstractArea.h
   * @brief An area in the chart with a background, a frame, etc.

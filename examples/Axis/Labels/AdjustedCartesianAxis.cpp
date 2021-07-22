@@ -22,7 +22,6 @@
 
 #include "AdjustedCartesianAxis.h"
 
-
 AdjustedCartesianAxis::AdjustedCartesianAxis(KDChart::AbstractCartesianDiagram *diagram)
     : CartesianAxis(diagram)
     , m_lowerBound(0.0)

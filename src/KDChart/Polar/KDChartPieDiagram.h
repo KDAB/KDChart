@@ -53,8 +53,7 @@ public:
     /**
      * Describes which decorations are painted around data labels.
      */
-    enum LabelDecoration
-    {
+    enum LabelDecoration {
         NoDecoration = 0, ///< No decoration
         FrameDecoration = 1, ///< A rectangular frame is painted around the label text
         LineFromSliceDecoration = 2 ///< A line is drawn from the pie slice to its label

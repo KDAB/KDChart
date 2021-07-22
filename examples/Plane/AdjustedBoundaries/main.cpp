@@ -35,7 +35,6 @@
 
 #include <QApplication>
 
-
 using namespace KDChart;
 
 class ChartWidget : public QWidget
@@ -180,8 +179,6 @@ public:
         ga.setGridSubStepWidth(5.0);
         ga.setGridVisible(true);
         ga.setSubGridVisible(true);
-
-
 
         // Assign your grid to the plane
         plane1->setGridAttributes(Qt::Vertical, ga);

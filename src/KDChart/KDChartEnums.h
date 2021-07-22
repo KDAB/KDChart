@@ -92,8 +92,7 @@ public:
       \li for having it divided by two GranularitySequence_10_50 is your choice.
 
       */
-    enum GranularitySequence
-    {
+    enum GranularitySequence {
         GranularitySequence_10_20,
         GranularitySequence_10_50,
         GranularitySequence_25_50,
@@ -126,7 +125,6 @@ public:
         return QString::fromLatin1("GranularitySequence_10_20");
     }
 
-
     /**
       Converts the specified string to a granularity sequence enum value.
 
@@ -149,7 +147,6 @@ public:
         return GranularitySequence_10_20;
     }
 
-
     /**
       Text layout policy: what to do if text that is to be drawn would
       cover neighboring text or neighboring areas.
@@ -162,8 +159,7 @@ public:
 
       \sa KDChartParams::setPrintDataValues
       */
-    enum TextLayoutPolicy
-    {
+    enum TextLayoutPolicy {
         LayoutJustOverwrite,
         LayoutPolicyRotate,
         LayoutPolicyShiftVertically,
@@ -180,7 +176,6 @@ public:
       */
     static QString layoutPolicyToString(TextLayoutPolicy type);
 
-
     /**
       Converts the specified string to a text layout policy enum value.
 
@@ -189,15 +184,13 @@ public:
       */
     static TextLayoutPolicy stringToLayoutPolicy(const QString &string);
 
-
     /**
         Numerical values of the static KDChart::Position instances,
         for using a Position::value() with a switch () statement.
 
         \sa Position
     */
-    enum PositionValue
-    {
+    enum PositionValue {
         PositionUnknown = 0,
         PositionCenter = 1,
         PositionNorthWest = 2,
@@ -210,7 +203,6 @@ public:
         PositionWest = 9,
         PositionFloating = 10
     };
-
 
     /**
       Measure calculation mode: the way how the absolute value of a KDChart::Measure is determined during KD Chart's internal geometry calculation time.
@@ -227,8 +219,7 @@ public:
 
       \sa KDChart::Measure::setCalculationMode
       */
-    enum MeasureCalculationMode
-    {
+    enum MeasureCalculationMode {
         MeasureCalculationModeAbsolute,
         MeasureCalculationModeRelative,
         MeasureCalculationModeAuto,
@@ -260,7 +251,6 @@ public:
         Q_ASSERT(!"unhandled MeasureCalculationMode");
         return QString::fromLatin1("MeasureCalculationModeAuto");
     }
-
 
     /**
       Converts the specified string to a measure calculation mode enum value.
@@ -300,8 +290,7 @@ public:
 
       \sa KDChart::Measure::setOrientationMode
       */
-    enum MeasureOrientation
-    {
+    enum MeasureOrientation {
         MeasureOrientationAuto,
         MeasureOrientationHorizontal,
         MeasureOrientationVertical,
@@ -334,7 +323,6 @@ public:
         return QString::fromLatin1("MeasureOrientationAuto");
     }
 
-
     /**
       Converts the specified string to a measure orientation enum value.
 
@@ -357,6 +345,5 @@ public:
         return MeasureOrientationAuto;
     }
 };
-
 
 #endif

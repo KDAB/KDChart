@@ -53,9 +53,7 @@ LineDiagram::Private::~Private()
 {
 }
 
-
 #define d d_func()
-
 
 LineDiagram::LineDiagram(QWidget *parent, CartesianCoordinatePlane *plane)
     : AbstractCartesianDiagram(new Private(), parent, plane)
@@ -89,7 +87,6 @@ LineDiagram *LineDiagram::clone() const
     newDiagram->setType(type());
     return newDiagram;
 }
-
 
 bool LineDiagram::compare(const LineDiagram *other) const
 {
@@ -369,7 +366,6 @@ ValueTrackerAttributes LineDiagram::valueTrackerAttributes(
         .value<ValueTrackerAttributes>();
 }
 
-
 /**
  * Returns whether the lines are drawn smoothed
  */
@@ -378,14 +374,11 @@ qreal LineDiagram::lineTension() const
     return d->tension;
 }
 
-
 void LineDiagram::setLineTension(qreal tension)
 {
     d->tension = tension;
     emit propertiesChanged();
 }
-
-
 
 void LineDiagram::resizeEvent(QResizeEvent *)
 {
@@ -406,7 +399,6 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
     // calculate boundaries for different line types Normal - Stacked - Percent - Default Normal
     return d->implementor->calculateDataBoundaries();
 }
-
 
 void LineDiagram::paintEvent(QPaintEvent *)
 {
@@ -431,7 +423,6 @@ void LineDiagram::paint(PaintContext *ctx)
 
     AbstractCoordinatePlane *const plane = ctx->coordinatePlane();
     ctx->setCoordinatePlane(plane->sharedAxisMasterPlane(ctx->painter()));
-
 
     // paint different line types Normal - Stacked - Percent - Default Normal
     d->implementor->paint(ctx);

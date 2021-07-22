@@ -36,7 +36,6 @@
 // FIXME till
 #define KDCHART_DATA_VALUE_AUTO_DIGITS 4
 
-
 #define d d_func()
 
 using namespace KDChart;
@@ -95,7 +94,6 @@ DataValueAttributes::Private::Private()
     mirrorNegativeValueTextRotation = false;
 }
 
-
 DataValueAttributes::DataValueAttributes()
     : _d(new Private())
 {
@@ -122,7 +120,6 @@ DataValueAttributes::~DataValueAttributes()
     _d = nullptr;
 }
 
-
 bool DataValueAttributes::operator==(const DataValueAttributes &r) const
 {
     return isVisible() == r.isVisible() && textAttributes() == r.textAttributes() && frameAttributes() == r.frameAttributes() && backgroundAttributes() == r.backgroundAttributes() && markerAttributes() == r.markerAttributes() && decimalDigits() == r.decimalDigits() && prefix() == r.prefix() && suffix() == r.suffix() && dataLabel() == r.dataLabel() && powerOfTenDivisor() == r.powerOfTenDivisor() && showInfinite() == r.showInfinite() && negativePosition() == r.negativePosition() && positivePosition() == r.positivePosition() && showRepetitiveDataLabels() == r.showRepetitiveDataLabels() && showOverlappingDataLabels() == r.showOverlappingDataLabels() && usePercentage() == r.usePercentage() && mirrorNegativeValueTextRotation() == r.mirrorNegativeValueTextRotation();
@@ -141,7 +138,6 @@ const QVariant &DataValueAttributes::defaultAttributesAsVariant()
     static const QVariant theDefaultDataValueAttributesVariant = QVariant::fromValue(defaultAttributes());
     return theDefaultDataValueAttributesVariant;
 }
-
 
 void DataValueAttributes::setVisible(bool visible)
 {

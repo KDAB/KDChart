@@ -47,7 +47,6 @@
 
 #include <KDABLibFakes>
 
-
 namespace KDChart {
 
 class AbstractAreaWidget;
@@ -119,7 +118,6 @@ struct LayoutGraphNode
     }
 };
 
-
 /**
  * \internal
  */
@@ -129,8 +127,7 @@ class Chart::Private : public QObject
 public:
     Chart *chart;
 
-    enum AxisType
-    {
+    enum AxisType {
         Abscissa,
         Ordinate
     };

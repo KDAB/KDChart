@@ -89,7 +89,7 @@ void TernaryLineDiagram::paint(PaintContext *paintContext)
     PainterSaver s(p);
 
     TernaryCoordinatePlane *plane =
-        ( TernaryCoordinatePlane * )paintContext->coordinatePlane();
+        (TernaryCoordinatePlane *)paintContext->coordinatePlane();
     Q_ASSERT(plane);
 
     qreal x, y, z;
@@ -112,11 +112,11 @@ void TernaryLineDiagram::paint(PaintContext *paintContext)
 
                 // retrieve data
                 x = qMax(model()->data(model()->index(row, column, rootIndex())).toReal(), // checked
-                         ( qreal )0.0);
+                         (qreal)0.0);
                 y = qMax(model()->data(model()->index(row, column + 1, rootIndex())).toReal(), // checked
-                         ( qreal )0.0);
+                         (qreal)0.0);
                 z = qMax(model()->data(model()->index(row, column + 2, rootIndex())).toReal(), // checked
-                         ( qreal )0.0);
+                         (qreal)0.0);
 
                 qreal total = x + y + z;
                 if (fabs(total) > 3 * std::numeric_limits<qreal>::epsilon()) {

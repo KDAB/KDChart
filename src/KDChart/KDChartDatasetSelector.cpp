@@ -86,7 +86,6 @@ void DatasetSelectorWidget::on_groupBox_toggled(bool state)
     }
 }
 
-
 void DatasetSelectorWidget::setSourceRowCount(const int &rowCount)
 {
     if (rowCount != mSourceRowCount) {

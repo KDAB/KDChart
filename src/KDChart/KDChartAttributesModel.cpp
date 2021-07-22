@@ -46,9 +46,7 @@
 
 #include <KDABLibFakes>
 
-
 using namespace KDChart;
-
 
 class AttributesModel::Private
 {
@@ -230,7 +228,6 @@ bool AttributesModel::compareAttributes(
     return true;
 }
 
-
 QVariant AttributesModel::headerData(int section, Qt::Orientation orientation,
                                      int role /* = Qt::DisplayRole */) const
 {
@@ -254,7 +251,6 @@ QVariant AttributesModel::headerData(int section, Qt::Orientation orientation,
 
     return defaultHeaderData(section, orientation, role);
 }
-
 
 QVariant AttributesModel::defaultHeaderData(int section, Qt::Orientation orientation, int role) const
 {
@@ -281,7 +277,6 @@ QVariant AttributesModel::defaultHeaderData(int section, Qt::Orientation orienta
     return QVariant();
 }
 
-
 QVariant AttributesModel::data(int role) const
 {
     if (isKnownAttributesRole(role)) {
@@ -295,7 +290,6 @@ QVariant AttributesModel::data(int role) const
     }
     return QVariant();
 }
-
 
 QVariant AttributesModel::data(int column, int role) const
 {
@@ -311,7 +305,6 @@ QVariant AttributesModel::data(int column, int role) const
     }
     return QVariant();
 }
-
 
 QVariant AttributesModel::data(const QModelIndex &index, int role) const
 {
@@ -349,7 +342,6 @@ QVariant AttributesModel::data(const QModelIndex &index, int role) const
 
     return QVariant();
 }
-
 
 bool AttributesModel::isKnownAttributesRole(int role) const
 {

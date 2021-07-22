@@ -44,5 +44,4 @@ private:
     KDChart::Chart *mChart;
 };
 
-
 #endif /* FRAMEWIDGET_H */

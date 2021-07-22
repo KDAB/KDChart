@@ -30,7 +30,6 @@
 
 #include <QtGui/QPainterPath>
 
-
 using namespace KDChart;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -94,7 +93,6 @@ void MainWindow::on_paintValuesCB_toggled(bool checked)
     m_chart->update();
 }
 
-
 void MainWindow::on_paintLinesCB_toggled(bool checked)
 {
     const int colCount = m_lines->model()->columnCount(m_lines->rootIndex());
@@ -109,7 +107,6 @@ void MainWindow::on_paintLinesCB_toggled(bool checked)
     }
     m_chart->update();
 }
-
 
 void MainWindow::on_paintMarkersCB_toggled(bool checked)
 {
@@ -166,13 +163,11 @@ void MainWindow::on_paintMarkersCB_toggled(bool checked)
     m_chart->update();
 }
 
-
 void MainWindow::on_markersStyleCB_currentIndexChanged(const QString &text)
 {
     Q_UNUSED(text);
     on_paintMarkersCB_toggled(paintMarkersCB->isChecked());
 }
-
 
 void MainWindow::on_markersWidthSB_valueChanged(int i)
 {

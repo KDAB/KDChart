@@ -24,7 +24,6 @@
 #include <KDChartWidget>
 #include <KDChartPolarDiagram>
 
-
 using namespace KDChart;
 
 int main(int argc, char **argv)

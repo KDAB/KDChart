@@ -328,7 +328,6 @@ void StackedLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
             };
             valueAtLambda valueAt(rowCount, this, policy);
 
-
             struct safeAddLambda
             {
                 qreal operator()(qreal accumulator, qreal newValue) const

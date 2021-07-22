@@ -60,7 +60,6 @@ MarkerAttributes::Private::Private()
 {
 }
 
-
 MarkerAttributes::MarkerAttributes()
     : _d(new Private)
 {
@@ -101,8 +100,6 @@ bool MarkerAttributes::operator==(const MarkerAttributes &r) const
     */
     return (isVisible() == r.isVisible() && markerStylesMap() == r.markerStylesMap() && markerStyle() == r.markerStyle() && markerSize() == r.markerSize() && markerColor() == r.markerColor() && customMarkerPath() == r.customMarkerPath() && pen() == r.pen());
 }
-
-
 
 void MarkerAttributes::setVisible(bool visible)
 {

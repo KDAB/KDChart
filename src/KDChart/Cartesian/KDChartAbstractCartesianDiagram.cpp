@@ -25,7 +25,6 @@
 
 #include <KDABLibFakes>
 
-
 using namespace KDChart;
 
 AbstractCartesianDiagram::Private::Private()
@@ -49,7 +48,6 @@ bool AbstractCartesianDiagram::compare(const AbstractCartesianDiagram *other) co
         // compare own properties
         (referenceDiagram() == other->referenceDiagram()) && ((!referenceDiagram()) || (referenceDiagramOffset() == other->referenceDiagramOffset()));
 }
-
 
 #define d d_func()
 

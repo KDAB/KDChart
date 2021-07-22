@@ -38,7 +38,6 @@ class QPainter;
 class QSizeF;
 QT_END_NAMESPACE
 
-
 namespace KDChart {
 
 class Area;

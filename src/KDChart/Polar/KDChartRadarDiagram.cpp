@@ -58,7 +58,6 @@ void RadarDiagram::init()
 {
 }
 
-
 /**
   * Creates an exact copy of this diagram.
   */
@@ -90,8 +89,6 @@ const QPair<QPointF, QPointF> RadarDiagram::calculateDataBoundaries() const
     QPointF topRight(QPointF(xMax, yMax));
     return QPair<QPointF, QPointF>(bottomLeft, topRight);
 }
-
-
 
 void RadarDiagram::paintEvent(QPaintEvent *)
 {

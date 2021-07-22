@@ -27,7 +27,6 @@
 
 #define d d_func()
 
-
 using namespace KDChart;
 
 class BackgroundAttributes::Private
@@ -49,7 +48,6 @@ BackgroundAttributes::Private::Private()
     , pixmapMode(BackgroundAttributes::BackgroundPixmapModeNone)
 {
 }
-
 
 BackgroundAttributes::BackgroundAttributes()
     : _d(new Private())
@@ -76,7 +74,6 @@ bool BackgroundAttributes::operator==(const BackgroundAttributes &r) const
     return isEqualTo(r);
 }
 
-
 bool BackgroundAttributes::isEqualTo(
     const BackgroundAttributes &other, bool ignorePixmap) const
 {
@@ -91,20 +88,16 @@ bool BackgroundAttributes::isEqualTo(
         isVisible() == other.isVisible() && brush() == other.brush() && pixmapMode() == other.pixmapMode() && (ignorePixmap || pixmap().cacheKey() == other.pixmap().cacheKey()));
 }
 
-
 BackgroundAttributes::~BackgroundAttributes()
 {
     delete _d;
     _d = nullptr;
 }
 
-
-
 void BackgroundAttributes::setVisible(bool visible)
 {
     d->visible = visible;
 }
-
 
 bool BackgroundAttributes::isVisible() const
 {

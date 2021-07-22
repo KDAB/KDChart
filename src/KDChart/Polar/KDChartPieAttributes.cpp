@@ -29,9 +29,7 @@
 
 #define d d_func()
 
-
 using namespace KDChart;
-
 
 PieAttributes::Private::Private()
     : explodeFactor(0.0)
@@ -39,7 +37,6 @@ PieAttributes::Private::Private()
     , radialGapFactor(0.0)
 {
 }
-
 
 PieAttributes::PieAttributes()
     : _d(new Private())
@@ -67,12 +64,10 @@ PieAttributes::~PieAttributes()
     _d = nullptr;
 }
 
-
 bool PieAttributes::operator==(const PieAttributes &r) const
 {
     return explodeFactor() == r.explodeFactor() && gapFactor(true) == r.gapFactor(true) && gapFactor(false) == r.gapFactor(false);
 }
-
 
 void PieAttributes::init()
 {

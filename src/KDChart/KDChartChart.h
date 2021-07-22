@@ -77,7 +77,6 @@ typedef QList<AbstractCoordinatePlane *> CoordinatePlaneList;
 typedef QList<HeaderFooter *> HeaderFooterList;
 typedef QList<Legend *> LegendList;
 
-
 /**
      * @class Chart KDChartChart.h KDChartChart
      * @brief A chart with one or more diagrams.
@@ -571,6 +570,5 @@ private:
  * Please consult the respective Qt documentation for details:
  * <A HREF="https://doc.qt.io/qt-5/qgraphicspolygonitem.html">https://doc.qt.io/qt-5/qgraphicspolygonitem.html</A>
  */
-
 
 #endif

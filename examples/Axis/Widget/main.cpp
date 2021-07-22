@@ -46,7 +46,6 @@ int main(int argc, char **argv)
     // items text
     widget.setDataset(0, vec1, "vec1");
 
-
     // add and position
     widget.addLegend(Position::North);
 

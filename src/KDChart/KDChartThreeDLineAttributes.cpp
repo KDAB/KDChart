@@ -37,7 +37,6 @@ ThreeDLineAttributes::Private::Private()
 {
 }
 
-
 ThreeDLineAttributes::ThreeDLineAttributes()
     : AbstractThreeDAttributes(new Private())
 {
@@ -66,13 +65,10 @@ void ThreeDLineAttributes::init()
 {
 }
 
-
 bool ThreeDLineAttributes::operator==(const ThreeDLineAttributes &r) const
 {
     return (lineXRotation() == r.lineXRotation() && lineYRotation() == r.lineYRotation() && AbstractThreeDAttributes::operator==(r));
 }
-
-
 
 void ThreeDLineAttributes::setLineXRotation(const uint degrees)
 {
@@ -93,7 +89,6 @@ uint ThreeDLineAttributes::lineYRotation() const
 {
     return d->lineYRotation;
 }
-
 
 #if !defined(QT_NO_DEBUG_STREAM)
 

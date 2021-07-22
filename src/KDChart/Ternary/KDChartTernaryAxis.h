@@ -23,7 +23,6 @@
 #ifndef KDCHARTTERNARYAXIS_H
 #define KDCHARTTERNARYAXIS_H
 
-
 #include <KDChartAbstractAxis.h>
 #include <KDChartPosition.h>
 #include <KDChartTextAttributes.h>

@@ -82,7 +82,6 @@ void MainWindow::init()
     on_displayGrid2CB_toggled(false);
 }
 
-
 void MainWindow::on_displayGrid1CB_toggled(bool checked)
 {
     CartesianCoordinatePlane *plane = qobject_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane());

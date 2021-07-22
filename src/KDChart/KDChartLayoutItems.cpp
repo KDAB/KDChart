@@ -45,7 +45,6 @@
 
 #include <math.h>
 
-
 //#define DEBUG_ITEMS_PAINT
 
 /**
@@ -293,7 +292,6 @@ KDChart::TextAttributes KDChart::TextLayoutItem::textAttributes() const
     return mAttributes;
 }
 
-
 Qt::Orientations KDChart::TextLayoutItem::expandingDirections() const
 {
     return {}; // Grow neither vertically nor horizontally
@@ -427,9 +425,7 @@ QSize KDChart::TextLayoutItem::sizeHintUnrotated() const
     return unrotatedSizeHint(cachedFont);
 }
 
-
 // PENDING(kalle) Support auto shrink
-
 
 QSize KDChart::TextLayoutItem::unrotatedTextSize(QFont fnt) const
 {
@@ -563,7 +559,6 @@ QSize KDChart::HorizontalLineLayoutItem::sizeHint() const
     return QSize(-1, 3); // see qframe.cpp
 }
 
-
 void KDChart::HorizontalLineLayoutItem::paint(QPainter *painter)
 {
     if (!mRect.isValid())
@@ -572,7 +567,6 @@ void KDChart::HorizontalLineLayoutItem::paint(QPainter *painter)
     painter->drawLine(QPointF(mRect.left(), mRect.center().y()),
                       QPointF(mRect.right(), mRect.center().y()));
 }
-
 
 KDChart::VerticalLineLayoutItem::VerticalLineLayoutItem()
     : AbstractLayoutItem(Qt::AlignCenter)
@@ -614,7 +608,6 @@ QSize KDChart::VerticalLineLayoutItem::sizeHint() const
     return QSize(3, -1); // see qframe.cpp
 }
 
-
 void KDChart::VerticalLineLayoutItem::paint(QPainter *painter)
 {
     if (!mRect.isValid())
@@ -623,8 +616,6 @@ void KDChart::VerticalLineLayoutItem::paint(QPainter *painter)
     painter->drawLine(QPointF(mRect.center().x(), mRect.top()),
                       QPointF(mRect.center().x(), mRect.bottom()));
 }
-
-
 
 KDChart::MarkerLayoutItem::MarkerLayoutItem(KDChart::AbstractDiagram *diagram,
                                             const MarkerAttributes &marker,
@@ -716,7 +707,6 @@ void KDChart::MarkerLayoutItem::paintIntoRect(
 #endif
 }
 
-
 KDChart::LineLayoutItem::LineLayoutItem(KDChart::AbstractDiagram *diagram,
                                         int length,
                                         const QPen &pen,
@@ -768,7 +758,6 @@ QSize KDChart::LineLayoutItem::sizeHint() const
     return QSize(mLength, mPen.width() + 2);
 }
 
-
 void KDChart::LineLayoutItem::setLegendLineSymbolAlignment(Qt::Alignment legendLineSymbolAlignment)
 {
     if (mLegendLineSymbolAlignment == legendLineSymbolAlignment)
@@ -810,7 +799,6 @@ void KDChart::LineLayoutItem::paintIntoRect(
                       QPointF(rect.right(), y));
     painter->setPen(oldPen);
 }
-
 
 KDChart::LineWithMarkerLayoutItem::LineWithMarkerLayoutItem(
     KDChart::AbstractDiagram *diagram,
@@ -922,7 +910,6 @@ void KDChart::AutoSpacerLayoutItem::setGeometry(const QRect &r)
     mRect = r;
 }
 
-
 static void updateCommonBrush(QBrush &commonBrush, bool &bStart, const KDChart::AbstractArea &area)
 {
     const KDChart::BackgroundAttributes ba(area.backgroundAttributes());
@@ -977,7 +964,6 @@ QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
     //qDebug() << mCachedSize;
     return mCachedSize;
 }
-
 
 void KDChart::AutoSpacerLayoutItem::paint(QPainter *painter)
 {

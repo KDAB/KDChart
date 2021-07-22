@@ -30,7 +30,6 @@
 
 #include <KDABLibFakes>
 
-
 using namespace KDChart;
 
 #define d (d_func())
@@ -41,12 +40,10 @@ AbstractArea::Private::Private()
     // this block left empty intentionally
 }
 
-
 AbstractArea::Private::~Private()
 {
     // this block left empty intentionally
 }
-
 
 AbstractArea::AbstractArea()
     : QObject()
@@ -61,7 +58,6 @@ AbstractArea::~AbstractArea()
     // this block left empty intentionally
 }
 
-
 void AbstractArea::init()
 {
     d->amountOfLeftOverlap = 0;
@@ -69,7 +65,6 @@ void AbstractArea::init()
     d->amountOfTopOverlap = 0;
     d->amountOfBottomOverlap = 0;
 }
-
 
 int AbstractArea::leftOverlap(bool doNotRecalculate) const
 {
@@ -103,7 +98,6 @@ int AbstractArea::bottomOverlap(bool doNotRecalculate) const
         sizeHint();
     return d->amountOfBottomOverlap;
 }
-
 
 void AbstractArea::paintIntoRect(QPainter &painter, const QRect &rect)
 {

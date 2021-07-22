@@ -61,7 +61,7 @@ private slots:
         QCOMPARE(m_plane->referenceCoordinatePlane(), m_chart->coordinatePlane());
         m_chart->takeCoordinatePlane(0);
         delete plane;
-        QCOMPARE(m_plane->referenceCoordinatePlane(), ( AbstractCoordinatePlane * )0);
+        QCOMPARE(m_plane->referenceCoordinatePlane(), (AbstractCoordinatePlane *)0);
     }
 
     void testStartPositionSettings()

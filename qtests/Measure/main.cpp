@@ -143,7 +143,6 @@ private slots:
             qMax(m_chart->size().width(), m_chart->size().height()) / 10.0);
     }
 
-
     void cleanupTestCase()
     {
     }

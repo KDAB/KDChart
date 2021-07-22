@@ -33,8 +33,7 @@ class GraphicsScene;
 class KDGANTT_EXPORT ConstraintGraphicsItem : public QGraphicsItem
 {
 public:
-    enum
-    {
+    enum {
         Type = UserType + 43
     };
 

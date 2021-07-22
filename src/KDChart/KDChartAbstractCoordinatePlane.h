@@ -50,8 +50,7 @@ class KDCHART_EXPORT AbstractCoordinatePlane : public AbstractArea
     friend class AbstractGrid;
 
 public:
-    enum AxesCalcMode
-    {
+    enum AxesCalcMode {
         Linear,
         Logarithmic
     };
@@ -283,7 +282,6 @@ public:
 
     virtual AbstractCoordinatePlane *sharedAxisMasterPlane(QPainter *p = nullptr); // KDChart 3: const method?
 
-
     /** pure virtual in QLayoutItem */
     bool isEmpty() const override;
     /** pure virtual in QLayoutItem */
@@ -451,7 +449,6 @@ public:
     {
         return !operator==(other);
     }
-
 
     qreal start;
     qreal end;
