@@ -84,9 +84,6 @@ option(${PROJECT_NAME}_STATIC "Build statically" OFF)
 option(${PROJECT_NAME}_TESTS "Build the tests" OFF)
 option(${PROJECT_NAME}_EXAMPLES "Build the examples" ON)
 option(${PROJECT_NAME}_PYTHON_BINDINGS "Build python bindings" OFF)
-if(${PROJECT_NAME}_PYTHON_BINDINGS AND (CMAKE_BUILD_TYPE MATCHES "^[Dd]eb" OR ${PROJECT_NAME}_STATIC))
-  message(FATAL_ERROR "** Python Bindings are disabled in debug or static builds.")
-endif()
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/ECM/modules")
@@ -152,6 +149,18 @@ else()
   set(${PROJECT_NAME}_LIBRARY_MODE "SHARED")
 endif()
 
+# Set a default build type if none was specified
+set(default_build_type "Release")
+if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
+  set(default_build_type "Debug")
+endif()
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  message(STATUS "Setting build type to ${default_build_type} as none was specified.")
+  set(CMAKE_BUILD_TYPE "${default_build_type}" CACHE STRING "Choose the type of build." FORCE)
+  # Set the possible values of build type for cmake-gui
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+endif()
+
 # setup default install locations
 include(InstallLocation)
 
@@ -160,10 +169,6 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
 
   if(CMAKE_BUILD_TYPE MATCHES "Release")
     add_definitions(-DNDEBUG)
-  endif()
-
-  if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "" FORCE)
   endif()
 
   if(USE_DEFAULT_INSTALL_LOCATION)
@@ -209,6 +214,9 @@ if(${PROJECT_NAME}_PYTHON_BINDINGS AND Qt5Core_VERSION VERSION_LESS 5.12)
 endif()
 
 if(Qt5Core_FOUND AND ${PROJECT_NAME}_PYTHON_BINDINGS)
+  if(CMAKE_BUILD_TYPE MATCHES "^[Dd]eb" OR ${PROJECT_NAME}_STATIC)
+    message(FATAL_ERROR "** Python Bindings are disabled in debug or static builds.")
+  endif()
   add_subdirectory(python)
 endif()
 

@@ -11,6 +11,7 @@ Version 3.0.0 (unreleased):
  * buildsystem - add an 'uninstall' target
  * buildsystem: generate and install kdchart-version.h
  * The Python bindings installation path for "site-packages"
+ * Build in Release mode by default (in non-developer situations)
 
 Version 2.8.0:
 --------------
