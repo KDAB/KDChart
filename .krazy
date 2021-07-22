@@ -4,9 +4,10 @@ CHECKSETS qt5,c++,foss
 EXTRA kdabcopyright
 
 #exclude checks now being done by clazy or clang-tools
-EXCLUDE style,includes,strings,explicit,normalize,passbyvalue,operators,nullstrcompare,nullstrassign,doublequote_chars,qobject,sigsandslots,staticobjects,cpp
+EXCLUDE includes,strings,explicit,normalize,passbyvalue,operators,nullstrcompare,nullstrassign,doublequote_chars,qobject,sigsandslots,staticobjects,cpp
 #exclude more checks
 EXCLUDE qminmax,captruefalse,dpointer,inline,constref
+EXCLUDE style
 
 #nor examples
 SKIP /examples/
