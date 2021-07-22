@@ -482,6 +482,31 @@ if(WIN32)
   endif()
 endif()
 
+# Generate library version files
+include(ECMSetupVersion)
+ecm_setup_version(
+  ${${PROJECT_NAME}_VERSION}
+  VARIABLE_PREFIX KDCHART
+  VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/kdchart_version.h"
+  PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KDChart/KDChartConfigVersion.cmake"
+  SOVERSION ${${PROJECT_NAME}_SOVERSION}
+  COMPATIBILITY AnyNewerVersion
+)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/kdchart_version.h" DESTINATION ${INSTALL_INCLUDE_DIR}/KDChart)
+
+configure_package_config_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/KDChartConfig.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/KDChartConfig.cmake"
+  INSTALL_DESTINATION "${INSTALL_LIBRARY_DIR}/cmake/KDChart"
+  PATH_VARS INSTALL_INCLUDE_DIR
+)
+
+install(FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/KDChartConfig.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/KDChart/KDChartConfigVersion.cmake"
+  DESTINATION "${INSTALL_LIBRARY_DIR}/cmake/KDChart"
+)
+
 install(TARGETS kdchart EXPORT KDChartTargets
   RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR}
   LIBRARY DESTINATION ${INSTALL_LIBRARY_DIR}

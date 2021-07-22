@@ -182,25 +182,6 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
 
   install(FILES LICENSE.GPL.txt LICENSE.txt LICENSE.US.txt README.txt README-commercial.txt kdchart.pri DESTINATION ${INSTALL_DOC_DIR})
 
-  include(CMakePackageConfigHelpers)
-
-  write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/KDChart/KDChartConfigVersion.cmake"
-    VERSION ${${PROJECT_NAME}_VERSION}
-    COMPATIBILITY AnyNewerVersion
-  )
-
-  configure_package_config_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/KDChartConfig.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/install/KDChartConfig.cmake"
-    INSTALL_DESTINATION "${INSTALL_LIBRARY_DIR}/cmake/KDChart"
-    PATH_VARS INSTALL_INCLUDE_DIR
-  )
-
-  install(FILES
-      "${CMAKE_CURRENT_BINARY_DIR}/install/KDChartConfig.cmake"
-      "${CMAKE_CURRENT_BINARY_DIR}/KDChart/KDChartConfigVersion.cmake"
-    DESTINATION "${INSTALL_LIBRARY_DIR}/cmake/KDChart"
-  )
   install(EXPORT KDChartTargets NAMESPACE KDChart::
     DESTINATION "${INSTALL_LIBRARY_DIR}/cmake/KDChart"
   )
