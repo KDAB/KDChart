@@ -4,13 +4,16 @@ Release Highlights
 Version 3.0.0 (unreleased):
 ---------------------------
  * Supports Qt6 in addition to Qt5
- * The qmake buildsystem (via autogen.py) is removed.
+ * Minimum Qt version is 5.15.0
+   (contact info@kdab.com to inquire about support for older Qt5 versions)
+ * The qmake buildsystem (via autogen.py) is removed
  * Requires C++11
- * The Python bindings installation path for "site-packages"
  * buildsystem - add an 'uninstall' target
+ * buildsystem: generate and install kdchart-version.h
+ * The Python bindings installation path for "site-packages"
 
-Version 2.8.0 (unreleased):
----------------------------
+Version 2.8.0:
+--------------
  * Support for Qt4 is removed
  * The qmake buildsystem is deprecated and will be removed in version 3.0
  * CMake buildsystem - increase min version to 3.1.0
