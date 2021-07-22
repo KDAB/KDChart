@@ -434,6 +434,7 @@ add_library(kdchart ${KDChart_LIBRARY_MODE} ${SOURCES} ${FORMS} ${RESOURCES})
 set_target_properties(kdchart PROPERTIES
   SOVERSION ${${PROJECT_NAME}_SOVERSION}
   VERSION ${${PROJECT_NAME}_VERSION}
+  OUTPUT_NAME "kdchart${${PROJECT_NAME}_LIBRARY_QTID}"
 )
 if(${PROJECT_NAME}_STATIC)
   target_compile_definitions(kdchart PUBLIC KDCHART_STATICLIB)
