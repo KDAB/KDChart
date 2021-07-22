@@ -30,21 +30,22 @@
 QT_BEGIN_NAMESPACE
 class QAbstractItemModel;
 namespace Ui {
-    class EntryDialog;
+class EntryDialog;
 }
 QT_END_NAMESPACE
 
 namespace KDGantt {
-    class ConstraintModel;
+class ConstraintModel;
 }
 
-class EntryDialog : public QDialog {
+class EntryDialog : public QDialog
+{
     Q_OBJECT
 
 public:
-    EntryDialog( const QAbstractItemModel* model, QWidget* parent = 0, Qt::WindowFlags f = {} );
-    void initFrom( const QModelIndex& index, const KDGantt::ConstraintModel* constraintModel );
-    
+    EntryDialog(const QAbstractItemModel *model, QWidget *parent = 0, Qt::WindowFlags f = {});
+    void initFrom(const QModelIndex &index, const KDGantt::ConstraintModel *constraintModel);
+
     QString name() const;
     int type() const;
     QDateTime startDate() const;
@@ -55,16 +56,16 @@ public:
     QString legend() const;
 
 private slots:
-    void updateEndDate( const QDateTime& startDate );
-    void disableEditing( bool disable );
-    
+    void updateEndDate(const QDateTime &startDate);
+    void disableEditing(bool disable);
+
 private:
     void init();
-    void addDependItem( const QAbstractItemModel* model, const QModelIndex& index, int indent = 0 );
-    
+    void addDependItem(const QAbstractItemModel *model, const QModelIndex &index, int indent = 0);
+
     QList<QPersistentModelIndex> indexList;
-    const QAbstractItemModel* model;
-    Ui::EntryDialog* ui;
+    const QAbstractItemModel *model;
+    Ui::EntryDialog *ui;
 };
 
 #endif /* ENTRYDIALOG_H */

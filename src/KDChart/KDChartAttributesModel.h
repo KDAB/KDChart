@@ -46,39 +46,40 @@ namespace KDChart {
 class KDCHART_EXPORT AttributesModel : public AbstractProxyModel
 {
     Q_OBJECT
-    KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( AttributesModel )
+    KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC(AttributesModel)
 public:
-    enum PaletteType {
+    enum PaletteType
+    {
         PaletteTypeDefault = 0,
         PaletteTypeRainbow = 1,
         PaletteTypeSubdued = 2
     };
 
-    explicit AttributesModel( QAbstractItemModel* model, QObject * parent = nullptr );
+    explicit AttributesModel(QAbstractItemModel *model, QObject *parent = nullptr);
     ~AttributesModel() override;
 
     /** Copies the internal data (maps and palette) of another
      *  AttributesModel* into this one.
      */
-    void initFrom( const AttributesModel* other );
+    void initFrom(const AttributesModel *other);
 
     /** Returns true if both, all of the attributes set, and
      * the palette set is equal in both of the AttributeModels.
      */
-    bool compare( const AttributesModel* other ) const;
+    bool compare(const AttributesModel *other) const;
 
-    bool compareAttributes( int role, const QVariant& a, const QVariant& b ) const;
+    bool compareAttributes(int role, const QVariant &a, const QVariant &b) const;
 
     /* Attributes Model specific API */
-    bool setModelData( const QVariant value, int role );
-    QVariant modelData( int role ) const;
+    bool setModelData(const QVariant value, int role);
+    QVariant modelData(int role) const;
 
     /** Returns whether the given role corresponds to one of the known
      * internally used ones. */
-    bool isKnownAttributesRole( int role ) const;
+    bool isKnownAttributesRole(int role) const;
 
     /** Sets the palettetype used by this attributesmodel */
-    void setPaletteType( PaletteType type );
+    void setPaletteType(PaletteType type);
     PaletteType paletteType() const;
 
     /** Returns the data that were specified at global level,
@@ -92,59 +93,59 @@ public:
     QVariant data(int column, int role) const;
 
     /** \reimpl */
-    QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     /** \reimpl */
-    int rowCount(const QModelIndex& ) const override;
+    int rowCount(const QModelIndex &) const override;
     /** \reimpl */
-    int columnCount(const QModelIndex& ) const override;
+    int columnCount(const QModelIndex &) const override;
     /** \reimpl */
-    QVariant data(const QModelIndex&, int role = Qt::DisplayRole) const override;
+    QVariant data(const QModelIndex &, int role = Qt::DisplayRole) const override;
     /** \reimpl */
-    bool setData ( const QModelIndex & index, const QVariant & value, int role = Qt::DisplayRole) override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::DisplayRole) override;
     /** Remove any explicit attributes settings that might have been specified before. */
-    bool resetData ( const QModelIndex & index, int role = Qt::DisplayRole);
+    bool resetData(const QModelIndex &index, int role = Qt::DisplayRole);
     /** \reimpl */
-    bool setHeaderData ( int section, Qt::Orientation orientation, const QVariant & value,
-                         int role = Qt::DisplayRole) override;
+    bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value,
+                       int role = Qt::DisplayRole) override;
     /** Returns default values for the header data. */
-    virtual QVariant defaultHeaderData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
+    virtual QVariant defaultHeaderData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     /** Remove any explicit attributes settings that might have been specified before. */
-    bool resetHeaderData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole);
+    bool resetHeaderData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole);
     /** \reimpl */
-    void setSourceModel ( QAbstractItemModel* sourceModel ) override;
+    void setSourceModel(QAbstractItemModel *sourceModel) override;
 
     /** Define the default value for a certain role.
         Passing a default-constructed QVariant is equivalent to removing the default. */
-    void setDefaultForRole( int role, const QVariant& value );
+    void setDefaultForRole(int role, const QVariant &value);
 
     /** Set the dimension of the dataset in the source model. \sa AbstractDiagram::setDatasetDimension */
-    void setDatasetDimension( int dimension );
+    void setDatasetDimension(int dimension);
     int datasetDimension() const;
 
 Q_SIGNALS:
-    void attributesChanged( const QModelIndex&, const QModelIndex& );
+    void attributesChanged(const QModelIndex &, const QModelIndex &);
 
 private Q_SLOTS:
-    void slotRowsAboutToBeInserted( const QModelIndex& parent, int start, int end );
-    void slotColumnsAboutToBeInserted( const QModelIndex& parent, int start, int end );
-    void slotRowsInserted( const QModelIndex& parent, int start, int end );
-    void slotColumnsInserted( const QModelIndex& parent, int start, int end );
+    void slotRowsAboutToBeInserted(const QModelIndex &parent, int start, int end);
+    void slotColumnsAboutToBeInserted(const QModelIndex &parent, int start, int end);
+    void slotRowsInserted(const QModelIndex &parent, int start, int end);
+    void slotColumnsInserted(const QModelIndex &parent, int start, int end);
 
-    void slotRowsAboutToBeRemoved( const QModelIndex& parent, int start, int end );
-    void slotColumnsAboutToBeRemoved( const QModelIndex& parent, int start, int end );
-    void slotRowsRemoved( const QModelIndex& parent, int start, int end );
-    void slotColumnsRemoved( const QModelIndex& parent, int start, int end );
+    void slotRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+    void slotColumnsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+    void slotRowsRemoved(const QModelIndex &parent, int start, int end);
+    void slotColumnsRemoved(const QModelIndex &parent, int start, int end);
 
-    void slotDataChanged( const QModelIndex& topLeft, const QModelIndex& bottomRight );
+    void slotDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 private:
     // helper
-    QVariant defaultsForRole( int role ) const;
-    bool compareHeaderDataMaps( const QMap< int, QMap< int, QVariant > >& mapA,
-                                const QMap< int, QMap< int, QVariant > >& mapB ) const;
+    QVariant defaultsForRole(int role) const;
+    bool compareHeaderDataMaps(const QMap<int, QMap<int, QVariant>> &mapA,
+                               const QMap<int, QMap<int, QVariant>> &mapB) const;
 
-    void removeEntriesFromDataMap( int start, int end );
-    void removeEntriesFromDirectionDataMaps( Qt::Orientation dir, int start, int end );
+    void removeEntriesFromDataMap(int start, int end);
+    void removeEntriesFromDirectionDataMaps(Qt::Orientation dir, int start, int end);
 };
 
 }

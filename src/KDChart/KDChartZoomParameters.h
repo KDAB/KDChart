@@ -37,44 +37,45 @@
 #include <QPointF>
 
 namespace KDChart {
-    /**
+/**
       * ZoomParameters stores the center and the factor of zooming internally
       * \internal
       */
-    class ZoomParameters {
-    public:
-        ZoomParameters()
-        : xFactor( 1.0 ),
-          yFactor( 1.0 ),
-          xCenter( 0.5 ),
-          yCenter( 0.5)
-        {
-        }
+class ZoomParameters
+{
+public:
+    ZoomParameters()
+        : xFactor(1.0)
+        , yFactor(1.0)
+        , xCenter(0.5)
+        , yCenter(0.5)
+    {
+    }
 
-        ZoomParameters( qreal xFactor, qreal yFactor, const QPointF& center )
-        : xFactor( xFactor ),
-          yFactor( yFactor ),
-          xCenter( center.x() ),
-          yCenter( center.y() )
-        {
-        }
+    ZoomParameters(qreal xFactor, qreal yFactor, const QPointF &center)
+        : xFactor(xFactor)
+        , yFactor(yFactor)
+        , xCenter(center.x())
+        , yCenter(center.y())
+    {
+    }
 
-        void setCenter( const QPointF& center )
-        {
-            xCenter = center.x();
-            yCenter = center.y();
-        }
-        const QPointF center() const
-        {
-            return QPointF( xCenter, yCenter );
-        }
+    void setCenter(const QPointF &center)
+    {
+        xCenter = center.x();
+        yCenter = center.y();
+    }
+    const QPointF center() const
+    {
+        return QPointF(xCenter, yCenter);
+    }
 
-        qreal xFactor;
-        qreal yFactor;
+    qreal xFactor;
+    qreal yFactor;
 
-        qreal xCenter;
-        qreal yCenter;
-    };
+    qreal xCenter;
+    qreal yCenter;
+};
 }
 
 #endif

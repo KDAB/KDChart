@@ -34,25 +34,27 @@ using namespace KDChart;
 class ValueTrackerAttributes::Private
 {
     friend class ValueTrackerAttributes;
-    public:
-        Private();
-    private:
-        QPen linePen;
-        QPen markerPen;
-        QBrush markerBrush;
-        QBrush arrowBrush;
-        QSizeF markerSize;
-        bool enabled;
-        QBrush areaBrush;
-        Qt::Orientations orientations;
+
+public:
+    Private();
+
+private:
+    QPen linePen;
+    QPen markerPen;
+    QBrush markerBrush;
+    QBrush arrowBrush;
+    QSizeF markerSize;
+    bool enabled;
+    QBrush areaBrush;
+    Qt::Orientations orientations;
 };
 
 ValueTrackerAttributes::Private::Private()
-    : linePen( QPen( QColor( 80, 80, 80, 200 ) ) ),
-      markerSize( QSizeF( 6.0, 6.0 ) ),
-      enabled( false ),
-      areaBrush( QBrush() ),
-      orientations(Qt::Vertical|Qt::Horizontal)
+    : linePen(QPen(QColor(80, 80, 80, 200)))
+    , markerSize(QSizeF(6.0, 6.0))
+    , enabled(false)
+    , areaBrush(QBrush())
+    , orientations(Qt::Vertical | Qt::Horizontal)
 {
     markerPen = linePen;
     arrowBrush = linePen.color();
@@ -60,18 +62,18 @@ ValueTrackerAttributes::Private::Private()
 
 
 ValueTrackerAttributes::ValueTrackerAttributes()
-    : _d( new Private() )
+    : _d(new Private())
 {
 }
 
-ValueTrackerAttributes::ValueTrackerAttributes( const ValueTrackerAttributes& r )
-    : _d( new Private( *r.d ) )
+ValueTrackerAttributes::ValueTrackerAttributes(const ValueTrackerAttributes &r)
+    : _d(new Private(*r.d))
 {
 }
 
-ValueTrackerAttributes & ValueTrackerAttributes::operator=( const ValueTrackerAttributes& r )
+ValueTrackerAttributes &ValueTrackerAttributes::operator=(const ValueTrackerAttributes &r)
 {
-    if ( this == &r )
+    if (this == &r)
         return *this;
 
     *d = *r.d;
@@ -81,22 +83,17 @@ ValueTrackerAttributes & ValueTrackerAttributes::operator=( const ValueTrackerAt
 
 ValueTrackerAttributes::~ValueTrackerAttributes()
 {
-    delete _d; _d = nullptr;
+    delete _d;
+    _d = nullptr;
 }
 
 
-bool ValueTrackerAttributes::operator==( const ValueTrackerAttributes& r ) const
+bool ValueTrackerAttributes::operator==(const ValueTrackerAttributes &r) const
 {
-    return ( linePen() == r.linePen() &&
-             markerPen() == r.markerPen() &&
-             markerBrush() == r.markerBrush() &&
-             arrowBrush() == r.arrowBrush() &&
-             areaBrush() == r.areaBrush() &&
-             markerSize() == r.markerSize() &&
-             isEnabled() == r.isEnabled() );
+    return (linePen() == r.linePen() && markerPen() == r.markerPen() && markerBrush() == r.markerBrush() && arrowBrush() == r.arrowBrush() && areaBrush() == r.areaBrush() && markerSize() == r.markerSize() && isEnabled() == r.isEnabled());
 }
 
-void ValueTrackerAttributes::setPen( const QPen& pen )
+void ValueTrackerAttributes::setPen(const QPen &pen)
 {
     d->linePen = pen;
     d->markerPen = pen;
@@ -109,7 +106,7 @@ QPen ValueTrackerAttributes::pen() const
     return d->linePen;
 }
 
-void ValueTrackerAttributes::setLinePen( const QPen &pen )
+void ValueTrackerAttributes::setLinePen(const QPen &pen)
 {
     d->linePen = pen;
 }
@@ -119,7 +116,7 @@ QPen ValueTrackerAttributes::linePen() const
     return d->linePen;
 }
 
-void ValueTrackerAttributes::setMarkerPen( const QPen &pen )
+void ValueTrackerAttributes::setMarkerPen(const QPen &pen)
 {
     d->markerPen = pen;
 }
@@ -129,7 +126,7 @@ QPen ValueTrackerAttributes::markerPen() const
     return d->markerPen;
 }
 
-void ValueTrackerAttributes::setMarkerBrush( const QBrush &brush )
+void ValueTrackerAttributes::setMarkerBrush(const QBrush &brush)
 {
     d->markerBrush = brush;
 }
@@ -139,7 +136,7 @@ QBrush ValueTrackerAttributes::markerBrush() const
     return d->markerBrush;
 }
 
-void ValueTrackerAttributes::setArrowBrush( const QBrush &brush )
+void ValueTrackerAttributes::setArrowBrush(const QBrush &brush)
 {
     d->arrowBrush = brush;
 }
@@ -149,7 +146,7 @@ QBrush ValueTrackerAttributes::arrowBrush() const
     return d->arrowBrush;
 }
 
-void ValueTrackerAttributes::setAreaBrush( const QBrush& brush )
+void ValueTrackerAttributes::setAreaBrush(const QBrush &brush)
 {
     d->areaBrush = brush;
 }
@@ -159,7 +156,7 @@ QBrush ValueTrackerAttributes::areaBrush() const
     return d->areaBrush;
 }
 
-void ValueTrackerAttributes::setMarkerSize( const QSizeF& size )
+void ValueTrackerAttributes::setMarkerSize(const QSizeF &size)
 {
     d->markerSize = size;
 }
@@ -174,12 +171,12 @@ Qt::Orientations ValueTrackerAttributes::orientations() const
     return d->orientations;
 }
 
-void ValueTrackerAttributes::setOrientations( Qt::Orientations orientations )
+void ValueTrackerAttributes::setOrientations(Qt::Orientations orientations)
 {
     d->orientations = orientations;
 }
 
-void ValueTrackerAttributes::setEnabled( bool enabled )
+void ValueTrackerAttributes::setEnabled(bool enabled)
 {
     d->enabled = enabled;
 }
@@ -190,15 +187,15 @@ bool ValueTrackerAttributes::isEnabled() const
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)
-QDebug operator<<(QDebug dbg, const KDChart::ValueTrackerAttributes& va)
+QDebug operator<<(QDebug dbg, const KDChart::ValueTrackerAttributes &va)
 {
     dbg << "KDChart::ValueTrackerAttributes("
-        << "linePen="<<va.linePen()
-        << "markerPen="<<va.markerPen()
-        << "markerBrush="<<va.markerBrush()
-        << "arrowBrush="<<va.arrowBrush()
-        << "markerSize="<<va.markerSize()
-        << "enabled="<<va.isEnabled()
+        << "linePen=" << va.linePen()
+        << "markerPen=" << va.markerPen()
+        << "markerBrush=" << va.markerBrush()
+        << "arrowBrush=" << va.arrowBrush()
+        << "markerSize=" << va.markerSize()
+        << "enabled=" << va.isEnabled()
         << ")";
     return dbg;
 }

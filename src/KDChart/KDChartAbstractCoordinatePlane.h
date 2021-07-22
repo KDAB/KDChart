@@ -32,41 +32,45 @@
 
 namespace KDChart {
 
-    class Chart;
-    class GridAttributes;
-    class DataDimension;
+class Chart;
+class GridAttributes;
+class DataDimension;
 
-    typedef QList<DataDimension> DataDimensionsList;
+typedef QList<DataDimension> DataDimensionsList;
 
-    /**
+/**
       * @brief Base class common for all coordinate planes, CartesianCoordinatePlane, PolarCoordinatePlane, TernaryCoordinatePlane
       */
-    class KDCHART_EXPORT AbstractCoordinatePlane : public AbstractArea
-    {
-        Q_OBJECT
+class KDCHART_EXPORT AbstractCoordinatePlane : public AbstractArea
+{
+    Q_OBJECT
 
-        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( AbstractCoordinatePlane, Chart* )
+    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT(AbstractCoordinatePlane, Chart *)
 
     friend class AbstractGrid;
 
-    public:
-        enum AxesCalcMode { Linear, Logarithmic };
+public:
+    enum AxesCalcMode
+    {
+        Linear,
+        Logarithmic
+    };
 
-    protected:
-        explicit AbstractCoordinatePlane( Chart* parent = nullptr );
+protected:
+    explicit AbstractCoordinatePlane(Chart *parent = nullptr);
 
-    public:
-        ~AbstractCoordinatePlane() override;
+public:
+    ~AbstractCoordinatePlane() override;
 
-        /**
+    /**
          * Adds a diagram to this coordinate plane.
          * @param diagram The diagram to add.
          *
          * \sa replaceDiagram, takeDiagram
          */
-        virtual void addDiagram( AbstractDiagram* diagram );
+    virtual void addDiagram(AbstractDiagram *diagram);
 
-        /**
+    /**
          * Replaces the old diagram, or appends the
          * diagram, it there is none yet.
          *
@@ -83,9 +87,9 @@ namespace KDChart {
          *
          * \sa addDiagram, takeDiagram
          */
-        virtual void replaceDiagram( AbstractDiagram* diagram, AbstractDiagram* oldDiagram = nullptr );
+    virtual void replaceDiagram(AbstractDiagram *diagram, AbstractDiagram *oldDiagram = nullptr);
 
-        /**
+    /**
          * Removes the diagram from the plane, without deleting it.
          *
          * The plane no longer owns the diagram, so it is
@@ -93,92 +97,114 @@ namespace KDChart {
          *
          * \sa addDiagram, replaceDiagram
         */
-        virtual void takeDiagram( AbstractDiagram* diagram );
+    virtual void takeDiagram(AbstractDiagram *diagram);
 
-        /**
+    /**
          * @return The first diagram associated with this coordinate plane.
          */
-        AbstractDiagram* diagram();
+    AbstractDiagram *diagram();
 
-        /**
+    /**
          * @return The list of diagrams associated with this coordinate plane.
          */
-        AbstractDiagramList diagrams();
+    AbstractDiagramList diagrams();
 
-        /**
+    /**
          * @return The list of diagrams associated with this coordinate plane.
          */
-        ConstAbstractDiagramList diagrams() const;
+    ConstAbstractDiagramList diagrams() const;
 
-        /**
+    /**
          * Distribute the available space among the diagrams and axes.
          */
-        virtual void layoutDiagrams() = 0;
+    virtual void layoutDiagrams() = 0;
 
-        /**
+    /**
          * Translate the given point in value space coordinates to a position
          * in pixel space.
          * @param diagramPoint The point in value coordinates.
          * @returns The translated point.
          */
-        virtual const QPointF translate( const QPointF& diagramPoint ) const = 0;
+    virtual const QPointF translate(const QPointF &diagramPoint) const = 0;
 
-        /**
+    /**
          * @return Whether zooming with a rubber band using the mouse is enabled.
          */
-        bool isRubberBandZoomingEnabled() const;
+    bool isRubberBandZoomingEnabled() const;
 
-        /**
+    /**
          * Enables or disables zooming with a rubber band using the mouse.
          */
-        void setRubberBandZoomingEnabled( bool enable );
+    void setRubberBandZoomingEnabled(bool enable);
 
-        /**
+    /**
          * @return The zoom factor in horizontal direction, that is applied
          * to all coordinate transformations.
          */
-        virtual qreal zoomFactorX() const { return 1.0; }
+    virtual qreal zoomFactorX() const
+    {
+        return 1.0;
+    }
 
-        /**
+    /**
          * @return The zoom factor in vertical direction, that is applied
          * to all coordinate transformations.
          */
-        virtual qreal zoomFactorY() const { return 1.0; }
+    virtual qreal zoomFactorY() const
+    {
+        return 1.0;
+    }
 
-        /**
+    /**
          * Sets both zoom factors in one go.
          * \sa setZoomFactorX,setZoomFactorY
          */
-        virtual void setZoomFactors( qreal factorX, qreal factorY ) { Q_UNUSED( factorX ); Q_UNUSED( factorY ); }
+    virtual void setZoomFactors(qreal factorX, qreal factorY)
+    {
+        Q_UNUSED(factorX);
+        Q_UNUSED(factorY);
+    }
 
-        /**
+    /**
          * Sets the zoom factor in horizontal direction, that is applied
          * to all coordinate transformations.
          * @param factor The new zoom factor
          */
-        virtual void setZoomFactorX( qreal  factor ) { Q_UNUSED( factor ); }
+    virtual void setZoomFactorX(qreal factor)
+    {
+        Q_UNUSED(factor);
+    }
 
-        /**
+    /**
          * Sets the zoom factor in vertical direction, that is applied
          * to all coordinate transformations.
          * @param factor The new zoom factor
          */
-        virtual void setZoomFactorY( qreal factor ) { Q_UNUSED( factor ); }
+    virtual void setZoomFactorY(qreal factor)
+    {
+        Q_UNUSED(factor);
+    }
 
-        /**
+    /**
          * @return The center point (in value coordinates) of the
          * coordinate plane, that is used for zoom operations.
          */
-        virtual QPointF zoomCenter() const { return QPointF(0.0, 0.0); }
+    virtual QPointF zoomCenter() const
+    {
+        return QPointF(0.0, 0.0);
+    }
 
-        /**
+    /**
          * Set the point (in value coordinates) to be used as the
          * center point in zoom operations.
          * @param center The point to use.
          */
-        virtual void setZoomCenter( const QPointF& center ) { Q_UNUSED( center ); }
+    virtual void setZoomCenter(const QPointF &center)
+    {
+        Q_UNUSED(center);
+    }
 
-        /**
+    /**
          * Set the grid attributes to be used by this coordinate plane.
          * To disable grid painting, for example, your code should like this:
          * \code
@@ -189,16 +215,16 @@ namespace KDChart {
          * \sa globalGridAttributes
          * \sa CartesianCoordinatePlane::setGridAttributes
          */
-        void setGlobalGridAttributes( const GridAttributes & );
+    void setGlobalGridAttributes(const GridAttributes &);
 
-        /**
+    /**
          * @return The grid attributes used by this coordinate plane.
          * \sa setGlobalGridAttributes
          * \sa CartesianCoordinatePlane::gridAttributes
          */
-        GridAttributes globalGridAttributes() const;
+    GridAttributes globalGridAttributes() const;
 
-        /**
+    /**
          * Returns the dimensions used for drawing the grid lines.
          *
          * Returned data is the result of (cached) grid calculations,
@@ -216,18 +242,18 @@ namespace KDChart {
          * @return The dimensions used for drawing the grid lines.
          * @sa DataDimension
          */
-        DataDimensionsList gridDimensionsList();
+    DataDimensionsList gridDimensionsList();
 
-        /**
+    /**
          * Set another coordinate plane to be used as the reference plane
          * for this one.
          * @param plane The coordinate plane to be used the reference plane
          * for this one.
          * @see referenceCoordinatePlane
          */
-        void setReferenceCoordinatePlane( AbstractCoordinatePlane * plane );
+    void setReferenceCoordinatePlane(AbstractCoordinatePlane *plane);
 
-        /**
+    /**
          * There are two ways, in which planes can be caused to interact, in
          * where they are put layouting wise: The first is the reference plane. If
          * such a reference plane is set, on a plane, it will use the same cell in the
@@ -242,124 +268,124 @@ namespace KDChart {
          * laid out vertically or horizontally next to each other.
          * @return The reference coordinate plane associated with this one.
          */
-        AbstractCoordinatePlane * referenceCoordinatePlane() const;
+    AbstractCoordinatePlane *referenceCoordinatePlane() const;
 
-        /**
+    /**
          * @return Whether this plane should have spacers in the corners
          * formed by the presence of axes.
          */
-        bool isCornerSpacersEnabled() const;
+    bool isCornerSpacersEnabled() const;
 
-        /**
+    /**
          * Enables or disables the use of spacers in the plane corners.
          */
-        void setCornerSpacersEnabled( bool enable );
+    void setCornerSpacersEnabled(bool enable);
 
-        virtual AbstractCoordinatePlane* sharedAxisMasterPlane( QPainter* p = nullptr ); // KDChart 3: const method?
+    virtual AbstractCoordinatePlane *sharedAxisMasterPlane(QPainter *p = nullptr); // KDChart 3: const method?
 
 
-        /** pure virtual in QLayoutItem */
-        bool isEmpty() const override;
-        /** pure virtual in QLayoutItem */
-        Qt::Orientations expandingDirections() const override;
-        /** pure virtual in QLayoutItem */
-        QSize maximumSize() const override;
-        /** pure virtual in QLayoutItem */
-        QSize minimumSize() const override;
-        /** pure virtual in QLayoutItem */
-        QSize sizeHint() const override;
-        /** pure virtual in QLayoutItem
+    /** pure virtual in QLayoutItem */
+    bool isEmpty() const override;
+    /** pure virtual in QLayoutItem */
+    Qt::Orientations expandingDirections() const override;
+    /** pure virtual in QLayoutItem */
+    QSize maximumSize() const override;
+    /** pure virtual in QLayoutItem */
+    QSize minimumSize() const override;
+    /** pure virtual in QLayoutItem */
+    QSize sizeHint() const override;
+    /** pure virtual in QLayoutItem
           *
           * \note Do not call this function directly, unless you know
           * exactly what you are doing.  Geometry management is done
           * by KD Chart's internal layouting measures.
           */
-        void setGeometry( const QRect& r ) override;
-        /** pure virtual in QLayoutItem */
-        QRect geometry() const override;
+    void setGeometry(const QRect &r) override;
+    /** pure virtual in QLayoutItem */
+    QRect geometry() const override;
 
-        virtual void mousePressEvent( QMouseEvent* event );
-        virtual void mouseDoubleClickEvent( QMouseEvent* event );
-        virtual void mouseMoveEvent( QMouseEvent* event );
-        virtual void mouseReleaseEvent( QMouseEvent* event );
+    virtual void mousePressEvent(QMouseEvent *event);
+    virtual void mouseDoubleClickEvent(QMouseEvent *event);
+    virtual void mouseMoveEvent(QMouseEvent *event);
+    virtual void mouseReleaseEvent(QMouseEvent *event);
 
-        /**
+    /**
           * Called internally by KDChart::Chart
           */
-        void setParent( Chart* parent );
-        Chart* parent();
-        const Chart* parent() const;
+    void setParent(Chart *parent);
+    Chart *parent();
+    const Chart *parent() const;
 
-        /**
+    /**
          * Tests, if a point is visible on the coordinate plane.
          *
          * \note Before calling this function the point must have been translated into coordinate plane space.
          */
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-        const bool isVisiblePoint( const QPointF& point ) const;
+    const bool isVisiblePoint(const QPointF &point) const;
 #else
-        bool isVisiblePoint( const QPointF& point ) const;
+    bool isVisiblePoint(const QPointF &point) const;
 #endif
 
-    public Q_SLOTS:
-        /**
+public Q_SLOTS:
+    /**
           * Calling update() on the plane triggers the global KDChart::Chart::update()
           */
-        void update();
-        /**
+    void update();
+    /**
           * Calling relayout() on the plane triggers the global KDChart::Chart::slotRelayout()
           */
-        void relayout();
-        /**
+    void relayout();
+    /**
           * Calling layoutPlanes() on the plane triggers the global KDChart::Chart::slotLayoutPlanes()
           */
-        void layoutPlanes();
-        /**
+    void layoutPlanes();
+    /**
          * Used by the chart to clear the cached grid data.
          */
-        void setGridNeedsRecalculate();
+    void setGridNeedsRecalculate();
 
-    Q_SIGNALS:
-        /** Emitted when this coordinate plane is destroyed. */
-        void destroyedCoordinatePlane( AbstractCoordinatePlane* );
+Q_SIGNALS:
+    /** Emitted when this coordinate plane is destroyed. */
+    void destroyedCoordinatePlane(AbstractCoordinatePlane *);
 
-        /** Emitted when plane needs to update its drawings. */
-        void needUpdate();
+    /** Emitted when plane needs to update its drawings. */
+    void needUpdate();
 
-        /** Emitted when plane needs to trigger the Chart's layouting. */
-        void needRelayout();
+    /** Emitted when plane needs to trigger the Chart's layouting. */
+    void needRelayout();
 
-        /** Emitted when plane needs to trigger the Chart's layouting of the coord. planes. */
-        void needLayoutPlanes();
+    /** Emitted when plane needs to trigger the Chart's layouting of the coord. planes. */
+    void needLayoutPlanes();
 
-        /** Emitted upon change of a property of the Coordinate Plane or any of its components. */
-        void propertiesChanged();
+    /** Emitted upon change of a property of the Coordinate Plane or any of its components. */
+    void propertiesChanged();
 
-        void boundariesChanged();
+    void boundariesChanged();
 
-        /** Emitted after the geometry of the Coordinate Plane has been changed.
+    /** Emitted after the geometry of the Coordinate Plane has been changed.
          *  and control has returned to the event loop.
          *
          * Parameters are the old geometry, the new geometry.
         */
-        void geometryChanged( QRect, QRect );
+    void geometryChanged(QRect, QRect);
 
-    private:
-    Q_SIGNALS:
-        // Emitted from inside the setGeometry()
-        // This is connected via QueuedConnection to the geometryChanged() Signal
-        // that users can connect to safely then.
-        void internal_geometryChanged( QRect, QRect );
-        /** Emitted upon change of the view coordinate system */
-        void viewportCoordinateSystemChanged();
+private:
+Q_SIGNALS:
+    // Emitted from inside the setGeometry()
+    // This is connected via QueuedConnection to the geometryChanged() Signal
+    // that users can connect to safely then.
+    void internal_geometryChanged(QRect, QRect);
+    /** Emitted upon change of the view coordinate system */
+    void viewportCoordinateSystemChanged();
 
-    protected:
-        virtual DataDimensionsList getDataDimensionsList() const = 0;
+protected:
+    virtual DataDimensionsList getDataDimensionsList() const = 0;
 
-        //KDCHART_DECLARE_PRIVATE_DERIVED( AbstractCoordinatePlane )
-    };
+    //KDCHART_DECLARE_PRIVATE_DERIVED( AbstractCoordinatePlane )
+};
 
-    /**
+/**
      * \brief Helper class for one dimension of data, e.g. for the rows in a data model,
      * or for the labels of an axis, or for the vertical lines in a grid.
      *
@@ -375,71 +401,69 @@ namespace KDChart {
      * The default c'tor just gets you counted values from 1..10, using step width 1,
      * used by the CartesianGrid, when showing an empty plane without any diagrams.
      */
-    class DataDimension{
-    public:
-        DataDimension()
-            : start( 1.0 )
-            , end( 10.0 )
-            , isCalculated( false )
-            , calcMode( AbstractCoordinatePlane::Linear )
-            , sequence( KDChartEnums::GranularitySequence_10_20 )
-            , stepWidth( 1.0 )
-            , subStepWidth( 0.0 )
-        {}
-        DataDimension( qreal start_,
-                       qreal end_,
-                       bool isCalculated_,
-                       AbstractCoordinatePlane::AxesCalcMode calcMode_,
-                       KDChartEnums::GranularitySequence sequence_,
-                       qreal stepWidth_=0.0,
-                       qreal subStepWidth_=0.0 )
-            : start( start_ )
-            , end( end_ )
-            , isCalculated( isCalculated_ )
-            , calcMode( calcMode_ )
-            , sequence( sequence_ )
-            , stepWidth( stepWidth_ )
-            , subStepWidth( subStepWidth_ )
-        {}
-        /**
+class DataDimension
+{
+public:
+    DataDimension()
+        : start(1.0)
+        , end(10.0)
+        , isCalculated(false)
+        , calcMode(AbstractCoordinatePlane::Linear)
+        , sequence(KDChartEnums::GranularitySequence_10_20)
+        , stepWidth(1.0)
+        , subStepWidth(0.0)
+    {
+    }
+    DataDimension(qreal start_,
+                  qreal end_,
+                  bool isCalculated_,
+                  AbstractCoordinatePlane::AxesCalcMode calcMode_,
+                  KDChartEnums::GranularitySequence sequence_,
+                  qreal stepWidth_ = 0.0,
+                  qreal subStepWidth_ = 0.0)
+        : start(start_)
+        , end(end_)
+        , isCalculated(isCalculated_)
+        , calcMode(calcMode_)
+        , sequence(sequence_)
+        , stepWidth(stepWidth_)
+        , subStepWidth(subStepWidth_)
+    {
+    }
+    /**
           * Returns the size of the distance,
           * equivalent to the width() (or height(), resp.) of a QRectF.
           *
           * Note that this value can be negative, e.g. indicating axis labels
           * going in reversed direction.
           */
-        qreal distance() const
-        {
-            return end-start;
-        }
+    qreal distance() const
+    {
+        return end - start;
+    }
 
-        bool operator==( const DataDimension& r ) const
-        {
-            return
-                (start        == r.start) &&
-                (end          == r.end) &&
-                (sequence     == r.sequence) &&
-                (isCalculated == r.isCalculated) &&
-                (calcMode     == r.calcMode) &&
-                (stepWidth    == r.stepWidth) &&
-                (subStepWidth    == r.subStepWidth);
-        }
+    bool operator==(const DataDimension &r) const
+    {
+        return (start == r.start) && (end == r.end) && (sequence == r.sequence) && (isCalculated == r.isCalculated) && (calcMode == r.calcMode) && (stepWidth == r.stepWidth) && (subStepWidth == r.subStepWidth);
+    }
 
-        bool operator!=( const DataDimension& other ) const
-        { return !operator==( other ); }
+    bool operator!=(const DataDimension &other) const
+    {
+        return !operator==(other);
+    }
 
 
-        qreal start;
-        qreal end;
-        bool  isCalculated;
-        AbstractCoordinatePlane::AxesCalcMode calcMode;
-        KDChartEnums::GranularitySequence sequence;
-        qreal stepWidth;
-        qreal subStepWidth;
-    };
+    qreal start;
+    qreal end;
+    bool isCalculated;
+    AbstractCoordinatePlane::AxesCalcMode calcMode;
+    KDChartEnums::GranularitySequence sequence;
+    qreal stepWidth;
+    qreal subStepWidth;
+};
 
 #if !defined(QT_NO_DEBUG_STREAM)
-    QDebug operator<<( QDebug stream, const DataDimension& r );
+QDebug operator<<(QDebug stream, const DataDimension &r);
 #endif
 
 }

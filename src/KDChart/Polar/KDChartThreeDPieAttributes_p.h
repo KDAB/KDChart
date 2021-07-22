@@ -47,6 +47,7 @@ namespace KDChart {
 class ThreeDPieAttributes::Private : public AbstractThreeDAttributes::Private
 {
     friend class ThreeDPieAttributes;
+
 public:
     Private();
 

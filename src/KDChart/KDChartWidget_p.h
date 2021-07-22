@@ -50,9 +50,10 @@
 class KDChart::Widget::Private
 {
     friend class ::KDChart::Widget;
-    Widget * const q;
+    Widget *const q;
+
 public:
-    explicit Private( Widget * qq );
+    explicit Private(Widget *qq);
     ~Private(); // non-virtual, since nothing inherits this
 
 protected:

@@ -30,54 +30,62 @@
 #include "kdganttconstraint.h"
 
 namespace KDGantt {
-    class KDGANTT_EXPORT ConstraintModel : public QObject {
-        Q_OBJECT
-        KDGANTT_DECLARE_PRIVATE_DERIVED_PARENT( ConstraintModel, QObject* )
-     public:
-        explicit ConstraintModel( QObject* parent=nullptr );
-        ~ConstraintModel() override;
+class KDGANTT_EXPORT ConstraintModel : public QObject
+{
+    Q_OBJECT
+    KDGANTT_DECLARE_PRIVATE_DERIVED_PARENT(ConstraintModel, QObject *)
+public:
+    explicit ConstraintModel(QObject *parent = nullptr);
+    ~ConstraintModel() override;
 
-        /**
+    /**
         * Subclassing ConstraintModel and overriding addConstraint() and removeConstraint() can provide
         * re-entrancy issues in the ConstraintModel<->ConstraintProxy interaction. Therefore it is recommed
         * to better subclass GraphicsView and override addConstraint() there.
         */
-        virtual void addConstraint( const Constraint& c );
-        virtual bool removeConstraint( const Constraint& c );
+    virtual void addConstraint(const Constraint &c);
+    virtual bool removeConstraint(const Constraint &c);
 
-        void clear();
-        void cleanup();
+    void clear();
+    void cleanup();
 
-        QList<Constraint> constraints() const;
+    QList<Constraint> constraints() const;
 
-        bool hasConstraint( const Constraint& c ) const;
-        inline bool hasConstraint( const QModelIndex& s,
-                                   const QModelIndex& e ) const;
+    bool hasConstraint(const Constraint &c) const;
+    inline bool hasConstraint(const QModelIndex &s,
+                              const QModelIndex &e) const;
 
-        QList<Constraint> constraintsForIndex( const QModelIndex& ) const;
+    QList<Constraint> constraintsForIndex(const QModelIndex &) const;
 
-    Q_SIGNALS:
-        void constraintAdded(const KDGantt::Constraint&);
-        void constraintRemoved(const KDGantt::Constraint&);
+Q_SIGNALS:
+    void constraintAdded(const KDGantt::Constraint &);
+    void constraintRemoved(const KDGantt::Constraint &);
 
-    private:
-        Private* _d;
-    };
+private:
+    Private *_d;
+};
 
-    inline const ConstraintModel::Private* ConstraintModel::d_func() const { return _d; }
-    inline ConstraintModel::Private* ConstraintModel::d_func() { return _d; }
-    inline bool ConstraintModel::hasConstraint( const QModelIndex& s, const QModelIndex& e ) const {
-        return hasConstraint( Constraint( s, e ) );
-    }
+inline const ConstraintModel::Private *ConstraintModel::d_func() const
+{
+    return _d;
+}
+inline ConstraintModel::Private *ConstraintModel::d_func()
+{
+    return _d;
+}
+inline bool ConstraintModel::hasConstraint(const QModelIndex &s, const QModelIndex &e) const
+{
+    return hasConstraint(Constraint(s, e));
+}
 }
 
 #ifndef QT_NO_DEBUG_STREAM
 #include <QDebug>
 
-QDebug KDGANTT_EXPORT operator<<( QDebug dbg, const KDGantt::ConstraintModel& model );
-inline QDebug operator<<( QDebug dbg, KDGantt::ConstraintModel* model )
+QDebug KDGANTT_EXPORT operator<<(QDebug dbg, const KDGantt::ConstraintModel &model);
+inline QDebug operator<<(QDebug dbg, KDGantt::ConstraintModel *model)
 {
-    return operator<<(dbg,*model);
+    return operator<<(dbg, *model);
 }
 
 #endif /* QT_NO_DEBUG_STREAM */

@@ -30,8 +30,13 @@
 // Parameters :
 // - ID : an file-wide identifier, e.g. the filename without the extension.
 //        It shouldn't be quoted, no spaces, and contain only alphanumerical characters.
-#define KDAB_EXPORT_STATIC_SYMBOLS( ID ) int __init_##ID##_static_symbols() { return 0; }
-#define KDAB_IMPORT_STATIC_SYMBOLS( ID ) extern int __init_##ID##_static_symbols(); \
+#define KDAB_EXPORT_STATIC_SYMBOLS(ID) \
+    int __init_##ID##_static_symbols() \
+    {                                  \
+        return 0;                      \
+    }
+#define KDAB_IMPORT_STATIC_SYMBOLS(ID)         \
+    extern int __init_##ID##_static_symbols(); \
     static int fake_init##ID = __init_##ID##_static_symbols();
 
 #endif // __ASCSHARED_UTIL_LIBUTIL_H__

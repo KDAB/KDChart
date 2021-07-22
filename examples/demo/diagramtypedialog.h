@@ -30,24 +30,35 @@ QT_BEGIN_NAMESPACE
 class QAbstractItemModel;
 QT_END_NAMESPACE
 
-namespace KDChart
-{
-    class Chart;
+namespace KDChart {
+class Chart;
 }
 
 class DiagramTypeDialog : public QDialog
 {
     Q_OBJECT
 public:
-    enum DiagramType{ Bar, LyingBar, Line, Plotter, Pie };
-    enum Subtype{ Normal, Percent, Stacked };
-    explicit DiagramTypeDialog( KDChart::Chart *chart, QWidget *parent = nullptr );
+    enum DiagramType
+    {
+        Bar,
+        LyingBar,
+        Line,
+        Plotter,
+        Pie
+    };
+    enum Subtype
+    {
+        Normal,
+        Percent,
+        Stacked
+    };
+    explicit DiagramTypeDialog(KDChart::Chart *chart, QWidget *parent = nullptr);
     ~DiagramTypeDialog() override;
 
-    void setDefaultModels( QHash< DiagramType, QAbstractItemModel* > models );
+    void setDefaultModels(QHash<DiagramType, QAbstractItemModel *> models);
 
 Q_SIGNALS:
-    void diagramTypeChanged( DiagramType, Subtype );
+    void diagramTypeChanged(DiagramType, Subtype);
 
 private:
     class Private;

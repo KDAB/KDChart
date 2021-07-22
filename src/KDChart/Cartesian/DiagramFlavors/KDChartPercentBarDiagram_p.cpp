@@ -31,8 +31,8 @@
 
 using namespace KDChart;
 
-PercentBarDiagram::PercentBarDiagram( BarDiagram* d )
-    : BarDiagramType( d )
+PercentBarDiagram::PercentBarDiagram(BarDiagram *d)
+    : BarDiagramType(d)
 {
 }
 
@@ -43,8 +43,8 @@ BarDiagram::BarType PercentBarDiagram::type() const
 
 const QPair<QPointF, QPointF> PercentBarDiagram::calculateDataBoundaries() const
 {
-    const int rowCount = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
-    const int colCount = diagram()->model() ? diagram()->model()->columnCount( diagram()->rootIndex() ) : 0;
+    const int rowCount = diagram()->model() ? diagram()->model()->rowCount(diagram()->rootIndex()) : 0;
+    const int colCount = diagram()->model() ? diagram()->model()->columnCount(diagram()->rootIndex()) : 0;
 
     const qreal xMin = 0.0;
     const qreal xMax = rowCount;
@@ -53,30 +53,30 @@ const QPair<QPointF, QPointF> PercentBarDiagram::calculateDataBoundaries() const
 
     qreal usedDepth = 0;
 
-    for ( int row = 0; row < rowCount ; ++row ) {
-        for ( int col = 0; col < colCount; ++col ) {
-            const CartesianDiagramDataCompressor::CachePosition position( row, col );
-            const CartesianDiagramDataCompressor::DataPoint p = compressor().data( position );
-            QModelIndex sourceIndex = attributesModel()->mapToSource( p.index );
-            ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( sourceIndex );
+    for (int row = 0; row < rowCount; ++row) {
+        for (int col = 0; col < colCount; ++col) {
+            const CartesianDiagramDataCompressor::CachePosition position(row, col);
+            const CartesianDiagramDataCompressor::DataPoint p = compressor().data(position);
+            QModelIndex sourceIndex = attributesModel()->mapToSource(p.index);
+            ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes(sourceIndex);
 
-            if ( threeDAttrs.isEnabled() && threeDAttrs.depth() > usedDepth ) {
+            if (threeDAttrs.isEnabled() && threeDAttrs.depth() > usedDepth) {
                 usedDepth = threeDAttrs.depth();
             }
         }
     }
 
-    return QPair< QPointF, QPointF >( QPointF( xMin, yMin ), QPointF( xMax, yMax + usedDepth * 0.3 ) );
+    return QPair<QPointF, QPointF>(QPointF(xMin, yMin), QPointF(xMax, yMax + usedDepth * 0.3));
 }
 
-void PercentBarDiagram::paint( PaintContext* ctx )
+void PercentBarDiagram::paint(PaintContext *ctx)
 {
     reverseMapper().clear();
 
-    const QPair<QPointF,QPointF> boundaries = diagram()->dataBoundaries(); // cached
+    const QPair<QPointF, QPointF> boundaries = diagram()->dataBoundaries(); // cached
 
-    const QPointF boundLeft = ctx->coordinatePlane()->translate( boundaries.first ) ;
-    const QPointF boundRight = ctx->coordinatePlane()->translate( boundaries.second );
+    const QPointF boundLeft = ctx->coordinatePlane()->translate(boundaries.first);
+    const QPointF boundRight = ctx->coordinatePlane()->translate(boundaries.second);
 
     const int rowCount = compressor().modelDataRows();
     const int colCount = compressor().modelDataColumns();
@@ -89,115 +89,110 @@ void PercentBarDiagram::paint( PaintContext* ctx )
     qreal spaceBetweenBars = 0;
     qreal spaceBetweenGroups = 0;
 
-    if ( ba.useFixedBarWidth() ) {
+    if (ba.useFixedBarWidth()) {
         barWidth = ba.fixedBarWidth();
         groupWidth += barWidth;
 
         // Pending Michel set a min and max value for the groupWidth
         // related to the area.width
-        if ( groupWidth < 0 )
+        if (groupWidth < 0)
             groupWidth = 0;
 
-        if ( groupWidth  * rowCount > width )
+        if (groupWidth * rowCount > width)
             groupWidth = width / rowCount;
     }
 
     // maxLimit: allow the space between bars to be larger until area.width()
     // is covered by the groups.
-    qreal maxLimit = rowCount * (groupWidth + ((colCount-1) * ba.fixedDataValueGap()) );
+    qreal maxLimit = rowCount * (groupWidth + ((colCount - 1) * ba.fixedDataValueGap()));
 
 
     //Pending Michel: FixMe
-    if ( ba.useFixedDataValueGap() ) {
-        if ( width > maxLimit )
+    if (ba.useFixedDataValueGap()) {
+        if (width > maxLimit)
             spaceBetweenBars += ba.fixedDataValueGap();
         else
-            spaceBetweenBars = ((width/rowCount) - groupWidth)/(colCount-1);
+            spaceBetweenBars = ((width / rowCount) - groupWidth) / (colCount - 1);
     }
 
-    if ( ba.useFixedValueBlockGap() )
+    if (ba.useFixedValueBlockGap())
         spaceBetweenGroups += ba.fixedValueBlockGap();
 
-    calculateValueAndGapWidths( rowCount, colCount,groupWidth,
-                                barWidth, spaceBetweenBars, spaceBetweenGroups );
+    calculateValueAndGapWidths(rowCount, colCount, groupWidth,
+                               barWidth, spaceBetweenBars, spaceBetweenGroups);
 
     LabelPaintCache lpc;
     const qreal maxValue = 100; // always 100 %
     qreal sumValues = 0;
-    QVector <qreal > sumValuesVector;
+    QVector<qreal> sumValuesVector;
 
     //calculate sum of values for each column and store
-    for ( int row = 0; row < rowCount; ++row )
-    {
-        for ( int col = 0; col < colCount; ++col )
-        {
-            const CartesianDiagramDataCompressor::CachePosition position( row, col );
-            const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+    for (int row = 0; row < rowCount; ++row) {
+        for (int col = 0; col < colCount; ++col) {
+            const CartesianDiagramDataCompressor::CachePosition position(row, col);
+            const CartesianDiagramDataCompressor::DataPoint point = compressor().data(position);
             //if ( point.value > 0 )
-            sumValues += qMax( point.value, -point.value );
-            if ( col == colCount - 1 ) {
-                sumValuesVector <<  sumValues ;
+            sumValues += qMax(point.value, -point.value);
+            if (col == colCount - 1) {
+                sumValuesVector << sumValues;
                 sumValues = 0;
             }
         }
     }
 
     // calculate stacked percent value
-    for ( int col = 0; col < colCount; ++col )
-    {
+    for (int col = 0; col < colCount; ++col) {
         qreal offset = spaceBetweenGroups;
-        if ( ba.useFixedBarWidth() )
+        if (ba.useFixedBarWidth())
             offset -= ba.fixedBarWidth();
-        
-        if ( offset < 0 )
+
+        if (offset < 0)
             offset = 0;
 
-        for ( int row = 0; row < rowCount ; ++row )
-        {
-            const CartesianDiagramDataCompressor::CachePosition position( row, col );
-            const CartesianDiagramDataCompressor::DataPoint p = compressor().data( position );
-            QModelIndex sourceIndex = attributesModel()->mapToSource( p.index );
-            ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( sourceIndex );
+        for (int row = 0; row < rowCount; ++row) {
+            const CartesianDiagramDataCompressor::CachePosition position(row, col);
+            const CartesianDiagramDataCompressor::DataPoint p = compressor().data(position);
+            QModelIndex sourceIndex = attributesModel()->mapToSource(p.index);
+            ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes(sourceIndex);
 
-            if ( threeDAttrs.isEnabled() ) {
-                if ( barWidth > 0 )
-                    barWidth =  (width - ((offset+(threeDAttrs.depth()))*rowCount))/ rowCount;
-                if ( barWidth <= 0 ) {
+            if (threeDAttrs.isEnabled()) {
+                if (barWidth > 0)
+                    barWidth = (width - ((offset + (threeDAttrs.depth())) * rowCount)) / rowCount;
+                if (barWidth <= 0) {
                     barWidth = 0;
-                    maxDepth = offset - ( width/rowCount);
+                    maxDepth = offset - (width / rowCount);
                 }
             } else {
-                barWidth = (width - (offset*rowCount))/ rowCount;
+                barWidth = (width - (offset * rowCount)) / rowCount;
             }
 
-            const qreal value = qMax( p.value, -p.value );
+            const qreal value = qMax(p.value, -p.value);
             qreal stackedValues = 0.0;
             qreal key = 0.0;
-            
+
             // calculate stacked percent value
             // we only take in account positives values for now.
-            for ( int k = col; k >= 0 ; --k )
-            {
-                const CartesianDiagramDataCompressor::CachePosition position( row, k );
-                const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-                stackedValues += qMax( point.value, -point.value );
+            for (int k = col; k >= 0; --k) {
+                const CartesianDiagramDataCompressor::CachePosition position(row, k);
+                const CartesianDiagramDataCompressor::DataPoint point = compressor().data(position);
+                stackedValues += qMax(point.value, -point.value);
                 key = point.key;
             }
 
             QPointF point, previousPoint;
-            if ( sumValuesVector.at( row ) != 0 && value > 0 ) {
-                point = ctx->coordinatePlane()->translate( QPointF( key,  stackedValues / sumValuesVector.at( row ) * maxValue ) );
+            if (sumValuesVector.at(row) != 0 && value > 0) {
+                point = ctx->coordinatePlane()->translate(QPointF(key, stackedValues / sumValuesVector.at(row) * maxValue));
                 point.rx() += offset / 2;
 
-                previousPoint = ctx->coordinatePlane()->translate( QPointF( key, ( stackedValues - value)/sumValuesVector.at(row)* maxValue ) );
+                previousPoint = ctx->coordinatePlane()->translate(QPointF(key, (stackedValues - value) / sumValuesVector.at(row) * maxValue));
             }
             const qreal barHeight = previousPoint.y() - point.y();
 
-            const QRectF rect( point, QSizeF( barWidth, barHeight ) );
-            m_private->addLabel( &lpc, sourceIndex, nullptr, PositionPoints( rect ), Position::North,
-                                Position::South, value );
-            paintBars( ctx, sourceIndex, rect, maxDepth );
+            const QRectF rect(point, QSizeF(barWidth, barHeight));
+            m_private->addLabel(&lpc, sourceIndex, nullptr, PositionPoints(rect), Position::North,
+                                Position::South, value);
+            paintBars(ctx, sourceIndex, rect, maxDepth);
         }
     }
-    m_private->paintDataValueTextsAndMarkers( ctx, lpc, false );
+    m_private->paintDataValueTextsAndMarkers(ctx, lpc, false);
 }

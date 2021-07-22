@@ -33,8 +33,8 @@
 
 using namespace KDChart;
 
-TextArea::Private::Private() :
-    AbstractAreaBase::Private()
+TextArea::Private::Private()
+    : AbstractAreaBase::Private()
 {
     // this bloc left empty intentionally
 }
@@ -65,37 +65,37 @@ void TextArea::init()
     // this bloc left empty intentionally
 }
 
-void TextArea::paintIntoRect( QPainter& painter, const QRect& rect )
+void TextArea::paintIntoRect(QPainter &painter, const QRect &rect)
 {
-    const QRect oldGeometry( geometry() );
-    if ( oldGeometry != rect )
-        setGeometry( rect );
-    painter.translate( rect.left(), rect.top() );
-    paintAll( painter );
-    painter.translate( -rect.left(), -rect.top() );
-    if ( oldGeometry != rect )
-        setGeometry( oldGeometry );
+    const QRect oldGeometry(geometry());
+    if (oldGeometry != rect)
+        setGeometry(rect);
+    painter.translate(rect.left(), rect.top());
+    paintAll(painter);
+    painter.translate(-rect.left(), -rect.top());
+    if (oldGeometry != rect)
+        setGeometry(oldGeometry);
 }
 
-void TextArea::paintAll( QPainter& painter )
+void TextArea::paintAll(QPainter &painter)
 {
     // Paint the background and frame
-    paintBackground( painter, geometry() );
-    paintFrame( painter, geometry() );
+    paintBackground(painter, geometry());
+    paintFrame(painter, geometry());
 
     // temporarily adjust the widget size, to be sure all content gets calculated
     // to fit into the inner rectangle
-    const QRect oldGeometry( areaGeometry() );
-    QRect inner( innerRect() );
+    const QRect oldGeometry(areaGeometry());
+    QRect inner(innerRect());
     inner.moveTo(
         oldGeometry.left() + inner.left(),
-        oldGeometry.top()  + inner.top() );
+        oldGeometry.top() + inner.top());
     const bool needAdjustGeometry = oldGeometry != inner;
-    if ( needAdjustGeometry )
-        setGeometry( inner );
-    paint( &painter );
-    if ( needAdjustGeometry )
-        setGeometry( oldGeometry );
+    if (needAdjustGeometry)
+        setGeometry(inner);
+    paint(&painter);
+    if (needAdjustGeometry)
+        setGeometry(oldGeometry);
     //qDebug() << "TextAreaWidget::paintAll() done.";
 }
 
@@ -106,6 +106,5 @@ QRect TextArea::areaGeometry() const
 
 void TextArea::positionHasChanged()
 {
-    emit positionChanged( this );
+    emit positionChanged(this);
 }
-

@@ -27,15 +27,17 @@
 
 namespace KDChart {
 
-    class StackedLyingBarDiagram : public BarDiagram::BarDiagramType
+class StackedLyingBarDiagram : public BarDiagram::BarDiagramType
+{
+public:
+    explicit StackedLyingBarDiagram(BarDiagram *);
+    ~StackedLyingBarDiagram() override
     {
-    public:
-        explicit StackedLyingBarDiagram( BarDiagram* );
-        ~StackedLyingBarDiagram() override {}
-        BarDiagram::BarType type() const override;
-        const QPair<QPointF,  QPointF> calculateDataBoundaries() const override;
-        void paint( PaintContext* ctx ) override;
-    };
+    }
+    BarDiagram::BarType type() const override;
+    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    void paint(PaintContext *ctx) override;
+};
 
 }
 

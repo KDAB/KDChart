@@ -40,16 +40,21 @@
 
 
 namespace KDChart {
-  
+
 class RadarCoordinatePlane::Private : public PolarCoordinatePlane::Private
 {
     friend class RadarCoordinatePlane;
-public:
-    explicit Private() { }
 
-    ~Private() override { }
+public:
+    explicit Private()
+    {
+    }
+
+    ~Private() override
+    {
+    }
     TextAttributes textAttributes;
-    
+
     void initialize() override
     {
         grid = new RadarGrid();

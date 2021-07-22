@@ -87,4 +87,3 @@ AbstractRowController::~AbstractRowController()
  *
  *\see QTreeView::indexAbove
  */
-

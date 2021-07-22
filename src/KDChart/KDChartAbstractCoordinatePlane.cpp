@@ -39,19 +39,19 @@ using namespace KDChart;
 
 AbstractCoordinatePlane::Private::Private()
     : AbstractArea::Private()
-    , parent( nullptr )
-    , grid( nullptr )
-    , referenceCoordinatePlane( nullptr )
-    , enableCornerSpacers( true )
-    , enableRubberBandZooming( false )
-    , rubberBand( nullptr )
+    , parent(nullptr)
+    , grid(nullptr)
+    , referenceCoordinatePlane(nullptr)
+    , enableCornerSpacers(true)
+    , enableRubberBandZooming(false)
+    , rubberBand(nullptr)
 {
     // this bloc left empty intentionally
 }
 
 
-AbstractCoordinatePlane::AbstractCoordinatePlane ( KDChart::Chart* parent )
-    : AbstractArea ( new Private() )
+AbstractCoordinatePlane::AbstractCoordinatePlane(KDChart::Chart *parent)
+    : AbstractArea(new Private())
 {
     d->parent = parent;
     d->init();
@@ -59,51 +59,51 @@ AbstractCoordinatePlane::AbstractCoordinatePlane ( KDChart::Chart* parent )
 
 AbstractCoordinatePlane::~AbstractCoordinatePlane()
 {
-    emit destroyedCoordinatePlane( this );
+    emit destroyedCoordinatePlane(this);
 }
 
 void AbstractCoordinatePlane::init()
 {
-    d->initialize();  // virtual method to init the correct grid: cartesian, polar, ...
-    connect( this, SIGNAL(internal_geometryChanged( QRect, QRect )),
-             this, SIGNAL(geometryChanged( QRect, QRect )),
-             Qt::QueuedConnection );
+    d->initialize(); // virtual method to init the correct grid: cartesian, polar, ...
+    connect(this, SIGNAL(internal_geometryChanged(QRect, QRect)),
+            this, SIGNAL(geometryChanged(QRect, QRect)),
+            Qt::QueuedConnection);
 }
 
-void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
+void AbstractCoordinatePlane::addDiagram(AbstractDiagram *diagram)
 {
     // diagrams are invisible and paint through their paint() method
     diagram->hide();
 
-    d->diagrams.append( diagram );
-    diagram->setParent( d->parent );
-    diagram->setCoordinatePlane( this );
+    d->diagrams.append(diagram);
+    diagram->setParent(d->parent);
+    diagram->setCoordinatePlane(this);
     layoutDiagrams();
     layoutPlanes(); // there might be new axes, etc
-    connect( diagram, SIGNAL( modelsChanged() ), this, SLOT( layoutPlanes() ) );
-    connect( diagram, SIGNAL( modelDataChanged() ), this, SLOT( update()) );
-    connect( diagram, SIGNAL( modelDataChanged() ), this, SLOT( relayout()) );
-    connect( this, SIGNAL( boundariesChanged() ), diagram, SIGNAL( boundariesChanged() ) );
+    connect(diagram, SIGNAL(modelsChanged()), this, SLOT(layoutPlanes()));
+    connect(diagram, SIGNAL(modelDataChanged()), this, SLOT(update()));
+    connect(diagram, SIGNAL(modelDataChanged()), this, SLOT(relayout()));
+    connect(this, SIGNAL(boundariesChanged()), diagram, SIGNAL(boundariesChanged()));
 
     update();
     emit boundariesChanged();
 }
 
 /*virtual*/
-void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, AbstractDiagram* oldDiagram_ )
+void AbstractCoordinatePlane::replaceDiagram(AbstractDiagram *diagram, AbstractDiagram *oldDiagram_)
 {
-    if ( diagram && oldDiagram_ != diagram ) {
-        AbstractDiagram* oldDiagram = oldDiagram_;
-        if ( d->diagrams.count() ) {
-            if ( ! oldDiagram ) {
+    if (diagram && oldDiagram_ != diagram) {
+        AbstractDiagram *oldDiagram = oldDiagram_;
+        if (d->diagrams.count()) {
+            if (!oldDiagram) {
                 oldDiagram = d->diagrams.first();
-                if ( oldDiagram == diagram )
+                if (oldDiagram == diagram)
                     return;
             }
-            takeDiagram( oldDiagram );
+            takeDiagram(oldDiagram);
         }
         delete oldDiagram;
-        addDiagram( diagram );
+        addDiagram(diagram);
         layoutDiagrams();
         layoutPlanes(); // there might be new axes, etc
         update();
@@ -111,26 +111,25 @@ void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, Abstrac
 }
 
 /*virtual*/
-void AbstractCoordinatePlane::takeDiagram ( AbstractDiagram* diagram )
+void AbstractCoordinatePlane::takeDiagram(AbstractDiagram *diagram)
 {
-    const int idx = d->diagrams.indexOf( diagram );
-    if ( idx != -1 ) {
-        d->diagrams.removeAt( idx );
-        diagram->setParent( nullptr );
-        diagram->setCoordinatePlane( nullptr );
-        disconnect( diagram, SIGNAL( modelsChanged() ), this, SLOT( layoutPlanes() ) );
-        disconnect( diagram, SIGNAL( modelDataChanged() ), this, SLOT( update()) );
-        disconnect( diagram, SIGNAL( modelDataChanged() ), this, SLOT( relayout()) );
+    const int idx = d->diagrams.indexOf(diagram);
+    if (idx != -1) {
+        d->diagrams.removeAt(idx);
+        diagram->setParent(nullptr);
+        diagram->setCoordinatePlane(nullptr);
+        disconnect(diagram, SIGNAL(modelsChanged()), this, SLOT(layoutPlanes()));
+        disconnect(diagram, SIGNAL(modelDataChanged()), this, SLOT(update()));
+        disconnect(diagram, SIGNAL(modelDataChanged()), this, SLOT(relayout()));
         layoutDiagrams();
         update();
     }
 }
 
 
-AbstractDiagram* AbstractCoordinatePlane::diagram()
+AbstractDiagram *AbstractCoordinatePlane::diagram()
 {
-    if ( d->diagrams.isEmpty() )
-    {
+    if (d->diagrams.isEmpty()) {
         return nullptr;
     } else {
         return d->diagrams.first();
@@ -146,15 +145,15 @@ ConstAbstractDiagramList AbstractCoordinatePlane::diagrams() const
 {
     ConstAbstractDiagramList list;
 #ifndef QT_NO_STL
-    qCopy( d->diagrams.begin(), d->diagrams.end(), std::back_inserter( list ) );
+    qCopy(d->diagrams.begin(), d->diagrams.end(), std::back_inserter(list));
 #else
-    Q_FOREACH( AbstractDiagram * a, d->diagrams )
-        list.push_back( a );
+    Q_FOREACH (AbstractDiagram *a, d->diagrams)
+        list.push_back(a);
 #endif
     return list;
 }
 
-void KDChart::AbstractCoordinatePlane::setGlobalGridAttributes( const GridAttributes& a )
+void KDChart::AbstractCoordinatePlane::setGlobalGridAttributes(const GridAttributes &a)
 {
     d->gridAttributes = a;
     update();
@@ -167,7 +166,7 @@ GridAttributes KDChart::AbstractCoordinatePlane::globalGridAttributes() const
 
 KDChart::DataDimensionsList KDChart::AbstractCoordinatePlane::gridDimensionsList()
 {
-    return d->grid->updateData( this );
+    return d->grid->updateData(this);
 }
 
 void KDChart::AbstractCoordinatePlane::setGridNeedsRecalculate()
@@ -175,27 +174,27 @@ void KDChart::AbstractCoordinatePlane::setGridNeedsRecalculate()
     d->grid->setNeedRecalculate();
 }
 
-void KDChart::AbstractCoordinatePlane::setReferenceCoordinatePlane( AbstractCoordinatePlane * plane )
+void KDChart::AbstractCoordinatePlane::setReferenceCoordinatePlane(AbstractCoordinatePlane *plane)
 {
     d->referenceCoordinatePlane = plane;
 }
 
-AbstractCoordinatePlane * KDChart::AbstractCoordinatePlane::referenceCoordinatePlane( ) const
+AbstractCoordinatePlane *KDChart::AbstractCoordinatePlane::referenceCoordinatePlane() const
 {
     return d->referenceCoordinatePlane;
 }
 
-void KDChart::AbstractCoordinatePlane::setParent( KDChart::Chart* parent )
+void KDChart::AbstractCoordinatePlane::setParent(KDChart::Chart *parent)
 {
     d->parent = parent;
 }
 
-const KDChart::Chart* KDChart::AbstractCoordinatePlane::parent() const
+const KDChart::Chart *KDChart::AbstractCoordinatePlane::parent() const
 {
     return d->parent;
 }
 
-KDChart::Chart* KDChart::AbstractCoordinatePlane::parent()
+KDChart::Chart *KDChart::AbstractCoordinatePlane::parent()
 {
     return d->parent;
 }
@@ -232,12 +231,12 @@ QSize KDChart::AbstractCoordinatePlane::sizeHint() const
     return maximumSize();
 }
 /* pure virtual in QLayoutItem */
-void KDChart::AbstractCoordinatePlane::setGeometry( const QRect& r )
+void KDChart::AbstractCoordinatePlane::setGeometry(const QRect &r)
 {
-    if ( d->geometry != r ) {
+    if (d->geometry != r) {
         // inform the outside word by Signal geometryChanged()
         // via a queued connection to internal_geometryChanged()
-        emit internal_geometryChanged( d->geometry, r );
+        emit internal_geometryChanged(d->geometry, r);
 
         d->geometry = r;
         // Note: We do *not* call update() here
@@ -268,12 +267,11 @@ void KDChart::AbstractCoordinatePlane::layoutPlanes()
     emit needLayoutPlanes();
 }
 
-void KDChart::AbstractCoordinatePlane::setRubberBandZoomingEnabled( bool enable )
+void KDChart::AbstractCoordinatePlane::setRubberBandZoomingEnabled(bool enable)
 {
     d->enableRubberBandZooming = enable;
 
-    if ( !enable && d->rubberBand != nullptr )
-    {
+    if (!enable && d->rubberBand != nullptr) {
         delete d->rubberBand;
         d->rubberBand = nullptr;
     }
@@ -284,9 +282,10 @@ bool KDChart::AbstractCoordinatePlane::isRubberBandZoomingEnabled() const
     return d->enableRubberBandZooming;
 }
 
-void KDChart::AbstractCoordinatePlane::setCornerSpacersEnabled( bool enable )
+void KDChart::AbstractCoordinatePlane::setCornerSpacersEnabled(bool enable)
 {
-    if ( d->enableCornerSpacers == enable ) return;
+    if (d->enableCornerSpacers == enable)
+        return;
 
     d->enableCornerSpacers = enable;
     emit needRelayout();
@@ -297,83 +296,73 @@ bool KDChart::AbstractCoordinatePlane::isCornerSpacersEnabled() const
     return d->enableCornerSpacers;
 }
 
-void KDChart::AbstractCoordinatePlane::mousePressEvent( QMouseEvent* event )
+void KDChart::AbstractCoordinatePlane::mousePressEvent(QMouseEvent *event)
 {
-    if ( event->button() == Qt::LeftButton )
-    {
-        if ( d->enableRubberBandZooming && d->rubberBand == nullptr )
-            d->rubberBand = new QRubberBand( QRubberBand::Rectangle, qobject_cast< QWidget* >( parent() ) );
+    if (event->button() == Qt::LeftButton) {
+        if (d->enableRubberBandZooming && d->rubberBand == nullptr)
+            d->rubberBand = new QRubberBand(QRubberBand::Rectangle, qobject_cast<QWidget *>(parent()));
 
-        if ( d->rubberBand != nullptr )
-        {
+        if (d->rubberBand != nullptr) {
             d->rubberBandOrigin = event->pos();
-            d->rubberBand->setGeometry( QRect( event->pos(), QSize() ) );
+            d->rubberBand->setGeometry(QRect(event->pos(), QSize()));
             d->rubberBand->show();
 
             event->accept();
         }
-    }
-    else if ( event->button() == Qt::RightButton )
-    {
-        if ( d->enableRubberBandZooming && !d->rubberBandZoomConfigHistory.isEmpty() )
-        {
+    } else if (event->button() == Qt::RightButton) {
+        if (d->enableRubberBandZooming && !d->rubberBandZoomConfigHistory.isEmpty()) {
             // restore the last config from the stack
             ZoomParameters config = d->rubberBandZoomConfigHistory.pop();
-            setZoomFactorX( config.xFactor );
-            setZoomFactorY( config.yFactor );
-            setZoomCenter( config.center() );
+            setZoomFactorX(config.xFactor);
+            setZoomFactorY(config.yFactor);
+            setZoomCenter(config.center());
 
-            QWidget* const p = qobject_cast< QWidget* >( parent() );
-            if ( p != nullptr )
+            QWidget *const p = qobject_cast<QWidget *>(parent());
+            if (p != nullptr)
                 p->update();
 
             event->accept();
         }
     }
 
-    Q_FOREACH( AbstractDiagram * a, d->diagrams )
-    {
-        a->mousePressEvent( event );
+    Q_FOREACH (AbstractDiagram *a, d->diagrams) {
+        a->mousePressEvent(event);
     }
 }
 
-void KDChart::AbstractCoordinatePlane::mouseDoubleClickEvent( QMouseEvent* event )
+void KDChart::AbstractCoordinatePlane::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    if ( event->button() == Qt::RightButton )
-    {
+    if (event->button() == Qt::RightButton) {
         // othewise the second click gets lost
         // which is pretty annoying when zooming out fast
-        mousePressEvent( event );
+        mousePressEvent(event);
     }
-    Q_FOREACH( AbstractDiagram * a, d->diagrams )
-    {
-        a->mouseDoubleClickEvent( event );
+    Q_FOREACH (AbstractDiagram *a, d->diagrams) {
+        a->mouseDoubleClickEvent(event);
     }
 }
 
-void KDChart::AbstractCoordinatePlane::mouseReleaseEvent( QMouseEvent* event )
+void KDChart::AbstractCoordinatePlane::mouseReleaseEvent(QMouseEvent *event)
 {
-    if ( d->rubberBand != nullptr )
-    {
+    if (d->rubberBand != nullptr) {
         // save the old config on the stack
-        d->rubberBandZoomConfigHistory.push( ZoomParameters( zoomFactorX(), zoomFactorY(), zoomCenter() ) );
+        d->rubberBandZoomConfigHistory.push(ZoomParameters(zoomFactorX(), zoomFactorY(), zoomCenter()));
 
         // this is the height/width of the rubber band in pixel space
-        const qreal rubberWidth = static_cast< qreal >( d->rubberBand->width() );
-        const qreal rubberHeight = static_cast< qreal >( d->rubberBand->height() );
+        const qreal rubberWidth = static_cast<qreal>(d->rubberBand->width());
+        const qreal rubberHeight = static_cast<qreal>(d->rubberBand->height());
 
-        if ( rubberWidth > 0.0 && rubberHeight > 0.0 )
-        {
+        if (rubberWidth > 0.0 && rubberHeight > 0.0) {
             // this is the center of the rubber band in pixel space
-            const qreal centerX = qFloor( d->rubberBand->geometry().width() / 2.0 + d->rubberBand->geometry().x() );
-            const qreal centerY = qCeil( d->rubberBand->geometry().height() / 2.0 + d->rubberBand->geometry().y() );
+            const qreal centerX = qFloor(d->rubberBand->geometry().width() / 2.0 + d->rubberBand->geometry().x());
+            const qreal centerY = qCeil(d->rubberBand->geometry().height() / 2.0 + d->rubberBand->geometry().y());
 
-            const qreal rubberCenterX = static_cast< qreal >( centerX - geometry().x() );
-            const qreal rubberCenterY = static_cast< qreal >( centerY - geometry().y() );
+            const qreal rubberCenterX = static_cast<qreal>(centerX - geometry().x());
+            const qreal rubberCenterY = static_cast<qreal>(centerY - geometry().y());
 
             // this is the height/width of the plane in pixel space
-            const qreal myWidth = static_cast< qreal >( geometry().width() );
-            const qreal myHeight = static_cast< qreal >( geometry().height() );
+            const qreal myWidth = static_cast<qreal>(geometry().width());
+            const qreal myHeight = static_cast<qreal>(geometry().height());
 
             // this describes the new center of zooming, relative to the plane pixel space
             const qreal newCenterX = rubberCenterX / myWidth / zoomFactorX() + zoomCenter().x() - 0.5 / zoomFactorX();
@@ -384,11 +373,11 @@ void KDChart::AbstractCoordinatePlane::mouseReleaseEvent( QMouseEvent* event )
             const qreal newZoomFactorY = zoomFactorY() * myHeight / rubberHeight;
 
             // and this the new center
-            const QPointF newZoomCenter( newCenterX, newCenterY );
+            const QPointF newZoomCenter(newCenterX, newCenterY);
 
-            setZoomFactorX( newZoomFactorX );
-            setZoomFactorY( newZoomFactorY );
-            setZoomCenter( newZoomCenter );
+            setZoomFactorX(newZoomFactorX);
+            setZoomFactorY(newZoomFactorY);
+            setZoomCenter(newZoomCenter);
         }
 
         d->rubberBand->parentWidget()->update();
@@ -398,53 +387,51 @@ void KDChart::AbstractCoordinatePlane::mouseReleaseEvent( QMouseEvent* event )
         event->accept();
     }
 
-    Q_FOREACH( AbstractDiagram * a, d->diagrams )
-    {
-        a->mouseReleaseEvent( event );
+    Q_FOREACH (AbstractDiagram *a, d->diagrams) {
+        a->mouseReleaseEvent(event);
     }
 }
 
-void KDChart::AbstractCoordinatePlane::mouseMoveEvent( QMouseEvent* event )
+void KDChart::AbstractCoordinatePlane::mouseMoveEvent(QMouseEvent *event)
 {
-    if ( d->rubberBand != nullptr )
-    {
-        const QRect normalized = QRect( d->rubberBandOrigin, event->pos() ).normalized();
-        d->rubberBand->setGeometry( normalized &  geometry() );
+    if (d->rubberBand != nullptr) {
+        const QRect normalized = QRect(d->rubberBandOrigin, event->pos()).normalized();
+        d->rubberBand->setGeometry(normalized & geometry());
 
         event->accept();
     }
 
-    Q_FOREACH( AbstractDiagram * a, d->diagrams )
-    {
-        a->mouseMoveEvent( event );
+    Q_FOREACH (AbstractDiagram *a, d->diagrams) {
+        a->mouseMoveEvent(event);
     }
 }
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && defined(Q_COMPILER_MANGLES_RETURN_TYPE)
 const
 #endif
-bool KDChart::AbstractCoordinatePlane::isVisiblePoint( const QPointF& point ) const
+    bool
+    KDChart::AbstractCoordinatePlane::isVisiblePoint(const QPointF &point) const
 {
-    return d->isVisiblePoint( this, point );
+    return d->isVisiblePoint(this, point);
 }
 
-AbstractCoordinatePlane* KDChart::AbstractCoordinatePlane::sharedAxisMasterPlane( QPainter* p )
+AbstractCoordinatePlane *KDChart::AbstractCoordinatePlane::sharedAxisMasterPlane(QPainter *p)
 {
-    Q_UNUSED( p );
+    Q_UNUSED(p);
     return this;
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)
 #include "KDChartEnums.h"
 
-QDebug KDChart::operator<<( QDebug stream, const DataDimension& r )
+QDebug KDChart::operator<<(QDebug stream, const DataDimension &r)
 {
     stream << "DataDimension("
            << " start=" << r.start
            << " end=" << r.end
-           << " sequence=" << KDChartEnums::granularitySequenceToString( r.sequence )
+           << " sequence=" << KDChartEnums::granularitySequenceToString(r.sequence)
            << " isCalculated=" << r.isCalculated
-           << " calcMode=" << ( r.calcMode == AbstractCoordinatePlane::Logarithmic ? "Logarithmic" : "Linear" )
+           << " calcMode=" << (r.calcMode == AbstractCoordinatePlane::Logarithmic ? "Logarithmic" : "Linear")
            << " stepWidth=" << r.stepWidth
            << " subStepWidth=" << r.subStepWidth
            << " )";

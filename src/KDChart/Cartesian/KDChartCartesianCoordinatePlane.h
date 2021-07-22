@@ -27,75 +27,75 @@
 
 namespace KDChart {
 
-    class Chart;
-    class PaintContext;
-    class AbstractDiagram;
-    class CartesianAxis;
-    class CartesianGrid;
+class Chart;
+class PaintContext;
+class AbstractDiagram;
+class CartesianAxis;
+class CartesianGrid;
 
-    /**
+/**
       * @brief Cartesian coordinate plane
       */
-    class KDCHART_EXPORT CartesianCoordinatePlane : public AbstractCoordinatePlane
-    {
-        Q_OBJECT
+class KDCHART_EXPORT CartesianCoordinatePlane : public AbstractCoordinatePlane
+{
+    Q_OBJECT
 
-        Q_DISABLE_COPY( CartesianCoordinatePlane )
-        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( CartesianCoordinatePlane, Chart* )
+    Q_DISABLE_COPY(CartesianCoordinatePlane)
+    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT(CartesianCoordinatePlane, Chart *)
 
     friend class CartesianAxis;
     friend class CartesianGrid;
 
-    public:
-        explicit CartesianCoordinatePlane ( Chart* parent = nullptr );
-        ~CartesianCoordinatePlane() override;
+public:
+    explicit CartesianCoordinatePlane(Chart *parent = nullptr);
+    ~CartesianCoordinatePlane() override;
 
-        void addDiagram ( AbstractDiagram* diagram ) override;
+    void addDiagram(AbstractDiagram *diagram) override;
 
-        /**
+    /**
          * If @p onOff is true, enforce that X and Y distances are scaled by the same factor.
          * This makes the plane's height a function of its width, and hasHeightForWidth()
          * will return true.
          */
-        void setIsometricScaling ( bool onOff );
+    void setIsometricScaling(bool onOff);
 
-        bool doesIsometricScaling() const;
+    bool doesIsometricScaling() const;
 
-        const QPointF translate ( const QPointF& diagramPoint ) const override;
+    const QPointF translate(const QPointF &diagramPoint) const override;
 
-        /**
+    /**
          * \sa setZoomFactorX, setZoomCenter
          */
-        qreal zoomFactorX() const override;
-        /**
+    qreal zoomFactorX() const override;
+    /**
          * \sa setZoomFactorY, setZoomCenter
          */
-        qreal zoomFactorY() const override;
+    qreal zoomFactorY() const override;
 
-        /**
+    /**
          * \sa setZoomFactorX,setZoomFactorY
          */
-        void setZoomFactors( qreal factorX, qreal factorY ) override;
-        /**
+    void setZoomFactors(qreal factorX, qreal factorY) override;
+    /**
          * \sa zoomFactorX, setZoomCenter
          */
-        void setZoomFactorX( qreal factor ) override;
-        /**
+    void setZoomFactorX(qreal factor) override;
+    /**
          * \sa zoomFactorY, setZoomCenter
          */
-        void setZoomFactorY( qreal factor ) override;
+    void setZoomFactorY(qreal factor) override;
 
-        /**
+    /**
          * \sa setZoomCenter, setZoomFactorX, setZoomFactorY
          */
-        QPointF zoomCenter() const override;
+    QPointF zoomCenter() const override;
 
-        /**
+    /**
          * \sa zoomCenter, setZoomFactorX, setZoomFactorY
          */
-        void setZoomCenter( const QPointF& center ) override;
+    void setZoomCenter(const QPointF &center) override;
 
-        /**
+    /**
          * Allows to specify a fixed data-space / coordinate-space relation. If set
          * to true then fixed bar widths are used, so you see more bars as the window
          * is made wider.
@@ -104,20 +104,20 @@ namespace KDChart {
          * upon resizing a window, the graphs coordinate plane will grow (add more
          * ticks to x- and y-coordinates) rather than have the image grow.
          */
-        void setFixedDataCoordinateSpaceRelation( bool fixed );
-        bool hasFixedDataCoordinateSpaceRelation() const;
+    void setFixedDataCoordinateSpaceRelation(bool fixed);
+    bool hasFixedDataCoordinateSpaceRelation() const;
 
-        /**
+    /**
           * Allows to fix the lower bound of X axis to zero when diagram is in first quadrant.
           *
           * The default behavior is to lower x or y bound to be 0. If this behaviour is not wanted,
           * either \a CartesianCoordinatePlane::setHorizontalRange could be used instead of letting
           * KDChart auto-adjust the ranges, or this method can be used to disable this behavior.
           */
-        void setXAxisStartAtZero(bool fixedStart);
-        bool xAxisStartAtZero() const;
+    void setXAxisStartAtZero(bool fixedStart);
+    bool xAxisStartAtZero() const;
 
-        /**
+    /**
          * \brief Set the boundaries of the visible value space displayed in horizontal direction.
          *
          * This is also known as the horizontal viewport.
@@ -152,9 +152,9 @@ namespace KDChart {
          * \sa setAutoAdjustHorizontalRangeToData, setVerticalRange
          * \sa GridAttributes::setAdjustBoundsToGrid()
          */
-        void setHorizontalRange( const QPair<qreal, qreal> & range );
+    void setHorizontalRange(const QPair<qreal, qreal> &range);
 
-        /**
+    /**
          * \brief Set the boundaries of the visible value space displayed in vertical direction.
          *
          * This is also known as the vertical viewport.
@@ -189,27 +189,27 @@ namespace KDChart {
          * \sa setAutoAdjustVerticalRangeToData, setHorizontalRange
          * \sa GridAttributes::setAdjustBoundsToGrid()
          */
-        void setVerticalRange( const QPair<qreal, qreal> & range );
+    void setVerticalRange(const QPair<qreal, qreal> &range);
 
-        /**
+    /**
          * @return The largest and smallest visible horizontal value space
          * value. If this is not explicitly set,or if both values are the same,
          * the plane will use the union of the dataBoundaries of all
          * associated diagrams.
          * \see KDChart::AbstractDiagram::dataBoundaries
          */
-        QPair<qreal, qreal> horizontalRange() const;
+    QPair<qreal, qreal> horizontalRange() const;
 
-        /**
+    /**
          * @return The largest and smallest visible horizontal value space
          * value. If this is not explicitly set, or if both values are the same,
          * the plane will use the union of the dataBoundaries of all
          * associated diagrams.
          * \see KDChart::AbstractDiagram::dataBoundaries
          */
-        QPair<qreal, qreal> verticalRange() const;
+    QPair<qreal, qreal> verticalRange() const;
 
-        /**
+    /**
          * \brief Automatically adjust horizontal range settings to the ranges covered by
          * the model's values, when ever the data have changed, and then emit horizontalRangeAutomaticallyAdjusted.
          *
@@ -229,9 +229,9 @@ namespace KDChart {
          * \sa setHorizontalRange, setVerticalRange
          * \sa setAutoAdjustVerticalRangeToData
          */
-        void setAutoAdjustHorizontalRangeToData( unsigned int percentEmpty = 67 );
+    void setAutoAdjustHorizontalRangeToData(unsigned int percentEmpty = 67);
 
-        /**
+    /**
          * \brief Automatically adjust vertical range settings to the ranges covered by
          * the model's values, when ever the data have changed, and then emit verticalRangeAutomaticallyAdjusted.
          *
@@ -251,9 +251,9 @@ namespace KDChart {
          * \sa setHorizontalRange, setVerticalRange
          * \sa setAutoAdjustHorizontalRangeToData
          */
-        void setAutoAdjustVerticalRangeToData( unsigned int percentEmpty = 67 );
+    void setAutoAdjustVerticalRangeToData(unsigned int percentEmpty = 67);
 
-        /**
+    /**
          * \brief Returns the maximal allowed percent of the horizontal
          * space covered by the coordinate plane that may be empty.
          *
@@ -263,9 +263,9 @@ namespace KDChart {
          *
          * \sa setAutoAdjustHorizontalRangeToData, adjustRangesToData
          */
-        unsigned int autoAdjustHorizontalRangeToData() const;
+    unsigned int autoAdjustHorizontalRangeToData() const;
 
-        /**
+    /**
          * \brief Returns the maximal allowed percent of the vertical
          * space covered by the coordinate plane that may be empty.
          *
@@ -275,10 +275,10 @@ namespace KDChart {
          *
          * \sa setAutoAdjustVerticalRangeToData, adjustRangesToData
          */
-        unsigned int autoAdjustVerticalRangeToData() const;
+    unsigned int autoAdjustVerticalRangeToData() const;
 
 
-        /**
+    /**
          * Set the attributes to be used for grid lines drawn in horizontal
          * direction (or in vertical direction, resp.).
          *
@@ -299,9 +299,9 @@ namespace KDChart {
          * \sa AbstractCoordinatePlane::setGlobalGridAttributes
          * \sa hasOwnGridAttributes
          */
-        void setGridAttributes( Qt::Orientation orientation, const GridAttributes & );
+    void setGridAttributes(Qt::Orientation orientation, const GridAttributes &);
 
-        /**
+    /**
          * Reset the attributes to be used for grid lines drawn in horizontal
          * direction (or in vertical direction, resp.).
          * By calling this method you specify that the global attributes set by
@@ -312,9 +312,9 @@ namespace KDChart {
          * \sa AbstractCoordinatePlane::globalGridAttributes
          * \sa hasOwnGridAttributes
          */
-        void resetGridAttributes( Qt::Orientation orientation );
+    void resetGridAttributes(Qt::Orientation orientation);
 
-        /**
+    /**
          * \return The attributes used for grid lines drawn in horizontal
          * direction (or in vertical direction, resp.).
          *
@@ -328,9 +328,9 @@ namespace KDChart {
          * \sa AbstractCoordinatePlane::globalGridAttributes
          * \sa hasOwnGridAttributes
          */
-        const GridAttributes gridAttributes( Qt::Orientation orientation ) const;
+    const GridAttributes gridAttributes(Qt::Orientation orientation) const;
 
-        /**
+    /**
          * \return Returns whether the grid attributes have been set for the
          * respective direction via setGridAttributes( orientation ).
          *
@@ -342,109 +342,109 @@ namespace KDChart {
          * \sa resetGridAttributes
          * \sa AbstractCoordinatePlane::globalGridAttributes
          */
-        bool hasOwnGridAttributes( Qt::Orientation orientation ) const;
+    bool hasOwnGridAttributes(Qt::Orientation orientation) const;
 
-        /**
+    /**
          * Disable / re-enable the built-in grid adjusting feature.
          *
          * By default additional lines will be drawn in a Linear grid when zooming in.
          *
          * \sa autoAdjustGridToZoom, setGridAttributes
          */
-        void setAutoAdjustGridToZoom( bool autoAdjust );
+    void setAutoAdjustGridToZoom(bool autoAdjust);
 
-        /**
+    /**
          * Return the status of the built-in grid adjusting feature.
          *
          * \sa setAutoAdjustGridToZoom
          */
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-        const bool autoAdjustGridToZoom() const;
+    const bool autoAdjustGridToZoom() const;
 #else
-        bool autoAdjustGridToZoom() const;
+    bool autoAdjustGridToZoom() const;
 #endif
 
-        AxesCalcMode axesCalcModeY() const;
-        AxesCalcMode axesCalcModeX() const;
+    AxesCalcMode axesCalcModeY() const;
+    AxesCalcMode axesCalcModeX() const;
 
-        /** Specifies the calculation modes for all axes */
-        void setAxesCalcModes( AxesCalcMode mode );
-        /** Specifies the calculation mode for all Ordinate axes */
-        void setAxesCalcModeY( AxesCalcMode mode );
-        /** Specifies the calculation mode for all Abscissa axes */
-        void setAxesCalcModeX( AxesCalcMode mode );
+    /** Specifies the calculation modes for all axes */
+    void setAxesCalcModes(AxesCalcMode mode);
+    /** Specifies the calculation mode for all Ordinate axes */
+    void setAxesCalcModeY(AxesCalcMode mode);
+    /** Specifies the calculation mode for all Abscissa axes */
+    void setAxesCalcModeX(AxesCalcMode mode);
 
-        /** reimpl */
-        void paint( QPainter* ) override;
+    /** reimpl */
+    void paint(QPainter *) override;
 
-        /** reimpl */
-        AbstractCoordinatePlane* sharedAxisMasterPlane( QPainter* p = nullptr ) override;
+    /** reimpl */
+    AbstractCoordinatePlane *sharedAxisMasterPlane(QPainter *p = nullptr) override;
 
-        /**
+    /**
          * Returns the currently visible data range. Might be greater than the
          * range of the grid.
          */
-        QRectF visibleDataRange() const;
+    QRectF visibleDataRange() const;
 
-        /**
+    /**
          * Returns the logical area, i.e., the rectangle defined by the very top
          * left and very bottom right coordinate.
          */
-        QRectF logicalArea() const;
+    QRectF logicalArea() const;
 
-        /**
+    /**
          * Returns the (physical) area occupied by the diagram. Unless zoom is applied
          * (which is also true when a fixed data coordinate / space relation is used),
          * \code diagramArea() == drawingArea() \endcode .
          * \sa setFixedDataCoordinateSpaceRelation
          * \sa drawingArea
          */
-        QRectF diagramArea() const;
+    QRectF diagramArea() const;
 
-        /**
+    /**
          * Returns the visible part of the diagram area, i.e.
          * \code diagramArea().intersected( drawingArea() ) \endcode
          * \sa diagramArea
          */
-        QRectF visibleDiagramArea() const;
+    QRectF visibleDiagramArea() const;
 
-        /**
+    /**
          * Sets whether the horizontal range should be reversed or not, i.e.
          * small values to the left and large values to the right (the default)
          * or vice versa.
          * \param reverse Whether the horizontal range should be reversed or not
          */
-        void setHorizontalRangeReversed( bool reverse );
+    void setHorizontalRangeReversed(bool reverse);
 
-        /**
+    /**
          * \return Whether the horizontal range is reversed or not
          */
-        bool isHorizontalRangeReversed() const;
+    bool isHorizontalRangeReversed() const;
 
-        /**
+    /**
          * Sets whether the vertical range should be reversed or not, i.e.
          * small values at the bottom and large values at the top (the default)
          * or vice versa.
          * \param reverse Whether the vertical range should be reversed or not
          */
-        void setVerticalRangeReversed( bool reverse );
+    void setVerticalRangeReversed(bool reverse);
 
-        /**
+    /**
          * \return Whether the vertical range is reversed or not
          */
-        bool isVerticalRangeReversed() const;
+    bool isVerticalRangeReversed() const;
 
-        /**
+    /**
          * reimplemented from AbstractCoordinatePlane
          */
-        void setGeometry( const QRect& r ) override;
+    void setGeometry(const QRect &r) override;
 
-        // reimplemented
-        Qt::Orientations expandingDirections() const override;
+    // reimplemented
+    Qt::Orientations expandingDirections() const override;
 
 
-    public Q_SLOTS:
-        /**
+public Q_SLOTS:
+    /**
          * \brief Adjust both, horizontal and vertical range settings to the
          * ranges covered by the model's data values.
          *
@@ -452,53 +452,55 @@ namespace KDChart {
          * \sa adjustHorizontalRangeToData, adjustVerticalRangeToData
          * \sa setAutoAdjustHorizontalRangeToData, setAutoAdjustVerticalRangeToData
          */
-        void adjustRangesToData();
+    void adjustRangesToData();
 
-        /**
+    /**
          * Adjust horizontal range settings to the ranges covered by the model's data values.
          * \sa adjustRangesToData
          */
-        void adjustHorizontalRangeToData();
+    void adjustHorizontalRangeToData();
 
-        /**
+    /**
          * Adjust vertical range settings to the ranges covered by the model's data values.
          * \sa adjustRangesToData
          */
-        void adjustVerticalRangeToData();
+    void adjustVerticalRangeToData();
 
-    protected:
-        QRectF getRawDataBoundingRectFromDiagrams() const;
-        QRectF adjustedToMaxEmptyInnerPercentage(
-                const QRectF& r, unsigned int percentX, unsigned int percentY ) const;
-        virtual QRectF calculateRawDataBoundingRect() const;
-        DataDimensionsList getDataDimensionsList() const override;
-        // the whole drawing area, includes diagrams and axes, but maybe smaller
-        // than (width, height):
-        virtual QRectF drawingArea() const;
-    public:
-        const QPointF translateBack( const QPointF& screenPoint ) const;
-    protected:
-        void paintEvent ( QPaintEvent* );
-        void layoutDiagrams() override;
-        // the following three return true if the new value is different from the old
-        bool doneSetZoomFactorX( qreal factor );
-        bool doneSetZoomFactorY( qreal factor );
-        bool doneSetZoomCenter( const QPointF& center );
+protected:
+    QRectF getRawDataBoundingRectFromDiagrams() const;
+    QRectF adjustedToMaxEmptyInnerPercentage(
+        const QRectF &r, unsigned int percentX, unsigned int percentY) const;
+    virtual QRectF calculateRawDataBoundingRect() const;
+    DataDimensionsList getDataDimensionsList() const override;
+    // the whole drawing area, includes diagrams and axes, but maybe smaller
+    // than (width, height):
+    virtual QRectF drawingArea() const;
 
-        void handleFixedDataCoordinateSpaceRelation( const QRectF& geometry );
+public:
+    const QPointF translateBack(const QPointF &screenPoint) const;
 
-        // reimplemented from QLayoutItem, via AbstractLayoutItem, AbstractArea, AbstractCoordinatePlane
-        bool hasHeightForWidth() const override;
-        int heightForWidth( int w ) const override;
-        QSize sizeHint() const override;
+protected:
+    void paintEvent(QPaintEvent *);
+    void layoutDiagrams() override;
+    // the following three return true if the new value is different from the old
+    bool doneSetZoomFactorX(qreal factor);
+    bool doneSetZoomFactorY(qreal factor);
+    bool doneSetZoomCenter(const QPointF &center);
 
-    protected Q_SLOTS:
-        void slotLayoutChanged( AbstractDiagram* );
+    void handleFixedDataCoordinateSpaceRelation(const QRectF &geometry);
 
-    private:
-        void setHasOwnGridAttributes(
-            Qt::Orientation orientation, bool on );
-    };
+    // reimplemented from QLayoutItem, via AbstractLayoutItem, AbstractArea, AbstractCoordinatePlane
+    bool hasHeightForWidth() const override;
+    int heightForWidth(int w) const override;
+    QSize sizeHint() const override;
+
+protected Q_SLOTS:
+    void slotLayoutChanged(AbstractDiagram *);
+
+private:
+    void setHasOwnGridAttributes(
+        Qt::Orientation orientation, bool on);
+};
 
 }
 

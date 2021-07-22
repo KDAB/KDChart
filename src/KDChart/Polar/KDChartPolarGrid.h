@@ -28,10 +28,10 @@
 
 namespace KDChart {
 
-    class PaintContext;
-    class PolarCoordinatePlane;
+class PaintContext;
+class PolarCoordinatePlane;
 
-    /**
+/**
      * \internal
      *
      * \brief Class for the grid in a polar plane.
@@ -41,18 +41,23 @@ namespace KDChart {
      * the sagittal grid lines, and the circular grid lines
      * of a polar coordinate plane.
      */
-    class PolarGrid : public AbstractGrid
+class PolarGrid : public AbstractGrid
+{
+public:
+    PolarGrid()
+        : AbstractGrid()
     {
-    public:
-        PolarGrid() : AbstractGrid() {}
-        ~PolarGrid() override {}
+    }
+    ~PolarGrid() override
+    {
+    }
 
-        void drawGrid( PaintContext* context ) override;
+    void drawGrid(PaintContext *context) override;
 
-    private:
-        DataDimensionsList calculateGrid(
-            const DataDimensionsList& rawDataDimensions ) const override;
-    };
+private:
+    DataDimensionsList calculateGrid(
+        const DataDimensionsList &rawDataDimensions) const override;
+};
 
 }
 

@@ -47,26 +47,27 @@ namespace KDChart {
 class RingDiagram::Private : public AbstractPieDiagram::Private
 {
     friend class RingDiagram;
+
 public:
     Private();
     ~Private() override;
 
-    Private( const Private& rhs ) :
-        AbstractPieDiagram::Private( rhs ),
-        startAngles(),
-        angleLens(),
-        position(),
-        size( 0 ),
-        polygonsToRender()
-        {
-            relativeThickness = rhs.relativeThickness;
-            expandWhenExploded = rhs.expandWhenExploded;
-        }
+    Private(const Private &rhs)
+        : AbstractPieDiagram::Private(rhs)
+        , startAngles()
+        , angleLens()
+        , position()
+        , size(0)
+        , polygonsToRender()
+    {
+        relativeThickness = rhs.relativeThickness;
+        expandWhenExploded = rhs.expandWhenExploded;
+    }
 
 protected:
     // this information needed temporarily at drawing time
-    QVector< QVector < qreal > > startAngles;
-    QVector< QVector < qreal > > angleLens;
+    QVector<QVector<qreal>> startAngles;
+    QVector<QVector<qreal>> angleLens;
     QRectF position;
     qreal size;
     bool relativeThickness;
@@ -75,7 +76,7 @@ protected:
     QMap<qreal, QPolygon> polygonsToRender;
 };
 
-KDCHART_IMPL_DERIVED_DIAGRAM( RingDiagram, AbstractPieDiagram, PolarCoordinatePlane )
+KDCHART_IMPL_DERIVED_DIAGRAM(RingDiagram, AbstractPieDiagram, PolarCoordinatePlane)
 
 }
 

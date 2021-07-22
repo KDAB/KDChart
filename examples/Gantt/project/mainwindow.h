@@ -32,7 +32,7 @@ class QCheckBox;
 QT_END_NAMESPACE
 
 namespace KDGantt {
-    class View;
+class View;
 }
 
 class ProjectModel;
@@ -48,11 +48,12 @@ public:
 private slots:
     void fileButtonClicked();
 };
-        
-class MainWindow : public QMainWindow {
+
+class MainWindow : public QMainWindow
+{
     Q_OBJECT
 public:
-    explicit MainWindow( QWidget* parent = nullptr );
+    explicit MainWindow(QWidget *parent = nullptr);
 
 private slots:
     void slotFileSavePdf();
@@ -67,10 +68,9 @@ private slots:
     void slotAlignCenter();
     void slotAlignRight();
     void slotAlignHidden();
-    
+
 private:
-    ProjectModel* m_model;
-    KDGantt::View* m_view;
+    ProjectModel *m_model;
+    KDGantt::View *m_view;
 };
 #endif /* MAINWINDOW_H */
-

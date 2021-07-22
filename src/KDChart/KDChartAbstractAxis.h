@@ -41,12 +41,12 @@ QT_END_NAMESPACE
 
 namespace KDChart {
 
-    class Area;
-    class AbstractCoordinatePlane;
-    class PaintContext;
-    class AbstractDiagram;
+class Area;
+class AbstractCoordinatePlane;
+class PaintContext;
+class AbstractDiagram;
 
-    /**
+/**
       * The base class for axes.
       *
       * For being useful, axes need to be assigned to a diagram, see
@@ -54,28 +54,28 @@ namespace KDChart {
       *
       * \sa PolarAxis, AbstractCartesianDiagram
       */
-    class KDCHART_EXPORT AbstractAxis : public AbstractArea
-    {
-        Q_OBJECT
+class KDCHART_EXPORT AbstractAxis : public AbstractArea
+{
+    Q_OBJECT
 
-        Q_DISABLE_COPY( AbstractAxis )
-        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( AbstractAxis, AbstractDiagram* )
+    Q_DISABLE_COPY(AbstractAxis)
+    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT(AbstractAxis, AbstractDiagram *)
 
-    public:
-        explicit AbstractAxis( AbstractDiagram* diagram = nullptr );
-        ~AbstractAxis() override;
+public:
+    explicit AbstractAxis(AbstractDiagram *diagram = nullptr);
+    ~AbstractAxis() override;
 
-        // FIXME implement when code os ready for it:
-        // virtual Area* clone() const = 0;
+    // FIXME implement when code os ready for it:
+    // virtual Area* clone() const = 0;
 
-        // FIXME (Mirko) readd when needed
-        // void copyRelevantDetailsFrom( const KDChartAxis* axis );
+    // FIXME (Mirko) readd when needed
+    // void copyRelevantDetailsFrom( const KDChartAxis* axis );
 
-        /*    virtual void paint( PaintContext* ) const = 0;
+    /*    virtual void paint( PaintContext* ) const = 0;
               virtual QSize sizeHint() const = 0;*/
-	//virtual void paintEvent( QPaintEvent* event) = 0;
+    //virtual void paintEvent( QPaintEvent* event) = 0;
 
-        /**
+    /**
          * \brief Reimplement this method if you want to adjust axis labels
          * before they are printed.
          *
@@ -97,14 +97,14 @@ namespace KDChart {
          *
          * \return The text to be drawn. By default this is the same as \c label.
          */
-        virtual const QString customizedLabel( const QString& label ) const;
+    virtual const QString customizedLabel(const QString &label) const;
 
-        /**
+    /**
          * Returns true if both axes have the same settings.
          */
-        bool compare( const AbstractAxis* other ) const;
+    bool compare(const AbstractAxis *other) const;
 
-        /**
+    /**
           * \internal
           *
           * Method invoked by AbstractCartesianDiagram::addAxis().
@@ -114,9 +114,9 @@ namespace KDChart {
           *
           * \sa connectSignals(), AbstractCartesianDiagram::addAxis()
           */
-        void createObserver( AbstractDiagram* diagram );
+    void createObserver(AbstractDiagram *diagram);
 
-        /**
+    /**
           * \internal
           *
           * Method invoked by AbstractCartesianDiagram::takeAxis().
@@ -126,11 +126,11 @@ namespace KDChart {
           *
           * \sa AbstractCartesianDiagram::takeAxis()
           */
-        void deleteObserver( AbstractDiagram* diagram );
-        const AbstractDiagram* diagram() const;
-        bool observedBy( AbstractDiagram* diagram ) const;
+    void deleteObserver(AbstractDiagram *diagram);
+    const AbstractDiagram *diagram() const;
+    bool observedBy(AbstractDiagram *diagram) const;
 
-        /**
+    /**
           * Wireing the signal/slot connections.
           *
           * This method gets called automatically, each time, when you assign
@@ -143,9 +143,9 @@ namespace KDChart {
           *
           * \sa AbstractCartesianDiagram::addAxis()
           */
-        virtual void connectSignals();
+    virtual void connectSignals();
 
-        /**
+    /**
           \brief Use this to specify the text attributes to be used for axis labels.
 
           By default, the reference area will be set at painting time.
@@ -156,16 +156,16 @@ namespace KDChart {
 
           \sa textAttributes, setLabels
         */
-        void setTextAttributes( const TextAttributes &a );
+    void setTextAttributes(const TextAttributes &a);
 
-        /**
+    /**
           \brief Returns the text attributes to be used for axis labels.
 
           \sa setTextAttributes
         */
-        TextAttributes textAttributes() const;
+    TextAttributes textAttributes() const;
 
-        /**
+    /**
           \brief Use this to specify the attributes used to paint the axis ruler
 
           Every axis has a default set of ruler attributes that is exactly the
@@ -173,16 +173,16 @@ namespace KDChart {
 
           \sa rulerAttributes
         */
-        void setRulerAttributes( const RulerAttributes &a );
+    void setRulerAttributes(const RulerAttributes &a);
 
-        /**
+    /**
           \brief Returns the attributes to be used for painting the rulers
 
           \sa setRulerAttributes
         */
-        RulerAttributes rulerAttributes() const;
+    RulerAttributes rulerAttributes() const;
 
-        /**
+    /**
           \brief Use this to specify your own set of strings, to be used as axis labels.
 
           Labels specified via setLabels take precedence:
@@ -198,16 +198,16 @@ namespace KDChart {
 
           \sa labels, setShortLabels
         */
-        void setLabels( const QStringList& list );
+    void setLabels(const QStringList &list);
 
-        /**
+    /**
           Returns a list of strings, that are used as axis labels, as set via setLabels.
 
           \sa setLabels
         */
-        QStringList labels() const;
+    QStringList labels() const;
 
-        /**
+    /**
           \brief Use this to specify your own set of strings, to be used as axis labels,
           in case the normal labels are too long.
 
@@ -218,9 +218,9 @@ namespace KDChart {
 
           \sa shortLabels, setLabels
         */
-        void setShortLabels( const QStringList& list );
+    void setShortLabels(const QStringList &list);
 
-        /**
+    /**
           Returns a list of strings, that are used as axis labels, as set via setShortLabels.
 
           \note Setting done via setShortLabels will be ignored, if you did not pass
@@ -228,28 +228,28 @@ namespace KDChart {
 
           \sa setShortLabels
         */
-        QStringList shortLabels() const;
+    QStringList shortLabels() const;
 
-        void setGeometry( const QRect& rect ) override = 0;
-        QRect geometry() const override = 0;
+    void setGeometry(const QRect &rect) override = 0;
+    QRect geometry() const override = 0;
 
-        /**
+    /**
             \brief Convenience function, returns the coordinate plane, in which this axis is used.
 
             If the axis is not used in a coordinate plane, the return value is Zero.
          */
-        const AbstractCoordinatePlane* coordinatePlane() const;
+    const AbstractCoordinatePlane *coordinatePlane() const;
 
-    protected Q_SLOTS:
-        /** called for initializing after the c'tor has completed */
-        virtual void delayedInit();
+protected Q_SLOTS:
+    /** called for initializing after the c'tor has completed */
+    virtual void delayedInit();
 
-    public Q_SLOTS:
-        void update();
+public Q_SLOTS:
+    void update();
 
-    Q_SIGNALS:
-        void coordinateSystemChanged();
-    };
+Q_SIGNALS:
+    void coordinateSystemChanged();
+};
 }
 
 #endif // KDCHARTABSTRACTAXIS_H

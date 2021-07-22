@@ -45,8 +45,8 @@
 class KDTextDocument;
 
 namespace KDChart {
-    class Chart;
-    class TextAttributes;
+class Chart;
+class TextAttributes;
 }
 
 /**
@@ -55,16 +55,17 @@ namespace KDChart {
 class KDChart::HeaderFooter::Private : public KDChart::TextArea::Private
 {
     friend class KDChart::HeaderFooter;
+
 public:
     explicit Private();
     ~Private() override;
 
-    Private( const Private& rhs ) :
-        TextArea::Private( rhs ),
-        type( rhs.type ),
-        position( rhs.position )
-        {
-        }
+    Private(const Private &rhs)
+        : TextArea::Private(rhs)
+        , type(rhs.type)
+        , position(rhs.position)
+    {
+    }
 
     void updateTextDoc();
 
@@ -74,19 +75,19 @@ private:
     Position position;
 };
 
-inline KDChart::HeaderFooter::HeaderFooter( Private* d, KDChart::Chart* parent )
-    : TextArea( d )
+inline KDChart::HeaderFooter::HeaderFooter(Private *d, KDChart::Chart *parent)
+    : TextArea(d)
 {
-    setParent( parent );
+    setParent(parent);
     init();
 }
-inline KDChart::HeaderFooter::Private * KDChart::HeaderFooter::d_func()
+inline KDChart::HeaderFooter::Private *KDChart::HeaderFooter::d_func()
 {
-    return static_cast<Private*>( TextArea::d_func() );
+    return static_cast<Private *>(TextArea::d_func());
 }
-inline const KDChart::HeaderFooter::Private * KDChart::HeaderFooter::d_func() const
+inline const KDChart::HeaderFooter::Private *KDChart::HeaderFooter::d_func() const
 {
-    return static_cast<const Private*>( TextArea::d_func() );
+    return static_cast<const Private *>(TextArea::d_func());
 }
 
 

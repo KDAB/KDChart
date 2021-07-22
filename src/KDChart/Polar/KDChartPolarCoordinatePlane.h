@@ -27,32 +27,32 @@
 
 namespace KDChart {
 
-    class Chart;
-    class PaintContext;
+class Chart;
+class PaintContext;
 
-    /**
+/**
       * @brief Polar coordinate plane
       */
-    class KDCHART_EXPORT PolarCoordinatePlane : public AbstractCoordinatePlane
-    {
-        Q_OBJECT
+class KDCHART_EXPORT PolarCoordinatePlane : public AbstractCoordinatePlane
+{
+    Q_OBJECT
 
-        Q_DISABLE_COPY( PolarCoordinatePlane )
-        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( PolarCoordinatePlane, Chart* )
+    Q_DISABLE_COPY(PolarCoordinatePlane)
+    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT(PolarCoordinatePlane, Chart *)
 
-    public:
-        struct CoordinateTransformation;
-        typedef QList<CoordinateTransformation> CoordinateTransformationList;
+public:
+    struct CoordinateTransformation;
+    typedef QList<CoordinateTransformation> CoordinateTransformationList;
 
-        explicit PolarCoordinatePlane ( Chart* parent = nullptr );
-        ~PolarCoordinatePlane() override;
+    explicit PolarCoordinatePlane(Chart *parent = nullptr);
+    ~PolarCoordinatePlane() override;
 
-        void addDiagram ( AbstractDiagram* diagram ) override;
+    void addDiagram(AbstractDiagram *diagram) override;
 
-        const QPointF translate ( const QPointF& diagramPoint ) const override;
-        const QPointF translatePolar ( const QPointF& diagramPoint ) const;
+    const QPointF translate(const QPointF &diagramPoint) const override;
+    const QPointF translatePolar(const QPointF &diagramPoint) const;
 
-        /** \brief Specify the rotation of the coordinate plane.
+    /** \brief Specify the rotation of the coordinate plane.
           *
           * In a pie diagram this indicates the position where the first pie starts,
           * in a polar diagram it specifies the Zero position of the circular axis:
@@ -61,24 +61,24 @@ namespace KDChart {
           *
           * \sa startPosition
           */
-        void setStartPosition( qreal degrees );
-        /** Retrieve the rotation of the coordinate plane.
+    void setStartPosition(qreal degrees);
+    /** Retrieve the rotation of the coordinate plane.
           * \sa setStartPosition
           */
-        qreal startPosition() const;
+    qreal startPosition() const;
 
-        qreal zoomFactorX() const override;
-        qreal zoomFactorY() const override;
+    qreal zoomFactorX() const override;
+    qreal zoomFactorY() const override;
 
-        void setZoomFactors( qreal factorX, qreal factorY ) override;
-        void setZoomFactorX( qreal factor ) override;
-        void setZoomFactorY( qreal factor ) override;
+    void setZoomFactors(qreal factorX, qreal factorY) override;
+    void setZoomFactorX(qreal factor) override;
+    void setZoomFactorY(qreal factor) override;
 
-        QPointF zoomCenter() const override;
+    QPointF zoomCenter() const override;
 
-        void setZoomCenter( const QPointF& center ) override;
+    void setZoomCenter(const QPointF &center) override;
 
-        /**
+    /**
          * Set the attributes to be used for grid lines drawn in circular
          * direction (or in sagittal direction, resp.).
          *
@@ -98,9 +98,9 @@ namespace KDChart {
          * \sa AbstractCoordinatePlane::setGlobalGridAttributes
          * \sa hasOwnGridAttributes
          */
-        void setGridAttributes( bool circular, const GridAttributes & );
+    void setGridAttributes(bool circular, const GridAttributes &);
 
-        /**
+    /**
          * Reset the attributes to be used for grid lines drawn in circular
          * direction (or in sagittal direction, resp.).
          * By calling this method you specify that the global attributes set by
@@ -110,9 +110,9 @@ namespace KDChart {
          * \sa AbstractCoordinatePlane::globalGridAttributes
          * \sa hasOwnGridAttributes
          */
-        void resetGridAttributes( bool circular );
+    void resetGridAttributes(bool circular);
 
-        /**
+    /**
          * \return The attributes used for grid lines drawn in circular
          * direction (or in sagittal direction, resp.).
          *
@@ -126,9 +126,9 @@ namespace KDChart {
          * \sa AbstractCoordinatePlane::globalGridAttributes
          * \sa hasOwnGridAttributes
          */
-        const GridAttributes gridAttributes( bool circular ) const;
+    const GridAttributes gridAttributes(bool circular) const;
 
-        /**
+    /**
          * \return Returns whether the grid attributes have been set for the
          * respective direction via setGridAttributes( bool circular ).
          *
@@ -140,27 +140,27 @@ namespace KDChart {
          * \sa resetGridAttributes
          * \sa AbstractCoordinatePlane::globalGridAttributes
          */
-        bool hasOwnGridAttributes( bool circular ) const;
+    bool hasOwnGridAttributes(bool circular) const;
 
-        qreal angleUnit() const;
-        qreal radiusUnit() const;
+    qreal angleUnit() const;
+    qreal radiusUnit() const;
 
-        /** reimpl */
-        void paint( QPainter* ) override;
+    /** reimpl */
+    void paint(QPainter *) override;
 
-    protected:
-        DataDimensionsList getDataDimensionsList() const override;
-        void paintEvent ( QPaintEvent* );
-        void resizeEvent ( QResizeEvent* );
+protected:
+    DataDimensionsList getDataDimensionsList() const override;
+    void paintEvent(QPaintEvent *);
+    void resizeEvent(QResizeEvent *);
 
-        void layoutDiagrams() override;
-    protected Q_SLOTS:
-        void slotLayoutChanged( AbstractDiagram* diagram );
-        void adjustZoomAndRepaint();
+    void layoutDiagrams() override;
+protected Q_SLOTS:
+    void slotLayoutChanged(AbstractDiagram *diagram);
+    void adjustZoomAndRepaint();
 
-    private:
-        void setHasOwnGridAttributes( bool circular, bool on );
-    };
+private:
+    void setHasOwnGridAttributes(bool circular, bool on);
+};
 
 }
 

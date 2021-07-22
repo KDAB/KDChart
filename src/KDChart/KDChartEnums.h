@@ -37,12 +37,12 @@
   Project global class providing some enums needed both by KDChartParams
   and by KDChartCustomBox.
   */
-class KDCHART_EXPORT KDChartEnums :public QObject
+class KDCHART_EXPORT KDChartEnums : public QObject
 {
     Q_OBJECT
-    Q_ENUMS( TextLayoutPolicy )
-    Q_ENUMS( AreaName )
-    Q_ENUMS( PositionFlag )
+    Q_ENUMS(TextLayoutPolicy)
+    Q_ENUMS(AreaName)
+    Q_ENUMS(PositionFlag)
 
 public:
     /**
@@ -92,12 +92,14 @@ public:
       \li for having it divided by two GranularitySequence_10_50 is your choice.
 
       */
-    enum GranularitySequence {
+    enum GranularitySequence
+    {
         GranularitySequence_10_20,
         GranularitySequence_10_50,
         GranularitySequence_25_50,
         GranularitySequence_125_25,
-        GranularitySequenceIrregular };
+        GranularitySequenceIrregular
+    };
 
     /**
       Converts the specified granularity sequence enum to a
@@ -106,20 +108,21 @@ public:
       \param sequence the granularity sequence enum to convert
       \return the string representation of the granularity sequence
       */
-    static QString granularitySequenceToString( GranularitySequence sequence ) {
-        switch ( sequence ) {
-            case GranularitySequence_10_20:
-                return QString::fromLatin1("GranularitySequence_10_20");
-            case GranularitySequence_10_50:
-                return QString::fromLatin1("GranularitySequence_10_50");
-            case GranularitySequence_25_50:
-                return QString::fromLatin1("GranularitySequence_25_50");
-            case GranularitySequence_125_25:
-                return QString::fromLatin1("GranularitySequence_125_25");
-            case GranularitySequenceIrregular:
-                return QString::fromLatin1("GranularitySequenceIrregular");
+    static QString granularitySequenceToString(GranularitySequence sequence)
+    {
+        switch (sequence) {
+        case GranularitySequence_10_20:
+            return QString::fromLatin1("GranularitySequence_10_20");
+        case GranularitySequence_10_50:
+            return QString::fromLatin1("GranularitySequence_10_50");
+        case GranularitySequence_25_50:
+            return QString::fromLatin1("GranularitySequence_25_50");
+        case GranularitySequence_125_25:
+            return QString::fromLatin1("GranularitySequence_125_25");
+        case GranularitySequenceIrregular:
+            return QString::fromLatin1("GranularitySequenceIrregular");
         }
-        Q_ASSERT( !"Unknown GranularitySequenceValue" );
+        Q_ASSERT(!"Unknown GranularitySequenceValue");
         return QString::fromLatin1("GranularitySequence_10_20");
     }
 
@@ -130,19 +133,20 @@ public:
       \param string the string to convert
       \return the granularity sequence enum value
       */
-    static GranularitySequence stringToGranularitySequence( const QString& string ) {
-      if ( string == QString::fromLatin1("GranularitySequence_10_20") )
-          return GranularitySequence_10_20;
-      if ( string == QString::fromLatin1("GranularitySequence_10_50") )
-          return GranularitySequence_10_50;
-      if ( string == QString::fromLatin1("GranularitySequence_25_50") )
-          return GranularitySequence_25_50;
-      if ( string == QString::fromLatin1("GranularitySequence_125") )
-          return GranularitySequence_125_25;
-      if ( string == QString::fromLatin1("GranularitySequenceIrregular") )
-          return GranularitySequenceIrregular;
-      // default, should not happen
-      return GranularitySequence_10_20;
+    static GranularitySequence stringToGranularitySequence(const QString &string)
+    {
+        if (string == QString::fromLatin1("GranularitySequence_10_20"))
+            return GranularitySequence_10_20;
+        if (string == QString::fromLatin1("GranularitySequence_10_50"))
+            return GranularitySequence_10_50;
+        if (string == QString::fromLatin1("GranularitySequence_25_50"))
+            return GranularitySequence_25_50;
+        if (string == QString::fromLatin1("GranularitySequence_125"))
+            return GranularitySequence_125_25;
+        if (string == QString::fromLatin1("GranularitySequenceIrregular"))
+            return GranularitySequenceIrregular;
+        // default, should not happen
+        return GranularitySequence_10_20;
     }
 
 
@@ -158,11 +162,14 @@ public:
 
       \sa KDChartParams::setPrintDataValues
       */
-    enum TextLayoutPolicy { LayoutJustOverwrite,
+    enum TextLayoutPolicy
+    {
+        LayoutJustOverwrite,
         LayoutPolicyRotate,
         LayoutPolicyShiftVertically,
         LayoutPolicyShiftHorizontally,
-        LayoutPolicyShrinkFontSize };
+        LayoutPolicyShrinkFontSize
+    };
 
     /**
       Converts the specified text layout policy enum to a
@@ -171,7 +178,7 @@ public:
       \param type the text layout policy to convert
       \return the string representation of the text layout policy enum
       */
-    static QString layoutPolicyToString( TextLayoutPolicy type );
+    static QString layoutPolicyToString(TextLayoutPolicy type);
 
 
     /**
@@ -180,7 +187,7 @@ public:
       \param string the string to convert
       \return the text layout policy enum value
       */
-    static TextLayoutPolicy stringToLayoutPolicy( const QString& string );
+    static TextLayoutPolicy stringToLayoutPolicy(const QString &string);
 
 
     /**
@@ -189,18 +196,19 @@ public:
 
         \sa Position
     */
-    enum PositionValue {
-        PositionUnknown   = 0,
-        PositionCenter    = 1,
+    enum PositionValue
+    {
+        PositionUnknown = 0,
+        PositionCenter = 1,
         PositionNorthWest = 2,
-        PositionNorth     = 3,
+        PositionNorth = 3,
         PositionNorthEast = 4,
-        PositionEast      = 5,
+        PositionEast = 5,
         PositionSouthEast = 6,
-        PositionSouth     = 7,
+        PositionSouth = 7,
         PositionSouthWest = 8,
-        PositionWest      = 9,
-        PositionFloating  =10
+        PositionWest = 9,
+        PositionFloating = 10
     };
 
 
@@ -219,11 +227,14 @@ public:
 
       \sa KDChart::Measure::setCalculationMode
       */
-    enum MeasureCalculationMode { MeasureCalculationModeAbsolute,
+    enum MeasureCalculationMode
+    {
+        MeasureCalculationModeAbsolute,
         MeasureCalculationModeRelative,
         MeasureCalculationModeAuto,
         MeasureCalculationModeAutoArea,
-        MeasureCalculationModeAutoOrientation };
+        MeasureCalculationModeAutoOrientation
+    };
 
     /**
       Converts the specified measure calculation mode enum to a
@@ -232,20 +243,21 @@ public:
       \param mode the measure calculation mode to convert
       \return the string representation of the Measure calculation mode enum
       */
-    static QString measureCalculationModeToString( MeasureCalculationMode mode ) {
-        switch ( mode ) {
-            case MeasureCalculationModeAbsolute:
-                return QString::fromLatin1("MeasureCalculationModeAbsolute");
-            case MeasureCalculationModeAuto:
-                return QString::fromLatin1("MeasureCalculationModeAuto");
-            case MeasureCalculationModeAutoArea:
-                return QString::fromLatin1("MeasureCalculationModeAutoArea");
-            case MeasureCalculationModeAutoOrientation:
-                return QString::fromLatin1("MeasureCalculationModeAutoOrientation");
-            case MeasureCalculationModeRelative:
-                return QString::fromLatin1("MeasureCalculationModeRelative");
+    static QString measureCalculationModeToString(MeasureCalculationMode mode)
+    {
+        switch (mode) {
+        case MeasureCalculationModeAbsolute:
+            return QString::fromLatin1("MeasureCalculationModeAbsolute");
+        case MeasureCalculationModeAuto:
+            return QString::fromLatin1("MeasureCalculationModeAuto");
+        case MeasureCalculationModeAutoArea:
+            return QString::fromLatin1("MeasureCalculationModeAutoArea");
+        case MeasureCalculationModeAutoOrientation:
+            return QString::fromLatin1("MeasureCalculationModeAutoOrientation");
+        case MeasureCalculationModeRelative:
+            return QString::fromLatin1("MeasureCalculationModeRelative");
         }
-        Q_ASSERT( !"unhandled MeasureCalculationMode" );
+        Q_ASSERT(!"unhandled MeasureCalculationMode");
         return QString::fromLatin1("MeasureCalculationModeAuto");
     }
 
@@ -256,19 +268,20 @@ public:
       \param string the string to convert
       \return the measure calculation mode enum value
       */
-    static MeasureCalculationMode stringToMeasureCalculationMode( const QString& string ) {
-      if ( string == QString::fromLatin1("MeasureCalculationModeAbsolute") )
-          return MeasureCalculationModeAbsolute;
-      if ( string == QString::fromLatin1("MeasureCalculationModeAuto") )
-          return MeasureCalculationModeAuto;
-      if ( string == QString::fromLatin1("MeasureCalculationModeAutoArea") )
-          return MeasureCalculationModeAutoArea;
-      if ( string == QString::fromLatin1("MeasureCalculationModeAutoOrientation") )
-          return MeasureCalculationModeAutoOrientation;
-      if ( string == QString::fromLatin1("MeasureCalculationModeRelative") )
-          return MeasureCalculationModeRelative;
-      // default, should not happen
-      return MeasureCalculationModeAuto;
+    static MeasureCalculationMode stringToMeasureCalculationMode(const QString &string)
+    {
+        if (string == QString::fromLatin1("MeasureCalculationModeAbsolute"))
+            return MeasureCalculationModeAbsolute;
+        if (string == QString::fromLatin1("MeasureCalculationModeAuto"))
+            return MeasureCalculationModeAuto;
+        if (string == QString::fromLatin1("MeasureCalculationModeAutoArea"))
+            return MeasureCalculationModeAutoArea;
+        if (string == QString::fromLatin1("MeasureCalculationModeAutoOrientation"))
+            return MeasureCalculationModeAutoOrientation;
+        if (string == QString::fromLatin1("MeasureCalculationModeRelative"))
+            return MeasureCalculationModeRelative;
+        // default, should not happen
+        return MeasureCalculationModeAuto;
     }
 
     /**
@@ -287,11 +300,14 @@ public:
 
       \sa KDChart::Measure::setOrientationMode
       */
-    enum MeasureOrientation { MeasureOrientationAuto,
+    enum MeasureOrientation
+    {
+        MeasureOrientationAuto,
         MeasureOrientationHorizontal,
         MeasureOrientationVertical,
         MeasureOrientationMinimum,
-        MeasureOrientationMaximum };
+        MeasureOrientationMaximum
+    };
 
     /**
       Converts the specified measure orientation enum to a
@@ -300,20 +316,21 @@ public:
       \param mode the measure orientation to convert
       \return the string representation of the measure orientation enum
       */
-    static QString measureOrientationToString( MeasureOrientation mode ) {
-        switch ( mode ) {
-            case MeasureOrientationAuto:
-                return QString::fromLatin1("MeasureOrientationAuto");
-            case MeasureOrientationHorizontal:
-                return QString::fromLatin1("MeasureOrientationHorizontal");
-            case MeasureOrientationVertical:
-                return QString::fromLatin1("MeasureOrientationVertical");
-            case MeasureOrientationMinimum:
-                return QString::fromLatin1("MeasureOrientationMinimum");
-            case MeasureOrientationMaximum:
-                return QString::fromLatin1("MeasureOrientationMaximum");
+    static QString measureOrientationToString(MeasureOrientation mode)
+    {
+        switch (mode) {
+        case MeasureOrientationAuto:
+            return QString::fromLatin1("MeasureOrientationAuto");
+        case MeasureOrientationHorizontal:
+            return QString::fromLatin1("MeasureOrientationHorizontal");
+        case MeasureOrientationVertical:
+            return QString::fromLatin1("MeasureOrientationVertical");
+        case MeasureOrientationMinimum:
+            return QString::fromLatin1("MeasureOrientationMinimum");
+        case MeasureOrientationMaximum:
+            return QString::fromLatin1("MeasureOrientationMaximum");
         }
-        Q_ASSERT( !"Unknown MeasureOrientation value" );
+        Q_ASSERT(!"Unknown MeasureOrientation value");
         return QString::fromLatin1("MeasureOrientationAuto");
     }
 
@@ -324,22 +341,21 @@ public:
       \param string the string to convert
       \return the measure orientation enum value
       */
-    static MeasureOrientation stringToMeasureOrientation( const QString& string ) {
-      if ( string == QString::fromLatin1("MeasureOrientationAuto") )
-          return MeasureOrientationAuto;
-      if ( string == QString::fromLatin1("MeasureOrientationHorizontal") )
-          return MeasureOrientationHorizontal;
-      if ( string == QString::fromLatin1("MeasureOrientationVertical") )
-          return MeasureOrientationVertical;
-      if ( string == QString::fromLatin1("MeasureOrientationMinimum") )
-          return MeasureOrientationMinimum;
-      if ( string == QString::fromLatin1("MeasureOrientationMaximum") )
-          return MeasureOrientationMaximum;
-      // default, should not happen
-      return MeasureOrientationAuto;
+    static MeasureOrientation stringToMeasureOrientation(const QString &string)
+    {
+        if (string == QString::fromLatin1("MeasureOrientationAuto"))
+            return MeasureOrientationAuto;
+        if (string == QString::fromLatin1("MeasureOrientationHorizontal"))
+            return MeasureOrientationHorizontal;
+        if (string == QString::fromLatin1("MeasureOrientationVertical"))
+            return MeasureOrientationVertical;
+        if (string == QString::fromLatin1("MeasureOrientationMinimum"))
+            return MeasureOrientationMinimum;
+        if (string == QString::fromLatin1("MeasureOrientationMaximum"))
+            return MeasureOrientationMaximum;
+        // default, should not happen
+        return MeasureOrientationAuto;
     }
-
-
 };
 
 

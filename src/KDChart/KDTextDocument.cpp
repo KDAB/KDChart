@@ -32,31 +32,31 @@
 // QLabel with rich text assigned, this is mostly a workaround around
 // QTextDocumentLayout not being a public class.
 
-KDTextDocument::KDTextDocument( QObject * p )
-    : QTextDocument( p ),
-      mHintValid( false ),
-      mSizeHint(),
-      mMinimumSizeHint()
+KDTextDocument::KDTextDocument(QObject *p)
+    : QTextDocument(p)
+    , mHintValid(false)
+    , mSizeHint()
+    , mMinimumSizeHint()
 {
-
 }
 
-KDTextDocument::KDTextDocument( const QString & text, QObject * p )
-    : QTextDocument( text, p ),
-      mHintValid( false ),
-      mSizeHint(),
-      mMinimumSizeHint()
+KDTextDocument::KDTextDocument(const QString &text, QObject *p)
+    : QTextDocument(text, p)
+    , mHintValid(false)
+    , mSizeHint()
+    , mMinimumSizeHint()
 {
-
 }
 
-KDTextDocument::~KDTextDocument() {}
+KDTextDocument::~KDTextDocument()
+{
+}
 
 
 QSize KDTextDocument::sizeHint()
 {
-    if ( !mHintValid )
-        (void)minimumSizeHint();
+    if (!mHintValid)
+        ( void )minimumSizeHint();
     return mSizeHint;
 }
 
@@ -73,17 +73,17 @@ QSize KDTextDocument::minimumSizeHint()
                   static_cast<int>(s.height()) );
     */
 
-    if ( mHintValid )
+    if (mHintValid)
         return mMinimumSizeHint;
 
     mHintValid = true;
-    mSizeHint = sizeForWidth( -1 );
+    mSizeHint = sizeForWidth(-1);
     QSize sz(-1, -1);
 
     // PENDING(kalle) Cache
-    sz.rwidth() = sizeForWidth( 0 ).width();
-    sz.rheight() = sizeForWidth( 32000 ).height();
-    if ( mSizeHint.height() < sz.height())
+    sz.rwidth() = sizeForWidth(0).width();
+    sz.rheight() = sizeForWidth(32000).height();
+    if (mSizeHint.height() < sz.height())
         sz.rheight() = mSizeHint.height();
 
     mMinimumSizeHint = sz;
@@ -93,7 +93,7 @@ QSize KDTextDocument::minimumSizeHint()
 
 QSize KDTextDocument::sizeForWidth(int w)
 {
-    Q_UNUSED( w );
+    Q_UNUSED(w);
 
     setPageSize(QSize(0, 100000));
 

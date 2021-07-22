@@ -28,20 +28,24 @@
 #include <QListView>
 
 namespace KDGantt {
-    class ListViewRowController::Private {
+class ListViewRowController::Private
+{
+public:
+    class HackListView : public QListView
+    {
     public:
-        class HackListView : public QListView {
-        public:
-            using QListView::verticalOffset;
-            using QListView::setViewportMargins;
-        };
-
-        Private(QListView* lv, QAbstractProxyModel* pm )
-            : listview(lv), proxy(pm) {}
-        QListView* listview;
-        QAbstractProxyModel* proxy;
+        using QListView::setViewportMargins;
+        using QListView::verticalOffset;
     };
+
+    Private(QListView *lv, QAbstractProxyModel *pm)
+        : listview(lv)
+        , proxy(pm)
+    {
+    }
+    QListView *listview;
+    QAbstractProxyModel *proxy;
+};
 }
 
 #endif /* KDGANTTLISTVIEWROWCONTROLLER_P_H */
-

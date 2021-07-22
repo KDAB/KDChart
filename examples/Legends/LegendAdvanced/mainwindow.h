@@ -31,8 +31,8 @@
 #include <TableModel.h>
 
 namespace KDChart {
-    class Chart;
-    class LineDiagram;
+class Chart;
+class LineDiagram;
 }
 
 class MainWindow : public QWidget, private Ui::MainWindow
@@ -40,7 +40,7 @@ class MainWindow : public QWidget, private Ui::MainWindow
     Q_OBJECT
 
 public:
-    MainWindow( QWidget* parent = nullptr );
+    MainWindow(QWidget *parent = nullptr);
 
 private slots:
     void on_addLegendPB_clicked();
@@ -49,15 +49,14 @@ private slots:
     void on_legendsTV_itemSelectionChanged();
 
 private:
-    void initAddLegendDialog( DerivedAddLegendDialog& conf,
-                              Qt::Alignment alignment ) const;
+    void initAddLegendDialog(DerivedAddLegendDialog &conf,
+                             Qt::Alignment alignment) const;
 
-    KDChart::Chart* m_chart;
+    KDChart::Chart *m_chart;
     TableModel m_model;
-    KDChart::LineDiagram* m_lines;
+    KDChart::LineDiagram *m_lines;
     QMap<Qt::Alignment, QString> alignmentMap;
 };
 
 
 #endif /* MAINWINDOW_H */
-

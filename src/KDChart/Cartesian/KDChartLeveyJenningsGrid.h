@@ -27,9 +27,9 @@
 
 namespace KDChart {
 
-    class PaintContext;
+class PaintContext;
 
-    /**
+/**
      * \internal
      *
      * \brief Class for the grid in a Levey Jennings plane.
@@ -39,21 +39,26 @@ namespace KDChart {
      * the horizonal grid lines, and the vertical grid lines
      * of a Levey Jennings coordinate plane.
      */
-    class LeveyJenningsGrid : public CartesianGrid
+class LeveyJenningsGrid : public CartesianGrid
+{
+public:
+    LeveyJenningsGrid()
+        : CartesianGrid()
     {
-    public:
-        LeveyJenningsGrid() : CartesianGrid() {}
-        ~LeveyJenningsGrid() override {}
+    }
+    ~LeveyJenningsGrid() override
+    {
+    }
 
-        void drawGrid( PaintContext* context ) override;
+    void drawGrid(PaintContext *context) override;
 
-    private:
-        DataDimensionsList calculateGrid( const DataDimensionsList& rawDataDimensions ) const override;
-        DataDimension calculateGridXY( const DataDimension& rawDataDimension, 
-                          Qt::Orientation orientation, bool adjustLower, bool adjustUpper ) const override;
-        void calculateStepWidth( qreal start_, qreal end_, const QList<qreal>& granularities, Qt::Orientation orientation,
-                                 qreal& stepWidth, qreal& subStepWidth, bool adjustLower, bool adjustUpper ) const override;
-    };
+private:
+    DataDimensionsList calculateGrid(const DataDimensionsList &rawDataDimensions) const override;
+    DataDimension calculateGridXY(const DataDimension &rawDataDimension,
+                                  Qt::Orientation orientation, bool adjustLower, bool adjustUpper) const override;
+    void calculateStepWidth(qreal start_, qreal end_, const QList<qreal> &granularities, Qt::Orientation orientation,
+                            qreal &stepWidth, qreal &subStepWidth, bool adjustLower, bool adjustUpper) const override;
+};
 
 }
 

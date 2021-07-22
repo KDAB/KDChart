@@ -35,7 +35,7 @@
  */
 QT_BEGIN_NAMESPACE
 namespace Ui {
-    class DatasetSelector;
+class DatasetSelector;
 }
 QT_END_NAMESPACE
 /**
@@ -44,43 +44,43 @@ QT_END_NAMESPACE
 
 namespace KDChart {
 
-    class KDCHART_EXPORT DatasetSelectorWidget : public QFrame
-    {
-        Q_OBJECT
+class KDCHART_EXPORT DatasetSelectorWidget : public QFrame
+{
+    Q_OBJECT
 
-    public:
-        explicit DatasetSelectorWidget ( QWidget* parent = nullptr );
-        ~DatasetSelectorWidget() override;
+public:
+    explicit DatasetSelectorWidget(QWidget *parent = nullptr);
+    ~DatasetSelectorWidget() override;
 
-    public Q_SLOTS:
-        void setSourceRowCount ( const int& rowCount );
-        void setSourceColumnCount ( const int& columnCount );
+public Q_SLOTS:
+    void setSourceRowCount(const int &rowCount);
+    void setSourceColumnCount(const int &columnCount);
 
-    Q_SIGNALS:
-        void configureDatasetProxyModel (
-            const DatasetDescriptionVector& rowConfig,
-            const DatasetDescriptionVector& columnConfig );
+Q_SIGNALS:
+    void configureDatasetProxyModel(
+        const DatasetDescriptionVector &rowConfig,
+        const DatasetDescriptionVector &columnConfig);
 
-        void mappingDisabled ();
+    void mappingDisabled();
 
-    private Q_SLOTS:
-        void on_sbStartColumn_valueChanged ( int );
-        void on_sbStartRow_valueChanged ( int );
-        void on_sbColumnCount_valueChanged( int );
-        void on_sbRowCount_valueChanged( int );
-        void on_cbReverseRows_stateChanged ( int );
-        void on_cbReverseColumns_stateChanged ( int );
-        void on_groupBox_toggled ( bool );
+private Q_SLOTS:
+    void on_sbStartColumn_valueChanged(int);
+    void on_sbStartRow_valueChanged(int);
+    void on_sbColumnCount_valueChanged(int);
+    void on_sbRowCount_valueChanged(int);
+    void on_cbReverseRows_stateChanged(int);
+    void on_cbReverseColumns_stateChanged(int);
+    void on_groupBox_toggled(bool);
 
 
-    private:
-        void resetDisplayValues ();
-        void calculateMapping();
+private:
+    void resetDisplayValues();
+    void calculateMapping();
 
-        Ui::DatasetSelector* mUi;
-        int mSourceRowCount;
-        int mSourceColumnCount;
-    };
+    Ui::DatasetSelector *mUi;
+    int mSourceRowCount;
+    int mSourceColumnCount;
+};
 
 }
 

@@ -43,32 +43,33 @@
 
 namespace KDChart {
 
-    class CartesianAxis;
+class CartesianAxis;
 
-    /**
+/**
      * \internal
      */
 
-    class LeveyJenningsCoordinatePlane::Private : public CartesianCoordinatePlane::Private
+class LeveyJenningsCoordinatePlane::Private : public CartesianCoordinatePlane::Private
+{
+    friend class LeveyJenningsCoordinatePlane;
+
+public:
+    explicit Private();
+
+    ~Private() override
     {
-        friend class LeveyJenningsCoordinatePlane;
+        // grid is delete in base class dtor
+    }
 
-    public:
-        explicit Private();
+    void initialize() override
+    {
+        grid = new LeveyJenningsGrid();
+    }
 
-        ~Private() override {
-            // grid is delete in base class dtor
-        }
+    LeveyJenningsGridAttributes gridAttributes;
+};
 
-        void initialize() override
-        {
-            grid = new LeveyJenningsGrid();
-        }
-
-        LeveyJenningsGridAttributes gridAttributes;
-    };
-
-    KDCHART_IMPL_DERIVED_PLANE(LeveyJenningsCoordinatePlane, CartesianCoordinatePlane)
+KDCHART_IMPL_DERIVED_PLANE(LeveyJenningsCoordinatePlane, CartesianCoordinatePlane)
 }
 
 #endif /* KDCHARTTERNARYCOORDINATEPLANE_P_H */

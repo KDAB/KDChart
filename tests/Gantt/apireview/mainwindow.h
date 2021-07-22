@@ -30,33 +30,34 @@ QT_BEGIN_NAMESPACE
 class QStandardItem;
 class QStandardItemModel;
 namespace Ui {
-    class MainWindow;
+class MainWindow;
 }
 QT_END_NAMESPACE
 
 namespace KDGantt {
-    class ConstraintModel;
-    class DateTimeGrid;
+class ConstraintModel;
+class DateTimeGrid;
 }
 
-class MainWindow : public QMainWindow {
+class MainWindow : public QMainWindow
+{
     Q_OBJECT
 
 public:
-    MainWindow( QWidget * parent = 0, Qt::WindowFlags flags = {} );
+    MainWindow(QWidget *parent = 0, Qt::WindowFlags flags = {});
 
 private slots:
     void addNewEntry();
     void removeEntry();
     void addDemoEntry();
     void printPreview();
-    void showContextMenu( const QPoint& );
-    void enableActions( const QItemSelection& selected );
+    void showContextMenu(const QPoint &);
+    void enableActions(const QItemSelection &selected);
     void zoomIn();
     void zoomOut();
 
-    void slotClicked( const QModelIndex& );
-    void slotDoubleClicked( const QModelIndex& );
+    void slotClicked(const QModelIndex &);
+    void slotDoubleClicked(const QModelIndex &);
 
 private:
     void initModel();
@@ -64,23 +65,23 @@ private:
     void initItemDelegate();
     void initGrid();
 
-    void setReadOnly( const QModelIndex& index, bool readOnly );
-    void addConstraint( const QModelIndex& index1, const QModelIndex& index2 );
-    void addConstraint( const QStandardItem* item1, const QStandardItem* item2 );
+    void setReadOnly(const QModelIndex &index, bool readOnly);
+    void addConstraint(const QModelIndex &index1, const QModelIndex &index2);
+    void addConstraint(const QStandardItem *item1, const QStandardItem *item2);
 
-    QStandardItemModel* model;
-    KDGantt::ConstraintModel* constraintModel;
-    KDGantt::DateTimeGrid* grid;
+    QStandardItemModel *model;
+    KDGantt::ConstraintModel *constraintModel;
+    KDGantt::DateTimeGrid *grid;
     int dayWidth;
 
-    QAction* newEntryAction;
-    QAction* removeEntryAction;
-    QAction* demoAction;
-    QAction* printAction;
-    QAction* zoomInAction;
-    QAction* zoomOutAction;
+    QAction *newEntryAction;
+    QAction *removeEntryAction;
+    QAction *demoAction;
+    QAction *printAction;
+    QAction *zoomInAction;
+    QAction *zoomOutAction;
 
-    Ui::MainWindow* ui;
+    Ui::MainWindow *ui;
 };
 
 #endif /* MAINWINDOW_H */

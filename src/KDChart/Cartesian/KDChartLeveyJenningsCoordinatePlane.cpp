@@ -40,8 +40,8 @@ LeveyJenningsCoordinatePlane::Private::Private()
 {
 }
 
-LeveyJenningsCoordinatePlane::LeveyJenningsCoordinatePlane( Chart* parent )
-    : CartesianCoordinatePlane( new Private(), parent )
+LeveyJenningsCoordinatePlane::LeveyJenningsCoordinatePlane(Chart *parent)
+    : CartesianCoordinatePlane(new Private(), parent)
 {
 }
 
@@ -53,18 +53,18 @@ void LeveyJenningsCoordinatePlane::init()
 {
 }
 
-void LeveyJenningsCoordinatePlane::addDiagram( AbstractDiagram* diagram )
+void LeveyJenningsCoordinatePlane::addDiagram(AbstractDiagram *diagram)
 {
-    Q_ASSERT_X ( dynamic_cast<LeveyJenningsDiagram*>( diagram ),
-                 "LeveyJenningsCoordinatePlane::addDiagram", "Only Levey Jennings "
-                 "diagrams can be added to a ternary coordinate plane!" );
-    CartesianCoordinatePlane::addDiagram ( diagram );
+    Q_ASSERT_X(dynamic_cast<LeveyJenningsDiagram *>(diagram),
+               "LeveyJenningsCoordinatePlane::addDiagram", "Only Levey Jennings "
+                                                           "diagrams can be added to a ternary coordinate plane!");
+    CartesianCoordinatePlane::addDiagram(diagram);
 }
 
-LeveyJenningsGrid* LeveyJenningsCoordinatePlane::grid() const
+LeveyJenningsGrid *LeveyJenningsCoordinatePlane::grid() const
 {
-    LeveyJenningsGrid* leveyJenningsGrid = static_cast<LeveyJenningsGrid*>( d->grid );
-    Q_ASSERT( dynamic_cast<LeveyJenningsGrid*>( d->grid ) );
+    LeveyJenningsGrid *leveyJenningsGrid = static_cast<LeveyJenningsGrid *>(d->grid);
+    Q_ASSERT(dynamic_cast<LeveyJenningsGrid *>(d->grid));
     return leveyJenningsGrid;
 }
 
@@ -73,14 +73,14 @@ LeveyJenningsGridAttributes LeveyJenningsCoordinatePlane::gridAttributes() const
     return d->gridAttributes;
 }
 
-void LeveyJenningsCoordinatePlane::setGridAttributes( const LeveyJenningsGridAttributes& attr )
+void LeveyJenningsCoordinatePlane::setGridAttributes(const LeveyJenningsGridAttributes &attr)
 {
     d->gridAttributes = attr;
 }
 
-const QPointF LeveyJenningsCoordinatePlane::translateBack( const QPointF& screenPoint ) const
+const QPointF LeveyJenningsCoordinatePlane::translateBack(const QPointF &screenPoint) const
 {
-    return CartesianCoordinatePlane::translateBack( screenPoint );
+    return CartesianCoordinatePlane::translateBack(screenPoint);
 }
 
 #undef d

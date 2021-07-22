@@ -27,9 +27,9 @@
 #include <TableModel.h>
 
 namespace KDChart {
-    class Chart;
-    class LineDiagram;
-    class Legend;
+class Chart;
+class LineDiagram;
+class Legend;
 }
 
 class MainWindow : public QWidget, private Ui::MainWindow
@@ -37,24 +37,24 @@ class MainWindow : public QWidget, private Ui::MainWindow
     Q_OBJECT
 
 public:
-    MainWindow( QWidget* parent = nullptr );
+    MainWindow(QWidget *parent = nullptr);
 
 
 
 private slots:
-    void on_zoomFactorSB_valueChanged( double factor );
-    void on_adjustGridCB_toggled( bool checked );
-    void on_rubberBandZoomCB_toggled( bool checked );
-    void on_hSBar_valueChanged( int value );
-    void on_vSBar_valueChanged( int value );
-    
+    void on_zoomFactorSB_valueChanged(double factor);
+    void on_adjustGridCB_toggled(bool checked);
+    void on_rubberBandZoomCB_toggled(bool checked);
+    void on_hSBar_valueChanged(int value);
+    void on_vSBar_valueChanged(int value);
+
     void applyNewZoomParameters();
 
 private:
-    KDChart::Chart* m_chart;
+    KDChart::Chart *m_chart;
     TableModel m_model;
-    KDChart::LineDiagram* m_lines;
-    KDChart::Legend* m_legend;
+    KDChart::LineDiagram *m_lines;
+    KDChart::Legend *m_legend;
 };
 
 #endif /* MAINWINDOW_H */

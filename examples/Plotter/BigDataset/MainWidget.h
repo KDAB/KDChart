@@ -46,16 +46,16 @@ public:
     MainWidget();
 
 private slots:
-    void functionToggled( bool checked );
+    void functionToggled(bool checked);
     void addPointsButtonClicked();
 
 private:
-    QWidget* m_controlsContainer;
+    QWidget *m_controlsContainer;
     Ui::Controls m_controls;
-    QVector< QRadioButton* > m_functionSelector;
-    QVector< QPushButton* > m_addPointsButtons;
+    QVector<QRadioButton *> m_functionSelector;
+    QVector<QPushButton *> m_addPointsButtons;
 
-    KDChart::Plotter* m_plotter;
+    KDChart::Plotter *m_plotter;
     Model m_model;
 };
 

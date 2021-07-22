@@ -28,15 +28,15 @@ using namespace KDChart;
 
 #define d d_func()
 
-KDChart::RadarCoordinatePlane::RadarCoordinatePlane ( Chart* parent ) :
-    PolarCoordinatePlane( new Private(), parent )
+KDChart::RadarCoordinatePlane::RadarCoordinatePlane(Chart *parent)
+    : PolarCoordinatePlane(new Private(), parent)
 {
 }
 KDChart::RadarCoordinatePlane::~RadarCoordinatePlane()
 {
 }
 
-void KDChart::RadarCoordinatePlane::setTextAttributes(const KDChart::TextAttributes& attr)
+void KDChart::RadarCoordinatePlane::setTextAttributes(const KDChart::TextAttributes &attr)
 {
     d->textAttributes = attr;
 }

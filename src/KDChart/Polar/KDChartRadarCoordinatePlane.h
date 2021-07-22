@@ -27,25 +27,24 @@
 
 namespace KDChart {
 
-    class Chart;
-    
-    /**
+class Chart;
+
+/**
       * @brief Radar coordinate plane
       */
-    class KDCHART_EXPORT RadarCoordinatePlane : public PolarCoordinatePlane
-    {
-        Q_OBJECT
+class KDCHART_EXPORT RadarCoordinatePlane : public PolarCoordinatePlane
+{
+    Q_OBJECT
 
-        Q_DISABLE_COPY( RadarCoordinatePlane )
-        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( RadarCoordinatePlane, Chart* )
+    Q_DISABLE_COPY(RadarCoordinatePlane)
+    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT(RadarCoordinatePlane, Chart *)
 
-    public:
+public:
+    explicit RadarCoordinatePlane(Chart *parent = nullptr);
+    ~RadarCoordinatePlane() override;
 
-        explicit RadarCoordinatePlane ( Chart* parent = nullptr );
-        ~RadarCoordinatePlane() override;
-        
-                
-        /**
+
+    /**
          * Set the attributes to be used for axis captions.
          *
          * To disable axis captions, for example, your code should like this:
@@ -55,9 +54,9 @@ namespace KDChart {
          * plane-setTextAttributes( ta );
          * \endcode
          */
-        void setTextAttributes( const TextAttributes & attr );
- 
-        /**
+    void setTextAttributes(const TextAttributes &attr);
+
+    /**
          * \return The attributes used for axis.
          *
          * \note This function always returns a valid set of text attributes:
@@ -66,10 +65,9 @@ namespace KDChart {
          *
          * \sa setTextAttributes
          */
-        const TextAttributes textAttributes() const;
+    const TextAttributes textAttributes() const;
+};
 
-    };
-    
 }
 
 #endif

@@ -28,10 +28,10 @@
 
 namespace KDChart {
 
-    class PaintContext;
-    class RadarCoordinatePlane;
+class PaintContext;
+class RadarCoordinatePlane;
 
-    /**
+/**
      * \internal
      *
      * \brief Class for the grid in a radar plane.
@@ -41,18 +41,23 @@ namespace KDChart {
      * the grid lines of a radar charts including "axis" 
      * labels.
      */
-    class RadarGrid : public AbstractGrid
+class RadarGrid : public AbstractGrid
+{
+public:
+    RadarGrid()
+        : AbstractGrid()
     {
-    public:
-        RadarGrid() : AbstractGrid() {}
-        ~RadarGrid() override {}
+    }
+    ~RadarGrid() override
+    {
+    }
 
-        void drawGrid( PaintContext* context ) override;
+    void drawGrid(PaintContext *context) override;
 
-    private:
-        DataDimensionsList calculateGrid(
-            const DataDimensionsList& rawDataDimensions ) const override;
-    };
+private:
+    DataDimensionsList calculateGrid(
+        const DataDimensionsList &rawDataDimensions) const override;
+};
 
 }
 

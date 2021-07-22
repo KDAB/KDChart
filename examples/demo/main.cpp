@@ -71,8 +71,9 @@
 
 #include "mainwindow.h"
 
-int main( int argc, char** argv ) {
-    QApplication app( argc, argv );
+int main(int argc, char **argv)
+{
+    QApplication app(argc, argv);
 
     //ChartWidget w;
     MainWindow w;

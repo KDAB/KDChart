@@ -34,14 +34,14 @@ class MainWindow : public QWidget, private Ui::MainWindow
     Q_OBJECT
 
 public:
-    MainWindow( QWidget *parent = nullptr );
+    MainWindow(QWidget *parent = nullptr);
 
 private slots:
-    void on_threeDProperties_toggled( bool checked );
-    void on_perspectiveDepth_valueChanged( int value );
-    void on_perspectiveAngle_valueChanged( int value );
-    void on_useShadowColors_toggled( bool checked );
-    void on_stockTypeCB_currentIndexChanged( const QString &text );
+    void on_threeDProperties_toggled(bool checked);
+    void on_perspectiveDepth_valueChanged(int value);
+    void on_perspectiveAngle_valueChanged(int value);
+    void on_useShadowColors_toggled(bool checked);
+    void on_stockTypeCB_currentIndexChanged(const QString &text);
     void chooseColor();
 
 private:

@@ -73,12 +73,13 @@ DateTimeSpan::DateTimeSpan()
 {
 }
 
-DateTimeSpan::DateTimeSpan( const QDateTime& start, const QDateTime& end )
-    : m_start( start ), m_end( end )
+DateTimeSpan::DateTimeSpan(const QDateTime &start, const QDateTime &end)
+    : m_start(start)
+    , m_end(end)
 {
 }
 
-DateTimeSpan::DateTimeSpan( const DateTimeSpan& other )
+DateTimeSpan::DateTimeSpan(const DateTimeSpan &other)
 {
     *this = other;
 }
@@ -87,9 +88,9 @@ DateTimeSpan::~DateTimeSpan()
 {
 }
 
-DateTimeSpan& DateTimeSpan::operator=( const DateTimeSpan& other )
+DateTimeSpan &DateTimeSpan::operator=(const DateTimeSpan &other)
 {
-    if ( this != &other ) {
+    if (this != &other) {
         m_start = other.m_start;
         m_end = other.m_end;
     }
@@ -101,48 +102,72 @@ bool DateTimeSpan::isValid() const
     return m_start.isValid() && m_end.isValid();
 }
 
-bool DateTimeSpan::equals( const DateTimeSpan& other ) const
+bool DateTimeSpan::equals(const DateTimeSpan &other) const
 {
-    return m_start==other.m_start && m_end==other.m_end;
+    return m_start == other.m_start && m_end == other.m_end;
 }
 
 #ifndef QT_NO_DEBUG_STREAM
 
-QDebug operator<<( QDebug dbg, KDGantt::ItemDataRole r)
+QDebug operator<<(QDebug dbg, KDGantt::ItemDataRole r)
 {
-  switch (r) {
-  case KDGantt::StartTimeRole:      dbg << "KDGantt::StartTimeRole"; break;
-  case KDGantt::EndTimeRole:        dbg << "KDGantt::EndTimeRole"; break;
-  case KDGantt::TaskCompletionRole: dbg << "KDGantt::TaskCompletionRole"; break;
-  case KDGantt::ItemTypeRole:       dbg << "KDGantt::ItemTypeRole"; break;
-  case KDGantt::LegendRole:         dbg << "KDGantt::LegendRole"; break;
-  default: dbg << static_cast<Qt::ItemDataRole>(r);
-  }
-  return dbg;
-}
-
-QDebug operator<<( QDebug dbg, KDGantt::ItemType t)
-{
-    switch ( t ) {
-    case KDGantt::TypeNone:        dbg << "KDGantt::TypeNone"; break;
-    case KDGantt::TypeEvent:       dbg << "KDGantt::TypeEvent"; break;
-    case KDGantt::TypeTask:        dbg << "KDGantt::TypeTask"; break;
-    case KDGantt::TypeSummary:     dbg << "KDGantt::TypeSummary"; break;
-    case KDGantt::TypeMulti:       dbg << "KDGantt::TypeMulti"; break;
-    case KDGantt::TypeUser:        dbg << "KDGantt::TypeUser"; break;
-    default: dbg << static_cast<int>(t);
+    switch (r) {
+    case KDGantt::StartTimeRole:
+        dbg << "KDGantt::StartTimeRole";
+        break;
+    case KDGantt::EndTimeRole:
+        dbg << "KDGantt::EndTimeRole";
+        break;
+    case KDGantt::TaskCompletionRole:
+        dbg << "KDGantt::TaskCompletionRole";
+        break;
+    case KDGantt::ItemTypeRole:
+        dbg << "KDGantt::ItemTypeRole";
+        break;
+    case KDGantt::LegendRole:
+        dbg << "KDGantt::LegendRole";
+        break;
+    default:
+        dbg << static_cast<Qt::ItemDataRole>(r);
     }
     return dbg;
 }
 
-QDebug operator<<( QDebug dbg, const KDGantt::Span& s )
+QDebug operator<<(QDebug dbg, KDGantt::ItemType t)
 {
-    dbg << "KDGantt::Span[ start="<<s.start()<<" length="<<s.length()<<"]";
+    switch (t) {
+    case KDGantt::TypeNone:
+        dbg << "KDGantt::TypeNone";
+        break;
+    case KDGantt::TypeEvent:
+        dbg << "KDGantt::TypeEvent";
+        break;
+    case KDGantt::TypeTask:
+        dbg << "KDGantt::TypeTask";
+        break;
+    case KDGantt::TypeSummary:
+        dbg << "KDGantt::TypeSummary";
+        break;
+    case KDGantt::TypeMulti:
+        dbg << "KDGantt::TypeMulti";
+        break;
+    case KDGantt::TypeUser:
+        dbg << "KDGantt::TypeUser";
+        break;
+    default:
+        dbg << static_cast<int>(t);
+    }
     return dbg;
 }
-QDebug operator<<( QDebug dbg, const KDGantt::DateTimeSpan& s )
+
+QDebug operator<<(QDebug dbg, const KDGantt::Span &s)
 {
-    dbg << "KDGantt::DateTimeSpan[ start="<<s.start()<<" end="<<s.end()<<"]";
+    dbg << "KDGantt::Span[ start=" << s.start() << " length=" << s.length() << "]";
+    return dbg;
+}
+QDebug operator<<(QDebug dbg, const KDGantt::DateTimeSpan &s)
+{
+    dbg << "KDGantt::DateTimeSpan[ start=" << s.start() << " end=" << s.end() << "]";
     return dbg;
 }
 
@@ -152,50 +177,52 @@ QDebug operator<<( QDebug dbg, const KDGantt::DateTimeSpan& s )
 
 #include <ostream>
 
-static std::ostream& operator<<( std::ostream& os, const Span& span )
+static std::ostream &operator<<(std::ostream &os, const Span &span)
 {
-    os << "Span[ start="<<span.start()<<", length="<<span.length()<<"]";
+    os << "Span[ start=" << span.start() << ", length=" << span.length() << "]";
     return os;
 }
 
-static std::ostream& operator<<( std::ostream& os, const DateTimeSpan& span )
+static std::ostream &operator<<(std::ostream &os, const DateTimeSpan &span)
 {
 #ifdef QT_NO_STL
-    os << "DateTimeSpan[ start="<<span.start().toString().toLatin1().constData()
-       << ", end="<<span.end().toString().toLatin1().constData() << "]";
+    os << "DateTimeSpan[ start=" << span.start().toString().toLatin1().constData()
+       << ", end=" << span.end().toString().toLatin1().constData() << "]";
 #else
-    os << "DateTimeSpan[ start="<<span.start().toString().toStdString()
-       << ", end="<<span.end().toString().toStdString() << "]";
+    os << "DateTimeSpan[ start=" << span.start().toString().toStdString()
+       << ", end=" << span.end().toString().toStdString() << "]";
 #endif
     return os;
 }
 
 #include "unittest/test.h"
 
-KDAB_SCOPED_UNITTEST_SIMPLE( KDGantt, Span, "test" ) {
+KDAB_SCOPED_UNITTEST_SIMPLE(KDGantt, Span, "test")
+{
     Span s1;
-    assertFalse( s1.isValid() );
-    s1.setStart( 10. );
-    s1.setLength( 2. );
+    assertFalse(s1.isValid());
+    s1.setStart(10.);
+    s1.setLength(2.);
 
-    Span s2( s1.start(), s1.length() );
-    assertEqual( s1, s2 );
+    Span s2(s1.start(), s1.length());
+    assertEqual(s1, s2);
 }
 
-KDAB_SCOPED_UNITTEST_SIMPLE( KDGantt, DateTimeSpan, "test" ) {
+KDAB_SCOPED_UNITTEST_SIMPLE(KDGantt, DateTimeSpan, "test")
+{
     DateTimeSpan s1;
-    assertFalse( s1.isValid() );
+    assertFalse(s1.isValid());
     QDateTime dt = QDateTime::currentDateTime();
-    s1.setStart( dt );
-    assertTrue( dt.isValid() );
-    s1.setEnd( dt.addDays( 1 ) );
+    s1.setStart(dt);
+    assertTrue(dt.isValid());
+    s1.setEnd(dt.addDays(1));
 
-    DateTimeSpan s2( dt, dt.addDays( 1 ) );
+    DateTimeSpan s2(dt, dt.addDays(1));
 
-    assertEqual( s1, s2 );
+    assertEqual(s1, s2);
 
     DateTimeSpan s3;
 
-    assertNotEqual( s1, s3 );
+    assertNotEqual(s1, s3);
 }
 #endif /* KDAB_NO_UNIT_TESTS */

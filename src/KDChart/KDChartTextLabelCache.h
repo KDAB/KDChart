@@ -33,30 +33,33 @@
 /**
   * @brief  base class for prerendered elements like labels, pixmaps, markers, etc.
   */
-class PrerenderedElement {
+class PrerenderedElement
+{
 public:
     PrerenderedElement();
-    virtual ~PrerenderedElement() {}
+    virtual ~PrerenderedElement()
+    {
+    }
 
     /** Returns the rendered element.
         If any of the properties have change, the element will be
         regenerated. */
-    virtual const QPixmap& pixmap() const = 0;
+    virtual const QPixmap &pixmap() const = 0;
 
     /** Return the location of the reference point relatively to the
         pixmap's origin. */
-    virtual QPointF referencePointLocation( KDChartEnums::PositionValue ) const = 0;
+    virtual QPointF referencePointLocation(KDChartEnums::PositionValue) const = 0;
 
     /** Set the position of the element. */
-    void setPosition( const QPointF& position );
+    void setPosition(const QPointF &position);
     /** Get the position of the element. */
-    const QPointF& position() const;
+    const QPointF &position() const;
 
     /** Set the reference point of the element.
         Every element has nine possible reference points (all compass
         directions, plus the center.
      */
-    void setReferencePoint( KDChartEnums::PositionValue );
+    void setReferencePoint(KDChartEnums::PositionValue);
     /** Get the reference point of the element. */
     KDChartEnums::PositionValue referencePoint() const;
 
@@ -100,24 +103,24 @@ public:
     PrerenderedLabel();
     ~PrerenderedLabel() override;
 
-    void setFont( const QFont& font );
-    const QFont& font() const;
+    void setFont(const QFont &font);
+    const QFont &font() const;
 
-    void setText( const QString& text );
-    const QString& text() const;
+    void setText(const QString &text);
+    const QString &text() const;
 
-    void setBrush( const QBrush& brush );
-    const QBrush& brush() const;
+    void setBrush(const QBrush &brush);
+    const QBrush &brush() const;
 
-    void setPen( const QPen& );
-    const QPen& pen() const;
+    void setPen(const QPen &);
+    const QPen &pen() const;
 
-    void setAngle( qreal angle );
+    void setAngle(qreal angle);
     qreal angle() const;
 
     // reimpl PrerenderedElement:
-    const QPixmap& pixmap() const override;
-    QPointF referencePointLocation( KDChartEnums::PositionValue position ) const override;
+    const QPixmap &pixmap() const override;
+    QPointF referencePointLocation(KDChartEnums::PositionValue position) const override;
     // overload: return location of referencePoint():
     QPointF referencePointLocation() const;
 

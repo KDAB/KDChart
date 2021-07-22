@@ -28,97 +28,97 @@
 
 using namespace KDChart;
 
-BarDiagram::Private::Private( const Private& rhs )
-    : AbstractCartesianDiagram::Private( rhs )
+BarDiagram::Private::Private(const Private &rhs)
+    : AbstractCartesianDiagram::Private(rhs)
 {
 }
 
-void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, qreal maxDepth )
+void BarDiagram::BarDiagramType::paintBars(PaintContext *ctx, const QModelIndex &index, const QRectF &bar, qreal maxDepth)
 {
-    PainterSaver painterSaver( ctx->painter() );
+    PainterSaver painterSaver(ctx->painter());
 
     //Pending Michel: configure threeDBrush settings - shadowColor etc...
-    QBrush indexBrush( diagram()->brush( index ) );
-    QPen indexPen( diagram()->pen( index ) );
+    QBrush indexBrush(diagram()->brush(index));
+    QPen indexPen(diagram()->pen(index));
 
-    ctx->painter()->setRenderHint( QPainter::Antialiasing, diagram()->antiAliasing() );
-    ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( index );
-    if ( threeDAttrs.isEnabled() ) {
-        indexBrush = threeDAttrs.threeDBrush( indexBrush, bar );
+    ctx->painter()->setRenderHint(QPainter::Antialiasing, diagram()->antiAliasing());
+    ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes(index);
+    if (threeDAttrs.isEnabled()) {
+        indexBrush = threeDAttrs.threeDBrush(indexBrush, bar);
     }
-    ctx->painter()->setBrush( indexBrush );
-    ctx->painter()->setPen( PrintingParameters::scalePen( indexPen ) );
+    ctx->painter()->setBrush(indexBrush);
+    ctx->painter()->setPen(PrintingParameters::scalePen(indexPen));
 
-    if ( threeDAttrs.isEnabled() ) {
-        if ( maxDepth ) {
-            threeDAttrs.setDepth( -maxDepth );
+    if (threeDAttrs.isEnabled()) {
+        if (maxDepth) {
+            threeDAttrs.setDepth(-maxDepth);
         }
         //fixme adjust the painting to reasonable depth value
-        const qreal usedDepth = threeDAttrs.depth() * ( type() == BarDiagram::Normal ? 0.25 : 1.0 );
+        const qreal usedDepth = threeDAttrs.depth() * (type() == BarDiagram::Normal ? 0.25 : 1.0);
 
-        const QRectF isoRect = bar.translated( usedDepth, -usedDepth );
+        const QRectF isoRect = bar.translated(usedDepth, -usedDepth);
         // we need to find out if the height is negative
         // and in this case paint it up and down
         QPolygonF topPoints;
-        if ( isoRect.height() < 0 ) {
-            if ( !( type() == BarDiagram::Stacked && index.column() != 0 ) ) {
+        if (isoRect.height() < 0) {
+            if (!(type() == BarDiagram::Stacked && index.column() != 0)) {
                 // fix it when several negative stacked values
                 topPoints << isoRect.bottomLeft() << isoRect.bottomRight()
                           << bar.bottomRight() << bar.bottomLeft();
             }
         } else {
-            reverseMapper().addRect( index.row(), index.column(), isoRect );
-            ctx->painter()->drawRect( isoRect );
-            if ( !( type() == BarDiagram::Percent && isoRect.height() == 0 ) ) {
+            reverseMapper().addRect(index.row(), index.column(), isoRect);
+            ctx->painter()->drawRect(isoRect);
+            if (!(type() == BarDiagram::Percent && isoRect.height() == 0)) {
                 topPoints << bar.topLeft() << bar.topRight() << isoRect.topRight() << isoRect.topLeft();
             }
         }
 
         bool noClippingForTop = false;
-        if ( !topPoints.isEmpty() ) {
+        if (!topPoints.isEmpty()) {
             // Draw the top, if at least one of the top's points is
             // either inside or near at the edge of the coordinate plane:
             bool drawIt = false;
             bool hasPointOutside = false;
-            const QRectF r( ctx->rectangle().adjusted( 0, -1, 1, 0 ) );
-            Q_FOREACH( QPointF pt, topPoints ) {
-                if ( r.contains( pt ) ) {
+            const QRectF r(ctx->rectangle().adjusted(0, -1, 1, 0));
+            Q_FOREACH (QPointF pt, topPoints) {
+                if (r.contains(pt)) {
                     drawIt = true;
                 } else {
                     hasPointOutside = true;
                 }
             }
-            if ( drawIt ) {
-                const PainterSaver p( ctx->painter() );
+            if (drawIt) {
+                const PainterSaver p(ctx->painter());
                 noClippingForTop = hasPointOutside && ctx->painter()->hasClipping();
-                if ( noClippingForTop ) {
-                    ctx->painter()->setClipping( false );
+                if (noClippingForTop) {
+                    ctx->painter()->setClipping(false);
                 }
-                reverseMapper().addPolygon( index.row(), index.column(), topPoints );
-                ctx->painter()->drawPolygon( topPoints );
+                reverseMapper().addPolygon(index.row(), index.column(), topPoints);
+                ctx->painter()->drawPolygon(topPoints);
             }
         }
 
-        if ( bar.height() != 0 ) {
-            const PainterSaver p( ctx->painter() );
-            if ( noClippingForTop ) {
-                ctx->painter()->setClipping( false );
+        if (bar.height() != 0) {
+            const PainterSaver p(ctx->painter());
+            if (noClippingForTop) {
+                ctx->painter()->setClipping(false);
             }
             QPolygonF sidePoints;
             sidePoints << bar.topRight() << isoRect.topRight()
                        << isoRect.bottomRight() << bar.bottomRight();
-            reverseMapper().addPolygon( index.row(), index.column(), sidePoints );
-            ctx->painter()->drawPolygon( sidePoints );
+            reverseMapper().addPolygon(index.row(), index.column(), sidePoints);
+            ctx->painter()->drawPolygon(sidePoints);
         }
     }
 
-    if ( bar.height() != 0 ) {
-        reverseMapper().addRect( index.row(), index.column(), bar );
-        ctx->painter()->drawRect( bar );
+    if (bar.height() != 0) {
+        reverseMapper().addRect(index.row(), index.column(), bar);
+        ctx->painter()->drawRect(bar);
     }
 }
 
-AttributesModel* BarDiagram::BarDiagramType::attributesModel() const
+AttributesModel *BarDiagram::BarDiagramType::attributesModel() const
 {
     return m_private->attributesModel;
 }
@@ -128,19 +128,19 @@ QModelIndex BarDiagram::BarDiagramType::attributesModelRootIndex() const
     return diagram()->attributesModelRootIndex();
 }
 
-BarDiagram* BarDiagram::BarDiagramType::diagram() const
+BarDiagram *BarDiagram::BarDiagramType::diagram() const
 {
-    return static_cast< BarDiagram* >( m_private->diagram );
+    return static_cast<BarDiagram *>(m_private->diagram);
 }
 
-void BarDiagram::BarDiagramType::calculateValueAndGapWidths( int rowCount, int colCount,
-                                             qreal groupWidth,
-                                             qreal& outBarWidth,
-                                             qreal& outSpaceBetweenBars,
-                                             qreal& outSpaceBetweenGroups )
+void BarDiagram::BarDiagramType::calculateValueAndGapWidths(int rowCount, int colCount,
+                                                            qreal groupWidth,
+                                                            qreal &outBarWidth,
+                                                            qreal &outSpaceBetweenBars,
+                                                            qreal &outSpaceBetweenGroups)
 {
 
-    Q_UNUSED( rowCount );
+    Q_UNUSED(rowCount);
     BarAttributes ba = diagram()->barAttributes();
 
     // Pending Michel Fixme
@@ -151,17 +151,17 @@ void BarDiagram::BarDiagramType::calculateValueAndGapWidths( int rowCount, int c
      * also one unit, by default. */
 
     qreal units;
-    if ( type() == Normal ) {
+    if (type() == Normal) {
         units = colCount // number of bars in group * 1.0
-                + (colCount-1) * ba.barGapFactor() // number of bar gaps
-                + 1 * ba.groupGapFactor(); // number of group gaps
+            + (colCount - 1) * ba.barGapFactor() // number of bar gaps
+            + 1 * ba.groupGapFactor(); // number of group gaps
     } else {
         units = 1 + 1 * ba.groupGapFactor();
     }
 
     qreal unitWidth = groupWidth / units;
 
-    if ( !ba.useFixedBarWidth() ) {
+    if (!ba.useFixedBarWidth()) {
         outBarWidth = unitWidth;
     }
 
@@ -178,12 +178,12 @@ void BarDiagram::BarDiagramType::calculateValueAndGapWidths( int rowCount, int c
     outSpaceBetweenGroups += unitWidth * ba.groupGapFactor();
 }
 
-ReverseMapper& BarDiagram::BarDiagramType::reverseMapper()
+ReverseMapper &BarDiagram::BarDiagramType::reverseMapper()
 {
     return m_private->reverseMapper;
 }
 
-CartesianDiagramDataCompressor& BarDiagram::BarDiagramType::compressor() const
+CartesianDiagramDataCompressor &BarDiagram::BarDiagramType::compressor() const
 {
     return m_private->compressor;
 }

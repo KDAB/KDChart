@@ -47,6 +47,7 @@ namespace KDChart {
 class PieAttributes::Private
 {
     friend class PieAttributes;
+
 public:
     Private();
 

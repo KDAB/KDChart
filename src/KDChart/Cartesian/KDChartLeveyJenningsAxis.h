@@ -31,9 +31,9 @@
 
 namespace KDChart {
 
-    class LeveyJenningsDiagram;
+class LeveyJenningsDiagram;
 
-    /**
+/**
       * The class for levey jennings axes.
       *
       * For being useful, axes need to be assigned to a diagram, see
@@ -41,15 +41,15 @@ namespace KDChart {
       *
       * \sa PolarAxis, AbstractCartesianDiagram
       */
-    class KDCHART_EXPORT LeveyJenningsAxis : public CartesianAxis
-    {
-        Q_OBJECT
+class KDCHART_EXPORT LeveyJenningsAxis : public CartesianAxis
+{
+    Q_OBJECT
 
-        Q_DISABLE_COPY( LeveyJenningsAxis )
-        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( LeveyJenningsAxis, AbstractDiagram* )
+    Q_DISABLE_COPY(LeveyJenningsAxis)
+    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT(LeveyJenningsAxis, AbstractDiagram *)
 
-    public:
-        /**
+public:
+    /**
           * C'tor of the class for levey jennings axes.
           *
           * \note If using a zero parent for the constructor, you need to call
@@ -59,30 +59,30 @@ namespace KDChart {
           *
           * \sa AbstractCartesianDiagram::addAxis
           */
-        explicit LeveyJenningsAxis ( LeveyJenningsDiagram* diagram = nullptr );
-        ~LeveyJenningsAxis() override;
+    explicit LeveyJenningsAxis(LeveyJenningsDiagram *diagram = nullptr);
+    ~LeveyJenningsAxis() override;
 
-        LeveyJenningsGridAttributes::GridType type() const;
-        void setType( LeveyJenningsGridAttributes::GridType type );
+    LeveyJenningsGridAttributes::GridType type() const;
+    void setType(LeveyJenningsGridAttributes::GridType type);
 
-        Qt::DateFormat dateFormat() const;
-        void setDateFormat( Qt::DateFormat format );
+    Qt::DateFormat dateFormat() const;
+    void setDateFormat(Qt::DateFormat format);
 
-        /**
+    /**
          * Returns true if both axes have the same settings.
          */
-        bool compare( const LeveyJenningsAxis* other ) const;
+    bool compare(const LeveyJenningsAxis *other) const;
 
-        /** reimpl */
-        void paintCtx( PaintContext* ) override;
+    /** reimpl */
+    void paintCtx(PaintContext *) override;
 
-    protected:
-        virtual void paintAsOrdinate( PaintContext* );
+protected:
+    virtual void paintAsOrdinate(PaintContext *);
 
-        virtual void paintAsAbscissa( PaintContext* );
-    };
+    virtual void paintAsAbscissa(PaintContext *);
+};
 
-    typedef QList<LeveyJenningsAxis*> LeveyJenningsAxisList;
+typedef QList<LeveyJenningsAxis *> LeveyJenningsAxisList;
 }
 
 #endif

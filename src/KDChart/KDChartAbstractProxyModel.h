@@ -27,28 +27,27 @@
 
 #include "KDChartGlobal.h"
 
-namespace KDChart
-{
-    /**
+namespace KDChart {
+/**
       * @brief Base class for all proxy models used inside KD Chart
       * \internal
       */
-    class KDCHART_EXPORT AbstractProxyModel : public QAbstractProxyModel
-    {
-        Q_OBJECT
-    public:
-        explicit AbstractProxyModel( QObject* parent = nullptr );
+class KDCHART_EXPORT AbstractProxyModel : public QAbstractProxyModel
+{
+    Q_OBJECT
+public:
+    explicit AbstractProxyModel(QObject *parent = nullptr);
 
-        /*! \reimpl */ 
-        QModelIndex mapFromSource( const QModelIndex & sourceIndex ) const override;
-        /*! \reimpl */ 
-        QModelIndex mapToSource( const QModelIndex &proxyIndex ) const override;
+    /*! \reimpl */
+    QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override;
+    /*! \reimpl */
+    QModelIndex mapToSource(const QModelIndex &proxyIndex) const override;
 
-        /*! \reimpl */
-        QModelIndex index( int row, int col, const QModelIndex& index ) const override;
-        /*! \reimpl */ 
-        QModelIndex parent( const QModelIndex& index ) const override;
-    };
+    /*! \reimpl */
+    QModelIndex index(int row, int col, const QModelIndex &index) const override;
+    /*! \reimpl */
+    QModelIndex parent(const QModelIndex &index) const override;
+};
 }
 
 #endif /* KDCHARTABSTRACTPROXYMODEL_H */

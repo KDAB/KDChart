@@ -27,19 +27,21 @@
 
 namespace KDChart {
 
-    class StackedLineDiagram : public LineDiagram::LineDiagramType
+class StackedLineDiagram : public LineDiagram::LineDiagramType
+{
+public:
+    explicit StackedLineDiagram(LineDiagram *);
+    ~StackedLineDiagram() override
     {
-    public:
-        explicit StackedLineDiagram( LineDiagram* );
-        ~StackedLineDiagram() override {}
-        LineDiagram::LineType type() const override;
-        const QPair<QPointF,  QPointF> calculateDataBoundaries() const override;
-        void paint( PaintContext* ctx ) override;
+    }
+    LineDiagram::LineType type() const override;
+    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    void paint(PaintContext *ctx) override;
 
-    private:
-        void paintWithLines( PaintContext* ctx );
-        void paintWithSplines( PaintContext* ctx, qreal tension );
-    };
+private:
+    void paintWithLines(PaintContext *ctx);
+    void paintWithSplines(PaintContext *ctx, qreal tension);
+};
 
 }
 

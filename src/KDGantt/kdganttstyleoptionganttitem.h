@@ -30,30 +30,36 @@
 #include <QDebug>
 
 namespace KDGantt {
-    class AbstractGrid;
-    class KDGANTT_EXPORT StyleOptionGanttItem : public QStyleOptionViewItem {
-    public:
-        enum Position { Left, Right, Center, Hidden };
-
-        StyleOptionGanttItem();
-        StyleOptionGanttItem( const StyleOptionGanttItem& other );
-        StyleOptionGanttItem& operator=( const StyleOptionGanttItem& other );
-
-        QRectF boundingRect;
-        QRectF itemRect;
-        Position displayPosition;
-        AbstractGrid* grid;
-        QString text;
+class AbstractGrid;
+class KDGANTT_EXPORT StyleOptionGanttItem : public QStyleOptionViewItem
+{
+public:
+    enum Position
+    {
+        Left,
+        Right,
+        Center,
+        Hidden
     };
+
+    StyleOptionGanttItem();
+    StyleOptionGanttItem(const StyleOptionGanttItem &other);
+    StyleOptionGanttItem &operator=(const StyleOptionGanttItem &other);
+
+    QRectF boundingRect;
+    QRectF itemRect;
+    Position displayPosition;
+    AbstractGrid *grid;
+    QString text;
+};
 }
 
 #ifndef QT_NO_DEBUG_STREAM
 
-QDebug operator<<( QDebug dbg, KDGantt::StyleOptionGanttItem::Position p);
-QDebug operator<<( QDebug dbg, const KDGantt::StyleOptionGanttItem& s );
+QDebug operator<<(QDebug dbg, KDGantt::StyleOptionGanttItem::Position p);
+QDebug operator<<(QDebug dbg, const KDGantt::StyleOptionGanttItem &s);
 
 #endif /* QT_NO_DEBUG_STREAM */
 
 
 #endif /* KDGANTTSTYLEOPTIONGANTTITEM_H */
-

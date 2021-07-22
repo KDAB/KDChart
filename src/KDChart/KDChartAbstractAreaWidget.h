@@ -45,11 +45,11 @@ class KDCHART_EXPORT AbstractAreaWidget : public QWidget, public AbstractAreaBas
 {
     Q_OBJECT
 
-    Q_DISABLE_COPY( AbstractAreaWidget )
-    KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET( AbstractAreaWidget )
+    Q_DISABLE_COPY(AbstractAreaWidget)
+    KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET(AbstractAreaWidget)
 
 public:
-    explicit AbstractAreaWidget( QWidget* parent = nullptr );
+    explicit AbstractAreaWidget(QWidget *parent = nullptr);
 
     /**
       * @brief Draws the background and frame, then calls paint().
@@ -58,7 +58,7 @@ public:
       * class, but you would overwrite paint() instead.
       * @sa paint
       */
-    void paintEvent( QPaintEvent* event ) override;
+    void paintEvent(QPaintEvent *event) override;
 
     /**
       * @brief Draws the background and frame, then calls paint().
@@ -66,7 +66,7 @@ public:
       * In most cases there is no need to overwrite this method in a derived
       * class, but you would overwrite paint() instead.
       */
-    virtual void paintIntoRect( QPainter& painter, const QRect& rect );
+    virtual void paintIntoRect(QPainter &painter, const QRect &rect);
 
     /**
       * Overwrite this to paint the inner contents of your widget.
@@ -79,32 +79,32 @@ public:
       * your custom drawing!
       * @sa paint, paintIntoRect
       */
-    virtual void paint( QPainter* painter ) = 0;
+    virtual void paint(QPainter *painter) = 0;
 
     /**
       * Call paintAll, if you want the background and the frame to be drawn
       * before the normal paint() is invoked automatically.
       */
-    void paintAll( QPainter& painter );
+    void paintAll(QPainter &painter);
 
     /**
       * Call this to trigger an unconditional re-building of the widget's internals.
-      */ 
+      */
     virtual void forceRebuild();
 
     /**
       * Call this to trigger an conditional re-building of the widget's internals.
       *
       * e.g. AbstractAreaWidget call this, before calling layout()->setGeometry()
-      */ 
+      */
     virtual void needSizeHint();
-    virtual void resizeLayout( const QSize& );
+    virtual void resizeLayout(const QSize &);
 
 Q_SIGNALS:
-    void positionChanged( AbstractAreaWidget * );
+    void positionChanged(AbstractAreaWidget *);
 
 protected:
-    ~AbstractAreaWidget() override ;
+    ~AbstractAreaWidget() override;
     QRect areaGeometry() const override;
     void positionHasChanged() override;
 };

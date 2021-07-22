@@ -48,65 +48,69 @@ class QGraphicsRectItem;
 QT_END_NAMESPACE
 
 namespace KDGantt {
-    class GraphicsItem;
-    class KDGanttTreeView;
+class GraphicsItem;
+class KDGanttTreeView;
 
-    /*! \internal */
-    class KDGanttTreeView : public QTreeView {
-        Q_OBJECT
-    public:
-        explicit KDGanttTreeView( QAbstractProxyModel* proxy, QWidget* parent=nullptr );
-        ~KDGanttTreeView() override;
+/*! \internal */
+class KDGanttTreeView : public QTreeView
+{
+    Q_OBJECT
+public:
+    explicit KDGanttTreeView(QAbstractProxyModel *proxy, QWidget *parent = nullptr);
+    ~KDGanttTreeView() override;
 
-        AbstractRowController* rowController() { return &m_controller; }
+    AbstractRowController *rowController()
+    {
+        return &m_controller;
+    }
 
-    public Q_SLOTS:
-        void expandAll(QModelIndex index = QModelIndex());
-        void collapseAll(QModelIndex index = QModelIndex());
+public Q_SLOTS:
+    void expandAll(QModelIndex index = QModelIndex());
+    void collapseAll(QModelIndex index = QModelIndex());
 
-    private:
-        TreeViewRowController m_controller;
-    };
+private:
+    TreeViewRowController m_controller;
+};
 
-    /*! \internal */
-    class View::Private {
-    public:
-        explicit Private(View*);
-        virtual ~Private();
+/*! \internal */
+class View::Private
+{
+public:
+    explicit Private(View *);
+    virtual ~Private();
 
-        void init();
+    void init();
 
-        GraphicsItem* createItem( ItemType type ) const;
+    GraphicsItem *createItem(ItemType type) const;
 
-        void updateScene();
+    void updateScene();
 
-        void setupGraphicsView();
+    void setupGraphicsView();
 
-        // slots
-        void slotCollapsed(const QModelIndex&);
-        void slotExpanded(const QModelIndex&);
-        void slotVerticalScrollValueChanged( int );
-        void slotLeftWidgetVerticalRangeChanged( int, int );
-        void slotGfxViewVerticalRangeChanged( int, int );
+    // slots
+    void slotCollapsed(const QModelIndex &);
+    void slotExpanded(const QModelIndex &);
+    void slotVerticalScrollValueChanged(int);
+    void slotLeftWidgetVerticalRangeChanged(int, int);
+    void slotGfxViewVerticalRangeChanged(int, int);
 
-        View* q;
+    View *q;
 
-        QSplitter splitter;
+    QSplitter splitter;
 
-        /* TODO: Refine/subclass */
-        //KDGanttTreeView treeview;
-        QPointer<QAbstractItemView> leftWidget;
-        AbstractRowController* rowController;
-        QPointer<GraphicsView> gfxview;
-        //KDGanttHeaderWidget headerwidget;
+    /* TODO: Refine/subclass */
+    //KDGanttTreeView treeview;
+    QPointer<QAbstractItemView> leftWidget;
+    AbstractRowController *rowController;
+    QPointer<GraphicsView> gfxview;
+    //KDGanttHeaderWidget headerwidget;
 
-        QPointer<QAbstractItemModel> model;
-        ProxyModel ganttProxyModel;
-        //KDGanttTreeViewRowController rowController;
-        ConstraintModel mappedConstraintModel;
-        ConstraintProxy constraintProxy;
-    };
+    QPointer<QAbstractItemModel> model;
+    ProxyModel ganttProxyModel;
+    //KDGanttTreeViewRowController rowController;
+    ConstraintModel mappedConstraintModel;
+    ConstraintProxy constraintProxy;
+};
 
 }
 #endif /* KDGANTTVIEW_P_H */
-

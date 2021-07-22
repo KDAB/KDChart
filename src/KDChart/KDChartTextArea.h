@@ -48,27 +48,27 @@ class KDCHART_EXPORT TextArea : public QObject, public AbstractAreaBase, public 
 {
     Q_OBJECT
 
-    Q_DISABLE_COPY( TextArea )
-    KDCHART_DECLARE_PRIVATE_DERIVED( TextArea )
+    Q_DISABLE_COPY(TextArea)
+    KDCHART_DECLARE_PRIVATE_DERIVED(TextArea)
 
 
 public:
-    ~TextArea() override ;
+    ~TextArea() override;
 
-//    virtual TextArea * clone() const = 0;
+    //    virtual TextArea * clone() const = 0;
     /**
       * @brief Draws the background and frame, then calls paint().
       *
       * In most cases there is no need to overwrite this method in a derived
       * class, but you would overwrite TextLayoutItem::paint() instead.
       */
-    virtual void paintIntoRect( QPainter& painter, const QRect& rect );
+    virtual void paintIntoRect(QPainter &painter, const QRect &rect);
 
     /**
       * Call paintAll, if you want the background and the frame to be drawn
       * before the normal paint() is invoked automatically.
       */
-    void paintAll( QPainter& painter ) override;
+    void paintAll(QPainter &painter) override;
 
 protected:
     TextArea();
@@ -76,7 +76,7 @@ protected:
     void positionHasChanged() override;
 
 Q_SIGNALS:
-    void positionChanged( TextArea * );
+    void positionChanged(TextArea *);
 
     //KDCHART_DECLARE_PRIVATE_DERIVED(TextArea)
 }; // End of class TextArea

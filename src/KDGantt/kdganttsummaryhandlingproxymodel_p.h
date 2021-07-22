@@ -31,22 +31,23 @@
 #include <QPersistentModelIndex>
 
 namespace KDGantt {
-    class SummaryHandlingProxyModel::Private {
-    public:
-        bool cacheLookup( const QModelIndex& idx,
-                          QPair<QDateTime,QDateTime>* result ) const;
-        void insertInCache( const SummaryHandlingProxyModel* model, const QModelIndex& idx ) const;
-        void removeFromCache( const QModelIndex& idx ) const;
-        void clearCache() const;
-		
-		inline bool isSummary( const QModelIndex& idx ) const {
-			int typ = idx.data( ItemTypeRole ).toInt();
-			return (typ==TypeSummary) || (typ==TypeMulti);
-		}
+class SummaryHandlingProxyModel::Private
+{
+public:
+    bool cacheLookup(const QModelIndex &idx,
+                     QPair<QDateTime, QDateTime> *result) const;
+    void insertInCache(const SummaryHandlingProxyModel *model, const QModelIndex &idx) const;
+    void removeFromCache(const QModelIndex &idx) const;
+    void clearCache() const;
 
-        mutable QHash<QModelIndex, QPair<QDateTime, QDateTime> > cached_summary_items;
-    };
+    inline bool isSummary(const QModelIndex &idx) const
+    {
+        int typ = idx.data(ItemTypeRole).toInt();
+        return (typ == TypeSummary) || (typ == TypeMulti);
+    }
+
+    mutable QHash<QModelIndex, QPair<QDateTime, QDateTime>> cached_summary_items;
+};
 }
 
 #endif /* KDGANTTSUMMARYHANDLINGPROXYMODEL_P_H */
-

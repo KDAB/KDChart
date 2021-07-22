@@ -29,26 +29,25 @@
 
 namespace KDChart {
 
-    /**
+/**
       * @brief A TernaryLineDiagram is a line diagram with a ternary coordinate plane
       */
-    class KDCHART_EXPORT TernaryLineDiagram : public AbstractTernaryDiagram
-    {
-        Q_OBJECT
-        Q_DISABLE_COPY( TernaryLineDiagram )
-        KDCHART_DECLARE_DERIVED_DIAGRAM( TernaryLineDiagram, TernaryCoordinatePlane )
+class KDCHART_EXPORT TernaryLineDiagram : public AbstractTernaryDiagram
+{
+    Q_OBJECT
+    Q_DISABLE_COPY(TernaryLineDiagram)
+    KDCHART_DECLARE_DERIVED_DIAGRAM(TernaryLineDiagram, TernaryCoordinatePlane)
 
-    public:
-        explicit TernaryLineDiagram ( QWidget* parent = nullptr, TernaryCoordinatePlane* plane = nullptr );
-        ~TernaryLineDiagram() override;
+public:
+    explicit TernaryLineDiagram(QWidget *parent = nullptr, TernaryCoordinatePlane *plane = nullptr);
+    ~TernaryLineDiagram() override;
 
-        void resize (const QSizeF &area) override;
-        void paint (PaintContext *paintContext) override;
+    void resize(const QSizeF &area) override;
+    void paint(PaintContext *paintContext) override;
 
-    protected:
-        const QPair< QPointF, QPointF > calculateDataBoundaries () const override;
-
-    };
+protected:
+    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+};
 }
 
 #endif

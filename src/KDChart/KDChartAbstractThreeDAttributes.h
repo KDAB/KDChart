@@ -35,26 +35,29 @@ class KDCHART_EXPORT AbstractThreeDAttributes
 {
 public:
     AbstractThreeDAttributes();
-    AbstractThreeDAttributes( const AbstractThreeDAttributes& );
-    AbstractThreeDAttributes &operator= ( const AbstractThreeDAttributes& );
+    AbstractThreeDAttributes(const AbstractThreeDAttributes &);
+    AbstractThreeDAttributes &operator=(const AbstractThreeDAttributes &);
 
     virtual ~AbstractThreeDAttributes() = 0;
 
-    void setEnabled( bool enabled );
+    void setEnabled(bool enabled);
     bool isEnabled() const;
 
-    void setDepth( qreal depth );
+    void setDepth(qreal depth);
     qreal depth() const;
 
     // returns the depth(), if is isEnabled() is true, otherwise returns 0.0
     qreal validDepth() const;
 
     bool isThreeDBrushEnabled() const;
-    void setThreeDBrushEnabled( bool enabled );
-    virtual QBrush threeDBrush( const QBrush& brush, const QRectF& rect ) const;
+    void setThreeDBrushEnabled(bool enabled);
+    virtual QBrush threeDBrush(const QBrush &brush, const QRectF &rect) const;
 
-    bool operator==( const AbstractThreeDAttributes& ) const;
-    inline bool operator!=( const AbstractThreeDAttributes& other ) const { return !operator==(other); }
+    bool operator==(const AbstractThreeDAttributes &) const;
+    inline bool operator!=(const AbstractThreeDAttributes &other) const
+    {
+        return !operator==(other);
+    }
 
     KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC(AbstractThreeDAttributes)
 
@@ -65,7 +68,7 @@ public:
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)
-KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::AbstractThreeDAttributes& );
+KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::AbstractThreeDAttributes &);
 #endif /* QT_NO_DEBUG_STREAM */
 
 

@@ -42,8 +42,8 @@ TernaryCoordinatePlane::Private::Private()
 {
 }
 
-TernaryCoordinatePlane::TernaryCoordinatePlane( Chart* parent )
-    : AbstractCoordinatePlane( new Private(), parent )
+TernaryCoordinatePlane::TernaryCoordinatePlane(Chart *parent)
+    : AbstractCoordinatePlane(new Private(), parent)
 {
 }
 
@@ -55,46 +55,45 @@ void TernaryCoordinatePlane::init()
 {
 }
 
-void TernaryCoordinatePlane::addDiagram( AbstractDiagram* diagram )
+void TernaryCoordinatePlane::addDiagram(AbstractDiagram *diagram)
 {
-    Q_ASSERT_X ( dynamic_cast<AbstractTernaryDiagram*>( diagram ),
-                 "TernaryCoordinatePlane::addDiagram", "Only ternary "
-                 "diagrams can be added to a ternary coordinate plane!" );
-    AbstractCoordinatePlane::addDiagram ( diagram );
+    Q_ASSERT_X(dynamic_cast<AbstractTernaryDiagram *>(diagram),
+               "TernaryCoordinatePlane::addDiagram", "Only ternary "
+                                                     "diagrams can be added to a ternary coordinate plane!");
+    AbstractCoordinatePlane::addDiagram(diagram);
 }
 
 void TernaryCoordinatePlane::layoutDiagrams()
-{   // this is our "resize event":
+{ // this is our "resize event":
     // all diagrams always take the same space, nothing to be done here
     // the "inner" margin (adjustments to diagram coordinates)
-    QRectF diagramNativeRectangle ( QPointF( 0.0, 0.0 ),
-                                    QSizeF( TriangleWidth, TriangleHeight ) );
+    QRectF diagramNativeRectangle(QPointF(0.0, 0.0),
+                                  QSizeF(TriangleWidth, TriangleHeight));
     QPair<QSizeF, QSizeF> margins = grid()->requiredMargins();
     d->diagramRect = areaGeometry();
-    diagramNativeRectangle.adjust
-        (-margins.first.width(), -margins.first.height(),
-         margins.second.width(), margins.second.height() );
+    diagramNativeRectangle.adjust(-margins.first.width(), -margins.first.height(),
+                                  margins.second.width(), margins.second.height());
 
     // the "outer" margin (distance between diagram contents and area,
     // determined by axis label overlap
     {
-        QSizeF topleft( 0.0, 0.0 );
-        QSizeF bottomRight( 0.0, 0.0 );
-        Q_FOREACH( AbstractDiagram* abstractDiagram, diagrams() ) {
-            AbstractTernaryDiagram* diagram =
-                qobject_cast<AbstractTernaryDiagram*>( abstractDiagram );
-            Q_ASSERT( diagram );
-            Q_FOREACH( TernaryAxis* axis, diagram->axes() ) {
+        QSizeF topleft(0.0, 0.0);
+        QSizeF bottomRight(0.0, 0.0);
+        Q_FOREACH (AbstractDiagram *abstractDiagram, diagrams()) {
+            AbstractTernaryDiagram *diagram =
+                qobject_cast<AbstractTernaryDiagram *>(abstractDiagram);
+            Q_ASSERT(diagram);
+            Q_FOREACH (TernaryAxis *axis, diagram->axes()) {
                 QPair<QSizeF, QSizeF> margin = axis->requiredMargins();
-                topleft = topleft.expandedTo( margin.first );
-                bottomRight = bottomRight.expandedTo( margin.second );
+                topleft = topleft.expandedTo(margin.first);
+                bottomRight = bottomRight.expandedTo(margin.second);
             }
         }
         d->diagramRectContainer =
-            d->diagramRect.adjusted( topleft.width(),
-                                     topleft.height(),
-                                     -bottomRight.width(),
-                                     -bottomRight.height() );
+            d->diagramRect.adjusted(topleft.width(),
+                                    topleft.height(),
+                                    -bottomRight.width(),
+                                    -bottomRight.height());
     }
 
     // now calculate isometric projection, x and y widget coordinate
@@ -105,16 +104,16 @@ void TernaryCoordinatePlane::layoutDiagrams()
     qreal usableWidth;
     qreal usableHeight;
 
-    if ( TriangleHeight * w > h ) {
+    if (TriangleHeight * w > h) {
         // shorten width:
         usableWidth = h / diagramNativeRectangle.height();
         usableHeight = h;
-        zeroZeroPoint.setX( zeroZeroPoint.x() + ( w - usableWidth ) / 2 );
+        zeroZeroPoint.setX(zeroZeroPoint.x() + (w - usableWidth) / 2);
     } else {
         // reduce height:
         usableWidth = w;
         usableHeight = diagramNativeRectangle.height() * w;
-        zeroZeroPoint.setY( zeroZeroPoint.y() - ( h - usableHeight ) / 2 );
+        zeroZeroPoint.setY(zeroZeroPoint.y() - (h - usableHeight) / 2);
     }
     // the rectangle has 1 as it's width, and TriangleHeight as it's
     // height - so this is how we translate that to widget coordinates:
@@ -125,17 +124,17 @@ void TernaryCoordinatePlane::layoutDiagrams()
     {
         qreal descent = diagramNativeRectangle.height() - TriangleHeight;
         qreal rightShift = -diagramNativeRectangle.x();
-        zeroZeroPoint += QPointF( rightShift * d->xUnit, descent * d->yUnit );
+        zeroZeroPoint += QPointF(rightShift * d->xUnit, descent * d->yUnit);
     }
 
-    d->diagramRect.setBottomLeft( zeroZeroPoint );
-    d->diagramRect.setTopRight( QPointF( usableWidth, -usableHeight ) + zeroZeroPoint );
+    d->diagramRect.setBottomLeft(zeroZeroPoint);
+    d->diagramRect.setTopRight(QPointF(usableWidth, -usableHeight) + zeroZeroPoint);
 }
 
-const QPointF TernaryCoordinatePlane::translate( const QPointF& point ) const
+const QPointF TernaryCoordinatePlane::translate(const QPointF &point) const
 {
-    return QPointF( d->diagramRect.bottomLeft().x() + point.x() * d->xUnit,
-                    d->diagramRect.bottomLeft().y() + point.y() * d->yUnit );
+    return QPointF(d->diagramRect.bottomLeft().x() + point.x() * d->xUnit,
+                   d->diagramRect.bottomLeft().y() + point.y() * d->yUnit);
 }
 
 QSize TernaryCoordinatePlane::minimumSizeHint() const
@@ -146,47 +145,45 @@ QSize TernaryCoordinatePlane::minimumSizeHint() const
 
 QSizePolicy TernaryCoordinatePlane::sizePolicy() const
 {
-    return QSizePolicy( QSizePolicy::MinimumExpanding,
-                        QSizePolicy::MinimumExpanding );
+    return QSizePolicy(QSizePolicy::MinimumExpanding,
+                       QSizePolicy::MinimumExpanding);
 }
 
-void TernaryCoordinatePlane::paint( QPainter* painter )
+void TernaryCoordinatePlane::paint(QPainter *painter)
 {
-    PainterSaver s( painter );
+    PainterSaver s(painter);
     // FIXME: this is not a good location for that:
-    painter->setRenderHint(QPainter::Antialiasing, true );
+    painter->setRenderHint(QPainter::Antialiasing, true);
 
     AbstractDiagramList diags = diagrams();
-    if ( !diags.isEmpty() )
-    {
+    if (!diags.isEmpty()) {
         PaintContext ctx;
-        ctx.setPainter ( painter );
-        ctx.setCoordinatePlane ( this );
-        const QRectF drawArea( areaGeometry() );
-        ctx.setRectangle ( drawArea );
+        ctx.setPainter(painter);
+        ctx.setCoordinatePlane(this);
+        const QRectF drawArea(areaGeometry());
+        ctx.setRectangle(drawArea);
 
         // paint the coordinate system rulers:
-        Q_ASSERT( d->grid != nullptr );
-        d->grid->drawGrid( &ctx );
+        Q_ASSERT(d->grid != nullptr);
+        d->grid->drawGrid(&ctx);
 
         // paint the diagrams:
-        for ( int i = 0; i < diags.size(); i++ )
-        {
-            PainterSaver diagramPainterSaver( painter );
-            diags[i]->paint ( &ctx );
+        for (int i = 0; i < diags.size(); i++) {
+            PainterSaver diagramPainterSaver(painter);
+            diags[i]->paint(&ctx);
         }
     }
 }
 
 DataDimensionsList TernaryCoordinatePlane::getDataDimensionsList() const
-{   // not needed
+{ // not needed
     return DataDimensionsList();
 }
 
-TernaryGrid* TernaryCoordinatePlane::grid() const
+TernaryGrid *TernaryCoordinatePlane::grid() const
 {
-    TernaryGrid* ternaryGrid = static_cast<TernaryGrid*>( d->grid );
-    Q_ASSERT( dynamic_cast<TernaryGrid*>( d->grid ) );
+    TernaryGrid *ternaryGrid = static_cast<TernaryGrid *>(d->grid);
+    Q_ASSERT(dynamic_cast<TernaryGrid *>(d->grid));
     return ternaryGrid;
 }
 

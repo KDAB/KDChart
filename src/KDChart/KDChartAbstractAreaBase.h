@@ -39,10 +39,10 @@ class QString;
 QT_END_NAMESPACE
 
 namespace KDChart {
-    class TextAttributes;
-    class BackgroundAttributes;
-    class FrameAttributes;
-    class PaintContext;
+class TextAttributes;
+class BackgroundAttributes;
+class FrameAttributes;
+class PaintContext;
 
 
 /**
@@ -64,41 +64,41 @@ namespace KDChart {
   */
 class KDCHART_EXPORT AbstractAreaBase
 {
-    Q_DISABLE_COPY( AbstractAreaBase )
-    KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( AbstractAreaBase )
+    Q_DISABLE_COPY(AbstractAreaBase)
+    KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC(AbstractAreaBase)
 
 protected:
     AbstractAreaBase();
-    virtual ~AbstractAreaBase() ;
+    virtual ~AbstractAreaBase();
 
 public:
-   /**
+    /**
      * Returns true if both areas have the same settings.
      */
-    bool compare( const AbstractAreaBase* other ) const;
+    bool compare(const AbstractAreaBase *other) const;
 
-    void alignToReferencePoint( const RelativePosition& position );
+    void alignToReferencePoint(const RelativePosition &position);
 
-    void setFrameAttributes( const FrameAttributes &a );
+    void setFrameAttributes(const FrameAttributes &a);
     FrameAttributes frameAttributes() const;
 
-    void setBackgroundAttributes( const BackgroundAttributes &a );
+    void setBackgroundAttributes(const BackgroundAttributes &a);
     BackgroundAttributes backgroundAttributes() const;
 
-    virtual void paintBackground( QPainter& painter, const QRect& rectangle );
-    virtual void paintFrame( QPainter& painter, const QRect& rectangle );
+    virtual void paintBackground(QPainter &painter, const QRect &rectangle);
+    virtual void paintFrame(QPainter &painter, const QRect &rectangle);
 
-    static void paintBackgroundAttributes( QPainter& painter, const QRect& rectangle,
-        const KDChart::BackgroundAttributes& attributes );
-    static void paintFrameAttributes( QPainter& painter, const QRect& rectangle,
-        const KDChart::FrameAttributes& attributes );
+    static void paintBackgroundAttributes(QPainter &painter, const QRect &rectangle,
+                                          const KDChart::BackgroundAttributes &attributes);
+    static void paintFrameAttributes(QPainter &painter, const QRect &rectangle,
+                                     const KDChart::FrameAttributes &attributes);
 
     /** \internal
       * \note Normally you should not call this method, but derive your classes
       * from AbstractArea or AbstractAreaWidget.
       * \sa AbstractArea, AbstractAreaWidget
       */
-    void getFrameLeadings(int& left, int& top, int& right, int& bottom ) const;
+    void getFrameLeadings(int &left, int &top, int &right, int &bottom) const;
 
 
 protected:

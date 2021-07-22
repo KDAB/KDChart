@@ -47,32 +47,33 @@ namespace KDChart {
 class PieDiagram::Private : public AbstractPieDiagram::Private
 {
     friend class PieDiagram;
+
 public:
     Private();
     ~Private() override;
 
-    Private( const Private& rhs ) :
-        AbstractPieDiagram::Private( rhs ),
-        startAngles(),
-        angleLens(),
-        size( 0 ),
-        labelDecorations( NoDecoration ),
-        isCollisionAvoidanceEnabled( false )
-        {
-            // just for consistency
-        }
+    Private(const Private &rhs)
+        : AbstractPieDiagram::Private(rhs)
+        , startAngles()
+        , angleLens()
+        , size(0)
+        , labelDecorations(NoDecoration)
+        , isCollisionAvoidanceEnabled(false)
+    {
+        // just for consistency
+    }
 
 protected:
     // this information needed temporarily at drawing time
-    QVector< qreal > startAngles;
-    QVector< qreal > angleLens;
+    QVector<qreal> startAngles;
+    QVector<qreal> angleLens;
     qreal size;
     LabelPaintCache labelPaintCache;
     PieDiagram::LabelDecorations labelDecorations;
     bool isCollisionAvoidanceEnabled;
 };
 
-KDCHART_IMPL_DERIVED_DIAGRAM( PieDiagram, AbstractPieDiagram, PolarCoordinatePlane )
+KDCHART_IMPL_DERIVED_DIAGRAM(PieDiagram, AbstractPieDiagram, PolarCoordinatePlane)
 
 }
 

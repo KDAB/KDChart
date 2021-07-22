@@ -25,8 +25,8 @@
 
 #include "ui_mainwindow.h"
 
-namespace KDChart{
-    class Widget;
+namespace KDChart {
+class Widget;
 }
 
 class MainWindow : public QWidget, private Ui::MainWindow
@@ -34,9 +34,9 @@ class MainWindow : public QWidget, private Ui::MainWindow
     Q_OBJECT
 
 public:
-    MainWindow( QWidget* parent = nullptr );
+    MainWindow(QWidget *parent = nullptr);
 
-    KDChart::Widget* widget;
+    KDChart::Widget *widget;
 
 private:
 };

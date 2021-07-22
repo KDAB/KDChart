@@ -50,23 +50,24 @@ class PolarCoordinatePlane;
 class AbstractPieDiagram::Private : public AbstractPolarDiagram::Private
 {
     friend class AbstractPieDiagram;
+
 public:
     Private();
     ~Private() override;
 
-    Private( const Private& rhs ) :
-        AbstractPolarDiagram::Private( rhs ),
-        granularity( rhs.granularity ),
-        autoRotateLabels( false )
-        {
-        }
+    Private(const Private &rhs)
+        : AbstractPolarDiagram::Private(rhs)
+        , granularity(rhs.granularity)
+        , autoRotateLabels(false)
+    {
+    }
 
 private:
     qreal granularity;
     bool autoRotateLabels;
 };
 
-KDCHART_IMPL_DERIVED_DIAGRAM( AbstractPieDiagram, AbstractPolarDiagram, PolarCoordinatePlane )
+KDCHART_IMPL_DERIVED_DIAGRAM(AbstractPieDiagram, AbstractPolarDiagram, PolarCoordinatePlane)
 
 }
 #endif /* KDCHARTABSTRACTPIEDIAGRAM_P_H */

@@ -44,7 +44,7 @@ class TESTTOOLS_EXPORT TableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    TableModel( QObject* parent = nullptr );
+    TableModel(QObject *parent = nullptr);
     ~TableModel() override;
 
     /** Return header data from the model.
@@ -53,16 +53,16 @@ public:
         exposed as model data, that means, the first model row and column will
         start at index (0, 0).
     */
-    QVariant headerData( int section, Qt::Orientation orientation,
-                         int role = Qt::DisplayRole ) const override;
+    QVariant headerData(int section, Qt::Orientation orientation,
+                        int role = Qt::DisplayRole) const override;
 
-    int rowCount( const QModelIndex& parent = QModelIndex() ) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    int columnCount( const QModelIndex& parent = QModelIndex() ) const override;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    bool setData( const QModelIndex& index, const QVariant& value, int role = Qt::EditRole ) override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
     /** Load the table from a comma separated file.
      *
@@ -79,7 +79,7 @@ public:
      *
      * @sa titleText
      */
-    bool loadFromCSV( const QString& filename );
+    bool loadFromCSV(const QString &filename);
 
     /**
      * If both DataHasHorizontalHeaders and DataHasVerticalHeaders is
@@ -95,7 +95,8 @@ public:
      *
      * @sa loadFromCSV
      */
-    const QString titleText() const {
+    const QString titleText() const
+    {
         return m_titleText;
     }
 
@@ -106,7 +107,8 @@ public:
      * TableModel is just storing this data but it does nothing
      * else with it, nor does Qt's IndeView model make use of it.
      */
-    void setTitleText( const QString& txt ) {
+    void setTitleText(const QString &txt)
+    {
         m_titleText = txt;
     }
 
@@ -116,29 +118,31 @@ public:
     /**
      * Set to false if the data has no horizontal header
      */
-    void setDataHasHorizontalHeaders( bool value ) {
+    void setDataHasHorizontalHeaders(bool value)
+    {
         m_dataHasHorizontalHeaders = value;
     }
     /**
      * Set to false if the data has no vertical header
      */
-    void setDataHasVerticalHeaders( bool value ) {
+    void setDataHasVerticalHeaders(bool value)
+    {
         m_dataHasVerticalHeaders = value;
     }
     /**
      * setSupplyHeaderData(false) allows to prevent the model from supplying header data,
      * even if parsing found any
      */
-    void setSupplyHeaderData( bool value ) {
+    void setSupplyHeaderData(bool value)
+    {
         m_supplyHeaderData = value;
     }
 
 protected:
     // the vector of rows:
-    QVector< QVector<QVariant> > m_rows;
+    QVector<QVector<QVariant>> m_rows;
 
 private:
-
     // the header data:
     QStringList m_horizontalHeaderData;
     QStringList m_verticalHeaderData;

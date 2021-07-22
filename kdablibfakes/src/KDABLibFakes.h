@@ -39,27 +39,27 @@
 
 #include <limits>
 
-#define NaN std::numeric_limits< qreal >::quiet_NaN()
-#define signalingNaN std::numeric_limits< qreal >::signaling_NaN()
+#define NaN std::numeric_limits<qreal>::quiet_NaN()
+#define signalingNaN std::numeric_limits<qreal>::signaling_NaN()
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
 
-#define DEGTORAD(d) (d)*M_PI/180
+#define DEGTORAD(d) (d) * M_PI / 180
 
 // Smybian's math.h doesn't define a trunc function
 #if defined(Q_OS_SYMBIAN) || defined(QT_SIMULATOR)
-#define trunc(x) (qreal) ((int) (x + (x >= 0.0 ? -0.5 : 0.5)))
+#define trunc(x) (qreal)(( int )(x + (x >= 0.0 ? -0.5 : 0.5)))
 #endif
 
 // We use our own ISNAN / ISINF in the code to detect
 // that we defined them.
 // reason: Windows / MacOS do not have isnan() / isinf()
-#if defined (Q_OS_WIN)
+#if defined(Q_OS_WIN)
 #include <float.h>
-#define ISNAN(x ) _isnan(x )
-#define ISINF(x ) (!(_finite(x ) + _isnan(x ) ) )
+#define ISNAN(x) _isnan(x)
+#define ISINF(x) (!(_finite(x) + _isnan(x)))
 #else
 #define ISNAN(x) std::isnan(x)
 #define ISINF(x) std::isinf(x)

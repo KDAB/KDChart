@@ -24,7 +24,7 @@
 #define MAINWINDOW_H
 
 
-#include	<QWidget>
+#include <QWidget>
 
 
 class ModelParamVsParam;
@@ -34,39 +34,38 @@ class QGridLayout;
 class QLineEdit;
 QT_END_NAMESPACE
 
-namespace KDChart
-{
-	class	LineDiagram;
+namespace KDChart {
+class LineDiagram;
 };
 
 
-class	MainWindow:	public QWidget
+class MainWindow : public QWidget
 {
-	 Q_OBJECT;
+    Q_OBJECT;
 
 public:
-	 MainWindow(
-		 QWidget					*p_parent =	0);
+    MainWindow(
+        QWidget *p_parent = 0);
 
-	 	~MainWindow() override;
+    ~MainWindow() override;
 
 private slots:
-	void timeoutEditingFinished();
-	void editingFinished();
+    void timeoutEditingFinished();
+    void editingFinished();
 
 private:
-	void addPlots();
-	void removePlots();
-	void setMarkerAttributes(
-		KDChart::LineDiagram		*p_lineDiagram);
+    void addPlots();
+    void removePlots();
+    void setMarkerAttributes(
+        KDChart::LineDiagram *p_lineDiagram);
 
 private:
-	ModelParamVsParam		*m_sourceModel;
-	QLineEdit				*m_timeoutLineEdit;
-	QLineEdit				*m_nrOfParametersLineEdit;
-	QLineEdit				*m_nrOfSamplesLineEdit;
-	QGridLayout				*m_paramVsParamGridLayout;
-};	//	class	MainWindow
+    ModelParamVsParam *m_sourceModel;
+    QLineEdit *m_timeoutLineEdit;
+    QLineEdit *m_nrOfParametersLineEdit;
+    QLineEdit *m_nrOfSamplesLineEdit;
+    QGridLayout *m_paramVsParamGridLayout;
+}; //	class	MainWindow
 
 
 #endif // MAINWINDOW_H

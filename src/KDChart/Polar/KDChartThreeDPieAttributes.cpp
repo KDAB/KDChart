@@ -32,25 +32,25 @@
 using namespace KDChart;
 
 ThreeDPieAttributes::Private::Private()
-    : useShadowColors( true )
+    : useShadowColors(true)
 {
 }
 
 
 ThreeDPieAttributes::ThreeDPieAttributes()
-    : AbstractThreeDAttributes( new Private() )
+    : AbstractThreeDAttributes(new Private())
 {
     init();
 }
 
-ThreeDPieAttributes::ThreeDPieAttributes( const ThreeDPieAttributes& r )
-    : AbstractThreeDAttributes( new Private( *r.d) )
+ThreeDPieAttributes::ThreeDPieAttributes(const ThreeDPieAttributes &r)
+    : AbstractThreeDAttributes(new Private(*r.d))
 {
 }
 
-ThreeDPieAttributes& ThreeDPieAttributes::operator= ( const ThreeDPieAttributes& r )
+ThreeDPieAttributes &ThreeDPieAttributes::operator=(const ThreeDPieAttributes &r)
 {
-    if ( this == &r )
+    if (this == &r)
         return *this;
 
     *d = *r.d;
@@ -64,17 +64,16 @@ ThreeDPieAttributes::~ThreeDPieAttributes()
 
 void ThreeDPieAttributes::init()
 {
-    setDepth( -10 );
+    setDepth(-10);
 }
 
 
-bool ThreeDPieAttributes::operator==( const ThreeDPieAttributes& r ) const
+bool ThreeDPieAttributes::operator==(const ThreeDPieAttributes &r) const
 {
-    return ( useShadowColors() == r.useShadowColors() &&
-             AbstractThreeDAttributes::operator==(r));
+    return (useShadowColors() == r.useShadowColors() && AbstractThreeDAttributes::operator==(r));
 }
 
-void ThreeDPieAttributes::setUseShadowColors( bool shadowColors )
+void ThreeDPieAttributes::setUseShadowColors(bool shadowColors)
 {
     d->useShadowColors = shadowColors;
 }
@@ -85,12 +84,11 @@ bool ThreeDPieAttributes::useShadowColors() const
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)
-QDebug operator<<(QDebug dbg, const KDChart::ThreeDPieAttributes& a)
+QDebug operator<<(QDebug dbg, const KDChart::ThreeDPieAttributes &a)
 {
     dbg << "KDChart::ThreeDPieAttributes(";
-    dbg = operator <<( dbg, static_cast<const AbstractThreeDAttributes&>(a) );
-    dbg << "useShadowColors="<< a.useShadowColors() << ")";
+    dbg = operator<<(dbg, static_cast<const AbstractThreeDAttributes &>(a));
+    dbg << "useShadowColors=" << a.useShadowColors() << ")";
     return dbg;
 }
 #endif /* QT_NO_DEBUG_STREAM */
-

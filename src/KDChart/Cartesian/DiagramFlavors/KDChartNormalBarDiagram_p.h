@@ -37,15 +37,17 @@
 
 namespace KDChart {
 
-    class NormalBarDiagram : public BarDiagram::BarDiagramType
+class NormalBarDiagram : public BarDiagram::BarDiagramType
+{
+public:
+    explicit NormalBarDiagram(BarDiagram *);
+    ~NormalBarDiagram() override
     {
-    public:
-        explicit NormalBarDiagram( BarDiagram* );
-        ~NormalBarDiagram() override {}
-        BarDiagram::BarType type() const override;
-        const QPair<QPointF,  QPointF> calculateDataBoundaries() const override;
-        void paint( PaintContext* ctx ) override;
-    };
+    }
+    BarDiagram::BarType type() const override;
+    const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
+    void paint(PaintContext *ctx) override;
+};
 
 }
 

@@ -34,26 +34,26 @@ using namespace KDChart;
 
 
 AbstractThreeDAttributes::Private::Private()
-    : enabled( false ),
-      depth( 20 ),
-      threeDBrushEnabled( false )
+    : enabled(false)
+    , depth(20)
+    , threeDBrushEnabled(false)
 {
 }
 
 
 AbstractThreeDAttributes::AbstractThreeDAttributes()
-    : _d( new Private() )
+    : _d(new Private())
 {
 }
 
-AbstractThreeDAttributes::AbstractThreeDAttributes( const AbstractThreeDAttributes& r )
-    : _d( new Private( *r.d ) )
+AbstractThreeDAttributes::AbstractThreeDAttributes(const AbstractThreeDAttributes &r)
+    : _d(new Private(*r.d))
 {
 }
 
-AbstractThreeDAttributes& AbstractThreeDAttributes::operator= ( const AbstractThreeDAttributes& r )
+AbstractThreeDAttributes &AbstractThreeDAttributes::operator=(const AbstractThreeDAttributes &r)
 {
-    if ( this == &r )
+    if (this == &r)
         return *this;
 
     *d = *r.d;
@@ -63,24 +63,22 @@ AbstractThreeDAttributes& AbstractThreeDAttributes::operator= ( const AbstractTh
 
 AbstractThreeDAttributes::~AbstractThreeDAttributes()
 {
-    delete _d; _d = nullptr;
+    delete _d;
+    _d = nullptr;
 }
 
 
-bool AbstractThreeDAttributes::operator==( const AbstractThreeDAttributes& r ) const
+bool AbstractThreeDAttributes::operator==(const AbstractThreeDAttributes &r) const
 {
-    return isEnabled() == r.isEnabled() &&
-        depth() == r.depth() && 
-        isThreeDBrushEnabled() == r.isThreeDBrushEnabled();
+    return isEnabled() == r.isEnabled() && depth() == r.depth() && isThreeDBrushEnabled() == r.isThreeDBrushEnabled();
 }
 
 
-void AbstractThreeDAttributes::init( )
+void AbstractThreeDAttributes::init()
 {
-
 }
 
-void AbstractThreeDAttributes::setEnabled( bool enabled )
+void AbstractThreeDAttributes::setEnabled(bool enabled)
 {
     d->enabled = enabled;
 }
@@ -90,7 +88,7 @@ bool AbstractThreeDAttributes::isEnabled() const
     return d->enabled;
 }
 
-void AbstractThreeDAttributes::setDepth( qreal depth )
+void AbstractThreeDAttributes::setDepth(qreal depth)
 {
     d->depth = depth;
 }
@@ -112,14 +110,14 @@ bool AbstractThreeDAttributes::isThreeDBrushEnabled() const
     return d->threeDBrushEnabled;
 }
 
-void AbstractThreeDAttributes::setThreeDBrushEnabled( bool enabled )
+void AbstractThreeDAttributes::setThreeDBrushEnabled(bool enabled)
 {
     d->threeDBrushEnabled = enabled;
 }
 
-QBrush AbstractThreeDAttributes::threeDBrush( const QBrush& brush, const QRectF& rect ) const
+QBrush AbstractThreeDAttributes::threeDBrush(const QBrush &brush, const QRectF &rect) const
 {
-    if ( isThreeDBrushEnabled() ) {
+    if (isThreeDBrushEnabled()) {
         QLinearGradient gr(rect.topLeft(), rect.bottomRight());
         gr.setColorAt(0.0, brush.color());
         gr.setColorAt(0.5, brush.color().lighter(180));
@@ -130,10 +128,10 @@ QBrush AbstractThreeDAttributes::threeDBrush( const QBrush& brush, const QRectF&
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)
-QDebug operator<<(QDebug dbg, const KDChart::AbstractThreeDAttributes& a)
+QDebug operator<<(QDebug dbg, const KDChart::AbstractThreeDAttributes &a)
 {
-    dbg << "enabled="<<a.isEnabled()
-        << "depth="<<a.depth();
+    dbg << "enabled=" << a.isEnabled()
+        << "depth=" << a.depth();
     return dbg;
 }
 #endif /* QT_NO_DEBUG_STREAM */

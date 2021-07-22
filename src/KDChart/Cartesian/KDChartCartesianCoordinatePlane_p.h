@@ -50,9 +50,12 @@ namespace KDChart {
 class CartesianCoordinatePlane::Private : public AbstractCoordinatePlane::Private
 {
     friend class CartesianCoordinatePlane;
+
 public:
     explicit Private();
-    ~Private() override {  }
+    ~Private() override
+    {
+    }
 
     void initialize() override
     {
@@ -62,26 +65,26 @@ public:
         grid = new CartesianGrid();
     }
 
-    static Private *get( CartesianCoordinatePlane *plane )
+    static Private *get(CartesianCoordinatePlane *plane)
     {
-        return static_cast< Private * >( plane->d_func() );
+        return static_cast<Private *>(plane->d_func());
     }
 
-    bool isVisiblePoint( const AbstractCoordinatePlane * plane, const QPointF& point ) const override
+    bool isVisiblePoint(const AbstractCoordinatePlane *plane, const QPointF &point) const override
     {
         QPointF p = point;
-        const CartesianCoordinatePlane* const ref =
-            qobject_cast< const CartesianCoordinatePlane* >(
-                              const_cast< AbstractCoordinatePlane* >( plane )->sharedAxisMasterPlane() );
-        const CartesianCoordinatePlane* const cartPlane =
-            dynamic_cast< const CartesianCoordinatePlane* >( plane );
-        if ( ref != nullptr && ref != cartPlane ) {
-            const QPointF logical = ref->translateBack( point ) - cartPlane->visibleDataRange().topLeft()
-                                                                + ref->visibleDataRange().topLeft();
-            p = ref->translate( logical );
+        const CartesianCoordinatePlane *const ref =
+            qobject_cast<const CartesianCoordinatePlane *>(
+                const_cast<AbstractCoordinatePlane *>(plane)->sharedAxisMasterPlane());
+        const CartesianCoordinatePlane *const cartPlane =
+            dynamic_cast<const CartesianCoordinatePlane *>(plane);
+        if (ref != nullptr && ref != cartPlane) {
+            const QPointF logical = ref->translateBack(point) - cartPlane->visibleDataRange().topLeft()
+                + ref->visibleDataRange().topLeft();
+            p = ref->translate(logical);
         }
-        const QRectF geo( plane->geometry() );
-        return geo.contains( p );
+        const QRectF geo(plane->geometry());
+        return geo.contains(p);
     }
 
 

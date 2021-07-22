@@ -29,12 +29,12 @@
 #include <QPixmap>
 
 namespace KDChart {
-    class Chart;
-    class DatasetProxyModel;
-    class LineDiagram;
-    class LineAttributes;
-    class CartesianAxis;
-    class Legend;
+class Chart;
+class DatasetProxyModel;
+class LineDiagram;
+class LineAttributes;
+class CartesianAxis;
+class Legend;
 }
 
 QT_BEGIN_NAMESPACE
@@ -46,44 +46,43 @@ class MainWindow : public QWidget, private Ui::MainWindow
     Q_OBJECT
 
 public:
-    MainWindow( QWidget* parent = 0 );
+    MainWindow(QWidget *parent = 0);
     void updateData(QString data);
 
-    protected:
-        /**
+protected:
+    /**
          * Adjusts the two small charts when the window is resized.
          */
-        /* reimp */ void resizeEvent ( QResizeEvent * ) override;
+    /* reimp */ void resizeEvent(QResizeEvent *) override;
 
 private slots:
 
-    void on_lineTypeCB_currentIndexChanged( const QString & text );
-    void on_paintLegendCB_toggled( bool checked );
-    void on_paintValuesCB_toggled( bool checked );
-    void on_paintMarkersCB_toggled( bool checked );
-    void on_markersStyleCB_currentIndexChanged( const QString & text );
-    void on_markersWidthSB_valueChanged( int i );
-    void on_markersHeightSB_valueChanged( int i);
-    void on_displayAreasCB_toggled( bool checked );
-    void on_transparencySB_valueChanged( int i );
-    void on_zoomFactorSB_valueChanged( qreal factor );
-    void on_hSBar_valueChanged( int value );
-    void on_vSBar_valueChanged( int value );
+    void on_lineTypeCB_currentIndexChanged(const QString &text);
+    void on_paintLegendCB_toggled(bool checked);
+    void on_paintValuesCB_toggled(bool checked);
+    void on_paintMarkersCB_toggled(bool checked);
+    void on_markersStyleCB_currentIndexChanged(const QString &text);
+    void on_markersWidthSB_valueChanged(int i);
+    void on_markersHeightSB_valueChanged(int i);
+    void on_displayAreasCB_toggled(bool checked);
+    void on_transparencySB_valueChanged(int i);
+    void on_zoomFactorSB_valueChanged(qreal factor);
+    void on_hSBar_valueChanged(int value);
+    void on_vSBar_valueChanged(int value);
     void on_savePB_clicked();
 
 private:
-    KDChart::Chart* m_chart;
+    KDChart::Chart *m_chart;
     TableModel m_model;
-    KDChart::DatasetProxyModel* m_datasetProxy;
-    KDChart::LineDiagram* m_lines;
-    KDChart::Legend* m_legend;
+    KDChart::DatasetProxyModel *m_datasetProxy;
+    KDChart::LineDiagram *m_lines;
+    KDChart::Legend *m_legend;
     QPixmap m_pix1, m_pix2;
-    QLabel* m_smallChart1;
-    QLabel* m_smallChart2;
+    QLabel *m_smallChart1;
+    QLabel *m_smallChart2;
     // mutable KDChart::CartesianAxis xAxis;
     //mutable KDChart::CartesianAxis yAxis;
 };
 
 
 #endif /* MAINWINDOW_H */
-

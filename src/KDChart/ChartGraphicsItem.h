@@ -27,27 +27,39 @@
 
 namespace KDChart {
 
-    /**
+/**
       * @brief Graphics item used inside of the ReverseMapper
       * \internal
       */
-    class ChartGraphicsItem : public QGraphicsPolygonItem
+class ChartGraphicsItem : public QGraphicsPolygonItem
+{
+public:
+    enum
     {
-    public:
-        enum { Type = UserType + 1 };
-
-        ChartGraphicsItem();
-
-        ChartGraphicsItem( int row,  int column );
-
-        int row() const { return m_row; }
-        int column() const { return m_column; }
-        int type() const override { return Type; }
-
-    private:
-        int m_row;
-        int m_column;
+        Type = UserType + 1
     };
+
+    ChartGraphicsItem();
+
+    ChartGraphicsItem(int row, int column);
+
+    int row() const
+    {
+        return m_row;
+    }
+    int column() const
+    {
+        return m_column;
+    }
+    int type() const override
+    {
+        return Type;
+    }
+
+private:
+    int m_row;
+    int m_column;
+};
 
 }
 

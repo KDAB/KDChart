@@ -66,10 +66,12 @@ namespace KDChart {
    which makes sure that restore() is called when exiting from guard
    clauses, or when exceptions are thrown.
 */
-class PainterSaver {
-    Q_DISABLE_COPY( PainterSaver )
+class PainterSaver
+{
+    Q_DISABLE_COPY(PainterSaver)
 public:
-    explicit PainterSaver( QPainter* p ) : painter( p )
+    explicit PainterSaver(QPainter *p)
+        : painter(p)
     {
         p->save();
     }
@@ -80,10 +82,9 @@ public:
     }
 
 private:
-    QPainter* const painter;
+    QPainter *const painter;
 };
 
 }
 
 #endif /* KDCHARTPAINTERSAVER_P_H */
-

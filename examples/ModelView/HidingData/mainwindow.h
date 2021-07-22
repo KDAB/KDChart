@@ -30,8 +30,8 @@ class QAbstractItemModel;
 QT_END_NAMESPACE
 
 namespace KDChart {
-    class Chart;
-    class LineDiagram;
+class Chart;
+class LineDiagram;
 }
 
 class MainWindow : public QWidget, private Ui::MainWindow
@@ -39,21 +39,20 @@ class MainWindow : public QWidget, private Ui::MainWindow
     Q_OBJECT
 
 public:
-    MainWindow( QWidget* parent = nullptr );
+    MainWindow(QWidget *parent = nullptr);
 
 private slots:
-    void on_showDataset1CB_toggled( bool checked );
-    void on_showDataset2CB_toggled( bool checked );
-    void on_showDataset3CB_toggled( bool checked );
-    void setHidden( int dataset, bool hidden );
+    void on_showDataset1CB_toggled(bool checked);
+    void on_showDataset2CB_toggled(bool checked);
+    void on_showDataset3CB_toggled(bool checked);
+    void setHidden(int dataset, bool hidden);
     void openFile(const QString &path);
 
 private:
-    KDChart::Chart             * m_chart;
-    KDChart::LineDiagram       * m_lines;
-    QAbstractItemModel         * m_model;
+    KDChart::Chart *m_chart;
+    KDChart::LineDiagram *m_lines;
+    QAbstractItemModel *m_model;
 };
 
 
 #endif /* MAINWINDOW_H */
-

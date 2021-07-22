@@ -51,47 +51,51 @@ namespace KDChart {
 /**
  * \internal
  */
-    class AbstractAreaBase::Private
+class AbstractAreaBase::Private
+{
+    friend class AbstractAreaBase;
+
+public:
+    explicit Private();
+    virtual ~Private();
+
+    Private(const Private &rhs)
+        : amountOfLeftOverlap(0)
+        , amountOfRightOverlap(0)
+        , amountOfTopOverlap(0)
+        , amountOfBottomOverlap(0)
+        , visible(rhs.visible)
+        , frameAttributes(rhs.frameAttributes)
+        , backgroundAttributes(rhs.backgroundAttributes)
     {
-        friend class AbstractAreaBase;
-    public:
-        explicit Private();
-        virtual ~Private();
+    }
 
-        Private( const Private& rhs ) :
-            amountOfLeftOverlap( 0 ),
-            amountOfRightOverlap( 0 ),
-            amountOfTopOverlap( 0 ),
-            amountOfBottomOverlap( 0 ),
-            visible( rhs.visible ),
-            frameAttributes( rhs.frameAttributes ),
-            backgroundAttributes( rhs.backgroundAttributes )
-            {
-            }
+protected:
+    void init();
 
-    protected:
-        void init();
+    // These are set each time the area's sizeHint()
+    // (or the maximumSize(), resp.) is calculated:
+    // They store additional layout-information about
+    // space needed around the area.
+    // Other classes (e.g. KDChart::AutoSpacer) can use
+    // these data to determine how much space has to
+    // be added additionally ...
+    mutable int amountOfLeftOverlap;
+    mutable int amountOfRightOverlap;
+    mutable int amountOfTopOverlap;
+    mutable int amountOfBottomOverlap;
 
-        // These are set each time the area's sizeHint()
-        // (or the maximumSize(), resp.) is calculated:
-        // They store additional layout-information about
-        // space needed around the area.
-        // Other classes (e.g. KDChart::AutoSpacer) can use
-        // these data to determine how much space has to
-        // be added additionally ...
-        mutable int amountOfLeftOverlap;
-        mutable int amountOfRightOverlap;
-        mutable int amountOfTopOverlap;
-        mutable int amountOfBottomOverlap;
+private:
+    bool visible;
+    KDChart::FrameAttributes frameAttributes;
+    KDChart::BackgroundAttributes backgroundAttributes;
+};
 
-    private:
-        bool visible;
-        KDChart::FrameAttributes frameAttributes;
-        KDChart::BackgroundAttributes backgroundAttributes;
-    };
-
-    inline AbstractAreaBase::AbstractAreaBase( AbstractAreaBase::Private * p ) :
-        _d( p ) { init(); }
+inline AbstractAreaBase::AbstractAreaBase(AbstractAreaBase::Private *p)
+    : _d(p)
+{
+    init();
+}
 
 }
 #endif /* KDCHARTABSTRACTAREABASE_P_H */

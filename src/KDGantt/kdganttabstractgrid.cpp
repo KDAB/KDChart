@@ -38,9 +38,9 @@ using namespace KDGantt;
 
 /*! Constructor. Creates an AbstractGrid with parent \a parent.
  * The QObject parent is not used for anything internally. */
-AbstractGrid::AbstractGrid( QObject* parent )
-    : QObject( parent ),
-      _d( new Private )
+AbstractGrid::AbstractGrid(QObject *parent)
+    : QObject(parent)
+    , _d(new Private)
 {
 }
 
@@ -55,13 +55,13 @@ AbstractGrid::~AbstractGrid()
 /*! Sets the QAbstractItemModel used by this grid implementation.
  * This is called by the view, you should never need to call this
  * from client code.  */
-void AbstractGrid::setModel( QAbstractItemModel* model )
+void AbstractGrid::setModel(QAbstractItemModel *model)
 {
     d->model = model;
 }
 
 /*!\returns The QAbstractItemModel used by this grid */
-QAbstractItemModel* AbstractGrid::model() const
+QAbstractItemModel *AbstractGrid::model() const
 {
     return d->model;
 }
@@ -69,7 +69,7 @@ QAbstractItemModel* AbstractGrid::model() const
 /*! Sets the root index used by this grid implementation.
  * This is called by the view, you should never need to call this
  * from client code.  */
-void AbstractGrid::setRootIndex( const QModelIndex& idx )
+void AbstractGrid::setRootIndex(const QModelIndex &idx)
 {
     d->root = idx;
 }
@@ -83,15 +83,16 @@ QModelIndex AbstractGrid::rootIndex() const
 /*!\returns true if the startpoint is before the endpoint
  * of the constraint \a c.
  */
-bool AbstractGrid::isSatisfiedConstraint( const Constraint& c ) const
+bool AbstractGrid::isSatisfiedConstraint(const Constraint &c) const
 {
     // First check if the data is valid,
     // TODO: review if true is the right choice
-    if ( !c.startIndex().isValid() || !c.endIndex().isValid() ) return true;
+    if (!c.startIndex().isValid() || !c.endIndex().isValid())
+        return true;
 
-    Span ss = mapToChart( c.startIndex() );
-    Span es = mapToChart( c.endIndex() );
-    return ( ss.end() <= es.start() );
+    Span ss = mapToChart(c.startIndex());
+    Span es = mapToChart(c.endIndex());
+    return (ss.end() <= es.start());
 }
 
 /*!
@@ -99,9 +100,9 @@ bool AbstractGrid::isSatisfiedConstraint( const Constraint& c ) const
  * Return a negative value if \a value cannot be mapped.
  * The default implementation returns -1.0.
  */
-qreal AbstractGrid::mapToChart( const QVariant& value ) const
+qreal AbstractGrid::mapToChart(const QVariant &value) const
 {
-    Q_UNUSED( value );
+    Q_UNUSED(value);
     return -1.0;
 }
 
@@ -109,9 +110,9 @@ qreal AbstractGrid::mapToChart( const QVariant& value ) const
  * Implement this to map from \a x to the corresponding location in the view.
  * Return an invalid value if \a x cannot be mapped.
  */
-QVariant AbstractGrid::mapFromChart( qreal x ) const
+QVariant AbstractGrid::mapFromChart(qreal x) const
 {
-    Q_UNUSED( x );
+    Q_UNUSED(x);
     return QVariant();
 }
 
@@ -151,7 +152,7 @@ QVariant AbstractGrid::mapFromChart( qreal x ) const
 /*!
 \todo document this function
 */
-void AbstractGrid::drawBackground(QPainter* paint, const QRectF& rect)
+void AbstractGrid::drawBackground(QPainter *paint, const QRectF &rect)
 {
     Q_UNUSED(paint);
     Q_UNUSED(rect);
@@ -160,7 +161,7 @@ void AbstractGrid::drawBackground(QPainter* paint, const QRectF& rect)
 /*!
 \todo document this function
 */
-void AbstractGrid::drawForeground(QPainter* paint, const QRectF& rect)
+void AbstractGrid::drawForeground(QPainter *paint, const QRectF &rect)
 {
     Q_UNUSED(paint);
     Q_UNUSED(rect);
@@ -168,4 +169,3 @@ void AbstractGrid::drawForeground(QPainter* paint, const QRectF& rect)
 
 
 #include "moc_kdganttabstractgrid.cpp"
-

@@ -32,7 +32,7 @@ QT_END_NAMESPACE
 
 namespace KDChart {
 
-    class ThreeDBarAttributes;
+class ThreeDBarAttributes;
 
 /**
  * @brief BarDiagram defines a common bar diagram.
@@ -43,86 +43,88 @@ class KDCHART_EXPORT BarDiagram : public AbstractCartesianDiagram
 {
     Q_OBJECT
 
-    Q_DISABLE_COPY( BarDiagram )
+    Q_DISABLE_COPY(BarDiagram)
 
-    KDCHART_DECLARE_DERIVED_DIAGRAM( BarDiagram, CartesianCoordinatePlane )
+    KDCHART_DECLARE_DERIVED_DIAGRAM(BarDiagram, CartesianCoordinatePlane)
 
 public:
     class BarDiagramType;
     friend class BarDiagramType;
 
     explicit BarDiagram(
-        QWidget* parent = nullptr, CartesianCoordinatePlane* plane = nullptr );
+        QWidget *parent = nullptr, CartesianCoordinatePlane *plane = nullptr);
     ~BarDiagram() override;
 
-    virtual BarDiagram * clone() const;
+    virtual BarDiagram *clone() const;
     /**
     * Returns true if both diagrams have the same settings.
     */
-    bool compare( const BarDiagram* other ) const;
+    bool compare(const BarDiagram *other) const;
 
-    enum BarType { Normal,
-                   Stacked,
-                   Percent,
-                   Rows ///< @deprecated Use BarDiagram::setOrientation() instead
-                 };
+    enum BarType
+    {
+        Normal,
+        Stacked,
+        Percent,
+        Rows ///< @deprecated Use BarDiagram::setOrientation() instead
+    };
 
-    void setType( const BarType type );
+    void setType(const BarType type);
     BarType type() const;
 
-    void setOrientation( Qt::Orientation orientation );
+    void setOrientation(Qt::Orientation orientation);
     Qt::Orientation orientation() const;
 
-    void setBarAttributes( const BarAttributes & a );
-    void setBarAttributes( int column, const BarAttributes & a );
-    void setBarAttributes( const QModelIndex & index, const BarAttributes & a );
+    void setBarAttributes(const BarAttributes &a);
+    void setBarAttributes(int column, const BarAttributes &a);
+    void setBarAttributes(const QModelIndex &index, const BarAttributes &a);
 
     BarAttributes barAttributes() const;
-    BarAttributes barAttributes( int column ) const;
-    BarAttributes barAttributes( const QModelIndex & index ) const;
+    BarAttributes barAttributes(int column) const;
+    BarAttributes barAttributes(const QModelIndex &index) const;
 
-    void setThreeDBarAttributes( const ThreeDBarAttributes & a );
-    void setThreeDBarAttributes( int column, const ThreeDBarAttributes & a );
-    void setThreeDBarAttributes( const QModelIndex & index,
-                                  const ThreeDBarAttributes & a );
+    void setThreeDBarAttributes(const ThreeDBarAttributes &a);
+    void setThreeDBarAttributes(int column, const ThreeDBarAttributes &a);
+    void setThreeDBarAttributes(const QModelIndex &index,
+                                const ThreeDBarAttributes &a);
     ThreeDBarAttributes threeDBarAttributes() const;
-    ThreeDBarAttributes threeDBarAttributes( int column ) const;
-    ThreeDBarAttributes threeDBarAttributes( const QModelIndex & index ) const;
+    ThreeDBarAttributes threeDBarAttributes(int column) const;
+    ThreeDBarAttributes threeDBarAttributes(const QModelIndex &index) const;
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && defined(Q_COMPILER_MANGLES_RETURN_TYPE)
     // implement AbstractCartesianDiagram
     /** \reimpl */
-    const int numberOfAbscissaSegments () const;
+    const int numberOfAbscissaSegments() const;
     /** \reimpl */
-    const int numberOfOrdinateSegments () const;
+    const int numberOfOrdinateSegments() const;
 #else
     // implement AbstractCartesianDiagram
     /** \reimpl */
-    int numberOfAbscissaSegments () const override;
+    int numberOfAbscissaSegments() const override;
     /** \reimpl */
-    int numberOfOrdinateSegments () const override;
+    int numberOfOrdinateSegments() const override;
 #endif
 
 protected:
-    void paint ( PaintContext* paintContext ) override;
+    void paint(PaintContext *paintContext) override;
 
 public:
-    void resize ( const QSizeF& area ) override;
+    void resize(const QSizeF &area) override;
 
 protected:
-    qreal threeDItemDepth( const QModelIndex & index ) const override;
-    qreal threeDItemDepth( int column ) const override;
+    qreal threeDItemDepth(const QModelIndex &index) const override;
+    qreal threeDItemDepth(int column) const override;
     /** \reimpl */
     const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
-    void paintEvent ( QPaintEvent* ) override;
-    void resizeEvent ( QResizeEvent* ) override;
-private:
+    void paintEvent(QPaintEvent *) override;
+    void resizeEvent(QResizeEvent *) override;
 
-    void calculateValueAndGapWidths( int rowCount, int colCount,
-                                     qreal groupWidth,
-                                     qreal& barWidth,
-                                     qreal& spaceBetweenBars,
-                                     qreal& spaceBetweenGroups );
+private:
+    void calculateValueAndGapWidths(int rowCount, int colCount,
+                                    qreal groupWidth,
+                                    qreal &barWidth,
+                                    qreal &spaceBetweenBars,
+                                    qreal &spaceBetweenGroups);
 }; // End of class BarDiagram
 
 }

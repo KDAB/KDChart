@@ -28,10 +28,10 @@
 
 namespace KDChart {
 
-    class PaintContext;
-    class CartesianCoordinatePlane;
+class PaintContext;
+class CartesianCoordinatePlane;
 
-    /**
+/**
      * \internal
      *
      * \brief Class for the grid in a cartesian plane.
@@ -41,28 +41,28 @@ namespace KDChart {
      * the horizonal grid lines, and the vertical grid lines
      * of a cartesian coordinate plane.
      */
-    class CartesianGrid : public AbstractGrid
-    {
-    public:
-        CartesianGrid();
-        ~CartesianGrid() override;
+class CartesianGrid : public AbstractGrid
+{
+public:
+    CartesianGrid();
+    ~CartesianGrid() override;
 
-        int minimalSteps() const;
-        void setMinimalSteps(int minsteps);
+    int minimalSteps() const;
+    void setMinimalSteps(int minsteps);
 
-        int maximalSteps() const;
-        void setMaximalSteps(int maxsteps);
+    int maximalSteps() const;
+    void setMaximalSteps(int maxsteps);
 
-        void drawGrid( PaintContext* context ) override;
+    void drawGrid(PaintContext *context) override;
 
-    private:
-        int m_minsteps;
-        int m_maxsteps;
-        
-        DataDimensionsList calculateGrid(
-            const DataDimensionsList& rawDataDimensions ) const override;
+private:
+    int m_minsteps;
+    int m_maxsteps;
 
-        /**
+    DataDimensionsList calculateGrid(
+        const DataDimensionsList &rawDataDimensions) const override;
+
+    /**
          * Helper function called by calculateGrid() to calculate the grid of one dimension.
          *
          * Classes derived from CartesianGrid can overwrite calculateGridXY() if they need
@@ -75,12 +75,12 @@ namespace KDChart {
          * so it matches the position of a grid line, if false the end value is
          * the raw data dimension end value.
          */
-        virtual DataDimension calculateGridXY(
-            const DataDimension& rawDataDimension,
-            Qt::Orientation orientation,
-            bool adjustLower, bool adjustUpper ) const;
+    virtual DataDimension calculateGridXY(
+        const DataDimension &rawDataDimension,
+        Qt::Orientation orientation,
+        bool adjustLower, bool adjustUpper) const;
 
-        /**
+    /**
           * Helper function called by calculateGridXY().
           *
           * Classes derived from CartesianGrid can overwrite calculateStepWidth() if they need
@@ -107,13 +107,13 @@ namespace KDChart {
           * list, optionally multiplied by a positive (or negative, resp.)
           * power of ten. subStepWidth: The matching width for sub-grid lines.
           */
-        virtual void calculateStepWidth(
-            qreal start, qreal end,
-            const QList<qreal>& granularities,
-            Qt::Orientation orientation,
-            qreal& stepWidth, qreal& subStepWidth,
-            bool adjustLower, bool adjustUpper ) const;
-    };
+    virtual void calculateStepWidth(
+        qreal start, qreal end,
+        const QList<qreal> &granularities,
+        Qt::Orientation orientation,
+        qreal &stepWidth, qreal &subStepWidth,
+        bool adjustLower, bool adjustUpper) const;
+};
 
 }
 

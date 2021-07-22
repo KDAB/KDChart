@@ -45,22 +45,22 @@ TernaryLineDiagram::Private::Private()
 {
 }
 
-TernaryLineDiagram::TernaryLineDiagram ( QWidget* parent,
-                                         TernaryCoordinatePlane* plane )
-    : AbstractTernaryDiagram( new Private(), parent, plane )
+TernaryLineDiagram::TernaryLineDiagram(QWidget *parent,
+                                       TernaryCoordinatePlane *plane)
+    : AbstractTernaryDiagram(new Private(), parent, plane)
 {
     init();
-    setDatasetDimensionInternal( 3 ); // the third column is implicit
+    setDatasetDimensionInternal(3); // the third column is implicit
 
     DataValueAttributes dataValueAttributes;
-    dataValueAttributes.setVisible( true );
+    dataValueAttributes.setVisible(true);
     MarkerAttributes markerAttributes;
-    markerAttributes.setMarkerStyle( MarkerAttributes::MarkerCircle );
-    markerAttributes.setVisible( true );
-    dataValueAttributes.setMarkerAttributes( markerAttributes );
+    markerAttributes.setMarkerStyle(MarkerAttributes::MarkerCircle);
+    markerAttributes.setVisible(true);
+    dataValueAttributes.setMarkerAttributes(markerAttributes);
     attributesModel()->setDefaultForRole(
         KDChart::DataValueLabelAttributesRole,
-        QVariant::fromValue( dataValueAttributes ) );
+        QVariant::fromValue(dataValueAttributes));
 }
 
 TernaryLineDiagram::~TernaryLineDiagram()
@@ -71,73 +71,71 @@ void TernaryLineDiagram::init()
 {
 }
 
-void  TernaryLineDiagram::resize (const QSizeF& area)
+void TernaryLineDiagram::resize(const QSizeF &area)
 {
-    Q_UNUSED( area );
+    Q_UNUSED(area);
 }
 
-void  TernaryLineDiagram::paint (PaintContext *paintContext)
+void TernaryLineDiagram::paint(PaintContext *paintContext)
 {
     d->reverseMapper.clear();
 
-    d->paint( paintContext );
+    d->paint(paintContext);
     // sanity checks:
-    if ( model() == nullptr ) return;
+    if (model() == nullptr)
+        return;
 
-    QPainter* p = paintContext->painter();
-    PainterSaver s( p );
+    QPainter *p = paintContext->painter();
+    PainterSaver s(p);
 
-    TernaryCoordinatePlane* plane =
-        (TernaryCoordinatePlane*) paintContext->coordinatePlane();
-    Q_ASSERT( plane );
+    TernaryCoordinatePlane *plane =
+        ( TernaryCoordinatePlane * )paintContext->coordinatePlane();
+    Q_ASSERT(plane);
 
     qreal x, y, z;
 
     // for some reason(?) TernaryPointDiagram is using per-diagram DVAs only:
-    const DataValueAttributes attrs( dataValueAttributes() );
+    const DataValueAttributes attrs(dataValueAttributes());
 
     d->forgetAlreadyPaintedDataValues();
 
-    int columnCount = model()->columnCount( rootIndex() );
+    int columnCount = model()->columnCount(rootIndex());
     QPointF start;
-    for (int column=0; column<columnCount; column+=datasetDimension() )
-    {
-        int numrows = model()->rowCount( rootIndex() );
-        for ( int row = 0; row < numrows; row++ )
-        {
+    for (int column = 0; column < columnCount; column += datasetDimension()) {
+        int numrows = model()->rowCount(rootIndex());
+        for (int row = 0; row < numrows; row++) {
             // see if there is data otherwise skip
-            QModelIndex base = model()->index( row, column ); // checked
-            if ( ! model()->data( base ).isNull() )
-            {
-                p->setPen( PrintingParameters::scalePen( pen( base ) ) );
-                p->setBrush( brush( base ) );
+            QModelIndex base = model()->index(row, column); // checked
+            if (!model()->data(base).isNull()) {
+                p->setPen(PrintingParameters::scalePen(pen(base)));
+                p->setBrush(brush(base));
 
                 // retrieve data
-                x = qMax( model()->data( model()->index( row, column, rootIndex() ) ).toReal(), // checked
-                          (qreal)0.0 );
-                y = qMax( model()->data( model()->index( row, column+1, rootIndex() ) ).toReal(), // checked
-                          (qreal)0.0 );
-                z = qMax( model()->data( model()->index( row, column+2, rootIndex() ) ).toReal(), // checked
-                          (qreal)0.0 );
+                x = qMax(model()->data(model()->index(row, column, rootIndex())).toReal(), // checked
+                         ( qreal )0.0);
+                y = qMax(model()->data(model()->index(row, column + 1, rootIndex())).toReal(), // checked
+                         ( qreal )0.0);
+                z = qMax(model()->data(model()->index(row, column + 2, rootIndex())).toReal(), // checked
+                         ( qreal )0.0);
 
                 qreal total = x + y + z;
-                if ( fabs( total ) > 3 * std::numeric_limits<qreal>::epsilon() ) {
-                    TernaryPoint tPunkt( x / total, y / total );
-                    QPointF diagramLocation = translate( tPunkt );
-                    QPointF widgetLocation = plane->translate( diagramLocation );
+                if (fabs(total) > 3 * std::numeric_limits<qreal>::epsilon()) {
+                    TernaryPoint tPunkt(x / total, y / total);
+                    QPointF diagramLocation = translate(tPunkt);
+                    QPointF widgetLocation = plane->translate(diagramLocation);
 
-                    if ( row > 0 ) {
-                        p->drawLine( start, widgetLocation );
+                    if (row > 0) {
+                        p->drawLine(start, widgetLocation);
                     }
-                    paintMarker( p, model()->index( row, column, rootIndex() ), widgetLocation ); // checked
+                    paintMarker(p, model()->index(row, column, rootIndex()), widgetLocation); // checked
                     start = widgetLocation;
                     // retrieve text and data value attributes
                     // FIXME use data model DisplayRole text
-                    QString text = tr( "(%1, %2, %3)" )
-                                   .arg( x * 100, 0, 'f', 0 )
-                                   .arg( y * 100, 0, 'f', 0 )
-                                   .arg( z * 100, 0, 'f', 0 );
-                    d->paintDataValueText( p, attrs, widgetLocation, true, text, true );
+                    QString text = tr("(%1, %2, %3)")
+                                       .arg(x * 100, 0, 'f', 0)
+                                       .arg(y * 100, 0, 'f', 0)
+                                       .arg(z * 100, 0, 'f', 0);
+                    d->paintDataValueText(p, attrs, widgetLocation, true, text, true);
                 } else {
                     // ignore and do not paint this point, garbage data
                     qDebug() << "TernaryPointDiagram::paint: data point x/y/z:"
@@ -148,11 +146,11 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
     }
 }
 
-const QPair< QPointF, QPointF >  TernaryLineDiagram::calculateDataBoundaries () const
+const QPair<QPointF, QPointF> TernaryLineDiagram::calculateDataBoundaries() const
 {
     // this is a constant, because we defined it to be one:
     static QPair<QPointF, QPointF> Boundaries(
         TriangleBottomLeft,
-        QPointF( TriangleBottomRight.x(), TriangleHeight ) );
+        QPointF(TriangleBottomRight.x(), TriangleHeight));
     return Boundaries;
 }

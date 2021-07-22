@@ -55,99 +55,110 @@
 #include <KDGanttConstraintModel>
 #include <KDGanttGraphicsView>
 
-class ItemTypeComboBox : public QComboBox {
+class ItemTypeComboBox : public QComboBox
+{
     Q_OBJECT
-    Q_PROPERTY( KDGantt::ItemType itemType READ itemType WRITE setItemType )
+    Q_PROPERTY(KDGantt::ItemType itemType READ itemType WRITE setItemType)
 public:
-    explicit ItemTypeComboBox( QWidget* parent=nullptr );
+    explicit ItemTypeComboBox(QWidget *parent = nullptr);
 
     KDGantt::ItemType itemType() const;
 public slots:
-    void setItemType( KDGantt::ItemType typ );
+    void setItemType(KDGantt::ItemType typ);
 };
 
-ItemTypeComboBox::ItemTypeComboBox( QWidget* parent )
-    : QComboBox( parent )
+ItemTypeComboBox::ItemTypeComboBox(QWidget *parent)
+    : QComboBox(parent)
 {
-    addItem( tr( "Task" ), QVariant( KDGantt::TypeTask ) );
-    addItem( tr( "Event" ), QVariant( KDGantt::TypeEvent ) );
-    addItem( tr( "Summary" ), QVariant( KDGantt::TypeSummary ) );
+    addItem(tr("Task"), QVariant(KDGantt::TypeTask));
+    addItem(tr("Event"), QVariant(KDGantt::TypeEvent));
+    addItem(tr("Summary"), QVariant(KDGantt::TypeSummary));
 }
 
 KDGantt::ItemType ItemTypeComboBox::itemType() const
 {
-    return static_cast<KDGantt::ItemType>( itemData( currentIndex() ).toInt() );
+    return static_cast<KDGantt::ItemType>(itemData(currentIndex()).toInt());
 }
 
-void ItemTypeComboBox::setItemType( KDGantt::ItemType typ )
+void ItemTypeComboBox::setItemType(KDGantt::ItemType typ)
 {
-    setCurrentIndex( typ-1 );
+    setCurrentIndex(typ - 1);
 }
 
-class MyItemDelegate : public KDGantt::ItemDelegate {
+class MyItemDelegate : public KDGantt::ItemDelegate
+{
 public:
-    explicit MyItemDelegate( QObject* parent=nullptr );
+    explicit MyItemDelegate(QObject *parent = nullptr);
 
-    /*reimp*/ QWidget* createEditor( QWidget* parent,
-                                     const QStyleOptionViewItem& option,
-                                     const QModelIndex& idx ) const override;
-    /*reimp*/ void setEditorData( QWidget* editor, const QModelIndex& index ) const override;
-    /*reimp*/ void setModelData( QWidget* editor, QAbstractItemModel* model,
-                                  const QModelIndex & index ) const override;
+    /*reimp*/ QWidget *createEditor(QWidget *parent,
+                                    const QStyleOptionViewItem &option,
+                                    const QModelIndex &idx) const override;
+    /*reimp*/ void setEditorData(QWidget *editor, const QModelIndex &index) const override;
+    /*reimp*/ void setModelData(QWidget *editor, QAbstractItemModel *model,
+                                const QModelIndex &index) const override;
+
 protected:
-    /*reimp*/void drawDisplay( QPainter* painter, const QStyleOptionViewItem & option,
-                               const QRect& rect, const QString& text ) const override;
+    /*reimp*/ void drawDisplay(QPainter *painter, const QStyleOptionViewItem &option,
+                               const QRect &rect, const QString &text) const override;
 };
 
-MyItemDelegate::MyItemDelegate( QObject* parent )
-    : KDGantt::ItemDelegate( parent )
+MyItemDelegate::MyItemDelegate(QObject *parent)
+    : KDGantt::ItemDelegate(parent)
 {
 }
 
-QWidget* MyItemDelegate::createEditor( QWidget* parent,
-                                       const QStyleOptionViewItem& option,
-                                       const QModelIndex& idx ) const
+QWidget *MyItemDelegate::createEditor(QWidget *parent,
+                                      const QStyleOptionViewItem &option,
+                                      const QModelIndex &idx) const
 {
-    qDebug() << "MyItemDelegate::createEditor("<<parent<<idx<<")";
-    if ( idx.isValid() && idx.column() == 1 )
-      return new ItemTypeComboBox(parent);
-    return ItemDelegate::createEditor( parent, option, idx );
+    qDebug() << "MyItemDelegate::createEditor(" << parent << idx << ")";
+    if (idx.isValid() && idx.column() == 1)
+        return new ItemTypeComboBox(parent);
+    return ItemDelegate::createEditor(parent, option, idx);
 }
 
-void MyItemDelegate::setEditorData ( QWidget* editor, const QModelIndex& index ) const
+void MyItemDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-  ItemTypeComboBox* c;
-  if ( (c = qobject_cast<ItemTypeComboBox*>(editor)) && index.isValid() ) {
-      c->setItemType(static_cast<KDGantt::ItemType>(index.data(Qt::EditRole).toInt()));
-  } else {
-      ItemDelegate::setEditorData(editor,index);
-  }
+    ItemTypeComboBox *c;
+    if ((c = qobject_cast<ItemTypeComboBox *>(editor)) && index.isValid()) {
+        c->setItemType(static_cast<KDGantt::ItemType>(index.data(Qt::EditRole).toInt()));
+    } else {
+        ItemDelegate::setEditorData(editor, index);
+    }
 }
 
-void MyItemDelegate::setModelData ( QWidget* editor, QAbstractItemModel* model,
-                                  const QModelIndex & index ) const
+void MyItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
+                                  const QModelIndex &index) const
 {
-  ItemTypeComboBox* c;
-  if ( (c = qobject_cast<ItemTypeComboBox*>(editor)) && index.isValid() ) {
-      model->setData(index,c->itemType());
-  } else {
-      ItemDelegate::setModelData(editor,model,index);
-  }
+    ItemTypeComboBox *c;
+    if ((c = qobject_cast<ItemTypeComboBox *>(editor)) && index.isValid()) {
+        model->setData(index, c->itemType());
+    } else {
+        ItemDelegate::setModelData(editor, model, index);
+    }
 }
 
-void MyItemDelegate::drawDisplay( QPainter* painter, const QStyleOptionViewItem& option,
-                                  const QRect& rect, const QString& text ) const
+void MyItemDelegate::drawDisplay(QPainter *painter, const QStyleOptionViewItem &option,
+                                 const QRect &rect, const QString &text) const
 {
-  //qDebug() << "MyItemDelegate::drawDisplay(" <<painter<<rect<<text<<")";
-  KDGantt::ItemType typ = static_cast<KDGantt::ItemType>(text.toInt());
-  QString str;
-  switch (typ) {
-      case KDGantt::TypeTask: str = tr("Task"); break;
-      case KDGantt::TypeEvent: str = tr("Event"); break;
-      case KDGantt::TypeSummary: str = tr("Summary"); break;
-      default: str = tr("None"); break;
-  }
-  ItemDelegate::drawDisplay(painter,option,rect,str);
+    //qDebug() << "MyItemDelegate::drawDisplay(" <<painter<<rect<<text<<")";
+    KDGantt::ItemType typ = static_cast<KDGantt::ItemType>(text.toInt());
+    QString str;
+    switch (typ) {
+    case KDGantt::TypeTask:
+        str = tr("Task");
+        break;
+    case KDGantt::TypeEvent:
+        str = tr("Event");
+        break;
+    case KDGantt::TypeSummary:
+        str = tr("Summary");
+        break;
+    default:
+        str = tr("None");
+        break;
+    }
+    ItemDelegate::drawDisplay(painter, option, rect, str);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -157,35 +168,37 @@ void MyItemDelegate::drawDisplay( QPainter* painter, const QStyleOptionViewItem&
 class DateTimeGrid : public KDGantt::DateTimeGrid
 {
 public:
-    DateTimeGrid(QObject* parent=nullptr) {
+    DateTimeGrid(QObject *parent = nullptr)
+    {
         setParent(parent);
-        setFreeDays( QSet<Qt::DayOfWeek>() );
-        setFreeDaysBrush( QBrush( Qt::NoBrush ) );
+        setFreeDays(QSet<Qt::DayOfWeek>());
+        setFreeDaysBrush(QBrush(Qt::NoBrush));
     }
-    ~DateTimeGrid() override { }
+    ~DateTimeGrid() override
+    {
+    }
 
     //virtual void paintUserDefinedHeader(QPainter* painter, const QRectF& headerRect, const QRectF& exposedRect, qreal offset, const KDGantt::DateTimeScaleFormatter* formatter, QWidget* widget = 0);
-    void drawBackground(QPainter* painter, const QRectF& rect) override;
-    void drawForeground(QPainter* painter, const QRectF& rect) override;
+    void drawBackground(QPainter *painter, const QRectF &rect) override;
+    void drawForeground(QPainter *painter, const QRectF &rect) override;
 };
 
-void DateTimeGrid::drawBackground(QPainter* painter, const QRectF& rect)
+void DateTimeGrid::drawBackground(QPainter *painter, const QRectF &rect)
 {
     QLinearGradient grad;
-    grad.setCoordinateMode( QGradient::ObjectBoundingMode );
-    grad.setStart( 0.5, 0.5 );
-    grad.setFinalStop( 0.5, 0.0 );
-    grad.setSpread( QGradient::ReflectSpread );
-//    grad.setCenter( 0.5, 0.5 );
-//    grad.setFocalPoint( 0.5, 0.5 );
-//    grad.setRadius( 0.5 );
+    grad.setCoordinateMode(QGradient::ObjectBoundingMode);
+    grad.setStart(0.5, 0.5);
+    grad.setFinalStop(0.5, 0.0);
+    grad.setSpread(QGradient::ReflectSpread);
+    //    grad.setCenter( 0.5, 0.5 );
+    //    grad.setFocalPoint( 0.5, 0.5 );
+    //    grad.setRadius( 0.5 );
     QColor currentColor = Qt::blue;
-    for ( qreal i = 0; i <= 1.0; i += 0.1 )
-    {
-        currentColor = currentColor.lighter( 100 + 20 * i );
-        grad.setColorAt( i, currentColor );
+    for (qreal i = 0; i <= 1.0; i += 0.1) {
+        currentColor = currentColor.lighter(100 + 20 * i);
+        grad.setColorAt(i, currentColor);
     }
-    QBrush brush( grad);
+    QBrush brush(grad);
     //brush.setColor(Qt::lightGray);
 
     QRectF r = computeRect(QDateTime::currentDateTime(),
@@ -194,7 +207,7 @@ void DateTimeGrid::drawBackground(QPainter* painter, const QRectF& rect)
     painter->fillRect(r, brush);
 }
 
-void DateTimeGrid::drawForeground(QPainter* painter, const QRectF& rect)
+void DateTimeGrid::drawForeground(QPainter *painter, const QRectF &rect)
 {
     painter->save();
 
@@ -204,14 +217,14 @@ void DateTimeGrid::drawForeground(QPainter* painter, const QRectF& rect)
 
     static QString text("Holiday");
     QFont font = painter->font();
-    font.setPixelSize(r.width()/5);
+    font.setPixelSize(r.width() / 5);
 
     QFontMetrics fm(font);
     int width = fm.horizontalAdvance(text);
     int height = fm.boundingRect(text).height();
 
     painter->translate(r.center());
-    painter->translate(-width/2, height/2);
+    painter->translate(-width / 2, height / 2);
     painter->setFont(font);
     painter->drawText(0, 0, text);
 
@@ -247,18 +260,18 @@ void DateTimeGrid::paintUserDefinedHeader( QPainter* painter, const QRectF& head
     }
 }
 */
-MainWindow::MainWindow( QWidget* parent )
-    : QMainWindow( parent ),
-      m_model( new ProjectModel( this ) ),
-      m_view( new KDGantt::View )
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , m_model(new ProjectModel(this))
+    , m_view(new KDGantt::View)
 {
-    m_view->setModel( m_model );
-    m_view->setSelectionModel( new QItemSelectionModel(m_model));
+    m_view->setModel(m_model);
+    m_view->setSelectionModel(new QItemSelectionModel(m_model));
 
     // slotToolsNewItem();
-    m_view->leftView()->setItemDelegateForColumn( 1, new MyItemDelegate( this ) );
-    m_view->leftView()->setHorizontalScrollBarPolicy( Qt::ScrollBarAsNeeded );
-    m_view->graphicsView()->setHorizontalScrollBarPolicy( Qt::ScrollBarAsNeeded );
+    m_view->leftView()->setItemDelegateForColumn(1, new MyItemDelegate(this));
+    m_view->leftView()->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    m_view->graphicsView()->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
     m_view->setGrid(new DateTimeGrid(this));
 
@@ -267,37 +280,37 @@ MainWindow::MainWindow( QWidget* parent )
     //factory->registerEditor( QVariant( KDGantt::TypeTask ).type(), creator );
     //m_view->itemDelegate()->setItemEditorFactory( factory );
 
-    setCentralWidget( m_view );
+    setCentralWidget(m_view);
 
-    QMenuBar* mb = menuBar();
+    QMenuBar *mb = menuBar();
 
-    QMenu* fileMenu = new QMenu( tr( "&File" ) );
+    QMenu *fileMenu = new QMenu(tr("&File"));
 
 #ifndef QT_NO_PRINTER
-    fileMenu->addAction( tr( "&Save as PDF..." ), this, SLOT( slotFileSavePdf() ) );
-    fileMenu->addAction( tr( "&Print..." ), this, SLOT( slotFilePrint() ) );
+    fileMenu->addAction(tr("&Save as PDF..."), this, SLOT(slotFileSavePdf()));
+    fileMenu->addAction(tr("&Print..."), this, SLOT(slotFilePrint()));
 #endif
 
     fileMenu->addSeparator();
-    fileMenu->addAction( tr( "&Quit" ), this, SLOT( slotFileQuit() ) );
+    fileMenu->addAction(tr("&Quit"), this, SLOT(slotFileQuit()));
 
-    mb->addMenu( fileMenu );
+    mb->addMenu(fileMenu);
 
-    QMenu* toolsMenu = new QMenu( tr( "&Tools" ) );
+    QMenu *toolsMenu = new QMenu(tr("&Tools"));
 
-    toolsMenu->addAction( tr( "&New Item" ), this, SLOT( slotToolsNewItem() ) );
-    toolsMenu->addAction( tr( "&Add Item" ), this, SLOT( slotToolsAppendItem() ) );
+    toolsMenu->addAction(tr("&New Item"), this, SLOT(slotToolsNewItem()));
+    toolsMenu->addAction(tr("&Add Item"), this, SLOT(slotToolsAppendItem()));
     toolsMenu->addSeparator();
-    QMenu *alignMenu = toolsMenu->addMenu( tr( "Ali&gn" ) );
-    alignMenu->addAction( tr( "&Left" ), this, SLOT( slotAlignLeft() ) );
-    alignMenu->addAction( tr( "&Center" ), this, SLOT( slotAlignCenter() ) );
-    alignMenu->addAction( tr( "&Right" ), this, SLOT( slotAlignRight() ) );
-    alignMenu->addAction( tr( "&Hidden" ), this, SLOT( slotAlignHidden() ) );
+    QMenu *alignMenu = toolsMenu->addMenu(tr("Ali&gn"));
+    alignMenu->addAction(tr("&Left"), this, SLOT(slotAlignLeft()));
+    alignMenu->addAction(tr("&Center"), this, SLOT(slotAlignCenter()));
+    alignMenu->addAction(tr("&Right"), this, SLOT(slotAlignRight()));
+    alignMenu->addAction(tr("&Hidden"), this, SLOT(slotAlignHidden()));
     toolsMenu->addSeparator();
-    toolsMenu->addAction( tr( "&Collapse All" ), this, SLOT( slotCollapseAll() ) );
-    toolsMenu->addAction( tr( "&Expand All" ), this, SLOT( slotExpandAll() ) );
+    toolsMenu->addAction(tr("&Collapse All"), this, SLOT(slotCollapseAll()));
+    toolsMenu->addAction(tr("&Expand All"), this, SLOT(slotExpandAll()));
 
-    mb->addMenu( toolsMenu );
+    mb->addMenu(toolsMenu);
 
     /*
     slotToolsNewItem();
@@ -374,7 +387,7 @@ void MainWindow::slotFileSavePdf()
     QPrinter printer(QPrinter::HighResolution);
     printer.setPageOrientation(QPageLayout::Landscape);
     printer.setColorMode(QPrinter::Color);
-    printer.setPageMargins({0.2, 0.2, 0.2, 0.2}, QPageLayout::Point);
+    printer.setPageMargins({ 0.2, 0.2, 0.2, 0.2 }, QPageLayout::Point);
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(file);
     m_view->print(&printer, drawRowLabels, drawColumnLabels);
@@ -403,22 +416,22 @@ void MainWindow::slotFileQuit()
 void MainWindow::slotToolsNewItem()
 {
     QModelIndex idx = m_view->selectionModel()->currentIndex();
-    if ( idx.isValid() ) {
+    if (idx.isValid()) {
         qDebug() << "MainWindow::slotToolsNewItem" << idx;
-        m_model->insertRows( 0, 1, m_model->index( idx.row(),0,idx.parent() ) );
+        m_model->insertRows(0, 1, m_model->index(idx.row(), 0, idx.parent()));
     } else {
-        m_model->insertRows( 0, 1, m_view->rootIndex() );
+        m_model->insertRows(0, 1, m_view->rootIndex());
     }
 }
 
 void MainWindow::slotToolsAppendItem()
 {
     QModelIndex idx = m_view->selectionModel()->currentIndex();
-    if ( idx.isValid() ) {
+    if (idx.isValid()) {
         qDebug() << "MainWindow::slotToolsAppendItem" << idx;
-        m_model->insertRows( m_model->rowCount( idx ), 1, m_model->index( idx.row(),0,idx.parent() ) );
+        m_model->insertRows(m_model->rowCount(idx), 1, m_model->index(idx.row(), 0, idx.parent()));
     } else {
-        m_model->insertRows( m_model->rowCount( m_view->rootIndex() ), 1, m_view->rootIndex() );
+        m_model->insertRows(m_model->rowCount(m_view->rootIndex()), 1, m_view->rootIndex());
     }
 }
 
@@ -430,7 +443,7 @@ void MainWindow::slotCollapseAll()
     //view->collapseAll();
 
     QModelIndex idx = m_view->selectionModel()->currentIndex();
-    if ( idx.isValid() )
+    if (idx.isValid())
         m_view->collapseAll();
 }
 
@@ -442,39 +455,39 @@ void MainWindow::slotExpandAll()
     //view->expandAll();
 
     QModelIndex idx = m_view->selectionModel()->currentIndex();
-    if ( idx.isValid() )
+    if (idx.isValid())
         m_view->expandAll();
 }
 
 void MainWindow::slotAlignLeft()
 {
     QModelIndex idx = m_view->selectionModel()->currentIndex();
-    if ( idx.isValid() ) {
-        m_model->setData( idx, KDGantt::StyleOptionGanttItem::Left, KDGantt::TextPositionRole );
+    if (idx.isValid()) {
+        m_model->setData(idx, KDGantt::StyleOptionGanttItem::Left, KDGantt::TextPositionRole);
     }
 }
 
 void MainWindow::slotAlignCenter()
 {
     QModelIndex idx = m_view->selectionModel()->currentIndex();
-    if ( idx.isValid() ) {
-        m_model->setData( idx, KDGantt::StyleOptionGanttItem::Center, KDGantt::TextPositionRole );
+    if (idx.isValid()) {
+        m_model->setData(idx, KDGantt::StyleOptionGanttItem::Center, KDGantt::TextPositionRole);
     }
 }
 
 void MainWindow::slotAlignRight()
 {
     QModelIndex idx = m_view->selectionModel()->currentIndex();
-    if ( idx.isValid() ) {
-        m_model->setData( idx, KDGantt::StyleOptionGanttItem::Right, KDGantt::TextPositionRole );
+    if (idx.isValid()) {
+        m_model->setData(idx, KDGantt::StyleOptionGanttItem::Right, KDGantt::TextPositionRole);
     }
 }
 
 void MainWindow::slotAlignHidden()
 {
     QModelIndex idx = m_view->selectionModel()->currentIndex();
-    if ( idx.isValid() ) {
-        m_model->setData( idx, KDGantt::StyleOptionGanttItem::Hidden, KDGantt::TextPositionRole );
+    if (idx.isValid()) {
+        m_model->setData(idx, KDGantt::StyleOptionGanttItem::Hidden, KDGantt::TextPositionRole);
     }
 }
 

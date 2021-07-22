@@ -47,6 +47,7 @@ namespace KDChart {
 class ThreeDLineAttributes::Private : public AbstractThreeDAttributes::Private
 {
     friend class ThreeDLineAttributes;
+
 public:
     Private();
 

@@ -27,14 +27,13 @@
 
 using namespace KDChart;
 
-MainWindow::MainWindow( QWidget* parent )
- : QWidget( parent )
+MainWindow::MainWindow(QWidget *parent)
+    : QWidget(parent)
 {
-    setupUi( this );
+    setupUi(this);
 
-    QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
-    widget = new ZoomWidget( chartFrame );
-    widget->setGlobalLeadingRight( 10 );
-    chartLayout->addWidget( widget );
+    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    widget = new ZoomWidget(chartFrame);
+    widget->setGlobalLeadingRight(10);
+    chartLayout->addWidget(widget);
 }
-

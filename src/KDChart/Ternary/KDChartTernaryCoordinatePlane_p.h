@@ -43,48 +43,48 @@
 
 namespace KDChart {
 
-    class TernaryAxis;
+class TernaryAxis;
 
-    /**
+/**
      * \internal
      */
 
-    class TernaryCoordinatePlane::Private : public AbstractCoordinatePlane::Private
+class TernaryCoordinatePlane::Private : public AbstractCoordinatePlane::Private
+{
+    friend class TernaryCoordinatePlane;
+
+public:
+    explicit Private();
+
+    ~Private() override
     {
-        friend class TernaryCoordinatePlane;
+        // grid is delete in base class dtor
+    }
 
-    public:
-        explicit Private();
+    void initialize() override
+    {
+        grid = new TernaryGrid();
+        xUnit = 0.0;
+        yUnit = 0.0;
+    }
 
-        ~Private() override {
-            // grid is delete in base class dtor
-        }
+    QList<TernaryAxis *> axes;
 
-        void initialize() override
-        {
-            grid = new TernaryGrid();
-            xUnit = 0.0;
-            yUnit = 0.0;
-        }
+    TextAttributes labelAttributes;
 
-        QList<TernaryAxis*> axes;
+    // the diagram is drawn within this rectangle, which is within
+    // this widget:
+    QRectF diagramRectContainer;
+    // this is the "frame" of the plot area
+    QRectF diagramRect;
+    // multiply m_xUnit with a [0..1] value to get an isometric
+    // widget coordinate
+    qreal xUnit;
+    // same for y:
+    qreal yUnit;
+};
 
-        TextAttributes labelAttributes;
-
-        // the diagram is drawn within this rectangle, which is within
-        // this widget:
-        QRectF diagramRectContainer;
-        // this is the "frame" of the plot area
-        QRectF diagramRect;
-        // multiply m_xUnit with a [0..1] value to get an isometric
-        // widget coordinate
-        qreal xUnit;
-        // same for y:
-        qreal yUnit;
-
-    };
-
-    KDCHART_IMPL_DERIVED_PLANE(TernaryCoordinatePlane, AbstractCoordinatePlane)
+KDCHART_IMPL_DERIVED_PLANE(TernaryCoordinatePlane, AbstractCoordinatePlane)
 }
 
 #endif /* KDCHARTTERNARYCOORDINATEPLANE_P_H */

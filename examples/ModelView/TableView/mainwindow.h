@@ -28,9 +28,9 @@
 #include <TableModel.h>
 
 namespace KDChart {
-    class Chart;
-    class BarDiagram;
-    class DatasetProxyModel;
+class Chart;
+class BarDiagram;
+class DatasetProxyModel;
 }
 
 QT_BEGIN_NAMESPACE
@@ -48,25 +48,25 @@ public:
     MainWindow();
 
 protected slots:
-    void selectionChanged( const QItemSelection & selected, const QItemSelection & deselected );
+    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 private slots:
     void initializeData();
     void openFile(const QString &path = QString());
     void saveFile();
 
-    void itemClicked( const QModelIndex& index );
+    void itemClicked(const QModelIndex &index);
 
 private:
     void setupModel();
     void setupViews();
 
-    KDChart::Chart* m_chart;
-    KDChart::DatasetProxyModel* m_datasetProxy;
+    KDChart::Chart *m_chart;
+    KDChart::DatasetProxyModel *m_datasetProxy;
 
-    QStandardItemModel  *m_model;
+    QStandardItemModel *m_model;
     KDChart::BarDiagram *m_diagramView;
-    QTableView          *m_tableView;
+    QTableView *m_tableView;
     QItemSelectionModel *m_selectionModel;
 };
 

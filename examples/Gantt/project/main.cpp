@@ -24,11 +24,12 @@
 
 #include "mainwindow.h"
 
-int main( int argc, char** argv ) {
-    QApplication app( argc, argv );
+int main(int argc, char **argv)
+{
+    QApplication app(argc, argv);
 
     MainWindow mw;
-    mw.resize( 800, 600 );
+    mw.resize(800, 600);
     mw.show();
 
     return app.exec();

@@ -34,45 +34,45 @@ QT_END_NAMESPACE
 
 namespace KDChart {
 
-    class AbstractDiagram;
-    class ChartGraphicsItem;
+class AbstractDiagram;
+class ChartGraphicsItem;
 
-    /**
+/**
       * @brief The ReverseMapper stores information about objects on a chart and their respective model indexes
       * \internal
       */
-    class ReverseMapper
-    {
+class ReverseMapper
+{
 
-    public:
-        ReverseMapper();
-        explicit ReverseMapper( AbstractDiagram* diagram );
+public:
+    ReverseMapper();
+    explicit ReverseMapper(AbstractDiagram *diagram);
 
-        ~ReverseMapper();
+    ~ReverseMapper();
 
-        void setDiagram( AbstractDiagram* diagram );
+    void setDiagram(AbstractDiagram *diagram);
 
-        void clear();
+    void clear();
 
-        QModelIndexList indexesAt( const QPointF& point ) const;
-        QModelIndexList indexesIn( const QRect& rect ) const;
+    QModelIndexList indexesAt(const QPointF &point) const;
+    QModelIndexList indexesIn(const QRect &rect) const;
 
-        QPolygonF polygon( int row, int column ) const;
-        QRectF boundingRect( int row, int column ) const;
+    QPolygonF polygon(int row, int column) const;
+    QRectF boundingRect(int row, int column) const;
 
-        void addItem( ChartGraphicsItem* item );
+    void addItem(ChartGraphicsItem *item);
 
-        // convenience methods:
-        void addPolygon( int row, int column, const QPolygonF& polygon );
-        void addRect( int row, int column, const QRectF& rect );
-        void addCircle( int row, int column, const QPointF& location, const QSizeF& diameter );
-        void addLine( int row, int column, const QPointF& from, const QPointF& to );
+    // convenience methods:
+    void addPolygon(int row, int column, const QPolygonF &polygon);
+    void addRect(int row, int column, const QRectF &rect);
+    void addCircle(int row, int column, const QPointF &location, const QSizeF &diameter);
+    void addLine(int row, int column, const QPointF &from, const QPointF &to);
 
-    private:
-        QGraphicsScene* m_scene;
-        AbstractDiagram* m_diagram;
-        QHash<QModelIndex, ChartGraphicsItem*> m_itemMap;
-    };
+private:
+    QGraphicsScene *m_scene;
+    AbstractDiagram *m_diagram;
+    QHash<QModelIndex, ChartGraphicsItem *> m_itemMap;
+};
 
 }
 

@@ -27,8 +27,8 @@
 #include <TableModel.h>
 
 namespace KDChart {
-    class Chart;
-    class BarDiagram;
+class Chart;
+class BarDiagram;
 }
 
 class MainWindow : public QWidget
@@ -36,15 +36,16 @@ class MainWindow : public QWidget
     Q_OBJECT
 
 public:
-    MainWindow( QWidget* parent = nullptr );
-    ~MainWindow() override { }
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow() override
+    {
+    }
 
 private:
-    KDChart::Chart* m_chart;
-    KDChart::BarDiagram* m_bars;
+    KDChart::Chart *m_chart;
+    KDChart::BarDiagram *m_bars;
     TableModel m_model;
 };
 
 
 #endif /* MAINWINDOW_H */
-

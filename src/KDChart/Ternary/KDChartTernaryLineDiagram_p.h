@@ -43,21 +43,23 @@ namespace KDChart {
 /**
  * \internal
  */
-    class TernaryLineDiagram::Private : public AbstractTernaryDiagram::Private
+class TernaryLineDiagram::Private : public AbstractTernaryDiagram::Private
+{
+    friend class TernaryLineDiagram;
+
+public:
+    Private();
+    ~Private() override
     {
-        friend class TernaryLineDiagram;
-    public:
-        Private();
-        ~Private() override {}
+    }
 
-        Private( const Private& rhs )
-            : AbstractTernaryDiagram::Private( rhs )
-        {
-        }
+    Private(const Private &rhs)
+        : AbstractTernaryDiagram::Private(rhs)
+    {
+    }
+};
 
-    };
-
-    KDCHART_IMPL_DERIVED_DIAGRAM( TernaryLineDiagram, AbstractTernaryDiagram, TernaryCoordinatePlane )
+KDCHART_IMPL_DERIVED_DIAGRAM(TernaryLineDiagram, AbstractTernaryDiagram, TernaryCoordinatePlane)
 /*
   inline LineDiagram::LineDiagram( Private * p, TernaryCoordinatePlane* plane )
   : AbstractTernaryDiagram( p, plane ) { init(); }
@@ -70,4 +72,3 @@ namespace KDChart {
 }
 
 #endif /* KDCHARTTERNARYLINEDIAGRAM_P_H */
-

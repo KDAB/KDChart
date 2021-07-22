@@ -66,19 +66,19 @@ Note that grids are painted from the coordinate plane, not from the diagram as o
 
 namespace KDChart {
 
-    class BackgroundAttributes;
-    class FrameAttributes;
-    class AbstractDiagram;
-    class AbstractCoordinatePlane;
-    class HeaderFooter;
-    class Legend;
+class BackgroundAttributes;
+class FrameAttributes;
+class AbstractDiagram;
+class AbstractCoordinatePlane;
+class HeaderFooter;
+class Legend;
 
-    typedef QList<AbstractCoordinatePlane*> CoordinatePlaneList;
-    typedef QList<HeaderFooter*> HeaderFooterList;
-    typedef QList<Legend*> LegendList;
+typedef QList<AbstractCoordinatePlane *> CoordinatePlaneList;
+typedef QList<HeaderFooter *> HeaderFooterList;
+typedef QList<Legend *> LegendList;
 
 
-    /**
+/**
      * @class Chart KDChartChart.h KDChartChart
      * @brief A chart with one or more diagrams.
      *
@@ -95,23 +95,23 @@ namespace KDChart {
      * static, KDChart::Widget provides an abstracted interface, that hides the complexity
      * of Interview to a large extent.
      */
-    class KDCHART_EXPORT Chart : public QWidget
-    {
-        Q_OBJECT
-         // KD Chart 3.0: leading is inter-line distance of text. this here is MARGIN or SPACING.
-        Q_PROPERTY( int globalLeadingTop READ globalLeadingTop WRITE setGlobalLeadingTop )
-        Q_PROPERTY( int globalLeadingBottom READ globalLeadingBottom WRITE setGlobalLeadingBottom )
-        Q_PROPERTY( int globalLeadingLeft READ globalLeadingLeft WRITE setGlobalLeadingLeft )
-        Q_PROPERTY( int globalLeadingRight READ globalLeadingRight WRITE setGlobalLeadingRight )
-        Q_PROPERTY( bool useNewLayoutSystem READ useNewLayoutSystem WRITE setUseNewLayoutSystem )
+class KDCHART_EXPORT Chart : public QWidget
+{
+    Q_OBJECT
+    // KD Chart 3.0: leading is inter-line distance of text. this here is MARGIN or SPACING.
+    Q_PROPERTY(int globalLeadingTop READ globalLeadingTop WRITE setGlobalLeadingTop)
+    Q_PROPERTY(int globalLeadingBottom READ globalLeadingBottom WRITE setGlobalLeadingBottom)
+    Q_PROPERTY(int globalLeadingLeft READ globalLeadingLeft WRITE setGlobalLeadingLeft)
+    Q_PROPERTY(int globalLeadingRight READ globalLeadingRight WRITE setGlobalLeadingRight)
+    Q_PROPERTY(bool useNewLayoutSystem READ useNewLayoutSystem WRITE setUseNewLayoutSystem)
 
-        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET( Chart )
+    KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET(Chart)
 
-    public:
-        explicit Chart ( QWidget* parent = nullptr );
-        ~Chart() override;
+public:
+    explicit Chart(QWidget *parent = nullptr);
+    ~Chart() override;
 
-        /**
+    /**
          * @brief useNewLayoutSystem
          * Be very careful activating the new layout system,
          * its still experimental and works only if the user knows
@@ -119,10 +119,10 @@ namespace KDChart {
          * the user from creating sharing graphs that are not layoutable in a
          * plane and still needs assistance from the user.
          */
-        bool useNewLayoutSystem() const;
-        void setUseNewLayoutSystem( bool value );
+    bool useNewLayoutSystem() const;
+    void setUseNewLayoutSystem(bool value);
 
-        /**
+    /**
           \brief Specify the frame attributes to be used, by default is it a thin black line.
 
           To hide the frame line, you could do something like this:
@@ -134,10 +134,10 @@ namespace KDChart {
 
           \sa setBackgroundAttributes
           */
-        void setFrameAttributes( const FrameAttributes &a );
-        FrameAttributes frameAttributes() const;
+    void setFrameAttributes(const FrameAttributes &a);
+    FrameAttributes frameAttributes() const;
 
-        /**
+    /**
           \brief Specify the background attributes to be used, by default there is no background.
 
           To set a light blue background, you could do something like this:
@@ -150,33 +150,33 @@ namespace KDChart {
 
           \sa setFrameAttributes
           */
-        void setBackgroundAttributes( const BackgroundAttributes &a );
-        BackgroundAttributes backgroundAttributes() const;
+    void setBackgroundAttributes(const BackgroundAttributes &a);
+    BackgroundAttributes backgroundAttributes() const;
 
-        /**
+    /**
          * Each chart must have at least one coordinate plane.
          * Initially a default CartesianCoordinatePlane is created.
          * Use replaceCoordinatePlane() to replace it with a different
          * one, such as a PolarCoordinatePlane.
          * @return The first coordinate plane of the chart.
          */
-        AbstractCoordinatePlane* coordinatePlane();
+    AbstractCoordinatePlane *coordinatePlane();
 
-        /**
+    /**
          * The list of coordinate planes.
          * @return The list of coordinate planes.
          */
-        CoordinatePlaneList coordinatePlanes();
+    CoordinatePlaneList coordinatePlanes();
 
-        /**
+    /**
          * Adds a coordinate plane to the chart. The chart takes ownership.
          * @param plane The coordinate plane to add.
          *
          * \sa replaceCoordinatePlane, takeCoordinatePlane
          */
-        void addCoordinatePlane( AbstractCoordinatePlane* plane );
+    void addCoordinatePlane(AbstractCoordinatePlane *plane);
 
-        /**
+    /**
          * Inserts a coordinate plane to the chart at index @p index.
 		 * The chart takes ownership.
 		 *
@@ -185,9 +185,9 @@ namespace KDChart {
          *
          * \sa replaceCoordinatePlane, takeCoordinatePlane
          */
-		void insertCoordinatePlane( int index, AbstractCoordinatePlane* plane );
+    void insertCoordinatePlane(int index, AbstractCoordinatePlane *plane);
 
-        /**
+    /**
          * Replaces the old coordinate plane, or appends the
          * plane, it there is none yet.
          *
@@ -204,10 +204,10 @@ namespace KDChart {
          *
          * \sa addCoordinatePlane, takeCoordinatePlane
          */
-        void replaceCoordinatePlane( AbstractCoordinatePlane* plane,
-                                     AbstractCoordinatePlane* oldPlane = nullptr );
+    void replaceCoordinatePlane(AbstractCoordinatePlane *plane,
+                                AbstractCoordinatePlane *oldPlane = nullptr);
 
-        /**
+    /**
          * Removes the coordinate plane from the chart, without deleting it.
          *
          * The chart no longer owns the plane, so it is
@@ -215,38 +215,38 @@ namespace KDChart {
          *
          * \sa addCoordinatePlane, takeCoordinatePlane
          */
-        void takeCoordinatePlane( AbstractCoordinatePlane* plane );
+    void takeCoordinatePlane(AbstractCoordinatePlane *plane);
 
-        /**
+    /**
          * Set the coordinate plane layout that should be used as model for
          * the internal used layout. The layout needs to be an instance of
          * QHBoxLayout or QVBoxLayout.
          */
-        void setCoordinatePlaneLayout( QLayout * layout );
-        QLayout* coordinatePlaneLayout();
+    void setCoordinatePlaneLayout(QLayout *layout);
+    QLayout *coordinatePlaneLayout();
 
-        /**
+    /**
          * The first header or footer of the chart. By default there is none.
          * @return The first header or footer of the chart or 0 if there was none
          * added to the chart.
          */
-        HeaderFooter* headerFooter();
+    HeaderFooter *headerFooter();
 
-        /**
+    /**
          * The list of headers and footers associated with the chart.
          * @return The list of headers and footers associated with the chart.
          */
-        HeaderFooterList headerFooters();
+    HeaderFooterList headerFooters();
 
-        /**
+    /**
          * Adds a header or a footer to the chart. The chart takes ownership.
          * @param headerFooter The header (or footer, resp.) to add.
          *
          * \sa replaceHeaderFooter, takeHeaderFooter
          */
-        void addHeaderFooter( HeaderFooter* headerFooter );
+    void addHeaderFooter(HeaderFooter *headerFooter);
 
-        /**
+    /**
          * Replaces the old header (or footer, resp.), or appends the
          * new header or footer, it there is none yet.
          *
@@ -263,10 +263,10 @@ namespace KDChart {
          *
          * \sa addHeaderFooter, takeHeaderFooter
          */
-        void replaceHeaderFooter ( HeaderFooter* headerFooter,
-                                   HeaderFooter* oldHeaderFooter = nullptr );
+    void replaceHeaderFooter(HeaderFooter *headerFooter,
+                             HeaderFooter *oldHeaderFooter = nullptr);
 
-        /**
+    /**
          * Removes the header (or footer, resp.) from the chart, without deleting it.
          *
          * The chart no longer owns the header or footer, so it is
@@ -274,29 +274,29 @@ namespace KDChart {
          *
          * \sa addHeaderFooter, replaceHeaderFooter
          */
-        void takeHeaderFooter( HeaderFooter* headerFooter );
+    void takeHeaderFooter(HeaderFooter *headerFooter);
 
-        /**
+    /**
          * The first legend of the chart or 0 if there was none added to the chart.
          * @return The first legend of the chart or 0 if none exists.
          */
-        Legend* legend();
+    Legend *legend();
 
-        /**
+    /**
          * The list of all legends associated with the chart.
          * @return The list of all legends associated with the chart.
          */
-        LegendList legends();
+    LegendList legends();
 
-        /**
+    /**
          * Add the given legend to the chart. The chart takes ownership.
          * @param legend The legend to add.
          *
          * \sa replaceLegend, takeLegend
          */
-        void addLegend( Legend* legend );
+    void addLegend(Legend *legend);
 
-        /**
+    /**
          * Replaces the old legend, or appends the
          * new legend, it there is none yet.
          *
@@ -319,9 +319,9 @@ namespace KDChart {
          *
          * \sa addLegend, takeLegend
          */
-        void replaceLegend ( Legend* legend, Legend* oldLegend = nullptr );
+    void replaceLegend(Legend *legend, Legend *oldLegend = nullptr);
 
-        /**
+    /**
          * Removes the legend from the chart, without deleting it.
          *
          * The chart no longer owns the legend, so it is
@@ -329,9 +329,9 @@ namespace KDChart {
          *
          * \sa addLegend, takeLegend
          */
-        void takeLegend( Legend* legend );
+    void takeLegend(Legend *legend);
 
-        /**
+    /**
          * Set the padding between the margin of the widget and the area that
          * the contents are drawn into.
          * @param left The padding on the left side.
@@ -350,18 +350,18 @@ namespace KDChart {
          * \sa setGlobalLeadingTop, setGlobalLeadingBottom, setGlobalLeadingLeft, setGlobalLeadingRight
          * \sa globalLeadingTop, globalLeadingBottom, globalLeadingLeft, globalLeadingRight
          */
-        void setGlobalLeading( int left, int top, int right, int bottom );
+    void setGlobalLeading(int left, int top, int right, int bottom);
 
-        /**
+    /**
          * Set the padding between the start of the widget and the start
          * of the area that is used for drawing on the left.
          * @param leading The padding value.
          *
          * \sa setGlobalLeading
          */
-        void setGlobalLeadingLeft( int leading );
+    void setGlobalLeadingLeft(int leading);
 
-        /**
+    /**
          * The padding between the start of the widget and the start
          * of the area that is used for drawing on the left.
          * @return The padding between the start of the widget and the start
@@ -369,18 +369,18 @@ namespace KDChart {
          *
          * \sa setGlobalLeading
          */
-        int globalLeadingLeft() const;
+    int globalLeadingLeft() const;
 
-        /**
+    /**
          * Set the padding between the start of the widget and the start
          * of the area that is used for drawing at the top.
          * @param leading The padding value.
          *
          * \sa setGlobalLeading
          */
-        void setGlobalLeadingTop( int leading );
+    void setGlobalLeadingTop(int leading);
 
-        /**
+    /**
          * The padding between the start of the widget and the start
          * of the area that is used for drawing at the top.
          * @return The padding between the start of the widget and the start
@@ -388,18 +388,18 @@ namespace KDChart {
          *
          * \sa setGlobalLeading
          */
-        int globalLeadingTop() const;
+    int globalLeadingTop() const;
 
-        /**
+    /**
          * Set the padding between the start of the widget and the start
          * of the area that is used for drawing on the right.
          * @param leading The padding value.
          *
          * \sa setGlobalLeading
          */
-        void setGlobalLeadingRight( int leading );
+    void setGlobalLeadingRight(int leading);
 
-        /**
+    /**
          * The padding between the start of the widget and the start
          * of the area that is used for drawing on the right.
          * @return The padding between the start of the widget and the start
@@ -407,18 +407,18 @@ namespace KDChart {
          *
          * \sa setGlobalLeading
          */
-        int globalLeadingRight() const;
+    int globalLeadingRight() const;
 
-        /**
+    /**
          * Set the padding between the start of the widget and the start
          * of the area that is used for drawing on the bottom.
          * @param leading The padding value.
          *
          * \sa setGlobalLeading
          */
-        void setGlobalLeadingBottom( int leading );
+    void setGlobalLeadingBottom(int leading);
 
-        /**
+    /**
          * The padding between the start of the widget and the start
          * of the area that is used for drawing at the bottom.
          * @return The padding between the start of the widget and the start
@@ -426,9 +426,9 @@ namespace KDChart {
          *
          * \sa setGlobalLeading
          */
-        int globalLeadingBottom() const;
+    int globalLeadingBottom() const;
 
-        /**
+    /**
           * Paints all the contents of the chart. Use this method to make KDChart
           * draw into your QPainter.
           *
@@ -441,45 +441,45 @@ namespace KDChart {
           *
           * \sa setGlobalLeading
           */
-        void paint( QPainter* painter, const QRect& target );
+    void paint(QPainter *painter, const QRect &target);
 
-        void reLayoutFloatingLegends();
+    void reLayoutFloatingLegends();
 
-    Q_SIGNALS:
-        /** Emitted upon change of a property of the Chart or any of its components. */
-        void propertiesChanged();
-        void finishedDrawing();
+Q_SIGNALS:
+    /** Emitted upon change of a property of the Chart or any of its components. */
+    void propertiesChanged();
+    void finishedDrawing();
 
-    protected:
-        /**
+protected:
+    /**
           * Adjusts the internal layout when the chart is resized.
           */
-        /* reimp */ void resizeEvent ( QResizeEvent * event ) override;
+    /* reimp */ void resizeEvent(QResizeEvent *event) override;
 
-        /**
+    /**
           * @brief Draws the background and frame, then calls paint().
           *
           * In most cases there is no need to override this method in a derived
           * class, but if you do, do not forget to call paint().
           * @sa paint
           */
-        /* reimp */ void paintEvent( QPaintEvent* event ) override;
+    /* reimp */ void paintEvent(QPaintEvent *event) override;
 
-        /** reimp */
-        void mousePressEvent( QMouseEvent* event ) override;
-        /** reimp */
-        void mouseDoubleClickEvent( QMouseEvent* event ) override;
-        /** reimp */
-        void mouseMoveEvent( QMouseEvent* event ) override;
-        /** reimp */
-        void mouseReleaseEvent( QMouseEvent* event ) override;
-        /** reimp */
-        bool event( QEvent* event ) override;
+    /** reimp */
+    void mousePressEvent(QMouseEvent *event) override;
+    /** reimp */
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
+    /** reimp */
+    void mouseMoveEvent(QMouseEvent *event) override;
+    /** reimp */
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    /** reimp */
+    bool event(QEvent *event) override;
 
-    private:
-        // TODO move this to the private class
-        void addLegendInternal( Legend *legend, bool setMeasures );
-    };
+private:
+    // TODO move this to the private class
+    void addLegendInternal(Legend *legend, bool setMeasures);
+};
 
 // Here we have a few docu block to be included into the API documentation:
 /**

@@ -35,15 +35,15 @@
 
 using namespace KDChart;
 
-MainWindow::MainWindow( QWidget* parent ) :
-    QWidget( parent )
+MainWindow::MainWindow(QWidget *parent)
+    : QWidget(parent)
 {
-    setupUi( this );
+    setupUi(this);
 
-    QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
     m_chart = new Chart();
-    m_chart->setGlobalLeading( 20,  20,  20,  20 );
-    chartLayout->addWidget( m_chart );
+    m_chart->setGlobalLeading(20, 20, 20, 20);
+    chartLayout->addWidget(m_chart);
 
 
     // Initialize the model, and fill it with data
@@ -58,52 +58,52 @@ MainWindow::MainWindow( QWidget* parent ) :
     // Set up the diagram
     m_lines = new LineDiagram();
     // Register the data model at the diagram
-    m_lines->setModel( m_model );
+    m_lines->setModel(m_model);
     // Add axes to the diagram
-    CartesianAxis *xAxis = new CartesianAxis( m_lines );
-    CartesianAxis *yAxis = new CartesianAxis ( m_lines );
-    xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
-    yAxis->setPosition ( KDChart::CartesianAxis::Left );
-    m_lines->addAxis( xAxis );
-    m_lines->addAxis( yAxis );
+    CartesianAxis *xAxis = new CartesianAxis(m_lines);
+    CartesianAxis *yAxis = new CartesianAxis(m_lines);
+    xAxis->setPosition(KDChart::CartesianAxis::Bottom);
+    yAxis->setPosition(KDChart::CartesianAxis::Left);
+    m_lines->addAxis(xAxis);
+    m_lines->addAxis(yAxis);
     // Make the lines thicker
-    for ( int iColumn = 0; iColumn < columnCount; ++iColumn ) {
-        QPen linePen( m_lines->pen( iColumn ) );
-        linePen.setWidth( 3 );
-        m_lines->setPen( iColumn, linePen );
+    for (int iColumn = 0; iColumn < columnCount; ++iColumn) {
+        QPen linePen(m_lines->pen(iColumn));
+        linePen.setWidth(3);
+        m_lines->setPen(iColumn, linePen);
     }
     // Register the diagram at the coordinate plane
-    m_chart->coordinatePlane()->replaceDiagram( m_lines );
+    m_chart->coordinatePlane()->replaceDiagram(m_lines);
 
     // Add a legend
-    Legend* legend = new Legend( m_lines, m_chart );
-    legend->setPosition( Position::South );
-    legend->setAlignment( Qt::AlignCenter );
-    legend->setShowLines( true );
+    Legend *legend = new Legend(m_lines, m_chart);
+    legend->setPosition(Position::South);
+    legend->setAlignment(Qt::AlignCenter);
+    legend->setShowLines(true);
     legend->setTitleText("");
-    legend->setOrientation( Qt::Horizontal );
-    legend->addDiagram( m_lines );
-    m_chart->addLegend( legend );
+    legend->setOrientation(Qt::Horizontal);
+    legend->addDiagram(m_lines);
+    m_chart->addLegend(legend);
 }
 
-void MainWindow::on_showDataset1CB_toggled( bool checked )
+void MainWindow::on_showDataset1CB_toggled(bool checked)
 {
-    setHidden( 0, ! checked );
+    setHidden(0, !checked);
 }
 
-void MainWindow::on_showDataset2CB_toggled( bool checked )
+void MainWindow::on_showDataset2CB_toggled(bool checked)
 {
-    setHidden( 1, ! checked );
+    setHidden(1, !checked);
 }
 
-void MainWindow::on_showDataset3CB_toggled( bool checked )
+void MainWindow::on_showDataset3CB_toggled(bool checked)
 {
-    setHidden( 2, ! checked );
+    setHidden(2, !checked);
 }
 
-void MainWindow::setHidden( int dataset, bool hidden )
+void MainWindow::setHidden(int dataset, bool hidden)
 {
-    m_lines->setHidden( dataset, hidden );
+    m_lines->setHidden(dataset, hidden);
     m_chart->update();
 }
 
@@ -112,7 +112,7 @@ void MainWindow::openFile(const QString &path)
     QString fileName;
     if (path.isNull())
         fileName = QFileDialog::getOpenFileName(this, tr("Choose a data file"),
-            "", "*.cht");
+                                                "", "*.cht");
     else
         fileName = path;
 
@@ -144,4 +144,3 @@ void MainWindow::openFile(const QString &path)
         }
     }
 }
-

@@ -31,7 +31,8 @@ class Model : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    enum Function {
+    enum Function
+    {
         SineFunction = 0,
         TriangleFunction,
         SquareFunction,
@@ -41,20 +42,20 @@ public:
     };
     Model();
 
-    int columnCount( const QModelIndex& parent ) const override;
-    int rowCount( const QModelIndex& parent ) const override;
+    int columnCount(const QModelIndex &parent) const override;
+    int rowCount(const QModelIndex &parent) const override;
 
-    QModelIndex index( int row, int column, const QModelIndex& parent ) const override;
-    QModelIndex parent( const QModelIndex& index ) const override;
+    QModelIndex index(int row, int column, const QModelIndex &parent) const override;
+    QModelIndex parent(const QModelIndex &index) const override;
 
-    QVariant data( const QModelIndex& index, int role ) const override;
+    QVariant data(const QModelIndex &index, int role) const override;
 
-    void setFunction( Function f );
+    void setFunction(Function f);
 
-    void appendPoints( int numPoints );
+    void appendPoints(int numPoints);
 
 public slots:
-    void setRunning( bool );
+    void setRunning(bool);
 
 private slots:
     void appendPoint();
@@ -64,7 +65,7 @@ private:
 
     qreal m_x;
     Function m_function;
-    QVector< qreal > m_data;
+    QVector<qreal> m_data;
     QTimer m_appendTimer;
 };
 

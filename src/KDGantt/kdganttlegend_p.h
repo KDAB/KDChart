@@ -28,11 +28,11 @@
 #include "kdganttproxymodel.h"
 
 namespace KDGantt {
-    class Legend::Private {
-    public:
-        ProxyModel proxyModel;
-    };
+class Legend::Private
+{
+public:
+    ProxyModel proxyModel;
+};
 }
 
 #endif /* KDGANTTLEGEND_P_H */
-

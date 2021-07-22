@@ -39,21 +39,20 @@ class MainWindow : public QWidget, private Ui::MainWindow
     Q_OBJECT
 
 public:
-    MainWindow( QWidget* parent = nullptr );
+    MainWindow(QWidget *parent = nullptr);
 
 private slots:
-    void annotationsToggled( bool );
-    void gridLinesOnAnnotationsToggled( bool );
+    void annotationsToggled(bool);
+    void gridLinesOnAnnotationsToggled(bool);
 
 private:
-    KDChart::Chart* m_chart;
-    KDChart::CartesianAxis* m_xAxis;
+    KDChart::Chart *m_chart;
+    KDChart::CartesianAxis *m_xAxis;
     TableModel m_model;
-    KDChart::DatasetProxyModel* m_datasetProxy;
-    KDChart::LineDiagram* m_lines;
-    KDChart::Legend* m_legend;
+    KDChart::DatasetProxyModel *m_datasetProxy;
+    KDChart::LineDiagram *m_lines;
+    KDChart::Legend *m_legend;
 };
 
 
 #endif /* MAINWINDOW_H */
-

@@ -36,7 +36,7 @@ QT_END_NAMESPACE
 
 namespace KDChart {
 
-    /**
+/**
      * \brief A set of text attributes.
      *
      * TextAttributes encapsulates settings that have to do with
@@ -46,27 +46,29 @@ namespace KDChart {
 class KDCHART_EXPORT TextAttributes
 {
 public:
-  TextAttributes();
-  TextAttributes( const TextAttributes& );
-  TextAttributes &operator= ( const TextAttributes& );
-  bool operator==( const TextAttributes& ) const;
-  inline bool operator!=( const TextAttributes& other ) const
-  { return !operator==(other); }
+    TextAttributes();
+    TextAttributes(const TextAttributes &);
+    TextAttributes &operator=(const TextAttributes &);
+    bool operator==(const TextAttributes &) const;
+    inline bool operator!=(const TextAttributes &other) const
+    {
+        return !operator==(other);
+    }
 
-  ~TextAttributes();
+    ~TextAttributes();
 
-  /**
+    /**
    * Set whether the text is to be rendered at all.
    * \param visible Whether the text is visible.
    */
-  void setVisible( bool visible );
+    void setVisible(bool visible);
 
-  /**
+    /**
    * \return Whether the text is visible.
    */
-  bool isVisible() const;
+    bool isVisible() const;
 
-  /**
+    /**
    * Set the font to be used for rendering the text.
    *
    * \note All of the font's attributes will be used - except of its size!
@@ -76,48 +78,48 @@ public:
    *
    * \sa setFontSize, setMinimalFontSize
    */
-  void setFont( const QFont& font );
+    void setFont(const QFont &font);
 
-  /**
+    /**
    * \return The font that is used for rendering text.
    */
-  QFont font() const;
+    QFont font() const;
 
-  /**
+    /**
    * Set the size of the font used for rendering text.
    * \param measure The measure to use.
    * \see Measure
    */
-  void setFontSize( const Measure & measure );
+    void setFontSize(const Measure &measure);
 
-  /**
+    /**
    * \return The measure used for the font size.
    */
-  Measure fontSize() const;
+    Measure fontSize() const;
 
-  /**
+    /**
    * Set the minimal size of the font used for rendering text.
    * \param measure The measure to use.
    * \see Measure
    */
-  void setMinimalFontSize( const Measure & measure );
+    void setMinimalFontSize(const Measure &measure);
 
-  /**
+    /**
    * \return The measure used for the minimal font size.
    */
-  Measure minimalFontSize() const;
+    Measure minimalFontSize() const;
 
-  /**
+    /**
    * \brief Returns the font size that is used at drawing time.
    *
    * This method is called at drawing time. It returns the
    * font size as it is used for rendering text, taking into account
    * any measures that were set via setFontSize and/or setMinimalFontSize.
    */
-  qreal calculatedFontSize( const QSizeF &referenceSize,
-                            KDChartEnums::MeasureOrientation autoReferenceOrientation ) const;
+    qreal calculatedFontSize(const QSizeF &referenceSize,
+                             KDChartEnums::MeasureOrientation autoReferenceOrientation) const;
 
-  /**
+    /**
    * \brief Returns the font size that is used at drawing time.
    *
    * This method is called at drawing time. It returns the
@@ -125,56 +127,56 @@ public:
    * any measures that were set via setFontSize and/or setMinimalFontSize.
    */
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && defined(Q_COMPILER_MANGLES_RETURN_TYPE)
-  const qreal calculatedFontSize(
+    const qreal calculatedFontSize(
 #else
-  qreal calculatedFontSize(
+    qreal calculatedFontSize(
 #endif
-        const QObject*                   autoReferenceArea,
-        KDChartEnums::MeasureOrientation autoReferenceOrientation ) const;
+        const QObject *autoReferenceArea,
+        KDChartEnums::MeasureOrientation autoReferenceOrientation) const;
 
-  /**
+    /**
    * \brief Returns the font in the size that is used at drawing time.
    *
    * This method is called at drawing time. It returns the
    * font as it is used for rendering text, taking into account
    * any measures that were set via setFontSize and/or setMinimalFontSize.
    */
-  const QFont calculatedFont(
-        const QObject*                   autoReferenceArea,
-        KDChartEnums::MeasureOrientation autoReferenceOrientation ) const;
+    const QFont calculatedFont(
+        const QObject *autoReferenceArea,
+        KDChartEnums::MeasureOrientation autoReferenceOrientation) const;
 
-  /**
+    /**
    * \return Whether the text has an absolute font size set.
    */
-  bool hasAbsoluteFontSize() const;
+    bool hasAbsoluteFontSize() const;
 
-  /**
+    /**
    * Set whether the text should be automatically rotated as
    * needed when space is tight.
    * \param autoRotate Whether text should be automatically rotated.
    */
-  void setAutoRotate( bool autoRotate );
+    void setAutoRotate(bool autoRotate);
 
-  /**
+    /**
    * \return Whether text is automatically rotated when space is
    * tight.
    */
-  bool autoRotate() const;
+    bool autoRotate() const;
 
-  /**
+    /**
    * Set whether the text should automatically be shrunk if
    * space is tight.
    * \param autoShrink Whether text should be auto-shrunk.
    */
-  void setAutoShrink( bool autoShrink );
+    void setAutoShrink(bool autoShrink);
 
-  /**
+    /**
    * \return Whether text is automatically shrunk if space is
    * tight.
    */
-  bool autoShrink() const;
+    bool autoShrink() const;
 
-  /**
+    /**
    * Set the rotation angle to use for the text.
    *
    * \note For axis titles the rotation angle can be set to one of the
@@ -185,55 +187,55 @@ public:
    *
    * \param rotation The rotation angle.
    */
-  void setRotation( int rotation );
-  void resetRotation();
-  bool hasRotation() const;
+    void setRotation(int rotation);
+    void resetRotation();
+    bool hasRotation() const;
 
-  /**
+    /**
    * \return The rotation angle used for rendering the text.
    */
-  int rotation() const;
+    int rotation() const;
 
-  /**
+    /**
    * Set the pen to use for rendering the text.
    * \param pen The pen to use.
    */
-  void setPen( const QPen& pen );
+    void setPen(const QPen &pen);
 
-  /**
+    /**
    * \return The pen used for rendering the text.
    */
-  QPen pen() const;
+    QPen pen() const;
 
-  /**
+    /**
    * \return The document used for the drawing the text or NULL if the
    * default document is used.
    */
-  QTextDocument* textDocument() const;
+    QTextDocument *textDocument() const;
 
-  /**
+    /**
    * Sets the document to use for the text. The previous document is deleted.
    */
-  void setTextDocument(QTextDocument* layout);
+    void setTextDocument(QTextDocument *layout);
 
-  // FIXME KDChartEnums::TextLayoutPolicy?
+    // FIXME KDChartEnums::TextLayoutPolicy?
 
 private:
-  KDCHART_DECLARE_PRIVATE_BASE_VALUE( TextAttributes )
+    KDCHART_DECLARE_PRIVATE_BASE_VALUE(TextAttributes)
 
 }; // End of class TextAttributes
 
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)
-KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::TextAttributes& );
+KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::TextAttributes &);
 #endif /* QT_NO_DEBUG_STREAM */
 
-KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::TextAttributes )
+KDCHART_DECLARE_SWAP_SPECIALISATION(KDChart::TextAttributes)
 
 QT_BEGIN_NAMESPACE
-Q_DECLARE_TYPEINFO( KDChart::TextAttributes, Q_MOVABLE_TYPE );
+Q_DECLARE_TYPEINFO(KDChart::TextAttributes, Q_MOVABLE_TYPE);
 QT_END_NAMESPACE
-Q_DECLARE_METATYPE( KDChart::TextAttributes )
+Q_DECLARE_METATYPE(KDChart::TextAttributes)
 
 #endif // KDCHARTTEXTATTRIBUTES_H

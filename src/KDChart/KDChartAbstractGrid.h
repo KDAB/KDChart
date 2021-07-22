@@ -32,10 +32,10 @@
 
 namespace KDChart {
 
-    class PaintContext;
+class PaintContext;
 
 
-    /**
+/**
      * \internal
      *
      * \brief Abstract base class for grid classes: cartesian, polar, ...
@@ -44,23 +44,24 @@ namespace KDChart {
      * AbstractCoordinatePlane, for calculating and for drawing
      * the grid lines of the plane.
      */
-    class AbstractGrid
-    {
-    public:
-        virtual ~AbstractGrid();
-    protected:
-        AbstractGrid ();
+class AbstractGrid
+{
+public:
+    virtual ~AbstractGrid();
+
+protected:
+    AbstractGrid();
 
 
-    public:
-        /** \brief Returns the cached result of data calculation.
+public:
+    /** \brief Returns the cached result of data calculation.
           *
           * For this, all derived classes need to implement the
           * pure-virtual calculateGrid() method.
           */
-        DataDimensionsList updateData( AbstractCoordinatePlane* plane );
+    DataDimensionsList updateData(AbstractCoordinatePlane *plane);
 
-        /**
+    /**
           * Doing the actual drawing.
           *
           * Every derived class must implement this.
@@ -70,73 +71,73 @@ namespace KDChart {
           * recalculated.
           * For an example, see the implementation of CartesianGrid:drawGrid().
           */
-        virtual void drawGrid( PaintContext* context ) = 0;
+    virtual void drawGrid(PaintContext *context) = 0;
 
-        /**
+    /**
          * Causes grid to be recalculated upon the next call
          * of updateData().
          *
          * \see calculateGrid
          */
-        void setNeedRecalculate();
+    void setNeedRecalculate();
 
-        /**
+    /**
          * Checks whether both coordinates of r are valid according
          * to isValueValid
          *
          * \see isValueValid
          */
-        static bool isBoundariesValid(const QRectF& r );
+    static bool isBoundariesValid(const QRectF &r);
 
-        /**
+    /**
          * Checks whether both coordinates of both points are valid
          * according to isValueValid
          *
          * \see isValueValid
          */
-        static bool isBoundariesValid(const QPair<QPointF,QPointF>& b );
+    static bool isBoundariesValid(const QPair<QPointF, QPointF> &b);
 
-        /**
+    /**
          * Checks whether all start and end properties of every
          * DataDimension in the list l are valid according to
          * isValueValid().
          *
          * \see isValueValid
          */
-        static bool isBoundariesValid(const DataDimensionsList& l );
+    static bool isBoundariesValid(const DataDimensionsList &l);
 
-        /**
+    /**
          * Checks if r is neither NaN nor infinity.
          */
-        static bool isValueValid(const qreal& r );
+    static bool isValueValid(const qreal &r);
 
-        /**
+    /**
          * Adjusts \a start and/or \a end so that they are a multiple of
          * \a stepWidth
          */
-        static void adjustLowerUpperRange(
-                qreal& start, qreal& end,
-                qreal stepWidth,
-                bool adjustLower, bool adjustUpper );
+    static void adjustLowerUpperRange(
+        qreal &start, qreal &end,
+        qreal stepWidth,
+        bool adjustLower, bool adjustUpper);
 
-        /**
+    /**
          * Adjusts \a dim so that \c dim.start and/or \c dim.end are a multiple
          * of \c dim.stepWidth.
          *
          * \see adjustLowerUpperRange
          */
-        static const DataDimension adjustedLowerUpperRange(
-                const DataDimension& dim,
-                bool adjustLower, bool adjustUpper );
+    static const DataDimension adjustedLowerUpperRange(
+        const DataDimension &dim,
+        bool adjustLower, bool adjustUpper);
 
-        GridAttributes gridAttributes;
+    GridAttributes gridAttributes;
 
-    protected:
-        DataDimensionsList mDataDimensions;
-        AbstractCoordinatePlane* mPlane;
+protected:
+    DataDimensionsList mDataDimensions;
+    AbstractCoordinatePlane *mPlane;
 
-    private:
-        /**
+private:
+    /**
           * \brief Calculates the grid start/end/step width values.
           *
           * Gets the raw data dimensions - e.g. the data model's boundaries,
@@ -150,9 +151,9 @@ namespace KDChart {
           * \note This function needs to be implemented by all derived classes,
           * like CartesianGrid, PolarGrid, ...
           */
-        virtual DataDimensionsList calculateGrid( const DataDimensionsList& rawDataDimensions ) const = 0;
-        DataDimensionsList mCachedRawDataDimensions;
-    };
+    virtual DataDimensionsList calculateGrid(const DataDimensionsList &rawDataDimensions) const = 0;
+    DataDimensionsList mCachedRawDataDimensions;
+};
 
 }
 

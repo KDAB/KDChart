@@ -40,12 +40,12 @@ class KDCHART_EXPORT GridAttributes
 {
 public:
     GridAttributes();
-    GridAttributes( const GridAttributes& );
-    GridAttributes &operator= ( const GridAttributes& );
+    GridAttributes(const GridAttributes &);
+    GridAttributes &operator=(const GridAttributes &);
 
     ~GridAttributes();
 
-    void setGridVisible( bool visible );
+    void setGridVisible(bool visible);
     bool isGridVisible() const;
 
     /**
@@ -54,13 +54,13 @@ public:
      *
      * The default is false.
      */
-    void setLinesOnAnnotations( bool );
+    void setLinesOnAnnotations(bool);
     bool linesOnAnnotations() const;
 
-    void setGridStepWidth( qreal stepWidth = 0.0 );
+    void setGridStepWidth(qreal stepWidth = 0.0);
     qreal gridStepWidth() const;
 
-    void setGridSubStepWidth( qreal subStepWidth = 0.0 );
+    void setGridSubStepWidth(qreal subStepWidth = 0.0);
     qreal gridSubStepWidth() const;
 
     /**
@@ -74,7 +74,7 @@ public:
      *
      * \sa setAdjustBoundsToGrid, GranularitySequence
      */
-    void setGridGranularitySequence( KDChartEnums::GranularitySequence sequence );
+    void setGridGranularitySequence(KDChartEnums::GranularitySequence sequence);
     KDChartEnums::GranularitySequence gridGranularitySequence() const;
 
     /**
@@ -87,44 +87,47 @@ public:
      * \sa CartesianCoordinatePlane::setHorizontalRange
      * \sa CartesianCoordinatePlane::setVerticalRange
      */
-    void setAdjustBoundsToGrid( bool adjustLower, bool adjustUpper );
+    void setAdjustBoundsToGrid(bool adjustLower, bool adjustUpper);
     bool adjustLowerBoundToGrid() const;
     bool adjustUpperBoundToGrid() const;
 
-    void setGridPen( const QPen & pen );
+    void setGridPen(const QPen &pen);
     QPen gridPen() const;
 
-    void setSubGridVisible( bool visible );
+    void setSubGridVisible(bool visible);
     bool isSubGridVisible() const;
 
-    void setSubGridPen( const QPen & pen );
+    void setSubGridPen(const QPen &pen);
     QPen subGridPen() const;
 
-    void setOuterLinesVisible( bool visible );
+    void setOuterLinesVisible(bool visible);
     bool isOuterLinesVisible() const;
 
-    void setZeroLinePen( const QPen & pen );
+    void setZeroLinePen(const QPen &pen);
     QPen zeroLinePen() const;
 
-    bool operator==( const GridAttributes& ) const;
-    inline bool operator!=( const GridAttributes& other ) const { return !operator==(other); }
+    bool operator==(const GridAttributes &) const;
+    inline bool operator!=(const GridAttributes &other) const
+    {
+        return !operator==(other);
+    }
 
 private:
-    KDCHART_DECLARE_PRIVATE_BASE_VALUE( GridAttributes )
+    KDCHART_DECLARE_PRIVATE_BASE_VALUE(GridAttributes)
 }; // End of class GridAttributes
 
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)
-KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::GridAttributes& );
+KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::GridAttributes &);
 #endif /* QT_NO_DEBUG_STREAM */
 
-KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::GridAttributes )
+KDCHART_DECLARE_SWAP_SPECIALISATION(KDChart::GridAttributes)
 
 QT_BEGIN_NAMESPACE
-Q_DECLARE_TYPEINFO( KDChart::GridAttributes, Q_MOVABLE_TYPE );
+Q_DECLARE_TYPEINFO(KDChart::GridAttributes, Q_MOVABLE_TYPE);
 QT_END_NAMESPACE
 
-Q_DECLARE_METATYPE( KDChart::GridAttributes )
+Q_DECLARE_METATYPE(KDChart::GridAttributes)
 
 #endif // KDCHARTGRIDATTRIBUTES_H

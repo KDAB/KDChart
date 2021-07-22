@@ -51,55 +51,59 @@ namespace KDChart {
 /**
  * \internal
  */
-    class AbstractTernaryDiagram::Private : public AbstractDiagram::Private
+class AbstractTernaryDiagram::Private : public AbstractDiagram::Private
+{
+    friend class AbstractTernaryDiagram;
+
+public:
+    Private();
+    ~Private() override
     {
-        friend class AbstractTernaryDiagram;
-    public:
-        Private();
-        ~Private() override {}
+    }
 
-        Private( const Private& rhs ) :
-            AbstractDiagram::Private( rhs ),
-            // Do not copy axes and reference diagrams.
-            axesList(),
-            referenceDiagram( nullptr ),
-            referenceDiagramOffset()
-        {
-        }
+    Private(const Private &rhs)
+        : AbstractDiagram::Private(rhs)
+        ,
+        // Do not copy axes and reference diagrams.
+        axesList()
+        , referenceDiagram(nullptr)
+        , referenceDiagramOffset()
+    {
+    }
 
-        TernaryAxisList axesList;
+    TernaryAxisList axesList;
 
-        AbstractTernaryDiagram* referenceDiagram;
-        QPointF referenceDiagramOffset;
+    AbstractTernaryDiagram *referenceDiagram;
+    QPointF referenceDiagramOffset;
 
-        void drawPoint( QPainter* p, int row, int column,
-                        const QPointF& widgetLocation )
-        {
-            // Q_ASSERT( false ); // unused, to be removed
-            static const qreal Diameter = 5.0;
-            static const qreal Radius = Diameter / 2.0;
-            QRectF ellipseRect( widgetLocation - QPointF( Radius, Radius ),
-                                QSizeF( Diameter, Diameter ) );
-            p->drawEllipse( ellipseRect );
+    void drawPoint(QPainter *p, int row, int column,
+                   const QPointF &widgetLocation)
+    {
+        // Q_ASSERT( false ); // unused, to be removed
+        static const qreal Diameter = 5.0;
+        static const qreal Radius = Diameter / 2.0;
+        QRectF ellipseRect(widgetLocation - QPointF(Radius, Radius),
+                           QSizeF(Diameter, Diameter));
+        p->drawEllipse(ellipseRect);
 
-            reverseMapper.addRect( row, column, ellipseRect );
-        }
+        reverseMapper.addRect(row, column, ellipseRect);
+    }
 
-        virtual void paint( PaintContext* paintContext )
-        {
-            paintContext->painter()->setRenderHint( QPainter::Antialiasing,
-                                                    antiAliasing );
-            if ( !axesList.isEmpty() ) {
+    virtual void paint(PaintContext *paintContext)
+    {
+        paintContext->painter()->setRenderHint(QPainter::Antialiasing,
+                                               antiAliasing);
+        if (!axesList.isEmpty()) {
 
-                Q_FOREACH( TernaryAxis* axis, axesList ) {
-                    PainterSaver s( paintContext->painter() );
-                    axis->paintCtx( paintContext );
-                }
+            Q_FOREACH (TernaryAxis *axis, axesList) {
+                PainterSaver s(paintContext->painter());
+                axis->paintCtx(paintContext);
             }
         }
-    };
+    }
+};
 
-    KDCHART_IMPL_DERIVED_DIAGRAM( AbstractTernaryDiagram, AbstractDiagram, TernaryCoordinatePlane )
+KDCHART_IMPL_DERIVED_DIAGRAM(AbstractTernaryDiagram, AbstractDiagram, TernaryCoordinatePlane)
 }
 
 #endif /* KDCHARTABSTRACTTERNARYDIAGRAM_P_H */

@@ -30,10 +30,10 @@
 
 namespace KDChart {
 
-    class Chart;
-    class TernaryLineDiagram;
-    class TernaryPointDiagram;
-    class TernaryCoordinatePlane;
+class Chart;
+class TernaryLineDiagram;
+class TernaryPointDiagram;
+class TernaryCoordinatePlane;
 
 }
 
@@ -43,17 +43,17 @@ class MainWindow : public QDialog,
     Q_OBJECT
 
 public:
-    explicit MainWindow( QWidget* parent = nullptr );
+    explicit MainWindow(QWidget *parent = nullptr);
 
 private slots:
-    void indexClicked( const QModelIndex& index );
+    void indexClicked(const QModelIndex &index);
 
 private:
     void setupModel();
 
-    KDChart::Chart* m_chart;
-    KDChart::TernaryPointDiagram* m_diagram;
-    KDChart::TernaryCoordinatePlane* m_ternaryPlane;
+    KDChart::Chart *m_chart;
+    KDChart::TernaryPointDiagram *m_diagram;
+    KDChart::TernaryCoordinatePlane *m_ternaryPlane;
 
     QStandardItemModel m_model;
 };
