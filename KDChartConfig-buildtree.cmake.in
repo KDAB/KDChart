@@ -1,5 +1,0 @@
-
-set(KDChart_INCLUDE_DIRS "@INSTALL_INCLUDE_DIR@")
-
-include("${CMAKE_CURRENT_LIST_DIR}/KDChartTargets.cmake")
-include("${CMAKE_CURRENT_LIST_DIR}/KDChartMacros.cmake")

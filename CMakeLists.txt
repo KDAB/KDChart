@@ -189,12 +189,6 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
     COMPATIBILITY AnyNewerVersion
   )
 
-  configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/KDChartConfig-buildtree.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/KDChart/KDChartConfig.cmake"
-    @ONLY
-  )
-
   configure_package_config_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/KDChartConfig.cmake.in"
     "${CMAKE_CURRENT_BINARY_DIR}/install/KDChartConfig.cmake"
