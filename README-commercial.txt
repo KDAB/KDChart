@@ -44,14 +44,14 @@ Email info@kdab.com for more information about the Copyright Assignment Agreemen
 Please submit your contributions or issue reports from our GitHub space at
 https://github.com/KDAB/KDChart
 
-License
-=======
-The KD Chart Software is Copyright (C) 2001-2021 Klarälvdalens Datakonsult AB (KDAB)
+Licensing
+=========
+Copyright (C) 2001-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, <info@kdab.com>
 
 Commercial licensing terms are available in the included file
-        LICENSE.txt (for non-US customers)
+        LICENSES/LicenseRef-KDAB-KDChart.txt (for non-US customers)
 or
-        LICENSE.US.txt (for US customers)
+        LICENSES/LicenseRef-KDAB-KDChart-US.txt (for US customers)
 , respectively.
 
 For terms of redistribution, refer to the license agreement.

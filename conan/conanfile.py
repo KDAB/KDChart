@@ -1,32 +1,25 @@
-#############################################################################
-## Copyright (C) 2010-2021 Klaralvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
-## All rights reserved.
-##
+######################################################################/
 ## This file is part of the KD Chart library.
+##
+## SPDX-FileCopyrightText: 2010-2021 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+##
+## SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDAB-KDChart OR LicenseRef-KDAB-KDChart-US
 ##
 ## Licensees holding valid commercial KD Chart licenses may use this file in
 ## accordance with the KD Chart Commercial License Agreement provided with
 ## the Software.
 ##
-## This file may be distributed and/or modified under the terms of the
-## GNU Lesser General Public License version 2.1 and version 3 as published by the
-## Free Software Foundation and appearing in the file LICENSE.LGPL.txt included.
-##
-## This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
-## WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-##
 ## Contact info@kdab.com if any conditions of this licensing are not
 ## clear to you.
 ##
-######################################################################/
 
 from conans import ConanFile, CMake, tools
 
 class KdchartConan(ConanFile):
     name = "KDChart"
     version = "2.99.50"
-    license = ("https://raw.githubusercontent.com/KDAB/KDChart/master/LICENSE.txt,"
-               "https://raw.githubusercontent.com/KDAB/KDChart/master/LICENSE.GPL.txt")
+    license = ("https://raw.githubusercontent.com/KDAB/KDChart/master/LICENSES/GPL-2.0-only.txt,"
+               "https://raw.githubusercontent.com/KDAB/KDChart/master/LICENSES/GPL-3.0-only.txt")
     author = "Klaralvdalens Datakonsult AB (KDAB) info@kdab.com"
     url = "https://github.com/KDAB/KDChart.git"
     description = "KD Chart is a tool for creating business and scientific charts."
