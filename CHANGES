@@ -10,6 +10,7 @@ Version 3.0.0 (unreleased):
  * Requires C++11
  * buildsystem - add an 'uninstall' target
  * buildsystem: generate and install kdchart-version.h
+ * Python3 bindings for Qt6. See INSTALL-bindings.txt for more information.
  * The Python bindings installation path for "site-packages"
  * Build in Release mode by default (in non-developer situations)
 
