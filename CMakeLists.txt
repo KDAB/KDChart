@@ -36,7 +36,7 @@
 # -DKDChart_PYTHON_BINDINGS=[true|false]
 #  Build/Generate Python bindings.  Always false for Debug builds.
 #  (If your shiboken or pyside is installed in a non-standard locations
-#  try passing the SHIBOKEN_CUSTOM_PREFIX and PYSIDE2_CUSTOM_PREFIX variables.)
+#  try passing the SHIBOKEN_CUSTOM_PREFIX and PYSIDE_CUSTOM_PREFIX variables.)
 #  Default=false
 #
 # -DKDChart_PYTHON_BINDINGS_INSTALL_PREFIX=[path]
@@ -62,8 +62,8 @@ endif()
 if(NOT DEFINED SHIBOKEN_CUSTOM_PREFIX) #look for shiboken in a custom location
   set(SHIBOKEN_CUSTOM_PREFIX "")
 endif()
-if(NOT DEFINED PYSIDE2_CUSTOM_PREFIX) #look for pyside in a custom location
-  set(PYSIDE2_CUSTOM_PREFIX "")
+if(NOT DEFINED PYSIDE_CUSTOM_PREFIX) #look for pyside in a custom location
+  set(PYSIDE_CUSTOM_PREFIX "")
 endif()
 
 # Allow using a non-KDAB install location
