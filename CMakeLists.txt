@@ -52,27 +52,12 @@ if(POLICY CMP0025)
   cmake_policy(SET CMP0025 NEW)
 endif()
 
-# Just to fix warnings with --warn-uninitialized
-if(NOT DEFINED USE_DEFAULT_INSTALL_LOCATION)
-  set(USE_DEFAULT_INSTALL_LOCATION FALSE)
-endif()
-if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "")
-endif()
-if(NOT DEFINED SHIBOKEN_CUSTOM_PREFIX) #look for shiboken in a custom location
-  set(SHIBOKEN_CUSTOM_PREFIX "")
-endif()
-if(NOT DEFINED PYSIDE_CUSTOM_PREFIX) #look for pyside in a custom location
-  set(PYSIDE_CUSTOM_PREFIX "")
-endif()
-
-# Allow using a non-KDAB install location
-set(KDAB_INSTALL True)
-if((NOT DEFINED ${USE_DEFAULT_INSTALL_LOCATION}) OR (NOT ${USE_DEFAULT_INSTALL_LOCATION}))
+# Allow using a non-KDAB install location.
+set(KDAB_INSTALL True CACHE INTERNAL "Install to default KDAB Location")
+if(DEFINED CMAKE_INSTALL_PREFIX)
   if(NOT "${CMAKE_INSTALL_PREFIX}" STREQUAL "")
-    set(KDAB_INSTALL False)
+    set(KDAB_INSTALL False CACHE INTERNAL "Install to non-KDAB Location")
   endif()
-  set(USE_DEFAULT_INSTALL_LOCATION ${KDAB_INSTALL} CACHE INTERNAL "Install to default KDAB Location" FORCE)
 endif()
 
 if(${CMAKE_VERSION} VERSION_LESS "3.12.0")
@@ -103,7 +88,6 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/ECM/modules")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/KDAB/modules")
 
-# try Qt5 first, and prefer that (if found), but only if not disabled via option
 if(${PROJECT_NAME}_QT6)
   set(QT_MIN_VERSION "6.0.0")
   find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Widgets Network PrintSupport Xml Svg Test)
@@ -137,6 +121,9 @@ add_definitions(-DQT_NO_CAST_TO_ASCII -DQT_NO_CAST_FROM_ASCII -DQBA_NO_CAST_TO_V
 add_definitions(-DUSE_EXCEPTIONS)
 if(MSVC)
   add_definitions(-D_SCL_SECURE_NO_WARNINGS)
+endif()
+if(CMAKE_BUILD_TYPE MATCHES "Release")
+  add_definitions(-DNDEBUG)
 endif()
 if(${CMAKE_SYSTEM_NAME} MATCHES "SunOS")
   add_definitions(-DSUN7)
@@ -175,23 +162,19 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
+if(KDAB_INSTALL)
+  if(UNIX)
+    set(CMAKE_INSTALL_PREFIX "/usr/local/KDAB/${PROJECT_NAME}-${${PROJECT_NAME}_VERSION}" CACHE INTERNAL "Install to default KDAB Location")
+  elseif(WIN32)
+    set(CMAKE_INSTALL_PREFIX "C:\\KDAB\\${PROJECT_NAME}-$$VERSION" CACHE INTERNAL "Install to default KDAB Location")
+  endif()
+endif()
+
 # setup default install locations
 include(InstallLocation)
 
 if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
   set(${PROJECT_NAME}_IS_ROOT_PROJECT TRUE)
-
-  if(CMAKE_BUILD_TYPE MATCHES "Release")
-    add_definitions(-DNDEBUG)
-  endif()
-
-  if(USE_DEFAULT_INSTALL_LOCATION)
-    if(UNIX)
-      set(CMAKE_INSTALL_PREFIX "/usr/local/KDAB/${PROJECT_NAME}-${${PROJECT_NAME}_VERSION}")
-    elseif(WIN32)
-      set(CMAKE_INSTALL_PREFIX "C:\\KDAB\\${PROJECT_NAME}-${${PROJECT_NAME}_VERSION}")
-    endif()
-  endif()
 
   message(STATUS "Building ${PROJECT_NAME} ${${PROJECT_NAME}_VERSION} in ${CMAKE_BUILD_TYPE} mode. Installing to ${CMAKE_INSTALL_PREFIX}")
 

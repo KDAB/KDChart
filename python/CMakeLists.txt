@@ -14,6 +14,14 @@
 
 set(PYTHON_BINDING_NAMESPACE "PyKDChart")
 
+# Just to fix warnings with --warn-uninitialized
+if(NOT DEFINED SHIBOKEN_CUSTOM_PREFIX) #look for shiboken in a custom location
+  set(SHIBOKEN_CUSTOM_PREFIX "")
+endif()
+if(NOT DEFINED PYSIDE_CUSTOM_PREFIX) #look for pyside in a custom location
+  set(PYSIDE_CUSTOM_PREFIX "")
+endif()
+
 if(${PROJECT_NAME}_QT6)
   set(PYSIDE_MAJOR_VERSION "6")
   set(QtWidgets_VERSION ${Qt6Widgets_VERSION})
