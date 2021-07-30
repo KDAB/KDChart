@@ -206,13 +206,11 @@ endif()
 add_subdirectory(src)
 
 # only build python bindings for Qt5.12 or greater
-if(${PROJECT_NAME}_PYTHON_BINDINGS AND Qt5Core_VERSION VERSION_LESS 5.12)
-  message(WARNING "** Disabling Python Bindings. Qt version is too old and unsupported.")
-  set(${PROJECT_NAME}_PYTHON_BINDINGS OFF)
-endif()
-
-if(Qt5Core_FOUND AND ${PROJECT_NAME}_PYTHON_BINDINGS)
-  if(CMAKE_BUILD_TYPE MATCHES "^[Dd]eb" OR ${PROJECT_NAME}_STATIC)
+if(${PROJECT_NAME}_PYTHON_BINDINGS)
+  if(QT_MAJOR_VERSION EQUAL 5 AND Qt5Core_VERSION VERSION_LESS 5.12)
+    message(WARNING "** Disabling Python Bindings. Qt version is too old and unsupported.")
+    set(${PROJECT_NAME}_PYTHON_BINDINGS OFF)
+  elseif(CMAKE_BUILD_TYPE MATCHES "^[Dd]eb" OR ${PROJECT_NAME}_STATIC)
     message(FATAL_ERROR "** Python Bindings are disabled in debug or static builds.")
   endif()
   add_subdirectory(python)
