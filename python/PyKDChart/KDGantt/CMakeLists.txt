@@ -76,9 +76,9 @@ set(PyKDGantt_target_include_directories
 
 set(PyKDGantt_target_link_libraries
   kdchart
-  Qt5::Core
-  Qt5::Widgets
-  Qt5::PrintSupport
+  Qt${QT_MAJOR_VERSION}::Core
+  Qt${QT_MAJOR_VERSION}::Widgets
+  Qt${QT_MAJOR_VERSION}::PrintSupport
 )
 
 set(PyKDGantt_DEPENDS
