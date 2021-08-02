@@ -102,9 +102,6 @@ else()
   set(${PROJECT_NAME}_LIBRARY_QTID "")
 endif()
 
-# extra optional modules
-find_package(Qt${QT_MAJOR_VERSION}Sql)
-
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
 set(CMAKE_AUTOMOC TRUE)
 set(CMAKE_AUTOUIC TRUE)

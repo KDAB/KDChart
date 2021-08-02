@@ -12,8 +12,8 @@
 ## clear to you.
 ##
 
-find_package(Qt5Sql REQUIRED)
-set(QT_LIBRARIES Qt5::Sql)
+find_package(Qt${QT_MAJOR_VERSION}Sql REQUIRED)
+set(QT_LIBRARIES Qt${QT_MAJOR_VERSION}::Sql)
 
 add_executable(Sql-example main.cpp)
 target_link_libraries(Sql-example ${QT_LIBRARIES} kdchart testtools)
