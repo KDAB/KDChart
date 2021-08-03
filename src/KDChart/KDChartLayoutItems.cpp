@@ -181,7 +181,7 @@ void KDChart::TextBubbleLayoutItem::paint(QPainter *painter)
     const QBrush oldBrush = painter->brush();
     painter->setPen(Qt::black);
     painter->setBrush(QColor(255, 255, 220));
-    painter->drawRoundedRect(geometry(), 10, 25); // KDAB_QT6_PORT: Double check if '25' is correct
+    painter->drawRoundedRect(geometry(), 10, 25, Qt::RelativeSize);
     painter->setPen(oldPen);
     painter->setBrush(oldBrush);
     m_text->paint(painter);
