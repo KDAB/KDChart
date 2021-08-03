@@ -32,27 +32,18 @@ public:
     Private();
 
 private:
-    qreal datasetGap;
-    bool useFixedDatasetGap;
-    qreal valueBlockGap;
-    bool useFixedValueBlockGap;
-    qreal barWidth;
-    bool useFixedBarWidth;
-    bool drawSolidExcessArrows;
-    qreal groupGapFactor;
-    qreal barGapFactor;
+    qreal datasetGap = 6;
+    bool useFixedDatasetGap = false;
+    qreal valueBlockGap = 24;
+    bool useFixedValueBlockGap = false;
+    qreal barWidth = -1;
+    bool useFixedBarWidth = false;
+    bool drawSolidExcessArrows = false;
+    qreal groupGapFactor = 2.0;
+    qreal barGapFactor = 0.4;
 };
 
 BarAttributes::Private::Private()
-    : datasetGap(6)
-    , useFixedDatasetGap(false)
-    , valueBlockGap(24)
-    , useFixedValueBlockGap(false)
-    , barWidth(-1)
-    , useFixedBarWidth(false)
-    , drawSolidExcessArrows(false)
-    , groupGapFactor(2.0)
-    , barGapFactor(0.4)
 {
 }
 

@@ -29,11 +29,6 @@ using namespace std;
 
 CartesianDiagramDataCompressor::CartesianDiagramDataCompressor(QObject *parent)
     : QObject(parent)
-    , m_mode(Precise)
-    , m_xResolution(0)
-    , m_yResolution(0)
-    , m_sampleStep(0)
-    , m_datasetDimension(1)
 {
     calculateSampleStepWidth();
     m_data.resize(0);

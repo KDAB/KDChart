@@ -142,9 +142,9 @@ private:
     QStringList m_horizontalHeaderData;
     QStringList m_verticalHeaderData;
     QString m_titleText;
-    bool m_dataHasHorizontalHeaders;
-    bool m_dataHasVerticalHeaders;
-    bool m_supplyHeaderData;
+    bool m_dataHasHorizontalHeaders = true;
+    bool m_dataHasVerticalHeaders = true;
+    bool m_supplyHeaderData = true;
 };
 
 #endif

@@ -37,7 +37,6 @@ class ChartWidget : public QWidget
 public:
     explicit ChartWidget(QWidget *parent = nullptr)
         : QWidget(parent)
-        , m_counter(0)
     {
         auto *splitter = new QSplitter(this);
         auto *l = new QHBoxLayout(this);
@@ -132,7 +131,7 @@ private:
     KDChart::Chart *m_chart;
     QStandardItemModel *m_model;
     QTimer *m_timer;
-    qreal m_counter;
+    qreal m_counter = 0;
 };
 
 /**

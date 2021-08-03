@@ -21,8 +21,6 @@ using namespace KDChart;
 
 ChartGraphicsItem::ChartGraphicsItem()
     : QGraphicsPolygonItem()
-    , m_row(-1)
-    , m_column(-1)
 {
 }
 

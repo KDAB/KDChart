@@ -46,11 +46,11 @@ public:
     Private();
 
 private:
-    bool enabled;
+    bool enabled = false;
     // FIXME: What is this needed for? height is not referenced anywhere.
     //    int height;
-    qreal depth;
-    bool threeDBrushEnabled;
+    qreal depth = 20;
+    bool threeDBrushEnabled = false;
 };
 
 inline AbstractThreeDAttributes::AbstractThreeDAttributes(Private *p)

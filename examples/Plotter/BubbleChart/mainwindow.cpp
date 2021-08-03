@@ -60,7 +60,6 @@ static const DataType bubblesData[nBubbles] = {
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
-    , m_model(nullptr)
 {
     setupUi(this);
 

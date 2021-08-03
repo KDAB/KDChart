@@ -53,9 +53,9 @@ private:
 
     bool showFirstTick : 1;
 
-    int labelMargin;
-    int majorTickLength;
-    int minorTickLength;
+    int labelMargin = -1;
+    int majorTickLength = 3;
+    int minorTickLength = 2;
 
     RulerAttributes::TickMarkerPensMap customTickMarkPens;
 };
@@ -72,9 +72,6 @@ RulerAttributes::Private::Private()
     , majorTickLengthIsSet(false)
     , minorTickLengthIsSet(false)
     , showFirstTick(true)
-    , labelMargin(-1)
-    , majorTickLength(3)
-    , minorTickLength(2)
 {
     tickMarkPen.setCapStyle(Qt::FlatCap);
     majorTickMarkPen.setCapStyle(Qt::FlatCap);

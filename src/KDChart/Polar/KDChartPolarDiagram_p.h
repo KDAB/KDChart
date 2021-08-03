@@ -58,8 +58,8 @@ public:
 private:
     QMap<int, bool> showDelimitersAtPosition;
     QMap<int, bool> showLabelsAtPosition;
-    bool rotateCircularLabels;
-    bool closeDatasets;
+    bool rotateCircularLabels = false;
+    bool closeDatasets = false;
     LabelPaintCache labelPaintCache;
 };
 

@@ -67,7 +67,7 @@ private:
     QStandardItemModel *model;
     KDGantt::ConstraintModel *constraintModel;
     KDGantt::DateTimeGrid *grid;
-    int dayWidth;
+    int dayWidth = 70;
 
     QAction *newEntryAction;
     QAction *removeEntryAction;

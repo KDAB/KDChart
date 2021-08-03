@@ -39,23 +39,19 @@ struct CoordinateTransformation
 {
 
     CoordinateTransformation()
-        : axesCalcModeY(CartesianCoordinatePlane::Linear)
-        , axesCalcModeX(CartesianCoordinatePlane::Linear)
-        , isPositiveX(true)
-        , isPositiveY(true)
     {
     }
 
-    CartesianCoordinatePlane::AxesCalcMode axesCalcModeY;
-    CartesianCoordinatePlane::AxesCalcMode axesCalcModeX;
+    CartesianCoordinatePlane::AxesCalcMode axesCalcModeY = CartesianCoordinatePlane::Linear;
+    CartesianCoordinatePlane::AxesCalcMode axesCalcModeX = CartesianCoordinatePlane::Linear;
 
     ZoomParameters zoom;
 
     QTransform transform;
     QTransform backTransform;
     // a logarithmic scale cannot cross zero, so we have to know which side we are on.
-    bool isPositiveX;
-    bool isPositiveY;
+    bool isPositiveX = true;
+    bool isPositiveY = true;
 
     qreal logTransform(qreal value, bool isPositiveRange) const
     {

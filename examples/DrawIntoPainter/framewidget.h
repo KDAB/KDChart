@@ -36,7 +36,7 @@ public:
     void setChart(KDChart::Chart *chart);
 
 private:
-    KDChart::Chart *mChart;
+    KDChart::Chart *mChart = nullptr;
 };
 
 #endif /* FRAMEWIDGET_H */

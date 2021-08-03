@@ -128,7 +128,7 @@ public:
     bool operator!=(int) const;
 
 private:
-    int m_value;
+    int m_value = KDChartEnums::PositionUnknown;
 }; // End of class Position
 
 inline bool Position::operator!=(const Position &other) const

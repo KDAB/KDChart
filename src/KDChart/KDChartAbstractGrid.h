@@ -127,7 +127,7 @@ public:
 
 protected:
     DataDimensionsList mDataDimensions;
-    AbstractCoordinatePlane *mPlane;
+    AbstractCoordinatePlane *mPlane = nullptr;
 
 private:
     /**

@@ -38,19 +38,17 @@ public:
     ~Private();
 
 private:
-    QObject *area;
+    QObject *area = nullptr;
     PositionPoints points;
     Position position;
     Qt::Alignment alignment;
     Measure horizontalPadding;
     Measure verticalPadding;
-    qreal rotation;
+    qreal rotation = 0;
 };
 
 RelativePosition::Private::Private()
-    : area(nullptr)
-    , alignment(Qt::AlignCenter)
-    , rotation(0)
+    : alignment(Qt::AlignCenter)
 {
 }
 

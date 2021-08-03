@@ -29,9 +29,6 @@ using namespace KDChart;
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
-    , m_currentFactor(0)
-    , m_currentDirection(1)
-    , m_currentSlice(0)
 {
     setupUi(this);
 

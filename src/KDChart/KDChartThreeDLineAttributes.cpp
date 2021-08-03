@@ -27,8 +27,6 @@
 using namespace KDChart;
 
 ThreeDLineAttributes::Private::Private()
-    : lineXRotation(15)
-    , lineYRotation(15)
 {
 }
 

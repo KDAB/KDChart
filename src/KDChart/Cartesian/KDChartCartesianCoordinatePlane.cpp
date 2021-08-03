@@ -43,21 +43,6 @@ using namespace KDChart;
 
 CartesianCoordinatePlane::Private::Private()
     : AbstractCoordinatePlane::Private()
-    , bPaintIsRunning(false)
-    , hasOwnGridAttributesHorizontal(false)
-    , hasOwnGridAttributesVertical(false)
-    , isometricScaling(false)
-    , horizontalMin(0)
-    , horizontalMax(0)
-    , verticalMin(0)
-    , verticalMax(0)
-    , autoAdjustHorizontalRangeToData(67)
-    , autoAdjustVerticalRangeToData(67)
-    , autoAdjustGridToZoom(true)
-    , fixedDataCoordinateSpaceRelation(false)
-    , xAxisStartAtZero(true)
-    , reverseVerticalPlane(false)
-    , reverseHorizontalPlane(false)
 {
 }
 

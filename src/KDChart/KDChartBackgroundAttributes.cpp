@@ -32,15 +32,13 @@ public:
     Private();
 
 private:
-    bool visible;
+    bool visible = false;
     QBrush brush;
-    BackgroundPixmapMode pixmapMode;
+    BackgroundPixmapMode pixmapMode = BackgroundAttributes::BackgroundPixmapModeNone;
     QPixmap pixmap;
 };
 
 BackgroundAttributes::Private::Private()
-    : visible(false)
-    , pixmapMode(BackgroundAttributes::BackgroundPixmapModeNone)
 {
 }
 

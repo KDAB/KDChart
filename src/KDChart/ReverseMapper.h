@@ -64,8 +64,8 @@ public:
     void addLine(int row, int column, const QPointF &from, const QPointF &to);
 
 private:
-    QGraphicsScene *m_scene;
-    AbstractDiagram *m_diagram;
+    QGraphicsScene *m_scene = nullptr;
+    AbstractDiagram *m_diagram = nullptr;
     QHash<QModelIndex, ChartGraphicsItem *> m_itemMap;
 };
 

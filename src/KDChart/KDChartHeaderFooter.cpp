@@ -34,8 +34,7 @@
 using namespace KDChart;
 
 HeaderFooter::Private::Private()
-    : type(Header)
-    , position(Position::North)
+    : position(Position::North)
 {
 }
 

@@ -36,7 +36,6 @@
 
 MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
-    , dayWidth(70)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);

@@ -26,7 +26,6 @@ using namespace KDChart;
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
-    , datasetCount(3)
 {
     setupUi(this);
 

@@ -24,7 +24,6 @@
 
 FrameWidget::FrameWidget(QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f)
-    , mChart(0)
 {
     // this block left empty intentionally
 }

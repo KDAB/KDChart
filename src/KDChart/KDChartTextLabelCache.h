@@ -69,7 +69,7 @@ protected:
 
 private:
     QPointF m_position;
-    KDChartEnums::PositionValue m_referencePoint;
+    KDChartEnums::PositionValue m_referencePoint = KDChartEnums::PositionNorthWest;
 };
 
 /** 
@@ -129,12 +129,12 @@ private:
     void paint() const;
 
     // store the settings (these are used for the painting):
-    mutable bool m_dirty;
+    mutable bool m_dirty = true;
     QFont m_font;
     QString m_text;
     QBrush m_brush;
     QPen m_pen;
-    qreal m_angle;
+    qreal m_angle = 0.0;
 
     // these are valid once the label has been rendered:
     mutable QPixmap m_pixmap;

@@ -31,14 +31,11 @@
 using namespace KDChart;
 
 ReverseMapper::ReverseMapper()
-    : m_scene(nullptr)
-    , m_diagram(nullptr)
 {
 }
 
 ReverseMapper::ReverseMapper(AbstractDiagram *diagram)
-    : m_scene(nullptr)
-    , m_diagram(diagram)
+    : m_diagram(diagram)
 {
 }
 

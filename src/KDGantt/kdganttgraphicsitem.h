@@ -118,7 +118,7 @@ private:
     QRectF m_rect;
     QRectF m_boundingrect;
     QPersistentModelIndex m_index;
-    bool m_isupdating;
+    bool m_isupdating = false;
     int m_istate;
     QPointF m_presspos;
     QPointF m_pressscenepos;

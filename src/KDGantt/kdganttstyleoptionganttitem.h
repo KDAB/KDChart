@@ -42,8 +42,8 @@ public:
 
     QRectF boundingRect;
     QRectF itemRect;
-    Position displayPosition;
-    AbstractGrid *grid;
+    Position displayPosition = Left;
+    AbstractGrid *grid = nullptr;
     QString text;
 };
 }

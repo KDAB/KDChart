@@ -71,8 +71,8 @@ private:
     void calculateMapping();
 
     Ui::DatasetSelector *mUi;
-    int mSourceRowCount;
-    int mSourceColumnCount;
+    int mSourceRowCount = 0;
+    int mSourceColumnCount = 0;
 };
 
 }

@@ -27,9 +27,6 @@
 using namespace KDChart;
 
 RadarDiagram::Private::Private()
-    : closeDatasets(false)
-    , reverseData(false)
-    , fillAlpha(0.0)
 {
 }
 

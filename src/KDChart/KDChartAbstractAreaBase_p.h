@@ -80,7 +80,7 @@ protected:
     mutable int amountOfBottomOverlap;
 
 private:
-    bool visible;
+    bool visible = true;
     KDChart::FrameAttributes frameAttributes;
     KDChart::BackgroundAttributes backgroundAttributes;
 };

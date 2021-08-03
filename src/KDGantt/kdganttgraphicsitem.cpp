@@ -68,7 +68,6 @@ public:
 }
 GraphicsItem::GraphicsItem(QGraphicsItem *parent, GraphicsScene *scene)
     : BASE(parent)
-    , m_isupdating(false)
 {
     if (scene)
         scene->addItem(this);
@@ -79,7 +78,6 @@ GraphicsItem::GraphicsItem(const QModelIndex &idx, QGraphicsItem *parent,
                            GraphicsScene *scene)
     : BASE(parent)
     , m_index(idx)
-    , m_isupdating(false)
 {
     init();
     if (scene)

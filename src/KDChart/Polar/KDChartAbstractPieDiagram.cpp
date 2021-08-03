@@ -29,8 +29,6 @@
 using namespace KDChart;
 
 AbstractPieDiagram::Private::Private()
-    : granularity(1.0)
-    , autoRotateLabels(false)
 {
 }
 

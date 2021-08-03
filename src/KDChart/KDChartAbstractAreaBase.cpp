@@ -30,7 +30,6 @@
 using namespace KDChart;
 
 AbstractAreaBase::Private::Private()
-    : visible(true)
 {
     init();
 }

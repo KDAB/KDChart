@@ -49,8 +49,8 @@ public:
     bool isValid() const;
 
 private:
-    qreal m_a;
-    qreal m_b;
+    qreal m_a = -1.0;
+    qreal m_b = -1.0;
 };
 
 QDebug operator<<(QDebug stream, const TernaryPoint &point);

@@ -47,8 +47,8 @@ public:
     }
 
 private:
-    qreal m_lowerBound;
-    qreal m_upperBound;
+    qreal m_lowerBound = 0.0;
+    qreal m_upperBound = 0.0;
 };
 
 #endif // ADJUSTED_CARTESIAN_AXIS_H

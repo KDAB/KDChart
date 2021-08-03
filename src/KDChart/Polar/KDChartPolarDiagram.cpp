@@ -27,8 +27,6 @@
 using namespace KDChart;
 
 PolarDiagram::Private::Private()
-    : rotateCircularLabels(false)
-    , closeDatasets(false)
 {
 }
 

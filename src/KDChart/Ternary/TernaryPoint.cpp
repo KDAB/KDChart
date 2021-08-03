@@ -24,15 +24,11 @@
 #include <QTextStream>
 
 TernaryPoint::TernaryPoint()
-    : m_a(-1.0)
-    , m_b(-1.0)
 {
     Q_ASSERT(!isValid());
 }
 
 TernaryPoint::TernaryPoint(qreal a, qreal b)
-    : m_a(-1.0)
-    , m_b(-1.0)
 {
     set(a, b);
 }

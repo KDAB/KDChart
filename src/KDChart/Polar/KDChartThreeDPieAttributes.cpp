@@ -27,7 +27,6 @@
 using namespace KDChart;
 
 ThreeDPieAttributes::Private::Private()
-    : useShadowColors(true)
 {
 }
 

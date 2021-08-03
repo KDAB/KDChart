@@ -398,13 +398,6 @@ class DataDimension
 {
 public:
     DataDimension()
-        : start(1.0)
-        , end(10.0)
-        , isCalculated(false)
-        , calcMode(AbstractCoordinatePlane::Linear)
-        , sequence(KDChartEnums::GranularitySequence_10_20)
-        , stepWidth(1.0)
-        , subStepWidth(0.0)
     {
     }
     DataDimension(qreal start_,
@@ -445,13 +438,13 @@ public:
         return !operator==(other);
     }
 
-    qreal start;
-    qreal end;
-    bool isCalculated;
-    AbstractCoordinatePlane::AxesCalcMode calcMode;
-    KDChartEnums::GranularitySequence sequence;
-    qreal stepWidth;
-    qreal subStepWidth;
+    qreal start = 1.0;
+    qreal end = 10.0;
+    bool isCalculated = false;
+    AbstractCoordinatePlane::AxesCalcMode calcMode = AbstractCoordinatePlane::Linear;
+    KDChartEnums::GranularitySequence sequence = KDChartEnums::GranularitySequence_10_20;
+    qreal stepWidth = 1.0;
+    qreal subStepWidth = 0.0;
 };
 
 #if !defined(QT_NO_DEBUG_STREAM)

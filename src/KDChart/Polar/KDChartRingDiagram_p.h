@@ -64,8 +64,8 @@ protected:
     QVector<QVector<qreal>> angleLens;
     QRectF position;
     qreal size;
-    bool relativeThickness;
-    bool expandWhenExploded;
+    bool relativeThickness = false;
+    bool expandWhenExploded = false;
     // polygons associated to their 3d depth
     QMap<qreal, QPolygon> polygonsToRender;
 };

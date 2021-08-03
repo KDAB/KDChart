@@ -29,9 +29,6 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QDialog(parent)
-    , m_chart(nullptr)
-    , m_diagram(nullptr)
-    , m_ternaryPlane(nullptr)
 {
     setupUi(this);
     // make a chart

@@ -23,7 +23,6 @@
 using namespace KDChart;
 
 AbstractCartesianDiagram::Private::Private()
-    : referenceDiagram(nullptr)
 {
 }
 

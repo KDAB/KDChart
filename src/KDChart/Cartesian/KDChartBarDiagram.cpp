@@ -39,14 +39,6 @@
 using namespace KDChart;
 
 BarDiagram::Private::Private()
-    : orientation(Qt::Vertical)
-    , implementor(nullptr)
-    , normalDiagram(nullptr)
-    , stackedDiagram(nullptr)
-    , percentDiagram(nullptr)
-    , normalLyingDiagram(nullptr)
-    , stackedLyingDiagram(nullptr)
-    , percentLyingDiagram(nullptr)
 {
 }
 

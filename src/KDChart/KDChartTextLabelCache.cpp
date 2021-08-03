@@ -51,7 +51,6 @@ int MissCount = 0;
 #endif
 
 PrerenderedElement::PrerenderedElement()
-    : m_referencePoint(KDChartEnums::PositionNorthWest)
 {
 }
 
@@ -77,11 +76,9 @@ KDChartEnums::PositionValue PrerenderedElement::referencePoint() const
 
 PrerenderedLabel::PrerenderedLabel()
     : PrerenderedElement()
-    , m_dirty(true)
     , m_font(qApp->font())
     , m_brush(Qt::black)
     , m_pen(Qt::black) // do not use anything invisible
-    , m_angle(0.0)
 {
 }
 

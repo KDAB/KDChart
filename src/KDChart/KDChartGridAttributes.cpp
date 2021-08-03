@@ -34,32 +34,23 @@ public:
     Private();
 
 private:
-    bool visible;
-    KDChartEnums::GranularitySequence sequence;
-    bool linesOnAnnotations;
-    qreal stepWidth;
-    qreal subStepWidth;
-    bool adjustLower;
-    bool adjustUpper;
+    bool visible = true;
+    KDChartEnums::GranularitySequence sequence = KDChartEnums::GranularitySequence_10_20;
+    bool linesOnAnnotations = false;
+    qreal stepWidth = 0.0;
+    qreal subStepWidth = 0.0;
+    bool adjustLower = true;
+    bool adjustUpper = true;
     QPen pen;
-    bool subVisible;
+    bool subVisible = true;
     QPen subPen;
-    bool outerVisible;
+    bool outerVisible = true;
     QPen zeroPen;
 };
 
 GridAttributes::Private::Private()
-    : visible(true)
-    , sequence(KDChartEnums::GranularitySequence_10_20)
-    , linesOnAnnotations(false)
-    , stepWidth(0.0)
-    , subStepWidth(0.0)
-    , adjustLower(true)
-    , adjustUpper(true)
-    , pen(QColor(0xa0, 0xa0, 0xa0))
-    , subVisible(true)
+    : pen(QColor(0xa0, 0xa0, 0xa0))
     , subPen(QColor(0xd0, 0xd0, 0xd0))
-    , outerVisible(true)
     , zeroPen(QColor(0x00, 0x00, 0x80))
 {
     pen.setCapStyle(Qt::FlatCap);

@@ -39,7 +39,7 @@ private:
     QBrush markerBrush;
     QBrush arrowBrush;
     QSizeF markerSize;
-    bool enabled;
+    bool enabled = false;
     QBrush areaBrush;
     Qt::Orientations orientations;
 };
@@ -47,7 +47,6 @@ private:
 ValueTrackerAttributes::Private::Private()
     : linePen(QPen(QColor(80, 80, 80, 200)))
     , markerSize(QSizeF(6.0, 6.0))
-    , enabled(false)
     , areaBrush(QBrush())
     , orientations(Qt::Vertical | Qt::Horizontal)
 {

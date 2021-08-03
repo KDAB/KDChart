@@ -41,7 +41,6 @@
 using namespace KDChart;
 
 LabelPaintInfo::LabelPaintInfo()
-    : isValuePositive(false)
 {
 }
 
@@ -68,15 +67,8 @@ LabelPaintInfo::LabelPaintInfo(const LabelPaintInfo &other)
 }
 
 AbstractDiagram::Private::Private()
-    : diagram(nullptr)
-    , doDumpPaintTime(false)
-    , plane(nullptr)
+    : plane(nullptr)
     , attributesModel(new PrivateAttributesModel(nullptr, nullptr))
-    , allowOverlappingDataValueTexts(false)
-    , antiAliasing(true)
-    , percent(false)
-    , datasetDimension(1)
-    , databoundariesDirty(true)
     , mCachedFontMetrics(QFontMetrics(qApp->font()))
 {
 }
@@ -149,11 +141,8 @@ void AbstractDiagram::Private::setAttributesModel(AttributesModel *amodel)
 }
 
 AbstractDiagram::Private::Private(const AbstractDiagram::Private &rhs)
-    : diagram(nullptr)
-    , doDumpPaintTime(rhs.doDumpPaintTime)
-    ,
-    // Do not copy the plane
-    plane(nullptr)
+    : doDumpPaintTime(rhs.doDumpPaintTime)
+    , plane(nullptr) // Do not copy the plane
     , attributesModelRootIndex(QModelIndex())
     , attributesModel(rhs.attributesModel)
     , allowOverlappingDataValueTexts(rhs.allowOverlappingDataValueTexts)

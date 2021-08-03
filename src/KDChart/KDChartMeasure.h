@@ -140,10 +140,10 @@ public:
     }
 
 private:
-    qreal mValue;
-    KDChartEnums::MeasureCalculationMode mMode;
-    const QObject *mArea;
-    KDChartEnums::MeasureOrientation mOrientation;
+    qreal mValue = 0.0;
+    KDChartEnums::MeasureCalculationMode mMode = KDChartEnums::MeasureCalculationModeAuto;
+    const QObject *mArea = nullptr;
+    KDChartEnums::MeasureOrientation mOrientation = KDChartEnums::MeasureOrientationAuto;
 }; // End of class Measure
 
 /**
@@ -195,7 +195,7 @@ public:
 
 private:
     QStack<QPair<qreal, qreal>> mFactors;
-    QPaintDevice *m_paintDevice;
+    QPaintDevice *m_paintDevice = nullptr;
 };
 
 }

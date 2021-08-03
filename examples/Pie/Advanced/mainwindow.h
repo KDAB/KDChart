@@ -59,9 +59,9 @@ private:
     KDChart::PieDiagram *m_pie;
     QTimer *m_timer;
 
-    int m_currentFactor;
-    int m_currentDirection;
-    int m_currentSlice;
+    int m_currentFactor = 0;
+    int m_currentDirection = 1;
+    int m_currentSlice = 0;
 };
 
 #endif /* MAINWINDOW_H */

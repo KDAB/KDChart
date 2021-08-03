@@ -31,16 +31,13 @@ public:
     Private();
 
 private:
-    bool visible;
+    bool visible = false;
     QPen pen;
-    qreal cornerRadius;
-    int padding;
+    qreal cornerRadius = 0;
+    int padding = 0;
 };
 
 FrameAttributes::Private::Private()
-    : visible(false)
-    , cornerRadius(0)
-    , padding(0)
 {
 }
 

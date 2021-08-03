@@ -55,10 +55,7 @@ public:
 
     Private(const Private &rhs)
         : AbstractDiagram::Private(rhs)
-        ,
-        // Do not copy axes and reference diagrams.
-        axesList()
-        , referenceDiagram(nullptr)
+        , axesList() // Do not copy axes and reference diagrams.
         , referenceDiagramOffset()
     {
     }
@@ -77,7 +74,7 @@ public:
 
     CartesianAxisList axesList;
 
-    AbstractCartesianDiagram *referenceDiagram;
+    AbstractCartesianDiagram *referenceDiagram = nullptr;
     QPointF referenceDiagramOffset;
 
     mutable CartesianDiagramDataCompressor compressor;

@@ -42,18 +42,11 @@
 using namespace KDChart;
 
 Legend::Private::Private()
-    : referenceArea(nullptr)
-    , position(Position::East)
+    : position(Position::East)
     , alignment(Qt::AlignCenter)
     , textAlignment(Qt::AlignCenter)
     , relativePosition(RelativePosition())
-    , orientation(Qt::Vertical)
-    , order(Qt::AscendingOrder)
-    , showLines(false)
     , titleText(QObject::tr("Legend"))
-    , spacing(1)
-    , useAutomaticMarkerSize(true)
-    , legendStyle(MarkersOnly)
 {
     // By default we specify a simple, hard point as the 'relative' position's ref. point,
     // since we can not be sure that there will be any parent specified for the legend.
@@ -849,10 +842,6 @@ QSizeF Legend::Private::maxMarkerSize(Legend *q, qreal fontHeight) const
 }
 
 HDatasetItem::HDatasetItem()
-    : markerLine(nullptr)
-    , label(nullptr)
-    , separatorLine(nullptr)
-    , spacer(nullptr)
 {
 }
 

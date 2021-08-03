@@ -96,8 +96,7 @@ class ModelDataCache : public ModelDataCachePrivate::ModelSignalMapper
 {
 public:
     ModelDataCache()
-        : m_model(nullptr)
-        , m_connector(*this)
+        : m_connector(*this)
     {
     }
 
@@ -335,7 +334,7 @@ protected:
     }
 
 private:
-    QAbstractItemModel *m_model;
+    QAbstractItemModel *m_model = nullptr;
     QModelIndex m_rootIndex;
     ModelDataCachePrivate::ModelSignalMapperConnector m_connector;
     mutable QVector<QVector<T>> m_data;

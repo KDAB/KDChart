@@ -126,24 +126,21 @@ private:
     Node *m_parent;
     QList<Node *> m_children;
 
-    KDGantt::ItemType m_type;
+    KDGantt::ItemType m_type = KDGantt::TypeTask;
     QDateTime m_start, m_end;
     QDateTime m_bStart, m_bEnd;
     QString m_label;
-    int m_completion;
-    KDGantt::StyleOptionGanttItem::Position m_position;
+    int m_completion = -1;
+    KDGantt::StyleOptionGanttItem::Position m_position = KDGantt::StyleOptionGanttItem::Right;
 };
 
 static int unnamed_count = 0;
 
 ProjectModel::Node::Node(Node *parent)
     : m_parent(parent)
-    , m_type(KDGantt::TypeTask)
     , m_start(QDateTime::currentDateTime())
     , m_end(QDateTime::currentDateTime().addDays(1))
     , m_label(tr("Unnamed task %1").arg(++unnamed_count))
-    , m_completion(-1)
-    , m_position(KDGantt::StyleOptionGanttItem::Right)
 {
     if (m_parent)
         m_parent->addChild(this);

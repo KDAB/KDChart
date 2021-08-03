@@ -39,7 +39,7 @@ public slots:
     void addDataset();
 
 private:
-    int datasetCount;
+    int datasetCount = 3;
 };
 
 #endif

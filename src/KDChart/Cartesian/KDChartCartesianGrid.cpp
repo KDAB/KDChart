@@ -34,8 +34,6 @@ using namespace KDChart;
 
 CartesianGrid::CartesianGrid()
     : AbstractGrid()
-    , m_minsteps(2)
-    , m_maxsteps(12)
 {
 }
 

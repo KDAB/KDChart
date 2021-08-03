@@ -66,7 +66,7 @@ public:
     CartesianCoordinatePlane *m_cartPlane;
     TableModel *m_model;
     AbstractDiagram *m_curDiagram;
-    ChartType m_type;
+    ChartType m_type = Bar;
     QHash<DiagramTypeDialog::DiagramType, QAbstractItemModel *> m_modelTable;
     MainWindow *qq;
 Q_SIGNALS:
@@ -80,7 +80,6 @@ MainWindow::Private::Private(MainWindow *q)
     , m_cartPlane(new CartesianCoordinatePlane)
     , m_model(new TableModel(q))
     , m_curDiagram(new BarDiagram(q, m_cartPlane))
-    , m_type(Bar)
     , qq(q)
 {
     m_chartWin->replaceCoordinatePlane(m_cartPlane);

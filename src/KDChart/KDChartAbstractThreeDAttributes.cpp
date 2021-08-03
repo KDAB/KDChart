@@ -27,9 +27,6 @@
 using namespace KDChart;
 
 AbstractThreeDAttributes::Private::Private()
-    : enabled(false)
-    , depth(20)
-    , threeDBrushEnabled(false)
 {
 }
 

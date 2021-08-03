@@ -52,8 +52,8 @@ private:
     QString dataLabel;
     RelativePosition negativeRelPos;
     RelativePosition positiveRelPos;
-    qint16 decimalDigits;
-    qint16 powerOfTenDivisor;
+    qint16 decimalDigits = KDCHART_DATA_VALUE_AUTO_DIGITS;
+    qint16 powerOfTenDivisor = 0;
     bool visible : 1;
     bool showInfinite : 1;
     bool showRepetitiveDataLabels : 1;
@@ -63,9 +63,7 @@ private:
 };
 
 DataValueAttributes::Private::Private()
-    : decimalDigits(KDCHART_DATA_VALUE_AUTO_DIGITS)
-    , powerOfTenDivisor(0)
-    , visible(false)
+    : visible(false)
     , showInfinite(true)
 {
     Measure me(20.0, KDChartEnums::MeasureCalculationModeAuto, KDChartEnums::MeasureOrientationAuto);

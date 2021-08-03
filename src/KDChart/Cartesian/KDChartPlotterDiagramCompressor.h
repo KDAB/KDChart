@@ -45,7 +45,6 @@ public:
         DataPoint()
             : key(std::numeric_limits<qreal>::quiet_NaN())
             , value(std::numeric_limits<qreal>::quiet_NaN())
-            , hidden(false)
         {
         }
         inline qreal distance(const DataPoint &other)
@@ -67,7 +66,7 @@ public:
 
         qreal key;
         qreal value;
-        bool hidden;
+        bool hidden = false;
         QModelIndex index;
     };
 
@@ -109,8 +108,6 @@ public:
     {
     public:
         CachePosition()
-            : first(-1)
-            , second(-1)
         {
         }
         CachePosition(int first, int second)
@@ -118,8 +115,8 @@ public:
             , second(second)
         {
         }
-        int first;
-        int second;
+        int first = -1;
+        int second = -1;
 
         bool operator==(const CachePosition &rhs) const
         {

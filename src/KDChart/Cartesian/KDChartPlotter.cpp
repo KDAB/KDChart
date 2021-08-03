@@ -29,9 +29,6 @@
 using namespace KDChart;
 
 Plotter::Private::Private()
-    : implementor(nullptr)
-    , normalPlotter(nullptr)
-    , percentPlotter(nullptr)
 {
 }
 

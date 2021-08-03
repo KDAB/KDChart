@@ -88,7 +88,6 @@ class ChartWidget : public QWidget
 public:
     explicit ChartWidget(QWidget *parent = nullptr)
         : QWidget(parent)
-        , m_model(nullptr)
     {
         QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
         db.setHostName("localhost");
@@ -158,7 +157,7 @@ public:
 
 private:
     Chart m_chart;
-    QSqlTableModel *m_model;
+    QSqlTableModel *m_model = nullptr;
 };
 
 int main(int argc, char **argv)

@@ -34,12 +34,6 @@ using namespace KDChart;
 
 AbstractCoordinatePlane::Private::Private()
     : AbstractArea::Private()
-    , parent(nullptr)
-    , grid(nullptr)
-    , referenceCoordinatePlane(nullptr)
-    , enableCornerSpacers(true)
-    , enableRubberBandZooming(false)
-    , rubberBand(nullptr)
 {
     // this block left empty intentionally
 }

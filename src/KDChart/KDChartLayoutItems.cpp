@@ -214,10 +214,7 @@ KDChart::TextLayoutItem::TextLayoutItem()
     , mText()
     , mTextAlignment(Qt::AlignLeft)
     , mAttributes()
-    , mAutoReferenceArea(nullptr)
-    , mAutoReferenceOrientation(KDChartEnums::MeasureOrientationHorizontal)
     , cachedSizeHint() // default this to invalid to force just-in-time calculation before first use of sizeHint()
-    , cachedFontSize(0.0)
     , cachedFont(mAttributes.font())
 {
 }

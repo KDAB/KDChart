@@ -83,7 +83,6 @@ const Position &Position::Floating = staticPositionFloating;
  * Default constructor. Creates a new Position, defaulting it to Position::Unknown.
  */
 Position::Position()
-    : m_value(KDChartEnums::PositionUnknown)
 {
 }
 

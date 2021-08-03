@@ -41,8 +41,6 @@ using namespace KDGantt;
  */
 
 Constraint::Private::Private()
-    : type(TypeSoft)
-    , relationType(FinishStart)
 {
 }
 
