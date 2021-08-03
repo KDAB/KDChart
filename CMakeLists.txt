@@ -83,13 +83,13 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/ECM/modules")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/KDAB/modules")
 
 if(${PROJECT_NAME}_QT6)
-  set(QT_MAJOR_VERSION 6)
+  set(Qt_VERSION_MAJOR 6)
   set(QT_MIN_VERSION "6.0.0")
   find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Gui Widgets PrintSupport Svg)
   list(APPEND QT_LIBRARIES Qt6::Gui Qt6::Widgets Qt6::PrintSupport Qt6::Svg)
   set(${PROJECT_NAME}_LIBRARY_QTID "-qt6")
 else()
-  set(QT_MAJOR_VERSION 5)
+  set(Qt_VERSION_MAJOR 5)
   set(QT_MIN_VERSION "5.15.0") # at least Qt::endl is needed
   find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Gui Widgets PrintSupport Svg)
   list(APPEND QT_LIBRARIES Qt5::Gui Qt5::Widgets Qt5::PrintSupport Qt5::Svg)
@@ -178,7 +178,7 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
 
   # Generate .pri file for qmake users
   #TODO: ECM does not support Qt6 yet
-  if(QT_MAJOR_VERSION EQUAL 5 AND
+  if(Qt_VERSION_MAJOR EQUAL 5 AND
     CMAKE_VERSION VERSION_GREATER "3.11.99" AND NOT CMAKE_CONFIGURATION_TYPES) # Not working with VS generator or older cmake versions
     include(ECMGeneratePriFile)
     set(PROJECT_VERSION_STRING ${${PROJECT_NAME}_VERSION})
@@ -194,7 +194,7 @@ add_subdirectory(src)
 
 # only build python bindings for Qt5.12 or greater
 if(${PROJECT_NAME}_PYTHON_BINDINGS)
-  if(QT_MAJOR_VERSION EQUAL 5 AND Qt5Core_VERSION VERSION_LESS 5.12)
+  if(Qt_VERSION_MAJOR EQUAL 5 AND Qt5Core_VERSION VERSION_LESS 5.12)
     message(WARNING "** Disabling Python Bindings. Qt version is too old and unsupported.")
     set(${PROJECT_NAME}_PYTHON_BINDINGS OFF)
   elseif(CMAKE_BUILD_TYPE MATCHES "^[Dd]eb" OR ${PROJECT_NAME}_STATIC)
@@ -226,8 +226,8 @@ if(${PROJECT_NAME}_IS_ROOT_PROJECT)
 
   add_subdirectory(features)
   if(${PROJECT_NAME}_TESTS)
-    find_package(Qt${QT_MAJOR_VERSION}Test REQUIRED)
-    list(APPEND QT_LIBRARIES Qt${QT_MAJOR_VERSION}::Test)
+    find_package(Qt${Qt_VERSION_MAJOR}Test REQUIRED)
+    list(APPEND QT_LIBRARIES Qt${Qt_VERSION_MAJOR}::Test)
     enable_testing()
     add_subdirectory(qtests)
     add_subdirectory(tests)
