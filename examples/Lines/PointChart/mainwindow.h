@@ -40,11 +40,11 @@ public:
 
 private slots:
 
-    void on_lineTypeCB_currentIndexChanged(const QString &text);
+    void on_lineTypeCB_currentIndexChanged(int index);
     void on_paintValuesCB_toggled(bool checked);
     void on_paintMarkersCB_toggled(bool checked);
     void on_paintLinesCB_toggled(bool checked);
-    void on_markersStyleCB_currentIndexChanged(const QString &text);
+    void on_markersStyleCB_currentIndexChanged(int index);
     void on_markersWidthSB_valueChanged(int i);
     void on_markersHeightSB_valueChanged(int i);
 

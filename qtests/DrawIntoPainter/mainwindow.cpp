@@ -195,8 +195,9 @@ void MainWindow::updateData(QString data)
     t.restart();
 }
 
-void MainWindow::on_lineTypeCB_currentIndexChanged(const QString &text)
+void MainWindow::on_lineTypeCB_currentIndexChanged(int index)
 {
+    const QString text = lineTypeCB->itemText(index);
     if (text == "Normal")
         m_lines->setType(LineDiagram::Normal);
     else if (text == "Stacked")
@@ -333,9 +334,9 @@ void MainWindow::on_paintMarkersCB_toggled(bool checked)
     }
 }
 
-void MainWindow::on_markersStyleCB_currentIndexChanged(const QString &text)
+void MainWindow::on_markersStyleCB_currentIndexChanged(int index)
 {
-    Q_UNUSED(text);
+    Q_UNUSED(index);
     if (paintMarkersCB->isChecked())
         on_paintMarkersCB_toggled(true);
 }

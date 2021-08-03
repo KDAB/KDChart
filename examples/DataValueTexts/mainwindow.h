@@ -44,17 +44,17 @@ private slots:
 
     void on_paintValuesCB_toggled(bool checked);
 
-    void on_fontCombo_currentIndexChanged(const QString &text);
+    void on_fontCombo_currentIndexChanged(int index);
     void on_relativeSizeSB_valueChanged(int i);
     void on_minimumSizeSB_valueChanged(int i);
     void on_rotationSB_valueChanged(int i);
 
-    void on_posPosCombo_currentIndexChanged(const QString &text);
-    void on_posAlignCombo_currentIndexChanged(const QString &text);
+    void on_posPosCombo_currentIndexChanged(int index);
+    void on_posAlignCombo_currentIndexChanged(int index);
     void on_posPadHoriSB_valueChanged(int i);
     void on_posPadVertSB_valueChanged(int i);
-    void on_negPosCombo_currentIndexChanged(const QString &text);
-    void on_negAlignCombo_currentIndexChanged(const QString &text);
+    void on_negPosCombo_currentIndexChanged(int index);
+    void on_negAlignCombo_currentIndexChanged(int index);
     void on_negPadHoriSB_valueChanged(int i);
     void on_negPadVertSB_valueChanged(int i);
 

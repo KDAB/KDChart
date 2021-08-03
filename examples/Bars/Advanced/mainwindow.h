@@ -35,8 +35,8 @@ public:
 
 private slots:
 
-    void on_barTypeCB_currentIndexChanged(const QString &text);
-    void on_barOrientationCB_currentIndexChanged(const QString &text);
+    void on_barTypeCB_currentIndexChanged(int index);
+    void on_barOrientationCB_currentIndexChanged(int index);
     void on_paintValuesCB_toggled(bool checked);
     void on_paintThreeDBarsCB_toggled(bool checked);
     void on_markColumnCB_toggled(bool checked);
