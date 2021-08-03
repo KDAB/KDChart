@@ -45,7 +45,7 @@ void DatasetProxyModel::setDatasetRowDescriptionVector(
                "A source model must be set before the selection can be configured.");
     initializeDatasetDecriptors(configuration, sourceModel()->rowCount(mRootIndex),
                                 mRowSrcToProxyMap, mRowProxyToSrcMap);
-    invalidate(); // clear emits layoutChanged()
+    invalidate();
 }
 
 void DatasetProxyModel::setDatasetColumnDescriptionVector(
@@ -55,7 +55,7 @@ void DatasetProxyModel::setDatasetColumnDescriptionVector(
                "A source model must be set before the selection can be configured.");
     initializeDatasetDecriptors(configuration, sourceModel()->columnCount(mRootIndex),
                                 mColSrcToProxyMap, mColProxyToSrcMap);
-    invalidate(); // clear emits layoutChanged()
+    invalidate();
 }
 
 void DatasetProxyModel::setDatasetDescriptionVectors(

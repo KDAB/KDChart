@@ -109,10 +109,11 @@ void MainWindow::on_paintValuesCB_toggled(bool checked)
     m_chart->update();
 }
 
-void MainWindow::on_fontCombo_currentIndexChanged(const QString &text)
+void MainWindow::on_fontCombo_currentIndexChanged(int index)
 {
     DataValueAttributes da(attributes());
     TextAttributes ta(da.textAttributes());
+    const QString text = fontCombo->itemText(index);
     QFont font(text);
     ta.setFont(font);
     da.setTextAttributes(ta);
@@ -158,10 +159,11 @@ void MainWindow::on_rotationSB_valueChanged(int i)
     m_chart->update();
 }
 
-void MainWindow::on_posPosCombo_currentIndexChanged(const QString &text)
+void MainWindow::on_posPosCombo_currentIndexChanged(int index)
 {
     DataValueAttributes da(attributes());
     RelativePosition relPos(da.positivePosition());
+    const QString text = posPosCombo->itemText(index);
     relPos.setReferencePosition(Position::fromName(qPrintable(text)));
     da.setPositivePosition(relPos);
     setAttributes(da);
@@ -169,10 +171,11 @@ void MainWindow::on_posPosCombo_currentIndexChanged(const QString &text)
     m_chart->update();
 }
 
-void MainWindow::on_posAlignCombo_currentIndexChanged(const QString &text)
+void MainWindow::on_posAlignCombo_currentIndexChanged(int index)
 {
     DataValueAttributes da(attributes());
     RelativePosition relPos(da.positivePosition());
+    const QString text = posAlignCombo->itemText(index);
     relPos.setAlignment(alignmentFromScreeName(text));
     da.setPositivePosition(relPos);
     setAttributes(da);
@@ -206,10 +209,11 @@ void MainWindow::on_posPadVertSB_valueChanged(int i)
     m_chart->update();
 }
 
-void MainWindow::on_negPosCombo_currentIndexChanged(const QString &text)
+void MainWindow::on_negPosCombo_currentIndexChanged(int index)
 {
     DataValueAttributes da(attributes());
     RelativePosition relPos(da.negativePosition());
+    const QString text = negPosCombo->itemText(index);
     relPos.setReferencePosition(Position::fromName(qPrintable(text)));
     da.setNegativePosition(relPos);
     setAttributes(da);
@@ -217,10 +221,11 @@ void MainWindow::on_negPosCombo_currentIndexChanged(const QString &text)
     m_chart->update();
 }
 
-void MainWindow::on_negAlignCombo_currentIndexChanged(const QString &text)
+void MainWindow::on_negAlignCombo_currentIndexChanged(int index)
 {
     DataValueAttributes da(attributes());
     RelativePosition relPos(da.negativePosition());
+    const QString text = negAlignCombo->itemText(index);
     relPos.setAlignment(alignmentFromScreeName(text));
     da.setNegativePosition(relPos);
     setAttributes(da);

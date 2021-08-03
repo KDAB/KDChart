@@ -168,8 +168,9 @@ MainWindow::MainWindow(QWidget *parent)
     on_paintMarkersCB_toggled(false);
 }
 
-void MainWindow::on_lineTypeCB_currentIndexChanged(const QString &text)
+void MainWindow::on_lineTypeCB_currentIndexChanged(int index)
 {
+    const QString text = lineTypeCB->itemText(index);
     if (text == "Normal")
         m_lines->setType(LineDiagram::Normal);
     else if (text == "Stacked")
@@ -214,9 +215,9 @@ void MainWindow::on_paintMarkersCB_toggled(bool checked)
     paintMarkers(checked, QSize());
 }
 
-void MainWindow::on_markersStyleCB_currentIndexChanged(const QString &text)
+void MainWindow::on_markersStyleCB_currentIndexChanged(int index)
 {
-    Q_UNUSED(text);
+    Q_UNUSED(index);
     on_paintMarkersCB_toggled(paintMarkersCB->isChecked());
 }
 

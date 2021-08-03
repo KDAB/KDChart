@@ -422,11 +422,11 @@ const QPair<QPointF, QPointF> LeveyJenningsDiagram::calculateDataBoundaries() co
 
     // rounded down/up to the prev/next midnight (at least that's the default)
     const QPair<QDateTime, QDateTime> range = timeRange();
-    const unsigned int minTime = range.first.toSecsSinceEpoch();
-    const unsigned int maxTime = range.second.toSecsSinceEpoch();
+    const qint64 minTime = range.first.toSecsSinceEpoch();
+    const qint64 maxTime = range.second.toSecsSinceEpoch();
 
-    const qreal xMin = minTime / static_cast<qreal>(24 * 60 * 60);
-    const qreal xMax = maxTime / static_cast<qreal>(24 * 60 * 60) - xMin;
+    const qreal xMin = static_cast<qreal>(minTime / 24 * 60 * 60);
+    const qreal xMax = static_cast<qreal>(maxTime / 24 * 60 * 60) - xMin;
 
     const QPointF bottomLeft(QPointF(0, yMin));
     const QPointF topRight(QPointF(xMax, yMax));

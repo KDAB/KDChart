@@ -72,8 +72,9 @@ MainWindow::MainWindow(QWidget *parent)
     m_chart->setGlobalLeadingTop(20);
 }
 
-void MainWindow::on_barTypeCB_currentIndexChanged(const QString &text)
+void MainWindow::on_barTypeCB_currentIndexChanged(int index)
 {
+    const QString text = barTypeCB->itemText(index);
     if (text == "Normal")
         m_bars->setType(BarDiagram::Normal);
     else if (text == "Stacked")
@@ -86,8 +87,9 @@ void MainWindow::on_barTypeCB_currentIndexChanged(const QString &text)
     m_chart->update();
 }
 
-void MainWindow::on_barOrientationCB_currentIndexChanged(const QString &text)
+void MainWindow::on_barOrientationCB_currentIndexChanged(int index)
 {
+    const QString text = barOrientationCB->itemText(index);
     if (text == "Vertical")
         m_bars->setOrientation(Qt::Vertical);
     else if (text == "Horizontal")

@@ -125,11 +125,12 @@ void MainWindow::on_useShadowColors_toggled(bool checked)
     m_chart->update();
 }
 
-void MainWindow::on_stockTypeCB_currentIndexChanged(const QString &text)
+void MainWindow::on_stockTypeCB_currentIndexChanged(int index)
 {
     // FIXME: Workaround for disappearing diagram when setting new model
     m_chart->coordinatePlane()->takeDiagram(&m_diagram);
 
+    const QString text = stockTypeCB->itemText(index);
     if (text == "High-Low-Close") {
         m_diagram.setType(StockDiagram::HighLowClose);
         m_diagram.setModel(&m_HLCModel);
