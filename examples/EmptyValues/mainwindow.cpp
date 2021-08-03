@@ -31,7 +31,7 @@ using namespace KDChart;
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
-    QHBoxLayout *chartLayout = new QHBoxLayout(this);
+    auto *chartLayout = new QHBoxLayout(this);
     m_chart = new Chart();
     chartLayout->addWidget(m_chart);
 
@@ -44,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_chart->coordinatePlane()->replaceDiagram(m_bars);
 
-    CartesianCoordinatePlane *plane = dynamic_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane());
+    auto *plane = dynamic_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane());
     Q_ASSERT(plane);
     // The values in the model are all zero, so set the size of the plane
     // to something that is non-zero manually

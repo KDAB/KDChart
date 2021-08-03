@@ -62,7 +62,7 @@ void TernaryGrid::drawGrid(PaintContext *context)
 
     QPainter &painter = *context->painter(); // recover from pointer madness
     PainterSaver s(&painter); // can i have a reference based version of that?
-    TernaryCoordinatePlane *plane = dynamic_cast<TernaryCoordinatePlane *>(context->coordinatePlane());
+    auto *plane = dynamic_cast<TernaryCoordinatePlane *>(context->coordinatePlane());
     Q_ASSERT_X(plane, "TernaryGrid::drawGrid",
                "Bad function call: PaintContext::coodinatePlane() NOT a ternary plane.");
 

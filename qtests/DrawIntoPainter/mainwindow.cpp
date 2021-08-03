@@ -54,9 +54,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
 #ifdef USE_FRAME_WIDGET
-    FrameWidget *chartFrameWidget = new FrameWidget();
+    auto *chartFrameWidget = new FrameWidget();
     chartLayout->addWidget(chartFrameWidget);
 #endif
     hSBar->setVisible(false);
@@ -69,10 +69,10 @@ MainWindow::MainWindow(QWidget *parent)
     m_model.loadFromCSV(QString(":/test"));
     m_lines->setModel(&m_model);
 
-    CartesianAxis *xAxis = new CartesianAxis(m_lines);
-    CartesianAxis *yAxis = new CartesianAxis(m_lines);
-    CartesianAxis *axisTop = new CartesianAxis(m_lines);
-    CartesianAxis *axisRight = new CartesianAxis(m_lines);
+    auto *xAxis = new CartesianAxis(m_lines);
+    auto *yAxis = new CartesianAxis(m_lines);
+    auto *axisTop = new CartesianAxis(m_lines);
+    auto *axisRight = new CartesianAxis(m_lines);
     xAxis->setPosition(KDChart::CartesianAxis::Bottom);
     yAxis->setPosition(KDChart::CartesianAxis::Left);
     axisTop->setPosition(KDChart::CartesianAxis::Top);

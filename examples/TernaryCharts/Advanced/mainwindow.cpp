@@ -29,9 +29,6 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QDialog(parent)
-    , m_chart(nullptr)
-    , m_diagram(nullptr)
-    , m_ternaryPlane(nullptr)
 {
     setupUi(this);
     // make a chart
@@ -45,14 +42,14 @@ MainWindow::MainWindow(QWidget *parent)
     m_ternaryPlane->replaceDiagram(m_diagram);
 
     // add the three ternary axes, see the positions
-    KDChart::TernaryAxis *axisA = new KDChart::TernaryAxis(m_diagram);
+    auto *axisA = new KDChart::TernaryAxis(m_diagram);
     axisA->setPosition(KDChartEnums::PositionSouth);
-    KDChart::TernaryAxis *axisB = new KDChart::TernaryAxis(m_diagram);
+    auto *axisB = new KDChart::TernaryAxis(m_diagram);
     axisB->setPosition(KDChartEnums::PositionWest);
-    KDChart::TernaryAxis *axisC = new KDChart::TernaryAxis(m_diagram);
+    auto *axisC = new KDChart::TernaryAxis(m_diagram);
     axisC->setPosition(KDChartEnums::PositionEast);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(frame);
+    auto *chartLayout = new QHBoxLayout(frame);
     chartLayout->addWidget(m_chart);
 
     setupModel();

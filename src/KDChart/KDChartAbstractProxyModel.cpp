@@ -72,7 +72,7 @@ QModelIndex AbstractProxyModel::mapToSource(const QModelIndex &proxyIndex) const
     // So here we need to create a source index which holds that internal pointer.
     // No way to pass it to sourceModel()->index... so we have to do the ugly way:
     QModelIndex sourceIndex;
-    KDPrivateModelIndex *hack = reinterpret_cast<KDPrivateModelIndex *>(&sourceIndex);
+    auto *hack = reinterpret_cast<KDPrivateModelIndex *>(&sourceIndex);
     hack->r = proxyIndex.row();
     hack->c = proxyIndex.column();
     hack->p = proxyIndex.internalPointer();

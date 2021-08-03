@@ -76,13 +76,13 @@ private slots:
     void testBoxLayoutHiddenWidget()
     {
         QBoxLayout *vLayout = new QVBoxLayout;
-        MyLegendWidget *widget1 = new MyLegendWidget(0);
+        auto *widget1 = new MyLegendWidget(0);
         widget1->resize(10, 10);
 
         // Adding a hidden widget doesn't work, the layout ignores it
         // This is why we created MyWidgetItem above, then the layout works
         //vLayout->addWidget( widget1 );
-        MyWidgetItem *widgetItem = new MyWidgetItem(widget1);
+        auto *widgetItem = new MyWidgetItem(widget1);
         vLayout->addItem(widgetItem);
 
         QRect geom(100, 100, 800, 800);
@@ -100,11 +100,11 @@ private slots:
 
     void testBoxLayoutChildWidget()
     {
-        QWidget *topLevelWidget = new QWidget(0);
+        auto *topLevelWidget = new QWidget(0);
         // This time the layout is associated with a widget, like d->layout in KDChart::Chart.
         QBoxLayout *vLayout = new QVBoxLayout(topLevelWidget);
-        MyLegendWidget *widget1 = new MyLegendWidget(topLevelWidget);
-        MyWidgetItem *widgetItem = new MyWidgetItem(widget1);
+        auto *widget1 = new MyLegendWidget(topLevelWidget);
+        auto *widgetItem = new MyWidgetItem(widget1);
         vLayout->addItem(widgetItem);
         //vLayout->activate();
 
@@ -136,18 +136,18 @@ private slots:
 
     void testSubGridLayout()
     {
-        QWidget *topLevelWidget = new QWidget(0);
+        auto *topLevelWidget = new QWidget(0);
         QBoxLayout *vLayout = new QVBoxLayout(topLevelWidget);
-        QGridLayout *gridLayout = new QGridLayout();
+        auto *gridLayout = new QGridLayout();
 
-        QLineEdit *lineEdit = new QLineEdit(topLevelWidget);
-        MyWidgetItem *lineEditWidgetItem = new MyWidgetItem(lineEdit);
+        auto *lineEdit = new QLineEdit(topLevelWidget);
+        auto *lineEditWidgetItem = new MyWidgetItem(lineEdit);
         gridLayout->addItem(lineEditWidgetItem, 0, 0);
 
-        MyLegendWidget *widget1 = new MyLegendWidget(topLevelWidget);
+        auto *widget1 = new MyLegendWidget(topLevelWidget);
         widget1->makeSizeFixed();
 
-        MyWidgetItem *widgetItem = new MyWidgetItem(widget1);
+        auto *widgetItem = new MyWidgetItem(widget1);
         gridLayout->addItem(widgetItem, 1, 1);
         vLayout->addLayout(gridLayout);
 

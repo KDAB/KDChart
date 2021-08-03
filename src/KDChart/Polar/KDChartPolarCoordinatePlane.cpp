@@ -90,7 +90,7 @@ void PolarCoordinatePlane::paint(QPainter *painter)
         d->currentTransformation = &(d->coordinateTransformations[i]);
         qreal zoomX;
         qreal zoomY;
-        PolarDiagram *polarDia = dynamic_cast<PolarDiagram *>(diags[i]);
+        auto *polarDia = dynamic_cast<PolarDiagram *>(diags[i]);
         if (polarDia) {
             polarDia->paint(&ctx, true, zoomX, zoomY);
             d->newZoomX = qMin(d->newZoomX, zoomX);
@@ -115,7 +115,7 @@ void PolarCoordinatePlane::paint(QPainter *painter)
     for (int i = 0; i < diags.size(); i++) {
         d->currentTransformation = &(d->coordinateTransformations[i]);
         PainterSaver painterSaver(painter);
-        PolarDiagram *polarDia = dynamic_cast<PolarDiagram *>(diags[i]);
+        auto *polarDia = dynamic_cast<PolarDiagram *>(diags[i]);
         if (polarDia) {
             qreal dummy1, dummy2;
             polarDia->paint(&ctx, false, dummy1, dummy2);
@@ -156,7 +156,7 @@ void PolarCoordinatePlane::layoutDiagrams()
     const qreal oldStartPosition = startPosition();
     d->coordinateTransformations.clear();
     Q_FOREACH (AbstractDiagram *diagram, diagrams()) {
-        AbstractPolarDiagram *polarDiagram = dynamic_cast<AbstractPolarDiagram *>(diagram);
+        auto *polarDiagram = dynamic_cast<AbstractPolarDiagram *>(diagram);
         Q_ASSERT(polarDiagram);
         QPair<QPointF, QPointF> dataBoundariesPair = polarDiagram->dataBoundaries();
 

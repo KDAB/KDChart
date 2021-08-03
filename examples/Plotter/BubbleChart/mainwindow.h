@@ -41,7 +41,7 @@ private slots:
     void setMarkerAttributes();
 
 private:
-    QStandardItemModel *m_model;
+    QStandardItemModel *m_model = nullptr;
     KDChart::Chart *m_chart;
     KDChart::Plotter *m_plotter;
 };

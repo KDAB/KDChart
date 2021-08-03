@@ -59,7 +59,7 @@ void NormalLineDiagram::paintWithLines(PaintContext *ctx)
 {
     reverseMapper().clear();
     Q_ASSERT(dynamic_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane()));
-    CartesianCoordinatePlane *plane = static_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane());
+    auto *plane = static_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane());
     const int columnCount = compressor().modelDataColumns();
     const int rowCount = compressor().modelDataRows();
     if (columnCount == 0 || rowCount == 0)
@@ -163,7 +163,7 @@ void NormalLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
 {
     reverseMapper().clear();
     Q_ASSERT(dynamic_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane()));
-    CartesianCoordinatePlane *plane = static_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane());
+    auto *plane = static_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane());
     const int columnCount = compressor().modelDataColumns();
     const int rowCount = compressor().modelDataRows();
     if (columnCount == 0 || rowCount == 0)

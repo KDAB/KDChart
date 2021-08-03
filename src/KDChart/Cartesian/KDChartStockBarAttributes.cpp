@@ -26,13 +26,11 @@ class StockBarAttributes::Private
 public:
     Private();
 
-    qreal candlestickWidth;
-    qreal tickLength;
+    qreal candlestickWidth = 0.3;
+    qreal tickLength = 0.15;
 };
 
 StockBarAttributes::Private::Private()
-    : candlestickWidth(0.3)
-    , tickLength(0.15)
 {
 }
 

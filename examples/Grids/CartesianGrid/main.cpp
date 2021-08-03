@@ -48,11 +48,11 @@ public:
             }
         }
 
-        LineDiagram *diagram = new LineDiagram;
+        auto *diagram = new LineDiagram;
         diagram->setModel(&m_model);
 
-        CartesianAxis *xAxis = new CartesianAxis(diagram);
-        CartesianAxis *yAxis = new CartesianAxis(diagram);
+        auto *xAxis = new CartesianAxis(diagram);
+        auto *yAxis = new CartesianAxis(diagram);
         xAxis->setPosition(KDChart::CartesianAxis::Bottom);
         yAxis->setPosition(KDChart::CartesianAxis::Left);
         diagram->addAxis(xAxis);
@@ -63,7 +63,7 @@ public:
         /* Header */
 
         // Add at one Header and set it up
-        HeaderFooter *header = new HeaderFooter(&m_chart);
+        auto *header = new HeaderFooter(&m_chart);
         header->setPosition(Position::North);
         header->setText("A Line Chart with Grid Configured");
         m_chart.addHeaderFooter(header);
@@ -101,7 +101,7 @@ public:
         // diagram->coordinatePlane returns an abstract plane one.
         // if we want to specify the orientation we need to cast
         // as follow
-        CartesianCoordinatePlane *plane = static_cast<CartesianCoordinatePlane *>(diagram->coordinatePlane());
+        auto *plane = static_cast<CartesianCoordinatePlane *>(diagram->coordinatePlane());
 
         /* Configure grid steps and pen */
 
@@ -159,7 +159,7 @@ public:
             diagram->setDataValueAttributes(iColumn, a);
         }
 
-        QVBoxLayout *l = new QVBoxLayout(this);
+        auto *l = new QVBoxLayout(this);
         l->addWidget(&m_chart);
         m_chart.setGlobalLeadingRight(20);
         setLayout(l);

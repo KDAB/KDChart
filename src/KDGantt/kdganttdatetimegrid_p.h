@@ -50,11 +50,7 @@ class DateTimeGrid::Private : public AbstractGrid::Private
 public:
     Private()
         : startDateTime(QDateTime::currentDateTime().addDays(-3))
-        , dayWidth(100.)
-        , scale(ScaleAuto)
-        , weekStart(Qt::Monday)
         , freeDays(QSet<Qt::DayOfWeek>() << Qt::Saturday << Qt::Sunday)
-        , rowSeparators(false)
         , noInformationBrush(Qt::red, Qt::DiagCrossPattern)
         , freeDaysBrush(QBrush())
         , upper(new DateTimeScaleFormatter(DateTimeScaleFormatter::Week, QString::fromLatin1("w")))
@@ -129,11 +125,11 @@ public:
 
     QDateTime startDateTime;
     QDateTime endDateTime;
-    qreal dayWidth;
-    Scale scale;
-    Qt::DayOfWeek weekStart;
+    qreal dayWidth = 100.;
+    Scale scale = ScaleAuto;
+    Qt::DayOfWeek weekStart = Qt::Monday;
     QSet<Qt::DayOfWeek> freeDays;
-    bool rowSeparators;
+    bool rowSeparators = false;
     QBrush noInformationBrush;
     QBrush freeDaysBrush;
 

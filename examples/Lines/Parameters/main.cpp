@@ -42,7 +42,7 @@ public:
             }
         }
 
-        LineDiagram *diagram = new LineDiagram;
+        auto *diagram = new LineDiagram;
         diagram->setModel(&m_model);
 
         // Display values
@@ -100,7 +100,7 @@ public:
         m_chart.coordinatePlane()->replaceDiagram(diagram);
         m_chart.setGlobalLeadingRight(50);
 
-        QVBoxLayout *l = new QVBoxLayout(this);
+        auto *l = new QVBoxLayout(this);
         l->addWidget(&m_chart);
         setLayout(l);
     }

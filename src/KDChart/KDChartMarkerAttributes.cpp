@@ -36,10 +36,10 @@ public:
     Private();
 
 private:
-    bool visible;
-    bool threeD;
+    bool visible = false;
+    bool threeD = false;
     QMap<uint, uint> markerStylesMap;
-    uint markerStyle;
+    uint markerStyle = MarkerSquare;
     QSizeF markerSize;
     QColor markerColor;
     QPainterPath customMarkerPath;
@@ -47,10 +47,7 @@ private:
 };
 
 MarkerAttributes::Private::Private()
-    : visible(false)
-    , threeD(false)
-    , markerStyle(MarkerSquare)
-    , markerSize(10, 10)
+    : markerSize(10, 10)
     , markerPen(Qt::black)
 {
 }

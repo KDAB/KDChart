@@ -33,17 +33,13 @@ public:
 
 private:
     //Areas
-    MissingValuesPolicy missingValuesPolicy;
-    bool displayArea;
-    uint transparency;
-    int areaBoundingDataset;
+    MissingValuesPolicy missingValuesPolicy = MissingValuesAreBridged;
+    bool displayArea = false;
+    uint transparency = 255;
+    int areaBoundingDataset = -1;
 };
 
 LineAttributes::Private::Private()
-    : missingValuesPolicy(MissingValuesAreBridged)
-    , displayArea(false)
-    , transparency(255)
-    , areaBoundingDataset(-1)
 {
 }
 

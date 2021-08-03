@@ -61,9 +61,9 @@ void KDAB::UnitTest::TestRegistry::registerTestFactory(const TestFactory *tf, co
 unsigned int KDAB::UnitTest::TestRegistry::run() const
 {
     unsigned int failed = 0;
-    for (std::map<std::string, std::vector<const TestFactory *>>::const_iterator g = mTests.begin(); g != mTests.end(); ++g) {
+    for (auto g = mTests.begin(); g != mTests.end(); ++g) {
         std::cerr << "===== GROUP \"" << g->first << "\" =========" << std::endl;
-        for (std::vector<const TestFactory *>::const_iterator it = g->second.begin(); it != g->second.end(); ++it) {
+        for (auto it = g->second.begin(); it != g->second.end(); ++it) {
             std::unique_ptr<Test> t((*it)->create());
             assert(t.get());
             std::cerr << "  === \"" << t->name() << "\" ===" << std::endl;
@@ -87,7 +87,7 @@ unsigned int KDAB::UnitTest::TestRegistry::run(const char *group) const
         return 1;
     }
     std::cerr << "===== GROUP \"" << g->first << "\" =========" << std::endl;
-    for (std::vector<const TestFactory *>::const_iterator it = g->second.begin(); it != g->second.end(); ++it) {
+    for (auto it = g->second.begin(); it != g->second.end(); ++it) {
         std::unique_ptr<Test> t((*it)->create());
         assert(t.get());
         std::cerr << "  === \"" << t->name() << "\" ===" << std::endl;

@@ -36,7 +36,6 @@
 
 MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
-    , dayWidth(70)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -46,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
     initItemDelegate();
     initGrid();
 
-    QTreeView *leftView = qobject_cast<QTreeView *>(ui->ganttView->leftView());
+    auto *leftView = qobject_cast<QTreeView *>(ui->ganttView->leftView());
     Q_ASSERT(leftView);
     leftView->setColumnHidden(1, true);
     leftView->setColumnHidden(2, true);
@@ -72,7 +71,7 @@ void MainWindow::initModel()
     model->setHeaderData(0, Qt::Horizontal, tr("Task"));
     ui->ganttView->setModel(model);
 
-    KDGantt::Legend *l = new KDGantt::Legend;
+    auto *l = new KDGantt::Legend;
     l->setWindowTitle(tr("Legend"));
     l->show();
     l->setModel(model);
@@ -126,7 +125,7 @@ void MainWindow::initActions()
 
 void MainWindow::initItemDelegate()
 {
-    EntryDelegate *delegate = new EntryDelegate(constraintModel, this);
+    auto *delegate = new EntryDelegate(constraintModel, this);
     ui->ganttView->leftView()->setItemDelegate(delegate);
 }
 
@@ -335,7 +334,7 @@ void MainWindow::zoomOut()
 
 void MainWindow::printPreview()
 {
-    QLabel *preview = new QLabel(this, Qt::Window);
+    auto *preview = new QLabel(this, Qt::Window);
     preview->setAttribute(Qt::WA_DeleteOnClose);
     preview->setScaledContents(true);
     preview->setWindowTitle(tr("Print Preview"));

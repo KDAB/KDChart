@@ -26,11 +26,10 @@ using namespace KDChart;
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
-    , datasetCount(3)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     widget = new Widget(chartFrame);
     chartLayout->addWidget(widget);
 

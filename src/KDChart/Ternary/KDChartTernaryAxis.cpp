@@ -68,7 +68,7 @@ void TernaryAxis::paint(QPainter *)
 void TernaryAxis::paintCtx(PaintContext *paintContext)
 {
     QPainter *p = paintContext->painter();
-    TernaryCoordinatePlane *plane =
+    auto *plane =
         (TernaryCoordinatePlane *)paintContext->coordinatePlane();
     // QObject* refArea = plane->parent();
     QRectF titleArea;

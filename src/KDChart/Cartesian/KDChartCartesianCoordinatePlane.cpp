@@ -43,21 +43,6 @@ using namespace KDChart;
 
 CartesianCoordinatePlane::Private::Private()
     : AbstractCoordinatePlane::Private()
-    , bPaintIsRunning(false)
-    , hasOwnGridAttributesHorizontal(false)
-    , hasOwnGridAttributesVertical(false)
-    , isometricScaling(false)
-    , horizontalMin(0)
-    , horizontalMax(0)
-    , verticalMin(0)
-    , verticalMax(0)
-    , autoAdjustHorizontalRangeToData(67)
-    , autoAdjustVerticalRangeToData(67)
-    , autoAdjustGridToZoom(true)
-    , fixedDataCoordinateSpaceRelation(false)
-    , xAxisStartAtZero(true)
-    , reverseVerticalPlane(false)
-    , reverseHorizontalPlane(false)
 {
 }
 
@@ -263,8 +248,8 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
     if (dgr && dgr->referenceDiagram()) {
         dgr = dgr->referenceDiagram();
     }
-    const BarDiagram *barDiagram = qobject_cast<const BarDiagram *>(dgr);
-    const StockDiagram *stockDiagram = qobject_cast<const StockDiagram *>(dgr);
+    const auto *barDiagram = qobject_cast<const BarDiagram *>(dgr);
+    const auto *stockDiagram = qobject_cast<const StockDiagram *>(dgr);
 
     // note:
     // It does make sense to retrieve the orientation from the first diagram. This is because
@@ -766,12 +751,12 @@ const
 AbstractCoordinatePlane *CartesianCoordinatePlane::sharedAxisMasterPlane(QPainter *painter)
 {
     CartesianCoordinatePlane *plane = this;
-    AbstractCartesianDiagram *diag = dynamic_cast<AbstractCartesianDiagram *>(plane->diagram());
+    auto *diag = dynamic_cast<AbstractCartesianDiagram *>(plane->diagram());
     const CartesianAxis *sharedAxis = nullptr;
     if (diag != nullptr) {
         const CartesianAxisList axes = diag->axes();
         Q_FOREACH (const CartesianAxis *a, axes) {
-            CartesianCoordinatePlane *p = const_cast<CartesianCoordinatePlane *>(
+            auto *p = const_cast<CartesianCoordinatePlane *>(
                 dynamic_cast<const CartesianCoordinatePlane *>(a->coordinatePlane()));
             if (p != nullptr && p != this) {
                 plane = p;

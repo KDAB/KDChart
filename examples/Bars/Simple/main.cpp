@@ -62,13 +62,13 @@ public:
     }
     */
 
-        KDChart::BarDiagram *diagram = new KDChart::BarDiagram;
+        auto *diagram = new KDChart::BarDiagram;
         diagram->setModel(&m_model);
         diagram->setPen(QPen(Qt::black, 0));
 
         m_chart.coordinatePlane()->replaceDiagram(diagram);
 
-        QVBoxLayout *l = new QVBoxLayout(this);
+        auto *l = new QVBoxLayout(this);
         l->addWidget(&m_chart);
         setLayout(l);
 

@@ -46,9 +46,9 @@ private slots:
 private:
     void setupModel();
 
-    KDChart::Chart *m_chart;
-    KDChart::TernaryPointDiagram *m_diagram;
-    KDChart::TernaryCoordinatePlane *m_ternaryPlane;
+    KDChart::Chart *m_chart = nullptr;
+    KDChart::TernaryPointDiagram *m_diagram = nullptr;
+    KDChart::TernaryCoordinatePlane *m_ternaryPlane = nullptr;
 
     QStandardItemModel m_model;
 };

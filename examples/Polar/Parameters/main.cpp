@@ -44,13 +44,13 @@ public:
             }
         }
         // We need a Polar plane for the Polar type
-        PolarCoordinatePlane *polarPlane = new PolarCoordinatePlane(&m_chart);
+        auto *polarPlane = new PolarCoordinatePlane(&m_chart);
         // replace the default Cartesian plane with
         // our Polar plane
         m_chart.replaceCoordinatePlane(polarPlane);
 
         // assign the model to our polar diagram
-        PolarDiagram *diagram = new PolarDiagram;
+        auto *diagram = new PolarDiagram;
         diagram->setModel(&m_model);
 
         // Configure the plane's Background
@@ -131,7 +131,7 @@ public:
         polarPlane->setZoomFactorX(0.9);
         polarPlane->setZoomFactorY(0.9);
 
-        QVBoxLayout *l = new QVBoxLayout(this);
+        auto *l = new QVBoxLayout(this);
         l->addWidget(&m_chart);
         m_chart.setGlobalLeadingTop(5);
         m_chart.setGlobalLeadingBottom(5);

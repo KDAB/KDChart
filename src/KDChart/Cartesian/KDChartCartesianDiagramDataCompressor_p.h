@@ -76,12 +76,11 @@ public:
         DataPoint()
             : key(std::numeric_limits<qreal>::quiet_NaN())
             , value(std::numeric_limits<qreal>::quiet_NaN())
-            , hidden(false)
         {
         }
         qreal key;
         qreal value;
-        bool hidden;
+        bool hidden = false;
         QModelIndex index;
     };
     typedef QVector<DataPoint> DataPointVector;
@@ -89,8 +88,6 @@ public:
     {
     public:
         CachePosition()
-            : row(-1)
-            , column(-1)
         {
         }
         CachePosition(int row, int column)
@@ -98,8 +95,8 @@ public:
             , column(column)
         {
         }
-        int row;
-        int column;
+        int row = -1;
+        int column = -1;
 
         bool operator==(const CachePosition &rhs) const
         {
@@ -202,15 +199,15 @@ private:
     QPointer<QAbstractItemModel> m_model;
     QModelIndex m_rootIndex;
 
-    ApproximationMode m_mode;
-    int m_xResolution;
-    int m_yResolution;
-    unsigned int m_sampleStep;
+    ApproximationMode m_mode = Precise;
+    int m_xResolution = 0;
+    int m_yResolution = 0;
+    unsigned int m_sampleStep = 0;
 
     mutable QVector<DataPointVector> m_data; // one per dataset
     ModelDataCache<qreal, Qt::DisplayRole> m_modelCache;
     mutable DataValueAttributesCache m_dataValueAttributesCache;
-    int m_datasetDimension;
+    int m_datasetDimension = 1;
 };
 }
 

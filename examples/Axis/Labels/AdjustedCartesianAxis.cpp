@@ -19,8 +19,6 @@
 
 AdjustedCartesianAxis::AdjustedCartesianAxis(KDChart::AbstractCartesianDiagram *diagram)
     : CartesianAxis(diagram)
-    , m_lowerBound(0.0)
-    , m_upperBound(0.0)
 {
     // this block left empty intentionally
 }

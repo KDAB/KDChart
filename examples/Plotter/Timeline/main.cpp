@@ -37,23 +37,22 @@ class ChartWidget : public QWidget
 public:
     explicit ChartWidget(QWidget *parent = nullptr)
         : QWidget(parent)
-        , m_counter(0)
     {
-        QSplitter *splitter = new QSplitter(this);
-        QHBoxLayout *l = new QHBoxLayout(this);
+        auto *splitter = new QSplitter(this);
+        auto *l = new QHBoxLayout(this);
         setLayout(l);
         l->addWidget(splitter);
 
-        QWidget *leftWidget = new QWidget(splitter);
-        QVBoxLayout *leftLayout = new QVBoxLayout(leftWidget);
+        auto *leftWidget = new QWidget(splitter);
+        auto *leftLayout = new QVBoxLayout(leftWidget);
         leftWidget->setLayout(leftLayout);
 
-        QPushButton *button = new QPushButton("Animate", leftWidget);
+        auto *button = new QPushButton("Animate", leftWidget);
         leftLayout->addWidget(button);
         button->setCheckable(true);
         connect(button, SIGNAL(toggled(bool)), this, SLOT(buttonToggled(bool)));
 
-        QTreeView *tv = new QTreeView(leftWidget);
+        auto *tv = new QTreeView(leftWidget);
         leftLayout->addWidget(tv);
 
         m_chart = new KDChart::Chart(splitter);
@@ -65,18 +64,18 @@ public:
             m_model->setData(m_model->index(i, 1), sin(i / 10.0) * 10);
         }
 
-        TimeChartModel *proxy = new TimeChartModel(this);
+        auto *proxy = new TimeChartModel(this);
         proxy->setSourceModel(m_model);
         proxy->setVisibleRange(QDateTime(QDate(2010, 2, 1), QTime()),
                                QDateTime(QDate(2010, 3, 31), QTime()));
 
-        KDChart::Plotter *plotter = new KDChart::Plotter;
+        auto *plotter = new KDChart::Plotter;
         m_chart->coordinatePlane()->replaceDiagram(plotter);
 
         tv->setModel(proxy);
         tv->show();
 
-        TimeAxis *axis = new TimeAxis(plotter);
+        auto *axis = new TimeAxis(plotter);
         axis->setPosition(TimeAxis::Bottom);
         plotter->addAxis(axis);
 
@@ -132,7 +131,7 @@ private:
     KDChart::Chart *m_chart;
     QStandardItemModel *m_model;
     QTimer *m_timer;
-    qreal m_counter;
+    qreal m_counter = 0;
 };
 
 /**

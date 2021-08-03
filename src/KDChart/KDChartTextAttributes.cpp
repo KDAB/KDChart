@@ -40,28 +40,22 @@ public:
     Private();
 
 private:
-    bool visible;
+    bool visible = true;
     QFont font;
     mutable QFont cachedFont;
-    mutable qreal cachedFontSize;
+    mutable qreal cachedFontSize = -1.0;
     Measure fontSize;
     Measure minimalFontSize;
-    bool autoRotate;
-    bool autoShrink;
-    bool hasRotation;
-    int rotation;
+    bool autoRotate = false;
+    bool autoShrink = false;
+    bool hasRotation = false;
+    int rotation = 0;
     QPen pen;
     QSharedPointer<QTextDocument> document;
 };
 
 TextAttributes::Private::Private()
-    : visible(true)
-    , font(QApplication::font())
-    , cachedFontSize(-1.0)
-    , autoRotate(false)
-    , autoShrink(false)
-    , hasRotation(false)
-    , rotation(0)
+    : font(QApplication::font())
     , pen(Qt::black)
 {
 }
@@ -175,7 +169,7 @@ const QFont TextAttributes::calculatedFont(const QObject *autoReferenceArea,
 {
     qreal size = NaN;
 
-    const CartesianCoordinatePlane *plane = qobject_cast<const CartesianCoordinatePlane *>(autoReferenceArea);
+    const auto *plane = qobject_cast<const CartesianCoordinatePlane *>(autoReferenceArea);
     if (plane && plane->hasFixedDataCoordinateSpaceRelation()) {
         // HACK
         // if hasFixedDataCoordinateSpaceRelation, we use a zoom trick to keep the diagram at a constant size

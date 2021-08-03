@@ -47,7 +47,7 @@ void Plotter::Private::setCompressorResolution(
 
 void Plotter::Private::changedProperties()
 {
-    if (CartesianCoordinatePlane *plane = dynamic_cast<CartesianCoordinatePlane *>(diagram->coordinatePlane())) {
+    if (auto *plane = dynamic_cast<CartesianCoordinatePlane *>(diagram->coordinatePlane())) {
         QPair<qreal, qreal> verticalRange = plane->verticalRange();
         if (verticalRange.first != verticalRange.second)
             implementor->plotterCompressor().setForcedDataBoundaries(verticalRange, Qt::Vertical);

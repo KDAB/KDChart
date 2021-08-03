@@ -91,10 +91,6 @@ class PolarCoordinatePlane::Private : public AbstractCoordinatePlane::Private
 
 public:
     explicit Private()
-        : currentTransformation(nullptr)
-        , initialResizeEventReceived(false)
-        , hasOwnGridAttributesCircular(false)
-        , hasOwnGridAttributesSagittal(false)
     {
     }
 
@@ -114,16 +110,16 @@ public:
     CoordinateTransformationList coordinateTransformations;
     // when painting, this pointer selects the coordinate transformation for
     // the current diagram:
-    CoordinateTransformation *currentTransformation;
+    CoordinateTransformation *currentTransformation = nullptr;
     // the reactangle occupied by the diagrams, in plane coordinates
     QRectF contentRect;
     // true after the first resize event came in
-    bool initialResizeEventReceived;
+    bool initialResizeEventReceived = false;
 
     // true after setGridAttributes( Qt::Orientation ) was used,
     // false if resetGridAttributes( Qt::Orientation ) was called
-    bool hasOwnGridAttributesCircular;
-    bool hasOwnGridAttributesSagittal;
+    bool hasOwnGridAttributesCircular = false;
+    bool hasOwnGridAttributesSagittal = false;
 
     GridAttributes gridAttributesCircular;
     GridAttributes gridAttributesSagittal;

@@ -63,7 +63,7 @@ public:
     DataValueAttributes attrs;
     QPainterPath labelArea;
     QPointF markerPos;
-    bool isValuePositive;
+    bool isValuePositive = false;
     // could (ab)use attrs.dataLabel() instead
     QString value;
 };
@@ -191,9 +191,9 @@ public:
         return diagram->_d;
     }
 
-    AbstractDiagram *diagram;
+    AbstractDiagram *diagram = nullptr;
     ReverseMapper reverseMapper;
-    bool doDumpPaintTime; // for use in performance testing code
+    bool doDumpPaintTime = false; // for use in performance testing code
 
 protected:
     void init();
@@ -202,12 +202,12 @@ protected:
     QPointer<AbstractCoordinatePlane> plane;
     mutable QModelIndex attributesModelRootIndex;
     QPointer<AttributesModel> attributesModel;
-    bool allowOverlappingDataValueTexts;
-    bool antiAliasing;
-    bool percent;
-    int datasetDimension;
+    bool allowOverlappingDataValueTexts = false;
+    bool antiAliasing = true;
+    bool percent = false;
+    int datasetDimension = 1;
     mutable QPair<QPointF, QPointF> databoundaries;
-    mutable bool databoundariesDirty;
+    mutable bool databoundariesDirty = true;
 
     QMap<Qt::Orientation, QString> unitSuffix;
     QMap<Qt::Orientation, QString> unitPrefix;

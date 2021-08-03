@@ -110,7 +110,7 @@ View::Private::~Private()
 
 void View::Private::init()
 {
-    KDGanttTreeView *tw = new KDGanttTreeView(&ganttProxyModel, &splitter);
+    auto *tw = new KDGanttTreeView(&ganttProxyModel, &splitter);
     tw->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     tw->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 
@@ -121,7 +121,7 @@ void View::Private::init()
 
     tw->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
-    QVBoxLayout *layout = new QVBoxLayout(q);
+    auto *layout = new QVBoxLayout(q);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(&splitter);
     q->setLayout(layout);
@@ -149,7 +149,7 @@ void View::Private::updateScene()
     if (!model)
         return;
 
-    if (QTreeView *tw = qobject_cast<QTreeView *>(leftWidget)) {
+    if (auto *tw = qobject_cast<QTreeView *>(leftWidget)) {
         QModelIndex idx = ganttProxyModel.mapFromSource(model->index(0, 0, leftWidget->rootIndex()));
         do {
             gfxview->updateRow(idx);
@@ -165,7 +165,7 @@ void View::Private::updateScene()
 
 void View::Private::slotCollapsed(const QModelIndex &_idx)
 {
-    QTreeView *tw = qobject_cast<QTreeView *>(leftWidget);
+    auto *tw = qobject_cast<QTreeView *>(leftWidget);
     if (!tw)
         return;
 
@@ -446,13 +446,13 @@ void View::setGrid(AbstractGrid *grid)
 
 void View::expandAll(QModelIndex index)
 {
-    KDGanttTreeView *tw = qobject_cast<KDGanttTreeView *>(leftView());
+    auto *tw = qobject_cast<KDGanttTreeView *>(leftView());
     tw->expandAll(index);
 }
 
 void View::collapseAll(QModelIndex index)
 {
-    KDGanttTreeView *tw = qobject_cast<KDGanttTreeView *>(leftView());
+    auto *tw = qobject_cast<KDGanttTreeView *>(leftView());
     tw->collapseAll(index);
 }
 
@@ -524,11 +524,11 @@ QAbstractProxyModel *View::ganttProxyModel()
 void View::ensureVisible(const QModelIndex &index)
 {
     QGraphicsView *view = graphicsView();
-    KDGantt::GraphicsScene *scene = static_cast<KDGantt::GraphicsScene *>(view->scene());
+    auto *scene = static_cast<KDGantt::GraphicsScene *>(view->scene());
     if (!scene)
         return;
 
-    KDGantt::SummaryHandlingProxyModel *model = static_cast<KDGantt::SummaryHandlingProxyModel *>(scene->summaryHandlingModel());
+    auto *model = static_cast<KDGantt::SummaryHandlingProxyModel *>(scene->summaryHandlingModel());
 
     const QModelIndex pidx = d->ganttProxyModel.mapFromSource(index);
     const QModelIndex idx = model->mapFromSource(pidx);

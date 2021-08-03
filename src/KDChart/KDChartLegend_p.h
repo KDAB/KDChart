@@ -58,10 +58,10 @@ struct HDatasetItem
     HDatasetItem();
     int height() const;
 
-    AbstractLayoutItem *markerLine;
-    TextLayoutItem *label;
-    VerticalLineLayoutItem *separatorLine;
-    QSpacerItem *spacer;
+    AbstractLayoutItem *markerLine = nullptr;
+    TextLayoutItem *label = nullptr;
+    VerticalLineLayoutItem *separatorLine = nullptr;
+    QSpacerItem *spacer = nullptr;
 };
 
 class DiagramsObserversList : public QList<DiagramObserver *>
@@ -98,15 +98,15 @@ public:
 
 private:
     // user-settable
-    const QWidget *referenceArea;
+    const QWidget *referenceArea = nullptr;
     Position position;
     Qt::Alignment alignment;
     Qt::Alignment textAlignment;
     Qt::Alignment legendLineSymbolAlignment;
     RelativePosition relativePosition;
-    Qt::Orientation orientation;
-    Qt::SortOrder order;
-    bool showLines;
+    Qt::Orientation orientation = Qt::Vertical;
+    Qt::SortOrder order = Qt::AscendingOrder;
+    bool showLines = false;
     QMap<uint, QString> texts;
     QMap<uint, QBrush> brushes;
     QMap<uint, QPen> pens;
@@ -115,9 +115,9 @@ private:
     TextAttributes textAttributes;
     QString titleText;
     TextAttributes titleTextAttributes;
-    uint spacing;
-    bool useAutomaticMarkerSize;
-    LegendStyle legendStyle;
+    uint spacing = 1;
+    bool useAutomaticMarkerSize = true;
+    LegendStyle legendStyle = MarkersOnly;
 
     // internal
     mutable QStringList modelLabels;

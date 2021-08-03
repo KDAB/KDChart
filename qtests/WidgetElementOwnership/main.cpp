@@ -99,8 +99,8 @@ private slots:
     void testHeaderFooterOwnership()
     {
         QCOMPARE(m_widget->allHeadersFooters().size(), 0);
-        HeaderFooter *h = new HeaderFooter();
-        HeaderFooter *h1 = new HeaderFooter();
+        auto *h = new HeaderFooter();
+        auto *h1 = new HeaderFooter();
         m_widget->addHeaderFooter(h);
         m_widget->addHeaderFooter(h1);
         QCOMPARE(m_widget->allHeadersFooters().size(), 2);

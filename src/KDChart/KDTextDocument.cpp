@@ -29,7 +29,6 @@
 
 KDTextDocument::KDTextDocument(QObject *p)
     : QTextDocument(p)
-    , mHintValid(false)
     , mSizeHint()
     , mMinimumSizeHint()
 {

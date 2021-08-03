@@ -50,7 +50,7 @@ private slots:
         model.setRowCount(RowCount);
         for (int row = 0; row < RowCount; ++row)
             for (int column = 0; column < ColumnCount; ++column) {
-                QStandardItem *item = new QStandardItem();
+                auto *item = new QStandardItem();
                 item->setData(1, Qt::DisplayRole);
                 model.setItem(row, column, item);
             }

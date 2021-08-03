@@ -27,9 +27,6 @@
 using namespace KDChart;
 
 PieAttributes::Private::Private()
-    : explodeFactor(0.0)
-    , tangentialGapFactor(0.0)
-    , radialGapFactor(0.0)
 {
 }
 

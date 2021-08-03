@@ -262,7 +262,7 @@ void Widget::addHeaderFooter(const QString &text,
                              HeaderFooter::HeaderFooterType type,
                              Position position)
 {
-    HeaderFooter *newHeader = new HeaderFooter(&d->m_chart);
+    auto *newHeader = new HeaderFooter(&d->m_chart);
     newHeader->setType(type);
     newHeader->setPosition(position);
     newHeader->setText(text);
@@ -310,7 +310,7 @@ QList<KDChart::Legend *> Widget::allLegends()
  */
 void Widget::addLegend(Position position)
 {
-    Legend *legend = new Legend(diagram(), &d->m_chart);
+    auto *legend = new Legend(diagram(), &d->m_chart);
     legend->setPosition(position);
     d->m_chart.addLegend(legend);
 }
@@ -434,9 +434,9 @@ void Widget::setType(ChartType chartType, SubType chartSubType)
         }
         if (diag != nullptr) {
             if (isCartesian(oldType) && isCartesian(chartType)) {
-                AbstractCartesianDiagram *oldDiag =
+                auto *oldDiag =
                     qobject_cast<AbstractCartesianDiagram *>(coordinatePlane()->diagram());
-                AbstractCartesianDiagram *newDiag =
+                auto *newDiag =
                     qobject_cast<AbstractCartesianDiagram *>(diag);
                 Q_FOREACH (CartesianAxis *axis, oldDiag->axes()) {
                     oldDiag->takeAxis(axis);
@@ -466,7 +466,7 @@ void Widget::setType(ChartType chartType, SubType chartSubType)
 template <class DiagramType, class Subtype>
 void setSubtype(AbstractDiagram *_dia, Subtype st)
 {
-    if (DiagramType *dia = qobject_cast<DiagramType *>(_dia)) {
+    if (auto *dia = qobject_cast<DiagramType *>(_dia)) {
         dia->setType(st);
     }
 }
@@ -530,9 +530,9 @@ Widget::SubType Widget::subType() const
     Widget::SubType retVal = Normal;
 
     AbstractDiagram *const dia = const_cast<Widget *>(this)->diagram();
-    BarDiagram *barDia = qobject_cast<BarDiagram *>(dia);
-    LineDiagram *lineDia = qobject_cast<LineDiagram *>(dia);
-    Plotter *plotterDia = qobject_cast<Plotter *>(dia);
+    auto *barDia = qobject_cast<BarDiagram *>(dia);
+    auto *lineDia = qobject_cast<LineDiagram *>(dia);
+    auto *plotterDia = qobject_cast<Plotter *>(dia);
 
     //FIXME(khz): Add the impl for these chart types - or remove them from here:
     //    PieDiagram*   pieDia   = qobject_cast< PieDiagram* >( diagram() );

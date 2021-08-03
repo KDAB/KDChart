@@ -288,13 +288,11 @@ enum ItemType {
 
 class Span
 {
-    qreal m_start;
-    qreal m_length;
+    qreal m_start = -1;
+    qreal m_length = 0;
 
 public:
     inline Span()
-        : m_start(-1)
-        , m_length(0)
     {
     }
     inline Span(qreal start, qreal length)

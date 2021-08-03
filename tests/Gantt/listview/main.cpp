@@ -104,7 +104,7 @@ public:
         slider.setOrientation(Qt::Horizontal);
         slider.setRange(1, 1000);
         slider.setValue(100);
-        QVBoxLayout *l = new QVBoxLayout(this);
+        auto *l = new QVBoxLayout(this);
         l->addWidget(&view);
         l->addWidget(&slider);
         grid.setStartDateTime(QDateTime::currentDateTime().addDays(-3));

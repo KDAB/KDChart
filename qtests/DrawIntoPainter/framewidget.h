@@ -39,7 +39,7 @@ public:
     }
 
 private:
-    KDChart::Chart *mChart;
+    KDChart::Chart *mChart = 0;
 };
 
 #endif /* FRAMEWIDGET_H */

@@ -53,8 +53,6 @@ public:
 
 MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
-    , smallLegend(nullptr)
-    , detailedLegend(nullptr)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -64,7 +62,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
     initItemDelegate();
     initGrid();
 
-    QTreeView *leftView = qobject_cast<QTreeView *>(ui->ganttView->leftView());
+    auto *leftView = qobject_cast<QTreeView *>(ui->ganttView->leftView());
     Q_ASSERT(leftView);
     leftView->setColumnHidden(1, true);
     leftView->setColumnHidden(2, true);
@@ -96,7 +94,7 @@ void MainWindow::initModel()
     model->setHeaderData(0, Qt::Horizontal, tr("Tree View of Entries"));
     ui->ganttView->setModel(model);
 
-    QStandardItemModel *lmodel = new QStandardItemModel;
+    auto *lmodel = new QStandardItemModel;
     lmodel->appendRow(QList<QStandardItem *>()
                       << new MyStandardItem(QVariant())
                       << new MyStandardItem(KDGantt::TypeEvent)
@@ -180,7 +178,7 @@ void MainWindow::initActions()
 
 void MainWindow::initItemDelegate()
 {
-    EntryDelegate *delegate = new EntryDelegate(constraintModel, this);
+    auto *delegate = new EntryDelegate(constraintModel, this);
     ui->ganttView->leftView()->setItemDelegate(delegate);
 }
 
@@ -360,30 +358,30 @@ void MainWindow::zoomFit()
 
 void MainWindow::scaleAuto()
 {
-    KDGantt::DateTimeGrid *grid = static_cast<KDGantt::DateTimeGrid *>(ui->ganttView->grid());
+    auto *grid = static_cast<KDGantt::DateTimeGrid *>(ui->ganttView->grid());
     grid->setScale(KDGantt::DateTimeGrid::ScaleAuto);
 }
 
 void MainWindow::scaleHour()
 {
-    KDGantt::DateTimeGrid *grid = static_cast<KDGantt::DateTimeGrid *>(ui->ganttView->grid());
+    auto *grid = static_cast<KDGantt::DateTimeGrid *>(ui->ganttView->grid());
     grid->setScale(KDGantt::DateTimeGrid::ScaleHour);
 }
 
 void MainWindow::scaleDay()
 {
-    KDGantt::DateTimeGrid *grid = static_cast<KDGantt::DateTimeGrid *>(ui->ganttView->grid());
+    auto *grid = static_cast<KDGantt::DateTimeGrid *>(ui->ganttView->grid());
     grid->setScale(KDGantt::DateTimeGrid::ScaleDay);
 }
 
 void MainWindow::scaleWeek()
 {
-    KDGantt::DateTimeGrid *grid = static_cast<KDGantt::DateTimeGrid *>(ui->ganttView->grid());
+    auto *grid = static_cast<KDGantt::DateTimeGrid *>(ui->ganttView->grid());
     grid->setScale(KDGantt::DateTimeGrid::ScaleWeek);
 }
 
 void MainWindow::scaleMonth()
 {
-    KDGantt::DateTimeGrid *grid = static_cast<KDGantt::DateTimeGrid *>(ui->ganttView->grid());
+    auto *grid = static_cast<KDGantt::DateTimeGrid *>(ui->ganttView->grid());
     grid->setScale(KDGantt::DateTimeGrid::ScaleMonth);
 }

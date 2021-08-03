@@ -68,7 +68,6 @@ public:
 }
 GraphicsItem::GraphicsItem(QGraphicsItem *parent, GraphicsScene *scene)
     : BASE(parent)
-    , m_isupdating(false)
 {
     if (scene)
         scene->addItem(this);
@@ -79,7 +78,6 @@ GraphicsItem::GraphicsItem(const QModelIndex &idx, QGraphicsItem *parent,
                            GraphicsScene *scene)
     : BASE(parent)
     , m_index(idx)
-    , m_isupdating(false)
 {
     init();
     if (scene)
@@ -364,7 +362,7 @@ void GraphicsItem::updateModel()
 {
     //qDebug() << "GraphicsItem::updateModel()";
     if (isEditable()) {
-        QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index().model());
+        auto *model = const_cast<QAbstractItemModel *>(index().model());
 #if !defined(NDEBUG)
         ConstraintModel *cmodel = scene()->constraintModel();
 #endif
@@ -467,14 +465,14 @@ void GraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     m_dragline = nullptr;
     if (scene()->dragSource()) {
         // Create a new constraint
-        GraphicsItem *other = qgraphicsitem_cast<GraphicsItem *>(scene()->itemAt(event->scenePos(), QTransform()));
+        auto *other = qgraphicsitem_cast<GraphicsItem *>(scene()->itemAt(event->scenePos(), QTransform()));
         if (other && scene()->dragSource() != other && other->index().data(KDGantt::ItemTypeRole) == KDGantt::TypeEvent) {
             // The code below fixes bug KDCH-696.
             // Modified the code to add constraint even if the user drags and drops
             // constraint on left part of the TypeEvent symbol(i.e diamond symbol)
             QRectF itemRect = other->rect().adjusted(-other->rect().height() / 2.0, 0, 0, 0);
             if (other->mapToScene(itemRect).boundingRect().contains(event->scenePos())) {
-                GraphicsView *view = qobject_cast<GraphicsView *>(event->widget()->parentWidget());
+                auto *view = qobject_cast<GraphicsView *>(event->widget()->parentWidget());
                 if (view) {
                     view->addConstraint(scene()->summaryHandlingModel()->mapToSource(scene()->dragSource()->index()),
                                         scene()->summaryHandlingModel()->mapToSource(other->index()), event->modifiers());
@@ -482,7 +480,7 @@ void GraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             }
         } else {
             if (other && scene()->dragSource() != other && other->mapToScene(other->rect()).boundingRect().contains(event->scenePos())) {
-                GraphicsView *view = qobject_cast<GraphicsView *>(event->widget()->parentWidget());
+                auto *view = qobject_cast<GraphicsView *>(event->widget()->parentWidget());
                 if (view) {
                     view->addConstraint(scene()->summaryHandlingModel()->mapToSource(scene()->dragSource()->index()),
                                         scene()->summaryHandlingModel()->mapToSource(other->index()), event->modifiers());

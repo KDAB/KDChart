@@ -31,13 +31,11 @@ class PaintContext::Private
 {
 
 public:
-    QPainter *painter;
+    QPainter *painter = nullptr;
     QRectF rect;
-    AbstractCoordinatePlane *plane;
+    AbstractCoordinatePlane *plane = nullptr;
 
     Private()
-        : painter(nullptr)
-        , plane(nullptr)
     {
     }
 };

@@ -57,8 +57,8 @@ public:
     }
 
 private:
-    qreal granularity;
-    bool autoRotateLabels;
+    qreal granularity = 1.0;
+    bool autoRotateLabels = false;
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM(AbstractPieDiagram, AbstractPolarDiagram, PolarCoordinatePlane)

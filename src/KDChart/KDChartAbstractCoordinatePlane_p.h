@@ -74,17 +74,17 @@ protected:
         return true;
     }
 
-    KDChart::Chart *parent;
-    AbstractGrid *grid;
+    KDChart::Chart *parent = nullptr;
+    AbstractGrid *grid = nullptr;
     QRect geometry;
     AbstractDiagramList diagrams;
     GridAttributes gridAttributes;
-    AbstractCoordinatePlane *referenceCoordinatePlane;
+    AbstractCoordinatePlane *referenceCoordinatePlane = nullptr;
 
-    bool enableCornerSpacers;
+    bool enableCornerSpacers = true;
 
-    bool enableRubberBandZooming;
-    QRubberBand *rubberBand;
+    bool enableRubberBandZooming = false;
+    QRubberBand *rubberBand = nullptr;
     QPoint rubberBandOrigin;
 
     QStack<ZoomParameters> rubberBandZoomConfigHistory;

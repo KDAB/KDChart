@@ -62,7 +62,7 @@ public:
     LineDiagramType *percentDiagram;
     bool centerDataPoints;
     bool reverseDatasetOrder;
-    qreal tension;
+    qreal tension = 0.0;
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM(LineDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane)

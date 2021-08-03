@@ -33,8 +33,6 @@
 using namespace KDChart;
 
 RingDiagram::Private::Private()
-    : relativeThickness(false)
-    , expandWhenExploded(false)
 {
 }
 

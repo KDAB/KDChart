@@ -88,7 +88,7 @@ void GraphicsScene::Private::createConstraintItem(const Constraint &c)
     GraphicsItem *eitem = q->findItem(summaryHandlingModel->mapFromSource(c.endIndex()));
 
     if (sitem && eitem) {
-        ConstraintGraphicsItem *citem = new ConstraintGraphicsItem(c);
+        auto *citem = new ConstraintGraphicsItem(c);
         sitem->addStartConstraint(citem);
         eitem->addEndConstraint(citem);
         q->addItem(citem);
@@ -433,7 +433,7 @@ void GraphicsScene::insertItem(const QPersistentModelIndex &idx, GraphicsItem *i
                 GraphicsItem *other_item = d->items.value(summaryHandlingModel()->mapFromSource(other_idx), 0);
                 if (!other_item)
                     continue;
-                ConstraintGraphicsItem *citem = new ConstraintGraphicsItem(c);
+                auto *citem = new ConstraintGraphicsItem(c);
                 item->addStartConstraint(citem);
                 other_item->addEndConstraint(citem);
                 addItem(citem);
@@ -442,7 +442,7 @@ void GraphicsScene::insertItem(const QPersistentModelIndex &idx, GraphicsItem *i
                 GraphicsItem *other_item = d->items.value(summaryHandlingModel()->mapFromSource(other_idx), 0);
                 if (!other_item)
                     continue;
-                ConstraintGraphicsItem *citem = new ConstraintGraphicsItem(c);
+                auto *citem = new ConstraintGraphicsItem(c);
                 other_item->addStartConstraint(citem);
                 item->addEndConstraint(citem);
                 addItem(citem);
@@ -576,9 +576,9 @@ void GraphicsScene::helpEvent(QGraphicsSceneHelpEvent *helpEvent)
 {
 #ifndef QT_NO_TOOLTIP
     QGraphicsItem *item = itemAt(helpEvent->scenePos(), QTransform());
-    if (GraphicsItem *gitem = qgraphicsitem_cast<GraphicsItem *>(item)) {
+    if (auto *gitem = qgraphicsitem_cast<GraphicsItem *>(item)) {
         QToolTip::showText(helpEvent->screenPos(), gitem->ganttToolTip());
-    } else if (ConstraintGraphicsItem *citem = qgraphicsitem_cast<ConstraintGraphicsItem *>(item)) {
+    } else if (auto *citem = qgraphicsitem_cast<ConstraintGraphicsItem *>(item)) {
         QToolTip::showText(helpEvent->screenPos(), citem->ganttToolTip());
     } else {
         QGraphicsScene::helpEvent(helpEvent);
@@ -786,7 +786,7 @@ void GraphicsScene::doPrint(QPainter *painter, const QRectF &targetRect,
             QModelIndex idx = summaryHandlingModel()->mapFromSource(sidx);
             const Span rg = rowController()->rowGeometry(sidx);
             const QString txt = idx.data(Qt::DisplayRole).toString();
-            QGraphicsTextItem *item = new QGraphicsTextItem(txt);
+            auto *item = new QGraphicsTextItem(txt);
             addItem(item);
             textLabels << item;
             item->adjustSize();
@@ -938,13 +938,13 @@ KDAB_SCOPED_UNITTEST_SIMPLE(KDGantt, GraphicsView, "test")
 {
     QStandardItemModel model;
 
-    QStandardItem *item = new QStandardItem();
+    auto *item = new QStandardItem();
     item->setData(KDGantt::TypeTask, KDGantt::ItemTypeRole);
     item->setData(QString::fromLatin1("Decide on new product"));
     item->setData(QDate(2007, 3, 1).startOfDay(), KDGantt::StartTimeRole);
     item->setData(QDate(2007, 3, 3).startOfDay(), KDGantt::EndTimeRole);
 
-    QStandardItem *item2 = new QStandardItem();
+    auto *item2 = new QStandardItem();
     item2->setData(KDGantt::TypeTask, KDGantt::ItemTypeRole);
     item2->setData(QString::fromLatin1("Educate personnel"));
     item2->setData(QDate(2007, 3, 3).startOfDay(), KDGantt::StartTimeRole);
@@ -963,7 +963,7 @@ KDAB_SCOPED_UNITTEST_SIMPLE(KDGantt, GraphicsView, "test")
     // Now the interesting stuff - the items above are just for a "realistic environment"
 
     bool foreignItemDestroyed = false;
-    TestLineItem *foreignItem = new TestLineItem(&foreignItemDestroyed);
+    auto *foreignItem = new TestLineItem(&foreignItemDestroyed);
     graphicsView.scene()->addItem(foreignItem);
 
     assertFalse(foreignItemDestroyed);

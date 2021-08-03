@@ -41,7 +41,6 @@
 using namespace KDChart;
 
 LabelPaintInfo::LabelPaintInfo()
-    : isValuePositive(false)
 {
 }
 
@@ -68,15 +67,8 @@ LabelPaintInfo::LabelPaintInfo(const LabelPaintInfo &other)
 }
 
 AbstractDiagram::Private::Private()
-    : diagram(nullptr)
-    , doDumpPaintTime(false)
-    , plane(nullptr)
+    : plane(nullptr)
     , attributesModel(new PrivateAttributesModel(nullptr, nullptr))
-    , allowOverlappingDataValueTexts(false)
-    , antiAliasing(true)
-    , percent(false)
-    , datasetDimension(1)
-    , databoundariesDirty(true)
     , mCachedFontMetrics(QFontMetrics(qApp->font()))
 {
 }
@@ -149,11 +141,8 @@ void AbstractDiagram::Private::setAttributesModel(AttributesModel *amodel)
 }
 
 AbstractDiagram::Private::Private(const AbstractDiagram::Private &rhs)
-    : diagram(nullptr)
-    , doDumpPaintTime(rhs.doDumpPaintTime)
-    ,
-    // Do not copy the plane
-    plane(nullptr)
+    : doDumpPaintTime(rhs.doDumpPaintTime)
+    , plane(nullptr) // Do not copy the plane
     , attributesModelRootIndex(QModelIndex())
     , attributesModel(rhs.attributesModel)
     , allowOverlappingDataValueTexts(rhs.allowOverlappingDataValueTexts)
@@ -649,14 +638,14 @@ bool AbstractDiagram::Private::isTransposed() const
     // Determine the diagram that specifies the orientation.
     // That diagram is the reference diagram, if it exists, or otherwise the diagram itself.
     // Note: In KDChart 2.3 or earlier, only a bar diagram can be transposed.
-    const AbstractCartesianDiagram *refDiagram = qobject_cast<const AbstractCartesianDiagram *>(diagram);
+    const auto *refDiagram = qobject_cast<const AbstractCartesianDiagram *>(diagram);
     if (!refDiagram) {
         return false;
     }
     if (refDiagram->referenceDiagram()) {
         refDiagram = refDiagram->referenceDiagram();
     }
-    const BarDiagram *barDiagram = qobject_cast<const BarDiagram *>(refDiagram);
+    const auto *barDiagram = qobject_cast<const BarDiagram *>(refDiagram);
     if (!barDiagram) {
         return false;
     }

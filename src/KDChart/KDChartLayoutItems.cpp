@@ -214,10 +214,7 @@ KDChart::TextLayoutItem::TextLayoutItem()
     , mText()
     , mTextAlignment(Qt::AlignLeft)
     , mAttributes()
-    , mAutoReferenceArea(nullptr)
-    , mAutoReferenceOrientation(KDChartEnums::MeasureOrientationHorizontal)
     , cachedSizeHint() // default this to invalid to force just-in-time calculation before first use of sizeHint()
-    , cachedFontSize(0.0)
     , cachedFont(mAttributes.font())
 {
 }
@@ -927,7 +924,7 @@ QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
     int topBottomOverlap = 0;
     if (mTopBottomLayout) {
         for (int i = 0; i < mTopBottomLayout->count(); ++i) {
-            AbstractArea *area = dynamic_cast<AbstractArea *>(mTopBottomLayout->itemAt(i));
+            auto *area = dynamic_cast<AbstractArea *>(mTopBottomLayout->itemAt(i));
             if (area) {
                 //qDebug() << "AutoSpacerLayoutItem testing" << area;
                 topBottomOverlap = qMax(topBottomOverlap,
@@ -941,7 +938,7 @@ QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
     int leftRightOverlap = 0;
     if (mRightLeftLayout) {
         for (int i = 0; i < mRightLeftLayout->count(); ++i) {
-            AbstractArea *area = dynamic_cast<AbstractArea *>(mRightLeftLayout->itemAt(i));
+            auto *area = dynamic_cast<AbstractArea *>(mRightLeftLayout->itemAt(i));
             if (area) {
                 //qDebug() << "AutoSpacerLayoutItem testing" << area;
                 leftRightOverlap = qMax(leftRightOverlap,

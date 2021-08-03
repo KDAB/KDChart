@@ -295,13 +295,13 @@ KDAB_SCOPED_UNITTEST_SIMPLE(KDGantt, SummaryHandlingProxyModel, "test")
 
     model.setSourceModel(&sourceModel);
 
-    QStandardItem *topitem = new QStandardItem(QString::fromLatin1("Summary"));
+    auto *topitem = new QStandardItem(QString::fromLatin1("Summary"));
     topitem->setData(KDGantt::TypeSummary, KDGantt::ItemTypeRole);
     sourceModel.appendRow(topitem);
 
-    QStandardItem *task1 = new QStandardItem(QString::fromLatin1("Task1"));
+    auto *task1 = new QStandardItem(QString::fromLatin1("Task1"));
     task1->setData(KDGantt::TypeTask, KDGantt::ItemTypeRole);
-    QStandardItem *task2 = new QStandardItem(QString::fromLatin1("Task2"));
+    auto *task2 = new QStandardItem(QString::fromLatin1("Task2"));
     task2->setData(KDGantt::TypeTask, KDGantt::ItemTypeRole);
     topitem->appendRow(task1);
     topitem->appendRow(task2);

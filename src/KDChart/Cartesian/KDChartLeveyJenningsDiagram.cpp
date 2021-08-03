@@ -82,7 +82,7 @@ LeveyJenningsDiagram::~LeveyJenningsDiagram()
   */
 LineDiagram *LeveyJenningsDiagram::clone() const
 {
-    LeveyJenningsDiagram *newDiagram = new LeveyJenningsDiagram(new Private(*d));
+    auto *newDiagram = new LeveyJenningsDiagram(new Private(*d));
     return newDiagram;
 }
 

@@ -51,8 +51,8 @@ public:
     void drawGrid(PaintContext *context) override;
 
 private:
-    int m_minsteps;
-    int m_maxsteps;
+    int m_minsteps = 2;
+    int m_maxsteps = 12;
 
     DataDimensionsList calculateGrid(
         const DataDimensionsList &rawDataDimensions) const override;

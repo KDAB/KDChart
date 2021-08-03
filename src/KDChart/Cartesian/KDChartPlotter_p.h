@@ -62,9 +62,9 @@ public:
         const QSizeF &size,
         const AbstractCoordinatePlane *plane);
 
-    PlotterType *implementor; // the current type
-    PlotterType *normalPlotter;
-    PlotterType *percentPlotter;
+    PlotterType *implementor = nullptr; // the current type
+    PlotterType *normalPlotter = nullptr;
+    PlotterType *percentPlotter = nullptr;
     PlotterDiagramCompressor plotterCompressor;
     Plotter::CompressionMode useCompression;
     qreal mergeRadiusPercentage;

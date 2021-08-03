@@ -28,8 +28,6 @@ using namespace KDChart;
 DatasetSelectorWidget::DatasetSelectorWidget(QWidget *parent)
     : QFrame(parent)
     , mUi(new Ui::DatasetSelector())
-    , mSourceRowCount(0)
-    , mSourceColumnCount(0)
 {
     qWarning("For DatasetSelectorWidget to become useful, it has to be connected to the proxy model it configures!");
 

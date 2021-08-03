@@ -34,7 +34,7 @@ DataDimensionsList LeveyJenningsGrid::calculateGrid(const DataDimensionsList &ra
     Q_ASSERT_X(rawDataDimensions.count() == 2, "CartesianGrid::calculateGrid",
                "Error: calculateGrid() expects a list with exactly two entries.");
 
-    LeveyJenningsCoordinatePlane *plane = dynamic_cast<LeveyJenningsCoordinatePlane *>(mPlane);
+    auto *plane = dynamic_cast<LeveyJenningsCoordinatePlane *>(mPlane);
     Q_ASSERT_X(plane, "LeveyJenningsGrid::calculateGrid",
                "Error: PaintContext::calculatePlane() called, but no cartesian plane set.");
 
@@ -252,12 +252,12 @@ void LeveyJenningsGrid::drawGrid(PaintContext *context)
 {
     // This plane is used for translating the coordinates - not for the data boundaries
     PainterSaver p(context->painter());
-    LeveyJenningsCoordinatePlane *plane = qobject_cast<LeveyJenningsCoordinatePlane *>(
+    auto *plane = qobject_cast<LeveyJenningsCoordinatePlane *>(
         mPlane->sharedAxisMasterPlane(context->painter()));
     Q_ASSERT_X(plane, "LeveyJenningsGrid::drawGrid",
                "Bad function call: PaintContext::coodinatePlane() NOT a Levey Jennings plane.");
 
-    LeveyJenningsDiagram *diag = qobject_cast<LeveyJenningsDiagram *>(plane->diagram());
+    auto *diag = qobject_cast<LeveyJenningsDiagram *>(plane->diagram());
     if (!diag) {
         return;
     }

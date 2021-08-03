@@ -88,7 +88,7 @@ public:
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
-    QHBoxLayout *chartLayout = new QHBoxLayout(this);
+    auto *chartLayout = new QHBoxLayout(this);
     m_chart = new Chart();
     m_chart->setGlobalLeading(5, 5, 5, 5);
     chartLayout->addWidget(m_chart);
@@ -98,8 +98,8 @@ MainWindow::MainWindow(QWidget *parent)
     // Set up the diagram
     m_bars = new LineDiagram();
     m_bars->setModel(m_model);
-    CartesianAxis *xAxis = new CartesianAxis(m_bars);
-    CartesianAxis *yAxis = new CartesianAxis(m_bars);
+    auto *xAxis = new CartesianAxis(m_bars);
+    auto *yAxis = new CartesianAxis(m_bars);
     xAxis->setPosition(KDChart::CartesianAxis::Bottom);
     yAxis->setPosition(KDChart::CartesianAxis::Left);
     xAxis->setTitleText("Abscissa axis at the bottom");
@@ -109,7 +109,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_chart->coordinatePlane()->replaceDiagram(m_bars);
 
-    Legend *legend = new Legend(m_bars, m_chart);
+    auto *legend = new Legend(m_bars, m_chart);
     legend->setPosition(Position::South);
     legend->setAlignment(Qt::AlignCenter);
     legend->setShowLines(true);

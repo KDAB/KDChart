@@ -49,7 +49,7 @@ private:
     PrintingParameters();
     static PrintingParameters *instance();
 
-    qreal scaleFactor;
+    qreal scaleFactor = 1.0;
 };
 }
 

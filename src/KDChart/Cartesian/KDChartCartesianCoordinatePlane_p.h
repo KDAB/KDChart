@@ -67,10 +67,10 @@ public:
     bool isVisiblePoint(const AbstractCoordinatePlane *plane, const QPointF &point) const override
     {
         QPointF p = point;
-        const CartesianCoordinatePlane *const ref =
+        const auto *const ref =
             qobject_cast<const CartesianCoordinatePlane *>(
                 const_cast<AbstractCoordinatePlane *>(plane)->sharedAxisMasterPlane());
-        const CartesianCoordinatePlane *const cartPlane =
+        const auto *const cartPlane =
             dynamic_cast<const CartesianCoordinatePlane *>(plane);
         if (ref != nullptr && ref != cartPlane) {
             const QPointF logical = ref->translateBack(point) - cartPlane->visibleDataRange().topLeft()
@@ -84,52 +84,52 @@ public:
     // the coordinate plane will calculate the coordinate transformation:
     CoordinateTransformation coordinateTransformation;
 
-    bool bPaintIsRunning;
+    bool bPaintIsRunning = false;
 
     // true after setGridAttributes( Qt::Orientation ) was used,
     // false if resetGridAttributes( Qt::Orientation ) was called
-    bool hasOwnGridAttributesHorizontal;
-    bool hasOwnGridAttributesVertical;
+    bool hasOwnGridAttributesHorizontal = false;
+    bool hasOwnGridAttributesVertical = false;
 
     // true after the first resize event came in
     // bool initialResizeEventReceived;
 
     // true if the coordinate plane scales isometrically
     // (same scaling ratio from data to screen space for both axes)
-    bool isometricScaling;
+    bool isometricScaling = false;
 
     GridAttributes gridAttributesHorizontal;
     GridAttributes gridAttributesVertical;
 
-    qreal horizontalMin;
-    qreal horizontalMax;
-    qreal verticalMin;
-    qreal verticalMax;
+    qreal horizontalMin = 0;
+    qreal horizontalMax = 0;
+    qreal verticalMin = 0;
+    qreal verticalMax = 0;
 
     // autoAdjustHorizontalRangeToData determines if and how much the horizontal range is adjusted.
     // A value of 100 means that the fixed horizontal range will be used (e.g. set by the user),
     // otherwise the value will be the percentage of the diagram's horizontal range that is to be
     // left empty (i.e., it resembles the 'gap' between the horizontal extrema and the border of the
     // diagram).
-    unsigned int autoAdjustHorizontalRangeToData;
+    unsigned int autoAdjustHorizontalRangeToData = 67;
 
     // autoAdjustVerticalRangeToData determines if and how much the vertical range is adjusted.
     // A value of 100 means that the fixed vertical range will be used (e.g. set by the user),
     // otherwise the value will be the percentage of the diagram's vertical range that is to be
     // left empty (i.e., it resembles the 'gap' between the vertical extrema and the border of the
     // diagram).
-    unsigned int autoAdjustVerticalRangeToData;
-    bool autoAdjustGridToZoom;
+    unsigned int autoAdjustVerticalRangeToData = 67;
+    bool autoAdjustGridToZoom = true;
 
-    bool fixedDataCoordinateSpaceRelation;
-    bool xAxisStartAtZero;
+    bool fixedDataCoordinateSpaceRelation = false;
+    bool xAxisStartAtZero = true;
     QSizeF fixedDataCoordinateSpaceRelationPinnedSize;
     ZoomParameters fixedDataCoordinateSpaceRelationPinnedZoom;
 
     DataDimensionsList dimensions;
 
-    bool reverseVerticalPlane;
-    bool reverseHorizontalPlane;
+    bool reverseVerticalPlane = false;
+    bool reverseHorizontalPlane = false;
 };
 
 KDCHART_IMPL_DERIVED_PLANE(CartesianCoordinatePlane, AbstractCoordinatePlane)

@@ -133,8 +133,8 @@ int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
-    KDGantt::GraphicsView *view = new KDGantt::GraphicsView;
-    MyRowController *rowController = new MyRowController;
+    auto *view = new KDGantt::GraphicsView;
+    auto *rowController = new MyRowController;
     view->setReadOnly(true);
     view->setRowController(rowController);
     view->show();
@@ -143,7 +143,7 @@ int main(int argc, char **argv)
     for (int i = 0; i < 10; ++i) {
         QList<QStandardItem *> items;
         for (int j = 0; j < 10; ++j) {
-            QStandardItem *item = new QStandardItem;
+            auto *item = new QStandardItem;
             //for ( int col = 0; col < 5; ++col ) {
             //  QStandardItem* colitem = new QStandardItem;
             item->setText(QString::fromLatin1("Item %1").arg(i));

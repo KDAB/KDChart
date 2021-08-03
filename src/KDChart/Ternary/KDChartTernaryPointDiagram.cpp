@@ -71,7 +71,7 @@ void TernaryPointDiagram::paint(PaintContext *paintContext)
     QPainter *p = paintContext->painter();
     PainterSaver s(p);
 
-    TernaryCoordinatePlane *plane =
+    auto *plane =
         static_cast<TernaryCoordinatePlane *>(paintContext->coordinatePlane());
     Q_ASSERT(plane);
 

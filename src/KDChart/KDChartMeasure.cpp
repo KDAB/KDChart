@@ -30,10 +30,6 @@
 namespace KDChart {
 
 Measure::Measure()
-    : mValue(0.0)
-    , mMode(KDChartEnums::MeasureCalculationModeAuto)
-    , mArea(nullptr)
-    , mOrientation(KDChartEnums::MeasureOrientationAuto)
 {
     // this block left empty intentionally
 }
@@ -134,16 +130,16 @@ qreal Measure::calculatedValue(const QObject *autoArea,
 const QSizeF Measure::sizeOfArea(const QObject *area) const
 {
     QSizeF size;
-    const CartesianCoordinatePlane *plane = dynamic_cast<const CartesianCoordinatePlane *>(area);
+    const auto *plane = dynamic_cast<const CartesianCoordinatePlane *>(area);
     if (false) {
         size = plane->visibleDiagramArea().size();
     } else {
-        const AbstractArea *kdcArea = dynamic_cast<const AbstractArea *>(area);
+        const auto *kdcArea = dynamic_cast<const AbstractArea *>(area);
         if (kdcArea) {
             size = kdcArea->geometry().size();
             //qDebug() << "Measure::sizeOfArea() found kdcArea with size" << size;
         } else {
-            const QWidget *widget = dynamic_cast<const QWidget *>(area);
+            const auto *widget = dynamic_cast<const QWidget *>(area);
             if (widget) {
                 /* ATTENTION: Using the layout does not work: The Legend will never get the right size then!
                 const QLayout * layout = widget->layout();
@@ -171,7 +167,6 @@ bool Measure::operator==(const Measure &r) const
 }
 
 GlobalMeasureScaling::GlobalMeasureScaling()
-    : m_paintDevice(nullptr)
 {
     mFactors.push(qMakePair(qreal(1.0), qreal(1.0)));
 }

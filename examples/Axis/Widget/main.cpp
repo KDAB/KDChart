@@ -45,8 +45,8 @@ int main(int argc, char **argv)
     widget.addLegend(Position::North);
 
     // configure the axes
-    CartesianAxis *xAxis = new CartesianAxis(widget.lineDiagram());
-    CartesianAxis *yAxis = new CartesianAxis(widget.lineDiagram());
+    auto *xAxis = new CartesianAxis(widget.lineDiagram());
+    auto *yAxis = new CartesianAxis(widget.lineDiagram());
     xAxis->setPosition(CartesianAxis::Bottom);
     yAxis->setPosition(CartesianAxis::Left);
     xAxis->setTitleText("Abscissa bottom position");

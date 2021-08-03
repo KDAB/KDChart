@@ -52,7 +52,7 @@ private:
     QSize sizeForWidth(int width);
 
 private:
-    bool mHintValid;
+    bool mHintValid = false;
     QSize mSizeHint;
     QSize mMinimumSizeHint;
 };

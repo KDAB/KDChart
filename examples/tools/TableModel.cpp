@@ -26,9 +26,6 @@
 
 TableModel::TableModel(QObject *parent)
     : QAbstractTableModel(parent)
-    , m_dataHasHorizontalHeaders(true)
-    , m_dataHasVerticalHeaders(true)
-    , m_supplyHeaderData(true)
 {
 }
 

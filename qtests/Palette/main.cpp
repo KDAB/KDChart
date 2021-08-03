@@ -29,7 +29,7 @@ private slots:
     {
         Palette p;
         QCOMPARE(p.isValid(), false);
-        Palette *p2 = new Palette();
+        auto *p2 = new Palette();
         QCOMPARE(p2->isValid(), false);
         QCOMPARE(p2->size(), 0);
         delete p2;

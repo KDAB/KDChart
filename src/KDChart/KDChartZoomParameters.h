@@ -40,10 +40,6 @@ class ZoomParameters
 {
 public:
     ZoomParameters()
-        : xFactor(1.0)
-        , yFactor(1.0)
-        , xCenter(0.5)
-        , yCenter(0.5)
     {
     }
 
@@ -65,11 +61,11 @@ public:
         return QPointF(xCenter, yCenter);
     }
 
-    qreal xFactor;
-    qreal yFactor;
+    qreal xFactor = 1.0;
+    qreal yFactor = 1.0;
 
-    qreal xCenter;
-    qreal yCenter;
+    qreal xCenter = 0.5;
+    qreal yCenter = 0.5;
 };
 }
 

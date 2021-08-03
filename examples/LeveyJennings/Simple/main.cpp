@@ -37,7 +37,7 @@ public:
         : QObject(view)
         , view(view)
     {
-        QTimer *const t = new QTimer(this);
+        auto *const t = new QTimer(this);
         connect(t, SIGNAL(timeout()), this, SLOT(animate()));
         t->start(1000);
     }
@@ -144,13 +144,13 @@ int main(int argc, char **argv)
     model.setData(model.index(13, 2), true);
     model.setData(model.index(13, 3), QDateTime::fromString("2007-07-12T21:00:00", Qt::ISODate));
 
-    KDChart::Chart *chart = new KDChart::Chart();
+    auto *chart = new KDChart::Chart();
 
-    KDChart::LeveyJenningsDiagram *diagram = new KDChart::LeveyJenningsDiagram;
+    auto *diagram = new KDChart::LeveyJenningsDiagram;
     diagram->setModel(&model);
     diagram->setExpectedMeanValue(200);
     diagram->setExpectedStandardDeviation(20);
-    KDChart::LeveyJenningsCoordinatePlane *plane = new KDChart::LeveyJenningsCoordinatePlane;
+    auto *plane = new KDChart::LeveyJenningsCoordinatePlane;
     chart->replaceCoordinatePlane(plane);
     plane->replaceDiagram(diagram);
 
@@ -165,11 +165,11 @@ int main(int argc, char **argv)
     diagram->setFluidicsPackChanges(QVector<QDateTime>() << QDateTime::fromString("2007-07-11T15:00:00", Qt::ISODate));
     diagram->setSensorChanges(QVector<QDateTime>() << QDateTime::fromString("2007-07-10T11:00:00", Qt::ISODate));
 
-    KDChart::LeveyJenningsAxis *axis = new KDChart::LeveyJenningsAxis(diagram);
+    auto *axis = new KDChart::LeveyJenningsAxis(diagram);
     axis->setPosition(KDChart::CartesianAxis::Left);
     diagram->addAxis(axis);
 
-    KDChart::LeveyJenningsAxis *axis2 = new KDChart::LeveyJenningsAxis(diagram);
+    auto *axis2 = new KDChart::LeveyJenningsAxis(diagram);
     axis2->setPosition(KDChart::CartesianAxis::Right);
     axis2->setType(KDChart::LeveyJenningsGridAttributes::Calculated);
     diagram->addAxis(axis2);
@@ -178,11 +178,11 @@ int main(int argc, char **argv)
     axis3->setPosition(KDChart::CartesianAxis::Bottom);
     diagram->addAxis(axis3);
 
-    QTableView *tv = new QTableView;
+    auto *tv = new QTableView;
     tv->setModel(&model);
     tv->setSelectionModel(diagram->selectionModel());
 
-    QSplitter *splitter = new QSplitter;
+    auto *splitter = new QSplitter;
     splitter->addWidget(tv);
     splitter->addWidget(chart);
 

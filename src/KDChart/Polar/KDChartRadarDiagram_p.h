@@ -56,9 +56,9 @@ public:
     }
 
 private:
-    bool closeDatasets;
-    bool reverseData;
-    qreal fillAlpha;
+    bool closeDatasets = false;
+    bool reverseData = false;
+    qreal fillAlpha = 0.0;
     LabelPaintCache labelPaintCache;
 };
 

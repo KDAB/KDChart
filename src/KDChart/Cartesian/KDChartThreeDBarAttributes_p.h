@@ -46,8 +46,8 @@ public:
     Private();
 
 private:
-    bool useShadowColors;
-    uint angle;
+    bool useShadowColors = true;
+    uint angle = 45;
 };
 
 KDCHART_DERIVED_PRIVATE_FOOTER(ThreeDBarAttributes, AbstractThreeDAttributes)

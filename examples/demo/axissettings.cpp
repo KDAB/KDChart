@@ -78,8 +78,8 @@ void AxisSettings::Private::currentIndexChanged(int index)
 {
     m_currentAxis = nullptr;
     const CartesianAxis::Position pos = (CartesianAxis::Position)ui.axisSelection->itemData(index).toInt();
-    CartesianCoordinatePlane *plane = qobject_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane());
-    AbstractCartesianDiagram *diag = qobject_cast<AbstractCartesianDiagram *>(m_chart->coordinatePlane()->diagram());
+    auto *plane = qobject_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane());
+    auto *diag = qobject_cast<AbstractCartesianDiagram *>(m_chart->coordinatePlane()->diagram());
     if (plane && diag) {
         QVector<CartesianAxis *> axes = diag->axes().toVector();
         Q_FOREACH (CartesianAxis *axis, axes) {
@@ -113,8 +113,8 @@ void AxisSettings::Private::updateUiForCurrentAxis()
 void AxisSettings::Private::setVisible(bool value)
 {
     const CartesianAxis::Position pos = (CartesianAxis::Position)ui.axisSelection->itemData(ui.axisSelection->currentIndex()).toInt();
-    CartesianCoordinatePlane *plane = qobject_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane());
-    AbstractCartesianDiagram *diag = qobject_cast<AbstractCartesianDiagram *>(m_chart->coordinatePlane()->diagram());
+    auto *plane = qobject_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane());
+    auto *diag = qobject_cast<AbstractCartesianDiagram *>(m_chart->coordinatePlane()->diagram());
     if (plane && diag) {
         QVector<CartesianAxis *> axes = m_axisCache[plane];
         bool foundAxis = false;
@@ -133,7 +133,7 @@ void AxisSettings::Private::setVisible(bool value)
         }
         if (!foundAxis) {
             Q_ASSERT(value);
-            CartesianAxis *axis = new CartesianAxis(diag);
+            auto *axis = new CartesianAxis(diag);
             axis->setPosition(pos);
             diag->addAxis(axis);
             m_axisCache[plane].append(axis);
@@ -179,7 +179,7 @@ AxisSettings::~AxisSettings()
 
 void AxisSettings::diagramTypeChanged()
 {
-    CartesianCoordinatePlane *plane = qobject_cast<CartesianCoordinatePlane *>(d->m_chart->coordinatePlane());
+    auto *plane = qobject_cast<CartesianCoordinatePlane *>(d->m_chart->coordinatePlane());
     setEnabled(plane);
     if (plane)
         d->currentIndexChanged(d->ui.axisSelection->currentIndex());

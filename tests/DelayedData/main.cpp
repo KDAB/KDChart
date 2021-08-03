@@ -32,10 +32,10 @@ public:
         : QWidget(parent)
     {
         m_model.insertRows(0, 0, QModelIndex());
-        KDChart::BarDiagram *diagram = new KDChart::BarDiagram;
+        auto *diagram = new KDChart::BarDiagram;
         diagram->setModel(&m_model);
 
-        KDChart::Legend *legend = new KDChart::Legend(diagram, diagram);
+        auto *legend = new KDChart::Legend(diagram, diagram);
         m_chart.addLegend(legend);
 
         // The code below doesn't work, but it would
@@ -48,9 +48,9 @@ public:
     m_chart.addLegend(legend);
 #endif
 
-        KDChart::CartesianAxis *abcissa = new KDChart::CartesianAxis(diagram);
+        auto *abcissa = new KDChart::CartesianAxis(diagram);
         abcissa->setPosition(KDChart::CartesianAxis::Bottom);
-        KDChart::CartesianAxis *ordinate = new KDChart::CartesianAxis(diagram);
+        auto *ordinate = new KDChart::CartesianAxis(diagram);
         ordinate->setPosition(KDChart::CartesianAxis::Left);
         diagram->addAxis(abcissa);
         diagram->addAxis(ordinate);
@@ -66,7 +66,7 @@ public:
         connect(&m_colbutton, SIGNAL(clicked()),
                 this, SLOT(addCols()));
 
-        QVBoxLayout *l = new QVBoxLayout(this);
+        auto *l = new QVBoxLayout(this);
         l->addWidget(&m_chart);
         l->addWidget(&m_rowbutton);
         l->addWidget(&m_colbutton);

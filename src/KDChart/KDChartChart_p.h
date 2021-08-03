@@ -62,51 +62,33 @@ class CartesianAxis;
 struct PlaneInfo
 {
     PlaneInfo()
-        : referencePlane(nullptr)
-        , horizontalOffset(1)
-        , verticalOffset(1)
-        , gridLayout(nullptr)
-        , topAxesLayout(nullptr)
-        , bottomAxesLayout(nullptr)
-        , leftAxesLayout(nullptr)
-        , rightAxesLayout(nullptr)
     {
     }
-    AbstractCoordinatePlane *referencePlane;
-    int horizontalOffset;
-    int verticalOffset;
-    QGridLayout *gridLayout;
-    QVBoxLayout *topAxesLayout;
-    QVBoxLayout *bottomAxesLayout;
-    QHBoxLayout *leftAxesLayout;
-    QHBoxLayout *rightAxesLayout;
+    AbstractCoordinatePlane *referencePlane = nullptr;
+    int horizontalOffset = 1;
+    int verticalOffset = 1;
+    QGridLayout *gridLayout = nullptr;
+    QVBoxLayout *topAxesLayout = nullptr;
+    QVBoxLayout *bottomAxesLayout = nullptr;
+    QHBoxLayout *leftAxesLayout = nullptr;
+    QHBoxLayout *rightAxesLayout = nullptr;
 };
 
 struct LayoutGraphNode
 {
     LayoutGraphNode()
-        : diagramPlane(nullptr)
-        , leftSuccesor(nullptr)
-        , bottomSuccesor(nullptr)
-        , sharedSuccesor(nullptr)
-        , gridLayout(nullptr)
-        , topAxesLayout(false)
-        , bottomAxesLayout(false)
-        , leftAxesLayout(false)
-        , rightAxesLayout(false)
-        , priority(-1)
     {
     }
-    AbstractCoordinatePlane *diagramPlane;
-    LayoutGraphNode *leftSuccesor;
-    LayoutGraphNode *bottomSuccesor;
-    LayoutGraphNode *sharedSuccesor;
-    QGridLayout *gridLayout;
-    bool topAxesLayout;
-    bool bottomAxesLayout;
-    bool leftAxesLayout;
-    bool rightAxesLayout;
-    int priority;
+    AbstractCoordinatePlane *diagramPlane = nullptr;
+    LayoutGraphNode *leftSuccesor = nullptr;
+    LayoutGraphNode *bottomSuccesor = nullptr;
+    LayoutGraphNode *sharedSuccesor = nullptr;
+    QGridLayout *gridLayout = nullptr;
+    bool topAxesLayout = false;
+    bool bottomAxesLayout = false;
+    bool leftAxesLayout = false;
+    bool rightAxesLayout = false;
+    int priority = -1;
     bool operator<(const LayoutGraphNode &other) const
     {
         return priority < other.priority;
@@ -177,10 +159,9 @@ public:
     struct AxisInfo
     {
         AxisInfo()
-            : plane(nullptr)
         {
         }
-        AbstractCoordinatePlane *plane;
+        AbstractCoordinatePlane *plane = nullptr;
     };
     QHash<AbstractCoordinatePlane *, PlaneInfo> buildPlaneLayoutInfos();
     QVector<LayoutGraphNode *> buildPlaneLayoutGraph();

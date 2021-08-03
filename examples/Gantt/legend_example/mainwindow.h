@@ -70,8 +70,8 @@ private:
     QStandardItemModel *model;
     KDGantt::ConstraintModel *constraintModel;
     KDGantt::DateTimeGrid *grid;
-    KDGantt::Legend *smallLegend;
-    KDGantt::Legend *detailedLegend;
+    KDGantt::Legend *smallLegend = nullptr;
+    KDGantt::Legend *detailedLegend = nullptr;
 
     QAction *newEntryAction;
     QAction *removeEntryAction;

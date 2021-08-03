@@ -57,15 +57,15 @@ public:
 
     void setOrientationAndType(Qt::Orientation, BarDiagram::BarType);
 
-    Qt::Orientation orientation;
+    Qt::Orientation orientation = Qt::Vertical;
 
-    BarDiagramType *implementor; // the current type
-    BarDiagramType *normalDiagram;
-    BarDiagramType *stackedDiagram;
-    BarDiagramType *percentDiagram;
-    BarDiagramType *normalLyingDiagram;
-    BarDiagramType *stackedLyingDiagram;
-    BarDiagramType *percentLyingDiagram;
+    BarDiagramType *implementor = nullptr; // the current type
+    BarDiagramType *normalDiagram = nullptr;
+    BarDiagramType *stackedDiagram = nullptr;
+    BarDiagramType *percentDiagram = nullptr;
+    BarDiagramType *normalLyingDiagram = nullptr;
+    BarDiagramType *stackedLyingDiagram = nullptr;
+    BarDiagramType *percentLyingDiagram = nullptr;
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM(BarDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane)

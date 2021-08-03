@@ -43,8 +43,8 @@ public:
 
     QPersistentModelIndex start;
     QPersistentModelIndex end;
-    Type type;
-    RelationType relationType;
+    Type type = TypeSoft;
+    RelationType relationType = FinishStart;
     QMap<int, QVariant> data;
 };
 }

@@ -48,8 +48,6 @@ class KDCHART_EXPORT AbstractLayoutItem : public QLayoutItem
 public:
     AbstractLayoutItem(Qt::Alignment itemAlignment = {})
         : QLayoutItem(itemAlignment)
-        , mParent(nullptr)
-        , mParentLayout(nullptr)
     {
     }
 
@@ -86,8 +84,8 @@ public:
     }
 
 protected:
-    QWidget *mParent;
-    QLayout *mParentLayout;
+    QWidget *mParent = nullptr;
+    QLayout *mParentLayout = nullptr;
 };
 
 /**
@@ -158,11 +156,11 @@ private:
     QString mText;
     Qt::Alignment mTextAlignment;
     TextAttributes mAttributes;
-    const QObject *mAutoReferenceArea;
-    KDChartEnums::MeasureOrientation mAutoReferenceOrientation;
+    const QObject *mAutoReferenceArea = nullptr;
+    KDChartEnums::MeasureOrientation mAutoReferenceOrientation = KDChartEnums::MeasureOrientationHorizontal;
     mutable QSize cachedSizeHint;
     mutable QPolygon mCachedBoundingPolygon;
-    mutable qreal cachedFontSize;
+    mutable qreal cachedFontSize = 0.0;
     mutable QFont cachedFont;
 };
 

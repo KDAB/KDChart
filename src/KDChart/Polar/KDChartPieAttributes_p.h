@@ -45,9 +45,9 @@ class PieAttributes::Private
 public:
     Private();
 
-    qreal explodeFactor;
-    qreal tangentialGapFactor;
-    qreal radialGapFactor;
+    qreal explodeFactor = 0.0;
+    qreal tangentialGapFactor = 0.0;
+    qreal radialGapFactor = 0.0;
 };
 
 }

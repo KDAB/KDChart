@@ -27,8 +27,6 @@
 using namespace KDChart;
 
 ThreeDBarAttributes::Private::Private()
-    : useShadowColors(true)
-    , angle(45)
 {
 }
 

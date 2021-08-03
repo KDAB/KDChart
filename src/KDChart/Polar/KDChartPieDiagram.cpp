@@ -34,7 +34,6 @@ using namespace KDChart;
 
 PieDiagram::Private::Private()
     : labelDecorations(PieDiagram::NoDecoration)
-    , isCollisionAvoidanceEnabled(false)
 {
 }
 

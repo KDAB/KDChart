@@ -39,14 +39,6 @@
 using namespace KDChart;
 
 BarDiagram::Private::Private()
-    : orientation(Qt::Vertical)
-    , implementor(nullptr)
-    , normalDiagram(nullptr)
-    , stackedDiagram(nullptr)
-    , percentDiagram(nullptr)
-    , normalLyingDiagram(nullptr)
-    , stackedLyingDiagram(nullptr)
-    , percentLyingDiagram(nullptr)
 {
 }
 
@@ -65,7 +57,7 @@ void BarDiagram::Private::setOrientationAndType(Qt::Orientation o, BarDiagram::B
     if (orientation == o && implementor->type() == type) {
         return;
     }
-    BarDiagram *barDia = qobject_cast<BarDiagram *>(diagram);
+    auto *barDia = qobject_cast<BarDiagram *>(diagram);
 
     orientation = o;
 
@@ -138,7 +130,7 @@ BarDiagram::~BarDiagram()
 BarDiagram *BarDiagram::clone() const
 {
 
-    BarDiagram *newDiagram = new BarDiagram(new Private(*d));
+    auto *newDiagram = new BarDiagram(new Private(*d));
     newDiagram->setType(type());
     return newDiagram;
 }

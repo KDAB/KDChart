@@ -65,7 +65,7 @@ public:
 
 private:
     // user-settable
-    HeaderFooterType type;
+    HeaderFooterType type = Header;
     Position position;
 };
 

@@ -89,7 +89,7 @@ void RadarGrid::drawGrid(PaintContext *context)
 {
     const QBrush backupBrush(context->painter()->brush());
     context->painter()->setBrush(QBrush());
-    RadarCoordinatePlane *plane = dynamic_cast<RadarCoordinatePlane *>(context->coordinatePlane());
+    auto *plane = dynamic_cast<RadarCoordinatePlane *>(context->coordinatePlane());
     Q_ASSERT(plane);
     Q_ASSERT(plane->diagram());
     QPair<QPointF, QPointF> boundaries = plane->diagram()->dataBoundaries();

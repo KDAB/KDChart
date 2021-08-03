@@ -47,8 +47,8 @@ public:
 
 private:
     //ThreeDLines
-    uint lineXRotation;
-    uint lineYRotation;
+    uint lineXRotation = 15;
+    uint lineYRotation = 15;
 };
 
 KDCHART_DERIVED_PRIVATE_FOOTER(ThreeDLineAttributes, AbstractThreeDAttributes)

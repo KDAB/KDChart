@@ -31,8 +31,6 @@
 static const qreal s_stepWidth = 0.1;
 
 Model::Model()
-    : m_x(0)
-    , m_function(SineFunction)
 {
     m_appendTimer.setInterval(3);
     connect(&m_appendTimer, SIGNAL(timeout()), SLOT(appendPoint()));

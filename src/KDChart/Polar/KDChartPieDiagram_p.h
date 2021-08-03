@@ -64,7 +64,7 @@ protected:
     qreal size;
     LabelPaintCache labelPaintCache;
     PieDiagram::LabelDecorations labelDecorations;
-    bool isCollisionAvoidanceEnabled;
+    bool isCollisionAvoidanceEnabled = false;
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM(PieDiagram, AbstractPieDiagram, PolarCoordinatePlane)

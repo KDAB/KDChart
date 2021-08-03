@@ -51,8 +51,8 @@ public:
     }
 
 private:
-    int m_row;
-    int m_column;
+    int m_row = -1;
+    int m_column = -1;
 };
 
 }

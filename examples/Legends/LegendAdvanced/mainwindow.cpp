@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     m_chart = new KDChart::Chart();
     chartLayout->addWidget(m_chart);
 
@@ -67,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_lines->setPen(2, pen);
 
     // Add at least one legend for starters
-    KDChart::Legend *legend = new KDChart::Legend(m_lines, m_chart);
+    auto *legend = new KDChart::Legend(m_lines, m_chart);
     legend->setPosition(KDChart::Position::North);
     legend->setAlignment(Qt::AlignCenter);
     legend->setShowLines(false);
@@ -76,7 +76,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_chart->addLegend(legend);
     legend->show();
 
-    LegendItem *newItem = new LegendItem(legend, legendsTV);
+    auto *newItem = new LegendItem(legend, legendsTV);
     newItem->setText(0, tr("North"));
     newItem->setText(1, tr("no"));
     newItem->setText(2, tr("Legend"));
@@ -124,7 +124,7 @@ void MainWindow::on_addLegendPB_clicked()
     DerivedAddLegendDialog conf;
     initAddLegendDialog(conf, Qt::AlignCenter);
     if (conf.exec() == QDialog::Accepted) {
-        KDChart::Legend *legend = new KDChart::Legend(m_lines, m_chart);
+        auto *legend = new KDChart::Legend(m_lines, m_chart);
         m_chart->addLegend(legend);
         legend->setPosition(
             KDChart::Position::fromName(conf.positionCO->itemData(conf.positionCO->currentIndex()).toByteArray()));
@@ -159,7 +159,7 @@ void MainWindow::on_addLegendPB_clicked()
             break;
         }
 
-        LegendItem *newItem = new LegendItem(legend, legendsTV);
+        auto *newItem = new LegendItem(legend, legendsTV);
         newItem->setText(0, conf.positionCO->currentText());
         newItem->setText(1, conf.showLinesCB->isChecked() ? tr("yes") : tr("no"));
         newItem->setText(2, conf.titleTextED->text());

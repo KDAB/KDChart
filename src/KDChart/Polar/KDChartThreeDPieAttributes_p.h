@@ -46,7 +46,7 @@ public:
     Private();
 
 private:
-    bool useShadowColors;
+    bool useShadowColors = true;
 };
 
 KDCHART_DERIVED_PRIVATE_FOOTER(ThreeDPieAttributes, AbstractThreeDAttributes)

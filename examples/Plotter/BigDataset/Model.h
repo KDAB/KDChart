@@ -57,8 +57,8 @@ private slots:
 private:
     qreal nextFunctionValue();
 
-    qreal m_x;
-    Function m_function;
+    qreal m_x = 0;
+    Function m_function = SineFunction;
     QVector<qreal> m_data;
     QTimer m_appendTimer;
 };

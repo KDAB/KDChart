@@ -33,9 +33,6 @@ using namespace KDChart;
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
-    , m_currentFactor(0)
-    , m_currentDirection(1)
-    , m_currentSlice(0)
 {
     setupUi(this);
 
@@ -43,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
     initKDChartClasses();
 
     // insert the KDChart::Chart into Qt's layout
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     m_chart->setGlobalLeadingLeft(5);
     m_chart->setGlobalLeadingRight(5);
     chartLayout->addWidget(m_chart);
@@ -100,7 +97,7 @@ void MainWindow::on_startPositionSB_valueChanged(double pos)
 
 void MainWindow::on_startPositionSL_valueChanged(int pos)
 {
-    qreal qrealValue = static_cast<qreal>(pos);
+    auto qrealValue = static_cast<qreal>(pos);
     startPositionSB->blockSignals(true);
     startPositionSB->setValue(qrealValue);
     startPositionSB->blockSignals(false);

@@ -97,7 +97,7 @@ bool AbstractAxis::Private::hasDiagram(AbstractDiagram *diagram) const
 
 void AbstractAxis::Private::updateLayouts()
 {
-    if (CartesianAxis *cartesianAxis = qobject_cast<CartesianAxis *>(mAxis)) {
+    if (auto *cartesianAxis = qobject_cast<CartesianAxis *>(mAxis)) {
         cartesianAxis->layoutPlanes();
     } else {
         mAxis->update();

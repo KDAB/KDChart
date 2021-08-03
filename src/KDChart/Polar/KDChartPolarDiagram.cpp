@@ -27,8 +27,6 @@
 using namespace KDChart;
 
 PolarDiagram::Private::Private()
-    : rotateCircularLabels(false)
-    , closeDatasets(false)
 {
 }
 
@@ -80,7 +78,7 @@ void PolarDiagram::init()
   */
 PolarDiagram *PolarDiagram::clone() const
 {
-    PolarDiagram *newDiagram = new PolarDiagram(new Private(*d));
+    auto *newDiagram = new PolarDiagram(new Private(*d));
     // This needs to be copied after the fact
     newDiagram->d->showDelimitersAtPosition = d->showDelimitersAtPosition;
     newDiagram->d->showLabelsAtPosition = d->showLabelsAtPosition;

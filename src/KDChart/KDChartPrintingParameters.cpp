@@ -20,7 +20,6 @@
 using namespace KDChart;
 
 PrintingParameters::PrintingParameters()
-    : scaleFactor(1.0)
 {
 }
 

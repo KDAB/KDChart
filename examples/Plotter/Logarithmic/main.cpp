@@ -64,20 +64,20 @@ int main(int argc, char **argv)
     model.setHeaderData(2, Qt::Horizontal, QString::fromLatin1("x"));
     model.setHeaderData(4, Qt::Horizontal, QString::fromLatin1("x^3"));
 
-    KDChart::Chart *chart = new KDChart::Chart();
+    auto *chart = new KDChart::Chart();
 
     KDChart::AbstractCartesianDiagram *diagram = new KDChart::Plotter;
     diagram->setModel(&model);
     chart->coordinatePlane()->replaceDiagram(diagram);
 
-    KDChart::CartesianAxis *xAxis = new KDChart::CartesianAxis(diagram);
-    KDChart::CartesianAxis *yAxis = new KDChart::CartesianAxis(diagram);
+    auto *xAxis = new KDChart::CartesianAxis(diagram);
+    auto *yAxis = new KDChart::CartesianAxis(diagram);
     xAxis->setPosition(KDChart::CartesianAxis::Bottom);
     yAxis->setPosition(KDChart::CartesianAxis::Left);
     diagram->addAxis(xAxis);
     diagram->addAxis(yAxis);
 
-    KDChart::Legend *legend = new KDChart::Legend(diagram, chart);
+    auto *legend = new KDChart::Legend(diagram, chart);
     KDChart::FrameAttributes legendAtt = legend->frameAttributes();
     legendAtt.setCornerRadius(9);
     legend->setFrameAttributes(legendAtt);
@@ -86,7 +86,7 @@ int main(int argc, char **argv)
     legend->setTitleText("Legend");
     chart->addLegend(legend);
 
-    KDChart::CartesianCoordinatePlane *cart_plane = dynamic_cast<KDChart::CartesianCoordinatePlane *>(chart->coordinatePlane());
+    auto *cart_plane = dynamic_cast<KDChart::CartesianCoordinatePlane *>(chart->coordinatePlane());
     Q_ASSERT(cart_plane);
 
     cart_plane->setAxesCalcModeX(KDChart::AbstractCoordinatePlane::Logarithmic);

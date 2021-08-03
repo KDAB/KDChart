@@ -166,7 +166,7 @@ int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
-    KDGantt::View *view = new KDGantt::View;
+    auto *view = new KDGantt::View;
 
     MyTaskModel model;
 

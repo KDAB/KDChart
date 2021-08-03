@@ -58,7 +58,7 @@ void LeveyJenningsCoordinatePlane::addDiagram(AbstractDiagram *diagram)
 
 LeveyJenningsGrid *LeveyJenningsCoordinatePlane::grid() const
 {
-    LeveyJenningsGrid *leveyJenningsGrid = static_cast<LeveyJenningsGrid *>(d->grid);
+    auto *leveyJenningsGrid = static_cast<LeveyJenningsGrid *>(d->grid);
     Q_ASSERT(dynamic_cast<LeveyJenningsGrid *>(d->grid));
     return leveyJenningsGrid;
 }

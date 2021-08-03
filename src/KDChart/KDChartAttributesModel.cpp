@@ -53,15 +53,13 @@ public:
     QMap<int, QMap<int, QVariant>> verticalHeaderDataMap;
     QMap<int, QVariant> modelDataMap;
     QMap<int, QVariant> defaultsMap;
-    int dataDimension;
-    AttributesModel::PaletteType paletteType;
+    int dataDimension = 1;
+    AttributesModel::PaletteType paletteType = AttributesModel::PaletteTypeDefault;
     Palette palette;
 };
 
 AttributesModel::Private::Private()
-    : dataDimension(1)
-    , paletteType(AttributesModel::PaletteTypeDefault)
-    , palette(Palette::defaultPalette())
+    : palette(Palette::defaultPalette())
 {
 }
 
