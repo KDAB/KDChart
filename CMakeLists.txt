@@ -45,12 +45,6 @@
 #
 
 cmake_minimum_required(VERSION 3.1)
-if(POLICY CMP0020)
-  cmake_policy(SET CMP0020 NEW)
-endif()
-if(POLICY CMP0025)
-  cmake_policy(SET CMP0025 NEW)
-endif()
 
 # Allow using a non-KDAB install location.
 set(KDAB_INSTALL True CACHE INTERNAL "Install to default KDAB Location")
