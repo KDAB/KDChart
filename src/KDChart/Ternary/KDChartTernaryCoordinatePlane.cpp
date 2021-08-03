@@ -75,7 +75,7 @@ void TernaryCoordinatePlane::layoutDiagrams()
         QSizeF topleft(0.0, 0.0);
         QSizeF bottomRight(0.0, 0.0);
         Q_FOREACH (AbstractDiagram *abstractDiagram, diagrams()) {
-            AbstractTernaryDiagram *diagram =
+            auto *diagram =
                 qobject_cast<AbstractTernaryDiagram *>(abstractDiagram);
             Q_ASSERT(diagram);
             Q_FOREACH (TernaryAxis *axis, diagram->axes()) {
@@ -177,7 +177,7 @@ DataDimensionsList TernaryCoordinatePlane::getDataDimensionsList() const
 
 TernaryGrid *TernaryCoordinatePlane::grid() const
 {
-    TernaryGrid *ternaryGrid = static_cast<TernaryGrid *>(d->grid);
+    auto *ternaryGrid = static_cast<TernaryGrid *>(d->grid);
     Q_ASSERT(dynamic_cast<TernaryGrid *>(d->grid));
     return ternaryGrid;
 }

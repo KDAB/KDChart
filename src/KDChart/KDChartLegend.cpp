@@ -191,7 +191,7 @@ Legend::LegendStyle Legend::legendStyle() const
   */
 Legend *Legend::clone() const
 {
-    Legend *legend = new Legend(new Private(*d), nullptr);
+    auto *legend = new Legend(new Private(*d), nullptr);
     legend->setTextAttributes(textAttributes());
     legend->setTitleTextAttributes(titleTextAttributes());
     legend->setFrameAttributes(frameAttributes());
@@ -289,7 +289,7 @@ ConstDiagramList Legend::constDiagrams() const
 void Legend::addDiagram(AbstractDiagram *newDiagram)
 {
     if (newDiagram) {
-        DiagramObserver *observer = new DiagramObserver(newDiagram, this);
+        auto *observer = new DiagramObserver(newDiagram, this);
 
         DiagramObserver *oldObs = d->findObserverForDiagram(newDiagram);
         if (oldObs) {
@@ -895,7 +895,7 @@ void Legend::buildLegend()
 
     // legend caption
     if (!titleText().isEmpty() && titleTextAttributes().isVisible()) {
-        TextLayoutItem *titleItem =
+        auto *titleItem =
             new TextLayoutItem(titleText(), titleTextAttributes(), referenceArea(),
                                measureOrientation, d->textAlignment);
         titleItem->setParentWidget(this);
@@ -905,7 +905,7 @@ void Legend::buildLegend()
 
         // The line between the title and the legend items, if any.
         if (showLines() && d->modelLabels.count()) {
-            HorizontalLineLayoutItem *lineItem = new HorizontalLineLayoutItem;
+            auto *lineItem = new HorizontalLineLayoutItem;
             d->paintItems << lineItem;
             d->layout->addItem(lineItem, 1, 0, 1, 5, Qt::AlignCenter);
         }
@@ -1001,7 +1001,7 @@ void Legend::buildLegend()
 
         // horizontal separator line, only between items
         if (showLines() && dataset != d->modelLabels.count() - 1) {
-            HorizontalLineLayoutItem *lineItem = new HorizontalLineLayoutItem;
+            auto *lineItem = new HorizontalLineLayoutItem;
             d->layout->addItem(lineItem, vLayoutRow + 1, 0, 1, 5, Qt::AlignCenter);
             d->paintItems << lineItem;
         }
@@ -1013,7 +1013,7 @@ void Legend::buildLegend()
 
     // vertical line (only in vertical mode)
     if (orientation() == Qt::Vertical && showLines() && d->modelLabels.count()) {
-        VerticalLineLayoutItem *lineItem = new VerticalLineLayoutItem;
+        auto *lineItem = new VerticalLineLayoutItem;
         d->paintItems << lineItem;
         d->layout->addItem(lineItem, 2, 2, d->modelLabels.count() * 2, 1);
     }
@@ -1044,7 +1044,7 @@ void Legend::Private::reflowHDatasetItems(Legend *q)
         QLayoutItem *const item = layout->itemAt(i);
         QLayout *const hbox = item->layout();
         if (!hbox) {
-            AbstractLayoutItem *alItem = dynamic_cast<AbstractLayoutItem *>(item);
+            auto *alItem = dynamic_cast<AbstractLayoutItem *>(item);
             Q_ASSERT(alItem);
             paintItems << alItem;
             continue;
@@ -1069,7 +1069,7 @@ void Legend::Private::flowHDatasetItems(Legend *q)
 
     const int allowedWidth = q->areaGeometry().width();
 
-    QHBoxLayout *currentLine = new QHBoxLayout;
+    auto *currentLine = new QHBoxLayout;
     int mainLayoutRow = 1;
     layout->addItem(currentLine, mainLayoutRow++, /*column*/ 0,
                     /*rowSpan*/ 1, /*columnSpan*/ 5, Qt::AlignLeft | Qt::AlignVCenter);

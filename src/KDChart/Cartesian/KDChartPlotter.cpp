@@ -75,7 +75,7 @@ Plotter::~Plotter()
   */
 Plotter *Plotter::clone() const
 {
-    Plotter *newDiagram = new Plotter(new Private(*d));
+    auto *newDiagram = new Plotter(new Private(*d));
     newDiagram->setType(type());
     return newDiagram;
 }
@@ -444,7 +444,7 @@ void Plotter::setDataBoundariesDirty()
 
 void Plotter::calcMergeRadius()
 {
-    CartesianCoordinatePlane *plane = dynamic_cast<CartesianCoordinatePlane *>(coordinatePlane());
+    auto *plane = dynamic_cast<CartesianCoordinatePlane *>(coordinatePlane());
     Q_ASSERT(plane);
     //Q_ASSERT( plane->translate( plane->translateBack( plane->visibleDiagramArea().topLeft() ) ) == plane->visibleDiagramArea().topLeft() );
     QRectF range = plane->visibleDataRange();

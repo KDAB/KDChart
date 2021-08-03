@@ -137,7 +137,7 @@ void MyItemDelegate::drawDisplay(QPainter *painter, const QStyleOptionViewItem &
                                  const QRect &rect, const QString &text) const
 {
     //qDebug() << "MyItemDelegate::drawDisplay(" <<painter<<rect<<text<<")";
-    KDGantt::ItemType typ = static_cast<KDGantt::ItemType>(text.toInt());
+    auto typ = static_cast<KDGantt::ItemType>(text.toInt());
     QString str;
     switch (typ) {
     case KDGantt::TypeTask:
@@ -279,7 +279,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     QMenuBar *mb = menuBar();
 
-    QMenu *fileMenu = new QMenu(tr("&File"));
+    auto *fileMenu = new QMenu(tr("&File"));
 
 #ifndef QT_NO_PRINTER
     fileMenu->addAction(tr("&Save as PDF..."), this, SLOT(slotFileSavePdf()));
@@ -291,7 +291,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     mb->addMenu(fileMenu);
 
-    QMenu *toolsMenu = new QMenu(tr("&Tools"));
+    auto *toolsMenu = new QMenu(tr("&Tools"));
 
     toolsMenu->addAction(tr("&New Item"), this, SLOT(slotToolsNewItem()));
     toolsMenu->addAction(tr("&Add Item"), this, SLOT(slotToolsAppendItem()));
@@ -326,18 +326,18 @@ SavePdfDialog::SavePdfDialog(QWidget *parent)
 {
     setModal(true);
     setWindowTitle(tr("Save as PDF"));
-    QVBoxLayout *l = new QVBoxLayout(this);
+    auto *l = new QVBoxLayout(this);
     setLayout(l);
 
-    QHBoxLayout *fileLayout = new QHBoxLayout(this);
+    auto *fileLayout = new QHBoxLayout(this);
     l->addLayout(fileLayout);
-    QLabel *fileLabel = new QLabel(tr("File:"), this);
+    auto *fileLabel = new QLabel(tr("File:"), this);
     fileLayout->addWidget(fileLabel);
     m_fileEdit = new QLineEdit(this);
     fileLabel->setBuddy(m_fileEdit);
     m_fileEdit->setText(QFileInfo(QDir::homePath(), "gantt.pdf").absoluteFilePath());
     fileLayout->addWidget(m_fileEdit);
-    QPushButton *m_fileButton = new QPushButton("...", this);
+    auto *m_fileButton = new QPushButton("...", this);
     connect(m_fileButton, SIGNAL(clicked()), this, SLOT(fileButtonClicked()));
     fileLayout->addWidget(m_fileButton);
 
@@ -349,7 +349,7 @@ SavePdfDialog::SavePdfDialog(QWidget *parent)
     m_columnLabels->setChecked(true);
     l->addWidget(m_columnLabels);
 
-    QDialogButtonBox *btnBox = new QDialogButtonBox(this);
+    auto *btnBox = new QDialogButtonBox(this);
     btnBox->setStandardButtons(QDialogButtonBox::Save | QDialogButtonBox::Cancel);
     connect(btnBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(btnBox, SIGNAL(rejected()), this, SLOT(reject()));

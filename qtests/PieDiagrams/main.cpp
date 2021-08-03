@@ -35,7 +35,7 @@ private slots:
     void initTestCase()
     {
         m_chart = new Chart(0);
-        PolarCoordinatePlane *polarPlane = new PolarCoordinatePlane(m_chart);
+        auto *polarPlane = new PolarCoordinatePlane(m_chart);
         m_chart->replaceCoordinatePlane(polarPlane);
         m_model = new TableModel(this);
         m_model->loadFromCSV(":/data");

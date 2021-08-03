@@ -64,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     m_chart = new Chart();
     chartLayout->addWidget(m_chart);
     // Set up the data
@@ -74,10 +74,10 @@ MainWindow::MainWindow(QWidget *parent)
     // Register the data model at the diagram
     m_plotter->setModel(m_model);
     // Add axes to the diagram
-    CartesianAxis *xAxis = new CartesianAxis(m_plotter);
-    CartesianAxis *xAxis2 = new CartesianAxis(m_plotter);
-    CartesianAxis *yAxis = new CartesianAxis(m_plotter);
-    CartesianAxis *yAxis2 = new CartesianAxis(m_plotter);
+    auto *xAxis = new CartesianAxis(m_plotter);
+    auto *xAxis2 = new CartesianAxis(m_plotter);
+    auto *yAxis = new CartesianAxis(m_plotter);
+    auto *yAxis2 = new CartesianAxis(m_plotter);
     xAxis->setPosition(KDChart::CartesianAxis::Bottom);
     xAxis2->setPosition(KDChart::CartesianAxis::Top);
     yAxis->setPosition(KDChart::CartesianAxis::Left);

@@ -58,7 +58,7 @@ void RadarDiagram::init()
   */
 RadarDiagram *RadarDiagram::clone() const
 {
-    RadarDiagram *newDiagram = new RadarDiagram(new Private(*d));
+    auto *newDiagram = new RadarDiagram(new Private(*d));
     // This needs to be copied after the fact
     newDiagram->d->closeDatasets = d->closeDatasets;
     return newDiagram;
@@ -178,7 +178,7 @@ void RadarDiagram::paint(PaintContext *ctx,
     const qreal r = qAbs(min) + dataBoundaries().second.y();
     const qreal step = (r - qAbs(min)) / (numberOfGridRings());
 
-    RadarCoordinatePlane *plane = dynamic_cast<RadarCoordinatePlane *>(ctx->coordinatePlane());
+    auto *plane = dynamic_cast<RadarCoordinatePlane *>(ctx->coordinatePlane());
     TextAttributes ta = plane->textAttributes();
     QRectF fontRect = ctx->rectangle();
     fontRect.setSize(QSizeF(fontRect.width(), step / 2.0));

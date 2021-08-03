@@ -70,9 +70,9 @@ void HeaderWidget::paintEvent(QPaintEvent *ev)
 bool HeaderWidget::event(QEvent *event)
 {
     if (event->type() == QEvent::ToolTip) {
-        DateTimeGrid *const grid = qobject_cast<DateTimeGrid *>(view()->grid());
+        auto *const grid = qobject_cast<DateTimeGrid *>(view()->grid());
         if (grid) {
-            QHelpEvent *e = static_cast<QHelpEvent *>(event);
+            auto *e = static_cast<QHelpEvent *>(event);
             QDateTime dt = grid->mapFromChart(view()->mapToScene(e->x(), 0).x()).toDateTime();
             setToolTip(dt.toString());
         }
@@ -84,7 +84,7 @@ void HeaderWidget::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu contextMenu;
 
-    DateTimeGrid *const grid = qobject_cast<DateTimeGrid *>(view()->grid());
+    auto *const grid = qobject_cast<DateTimeGrid *>(view()->grid());
     QAction *actionScaleAuto = nullptr;
     QAction *actionScaleMonth = nullptr;
     QAction *actionScaleWeek = nullptr;
@@ -93,8 +93,8 @@ void HeaderWidget::contextMenuEvent(QContextMenuEvent *event)
     QAction *actionZoomIn = nullptr;
     QAction *actionZoomOut = nullptr;
     if (grid != nullptr) {
-        QMenu *menuScale = new QMenu(tr("Scale"), &contextMenu);
-        QActionGroup *scaleGroup = new QActionGroup(&contextMenu);
+        auto *menuScale = new QMenu(tr("Scale"), &contextMenu);
+        auto *scaleGroup = new QActionGroup(&contextMenu);
         scaleGroup->setExclusive(true);
 
         actionScaleAuto = new QAction(tr("Auto"), menuScale);
@@ -618,7 +618,7 @@ void GraphicsView::resizeEvent(QResizeEvent *ev)
 QModelIndex GraphicsView::indexAt(const QPoint &pos) const
 {
     QGraphicsItem *item = itemAt(pos);
-    if (GraphicsItem *gitem = qgraphicsitem_cast<GraphicsItem *>(item)) {
+    if (auto *gitem = qgraphicsitem_cast<GraphicsItem *>(item)) {
         return d->scene.summaryHandlingModel()->mapToSource(gitem->index());
     } else {
         return QModelIndex();

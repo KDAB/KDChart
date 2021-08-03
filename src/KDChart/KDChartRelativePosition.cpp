@@ -165,10 +165,10 @@ const QPointF RelativePosition::referencePoint(qreal *polarDegrees) const
     bool useRect = (d->area != nullptr);
     QRect rect;
     if (useRect) {
-        if (const QWidget *widget = qobject_cast<const QWidget *>(d->area)) {
+        if (const auto *widget = qobject_cast<const QWidget *>(d->area)) {
             const QLayout *layout = widget->layout();
             rect = layout ? layout->geometry() : widget->geometry();
-        } else if (const AbstractArea *kdcArea = qobject_cast<const AbstractArea *>(d->area)) {
+        } else if (const auto *kdcArea = qobject_cast<const AbstractArea *>(d->area)) {
             rect = kdcArea->geometry();
         } else {
             useRect = false;

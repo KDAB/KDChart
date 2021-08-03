@@ -43,13 +43,13 @@ public:
             }
         }
 
-        BarDiagram *diagram = new BarDiagram;
+        auto *diagram = new BarDiagram;
         diagram->setModel(&m_model);
 
         m_chart.coordinatePlane()->replaceDiagram(diagram);
 
         // Add at one legend and set it up
-        Legend *legend = new Legend(diagram, &m_chart);
+        auto *legend = new Legend(diagram, &m_chart);
         legend->setPosition(Position::North);
         legend->setAlignment(Qt::AlignCenter);
         legend->setShowLines(true);
@@ -108,7 +108,7 @@ public:
         fa.setVisible(true);
         legend->setFrameAttributes(fa);
 
-        QVBoxLayout *l = new QVBoxLayout(this);
+        auto *l = new QVBoxLayout(this);
         l->addWidget(&m_chart);
         m_chart.setGlobalLeadingTop(10);
         setLayout(l);

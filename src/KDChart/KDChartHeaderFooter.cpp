@@ -87,7 +87,7 @@ void HeaderFooter::init()
   */
 HeaderFooter *HeaderFooter::clone() const
 {
-    HeaderFooter *headerFooter = new HeaderFooter(new Private(*d), nullptr);
+    auto *headerFooter = new HeaderFooter(new Private(*d), nullptr);
     headerFooter->setType(type());
     headerFooter->setPosition(position());
     headerFooter->setText(text());

@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     m_chart = new Chart();
     chartLayout->addWidget(m_chart);
 
@@ -104,14 +104,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     plane = new CartesianCoordinatePlane(m_chart);
 
-    CartesianAxis *xAxis = new CartesianAxis(m_lines);
-    CartesianAxis *yAxis = new CartesianAxis(m_lines);
-    CartesianAxis *yAxis3 = new CartesianAxis(m_lines);
+    auto *xAxis = new CartesianAxis(m_lines);
+    auto *yAxis = new CartesianAxis(m_lines);
+    auto *yAxis3 = new CartesianAxis(m_lines);
     xAxis->setPosition(KDChart::CartesianAxis::Bottom);
     yAxis->setPosition(KDChart::CartesianAxis::Left);
     yAxis3->setPosition(KDChart::CartesianAxis::Left);
 
-    CartesianAxis *yAxis2 = new CartesianAxis(m_bars);
+    auto *yAxis2 = new CartesianAxis(m_bars);
     yAxis2->setPosition(KDChart::CartesianAxis::Right);
 
     // explicitly add it to the second diagram, we want to share it

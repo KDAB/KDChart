@@ -138,7 +138,7 @@ private slots:
         initTestCase();
         m_axis = new CartesianAxis;
         m_bars->addAxis(m_axis);
-        BarDiagram *bars2 = new BarDiagram;
+        auto *bars2 = new BarDiagram;
         bars2->setModel(m_tableModel);
         m_chart->coordinatePlane()->replaceDiagram(bars2);
         m_axis->sizeHint();

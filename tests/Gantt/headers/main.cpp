@@ -107,7 +107,7 @@ int main(int argc, char **argv)
 
     /*** A view with header and vertical grid lines for every 10 minutes */
     View view2;
-    QTreeView *tw = qobject_cast<QTreeView *>(view2.leftView());
+    auto *tw = qobject_cast<QTreeView *>(view2.leftView());
     if (tw)
         tw->setHeader(new MyHeaderView);
     DateTimeGrid grid2;

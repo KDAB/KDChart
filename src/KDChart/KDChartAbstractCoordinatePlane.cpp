@@ -342,8 +342,8 @@ void KDChart::AbstractCoordinatePlane::mouseReleaseEvent(QMouseEvent *event)
         d->rubberBandZoomConfigHistory.push(ZoomParameters(zoomFactorX(), zoomFactorY(), zoomCenter()));
 
         // this is the height/width of the rubber band in pixel space
-        const qreal rubberWidth = static_cast<qreal>(d->rubberBand->width());
-        const qreal rubberHeight = static_cast<qreal>(d->rubberBand->height());
+        const auto rubberWidth = static_cast<qreal>(d->rubberBand->width());
+        const auto rubberHeight = static_cast<qreal>(d->rubberBand->height());
 
         if (rubberWidth > 0.0 && rubberHeight > 0.0) {
             // this is the center of the rubber band in pixel space

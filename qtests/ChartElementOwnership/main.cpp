@@ -45,7 +45,7 @@ private slots:
         QCOMPARE(m_chart->coordinatePlanes().size(), 1);
 
         // add and take
-        CartesianCoordinatePlane *p = new CartesianCoordinatePlane();
+        auto *p = new CartesianCoordinatePlane();
         m_chart->addCoordinatePlane(p);
         QCOMPARE(m_chart->coordinatePlanes().size(), 2);
         m_chart->takeCoordinatePlane(orig);
@@ -55,7 +55,7 @@ private slots:
         QCOMPARE(m_chart->coordinatePlanes().size(), 2);
 
         // replace abstract by polar
-        PolarCoordinatePlane *po = new PolarCoordinatePlane();
+        auto *po = new PolarCoordinatePlane();
         m_chart->replaceCoordinatePlane(po, orig);
         QCOMPARE(m_chart->coordinatePlanes().size(), 2);
         m_chart->takeCoordinatePlane(p);
@@ -70,13 +70,13 @@ private slots:
         QCOMPARE(dynamic_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane()), p);
 
         // replace cartesian by polar
-        PolarCoordinatePlane *polast = new PolarCoordinatePlane();
+        auto *polast = new PolarCoordinatePlane();
         m_chart->replaceCoordinatePlane(polast);
         QCOMPARE(m_chart->coordinatePlanes().size(), 1);
         QCOMPARE(dynamic_cast<PolarCoordinatePlane *>(m_chart->coordinatePlane()), polast);
 
         // replace polar by cartesian
-        CartesianCoordinatePlane *plast = new CartesianCoordinatePlane();
+        auto *plast = new CartesianCoordinatePlane();
         m_chart->replaceCoordinatePlane(plast, polast);
         QCOMPARE(m_chart->coordinatePlanes().size(), 1);
         QCOMPARE(dynamic_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane()), plast);
@@ -85,7 +85,7 @@ private slots:
     void testHeaderFooterOwnership()
     {
         QCOMPARE(m_chart->headerFooters().size(), 0);
-        HeaderFooter *h = new HeaderFooter();
+        auto *h = new HeaderFooter();
         m_chart->addHeaderFooter(h);
         QCOMPARE(m_chart->headerFooters().size(), 1);
         m_chart->takeHeaderFooter(h);
@@ -99,8 +99,8 @@ private slots:
     void testHeaderFooterReplace()
     {
         QCOMPARE(m_chart->headerFooters().size(), 0);
-        HeaderFooter *h = new HeaderFooter();
-        HeaderFooter *h1 = new HeaderFooter();
+        auto *h = new HeaderFooter();
+        auto *h1 = new HeaderFooter();
         m_chart->addHeaderFooter(h);
         QCOMPARE(m_chart->headerFooters().size(), 1);
         m_chart->addHeaderFooter(h1);
@@ -120,7 +120,7 @@ private slots:
         QCOMPARE(m_chart->legends().size(), 0);
 
         // check add legend - take legend - delete legend
-        Legend *legend = new Legend(m_chart->coordinatePlane()->diagram());
+        auto *legend = new Legend(m_chart->coordinatePlane()->diagram());
         m_chart->addLegend(legend);
         QCOMPARE(m_chart->legends().size(), 1);
         m_chart->takeLegend(legend);
@@ -138,8 +138,8 @@ private slots:
         QCOMPARE(m_chart->legends().size(), 0);
         // check add several legends - take legend
         // replace legend - delete legend
-        Legend *legend = new Legend(m_chart->coordinatePlane()->diagram());
-        Legend *legend2 = new Legend(m_chart->coordinatePlane()->diagram());
+        auto *legend = new Legend(m_chart->coordinatePlane()->diagram());
+        auto *legend2 = new Legend(m_chart->coordinatePlane()->diagram());
         m_chart->addLegend(legend);
         QCOMPARE(m_chart->legends().size(), 1);
         m_chart->addLegend(legend2);

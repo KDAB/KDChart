@@ -131,7 +131,7 @@ namespace PaintingHelpers {
 
     void paintValueTracker(PaintContext *ctx, const ValueTrackerAttributes &vt, const QPointF &at)
     {
-        CartesianCoordinatePlane *plane = qobject_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane());
+        auto *plane = qobject_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane());
         if (!plane)
             return;
 
@@ -213,9 +213,9 @@ namespace PaintingHelpers {
     //     hierarchy, so we have to use hacks to use their common methods
     static ThreeDLineAttributes threeDLineAttributes(AbstractDiagram *diagram, const QModelIndex &index)
     {
-        if (Plotter *plotter = qobject_cast<Plotter *>(diagram)) {
+        if (auto *plotter = qobject_cast<Plotter *>(diagram)) {
             return plotter->threeDLineAttributes(index);
-        } else if (LineDiagram *lineDiagram = qobject_cast<LineDiagram *>(diagram)) {
+        } else if (auto *lineDiagram = qobject_cast<LineDiagram *>(diagram)) {
             return lineDiagram->threeDLineAttributes(index);
         }
         Q_ASSERT(false);
@@ -224,9 +224,9 @@ namespace PaintingHelpers {
 
     static ValueTrackerAttributes valueTrackerAttributes(AbstractDiagram *diagram, const QModelIndex &index)
     {
-        if (Plotter *plotter = qobject_cast<Plotter *>(diagram)) {
+        if (auto *plotter = qobject_cast<Plotter *>(diagram)) {
             return plotter->valueTrackerAttributes(index);
-        } else if (LineDiagram *lineDiagram = qobject_cast<LineDiagram *>(diagram)) {
+        } else if (auto *lineDiagram = qobject_cast<LineDiagram *>(diagram)) {
             return lineDiagram->valueTrackerAttributes(index);
         }
         Q_ASSERT(false);
@@ -238,7 +238,7 @@ namespace PaintingHelpers {
         qreal tension = 0;
         SplineDirection splineDirection = NormalSplineDirection;
 
-        if (LineDiagram::Private *lineDiagram = dynamic_cast<LineDiagram::Private *>(diagramPrivate)) {
+        if (auto *lineDiagram = dynamic_cast<LineDiagram::Private *>(diagramPrivate)) {
             tension = lineDiagram->tension;
             Q_ASSERT(dynamic_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane()));
             const auto plane = static_cast<CartesianCoordinatePlane *>(ctx->coordinatePlane());

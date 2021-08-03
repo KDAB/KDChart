@@ -38,7 +38,7 @@ LeveyJenningsDiagram::Private::Private(const Private &rhs)
 
 void LeveyJenningsDiagram::Private::setYAxisRange() const
 {
-    CartesianCoordinatePlane *const plane = static_cast<CartesianCoordinatePlane *>(diagram->coordinatePlane());
+    auto *const plane = static_cast<CartesianCoordinatePlane *>(diagram->coordinatePlane());
     if (plane == nullptr)
         return;
 

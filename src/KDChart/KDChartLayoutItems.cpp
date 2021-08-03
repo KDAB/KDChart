@@ -927,7 +927,7 @@ QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
     int topBottomOverlap = 0;
     if (mTopBottomLayout) {
         for (int i = 0; i < mTopBottomLayout->count(); ++i) {
-            AbstractArea *area = dynamic_cast<AbstractArea *>(mTopBottomLayout->itemAt(i));
+            auto *area = dynamic_cast<AbstractArea *>(mTopBottomLayout->itemAt(i));
             if (area) {
                 //qDebug() << "AutoSpacerLayoutItem testing" << area;
                 topBottomOverlap = qMax(topBottomOverlap,
@@ -941,7 +941,7 @@ QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
     int leftRightOverlap = 0;
     if (mRightLeftLayout) {
         for (int i = 0; i < mRightLeftLayout->count(); ++i) {
-            AbstractArea *area = dynamic_cast<AbstractArea *>(mRightLeftLayout->itemAt(i));
+            auto *area = dynamic_cast<AbstractArea *>(mRightLeftLayout->itemAt(i));
             if (area) {
                 //qDebug() << "AutoSpacerLayoutItem testing" << area;
                 leftRightOverlap = qMax(leftRightOverlap,

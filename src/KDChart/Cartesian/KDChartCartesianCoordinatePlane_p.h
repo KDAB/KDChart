@@ -67,10 +67,10 @@ public:
     bool isVisiblePoint(const AbstractCoordinatePlane *plane, const QPointF &point) const override
     {
         QPointF p = point;
-        const CartesianCoordinatePlane *const ref =
+        const auto *const ref =
             qobject_cast<const CartesianCoordinatePlane *>(
                 const_cast<AbstractCoordinatePlane *>(plane)->sharedAxisMasterPlane());
-        const CartesianCoordinatePlane *const cartPlane =
+        const auto *const cartPlane =
             dynamic_cast<const CartesianCoordinatePlane *>(plane);
         if (ref != nullptr && ref != cartPlane) {
             const QPointF logical = ref->translateBack(point) - cartPlane->visibleDataRange().topLeft()

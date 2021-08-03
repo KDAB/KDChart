@@ -36,16 +36,16 @@ MainWindow::MainWindow(QWidget *parent)
     m_diagram.setType(StockDiagram::HighLowClose);
     m_diagram.setModel(&m_HLCModel);
     m_chart->coordinatePlane()->replaceDiagram(&m_diagram);
-    KDChart::Legend *legend = new KDChart::Legend(&m_diagram, m_chart);
+    auto *legend = new KDChart::Legend(&m_diagram, m_chart);
     m_chart->addLegend(legend);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     chartLayout->addWidget(m_chart);
 
     // Abscissa
-    CartesianAxis *leftAxis = new CartesianAxis(&m_diagram);
+    auto *leftAxis = new CartesianAxis(&m_diagram);
     // Ordinate
-    CartesianAxis *bottomAxis = new CartesianAxis(&m_diagram);
+    auto *bottomAxis = new CartesianAxis(&m_diagram);
 
     leftAxis->setPosition(CartesianAxis::Left);
 

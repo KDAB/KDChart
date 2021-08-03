@@ -175,7 +175,7 @@ const QFont TextAttributes::calculatedFont(const QObject *autoReferenceArea,
 {
     qreal size = NaN;
 
-    const CartesianCoordinatePlane *plane = qobject_cast<const CartesianCoordinatePlane *>(autoReferenceArea);
+    const auto *plane = qobject_cast<const CartesianCoordinatePlane *>(autoReferenceArea);
     if (plane && plane->hasFixedDataCoordinateSpaceRelation()) {
         // HACK
         // if hasFixedDataCoordinateSpaceRelation, we use a zoom trick to keep the diagram at a constant size

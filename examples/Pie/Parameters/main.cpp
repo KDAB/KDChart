@@ -50,13 +50,13 @@ public:
             }
         }
         // We need a Polar plane for the Pie type
-        PolarCoordinatePlane *polarPlane = new PolarCoordinatePlane(&m_chart);
+        auto *polarPlane = new PolarCoordinatePlane(&m_chart);
         // replace the default Cartesian plane with
         // our Polar plane
         m_chart.replaceCoordinatePlane(polarPlane);
 
         // assign the model to our pie diagram
-        PieDiagram *diagram = new PieDiagram;
+        auto *diagram = new PieDiagram;
         diagram->setModel(&m_model);
 
         // Configure some Pie specifical attributes
@@ -109,7 +109,7 @@ public:
         // Assign our diagram to the Chart
         m_chart.coordinatePlane()->replaceDiagram(diagram);
 
-        QVBoxLayout *l = new QVBoxLayout(this);
+        auto *l = new QVBoxLayout(this);
         l->addWidget(&m_chart);
         setLayout(l);
     }

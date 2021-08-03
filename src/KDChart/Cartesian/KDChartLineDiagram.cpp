@@ -78,7 +78,7 @@ LineDiagram::~LineDiagram()
   */
 LineDiagram *LineDiagram::clone() const
 {
-    LineDiagram *newDiagram = new LineDiagram(new Private(*d));
+    auto *newDiagram = new LineDiagram(new Private(*d));
     newDiagram->setType(type());
     return newDiagram;
 }

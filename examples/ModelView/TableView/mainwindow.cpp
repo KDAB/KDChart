@@ -38,7 +38,7 @@ using namespace KDChart;
 
 MainWindow::MainWindow()
 {
-    QMenu *fileMenu = new QMenu(tr("&File"), this);
+    auto *fileMenu = new QMenu(tr("&File"), this);
     QAction *openAction = fileMenu->addAction(tr("&Open..."));
     openAction->setShortcut(QKeySequence(tr("Ctrl+O")));
     QAction *saveAction = fileMenu->addAction(tr("&Save As..."));
@@ -87,7 +87,7 @@ void MainWindow::setupViews()
 
     m_tableView = new QTableView;
 
-    QSplitter *splitter = new QSplitter(Qt::Vertical);
+    auto *splitter = new QSplitter(Qt::Vertical);
     splitter->addWidget(m_tableView);
     splitter->addWidget(m_chart);
     splitter->setStretchFactor(0, 0);
@@ -102,12 +102,12 @@ void MainWindow::setupViews()
 
     qDebug() << "(" << m_model->rowCount() << "," << m_model->columnCount() << ")";
 
-    KDChart::DatasetProxyModel *dproxy = new KDChart::DatasetProxyModel(this);
+    auto *dproxy = new KDChart::DatasetProxyModel(this);
     dproxy->setSourceModel(m_model);
     dproxy->setDatasetColumnDescriptionVector(columnConfig);
     m_diagramView->setModel(dproxy);
 
-    KDChart::HeaderFooter *headerFooter = new KDChart::HeaderFooter(m_chart);
+    auto *headerFooter = new KDChart::HeaderFooter(m_chart);
     headerFooter->setText(tr("You can edit the table data, or select table cells with keyboard/mouse."));
     headerFooter->setType(HeaderFooter::Header);
     headerFooter->setPosition(Position::North);

@@ -42,10 +42,10 @@ MainWindow::MainWindow(
     connect(m_nrOfParametersLineEdit, SIGNAL(editingFinished()), SLOT(editingFinished()));
     connect(m_nrOfSamplesLineEdit, SIGNAL(editingFinished()), SLOT(editingFinished()));
 
-    QVBoxLayout *vBoxLayout = new QVBoxLayout;
+    auto *vBoxLayout = new QVBoxLayout;
     setLayout(vBoxLayout);
 
-    QGridLayout *gridLayout = new QGridLayout;
+    auto *gridLayout = new QGridLayout;
     vBoxLayout->addLayout(gridLayout);
     gridLayout->setColumnStretch(2, 1);
 
@@ -100,10 +100,10 @@ void MainWindow::addPlots()
     for (int r = 0; r < m_sourceModel->columnCount(); r++) {
         for (int c = 0; c < m_sourceModel->columnCount(); c++) {
 
-            Chart *chart = new Chart;
+            auto *chart = new Chart;
             m_paramVsParamGridLayout->addWidget(chart, r, c);
 
-            CartesianCoordinatePlane *plane = static_cast<CartesianCoordinatePlane *>(chart->coordinatePlane());
+            auto *plane = static_cast<CartesianCoordinatePlane *>(chart->coordinatePlane());
 
             // Hide grid.
             GridAttributes ga = plane->globalGridAttributes();
@@ -120,17 +120,17 @@ void MainWindow::addPlots()
 
             if (r == c) {
             } else {
-                ModelParamVsParamPlot *modelParamVsParamPlot =
+                auto *modelParamVsParamPlot =
                     new ModelParamVsParamPlot(m_sourceModel, c, r);
 
-                LineDiagram *lineDiagram = new LineDiagram;
+                auto *lineDiagram = new LineDiagram;
                 lineDiagram->setDatasetDimension(2);
                 lineDiagram->setModel(modelParamVsParamPlot);
                 lineDiagram->setPen(Qt::NoPen);
                 setMarkerAttributes(lineDiagram);
 
-                CartesianAxis *xAxis = new CartesianAxis(lineDiagram);
-                CartesianAxis *yAxis = new CartesianAxis(lineDiagram);
+                auto *xAxis = new CartesianAxis(lineDiagram);
+                auto *yAxis = new CartesianAxis(lineDiagram);
                 xAxis->setPosition(CartesianAxis::Bottom);
                 yAxis->setPosition(CartesianAxis::Left);
                 xAxis->setTitleText('P' + QString::number(c));
@@ -147,7 +147,7 @@ void MainWindow::addPlots()
 void MainWindow::removePlots()
 {
     while (m_paramVsParamGridLayout->count()) {
-        Chart *chart = static_cast<Chart *>(m_paramVsParamGridLayout->itemAt(0)->widget());
+        auto *chart = static_cast<Chart *>(m_paramVsParamGridLayout->itemAt(0)->widget());
         m_paramVsParamGridLayout->removeWidget(chart);
         delete chart;
     }

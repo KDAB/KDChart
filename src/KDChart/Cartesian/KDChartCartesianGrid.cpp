@@ -65,7 +65,7 @@ void CartesianGrid::setMaximalSteps(int maxsteps)
 
 void CartesianGrid::drawGrid(PaintContext *context)
 {
-    CartesianCoordinatePlane *plane = qobject_cast<CartesianCoordinatePlane *>(context->coordinatePlane());
+    auto *plane = qobject_cast<CartesianCoordinatePlane *>(context->coordinatePlane());
     const GridAttributes gridAttrsX(plane->gridAttributes(Qt::Horizontal));
     const GridAttributes gridAttrsY(plane->gridAttributes(Qt::Vertical));
     if (!gridAttrsX.isGridVisible() && !gridAttrsX.isSubGridVisible() && !gridAttrsY.isGridVisible() && !gridAttrsY.isSubGridVisible()) {
@@ -177,7 +177,7 @@ DataDimensionsList CartesianGrid::calculateGrid(const DataDimensionsList &rawDat
     Q_ASSERT_X(rawDataDimensions.count() == 2, "CartesianGrid::calculateGrid",
                "Error: calculateGrid() expects a list with exactly two entries.");
 
-    CartesianCoordinatePlane *plane = qobject_cast<CartesianCoordinatePlane *>(mPlane);
+    auto *plane = qobject_cast<CartesianCoordinatePlane *>(mPlane);
     Q_ASSERT_X(plane, "CartesianGrid::calculateGrid",
                "Error: PaintContext::calculatePlane() called, but no cartesian plane set.");
 
@@ -275,7 +275,7 @@ DataDimension CartesianGrid::calculateGridXY(
     Qt::Orientation orientation,
     bool adjustLower, bool adjustUpper) const
 {
-    CartesianCoordinatePlane *const plane = dynamic_cast<CartesianCoordinatePlane *>(mPlane);
+    auto *const plane = dynamic_cast<CartesianCoordinatePlane *>(mPlane);
     if ((orientation == Qt::Vertical && plane->autoAdjustVerticalRangeToData() >= 100) || (orientation == Qt::Horizontal && plane->autoAdjustHorizontalRangeToData() >= 100)) {
         adjustLower = false;
         adjustUpper = false;

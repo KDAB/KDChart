@@ -83,7 +83,7 @@ void TernaryLineDiagram::paint(PaintContext *paintContext)
     QPainter *p = paintContext->painter();
     PainterSaver s(p);
 
-    TernaryCoordinatePlane *plane =
+    auto *plane =
         (TernaryCoordinatePlane *)paintContext->coordinatePlane();
     Q_ASSERT(plane);
 

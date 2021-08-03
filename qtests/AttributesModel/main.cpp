@@ -33,7 +33,7 @@ private slots:
 
     void initTestCase()
     {
-        TableModel *tableModel = new TableModel(this);
+        auto *tableModel = new TableModel(this);
         tableModel->loadFromCSV(":/data");
         tableModel->setSupplyHeaderData(false);
         m_model = tableModel;
@@ -82,7 +82,7 @@ private slots:
         // Note: a SHARED atributes-model must be owned by the USER
         //       but it may not be owned by any of the diagrams
         //       see API docu of AbstractDiagram::setAttributesModel()
-        AttributesModel *attrsmodel = new AttributesModel(m_model, 0);
+        auto *attrsmodel = new AttributesModel(m_model, 0);
 
         m_lines->setAttributesModel(attrsmodel);
         m_bars->setAttributesModel(attrsmodel);
@@ -114,7 +114,7 @@ private slots:
         m_lines = new LineDiagram();
         m_lines->setModel(m_model);
 
-        AttributesModel *attrsmodel = new AttributesModel(m_model, m_plane);
+        auto *attrsmodel = new AttributesModel(m_model, m_plane);
         m_lines->setAttributesModel(attrsmodel);
         m_bars->setAttributesModel(attrsmodel);
 

@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     widget = new ZoomWidget(chartFrame);
     widget->setGlobalLeadingRight(10);
     chartLayout->addWidget(widget);

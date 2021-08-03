@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     m_chart = new KDChart::Chart();
     chartLayout->addWidget(m_chart);
 
@@ -87,7 +87,7 @@ void MainWindow::on_addHeaderPB_clicked()
     conf.typeCO->setCurrentIndex(0); // let us start with "Header"
     conf.positionCO->setCurrentIndex(0);
     if (dlg.exec()) {
-        KDChart::HeaderFooter *headerFooter = new KDChart::HeaderFooter(m_chart);
+        auto *headerFooter = new KDChart::HeaderFooter(m_chart);
         m_chart->addHeaderFooter(headerFooter);
         headerFooter->setText(conf.textED->text());
         KDChart::TextAttributes attrs(headerFooter->textAttributes());
@@ -99,7 +99,7 @@ void MainWindow::on_addHeaderPB_clicked()
                                                            conf.positionCO->currentIndex())
                                             .toByteArray()));
 
-        HeaderItem *newItem = new HeaderItem(headerFooter, headersTV);
+        auto *newItem = new HeaderItem(headerFooter, headersTV);
         newItem->setText(0, conf.textED->text());
         newItem->setText(1, headerFooter->type() == KDChart::HeaderFooter::Header ? tr("Header") : tr("Footer"));
         newItem->setText(2, conf.positionCO->currentText());

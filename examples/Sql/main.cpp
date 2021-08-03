@@ -124,16 +124,16 @@ public:
             Q_ASSERT(ok);
         }
 
-        BarDiagram *diagram = new BarDiagram;
+        auto *diagram = new BarDiagram;
 
-        TransposeProxyModel *proxymodel = new TransposeProxyModel(this);
+        auto *proxymodel = new TransposeProxyModel(this);
         proxymodel->setSourceModel(m_model);
         diagram->setModel(proxymodel);
 
         m_chart.coordinatePlane()->replaceDiagram(diagram);
 
         // Add at one Header and set it up
-        HeaderFooter *header = new HeaderFooter(&m_chart);
+        auto *header = new HeaderFooter(&m_chart);
         header->setPosition(Position::North);
         header->setText("A Simple Bar Chart");
         m_chart.addHeaderFooter(header);
@@ -151,7 +151,7 @@ public:
         hfa.setVisible(true);
         header->setFrameAttributes(hfa);
 
-        QVBoxLayout *l = new QVBoxLayout(this);
+        auto *l = new QVBoxLayout(this);
         l->addWidget(&m_chart);
         setLayout(l);
     }

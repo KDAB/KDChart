@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     m_chart = new Chart();
     chartLayout->addWidget(m_chart);
 

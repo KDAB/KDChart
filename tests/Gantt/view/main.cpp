@@ -116,7 +116,7 @@ public:
         slider.setOrientation(Qt::Horizontal);
         slider.setRange(1, 10000);
         slider.setValue(100);
-        QVBoxLayout *l = new QVBoxLayout(this);
+        auto *l = new QVBoxLayout(this);
         l->addWidget(&view);
         l->addWidget(&slider);
         grid.setStartDateTime(QDateTime::currentDateTime().addDays(-3));
@@ -128,8 +128,8 @@ public:
         connect(&slider, SIGNAL(valueChanged(int)),
                 this, SLOT(slotZoom(int)));
 
-        QPushButton *pb1 = new QPushButton(tr("Print Preview..."));
-        QPushButton *pb2 = new QPushButton(tr("Print..."));
+        auto *pb1 = new QPushButton(tr("Print Preview..."));
+        auto *pb2 = new QPushButton(tr("Print..."));
         l->addWidget(pb1);
         l->addWidget(pb2);
         connect(pb1, SIGNAL(clicked()), this, SLOT(slotPrintPreview()));
@@ -153,7 +153,7 @@ public slots:
         QPainter painter(&pix);
         view.print(&painter, pix.rect());
         painter.end();
-        QLabel *label = new QLabel;
+        auto *label = new QLabel;
         label->setPixmap(pix);
         label->show();
     }

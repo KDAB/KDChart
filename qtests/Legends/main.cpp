@@ -48,7 +48,7 @@ private slots:
 
     void testIntialOwnership()
     {
-        Legend *l = new Legend(m_chart);
+        auto *l = new Legend(m_chart);
         m_chart->addLegend(l);
         QCOMPARE(m_chart->legend(), l);
         QCOMPARE(l->diagram(), (AbstractDiagram *)0);
@@ -58,7 +58,7 @@ private slots:
 
     void testIntialOwnershipFromCtor()
     {
-        Legend *l = new Legend(m_lines, m_chart);
+        auto *l = new Legend(m_lines, m_chart);
         m_chart->replaceLegend(l);
         QCOMPARE(m_chart->legend(), l);
         QCOMPARE(dynamic_cast<LineDiagram *>(l->diagram()), m_lines);
@@ -66,7 +66,7 @@ private slots:
 
     void testReplacing()
     {
-        Legend *l = new Legend(m_chart);
+        auto *l = new Legend(m_chart);
         QPointer<Legend> oldLegend = m_chart->legend();
         QCOMPARE(dynamic_cast<LineDiagram *>(oldLegend->diagram()), m_lines);
         m_chart->replaceLegend(l, oldLegend);
@@ -78,19 +78,19 @@ private slots:
 
     void testReferenceArea()
     {
-        Legend *l = new Legend();
+        auto *l = new Legend();
         QCOMPARE(l->referenceArea(), (const QWidget *)0);
         l->setReferenceArea(m_chart);
         QCOMPARE(dynamic_cast<const Chart *>(l->referenceArea()), const_cast<const Chart *>(m_chart));
-        Legend *l1 = new Legend(m_chart);
+        auto *l1 = new Legend(m_chart);
         QCOMPARE(dynamic_cast<const Chart *>(l1->referenceArea()), const_cast<const Chart *>(m_chart));
-        Legend *l2 = new Legend(m_lines, m_chart);
+        auto *l2 = new Legend(m_lines, m_chart);
         QCOMPARE(dynamic_cast<const Chart *>(l2->referenceArea()), const_cast<const Chart *>(m_chart));
     }
 
     void testDiagramOwnership()
     {
-        Legend *l = new Legend(m_chart);
+        auto *l = new Legend(m_chart);
         QVERIFY(l->diagrams().size() == 0);
         l->addDiagram(m_lines);
         QVERIFY(l->diagrams().size() == 1);
@@ -107,7 +107,7 @@ private slots:
 
     void testLegendSettings()
     {
-        Legend *l = new Legend(m_lines, m_chart);
+        auto *l = new Legend(m_lines, m_chart);
         QVERIFY(l->position() == Position::NorthEast);
         QVERIFY(l->alignment() == Qt::AlignCenter);
         QVERIFY(l->orientation() == Qt::Vertical);

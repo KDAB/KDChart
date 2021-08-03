@@ -44,7 +44,7 @@ int main(int argc, char **argv)
     widget.setDataset(2, vec2, "v2");
     widget.setType(Widget::Bar);
 
-    Legend *legend = new Legend(widget.diagram(), &widget);
+    auto *legend = new Legend(widget.diagram(), &widget);
     legend->setOrientation(Qt::Horizontal);
     legend->setTitleText("Bars Legend");
     legend->setText(0, "Vector 1");

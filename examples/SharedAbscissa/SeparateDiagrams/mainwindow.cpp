@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     m_chart = new Chart();
     chartLayout->addWidget(m_chart);
 
@@ -50,15 +50,15 @@ MainWindow::MainWindow(QWidget *parent)
     m_lines2->setModel(&m_model2);
 
     // The by default built-in plane.
-    KDChart::CartesianCoordinatePlane *plane1 = static_cast<KDChart::CartesianCoordinatePlane *>(m_chart->coordinatePlane());
+    auto *plane1 = static_cast<KDChart::CartesianCoordinatePlane *>(m_chart->coordinatePlane());
 
     // We call this "plane2" just for remembering, that we use it
     // in addition to the plane, that's built-in by default.
     plane2 = new CartesianCoordinatePlane(m_chart);
 
-    CartesianAxis *xAxis = new CartesianAxis(m_lines);
-    CartesianAxis *yAxis = new CartesianAxis(m_lines);
-    CartesianAxis *yAxis2 = new CartesianAxis(m_lines2);
+    auto *xAxis = new CartesianAxis(m_lines);
+    auto *yAxis = new CartesianAxis(m_lines);
+    auto *yAxis2 = new CartesianAxis(m_lines2);
 
     QList<qreal> ticks;
     ticks.append(5);

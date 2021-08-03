@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    QHBoxLayout *chartLayout = new QHBoxLayout(chartFrame);
+    auto *chartLayout = new QHBoxLayout(chartFrame);
     m_chart = new Chart();
     m_chart->setGlobalLeadingLeft(5);
     m_chart->setGlobalLeadingRight(5);
@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     explodeDatasetSB->setMaximum(m_model.columnCount() - 1);
 
     // Set up the diagram
-    PolarCoordinatePlane *polarPlane = new PolarCoordinatePlane(m_chart);
+    auto *polarPlane = new PolarCoordinatePlane(m_chart);
     m_chart->replaceCoordinatePlane(polarPlane);
     m_pie = new PieDiagram();
     m_pie->setModel(&m_model);
@@ -67,7 +67,7 @@ void MainWindow::on_startPositionSB_valueChanged(double pos)
 
 void MainWindow::on_startPositionSL_valueChanged(int pos)
 {
-    qreal qrealValue = static_cast<qreal>(pos);
+    auto qrealValue = static_cast<qreal>(pos);
     startPositionSB->blockSignals(true);
     startPositionSB->setValue(qrealValue);
     startPositionSB->blockSignals(false);

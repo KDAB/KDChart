@@ -41,9 +41,9 @@ private slots:
 
     void testCloningBarDiagram()
     {
-        BarDiagram *diagram = new BarDiagram();
+        auto *diagram = new BarDiagram();
         diagram->setType(BarDiagram::Stacked);
-        CartesianAxis *axis = new CartesianAxis;
+        auto *axis = new CartesianAxis;
         diagram->addAxis(axis);
         QCOMPARE(diagram->axes().count(), 1);
         BarAttributes attrs;
@@ -78,7 +78,7 @@ private slots:
 
     void testCloningLineDiagram()
     {
-        LineDiagram *diagram = new LineDiagram();
+        auto *diagram = new LineDiagram();
         diagram->setType(LineDiagram::Percent);
         LineAttributes attrs;
         attrs.setMissingValuesPolicy(LineAttributes::MissingValuesShownAsZero);
@@ -96,7 +96,7 @@ private slots:
         // will make new test for that in PolarCoordinatePlane
         // do we want the warning ?
         // if yes - we just need to un-comment
-        PieDiagram *diagram = new PieDiagram();
+        auto *diagram = new PieDiagram();
         //diagram->coordinatePlane()->setStartPosition( 15.0 );
         diagram->setGranularity(1.5);
         PieAttributes attrs;
@@ -119,7 +119,7 @@ private slots:
         // will make new test for that in PolarCoordinatePlane
         // do we want the warning ?
         // if yes - we just need to un-comment
-        PolarDiagram *diagram = new PolarDiagram();
+        auto *diagram = new PolarDiagram();
         //diagram->setZeroDegreePosition( 5 );
         diagram->setRotateCircularLabels(true);
         diagram->setShowDelimitersAtPosition(Position::North, false);
@@ -139,7 +139,7 @@ private slots:
     }
     void testCloningRingDiagram()
     {
-        RingDiagram *diagram = new RingDiagram();
+        auto *diagram = new RingDiagram();
         diagram->setRelativeThickness(true);
         RingDiagram *clone = diagram->clone();
         QCOMPARE(diagram->relativeThickness(), clone->relativeThickness());
@@ -149,7 +149,7 @@ private slots:
 
     void testCloningHeaderFooter()
     {
-        HeaderFooter *headerFooter = new HeaderFooter();
+        auto *headerFooter = new HeaderFooter();
         headerFooter->setType(HeaderFooter::Footer);
         TextAttributes attrs;
         attrs.setPen(QPen(Qt::red));
@@ -161,7 +161,7 @@ private slots:
 
     void testCloningLegends()
     {
-        Legend *legend = new Legend();
+        auto *legend = new Legend();
         TextAttributes attrs;
         attrs.setPen(QPen(Qt::red));
         legend->setTextAttributes(attrs);

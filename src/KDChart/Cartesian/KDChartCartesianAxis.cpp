@@ -141,7 +141,7 @@ static QMultiMap<qreal, QString> allAxisAnnotations(const AbstractCoordinatePlan
 {
     QMultiMap<qreal, QString> annotations;
     Q_FOREACH (const AbstractDiagram *diagram, plane->diagrams()) {
-        const AbstractCartesianDiagram *cd = qobject_cast<const AbstractCartesianDiagram *>(diagram);
+        const auto *cd = qobject_cast<const AbstractCartesianDiagram *>(diagram);
         if (!cd) {
             continue;
         }
@@ -383,11 +383,11 @@ CartesianAxis::~CartesianAxis()
     // when we remove the first axis it will unregister itself and
     // propagate the next one to the primary, thus the while loop
     while (d->mDiagram) {
-        AbstractCartesianDiagram *cd = qobject_cast<AbstractCartesianDiagram *>(d->mDiagram);
+        auto *cd = qobject_cast<AbstractCartesianDiagram *>(d->mDiagram);
         cd->takeAxis(this);
     }
     Q_FOREACH (AbstractDiagram *diagram, d->secondaryDiagrams) {
-        AbstractCartesianDiagram *cd = qobject_cast<AbstractCartesianDiagram *>(diagram);
+        auto *cd = qobject_cast<AbstractCartesianDiagram *>(diagram);
         cd->takeAxis(this);
     }
 }
@@ -495,7 +495,7 @@ void CartesianAxis::layoutPlanes()
 
 static bool referenceDiagramIsBarDiagram(const AbstractDiagram *diagram)
 {
-    const AbstractCartesianDiagram *dia =
+    const auto *dia =
         qobject_cast<const AbstractCartesianDiagram *>(diagram);
     if (dia && dia->referenceDiagram())
         dia = dia->referenceDiagram();
@@ -504,7 +504,7 @@ static bool referenceDiagramIsBarDiagram(const AbstractDiagram *diagram)
 
 static bool referenceDiagramNeedsCenteredAbscissaTicks(const AbstractDiagram *diagram)
 {
-    const AbstractCartesianDiagram *dia =
+    const auto *dia =
         qobject_cast<const AbstractCartesianDiagram *>(diagram);
     if (dia && dia->referenceDiagram())
         dia = dia->referenceDiagram();
@@ -513,7 +513,7 @@ static bool referenceDiagramNeedsCenteredAbscissaTicks(const AbstractDiagram *di
     if (qobject_cast<const StockDiagram *>(dia))
         return true;
 
-    const LineDiagram *lineDiagram = qobject_cast<const LineDiagram *>(dia);
+    const auto *lineDiagram = qobject_cast<const LineDiagram *>(dia);
     return lineDiagram && lineDiagram->centerDataPoints();
 }
 
@@ -648,7 +648,7 @@ void CartesianAxis::paintCtx(PaintContext *context)
     Q_ASSERT_X(d->diagram(), "CartesianAxis::paint",
                "Function call not allowed: The axis is not assigned to any diagram.");
 
-    CartesianCoordinatePlane *plane = dynamic_cast<CartesianCoordinatePlane *>(context->coordinatePlane());
+    auto *plane = dynamic_cast<CartesianCoordinatePlane *>(context->coordinatePlane());
     Q_ASSERT_X(plane, "CartesianAxis::paint",
                "Bad function call: PaintContext::coordinatePlane() NOT a cartesian plane.");
 
@@ -736,9 +736,9 @@ void CartesianAxis::paintCtx(PaintContext *context)
 
     int labelThinningFactor = 1;
     // TODO: label thinning also when grid line distance < 4 pixels, not only when labels collide
-    TextLayoutItem *tickLabel = new TextLayoutItem(QString(), labelTA, plane->parent(),
+    auto *tickLabel = new TextLayoutItem(QString(), labelTA, plane->parent(),
                                                    KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft);
-    TextLayoutItem *prevTickLabel = new TextLayoutItem(QString(), labelTA, plane->parent(),
+    auto *prevTickLabel = new TextLayoutItem(QString(), labelTA, plane->parent(),
                                                        KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft);
     QPointF prevTickLabelPos;
     enum {
@@ -961,7 +961,7 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
         return QSize();
     }
 
-    CartesianCoordinatePlane *plane = dynamic_cast<CartesianCoordinatePlane *>(diagram()->coordinatePlane());
+    auto *plane = dynamic_cast<CartesianCoordinatePlane *>(diagram()->coordinatePlane());
     Q_ASSERT(plane);
     QObject *refArea = plane->parent();
     const bool centerTicks = referenceDiagramNeedsCenteredAbscissaTicks(diagram())

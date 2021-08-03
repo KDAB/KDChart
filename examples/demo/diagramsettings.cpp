@@ -77,9 +77,9 @@ void DiagramSettings::Private::changeAutoGradient()
 void DiagramSettings::Private::changeThreeD()
 {
     if (m_chart && m_chart->coordinatePlane() && m_chart->coordinatePlane()->diagram()) {
-        BarDiagram *bars = qobject_cast<BarDiagram *>(m_chart->coordinatePlane()->diagram());
-        LineDiagram *lines = qobject_cast<LineDiagram *>(m_chart->coordinatePlane()->diagram());
-        PieDiagram *pie = qobject_cast<PieDiagram *>(m_chart->coordinatePlane()->diagram());
+        auto *bars = qobject_cast<BarDiagram *>(m_chart->coordinatePlane()->diagram());
+        auto *lines = qobject_cast<LineDiagram *>(m_chart->coordinatePlane()->diagram());
+        auto *pie = qobject_cast<PieDiagram *>(m_chart->coordinatePlane()->diagram());
         if (bars) {
             ThreeDBarAttributes td(bars->threeDBarAttributes());
             td.setEnabled(ui->threeDSelector->checkState() == Qt::Checked);
@@ -204,9 +204,9 @@ DiagramSettings::~DiagramSettings()
 void DiagramSettings::refreshSettings()
 {
     if (d->m_chart && d->m_chart->coordinatePlane() && d->m_chart->coordinatePlane()->diagram()) {
-        BarDiagram *bars = qobject_cast<BarDiagram *>(d->m_chart->coordinatePlane()->diagram());
-        LineDiagram *lines = qobject_cast<LineDiagram *>(d->m_chart->coordinatePlane()->diagram());
-        PieDiagram *pie = qobject_cast<PieDiagram *>(d->m_chart->coordinatePlane()->diagram());
+        auto *bars = qobject_cast<BarDiagram *>(d->m_chart->coordinatePlane()->diagram());
+        auto *lines = qobject_cast<LineDiagram *>(d->m_chart->coordinatePlane()->diagram());
+        auto *pie = qobject_cast<PieDiagram *>(d->m_chart->coordinatePlane()->diagram());
 
         if (bars) {
             const AbstractThreeDAttributes &td = bars->threeDBarAttributes();

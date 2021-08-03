@@ -46,7 +46,7 @@ ChartWidget::ChartWidget(QWidget *parent)
         }
     }
 
-    BarDiagram *diagram = new KDChart::BarDiagram;
+    auto *diagram = new KDChart::BarDiagram;
     diagram->setModel(&m_model);
 
     BarAttributes ba(diagram->barAttributes());
@@ -86,7 +86,7 @@ ChartWidget::ChartWidget(QWidget *parent)
     m_chart.coordinatePlane()->replaceDiagram(diagram);
     m_chart.setGlobalLeadingTop(40);
 
-    QVBoxLayout *l = new QVBoxLayout(this);
+    auto *l = new QVBoxLayout(this);
     l->addWidget(&m_chart);
     setLayout(l);
 }

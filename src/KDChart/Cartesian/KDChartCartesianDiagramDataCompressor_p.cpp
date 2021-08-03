@@ -257,7 +257,7 @@ void CartesianDiagramDataCompressor::slotModelLayoutChanged()
 
 void CartesianDiagramDataCompressor::slotDiagramLayoutChanged(AbstractDiagram *diagramBase)
 {
-    AbstractCartesianDiagram *diagram = qobject_cast<AbstractCartesianDiagram *>(diagramBase);
+    auto *diagram = qobject_cast<AbstractCartesianDiagram *>(diagramBase);
     Q_ASSERT(diagram);
     if (diagram->datasetDimension() != m_datasetDimension) {
         setDatasetDimension(diagram->datasetDimension());

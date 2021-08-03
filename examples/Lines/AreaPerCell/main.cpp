@@ -40,7 +40,7 @@ public:
         m_model.setData(m_model.index(4, 0, QModelIndex()), -1);
         m_model.setData(m_model.index(5, 0, QModelIndex()), -5);
 
-        LineDiagram *diagram = new LineDiagram;
+        auto *diagram = new LineDiagram;
         diagram->setModel(&m_model);
 
         m_chart.coordinatePlane()->replaceDiagram(diagram);
@@ -57,7 +57,7 @@ public:
         diagram->setBrush(m_model.index(4, 0, QModelIndex()), QBrush(Qt::red));
         diagram->setLineAttributes(m_model.index(4, 0, QModelIndex()), la3);
 
-        QVBoxLayout *l = new QVBoxLayout(this);
+        auto *l = new QVBoxLayout(this);
         l->addWidget(&m_chart);
         setLayout(l);
     }

@@ -649,14 +649,14 @@ bool AbstractDiagram::Private::isTransposed() const
     // Determine the diagram that specifies the orientation.
     // That diagram is the reference diagram, if it exists, or otherwise the diagram itself.
     // Note: In KDChart 2.3 or earlier, only a bar diagram can be transposed.
-    const AbstractCartesianDiagram *refDiagram = qobject_cast<const AbstractCartesianDiagram *>(diagram);
+    const auto *refDiagram = qobject_cast<const AbstractCartesianDiagram *>(diagram);
     if (!refDiagram) {
         return false;
     }
     if (refDiagram->referenceDiagram()) {
         refDiagram = refDiagram->referenceDiagram();
     }
-    const BarDiagram *barDiagram = qobject_cast<const BarDiagram *>(refDiagram);
+    const auto *barDiagram = qobject_cast<const BarDiagram *>(refDiagram);
     if (!barDiagram) {
         return false;
     }

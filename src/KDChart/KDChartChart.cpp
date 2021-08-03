@@ -384,7 +384,7 @@ public:
 void checkExistingAxes(LayoutGraphNode *node)
 {
     if (node && node->diagramPlane && node->diagramPlane->diagram()) {
-        AbstractCartesianDiagram *diag = qobject_cast<AbstractCartesianDiagram *>(node->diagramPlane->diagram());
+        auto *diag = qobject_cast<AbstractCartesianDiagram *>(node->diagramPlane->diagram());
         if (diag) {
             Q_FOREACH (const CartesianAxis *axis, diag->axes()) {
                 switch (axis->position()) {
@@ -431,7 +431,7 @@ static CoordinatePlaneList findSharingAxisDiagrams(AbstractCoordinatePlane *plan
     Q_ASSERT(plane);
     Q_ASSERT(plane->diagram());
     CoordinatePlaneList result;
-    AbstractCartesianDiagram *diagram = qobject_cast<AbstractCartesianDiagram *>(plane->diagram());
+    auto *diagram = qobject_cast<AbstractCartesianDiagram *>(plane->diagram());
     if (!diagram)
         return CoordinatePlaneList();
 
@@ -443,7 +443,7 @@ static CoordinatePlaneList findSharingAxisDiagrams(AbstractCoordinatePlane *plan
         }
     }
     Q_FOREACH (AbstractCoordinatePlane *curPlane, list) {
-        AbstractCartesianDiagram *diagram =
+        auto *diagram =
             qobject_cast<AbstractCartesianDiagram *>(curPlane->diagram());
         if (!diagram)
             continue;
@@ -575,7 +575,7 @@ QHash<AbstractCoordinatePlane *, PlaneInfo> Chart::Private::buildPlaneLayoutInfo
         planeInfos.insert(plane, p);
 
         Q_FOREACH (AbstractDiagram *abstractDiagram, plane->diagrams()) {
-            AbstractCartesianDiagram *diagram =
+            auto *diagram =
                 qobject_cast<AbstractCartesianDiagram *>(abstractDiagram);
             if (!diagram) {
                 continue;
@@ -692,7 +692,7 @@ void Chart::Private::slotLayoutPlanes()
 
                         //qDebug() << Q_FUNC_INFO << row + planeRowOffset << col + planeColOffset;
                         planeLayoutItems << curColComponent->diagramPlane;
-                        AbstractCartesianDiagram *cartDiag = qobject_cast<AbstractCartesianDiagram *>(diagram);
+                        auto *cartDiag = qobject_cast<AbstractCartesianDiagram *>(diagram);
                         if (cartDiag) {
                             gridPlaneLayout->addItem(curColComponent->diagramPlane, row + planeRowOffset, col + planeColOffset, 2, 2);
                             curColComponent->diagramPlane->setParentLayout(gridPlaneLayout);
@@ -841,7 +841,7 @@ void Chart::Private::slotLayoutPlanes()
             planeLayout->setRowStretch(row, 2);
             planeLayout->setColumnStretch(column, 2);
             Q_FOREACH (AbstractDiagram *abstractDiagram, plane->diagrams()) {
-                AbstractCartesianDiagram *diagram =
+                auto *diagram =
                     qobject_cast<AbstractCartesianDiagram *>(abstractDiagram);
                 if (!diagram) {
                     continue; // FIXME what about polar ?
@@ -1010,7 +1010,7 @@ void Chart::Private::createLayouts()
         for (int column = 0; column < 3; ++column) {
             const Qt::Alignment align = s_gridAlignments[row][column];
             for (int headOrFoot = 0; headOrFoot < 2; headOrFoot++) {
-                QVBoxLayout *innerLayout = new QVBoxLayout();
+                auto *innerLayout = new QVBoxLayout();
                 innerLayout->setContentsMargins(0, 0, 0, 0);
                 innerLayout->setAlignment(align);
                 innerHdFtLayouts[headOrFoot][row][column] = innerLayout;
@@ -1507,7 +1507,7 @@ HeaderFooterList Chart::headerFooters()
 
 void Chart::Private::slotLegendPositionChanged(AbstractAreaWidget *aw)
 {
-    Legend *legend = qobject_cast<Legend *>(aw);
+    auto *legend = qobject_cast<Legend *>(aw);
     Q_ASSERT(legend);
     chart->takeLegend(legend);
     chart->addLegendInternal(legend, false);
@@ -1570,7 +1570,7 @@ void Chart::addLegendInternal(Legend *legend, bool setMeasures)
         // on demand. we don't remove it when empty.
 
         QLayoutItem *edgeItem = d->dataAndLegendLayout->itemAtPosition(row, column);
-        QGridLayout *alignmentsLayout = dynamic_cast<QGridLayout *>(edgeItem);
+        auto *alignmentsLayout = dynamic_cast<QGridLayout *>(edgeItem);
         Q_ASSERT(!edgeItem || alignmentsLayout); // if it exists, it must be a QGridLayout
         if (!alignmentsLayout) {
             alignmentsLayout = new QGridLayout;
@@ -1595,7 +1595,7 @@ void Chart::addLegendInternal(Legend *legend, bool setMeasures)
         }
 
         QLayoutItem *alignmentItem = alignmentsLayout->itemAtPosition(row, column);
-        QVBoxLayout *sameAlignmentLayout = dynamic_cast<QVBoxLayout *>(alignmentItem);
+        auto *sameAlignmentLayout = dynamic_cast<QVBoxLayout *>(alignmentItem);
         Q_ASSERT(!alignmentItem || sameAlignmentLayout); // if it exists, it must be a QVBoxLayout
         if (!sameAlignmentLayout) {
             sameAlignmentLayout = new QVBoxLayout;
