@@ -1,5 +1,5 @@
 These are the instructions for installing KD Chart using the CMake buildsystem.
-CMake version 3.1.0 or higher is required.
+CMake version 3.3 or higher is required.
 
 Qt Version support:
  * KD Chart 2.5.0 or below requires Qt4

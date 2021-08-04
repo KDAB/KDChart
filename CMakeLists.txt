@@ -44,7 +44,7 @@
 #  Default=CMAKE_INSTALL_PREFIX
 #
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.3)
 
 # Allow using a non-KDAB install location.
 set(KDAB_INSTALL True CACHE INTERNAL "Install to default KDAB Location")
