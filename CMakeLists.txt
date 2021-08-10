@@ -127,11 +127,7 @@ endif()
 if(${CMAKE_SYSTEM_NAME} MATCHES "SunOS")
   add_definitions(-DSUN7)
 endif()
-# Note: The following KDCHART_MASTER_CVS definition is used to distinguish
-#       between KDAB Master CVS and other CVS repositories holding copies
-#       of the sources that might have to use special statements like
-#       include "KDFrame.moc" in the code.
-add_definitions(-DKDCHART_VERSION=200 -DKDCHART_MASTER_CVS)
+
 #  NOMINMAX avoids conflicting definitions of min and max
 #  _USE_MATH_DEFINES makes M_PI defined
 if(MSVC)
