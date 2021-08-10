@@ -50,8 +50,8 @@ public:
 
 #ifndef QT_NO_DEBUG_STREAM
 
-QDebug operator<<(QDebug dbg, KDGantt::StyleOptionGanttItem::Position p);
-QDebug operator<<(QDebug dbg, const KDGantt::StyleOptionGanttItem &s);
+KDGANTT_EXPORT QDebug operator<<(QDebug dbg, KDGantt::StyleOptionGanttItem::Position p);
+KDGANTT_EXPORT QDebug operator<<(QDebug dbg, const KDGantt::StyleOptionGanttItem &s);
 
 #endif /* QT_NO_DEBUG_STREAM */
 

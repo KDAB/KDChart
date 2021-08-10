@@ -87,7 +87,7 @@ protected:
 }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug dbg, KDGantt::ItemDelegate::InteractionState);
+KDGANTT_EXPORT QDebug operator<<(QDebug dbg, KDGantt::ItemDelegate::InteractionState);
 #endif
 
 #endif /* KDGANTTITEMDELEGATE_H */
