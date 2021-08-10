@@ -13,6 +13,7 @@ Version 3.0.0 (unreleased):
  * buildsystem: generate and install kdchart-version.h
  * Python3 bindings for Qt6. See INSTALL-bindings.txt for more information.
  * The Python bindings installation path for "site-packages"
+ * The Python bindings for Qt6 use the "PyKDChartQt6" namespace
  * Build in Release mode by default (in non-developer situations)
 
 Version 2.8.0:
