@@ -47,9 +47,9 @@ public:
     void paint(QPainter *) override;
     DataDimensionsList getDataDimensionsList() const override;
 
-    /** \reimpl */
+    /** \reimp */
     QSize minimumSizeHint() const;
-    /** \reimpl */
+    /** \reimp */
     QSizePolicy sizePolicy() const;
 
 private:

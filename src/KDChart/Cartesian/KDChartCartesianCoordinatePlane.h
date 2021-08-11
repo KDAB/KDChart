@@ -368,10 +368,10 @@ public:
     /** Specifies the calculation mode for all Abscissa axes */
     void setAxesCalcModeX(AxesCalcMode mode);
 
-    /** reimpl */
+    /** reimp */
     void paint(QPainter *) override;
 
-    /** reimpl */
+    /** reimp */
     AbstractCoordinatePlane *sharedAxisMasterPlane(QPainter *p = nullptr) override;
 
     /**

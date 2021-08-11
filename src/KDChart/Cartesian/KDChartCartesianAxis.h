@@ -67,9 +67,9 @@ public:
          */
     bool compare(const CartesianAxis *other) const;
 
-    /** reimpl */
+    /** reimp */
     void paint(QPainter *) override;
-    /** reimpl */
+    /** reimp */
     void paintCtx(PaintContext *) override;
 
     /**

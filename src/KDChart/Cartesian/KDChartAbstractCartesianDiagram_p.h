@@ -60,7 +60,7 @@ public:
     {
     }
 
-    /** \reimpl */
+    /** \reimp */
     CartesianDiagramDataCompressor::AggregatedDataValueAttributes aggregatedAttrs(
         const QModelIndex &index,
         const CartesianDiagramDataCompressor::CachePosition *position) const override

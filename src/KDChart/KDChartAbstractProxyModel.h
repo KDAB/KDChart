@@ -33,14 +33,14 @@ class KDCHART_EXPORT AbstractProxyModel : public QAbstractProxyModel
 public:
     explicit AbstractProxyModel(QObject *parent = nullptr);
 
-    /*! \reimpl */
+    /*! \reimp */
     QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override;
-    /*! \reimpl */
+    /*! \reimp */
     QModelIndex mapToSource(const QModelIndex &proxyIndex) const override;
 
-    /*! \reimpl */
+    /*! \reimp */
     QModelIndex index(int row, int col, const QModelIndex &index) const override;
-    /*! \reimpl */
+    /*! \reimp */
     QModelIndex parent(const QModelIndex &index) const override;
 };
 }

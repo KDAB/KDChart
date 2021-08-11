@@ -177,7 +177,7 @@ QModelIndex AbstractDiagram::conditionallyMapFromSource(const QModelIndex &index
     return index.model() == attributesModel() ? index : attributesModel()->mapFromSource(index);
 }
 
-/*! \reimpl */
+/*! \reimp */
 void AbstractDiagram::setRootIndex(const QModelIndex &idx)
 {
     QAbstractItemView::setRootIndex(idx);

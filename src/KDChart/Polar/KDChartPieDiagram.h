@@ -41,7 +41,7 @@ public:
 
 protected:
     // Implement AbstractDiagram
-    /** \reimpl */
+    /** \reimp */
     void paint(PaintContext *paintContext) override;
 
 public:
@@ -67,21 +67,21 @@ public:
     /// Return whether overlapping labels will be moved to until they don't overlap anymore.
     bool isLabelCollisionAvoidanceEnabled() const;
 
-    /** \reimpl */
+    /** \reimp */
     void resize(const QSizeF &area) override;
 
     // Implement AbstractPolarDiagram
-    /** \reimpl */
+    /** \reimp */
     qreal valueTotals() const override;
-    /** \reimpl */
+    /** \reimp */
     qreal numberOfValuesPerDataset() const override;
-    /** \reimpl */
+    /** \reimp */
     qreal numberOfGridRings() const override;
 
     virtual PieDiagram *clone() const;
 
 protected:
-    /** \reimpl */
+    /** \reimp */
     const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paintEvent(QPaintEvent *) override;
     void resizeEvent(QResizeEvent *) override;

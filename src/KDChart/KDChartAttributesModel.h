@@ -86,26 +86,26 @@ public:
       */
     QVariant data(int column, int role) const;
 
-    /** \reimpl */
+    /** \reimp */
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-    /** \reimpl */
+    /** \reimp */
     int rowCount(const QModelIndex &) const override;
-    /** \reimpl */
+    /** \reimp */
     int columnCount(const QModelIndex &) const override;
-    /** \reimpl */
+    /** \reimp */
     QVariant data(const QModelIndex &, int role = Qt::DisplayRole) const override;
-    /** \reimpl */
+    /** \reimp */
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::DisplayRole) override;
     /** Remove any explicit attributes settings that might have been specified before. */
     bool resetData(const QModelIndex &index, int role = Qt::DisplayRole);
-    /** \reimpl */
+    /** \reimp */
     bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value,
                        int role = Qt::DisplayRole) override;
     /** Returns default values for the header data. */
     virtual QVariant defaultHeaderData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     /** Remove any explicit attributes settings that might have been specified before. */
     bool resetHeaderData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole);
-    /** \reimpl */
+    /** \reimp */
     void setSourceModel(QAbstractItemModel *sourceModel) override;
 
     /** Define the default value for a certain role.

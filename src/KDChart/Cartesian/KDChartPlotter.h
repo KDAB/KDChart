@@ -104,15 +104,15 @@ public:
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && defined(Q_COMPILER_MANGLES_RETURN_TYPE)
     // implement AbstractCartesianDiagram
-    /* reimpl */
+    /* reimp */
     const int numberOfAbscissaSegments() const;
-    /* reimpl */
+    /* reimp */
     const int numberOfOrdinateSegments() const;
 #else
     // implement AbstractCartesianDiagram
-    /* reimpl */
+    /* reimp */
     int numberOfAbscissaSegments() const override;
-    /* reimpl */
+    /* reimp */
     int numberOfOrdinateSegments() const override;
 #endif
 
@@ -128,7 +128,7 @@ public:
 protected:
     qreal threeDItemDepth(const QModelIndex &index) const override;
     qreal threeDItemDepth(int column) const override;
-    /** \reimpl */
+    /** \reimp */
     const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paintEvent(QPaintEvent *) override;
     void resizeEvent(QResizeEvent *) override;

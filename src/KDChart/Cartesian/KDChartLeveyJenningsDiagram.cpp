@@ -412,7 +412,7 @@ static QDateTime ceilHour(const QDateTime &dt)
     return result;
 }
 
-/** \reimpl */
+/** \reimp */
 const QPair<QPointF, QPointF> LeveyJenningsDiagram::calculateDataBoundaries() const
 {
     const qreal yMin = d->expectedMeanValue - 4 * d->expectedStandardDeviation;
@@ -497,7 +497,7 @@ void LeveyJenningsDiagram::drawChanges(PaintContext *ctx)
     }
 }
 
-/** \reimpl */
+/** \reimp */
 void LeveyJenningsDiagram::paint(PaintContext *ctx)
 {
     d->reverseMapper.clear();

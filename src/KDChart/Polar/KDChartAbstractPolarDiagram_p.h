@@ -56,7 +56,7 @@ public:
         // just for consistency
     }
 
-    /** \reimpl */
+    /** \reimp */
     // FIXME: Optimize when needed
     qreal calcPercentValue(const QModelIndex &index) const override
     {

@@ -44,19 +44,19 @@ public:
 
 protected:
     // Implement AbstractDiagram
-    /** \reimpl */
+    /** \reimp */
     void paint(PaintContext *paintContext) override;
 
 public:
-    /** \reimpl */
+    /** \reimp */
     void resize(const QSizeF &area) override;
 
     // Implement AbstractPolarDiagram
-    /** \reimpl */
+    /** \reimp */
     qreal valueTotals() const override;
-    /** \reimpl */
+    /** \reimp */
     qreal numberOfValuesPerDataset() const override;
-    /** \reimpl */
+    /** \reimp */
     qreal numberOfGridRings() const override;
 
     virtual PolarDiagram *clone() const;
@@ -89,7 +89,7 @@ public:
                        qreal &newZoomX, qreal &newZoomY); // KDChart 3: references -> pointers
 
 protected:
-    /** \reimpl */
+    /** \reimp */
     const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paintEvent(QPaintEvent *) override;
     void resizeEvent(QResizeEvent *) override;

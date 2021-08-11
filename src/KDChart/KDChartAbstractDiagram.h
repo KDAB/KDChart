@@ -159,28 +159,28 @@ public:
         * referencing data for display. */
     void setRootIndex(const QModelIndex &idx) override;
 
-    /** \reimpl */
+    /** \reimp */
     QRect visualRect(const QModelIndex &index) const override;
-    /** \reimpl */
+    /** \reimp */
     void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible) override;
-    /** \reimpl */
+    /** \reimp */
     QModelIndex indexAt(const QPoint &point) const override;
-    /** \reimpl */
+    /** \reimp */
     QModelIndex moveCursor(CursorAction cursorAction, Qt::KeyboardModifiers modifiers) override;
-    /** \reimpl */
+    /** \reimp */
     int horizontalOffset() const override;
-    /** \reimpl */
+    /** \reimp */
     int verticalOffset() const override;
-    /** \reimpl */
+    /** \reimp */
     bool isIndexHidden(const QModelIndex &index) const override;
-    /** \reimpl */
+    /** \reimp */
     void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command) override;
-    /** \reimpl */
+    /** \reimp */
     QRegion visualRegionForSelection(const QItemSelection &selection) const override;
     virtual QRegion visualRegion(const QModelIndex &index) const;
-    /** \reimpl */
+    /** \reimp */
     void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles = QVector<int>()) override;
-    /** \reimpl */
+    /** \reimp */
     void doItemsLayout() override;
 
     /**

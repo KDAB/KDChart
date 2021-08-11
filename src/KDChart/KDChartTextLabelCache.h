@@ -113,7 +113,7 @@ public:
     void setAngle(qreal angle);
     qreal angle() const;
 
-    // reimpl PrerenderedElement:
+    // reimp PrerenderedElement:
     const QPixmap &pixmap() const override;
     QPointF referencePointLocation(KDChartEnums::PositionValue position) const override;
     // overload: return location of referencePoint():

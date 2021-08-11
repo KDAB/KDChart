@@ -84,7 +84,7 @@ public:
           * Normally you don't need to call this method. It's handled automatically for you.
          */
     virtual void layoutPlanes();
-    /** \reimpl */
+    /** \reimp */
     void setCoordinatePlane(AbstractCoordinatePlane *plane) override;
 
     /**
@@ -106,11 +106,11 @@ public:
           */
     virtual QPointF referenceDiagramOffset() const;
 
-    /* reimpl */
+    /* reimp */
     void setModel(QAbstractItemModel *model) override;
-    /* reimpl */
+    /* reimp */
     void setRootIndex(const QModelIndex &index) override;
-    /* reimpl */
+    /* reimp */
     void setAttributesModel(AttributesModel *model) override;
 
 protected Q_SLOTS:

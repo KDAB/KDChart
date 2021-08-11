@@ -39,20 +39,20 @@ public:
 
 protected:
     // Implement AbstractDiagram
-    /** \reimpl */
+    /** \reimp */
     void paint(PaintContext *paintContext) override;
 
 public:
-    /** \reimpl */
+    /** \reimp */
     void resize(const QSizeF &area) override;
 
     // Implement AbstractPolarDiagram
-    /** \reimpl */
+    /** \reimp */
     qreal valueTotals() const override;
-    /** \reimpl */
+    /** \reimp */
     qreal numberOfValuesPerDataset() const override;
     qreal numberOfDatasets() const override;
-    /** \reimpl */
+    /** \reimp */
     qreal numberOfGridRings() const override;
 
     qreal valueTotals(int dataset) const;
@@ -71,7 +71,7 @@ public:
     virtual bool expandWhenExploded() const;
 
 protected:
-    /** \reimpl */
+    /** \reimp */
     const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paintEvent(QPaintEvent *) override;
     void resizeEvent(QResizeEvent *) override;

@@ -140,7 +140,7 @@ public:
     qreal angleUnit() const;
     qreal radiusUnit() const;
 
-    /** reimpl */
+    /** reimp */
     void paint(QPainter *) override;
 
 protected:

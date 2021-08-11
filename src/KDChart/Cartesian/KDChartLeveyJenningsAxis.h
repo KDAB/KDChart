@@ -68,7 +68,7 @@ public:
          */
     bool compare(const LeveyJenningsAxis *other) const;
 
-    /** reimpl */
+    /** reimp */
     void paintCtx(PaintContext *) override;
 
 protected:

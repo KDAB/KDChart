@@ -94,7 +94,7 @@ public:
     void setSymbol(Symbol symbol, const QString &filename);
     QString symbol(Symbol symbol) const;
 
-    /* \reimpl */
+    /* \reimp */
     void setModel(QAbstractItemModel *model) override;
 
     QPair<QDateTime, QDateTime> timeRange() const;
@@ -113,7 +113,7 @@ protected:
 
     QSvgRenderer *iconRenderer(Symbol symbol);
 
-    /** \reimpl */
+    /** \reimp */
     const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
 
 protected Q_SLOTS:
