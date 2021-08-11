@@ -1,4 +1,3 @@
-# <a name="title"></a> KD Chart [![Logo](https://github.com/KDAB/KDChart/blob/master/images/kdchart-medium.png)](ttps://www.kdab.com/development-resources/qt-tools/kd-chart)
 Introduction
 ============
 KD Chart is a tool for creating business and scientific charts.
@@ -58,7 +57,7 @@ and is available under the terms of:
   please contact info@kdab.com if you are interested in buying commercial licenses.
 
 Commercial licensing terms are available in
-LicenseRef-KDAB-KDChart.txt](LICENSES/LicenseRef-KDAB-KDChart.txt),
+[LicenseRef-KDAB-KDChart.txt](LICENSES/LicenseRef-KDAB-KDChart.txt),
 [LicenseRef-KDAB-KDChart-US.txt](LICENSES/LicenseRef-KDAB-KDChart-US.txt).
 
 See [README-commercial.txt](README-commercial.txt) for more details.
