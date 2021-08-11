@@ -20,5 +20,7 @@ SKIP python/cmake/
 #skip generated cmake
 SKIP KDChartConfig\.cmake\.in
 
+#skip other cmake
+SKIP Doxyfile.cmake
 #skip the borrowed code in the cmake subdir
 SKIP /cmake/InstallLocation.cmake|/cmake/ECM/|/cmake/KDAB/
