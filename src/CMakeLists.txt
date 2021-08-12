@@ -302,7 +302,7 @@ install(FILES
   KDGantt/kdganttsummaryhandlingproxymodel.h
   KDGantt/kdgantttreeviewrowcontroller.h
   KDGantt/kdganttview.h
-DESTINATION ${INSTALL_INCLUDE_DIR}/KDChart
+DESTINATION ${INSTALL_INCLUDE_DIR}/KDChart${${PROJECT_NAME}_LIBRARY_QTID}
 )
 
 set(SOURCES
@@ -466,7 +466,7 @@ endif()
 set_target_properties(kdchart PROPERTIES DEFINE_SYMBOL KDCHART_BUILD_KDCHART_LIB)
 target_include_directories(kdchart
   INTERFACE
-    "$<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR}/KDChart>"
+    "$<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR}/KDChart${${PROJECT_NAME}_LIBRARY_QTID}>"
   PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/kdablibfakes/include>"
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
@@ -507,7 +507,7 @@ ecm_setup_version(
   SOVERSION ${${PROJECT_NAME}_SOVERSION}
   COMPATIBILITY AnyNewerVersion
 )
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/kdchart_version.h" DESTINATION ${INSTALL_INCLUDE_DIR}/KDChart)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/kdchart_version.h" DESTINATION ${INSTALL_INCLUDE_DIR}/KDChart${${PROJECT_NAME}_LIBRARY_QTID})
 
 configure_package_config_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/KDChartConfig.cmake.in"
