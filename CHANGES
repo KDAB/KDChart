@@ -3,7 +3,7 @@ Release Highlights
 
 Version 3.0.0 (unreleased):
 ---------------------------
- * Supports Qt6 in addition to Qt5
+ * Supports Qt6 in addition to Qt5 (co-installable)
  * Minimum Qt version is 5.15.0
    (contact info@kdab.com to inquire about support for older Qt5 versions)
  * The qmake buildsystem (via autogen.py) is removed
