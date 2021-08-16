@@ -874,7 +874,9 @@ INPUT_ENCODING         = UTF-8
 
 FILE_PATTERNS          = *.cpp \
                          *.h \
-                         *.md
+                         *.dox \
+                         *.md \
+                         *.gif
 
 # The RECURSIVE tag can be used to specify whether or not subdirectories should
 # be searched for input files as well.
