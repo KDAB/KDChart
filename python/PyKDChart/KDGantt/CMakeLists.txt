@@ -79,6 +79,7 @@ set(PyKDGantt_target_link_libraries
   Qt${Qt_VERSION_MAJOR}::Core
   Qt${Qt_VERSION_MAJOR}::Widgets
   Qt${Qt_VERSION_MAJOR}::PrintSupport
+  ${Python3_LIBRARIES}
 )
 
 set(PyKDGantt_DEPENDS
