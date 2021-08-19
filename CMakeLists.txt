@@ -127,8 +127,10 @@ set(CMAKE_C_VISIBILITY_PRESET hidden)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
 
-add_definitions(-DQT_NO_CAST_TO_ASCII -DQT_NO_CAST_FROM_ASCII -DQBA_NO_CAST_TO_VOID -DQBA_NO_CAST_TO_ASCII -DQT_NO_STL -DQT_FATAL_ASSERT)
-add_definitions(-DUSE_EXCEPTIONS)
+include(KDCompilerFlags)
+
+add_definitions(-DQT_NO_CAST_TO_ASCII -DQT_NO_CAST_FROM_ASCII -DQBA_NO_CAST_TO_VOID -DQBA_NO_CAST_TO_ASCII -DQT_NO_STL)
+add_definitions(-DUSE_EXCEPTIONS -DQT_FATAL_ASSERT)
 if(MSVC)
   add_definitions(-D_SCL_SECURE_NO_WARNINGS)
 endif()
@@ -144,10 +146,6 @@ endif()
 if(MSVC)
   add_definitions(-DNOMINMAX -D_USE_MATH_DEFINES)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GR /EHsc /wd4251")
-endif()
-
-if(CMAKE_COMPILER_IS_GNUCXX)
-  add_compile_options(-Wsuggest-override)
 endif()
 
 if(${PROJECT_NAME}_STATIC)
