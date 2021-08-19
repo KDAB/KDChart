@@ -23,7 +23,7 @@
 
 class ModelParamVsParam : public QStandardItemModel
 {
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
     ModelParamVsParam(

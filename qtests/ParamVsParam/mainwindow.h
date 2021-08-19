@@ -29,11 +29,11 @@ QT_END_NAMESPACE
 
 namespace KDChart {
 class LineDiagram;
-};
+}
 
 class MainWindow : public QWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
     MainWindow(

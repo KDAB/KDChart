@@ -25,7 +25,7 @@
 #include <QDateTime>
 #include <QPersistentModelIndex>
 
-Q_DECLARE_METATYPE(QPersistentModelIndex);
+Q_DECLARE_METATYPE(QPersistentModelIndex)
 
 EntryDialog::EntryDialog(const QAbstractItemModel *model, QWidget *parent, Qt::WindowFlags f)
     : QDialog(parent, f)

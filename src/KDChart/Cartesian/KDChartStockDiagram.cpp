@@ -324,7 +324,7 @@ void StockDiagram::paint(PaintContext *context)
             switch (d->type) {
             case HighLowClose:
                 open.hidden = true;
-                // Fall-through intended!
+                Q_FALLTHROUGH();
             case OpenHighLowClose:
                 if (close.index.isValid() && low.index.isValid() && high.index.isValid())
                     d->drawOHLCBar(col, open, high, low, close, context);

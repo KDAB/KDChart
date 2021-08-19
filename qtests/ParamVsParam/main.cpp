@@ -43,6 +43,6 @@ private slots:
     }
 };
 
-QTEST_MAIN(TestParamVsParam);
+QTEST_MAIN(TestParamVsParam)
 
 #include "main.moc"
