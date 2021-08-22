@@ -8,6 +8,7 @@ set_and_check(KDChart_INCLUDE_DIR "@PACKAGE_INSTALL_INCLUDE_DIR@")
 set(KDChart_INCLUDE_DIRS "${KDChart_INCLUDE_DIR}")
 
 find_dependency(Qt5Svg)
+find_dependency(Qt5Network)
 
 include("${CMAKE_CURRENT_LIST_DIR}/KDChartTargets.cmake")
 
