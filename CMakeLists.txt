@@ -208,6 +208,8 @@ if(${PROJECT_NAME}_PYTHON_BINDINGS)
   elseif(CMAKE_BUILD_TYPE MATCHES "^[Dd]eb" OR ${PROJECT_NAME}_STATIC)
     message(FATAL_ERROR "** Python Bindings are disabled in debug or static builds.")
   endif()
+endif()
+if(${PROJECT_NAME}_PYTHON_BINDINGS)
   add_subdirectory(python)
 endif()
 
