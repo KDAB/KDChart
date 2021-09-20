@@ -73,6 +73,6 @@ add_custom_command(
 add_custom_target(kdchart-api.qch ALL DEPENDS ${DOXYGEN_OUTPUT_DIR}/qch/kdchart-api.qch)
 add_custom_target(docs DEPENDS kdchart-api.qch)
 
-set(QCH_INSTALL_DIR ${CMAKE_INSTALL_DOCDIR} CACHE STRING "Install location of Qt Assistant help files.")
+set(QCH_INSTALL_DIR ${INSTALL_DOC_DIR} CACHE STRING "Install location of Qt Assistant help files.")
 install(FILES ${DOXYGEN_OUTPUT_DIR}/qch/kdchart-api.qch DESTINATION ${QCH_INSTALL_DIR})
-install(FILES ${DOXYGEN_OUTPUT_DIR}/kdchart.tags DESTINATION ${CMAKE_INSTALL_DOCDIR})
+install(FILES ${DOXYGEN_OUTPUT_DIR}/kdchart.tags DESTINATION ${INSTALL_DOC_DIR})
