@@ -60,7 +60,7 @@ public:
         Normal,
         Stacked,
         Percent,
-        Rows ///< @deprecated Use BarDiagram::setOrientation() instead
+        Rows Q_DECL_ENUMERATOR_DEPRECATED ///< @deprecated Use BarDiagram::setOrientation() instead
     };
 
     void setType(const BarType type);

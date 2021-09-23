@@ -95,7 +95,7 @@ public:
          * Called by the widget's sizeEvent. Adjust all internal structures,
          * that are calculated, dependending on the size of the widget.
          *
-         * @param area
+         * @param area Size of the widget
          */
     virtual void resize(const QSizeF &area) = 0;
 
@@ -195,7 +195,6 @@ public:
          * Set the coordinate plane associated with the diagram. This determines
          * how coordinates in value space are mapped into pixel space. The chart
          * takes ownership.
-         * @return The coordinate plane associated with the diagram.
          */
     virtual void setCoordinatePlane(AbstractCoordinatePlane *plane);
 
@@ -567,7 +566,7 @@ public:
          *
          * \see percentMode
          */
-    void setPercentMode(bool percent);
+    Q_DECL_DEPRECATED void setPercentMode(bool percent);
 
     /**
          * \brief Returns whether this diagram is drawn in percent mode.
@@ -609,7 +608,7 @@ public:
          * Sets the dataset dimension of the diagram. Using this method
          * is deprecated. Use the specific diagram types instead.
          */
-    void setDatasetDimension(int dimension);
+    Q_DECL_DEPRECATED void setDatasetDimension(int dimension);
 
 protected:
     void setDatasetDimensionInternal(int dimension);
@@ -648,7 +647,7 @@ protected:
          * d->paintDataValueTextsAndMarkers() instead
          * which also is taking care for showing your cell-specific comments, if any,
          */
-    virtual void paintDataValueTexts(QPainter *painter);
+    Q_DECL_DEPRECATED virtual void paintDataValueTexts(QPainter *painter);
     /**
          * \deprecated
          * This method is deprecated and provided for backward-compatibility only.
@@ -656,7 +655,7 @@ protected:
          * d->paintDataValueTextsAndMarkers() instead
          * which also is taking care for showing your cell-specific comments, if any,
          */
-    virtual void paintMarkers(QPainter *painter);
+    Q_DECL_DEPRECATED virtual void paintMarkers(QPainter *painter);
     void setAttributesModelRootIndex(const QModelIndex &);
     QModelIndex attributesModelRootIndex() const;
 
@@ -667,7 +666,7 @@ protected:
          * @return The value of the display role at the given row and column as a qreal.
          * @deprecated
          */
-    qreal valueForCell(int row, int column) const;
+    Q_DECL_DEPRECATED qreal valueForCell(int row, int column) const;
 
 Q_SIGNALS:
     /** Diagrams are supposed to emit this signal, when the layout of one

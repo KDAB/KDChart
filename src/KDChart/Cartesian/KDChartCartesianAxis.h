@@ -84,14 +84,14 @@ public:
          * Be aware that setting this value can lead to
          * collisions between axis labels and the title
          */
-    void setTitleSpace(qreal value);
+    Q_DECL_DEPRECATED void setTitleSpace(qreal value);
     /// \deprecated
-    qreal titleSpace() const;
+    Q_DECL_DEPRECATED qreal titleSpace() const;
 
     /// \deprecated \brief use setTitleTextAttributes() instead
-    void setTitleSize(qreal value);
+    Q_DECL_DEPRECATED void setTitleSize(qreal value);
     /// \deprecated
-    qreal titleSize() const;
+    Q_DECL_DEPRECATED qreal titleSize() const;
 
     void setTitleTextAttributes(const TextAttributes &a);
     /**

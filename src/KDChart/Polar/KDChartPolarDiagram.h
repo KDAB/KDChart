@@ -62,9 +62,9 @@ public:
     virtual PolarDiagram *clone() const;
 
     /** \deprecated Use PolarCoordinatePlane::setStartPosition( qreal degrees ) instead. */
-    void setZeroDegreePosition(int degrees);
+    Q_DECL_DEPRECATED void setZeroDegreePosition(int degrees);
     /** \deprecated Use qreal PolarCoordinatePlane::startPosition instead. */
-    int zeroDegreePosition() const;
+    Q_DECL_DEPRECATED int zeroDegreePosition() const;
 
     void setRotateCircularLabels(bool rotateCircularLabels);
     bool rotateCircularLabels() const;

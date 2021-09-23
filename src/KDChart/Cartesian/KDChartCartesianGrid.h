@@ -97,10 +97,10 @@ private:
           * \param adjustUpper If true, the function adjusts the end value
           * so it matches the position of a grid line, if false the end value is
           * left as it is, in any case the value is adjusted for internal calculation only.
-          *
-          * \returns stepWidth: One of the values from the granularities
+          * \param stepWidth One of the values from the granularities
           * list, optionally multiplied by a positive (or negative, resp.)
-          * power of ten. subStepWidth: The matching width for sub-grid lines.
+          * power of ten.
+          * \param subStepWidth The matching width for sub-grid lines.
           */
     virtual void calculateStepWidth(
         qreal start, qreal end,

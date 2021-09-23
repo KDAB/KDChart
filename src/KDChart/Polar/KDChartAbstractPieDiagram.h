@@ -55,9 +55,9 @@ public:
     qreal granularity() const;
 
     /** \deprecated Use PolarCoordinatePlane::setStartPosition( qreal degrees ) instead. */
-    void setStartPosition(int degrees);
+    Q_DECL_DEPRECATED void setStartPosition(int degrees);
     /** \deprecated Use qreal PolarCoordinatePlane::startPosition instead. */
-    int startPosition() const;
+    Q_DECL_DEPRECATED int startPosition() const;
 
     /** If this property is set, and if a pie's TextAttributes have no rotation set, its labels will
      * automatically be rotated according to the pie's angle.
