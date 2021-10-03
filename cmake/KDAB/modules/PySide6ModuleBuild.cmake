@@ -134,6 +134,11 @@ macro(CREATE_PYTHON_BINDINGS
             OUTPUT_NAME ${MODULE_NAME}
             LIBRARY_OUTPUT_DIRECTORY ${MODULE_OUTPUT_DIR}
         )
+        if(APPLE)
+            set_target_properties(${TARGET_NAME} PROPERTIES INSTALL_RPATH "@loader_path")
+        elseif(NOT WIN32) #ie. linux
+            set_target_properties(${TARGET_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN")
+        endif()
 
         if(WIN32)
             set_target_properties(${TARGET_NAME} PROPERTIES SUFFIX ".pyd")
