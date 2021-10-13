@@ -20,5 +20,19 @@ add_subdirectory(KDGantt)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/__init__.py.cmake ${CMAKE_CURRENT_BINARY_DIR}/__init__.py @ONLY)
 
 # install
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/__init__.py
-    DESTINATION ${${PROJECT_NAME}_PYTHON_BINDINGS_INSTALL_PREFIX})
+install(
+  FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/__init__.py
+    $<TARGET_FILE:KDAB::kdchart>
+  DESTINATION
+    ${${PROJECT_NAME}_PYTHON_BINDINGS_INSTALL_PREFIX}
+)
+if(NOT WIN32)
+  install(
+    FILES
+        $<TARGET_LINKER_FILE:KDAB::kdchart>
+        $<TARGET_SONAME_FILE:KDAB::kdchart>
+    DESTINATION
+        ${${PROJECT_NAME}_PYTHON_BINDINGS_INSTALL_PREFIX}
+  )
+endif()
