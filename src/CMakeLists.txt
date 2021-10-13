@@ -445,6 +445,7 @@ check_cxx_source_compiles("int main(void) { return 0; }" HAVE_LD_VERSION_SCRIPT)
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS_SAVE})
 
 add_library(kdchart ${KDChart_LIBRARY_MODE} ${SOURCES} ${FORMS} ${RESOURCES})
+add_library(KDAB::kdchart ALIAS kdchart)
 set_target_properties(kdchart PROPERTIES
   SOVERSION ${${PROJECT_NAME}_SOVERSION}
   VERSION ${${PROJECT_NAME}_VERSION}
@@ -514,6 +515,10 @@ install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/KDChart${${PROJECT_NAME}_LIBRARY_QTID}Config.cmake"
   "${CMAKE_CURRENT_BINARY_DIR}/KDChart/KDChart${${PROJECT_NAME}_LIBRARY_QTID}ConfigVersion.cmake"
   DESTINATION "${INSTALL_LIBRARY_DIR}/cmake/KDChart${${PROJECT_NAME}_LIBRARY_QTID}"
+)
+
+export(TARGETS kdchart NAMESPACE KDChart::
+  FILE "${CMAKE_CURRENT_BINARY_DIR}/KDChart/KDChartTargets.cmake"
 )
 
 install(TARGETS kdchart EXPORT KDChartTargets

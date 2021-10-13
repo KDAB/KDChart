@@ -184,6 +184,9 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
     DESTINATION "${INSTALL_LIBRARY_DIR}/cmake/KDChart${${PROJECT_NAME}_LIBRARY_QTID}"
   )
 
+  #Install the kdchart features file for qmake users
+  add_subdirectory(features)
+
   # Generate .pri file for qmake users
   #TODO: ECM does not support Qt6 yet
   if(Qt_VERSION_MAJOR EQUAL 5 AND
@@ -196,6 +199,16 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
     )
     install(FILES ${pri_filename} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
   endif()
+else()
+  #Always disable tests, examples, docs when used as a submodule
+  set(${PROJECT_NAME}_IS_ROOT_PROJECT FALSE)
+  set(${PROJECT_NAME}_TESTS FALSE)
+  set(${PROJECT_NAME}_EXAMPLES FALSE)
+  set(${PROJECT_NAME}_DOCS FALSE)
+endif()
+
+if(${PROJECT_NAME}_TESTS)
+  enable_testing()
 endif()
 
 add_subdirectory(src)
@@ -213,47 +226,42 @@ if(${PROJECT_NAME}_PYTHON_BINDINGS)
   add_subdirectory(python)
 endif()
 
-if(${PROJECT_NAME}_IS_ROOT_PROJECT)
-  export(TARGETS kdchart NAMESPACE KDChart::
-    FILE "${CMAKE_CURRENT_BINARY_DIR}/KDChart/KDChartTargets.cmake"
+if(${PROJECT_NAME}_TESTS OR ${PROJECT_NAME}_EXAMPLES)
+  # Shared testtools lib
+  add_library(testtools ${KDChart_LIBRARY_MODE} examples/tools/TableModel.cpp)
+
+  target_link_libraries(testtools ${QT_LIBRARIES})
+  target_compile_definitions(testtools PRIVATE KDCHART_BUILD_TESTTOOLS_LIB)
+
+  if(NOT ${PROJECT_NAME}_STATIC)
+    target_compile_definitions(testtools PRIVATE QT_SHARED TESTTOOLS_MAKEDLL)
+  endif()
+
+  target_include_directories(testtools
+    PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/examples/tools>"
   )
+endif()
 
-  if(${PROJECT_NAME}_TESTS OR ${PROJECT_NAME}_EXAMPLES)
-    # Shared testtools lib
-    add_library(testtools ${KDChart_LIBRARY_MODE} examples/tools/TableModel.cpp)
+if(${PROJECT_NAME}_TESTS)
+  find_package(Qt${Qt_VERSION_MAJOR}Test REQUIRED)
+  list(APPEND QT_LIBRARIES Qt${Qt_VERSION_MAJOR}::Test)
+  add_subdirectory(qtests)
+  add_subdirectory(tests)
+endif()
 
-    target_link_libraries(testtools ${QT_LIBRARIES})
-    target_compile_definitions(testtools PRIVATE KDCHART_BUILD_TESTTOOLS_LIB)
+if(${PROJECT_NAME}_EXAMPLES)
+  add_subdirectory(examples)
+endif()
 
-    if(NOT ${PROJECT_NAME}_STATIC)
-      target_compile_definitions(testtools PRIVATE QT_SHARED TESTTOOLS_MAKEDLL)
-    endif()
+if(${PROJECT_NAME}_DOCS)
+  add_subdirectory(docs) # needs to go last, in case there are build source files
+else()
+  add_custom_target(docs
+    COMMAND ${CMAKE_COMMAND} -E echo "Sorry, there is no docs target since KDChart_DOCS=OFF."
+    "Re-run cmake with the -DKDChart_DOCS=True option if you want to generate the documentation.")
+endif()
 
-    target_include_directories(testtools
-      PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/examples/tools>"
-    )
-  endif()
-
-  add_subdirectory(features)
-  if(${PROJECT_NAME}_TESTS)
-    find_package(Qt${Qt_VERSION_MAJOR}Test REQUIRED)
-    list(APPEND QT_LIBRARIES Qt${Qt_VERSION_MAJOR}::Test)
-    enable_testing()
-    add_subdirectory(qtests)
-    add_subdirectory(tests)
-  endif()
-  if(${PROJECT_NAME}_EXAMPLES)
-    add_subdirectory(examples)
-  endif()
-
-  if(${PROJECT_NAME}_DOCS)
-    add_subdirectory(docs) # needs to go last, in case there are build source files
-  else()
-    add_custom_target(docs
-      COMMAND ${CMAKE_COMMAND} -E echo "Sorry, there is no docs target since KDChart_DOCS=OFF."
-      "Re-run cmake with the -DKDChart_DOCS=True option if you want to generate the documentation.")
-  endif()
-
+if(${PROJECT_NAME}_IS_ROOT_PROJECT)
   # Add uninstall target (not for submodules since parent projects typically have uninstall too)
   include(ECMUninstallTarget)
 endif()
