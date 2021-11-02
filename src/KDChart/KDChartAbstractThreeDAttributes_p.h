@@ -44,6 +44,7 @@ class AbstractThreeDAttributes::Private
 
 public:
     Private();
+    virtual ~Private() = default;
 
 private:
     bool enabled = false;
