@@ -3,6 +3,7 @@ Release Highlights
 
 Version 3.0.0 (unreleased):
 ---------------------------
+** NOTE: Version 3.0 is not! binary compatible with Version 2.x **
  * Supports Qt6 in addition to Qt5 (co-installable)
  * Minimum Qt version is 5.15.0
    (contact info@kdab.com to inquire about support for older Qt5 versions)
