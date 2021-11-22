@@ -19,7 +19,7 @@ skip_tags: false
 
 # Build worker image
 image:
-  - Ubuntu
+  - Ubuntu2004
   - macos
   - Visual Studio 2019
 
