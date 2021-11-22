@@ -197,7 +197,6 @@ private:
     QStack<QPair<qreal, qreal>> mFactors;
     QPaintDevice *m_paintDevice = nullptr;
 };
-
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)

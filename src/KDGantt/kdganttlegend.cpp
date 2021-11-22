@@ -126,7 +126,7 @@ StyleOptionGanttItem Legend::getStyleOption(const QModelIndex &index) const
     return opt;
 }
 
-/*! Draws the legend item at \a index and all of it's children recursively 
+/*! Draws the legend item at \a index and all of it's children recursively
  *  at \a pos onto \a painter.
  *  Reimplement this if you want to draw items in an user defined way.
  *  \returns the rectangle drawn.

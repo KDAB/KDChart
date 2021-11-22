@@ -148,7 +148,6 @@ private:
     class Private;
     Private *d;
 };
-
 }
 
 #endif // PLOTTERDIAGRAMCOMPRESSOR_H

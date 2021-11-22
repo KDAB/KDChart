@@ -106,6 +106,5 @@ public:
     ConstraintModel mappedConstraintModel;
     ConstraintProxy constraintProxy;
 };
-
 }
 #endif /* KDGANTTVIEW_P_H */

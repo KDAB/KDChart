@@ -94,5 +94,4 @@ QModelIndex AbstractProxyModel::parent(const QModelIndex &index) const
         return QModelIndex();
     return mapFromSource(sourceModel()->parent(mapToSource(index)));
 }
-
 }

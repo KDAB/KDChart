@@ -51,7 +51,6 @@ static void drawIntoPixmap(QPixmap &pix, const QSize &size, KDChart::Chart *char
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
-
     setupUi(this);
 
     auto *chartLayout = new QHBoxLayout(chartFrame);

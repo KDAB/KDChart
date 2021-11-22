@@ -29,7 +29,6 @@ using namespace KDChart;
 
 class PaintContext::Private
 {
-
 public:
     QPainter *painter = nullptr;
     QRectF rect;

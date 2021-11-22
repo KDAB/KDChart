@@ -54,7 +54,6 @@ private:
     int m_row = -1;
     int m_column = -1;
 };
-
 }
 
 #endif

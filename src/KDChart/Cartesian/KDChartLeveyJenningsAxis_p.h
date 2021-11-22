@@ -73,7 +73,6 @@ inline const LeveyJenningsAxis::Private *LeveyJenningsAxis::d_func() const
 {
     return static_cast<const Private *>(CartesianAxis::d_func());
 }
-
 }
 
 #endif

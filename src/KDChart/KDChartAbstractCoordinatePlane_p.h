@@ -105,7 +105,6 @@ inline const AbstractCoordinatePlane::Private *AbstractCoordinatePlane::d_func()
 {
     return static_cast<const Private *>(AbstractArea::d_func());
 }
-
 }
 
 #endif /* KDCHARTABSTRACTCOORDINATEPLANE_P_H*/

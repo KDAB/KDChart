@@ -80,7 +80,6 @@ private:
         return _d;
     }
 }; // End of class BarAttributes
-
 }
 
 Q_DECLARE_METATYPE(KDChart::BarAttributes)

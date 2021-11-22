@@ -119,7 +119,6 @@ public:
 private:
     KDCHART_DECLARE_PRIVATE_BASE_VALUE(ValueTrackerAttributes)
 }; // End of class ValueTrackerAttributes
-
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)

@@ -29,7 +29,6 @@ class Chart;
 class TernaryLineDiagram;
 class TernaryPointDiagram;
 class TernaryCoordinatePlane;
-
 }
 
 class MainWindow : public QDialog,

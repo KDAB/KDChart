@@ -56,7 +56,6 @@ protected:
 private:
     LeveyJenningsGrid *grid() const;
 };
-
 }
 
 #endif

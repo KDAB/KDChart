@@ -73,7 +73,6 @@ inline const TextArea::Private *TextArea::d_func() const
 {
     return static_cast<const Private *>(AbstractAreaBase::d_func());
 }
-
 }
 
 #endif /* KDCHART_TEXT_AREA_P_H */

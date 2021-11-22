@@ -537,7 +537,6 @@ bool PlotterDiagramCompressor::Private::inBoundaries(Qt::Orientation orient, con
 // method
 void PlotterDiagramCompressor::Private::rowsInserted(const QModelIndex & /*parent*/, int start, int end)
 {
-
     //Q_ASSERT( std::numeric_limits<qreal>::quiet_NaN() < 5 || std::numeric_limits<qreal>::quiet_NaN() > 5 );
     //Q_ASSERT( 5 == qMin( std::numeric_limits<qreal>::quiet_NaN(),  5.0 ) );
     //Q_ASSERT( 5 == qMax( 5.0, std::numeric_limits<qreal>::quiet_NaN() ) );

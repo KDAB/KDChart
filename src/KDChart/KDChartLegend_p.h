@@ -146,7 +146,6 @@ inline const Legend::Private *Legend::d_func() const
 {
     return static_cast<const Private *>(AbstractAreaWidget::d_func());
 }
-
 }
 
 #endif /* KDCHARTLEGEND_P_H */

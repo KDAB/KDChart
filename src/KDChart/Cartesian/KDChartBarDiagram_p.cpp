@@ -134,7 +134,6 @@ void BarDiagram::BarDiagramType::calculateValueAndGapWidths(int rowCount, int co
                                                             qreal &outSpaceBetweenBars,
                                                             qreal &outSpaceBetweenGroups)
 {
-
     Q_UNUSED(rowCount);
     BarAttributes ba = diagram()->barAttributes();
 

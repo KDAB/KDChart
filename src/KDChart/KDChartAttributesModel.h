@@ -141,7 +141,6 @@ private:
     void removeEntriesFromDataMap(int start, int end);
     void removeEntriesFromDirectionDataMaps(Qt::Orientation dir, int start, int end);
 };
-
 }
 
 #endif

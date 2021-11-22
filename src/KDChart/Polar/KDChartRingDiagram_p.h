@@ -71,7 +71,6 @@ protected:
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM(RingDiagram, AbstractPieDiagram, PolarCoordinatePlane)
-
 }
 
 #endif /* KDCHARTRINGDIAGRAM_P_H */

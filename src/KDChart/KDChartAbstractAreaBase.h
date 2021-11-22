@@ -117,6 +117,5 @@ protected:
     virtual void positionHasChanged();
 
 }; // End of class AbstractAreaBase
-
 }
 #endif // KDCHARTABSTRACTAREABASE_H

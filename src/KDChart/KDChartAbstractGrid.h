@@ -147,7 +147,6 @@ private:
     virtual DataDimensionsList calculateGrid(const DataDimensionsList &rawDataDimensions) const = 0;
     DataDimensionsList mCachedRawDataDimensions;
 };
-
 }
 
 #endif

@@ -53,7 +53,6 @@ public:
     KDCHART_DECLARE_PRIVATE_DERIVED(ThreeDLineAttributes)
 
 }; // End of class ThreeDLineAttributes
-
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)

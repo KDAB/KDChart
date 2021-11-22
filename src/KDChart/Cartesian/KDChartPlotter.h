@@ -136,7 +136,6 @@ protected Q_SLOTS:
     void setDataBoundariesDirty();
     void calcMergeRadius();
 }; // End of class KDChart::Plotter
-
 }
 
 #endif // KDCHARTLINEDIAGRAM_H

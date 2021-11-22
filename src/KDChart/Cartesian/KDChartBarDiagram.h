@@ -120,7 +120,6 @@ private:
                                     qreal &spaceBetweenBars,
                                     qreal &spaceBetweenGroups);
 }; // End of class BarDiagram
-
 }
 
 #endif // KDCHARTBARDIAGRAM_H

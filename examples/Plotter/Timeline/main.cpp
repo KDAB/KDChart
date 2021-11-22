@@ -96,7 +96,6 @@ public:
 private slots:
     void slotTimeout()
     {
-
         // An ugly hack to prevent the QAbstractItemModel from emitting dataChanged
         // for every single call to setData which would result in a full relayout
         // every time. That's horrible for performance and what we do is to prevent

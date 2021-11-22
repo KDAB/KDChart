@@ -173,7 +173,6 @@ private:
     int mProxyColumnCount;
     QModelIndex mRootIndex;
 };
-
 }
 
 #endif

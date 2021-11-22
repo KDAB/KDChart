@@ -116,6 +116,5 @@ private:
 }; // End of class KDChartPieDiagram
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(PieDiagram::LabelDecorations)
-
 }
 #endif // KDCHARTPIEDIAGRAM_H

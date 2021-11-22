@@ -78,7 +78,6 @@ inline const AbstractAreaWidget::Private *AbstractAreaWidget::d_func() const
 {
     return static_cast<const Private *>(AbstractAreaBase::d_func());
 }
-
 }
 
 #endif /* KDCHARTABSTRACTAREAWIDGET_P_H */

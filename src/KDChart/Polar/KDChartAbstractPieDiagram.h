@@ -85,7 +85,6 @@ public:
     ThreeDPieAttributes threeDPieAttributes(int column) const;
     ThreeDPieAttributes threeDPieAttributes(const QModelIndex &index) const;
 }; // End of class KDChartAbstractPieDiagram
-
 }
 
 #endif // KDCHARTABSTACTPIEDIAGRAM_H

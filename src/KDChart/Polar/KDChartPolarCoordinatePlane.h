@@ -156,7 +156,6 @@ protected Q_SLOTS:
 private:
     void setHasOwnGridAttributes(bool circular, bool on);
 };
-
 }
 
 #endif

@@ -32,7 +32,6 @@ public:
     explicit ChartWidget(QWidget *parent = nullptr)
         : QWidget(parent)
     {
-
         // initialize the ItemModel and fill in some data
         m_model.insertRows(0, 10);
         m_model.insertColumns(0, 5);

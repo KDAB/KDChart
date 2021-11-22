@@ -60,7 +60,6 @@ private:
         return _d;
     }
 };
-
 }
 
 #endif /* PAINTCONTEXT_H */

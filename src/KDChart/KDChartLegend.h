@@ -165,7 +165,7 @@ public:
     void replaceDiagram(KDChart::AbstractDiagram *newDiagram,
                         KDChart::AbstractDiagram *oldDiagram = nullptr);
 
-    /** 
+    /**
       * Returns the offset of the first dataset of \c diagram.
       *
       */
@@ -397,7 +397,6 @@ private Q_SLOTS:
     void setNeedRebuild();
     void buildLegend();
 }; // End of class Legend
-
 }
 
 #endif // KDCHARTLEGEND_H

@@ -69,7 +69,7 @@ public:
      * first row and the first column, where string values are executed (those
      * will be used as axis descriptors). If values cannot be converted to
      * qreals, their string representation will be used.
-     * 
+     *
      * @returns true if successful, false otherwise
      *
      * @sa titleText
@@ -98,7 +98,7 @@ public:
     /**
      * Setting the title text has no effect except that the text
      * can then be retrieved via titleText.
-     * 
+     *
      * TableModel is just storing this data but it does nothing
      * else with it, nor does Qt's IndeView model make use of it.
      */

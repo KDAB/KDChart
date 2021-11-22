@@ -63,7 +63,6 @@ KDCHART_IMPL_DERIVED_DIAGRAM(TernaryLineDiagram, AbstractTernaryDiagram, Ternary
   inline const LineDiagram::Private * LineDiagram::d_func() const
   { return static_cast<const Private*>( AbstractTernaryDiagram::d_func() ); }
 */
-
 }
 
 #endif /* KDCHARTTERNARYLINEDIAGRAM_P_H */

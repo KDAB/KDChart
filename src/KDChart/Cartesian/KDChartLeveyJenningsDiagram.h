@@ -119,7 +119,6 @@ protected:
 protected Q_SLOTS:
     void calculateMeanAndStandardDeviation() const;
 }; // End of class KDChartLineDiagram
-
 }
 
 #endif // KDCHARTLINEDIAGRAM_H

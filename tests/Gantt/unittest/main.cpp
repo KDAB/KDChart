@@ -22,7 +22,6 @@
 
 int main(int argc, char **argv)
 {
-
     QApplication app(argc, argv);
 
     KDAB::UnitTest::Runner r;

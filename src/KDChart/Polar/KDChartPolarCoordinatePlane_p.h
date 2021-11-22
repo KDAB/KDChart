@@ -128,7 +128,6 @@ public:
 };
 
 KDCHART_IMPL_DERIVED_PLANE(PolarCoordinatePlane, AbstractCoordinatePlane)
-
 }
 
 #endif /* KDCHARTBARDIAGRAM_P_H */

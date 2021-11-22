@@ -52,7 +52,6 @@ private:
     KDCHART_DECLARE_PRIVATE_DERIVED(ThreeDPieAttributes)
 
 }; // End of class ThreeDPieAttributes
-
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)

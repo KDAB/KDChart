@@ -92,6 +92,5 @@ inline const AbstractAxis::Private *AbstractAxis::d_func() const
 {
     return static_cast<const Private *>(AbstractArea::d_func());
 }
-
 }
 #endif /* KDCHARTAREA_P_H */

@@ -47,7 +47,6 @@ ReverseMapper::~ReverseMapper()
 
 void ReverseMapper::setDiagram(AbstractDiagram *diagram)
 {
-
     m_diagram = diagram;
 }
 

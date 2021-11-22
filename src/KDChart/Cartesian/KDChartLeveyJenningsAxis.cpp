@@ -123,7 +123,6 @@ bool LeveyJenningsAxis::compare(const LeveyJenningsAxis *other) const
 
 void LeveyJenningsAxis::paintCtx(PaintContext *context)
 {
-
     Q_ASSERT_X(d->diagram(), "LeveyJenningsAxis::paint",
                "Function call not allowed: The axis is not assigned to any diagram.");
 

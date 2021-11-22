@@ -737,9 +737,9 @@ void CartesianAxis::paintCtx(PaintContext *context)
     int labelThinningFactor = 1;
     // TODO: label thinning also when grid line distance < 4 pixels, not only when labels collide
     auto *tickLabel = new TextLayoutItem(QString(), labelTA, plane->parent(),
-                                                   KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft);
+                                         KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft);
     auto *prevTickLabel = new TextLayoutItem(QString(), labelTA, plane->parent(),
-                                                       KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft);
+                                             KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft);
     QPointF prevTickLabelPos;
     enum {
         Layout = 0,

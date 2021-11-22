@@ -102,6 +102,5 @@ protected:
     QRect areaGeometry() const override;
     void positionHasChanged() override;
 };
-
 }
 #endif // KDCHARTABSTRACTAREAWIDGET_H

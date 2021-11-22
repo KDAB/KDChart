@@ -89,7 +89,6 @@ protected:
     void paint(PaintContext *paintContext) override;
 
 }; // End of class RadarDiagram
-
 }
 
 #endif // KDCHARTRADARDIAGRAM_H

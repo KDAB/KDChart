@@ -62,7 +62,7 @@ private:
          *
          * Classes derived from CartesianGrid can overwrite calculateGridXY() if they need
          * a special way of calculating the start or end or step width of their grid lines.
-         * 
+         *
          * \param adjustLower If true, the function adjusts the start value
          * so it matches the position of a grid line, if false the start value is
          * the raw data dimension start value.
@@ -109,7 +109,6 @@ private:
         qreal &stepWidth, qreal &subStepWidth,
         bool adjustLower, bool adjustUpper) const;
 };
-
 }
 
 #endif

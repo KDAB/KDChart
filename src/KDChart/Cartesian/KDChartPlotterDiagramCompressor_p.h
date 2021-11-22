@@ -54,7 +54,6 @@ public Q_SLOTS:
     void clearBuffer();
     void setModelToZero();
 };
-
 }
 
 #endif // PLOTTERDIAGRAMCOMPRESSOR_P_H

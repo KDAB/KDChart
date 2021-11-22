@@ -65,7 +65,6 @@ inline TernaryPointDiagram::Private * TernaryPointDiagram::d_func()
 inline const TernaryPointDiagram::Private * TernaryPointDiagram::d_func() const
 { return static_cast<const Private*>( AbstractTernaryDiagram::d_func() ); }
 */
-
 }
 
 #endif /* KDCHARTTERNARYPOINTDIAGRAM_P_H */

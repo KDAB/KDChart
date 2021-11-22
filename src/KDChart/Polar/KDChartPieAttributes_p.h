@@ -49,7 +49,6 @@ public:
     qreal tangentialGapFactor = 0.0;
     qreal radialGapFactor = 0.0;
 };
-
 }
 
 #endif // KDCHART_PIE_ATTRIBUTES_P_H

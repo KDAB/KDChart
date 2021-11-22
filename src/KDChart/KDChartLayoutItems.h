@@ -468,7 +468,6 @@ private:
     mutable QBrush mCommonBrush;
     mutable QSize mCachedSize;
 };
-
 }
 
 #endif /* KDCHARTLAYOUTITEMS_H */

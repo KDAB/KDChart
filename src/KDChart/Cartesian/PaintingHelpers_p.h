@@ -59,7 +59,6 @@ namespace PaintingHelpers {
     void paintSpline(PaintContext *ctx, const QBrush &brush, const QPen &pen, const QPolygonF &points);
     void paintAreas(AbstractDiagram::Private *diagramPrivate, PaintContext *ctx, const QModelIndex &index,
                     const QList<QPainterPath> &areas, uint opacity);
-
 }
 
 inline qreal euclideanLength(const QPointF &p)
@@ -112,7 +111,6 @@ inline void addSplineChunkTo(QPainterPath &path, qreal tension, QPointF before, 
     const QPair<QPointF, QPointF> chunk = splineChunk(tension, before, a, b, after, splineDirection);
     path.cubicTo(chunk.first, chunk.second, b);
 }
-
 }
 
 #endif

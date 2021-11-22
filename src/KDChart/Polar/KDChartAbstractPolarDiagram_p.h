@@ -85,6 +85,5 @@ inline AbstractPolarDiagram::Private * AbstractPolarDiagram::d_func()
 inline const AbstractPolarDiagram::Private * AbstractPolarDiagram::d_func() const
 { return static_cast<const Private*>( AbstractDiagram::d_func() ); }
 */
-
 }
 #endif /* KDCHARTABSTRACTCARTESIANDIAGRAM_P_H */

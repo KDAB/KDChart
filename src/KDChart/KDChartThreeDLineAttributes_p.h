@@ -52,7 +52,6 @@ private:
 };
 
 KDCHART_DERIVED_PRIVATE_FOOTER(ThreeDLineAttributes, AbstractThreeDAttributes)
-
 }
 
 #endif // KDCHARTTHREEDLINESATTRIBUTES_P_H

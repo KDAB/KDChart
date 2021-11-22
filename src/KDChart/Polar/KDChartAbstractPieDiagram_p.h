@@ -62,6 +62,5 @@ private:
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM(AbstractPieDiagram, AbstractPolarDiagram, PolarCoordinatePlane)
-
 }
 #endif /* KDCHARTABSTRACTPIEDIAGRAM_P_H */

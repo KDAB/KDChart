@@ -59,7 +59,6 @@ private:
         return _d;
     }
 };
-
 }
 
 Q_DECLARE_METATYPE(KDChart::StockBarAttributes)

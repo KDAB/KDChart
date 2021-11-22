@@ -33,7 +33,7 @@ class RadarCoordinatePlane;
      *
      * The RadarGrid interface is used
      * for calculating and for drawing
-     * the grid lines of a radar charts including "axis" 
+     * the grid lines of a radar charts including "axis"
      * labels.
      */
 class RadarGrid : public AbstractGrid
@@ -53,7 +53,6 @@ private:
     DataDimensionsList calculateGrid(
         const DataDimensionsList &rawDataDimensions) const override;
 };
-
 }
 
 #endif

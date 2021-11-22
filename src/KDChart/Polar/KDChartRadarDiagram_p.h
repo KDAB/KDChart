@@ -63,7 +63,6 @@ private:
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM(RadarDiagram, AbstractPolarDiagram, RadarCoordinatePlane)
-
 }
 
 #endif /* KDCHARTRADARDIAGRAM_P_H */

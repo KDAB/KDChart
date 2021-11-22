@@ -61,7 +61,6 @@ Q_SIGNALS:
     void positionChanged(HeaderFooter *);
 
 }; // End of class HeaderFooter
-
 }
 
 #endif // KDCHARTHEADERFOOTER_H

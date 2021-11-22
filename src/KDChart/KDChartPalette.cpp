@@ -88,7 +88,6 @@ static Palette makeRainbowPalette()
     }
     return p;
 }
-
 }
 
 #define d d_func()

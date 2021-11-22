@@ -125,6 +125,5 @@ protected:
 Q_SIGNALS:
     void positionChanged(AbstractArea *);
 }; // End of class AbstractArea
-
 }
 #endif // KDCHARTABSTRACTAREA_H

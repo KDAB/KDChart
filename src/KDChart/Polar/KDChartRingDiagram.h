@@ -82,7 +82,6 @@ private:
     QPointF pointOnEllipse(const QRectF &rect, int dataset, int slice, bool outer, qreal angle,
                            qreal totalGapFactor, qreal totalExplodeFactor);
 }; // End of class RingDiagram
-
 }
 
 #endif // KDCHARTRINGDIAGRAM_H

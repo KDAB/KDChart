@@ -35,7 +35,6 @@ public:
     explicit ChartWidget(QWidget *parent = nullptr)
         : QWidget(parent)
     {
-
         m_model.insertRows(0, 2, QModelIndex());
         m_model.insertColumns(0, 3, QModelIndex());
         for (int row = 0; row < 3; ++row) {

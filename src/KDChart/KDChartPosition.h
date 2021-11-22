@@ -278,7 +278,6 @@ public:
     QMap<KDChartEnums::PositionValue, qreal> mapOfDegrees;
 
 }; // End of class PositionPoints
-
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)

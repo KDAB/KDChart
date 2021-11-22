@@ -145,7 +145,6 @@ protected:
     void paintEvent(QPaintEvent *) override;
     void resizeEvent(QResizeEvent *) override;
 }; // End of class KDChartLineDiagram
-
 }
 
 #endif // KDCHARTLINEDIAGRAM_H

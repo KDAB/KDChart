@@ -81,6 +81,5 @@ public:
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM(AbstractCartesianDiagram, AbstractDiagram, CartesianCoordinatePlane)
-
 }
 #endif /* KDCHARTABSTRACTCARTESIANDIAGRAM_P_H */

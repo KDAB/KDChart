@@ -141,7 +141,6 @@ public:
 private:
     QSize m_size;
 };
-
 }
 
 #endif

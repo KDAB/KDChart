@@ -29,7 +29,6 @@ public:
     explicit ChartWidget(QWidget *parent = nullptr)
         : QWidget(parent)
     {
-
         m_model.insertRows(0, 6, QModelIndex());
         m_model.insertColumns(0, 1, QModelIndex());
 

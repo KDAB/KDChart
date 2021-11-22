@@ -56,7 +56,6 @@ public:
 };
 
 KDCHART_IMPL_DERIVED_PLANE(RadarCoordinatePlane, PolarCoordinatePlane)
-
 }
 
 #endif /* KDCHARTBARDIAGRAM_P_H */

@@ -55,7 +55,6 @@ void AbstractTernaryDiagram::addAxis(TernaryAxis *axis)
 
 void AbstractTernaryDiagram::takeAxis(TernaryAxis *axis)
 {
-
     int index = d->axesList.indexOf(axis);
     if (index != -1)
         d->axesList.removeAt(index);

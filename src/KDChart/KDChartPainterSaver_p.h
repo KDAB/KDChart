@@ -78,7 +78,6 @@ public:
 private:
     QPainter *const painter;
 };
-
 }
 
 #endif /* KDCHARTPAINTERSAVER_P_H */

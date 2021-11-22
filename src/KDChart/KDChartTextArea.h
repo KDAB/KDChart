@@ -73,6 +73,5 @@ Q_SIGNALS:
 
     //KDCHART_DECLARE_PRIVATE_DERIVED(TextArea)
 }; // End of class TextArea
-
 }
 #endif // KDCHART_TEXT_AREA_H

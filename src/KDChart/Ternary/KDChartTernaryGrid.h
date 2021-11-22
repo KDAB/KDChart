@@ -67,7 +67,6 @@ private:
     QVector<TickInfo> m_tickInfo;
     // QList<PrerenderedLabel> m_labels;
 };
-
 }
 
 #endif

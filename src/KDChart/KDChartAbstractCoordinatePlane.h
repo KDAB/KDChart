@@ -450,6 +450,5 @@ public:
 #if !defined(QT_NO_DEBUG_STREAM)
 QDebug operator<<(QDebug stream, const DataDimension &r);
 #endif
-
 }
 #endif

@@ -55,7 +55,6 @@ public:
 private:
     TernaryGrid *grid() const;
 };
-
 }
 
 #endif

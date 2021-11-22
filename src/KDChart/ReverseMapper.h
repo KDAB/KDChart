@@ -38,7 +38,6 @@ class ChartGraphicsItem;
       */
 class ReverseMapper
 {
-
 public:
     ReverseMapper();
     explicit ReverseMapper(AbstractDiagram *diagram);
@@ -68,7 +67,6 @@ private:
     AbstractDiagram *m_diagram = nullptr;
     QHash<QModelIndex, ChartGraphicsItem *> m_itemMap;
 };
-
 }
 
 #endif

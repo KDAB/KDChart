@@ -38,14 +38,12 @@ Simplified(*) overview of object ownership in a chart:
 
 (*) less important classes, including base classes, removed.
 
-
 Layout rules:
 
 In principle, every size or existence change in one of the objects listed above must be propagated
 to all other objects. This could change their size.
 There are also settings changes that invalidate the size of other components, where the size changes
 are detected and propagated.
-
 
 Painting call tree (simplified):
 

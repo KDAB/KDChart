@@ -59,7 +59,6 @@ inline AbstractThreeDAttributes::AbstractThreeDAttributes(Private *p)
 {
     init();
 }
-
 }
 
 #endif // KDCHARTABSTRACTTHREEDATTRIBUTES_P_H

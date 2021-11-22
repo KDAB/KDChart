@@ -90,6 +90,5 @@ inline AbstractAreaBase::AbstractAreaBase(AbstractAreaBase::Private *p)
 {
     init();
 }
-
 }
 #endif /* KDCHARTABSTRACTAREABASE_P_H */

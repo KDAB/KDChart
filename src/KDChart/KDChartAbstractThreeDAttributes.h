@@ -59,7 +59,6 @@ public:
     KDCHART_DECLARE_SWAP_BASE(AbstractThreeDAttributes)
 
 }; // End of class AbstractThreeDAttributes
-
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)

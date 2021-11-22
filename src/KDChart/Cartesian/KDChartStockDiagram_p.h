@@ -81,7 +81,6 @@ private:
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM(StockDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane)
-
 }
 
 #endif // KDCHART_STOCK_DIAGRAM_P_H

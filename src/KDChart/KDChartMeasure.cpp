@@ -208,7 +208,6 @@ QPaintDevice *GlobalMeasureScaling::paintDevice()
 {
     return instance()->m_paintDevice;
 }
-
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)

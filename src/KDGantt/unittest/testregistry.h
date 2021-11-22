@@ -63,7 +63,6 @@ namespace UnitTest {
         ~Runner();
         unsigned int run(const char *group = nullptr) const;
     };
-
 }
 }
 

@@ -33,7 +33,6 @@ public:
     const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void paint(PaintContext *ctx) override;
 };
-
 }
 
 #endif

@@ -175,7 +175,6 @@ public Q_SLOTS:
     void slotUnregisterDestroyedHeaderFooter(HeaderFooter *headerFooter);
     void slotUnregisterDestroyedPlane(AbstractCoordinatePlane *plane);
 };
-
 }
 
 #endif

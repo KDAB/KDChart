@@ -153,7 +153,6 @@ namespace UnitTest {
         }
         virtual Test *create() const = 0;
     };
-
 }
 }
 
@@ -175,7 +174,6 @@ namespace UnitTest {
             return new T_Test();
         }
     };
-
 }
 }
 

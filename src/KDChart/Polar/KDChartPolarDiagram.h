@@ -96,7 +96,6 @@ protected:
     virtual void paintPolarMarkers(PaintContext *ctx, const QPolygonF &polygon);
 
 }; // End of class PolarDiagram
-
 }
 
 #endif // KDCHARTPOLARDIAGRAM_H

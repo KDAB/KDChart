@@ -37,7 +37,6 @@ namespace KDChart {
       */
 struct CoordinateTransformation
 {
-
     CoordinateTransformation()
     {
     }
@@ -134,7 +133,6 @@ struct CoordinateTransformation
 };
 
 typedef QList<CoordinateTransformation> CoordinateTransformationList;
-
 }
 
 #endif

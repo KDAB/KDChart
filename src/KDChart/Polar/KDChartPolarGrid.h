@@ -53,7 +53,6 @@ private:
     DataDimensionsList calculateGrid(
         const DataDimensionsList &rawDataDimensions) const override;
 };
-
 }
 
 #endif

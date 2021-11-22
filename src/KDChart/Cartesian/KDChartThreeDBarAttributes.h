@@ -55,7 +55,6 @@ public:
     KDCHART_DECLARE_PRIVATE_DERIVED(ThreeDBarAttributes)
 
 }; // End of class ThreeDBarAttributes
-
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)

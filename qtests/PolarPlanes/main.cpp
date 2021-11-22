@@ -87,7 +87,6 @@ private slots:
 
     void testDiagramOwnership()
     {
-
         QCOMPARE(m_plane->diagrams().size(), 1);
         m_plane->addDiagram(m_polar);
         QCOMPARE(m_plane->diagrams().size(), 2);

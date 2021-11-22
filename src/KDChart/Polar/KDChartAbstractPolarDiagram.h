@@ -54,7 +54,6 @@ public:
     int columnCount() const;
     int rowCount() const;
 };
-
 }
 
 #endif

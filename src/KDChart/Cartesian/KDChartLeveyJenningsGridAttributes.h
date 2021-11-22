@@ -69,7 +69,6 @@ public:
 private:
     KDCHART_DECLARE_PRIVATE_BASE_VALUE(LeveyJenningsGridAttributes)
 }; // End of class GridAttributes
-
 }
 
 KDCHART_DECLARE_SWAP_SPECIALISATION(KDChart::LeveyJenningsGridAttributes)

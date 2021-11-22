@@ -64,7 +64,6 @@ private:
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM(PolarDiagram, AbstractPolarDiagram, PolarCoordinatePlane)
-
 }
 
 #endif /* KDCHARTPOLARDIAGRAM_P_H */

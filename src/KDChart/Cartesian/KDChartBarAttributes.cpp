@@ -128,7 +128,6 @@ void BarAttributes::setFixedBarWidth(qreal width)
 
 qreal BarAttributes::fixedBarWidth() const
 {
-
     return d->barWidth;
 }
 

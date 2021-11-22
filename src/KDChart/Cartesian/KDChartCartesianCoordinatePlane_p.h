@@ -133,7 +133,6 @@ public:
 };
 
 KDCHART_IMPL_DERIVED_PLANE(CartesianCoordinatePlane, AbstractCoordinatePlane)
-
 }
 
 #endif /* KDCHARTBARDIAGRAM_P_H */

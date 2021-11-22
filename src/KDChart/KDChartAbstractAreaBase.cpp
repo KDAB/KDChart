@@ -154,7 +154,6 @@ void AbstractAreaBase::paintBackgroundAttributes(QPainter &painter, const QRect 
 void AbstractAreaBase::paintFrameAttributes(QPainter &painter, const QRect &rect,
                                             const KDChart::FrameAttributes &attributes)
 {
-
     if (!attributes.isVisible())
         return;
 

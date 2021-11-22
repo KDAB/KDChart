@@ -42,7 +42,6 @@ public:
 protected:
     const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
 };
-
 }
 
 #endif

@@ -54,14 +54,13 @@ public:
          * \return The attributes used for axis.
          *
          * \note This function always returns a valid set of text attributes:
-         * If no special text attributes was set a default one is 
+         * If no special text attributes was set a default one is
          * returned.
          *
          * \sa setTextAttributes
          */
     const TextAttributes textAttributes() const;
 };
-
 }
 
 #endif

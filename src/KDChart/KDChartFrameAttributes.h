@@ -58,7 +58,6 @@ public:
 private:
     KDCHART_DECLARE_PRIVATE_BASE_VALUE(FrameAttributes)
 }; // End of class FrameAttributes
-
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)

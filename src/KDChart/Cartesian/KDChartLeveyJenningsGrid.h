@@ -54,7 +54,6 @@ private:
     void calculateStepWidth(qreal start_, qreal end_, const QList<qreal> &granularities, Qt::Orientation orientation,
                             qreal &stepWidth, qreal &subStepWidth, bool adjustLower, bool adjustUpper) const override;
 };
-
 }
 
 #endif

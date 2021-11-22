@@ -74,7 +74,6 @@ private:
     int mSourceRowCount = 0;
     int mSourceColumnCount = 0;
 };
-
 }
 
 #endif

@@ -319,7 +319,6 @@ GraphicsView::GraphicsView(QWidget *parent)
     : QGraphicsView(parent)
     , _d(new Private(this))
 {
-
 #if defined KDAB_EVAL
     EvalDialog::checkEvalLicense("KD Gantt");
 #endif

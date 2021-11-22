@@ -249,6 +249,5 @@ public:
 
 typedef QVector<LineAttributesInfo> LineAttributesInfoList;
 typedef QVectorIterator<LineAttributesInfo> LineAttributesInfoListIterator;
-
 }
 #endif /* KDCHARTDIAGRAM_P_H */

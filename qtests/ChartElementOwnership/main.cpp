@@ -133,7 +133,6 @@ private slots:
 
     void testLegendReplace()
     {
-
         // check no legend
         QCOMPARE(m_chart->legends().size(), 0);
         // check add several legends - take legend

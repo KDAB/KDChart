@@ -72,10 +72,10 @@ private:
     KDChartEnums::PositionValue m_referencePoint = KDChartEnums::PositionNorthWest;
 };
 
-/** 
+/**
     @brief PrerenderedLabel is an internal KDChart class that simplifies creation
     and caching of cached text labels.
-    
+
     It provides referenze points to anchor the text to other
     elements. Reference points use the positions defined in
     KDChartEnums.

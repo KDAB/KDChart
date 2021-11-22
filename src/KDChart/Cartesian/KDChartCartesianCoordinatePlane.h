@@ -494,7 +494,6 @@ private:
     void setHasOwnGridAttributes(
         Qt::Orientation orientation, bool on);
 };
-
 }
 
 #endif

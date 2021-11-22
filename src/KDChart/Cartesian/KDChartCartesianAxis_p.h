@@ -207,7 +207,6 @@ private:
     qreal m_minorTick;
     QString m_text;
 };
-
 }
 
 #endif
