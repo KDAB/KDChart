@@ -90,7 +90,7 @@ public:
         void invalidate();
 
     protected:
-        Iterator(int dataSet, PlotterDiagramCompressor *parent, QVector<DataPoint> buffer);
+        Iterator(int dataSet, PlotterDiagramCompressor *parent, QVector<DataPoint> &buffer);
 
     private:
         void handleSlopeForward(const DataPoint &dp);

@@ -316,7 +316,7 @@ m_legend->setFloatingPosition( relativePosition );
      * All datasets are shown by default, which means
      * that hiddenDatasets() returns an empty list.
      */
-    void setHiddenDatasets(const QList<uint> hiddenDatasets);
+    void setHiddenDatasets(const QList<uint> &hiddenDatasets);
     const QList<uint> hiddenDatasets() const;
     void setDatasetHidden(uint dataset, bool hidden);
     bool datasetIsHidden(uint dataset) const;

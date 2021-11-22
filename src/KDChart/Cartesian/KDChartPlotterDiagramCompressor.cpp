@@ -47,7 +47,7 @@ PlotterDiagramCompressor::Iterator::Iterator(int dataSet, PlotterDiagramCompress
     }
 }
 
-PlotterDiagramCompressor::Iterator::Iterator(int dataSet, PlotterDiagramCompressor *parent, QVector<DataPoint> buffer)
+PlotterDiagramCompressor::Iterator::Iterator(int dataSet, PlotterDiagramCompressor *parent, QVector<DataPoint> &buffer)
     : m_parent(parent)
     , m_buffer(buffer)
     , m_index(0)

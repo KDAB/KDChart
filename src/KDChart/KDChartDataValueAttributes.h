@@ -174,7 +174,7 @@ public:
    * \brief Prepend a prefix string to the data value label
    * \sa prefix
    */
-    void setPrefix(const QString prefix);
+    void setPrefix(const QString &prefix);
 
     /**
    * \brief Returns the string used as a prefix to the data value text.
@@ -186,7 +186,7 @@ public:
    * \brief Append a suffix string to the data value label
    * \sa suffix
    */
-    void setSuffix(const QString suffix);
+    void setSuffix(const QString &suffix);
 
     /**
    * \brief Returns the string used as a suffix to the data value text.
@@ -199,7 +199,7 @@ public:
    * Supports HTML code.
    * \sa dataLabel
    */
-    void setDataLabel(const QString label);
+    void setDataLabel(const QString &label);
 
     /**
    * \brief Returns the string displayed instead of the data value label

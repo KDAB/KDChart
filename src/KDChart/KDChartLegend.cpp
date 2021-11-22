@@ -1180,7 +1180,7 @@ void Legend::Private::destroyOldLayout()
     paintItems.clear();
 }
 
-void Legend::setHiddenDatasets(const QList<uint> hiddenDatasets)
+void Legend::setHiddenDatasets(const QList<uint> &hiddenDatasets)
 {
     d->hiddenDatasets = hiddenDatasets;
 }
