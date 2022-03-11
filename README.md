@@ -15,6 +15,8 @@ Try KD Chart in your web browser! visit https://demos.kdab.com/wasm/kdchart
 Using KD Chart
 ==============
 KD Chart requires Qt5.15.0 or newer, and a compiler with C++11 support.
+Qt6 support is added starting with KD Chart version 3.0, and requires
+a compiler with C++17 support.
 
 See [INSTALL.txt](INSTALL.txt) for installation instructions using CMake.
 
