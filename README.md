@@ -51,7 +51,7 @@ https://github.com/KDAB/KDChart
 
 License
 =======
-The KD Chart Software is Copyright 2001-2021 Klarälvdalens Datakonsult AB (KDAB),
+The KD Chart Software is Copyright 2001-2022 Klarälvdalens Datakonsult AB (KDAB),
 and is available under the terms of:
 
 * [GPL-2.0](LICENSES/GPL-2.0-only.txt) or [GPL-3.0](LICENSES/GPL-3.0-only.txt)

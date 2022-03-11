@@ -4,17 +4,17 @@ Upstream-Contact:  <info@kdab.com>
 Source: https://www.github.com/KDAB/KDChart
 
 Files: *.qrc *.ui *.xml *.kdx *.kxs *.conf *.csv *.cht *.map *.bat
-Copyright: 2001-2021 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+Copyright: 2001-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
 License: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDAB-KDChart OR LicenseRef-KDAB-KDChart-US
 
 #artwork
 Files: images/*.png docs/api/*.png examples/*/*.png images/*.svg src/KDChart/resources/*.svg
-Copyright: 2001-2021 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+Copyright: 2001-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
 License: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDAB-KDChart OR LicenseRef-KDAB-KDChart-US
 
 #documents
 Files: *.txt *.html docs/manual/*.pdf
-Copyright: 2001-2021 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+Copyright: 2001-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
 License: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDAB-KDChart OR LicenseRef-KDAB-KDChart-US
 
 #3rdparty

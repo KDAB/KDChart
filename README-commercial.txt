@@ -46,7 +46,7 @@ https://github.com/KDAB/KDChart
 
 Licensing
 =========
-Copyright (C) 2001-2021 Klarälvdalens Datakonsult AB, a KDAB Group company, <info@kdab.com>
+Copyright (C) 2001-2022 Klarälvdalens Datakonsult AB, a KDAB Group company, <info@kdab.com>
 
 Commercial licensing terms are available in the included file
         LICENSES/LicenseRef-KDAB-KDChart.txt (for non-US customers)
