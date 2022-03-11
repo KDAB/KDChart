@@ -8,6 +8,9 @@ Qt Version support:
  * KD Chart 3.0 or above requires Qt5.15.0 up to Qt6.x
    (inquire at info@kdab.com if support for older Qt5 version is needed)
 
+Also note that Qt6 builds require a C++17 compliant compiler,
+whereas Qt5 builds can get by with C++11 compliance.
+
 Please see the comments at the top of CMakeLists.txt for
 the available configuration options you can pass to cmake.
 
