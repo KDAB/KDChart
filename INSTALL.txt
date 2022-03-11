@@ -93,7 +93,7 @@ From your CMake project, add
 
 or for Qt6
 
-    find_package(KDChart-qt6 CONFIG)
+    find_package(KDChart-qt6 CONFIG REQUIRED)
 
 and link to the imported target KDChart::kdchart.
 That's all you need to do (the imported target also brings in the include directories)
