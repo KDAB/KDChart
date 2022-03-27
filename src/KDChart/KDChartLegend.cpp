@@ -848,7 +848,7 @@ HDatasetItem::HDatasetItem()
 static void updateToplevelLayout(QWidget *w)
 {
     while (w) {
-        if (w->isTopLevel()) {
+        if (w->isWindow()) {
             // The null check has proved necessary during destruction of the Legend / Chart
             if (w->layout()) {
                 w->layout()->update();
