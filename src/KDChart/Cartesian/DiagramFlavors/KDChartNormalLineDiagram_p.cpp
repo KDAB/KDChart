@@ -136,7 +136,7 @@ void NormalLineDiagram::paintWithLines(PaintContext *ctx)
                                     Position::NorthWest, point.value);
 
                 // add line and area, if switched on and we have a current and previous value
-                if (!ISNAN(lastPoint.value)) {
+                if (!ISNAN(a.x()) && !ISNAN(a.y()) && !ISNAN(b.x()) && !ISNAN(b.y())) {
                     lineList.append(LineAttributesInfo(sourceIndex, a, b));
 
                     if (laCell.displayArea()) {
