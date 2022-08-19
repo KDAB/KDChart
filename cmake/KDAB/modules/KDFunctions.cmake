@@ -17,6 +17,7 @@ if("CXX" IN_LIST _supported_languages)
     set(KD_CXX_PROJECT True SCOPE GLOBAL)
 endif()
 
+# If the condition is true, add the specified value to the arguments at the parent scope
 function(kd_append_if condition value)
     if(${condition})
         foreach(variable ${ARGN})
@@ -25,6 +26,7 @@ function(kd_append_if condition value)
     endif()
 endfunction()
 
+# Add C and C++ compiler command line option
 macro(kd_add_flag_if_supported flag name)
     if(KD_C_PROJECT)
         check_c_compiler_flag("-Werror ${flag}" "C_SUPPORTS_${name}")
