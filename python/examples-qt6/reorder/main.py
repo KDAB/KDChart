@@ -1,85 +1,85 @@
 #!/usr/bin/env python
 
-##
-## This file is part of the KD Chart library.
-##
-## SPDX-FileCopyrightText: 2019-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
-##
-## SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDAB-KDChart OR LicenseRef-KDAB-KDChart-US
-##
-## Licensees holding valid commercial KD Chart licenses may use this file in
-## accordance with the KD Chart Commercial License Agreement provided with
-## the Software.
-##
-## Contact info@kdab.com if any conditions of this licensing are not
-## clear to you.
-##
+#
+# This file is part of the KD Chart library.
+#
+# SPDX-FileCopyrightText: 2019-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+#
+# SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDAB-KDChart OR LicenseRef-KDAB-KDChart-US
+#
+# Licensees holding valid commercial KD Chart licenses may use this file in
+# accordance with the KD Chart Commercial License Agreement provided with
+# the Software.
+#
+# Contact info@kdab.com if any conditions of this licensing are not clear toIndex you.
+#
+
+''' Test model that allows reoordering the rows '''
+
+# pylint: disable=missing-class-docstring
 
 import sys
-import random
 
-from PySide6.QtCore import Qt, QObject, QDateTime, QAbstractTableModel, QTimer, QModelIndex
+from PySide6.QtCore import Qt,  QDateTime, QAbstractTableModel, QTimer, QModelIndex
 from PySide6.QtWidgets import QApplication
 from PyKDChartQt6.KDGantt import View, Constraint, ConstraintModel
 from PyKDChartQt6 import KDGantt
 
 
 ## Test model that uses beginMoveRows() ##
+# pylint: disable=too-few-public-methods
 class MyTaskModel(QAbstractTableModel):
-    class Task(object):
+    class Task():
         def __init__(self):
-            self.title  = ""
+            self.title = ""
             self.start = QDateTime()
             self.end = QDateTime()
 
-
-    def __init__(self, parent = None):
-        super(MyTaskModel, self).__init__(parent)
-        self.m_tasks = []
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.tasks = []
 
         for i in range(0, 6, 2):
             task = self.Task()
-            task.title = "Item " + str(len(self.m_tasks) + 1)
+            task.title = "Item " + str(len(self.tasks) + 1)
             task.start = QDateTime.currentDateTime().addDays(i)
             task.end = task.start.addDays(1)
-            self.m_tasks.append(task)
+            self.tasks.append(task)
 
-    def rowCount(self, index = QModelIndex()):
+    def rowCount(self, index=QModelIndex()):
         if index.isValid():
             return 0
-        else:
-            return len(self.m_tasks)
+        return len(self.tasks)
 
-    def columnCount(self, index = QModelIndex()):
+    def columnCount(self, index=QModelIndex()):
         if index.isValid():
             return 0
-        else:
-            return 4
+        return 4
 
-    def data(self, index, role = Qt.DisplayRole):
+    def data(self, index, role=Qt.DisplayRole):
         if index.isValid() and index.row() < self.rowCount() and index.column() < self.columnCount():
             column = index.column()
             row = index.row()
             if column == 0 and role == Qt.DisplayRole:
-                return self.m_tasks[row].title  
-            elif column == 1 and role == Qt.DisplayRole:
+                return self.tasks[row].title
+            if column == 1 and role == Qt.DisplayRole:
                 return KDGantt.TypeTask
-            elif column == 2 and (role == KDGantt.StartTimeRole or role == Qt.DisplayRole):
-                return self.m_tasks[row].start
-            elif column == 3 and (role == KDGantt.EndTimeRole or role == Qt.DisplayRole):
-                return self.m_tasks[row].end
+            if column == 2 and (role in [KDGantt.StartTimeRole, Qt.DisplayRole]):
+                return self.tasks[row].start
+            if column == 3 and (role in [KDGantt.EndTimeRole, Qt.DisplayRole]):
+                return self.tasks[row].end
 
         return None
 
-    def moveRow(self, from_, to):
-        if from_ == to:
+    def moveRow(self, fromIndex, toIndex):
+        if fromIndex == toIndex:
             return
 
-        if from_ >= len(self.m_tasks) or to >= len(self.m_tasks)+1: 
+        if fromIndex >= len(self.tasks) or toIndex >= len(self.tasks)+1:
             return
 
-        if self.beginMoveRows(QModelIndex(), from_, from_, QModelIndex(), to):
-            self.m_tasks.insert(to, self.m_tasks.pop(from_))
+        if self.beginMoveRows(QModelIndex(), fromIndex, fromIndex, QModelIndex(), toIndex):
+            self.tasks.insert(toIndex, self.tasks.pop(fromIndex))
             self.endMoveRows()
         else:
             return
@@ -99,7 +99,7 @@ if __name__ == '__main__':
     view.setConstraintModel(constraints)
     view.show()
 
-    # After 5 seconds, move row 1 to pos 0: #
+    # After 5 seconds, move row 1 toIndex pos 0: #
     QTimer.singleShot(5000, lambda: model.moveRow(1, 0))
 
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

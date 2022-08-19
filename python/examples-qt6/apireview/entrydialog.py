@@ -1,33 +1,35 @@
 #!/usr/bin/env python
 
-##
-## This file is part of the KD Chart library.
-##
-## SPDX-FileCopyrightText: 2019-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
-##
-## SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDAB-KDChart OR LicenseRef-KDAB-KDChart-US
-##
-## Licensees holding valid commercial KD Chart licenses may use this file in
-## accordance with the KD Chart Commercial License Agreement provided with
-## the Software.
-##
-## Contact info@kdab.com if any conditions of this licensing are not
-## clear to you.
-##
+#
+# This file is part of the KD Chart library.
+#
+# SPDX-FileCopyrightText: 2019-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+#
+# SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDAB-KDChart OR LicenseRef-KDAB-KDChart-US
+#
+# Licensees holding valid commercial KD Chart licenses may use this file in
+# accordance with the KD Chart Commercial License Agreement provided with
+# the Software.
+#
+# Contact info@kdab.com if any conditions of this licensing are not clear to you.
 
-from PySide6.QtCore import Qt, QModelIndex, QDateTime
+''' Entry Dialog for the API Review Example '''
+
+# pylint: disable=missing-function-docstring,missing-class-docstring
+
+from PySide6.QtCore import Qt, QModelIndex, QDateTime, QPersistentModelIndex
 from PySide6.QtWidgets import QDialog
 from PyKDChartQt6 import KDGantt
 
-from ui_entrydialog import Ui_EntryDialog
+from ui_entrydialog import Ui_entryDialog
 
 
 class EntryDialog(QDialog):
-    def __init__(self, model, parent = None, f = Qt.WindowFlags()):
-        super(EntryDialog, self).__init__(parent, f)
+    def __init__(self, model, parent=None, f=Qt.WindowFlags()):
+        super().__init__(parent, f)
 
         self.indexList = []
-        self.ui = Ui_EntryDialog()
+        self.ui = Ui_entryDialog()  # pylint: disable=invalid-name
         self.ui.setupUi(self)
         self.model = model
         self.init()
@@ -39,7 +41,7 @@ class EntryDialog(QDialog):
         self.ui.type.addItem("Multi", KDGantt.TypeMulti)
 
         for row in range(0, self.model.rowCount()):
-            self.addDependItem(self.model, self.model.index(row, 0))
+            self.addDependItem(self.model, self.model.index(row, 0), 0)
 
         self.ui.startDate.dateTimeChanged.connect(self.updateEndDate)
         self.ui.readOnly.toggled.connect(self.disableEditing)
@@ -49,20 +51,28 @@ class EntryDialog(QDialog):
         row = index.row()
         parent = index.parent()
 
-        self.ui.name.setText(self.model.data(self.model.index(row, 0, parent)).toString())
-        self.ui.legend.setText(self.model.data(self.model.index(row, 5, parent)).toString())
-        
-        idx = self.ui.type.findData(self.model.data(self.model.index(row, 1, parent)).toInt())
+        self.ui.name.setText(self.model.data(
+            self.model.index(row, 0, parent)).toString())
+        self.ui.legend.setText(self.model.data(
+            self.model.index(row, 5, parent)).toString())
+
+        idx = self.ui.type.findData(self.model.data(
+            self.model.index(row, 1, parent)).toInt())
         self.ui.type.setCurrentIndex(idx)
-        self.ui.startDate.setDateTime(self.model.data(self.model.index(row, 2, parent)).toDateTime())
-        self.ui.endDate.setDateTime(self.model.data(self.model.index(row, 3, parent)).toDateTime())
-        self.ui.completion.setValue(self.model.data(self.model.index(row, 4, parent)).toInt())
-        self.ui.readOnly.setChecked(not (self.model.flags(self.model.index(row, 0, parent)) & Qt.ItemIsEditable))
-    
-        constraints = constraintModel.constraintsForIndex(self.model.index(row, 0, parent))
+        self.ui.startDate.setDateTime(self.model.data(
+            self.model.index(row, 2, parent)).toDateTime())
+        self.ui.endDate.setDateTime(self.model.data(
+            self.model.index(row, 3, parent)).toDateTime())
+        self.ui.completion.setValue(self.model.data(
+            self.model.index(row, 4, parent)).toInt())
+        self.ui.readOnly.setChecked(not self.model.flags(
+            self.model.index(row, 0, parent)) & Qt.ItemIsEditable)
+
+        constraints = constraintModel.constraintsForIndex(
+            self.model.index(row, 0, parent))
         if constraints.isEmpty():
             return
-    
+
         constraintIndex = QModelIndex()
         for i in range(0, constraints.size()):
             constraint = constraints[i]
@@ -73,17 +83,16 @@ class EntryDialog(QDialog):
         if not constraintIndex.isValid():
             return
 
-        self.ui.depends.setCurrentIndex(indexList.indexOf(constraintIndex) + 1 )
-
+        self.ui.depends.setCurrentIndex(
+            self.indexList.index(constraintIndex) + 1)
 
     def addDependItem(self, model, index, indent):
         self.indexList.insert(QPersistentModelIndex(index))
-        str_ = "".ljust(indent) + model.data(index).toString()
-        self.ui.depends.addItem(str_)
+        itemStr = "".ljust(indent) + model.data(index).toString()
+        self.ui.depends.addItem(itemStr)
 
         for row in range(0, model.rowCount(index)):
             self.addDependItem(model, model.index(row, 0, index), indent + 2)
-
 
     def name(self):
         return self.ui.name.text()
@@ -127,4 +136,3 @@ class EntryDialog(QDialog):
         self.ui.startDate.setEnabled(not disable)
         self.ui.endDate.setEnabled(not disable)
         self.ui.depends.setEnabled(not disable)
-

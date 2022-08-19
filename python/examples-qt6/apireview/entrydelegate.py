@@ -1,30 +1,33 @@
 #!/usr/bin/env python
 
-##
-## This file is part of the KD Chart library.
-##
-## SPDX-FileCopyrightText: 2019-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
-##
-## SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDAB-KDChart OR LicenseRef-KDAB-KDChart-US
-##
-## Licensees holding valid commercial KD Chart licenses may use this file in
-## accordance with the KD Chart Commercial License Agreement provided with
-## the Software.
-##
-## Contact info@kdab.com if any conditions of this licensing are not
-## clear to you.
-##
+#
+# This file is part of the KD Chart library.
+#
+# SPDX-FileCopyrightText: 2019-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+#
+# SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDAB-KDChart OR LicenseRef-KDAB-KDChart-US
+#
+# Licensees holding valid commercial KD Chart licenses may use this file in
+# accordance with the KD Chart Commercial License Agreement provided with
+# the Software.
+#
+# Contact info@kdab.com if any conditions of this licensing are not clear to you.
+#
 
-import sys
-import random
+''' Entry Delegate for the API Review Example '''
 
+# pylint: disable=missing-class-docstring,missing-function-docstring
+
+from entrydialog import EntryDialog
 from PySide6.QtCore import Qt, QEvent
 from PySide6.QtWidgets import QItemDelegate
+from PyKDChartQt6.KDGantt import ConstraintModel
 from PyKDChartQt6 import KDGantt
 
+
 class EntryDelegate(QItemDelegate):
-    def __init__(self, constraintModel, parent = None):
-        super(EntryDelegate, self).__init__(parent)
+    def __init__(self, constraintModel, parent=None):
+        super().__init__(parent)
 
         self.constraintModel = constraintModel
 
@@ -33,13 +36,13 @@ class EntryDelegate(QItemDelegate):
             return False
 
         if not index.isValid():
-            return super(QItemDelegate, self).editorEvent(event, model, option, index)
+            return super().editorEvent(event, model, option, index)
 
         dialog = EntryDialog(model)
-        dialog.initFrom(index, constraintModel)
+        dialog.initFrom(index, self.constraintModel)
         dialog.setWindowTitle("Edit Entry")
         dialog.exec_()
-        
+
         row = index.row()
         parent = index.parent()
 
@@ -52,13 +55,14 @@ class EntryDelegate(QItemDelegate):
 
         model.setData(model.index(row, 4, parent), dialog.completion())
         model.setData(model.index(row, 5, parent), dialog.legend())
-    
+
         self.addConstraint(dialog.depends(), model.index(row, 0, parent))
         self.setReadOnly(model.index(row, 0, parent), dialog.readOnly())
 
         dialog = None
         return True
 
+    # pylint: disable=no-self-use
     def setReadOnly(self, index, readOnly):
         row = index.row()
         parent = index.parent()
@@ -76,5 +80,5 @@ class EntryDelegate(QItemDelegate):
         if not index1.isValid() or not index2.isValid():
             return
 
-        c = Constraint(index1, index2)
+        c = ConstraintModel(index1, index2)
         self.constraintModel.addConstraint(c)
