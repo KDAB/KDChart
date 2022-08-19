@@ -19,8 +19,8 @@
 #define TIMECHARTMODEL_H
 
 #include <QDateTime>
-#include <QSortFilterProxyModel>
 #include <QPair>
+#include <QSortFilterProxyModel>
 
 class TimeChartModel : public QSortFilterProxyModel
 {

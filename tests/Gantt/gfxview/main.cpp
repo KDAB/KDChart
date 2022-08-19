@@ -17,14 +17,14 @@
 
 #include <QApplication>
 #include <QModelIndex>
-#include <QStandardItemModel>
-#include <QPushButton>
 #include <QPointer>
+#include <QPushButton>
+#include <QStandardItemModel>
 
 #include <stdlib.h>
 
-#include <KDGanttGraphicsView>
 #include <KDGanttAbstractRowController>
+#include <KDGanttGraphicsView>
 #include <KDGanttStyleOptionGanttItem>
 
 class MyRowController : public KDGantt::AbstractRowController
@@ -96,14 +96,14 @@ class MyStandardItemModel : public QStandardItemModel
 public:
     /*reimp*/ bool setData(const QModelIndex &idx, const QVariant &value, int role) override
     {
-        //qDebug() << "MyStandardItemModel::setData("<<idx<< value<<role<<")";
+        // qDebug() << "MyStandardItemModel::setData("<<idx<< value<<role<<")";
         return QStandardItemModel::setData(idx, value, role);
     }
 };
 
 static Qt::Alignment random_alignment()
 {
-    int r = (int)(3.0 * rand() / (RAND_MAX + 1.0));
+    int r = ( int )(3.0 * rand() / (RAND_MAX + 1.0));
     switch (r) {
     case 0:
         return Qt::AlignTop;
@@ -117,7 +117,7 @@ static Qt::Alignment random_alignment()
 
 static KDGantt::StyleOptionGanttItem::Position random_position()
 {
-    int r = (int)(3.0 * rand() / (RAND_MAX + 1.0));
+    int r = ( int )(3.0 * rand() / (RAND_MAX + 1.0));
     switch (r) {
     case 0:
         return KDGantt::StyleOptionGanttItem::Left;
@@ -144,8 +144,8 @@ int main(int argc, char **argv)
         QList<QStandardItem *> items;
         for (int j = 0; j < 10; ++j) {
             auto *item = new QStandardItem;
-            //for ( int col = 0; col < 5; ++col ) {
-            //  QStandardItem* colitem = new QStandardItem;
+            // for ( int col = 0; col < 5; ++col ) {
+            //   QStandardItem* colitem = new QStandardItem;
             item->setText(QString::fromLatin1("Item %1").arg(i));
             item->setData(KDGantt::TypeTask, KDGantt::ItemTypeRole);
             item->setData(QDateTime::currentDateTime().addDays(2 * j).addMSecs(100000 * i), KDGantt::StartTimeRole);
@@ -169,5 +169,5 @@ int main(int argc, char **argv)
     pb->show();
 #endif
     return app.exec();
-    //return 0;
+    // return 0;
 }

@@ -18,14 +18,14 @@
 #include "datavaluesettings.h"
 #include "ui_datavaluesettings.h"
 
-#include <KDChart/KDChartChart>
 #include <KDChart/KDChartAbstractCoordinatePlane>
-#include <KDChart/KDChartBarDiagram>
-#include <KDChart/KDChartTextAttributes>
-#include <KDChart/KDChartRelativePosition>
-#include <KDChart/KDChartPosition>
-#include <KDChartDataValueAttributes>
 #include <KDChart/KDChartAbstractDiagram>
+#include <KDChart/KDChartBarDiagram>
+#include <KDChart/KDChartChart>
+#include <KDChart/KDChartPosition>
+#include <KDChart/KDChartRelativePosition>
+#include <KDChart/KDChartTextAttributes>
+#include <KDChartDataValueAttributes>
 
 #include <QDebug>
 #include <QPainter>

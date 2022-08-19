@@ -17,13 +17,13 @@
 
 #include "mainwindow.h"
 
-#include <KDChartChart>
-#include <KDChartDatasetProxyModel>
 #include <KDChartAbstractCoordinatePlane>
 #include <KDChartBarDiagram>
-#include <KDChartTextAttributes>
-#include <KDChartRelativePosition>
+#include <KDChartChart>
+#include <KDChartDatasetProxyModel>
 #include <KDChartPosition>
+#include <KDChartRelativePosition>
+#include <KDChartTextAttributes>
 
 #include <QDebug>
 #include <QPainter>
@@ -296,14 +296,14 @@ const QModelIndex MainWindow::currentIndex() const
 const KDChart::DataValueAttributes MainWindow::attributes() const
 {
     if (scopeOneBarRB->isChecked()) {
-        //qDebug() << "attributes() returns settings for one single bar";
+        // qDebug() << "attributes() returns settings for one single bar";
         return m_bars->dataValueAttributes(currentIndex());
     }
     if (scopeDatasetRB->isChecked()) {
-        //qDebug() << "attributes() returns settings for a dataset";
+        // qDebug() << "attributes() returns settings for a dataset";
         return m_bars->dataValueAttributes(scopeDatasetSB->value());
     }
-    //qDebug() << "attributes() returns common settings";
+    // qDebug() << "attributes() returns common settings";
     return m_bars->dataValueAttributes();
 }
 

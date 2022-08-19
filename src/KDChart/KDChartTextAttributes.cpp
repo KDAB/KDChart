@@ -20,13 +20,13 @@
 #include <KDChartCartesianCoordinatePlane.h>
 #include <KDChartCartesianCoordinatePlane_p.h>
 
+#include <KDABLibFakes>
+#include <QApplication>
 #include <QFont>
 #include <QPen>
-#include <qglobal.h>
-#include <QApplication>
 #include <QSharedPointer>
 #include <QTextDocument>
-#include <KDABLibFakes>
+#include <qglobal.h>
 
 #define d d_func()
 

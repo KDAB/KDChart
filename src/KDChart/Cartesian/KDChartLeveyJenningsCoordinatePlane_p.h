@@ -31,8 +31,8 @@
 
 #include <QRectF>
 
-#include "KDChartLeveyJenningsGrid.h"
 #include "KDChartCartesianCoordinatePlane_p.h"
+#include "KDChartLeveyJenningsGrid.h"
 
 #include <KDABLibFakes>
 
@@ -41,8 +41,8 @@ namespace KDChart {
 class CartesianAxis;
 
 /**
-     * \internal
-     */
+ * \internal
+ */
 
 class LeveyJenningsCoordinatePlane::Private : public CartesianCoordinatePlane::Private
 {

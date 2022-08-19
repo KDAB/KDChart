@@ -16,7 +16,6 @@
 ****************************************************************************/
 
 #include "KDChartLayoutItems.h"
-#include "KDTextDocument.h"
 #include "KDChartAbstractArea.h"
 #include "KDChartAbstractDiagram.h"
 #include "KDChartBackgroundAttributes.h"
@@ -24,17 +23,18 @@
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartPrintingParameters.h"
-#include <QTextCursor>
-#include <QTextBlockFormat>
-#include <QTextDocumentFragment>
+#include "KDTextDocument.h"
 #include <QAbstractTextDocumentLayout>
+#include <QApplication>
+#include <QCoreApplication>
+#include <QDebug>
 #include <QLayout>
 #include <QPainter>
-#include <QDebug>
-#include <QCoreApplication>
-#include <QApplication>
 #include <QStringList>
 #include <QStyle>
+#include <QTextBlockFormat>
+#include <QTextCursor>
+#include <QTextDocumentFragment>
 
 #include <KDABLibFakes>
 
@@ -61,8 +61,8 @@ void KDChart::AbstractLayoutItem::paintAll(QPainter &painter)
 }
 
 /**
-  * Default impl: Paint the complete item using its layouted position and size.
-  */
+ * Default impl: Paint the complete item using its layouted position and size.
+ */
 void KDChart::AbstractLayoutItem::paintCtx(PaintContext *context)
 {
     if (context)
@@ -653,7 +653,7 @@ void KDChart::MarkerLayoutItem::setGeometry(const QRect &r)
 
 QSize KDChart::MarkerLayoutItem::sizeHint() const
 {
-    //qDebug() << "KDChart::MarkerLayoutItem::sizeHint() returns:"<<mMarker.markerSize().toSize();
+    // qDebug() << "KDChart::MarkerLayoutItem::sizeHint() returns:"<<mMarker.markerSize().toSize();
     return mMarker.markerSize().toSize();
 }
 
@@ -926,7 +926,7 @@ QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
         for (int i = 0; i < mTopBottomLayout->count(); ++i) {
             auto *area = dynamic_cast<AbstractArea *>(mTopBottomLayout->itemAt(i));
             if (area) {
-                //qDebug() << "AutoSpacerLayoutItem testing" << area;
+                // qDebug() << "AutoSpacerLayoutItem testing" << area;
                 topBottomOverlap = qMax(topBottomOverlap,
                                         mLayoutIsAtLeftPosition ? area->rightOverlap()
                                                                 : area->leftOverlap());
@@ -940,7 +940,7 @@ QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
         for (int i = 0; i < mRightLeftLayout->count(); ++i) {
             auto *area = dynamic_cast<AbstractArea *>(mRightLeftLayout->itemAt(i));
             if (area) {
-                //qDebug() << "AutoSpacerLayoutItem testing" << area;
+                // qDebug() << "AutoSpacerLayoutItem testing" << area;
                 leftRightOverlap = qMax(leftRightOverlap,
                                         mLayoutIsAtTopPosition ? area->bottomOverlap()
                                                                : area->topOverlap());
@@ -953,7 +953,7 @@ QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
     else
         mCommonBrush = QBrush();
     mCachedSize = QSize(topBottomOverlap, leftRightOverlap);
-    //qDebug() << mCachedSize;
+    // qDebug() << mCachedSize;
     return mCachedSize;
 }
 
@@ -971,10 +971,10 @@ void KDChart::AutoSpacerLayoutItem::paint(QPainter *painter)
             p2.ry() -= 1;
         } else
             p2.ry() -= mCachedSize.height() - mParentLayout->spacing() - 1;
-        //qDebug() << mLayoutIsAtTopPosition << mLayoutIsAtLeftPosition;
-        //qDebug() << mRect;
-        //qDebug() << mParentLayout->margin();
-        //qDebug() << QRect( p1, p2 );
+        // qDebug() << mLayoutIsAtTopPosition << mLayoutIsAtLeftPosition;
+        // qDebug() << mRect;
+        // qDebug() << mParentLayout->margin();
+        // qDebug() << QRect( p1, p2 );
         const QPoint oldBrushOrigin(painter->brushOrigin());
         const QBrush oldBrush(painter->brush());
         const QPen oldPen(painter->pen());

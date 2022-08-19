@@ -26,7 +26,8 @@ class Model : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    enum Function {
+    enum Function
+    {
         SineFunction = 0,
         TriangleFunction,
         SquareFunction,

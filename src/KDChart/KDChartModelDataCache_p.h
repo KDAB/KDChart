@@ -20,8 +20,8 @@
 
 #include <limits>
 
-#include <QObject>
 #include <QModelIndex>
+#include <QObject>
 #include <QVector>
 
 #include "kdchart_export.h"
@@ -32,66 +32,66 @@ QT_END_NAMESPACE
 
 namespace KDChart {
 namespace ModelDataCachePrivate {
-    class KDCHART_EXPORT ModelSignalMapper
+class KDCHART_EXPORT ModelSignalMapper
+{
+protected:
+    ModelSignalMapper()
     {
-    protected:
-        ModelSignalMapper()
-        {
-        }
-
-    public:
-        virtual ~ModelSignalMapper()
-        {
-        }
-        virtual void resetModel() = 0;
-        virtual void columnsInserted(const QModelIndex &, int, int) = 0;
-        virtual void columnsRemoved(const QModelIndex &, int, int) = 0;
-        virtual void dataChanged(const QModelIndex &, const QModelIndex &) = 0;
-        virtual void layoutChanged() = 0;
-        virtual void modelReset() = 0;
-        virtual void rowsInserted(const QModelIndex &, int, int) = 0;
-        virtual void rowsRemoved(const QModelIndex &, int, int) = 0;
-    };
-
-    // this class maps slots to a non-QObject instantiating ModelSignalMapper
-    class KDCHART_EXPORT ModelSignalMapperConnector : public QObject
-    {
-        Q_OBJECT
-    public:
-        explicit ModelSignalMapperConnector(ModelSignalMapper &mapper);
-        ~ModelSignalMapperConnector() override;
-
-        void connectSignals(QAbstractItemModel *model);
-        void disconnectSignals(QAbstractItemModel *model);
-
-    protected Q_SLOTS:
-        void resetModel();
-        void columnsInserted(const QModelIndex &, int, int);
-        void columnsRemoved(const QModelIndex &, int, int);
-        void dataChanged(const QModelIndex &, const QModelIndex &);
-        void layoutChanged();
-        void modelReset();
-        void rowsInserted(const QModelIndex &, int, int);
-        void rowsRemoved(const QModelIndex &, int, int);
-
-    private:
-        ModelSignalMapper &m_mapper;
-    };
-
-    template <class T>
-    T nan()
-    {
-        return T();
     }
 
-    template <>
-    inline qreal nan<qreal>()
+public:
+    virtual ~ModelSignalMapper()
     {
-        return std::numeric_limits<qreal>::quiet_NaN();
     }
+    virtual void resetModel() = 0;
+    virtual void columnsInserted(const QModelIndex &, int, int) = 0;
+    virtual void columnsRemoved(const QModelIndex &, int, int) = 0;
+    virtual void dataChanged(const QModelIndex &, const QModelIndex &) = 0;
+    virtual void layoutChanged() = 0;
+    virtual void modelReset() = 0;
+    virtual void rowsInserted(const QModelIndex &, int, int) = 0;
+    virtual void rowsRemoved(const QModelIndex &, int, int) = 0;
+};
+
+// this class maps slots to a non-QObject instantiating ModelSignalMapper
+class KDCHART_EXPORT ModelSignalMapperConnector : public QObject
+{
+    Q_OBJECT
+public:
+    explicit ModelSignalMapperConnector(ModelSignalMapper &mapper);
+    ~ModelSignalMapperConnector() override;
+
+    void connectSignals(QAbstractItemModel *model);
+    void disconnectSignals(QAbstractItemModel *model);
+
+protected Q_SLOTS:
+    void resetModel();
+    void columnsInserted(const QModelIndex &, int, int);
+    void columnsRemoved(const QModelIndex &, int, int);
+    void dataChanged(const QModelIndex &, const QModelIndex &);
+    void layoutChanged();
+    void modelReset();
+    void rowsInserted(const QModelIndex &, int, int);
+    void rowsRemoved(const QModelIndex &, int, int);
+
+private:
+    ModelSignalMapper &m_mapper;
+};
+
+template<class T>
+T nan()
+{
+    return T();
 }
 
-template <class T, int ROLE>
+template<>
+inline qreal nan<qreal>()
+{
+    return std::numeric_limits<qreal>::quiet_NaN();
+}
+}
+
+template<class T, int ROLE>
 class ModelDataCache : public ModelDataCachePrivate::ModelSignalMapper
 {
 public:

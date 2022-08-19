@@ -21,10 +21,10 @@
 
 #include "test.h"
 
-#include <memory>
-#include <iostream>
-#include <iomanip>
 #include <cassert>
+#include <iomanip>
+#include <iostream>
+#include <memory>
 
 KDAB::UnitTest::TestRegistry::TestRegistry()
     : mTests()

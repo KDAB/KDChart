@@ -18,20 +18,20 @@
 #include "KDChartPolarCoordinatePlane.h"
 #include "KDChartPolarCoordinatePlane_p.h"
 
-#include "KDChartPainterSaver_p.h"
-#include "KDChartChart.h"
-#include "KDChartPaintContext.h"
 #include "KDChartAbstractDiagram.h"
 #include "KDChartAbstractPolarDiagram.h"
+#include "KDChartChart.h"
+#include "KDChartPaintContext.h"
+#include "KDChartPainterSaver_p.h"
 #include "KDChartPolarDiagram.h"
 
 #include <math.h>
 
 #include <QFont>
 #include <QList>
-#include <QtDebug>
 #include <QPainter>
 #include <QTimer>
+#include <QtDebug>
 
 #include <KDABLibFakes>
 
@@ -99,7 +99,7 @@ void PolarCoordinatePlane::paint(QPainter *painter)
     }
 
     if (d->newZoomX != oldZoomX || d->newZoomY != oldZoomY) {
-        //qDebug() << "new zoom:" << d->newZoomY << " old zoom:" << oldZoomY;
+        // qDebug() << "new zoom:" << d->newZoomY << " old zoom:" << oldZoomY;
         d->currentTransformation = nullptr; // not painting anymore until we get called again
         QMetaObject::invokeMethod(this, "adjustZoomAndRepaint", Qt::QueuedConnection);
         return;
@@ -161,14 +161,14 @@ void PolarCoordinatePlane::layoutDiagrams()
         QPair<QPointF, QPointF> dataBoundariesPair = polarDiagram->dataBoundaries();
 
         const qreal angleUnit = 360 / polarDiagram->valueTotals();
-        //qDebug() << "--------------------------------------------------------";
+        // qDebug() << "--------------------------------------------------------";
         const qreal radius = qAbs(dataBoundariesPair.first.y()) + dataBoundariesPair.second.y();
-        //qDebug() << radius <<"="<<dataBoundariesPair.second.y();
+        // qDebug() << radius <<"="<<dataBoundariesPair.second.y();
         const qreal diagramWidth = radius * 2; // == height
         const qreal planeWidth = d->contentRect.width();
         const qreal planeHeight = d->contentRect.height();
         const qreal radiusUnit = qMin(planeWidth, planeHeight) / diagramWidth;
-        //qDebug() << radiusUnit <<"=" << "qMin( "<<planeWidth<<","<< planeHeight <<") / "<<diagramWidth;
+        // qDebug() << radiusUnit <<"=" << "qMin( "<<planeWidth<<","<< planeHeight <<") / "<<diagramWidth;
         QPointF coordinateOrigin = QPointF(planeWidth / 2, planeHeight / 2);
         coordinateOrigin += d->contentRect.topLeft();
 
@@ -299,7 +299,7 @@ DataDimensionsList PolarCoordinatePlane::getDataDimensionsList() const
 {
     DataDimensionsList l;
 
-    //FIXME(khz): do the real calculation
+    // FIXME(khz): do the real calculation
 
     return l;
 }

@@ -15,15 +15,15 @@
 **
 ****************************************************************************/
 
-#include <QtTest/QtTest>
 #include <QStandardItemModel>
+#include <QtTest/QtTest>
 
+#include <KDChartBarDiagram>
+#include <KDChartCartesianCoordinatePlane>
 #include <KDChartChart>
 #include <KDChartGlobal>
-#include <KDChartBarDiagram>
-#include <KDChartLineDiagram>
-#include <KDChartCartesianCoordinatePlane>
 #include <KDChartLegend>
+#include <KDChartLineDiagram>
 
 #include <TableModel.h>
 
@@ -51,7 +51,7 @@ private slots:
         auto *l = new Legend(m_chart);
         m_chart->addLegend(l);
         QCOMPARE(m_chart->legend(), l);
-        QCOMPARE(l->diagram(), (AbstractDiagram *)0);
+        QCOMPARE(l->diagram(), ( AbstractDiagram * )0);
         l->setDiagram(m_lines);
         QCOMPARE(dynamic_cast<LineDiagram *>(l->diagram()), m_lines);
     }
@@ -71,7 +71,7 @@ private slots:
         QCOMPARE(dynamic_cast<LineDiagram *>(oldLegend->diagram()), m_lines);
         m_chart->replaceLegend(l, oldLegend);
         QVERIFY(oldLegend.isNull());
-        QCOMPARE(l->diagram(), (AbstractDiagram *)0);
+        QCOMPARE(l->diagram(), ( AbstractDiagram * )0);
         l->setDiagram(m_lines);
         QCOMPARE(dynamic_cast<LineDiagram *>(l->diagram()), m_lines);
     }
@@ -79,7 +79,7 @@ private slots:
     void testReferenceArea()
     {
         auto *l = new Legend();
-        QCOMPARE(l->referenceArea(), (const QWidget *)0);
+        QCOMPARE(l->referenceArea(), ( const QWidget * )0);
         l->setReferenceArea(m_chart);
         QCOMPARE(dynamic_cast<const Chart *>(l->referenceArea()), const_cast<const Chart *>(m_chart));
         auto *l1 = new Legend(m_chart);

@@ -15,11 +15,11 @@
 **
 ****************************************************************************/
 
-#include <QtDebug>
 #include <QDebug>
-#include <QtTest/QtTest>
 #include <QStandardItem>
 #include <QStandardItemModel>
+#include <QtDebug>
+#include <QtTest/QtTest>
 
 #include <KDChartCartesianDiagramDataCompressor_p.h>
 

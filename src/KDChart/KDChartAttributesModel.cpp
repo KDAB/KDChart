@@ -16,27 +16,27 @@
 ****************************************************************************/
 
 #include "KDChartAttributesModel.h"
-#include "KDChartPalette.h"
 #include "KDChartGlobal.h"
+#include "KDChartPalette.h"
 
 #include <QDebug>
 #include <QPen>
 #include <QPointer>
 
-#include <KDChartTextAttributes.h>
-#include <KDChartFrameAttributes.h>
-#include <KDChartBackgroundAttributes.h>
-#include <KDChartDataValueAttributes.h>
-#include <KDChartMarkerAttributes.h>
-#include <KDChartBarAttributes.h>
-#include <KDChartStockBarAttributes.h>
-#include <KDChartLineAttributes.h>
-#include <KDChartPieAttributes.h>
 #include <KDChartAbstractThreeDAttributes.h>
+#include <KDChartBackgroundAttributes.h>
+#include <KDChartBarAttributes.h>
+#include <KDChartDataValueAttributes.h>
+#include <KDChartFrameAttributes.h>
+#include <KDChartGridAttributes.h>
+#include <KDChartLineAttributes.h>
+#include <KDChartMarkerAttributes.h>
+#include <KDChartPieAttributes.h>
+#include <KDChartStockBarAttributes.h>
+#include <KDChartTextAttributes.h>
 #include <KDChartThreeDBarAttributes.h>
 #include <KDChartThreeDLineAttributes.h>
 #include <KDChartThreeDPieAttributes.h>
-#include <KDChartGridAttributes.h>
 #include <KDChartValueTrackerAttributes.h>
 
 #include <KDABLibFakes>
@@ -253,7 +253,7 @@ QVariant AttributesModel::defaultHeaderData(int section, Qt::Orientation orienta
 
     switch (role) {
     case Qt::DisplayRole:
-        //TODO for KDChart 3.0: return QString::number( dataset + 1 );
+        // TODO for KDChart 3.0: return QString::number( dataset + 1 );
         return QLatin1String(orientation == Qt::Vertical ? "Series " : "Item ") + QString::number(dataset);
     case KDChart::DatasetBrushRole:
         return d->palette.getBrush(dataset);

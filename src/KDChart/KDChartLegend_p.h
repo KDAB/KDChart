@@ -29,13 +29,13 @@
 // We mean it.
 //
 
+#include "KDChartAbstractAreaWidget_p.h"
 #include "KDChartLegend.h"
 #include <KDChartDiagramObserver.h>
-#include "KDChartAbstractAreaWidget_p.h"
-#include <KDChartTextAttributes.h>
 #include <KDChartMarkerAttributes.h>
-#include <QList>
+#include <KDChartTextAttributes.h>
 #include <QAbstractTextDocumentLayout>
+#include <QList>
 #include <QPainter>
 #include <QVector>
 

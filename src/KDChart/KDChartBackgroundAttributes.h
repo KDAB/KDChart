@@ -18,16 +18,16 @@
 #ifndef KDCHARTBACKGROUNDATTRIBUTES_H
 #define KDCHARTBACKGROUNDATTRIBUTES_H
 
+#include "KDChartGlobal.h"
+#include <QBrush>
 #include <QDebug>
 #include <QMetaType>
-#include <QBrush>
-#include "KDChartGlobal.h"
 
 namespace KDChart {
 
 /**
-  * Set of attributes usable for background pixmaps
-  */
+ * Set of attributes usable for background pixmaps
+ */
 class KDCHART_EXPORT BackgroundAttributes
 {
 public:
@@ -37,7 +37,8 @@ public:
 
     ~BackgroundAttributes();
 
-    enum BackgroundPixmapMode {
+    enum BackgroundPixmapMode
+    {
         BackgroundPixmapModeNone,
         BackgroundPixmapModeCentered,
         BackgroundPixmapModeScaled,

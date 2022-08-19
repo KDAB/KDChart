@@ -21,8 +21,8 @@
 #include "kdganttitemdelegate.h"
 #include "kdganttsummaryhandlingproxymodel.h"
 
-#include <QPainter>
 #include <QDebug>
+#include <QPainter>
 
 using namespace KDGantt;
 
@@ -71,7 +71,7 @@ void ConstraintGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphics
                                    QWidget *widget)
 {
     Q_UNUSED(widget);
-    //qDebug() << "ConstraintGraphicsItem::paint(...), c=" << m_constraint;
+    // qDebug() << "ConstraintGraphicsItem::paint(...), c=" << m_constraint;
     scene()->itemDelegate()->paintConstraintItem(painter, *option, m_start, m_end, m_constraint);
 }
 

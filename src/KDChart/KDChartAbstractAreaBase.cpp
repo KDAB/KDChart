@@ -17,11 +17,11 @@
 
 #include "KDChartAbstractAreaBase.h"
 #include "KDChartAbstractAreaBase_p.h"
+#include "KDChartPainterSaver_p.h"
+#include "KDChartPrintingParameters.h"
 #include <KDChartBackgroundAttributes.h>
 #include <KDChartFrameAttributes.h>
 #include <KDChartTextAttributes.h>
-#include "KDChartPainterSaver_p.h"
-#include "KDChartPrintingParameters.h"
 #include <QPainter>
 
 #include <KDABLibFakes>
@@ -129,8 +129,8 @@ void AbstractAreaBase::paintBackgroundAttributes(QPainter &painter, const QRect 
             painter.drawPixmap(ol, attributes.pixmap());
         } else {
             QTransform m;
-            qreal zW = (qreal)rect.width() / (qreal)attributes.pixmap().width();
-            qreal zH = (qreal)rect.height() / (qreal)attributes.pixmap().height();
+            qreal zW = ( qreal )rect.width() / ( qreal )attributes.pixmap().width();
+            qreal zH = ( qreal )rect.height() / ( qreal )attributes.pixmap().height();
             switch (attributes.pixmapMode()) {
             case BackgroundAttributes::BackgroundPixmapModeScaled: {
                 qreal z;

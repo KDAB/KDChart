@@ -19,17 +19,17 @@
 
 #include <QApplication>
 
-#include <QSqlTableModel>
-#include <QSqlQuery>
-#include <QSqlError>
-#include <QSqlRecord>
-#include <QSqlField>
-#include <KDChartChart>
+#include <KDChartBackgroundAttributes>
 #include <KDChartBarDiagram>
+#include <KDChartChart>
+#include <KDChartFrameAttributes>
 #include <KDChartHeaderFooter>
 #include <KDChartPosition>
-#include <KDChartBackgroundAttributes>
-#include <KDChartFrameAttributes>
+#include <QSqlError>
+#include <QSqlField>
+#include <QSqlQuery>
+#include <QSqlRecord>
+#include <QSqlTableModel>
 
 #include <QPixmap>
 
@@ -92,8 +92,8 @@ public:
         QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
         db.setHostName("localhost");
         db.setDatabaseName(":memory:"); // in memory rather then in a file
-        //db.setUserName("");
-        //db.setPassword("");
+        // db.setUserName("");
+        // db.setPassword("");
         bool ok = db.open();
         Q_ASSERT(ok);
         Q_UNUSED(ok) // release mode

@@ -17,9 +17,9 @@
 
 #include "mainwindow.h"
 
-#include "ui_mainwindow.h"
 #include "entrydelegate.h"
 #include "entrydialog.h"
+#include "ui_mainwindow.h"
 
 #include <algorithm>
 
@@ -28,13 +28,13 @@
 #include <KDGanttGraphicsView>
 #include <KDGanttLegend>
 #include <QAbstractItemView>
+#include <QCloseEvent>
 #include <QDebug>
 #include <QHeaderView>
-#include <QStandardItemModel>
-#include <QTreeView>
-#include <QCloseEvent>
 #include <QPointer>
 #include <QScrollBar>
+#include <QStandardItemModel>
+#include <QTreeView>
 
 class MyStandardItem : public QStandardItem
 {
@@ -350,7 +350,7 @@ void MainWindow::zoomFit()
     delta += start.time().msecsTo(end.time()) / (1000. * 24. * 60. * 60.);
 
     qDebug() << view_width << "/" << delta;
-    grid->setDayWidth(view_width / (std::max((qreal)1., delta)));
+    grid->setDayWidth(view_width / (std::max(( qreal )1., delta)));
     qDebug() << "daywidth set to" << grid->dayWidth();
     qDebug() << "start scroll to" << grid->mapToChart(start);
     ui->ganttView->graphicsView()->horizontalScrollBar()->setValue(grid->mapToChart(start));

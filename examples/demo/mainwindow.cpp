@@ -17,34 +17,34 @@
 
 #include "mainwindow.h"
 
-#include <KDChart/KDChartChart>
-#include <KDChart/KDChartCartesianCoordinatePlane>
 #include <KDChart/KDChartAbstractCoordinatePlane>
-#include <KDChart/KDChartCartesianAxis>
-#include <KDChart/KDChartCartesianGrid>
 #include <KDChart/KDChartAbstractDiagram>
 #include <KDChart/KDChartBarDiagram>
-#include <KDChart/KDChartLineDiagram>
-#include <KDChart/KDChartPlotter>
-#include <KDChart/KDChartPieDiagram>
-#include <KDChart/KDChartPolarCoordinatePlane>
-#include <KDChart/KDChartLegend>
+#include <KDChart/KDChartCartesianAxis>
+#include <KDChart/KDChartCartesianCoordinatePlane>
+#include <KDChart/KDChartCartesianGrid>
+#include <KDChart/KDChartChart>
 #include <KDChart/KDChartDataValueAttributes>
-#include <KDChart/KDChartMarkerAttributes>
-#include <KDChart/KDChartTextAttributes>
 #include <KDChart/KDChartGridAttributes>
-#include <KDChart/KDChartRulerAttributes>
+#include <KDChart/KDChartLegend>
+#include <KDChart/KDChartLineDiagram>
+#include <KDChart/KDChartMarkerAttributes>
 #include <KDChart/KDChartPieAttributes>
+#include <KDChart/KDChartPieDiagram>
+#include <KDChart/KDChartPlotter>
+#include <KDChart/KDChartPolarCoordinatePlane>
+#include <KDChart/KDChartRulerAttributes>
+#include <KDChart/KDChartTextAttributes>
 
 #include <TableModel.h>
 
 #include <QDockWidget>
 
-#include "datasetsettings.h"
-#include "diagramsettings.h"
-#include "datavaluesettings.h"
-#include "diagramtypedialog.h"
 #include "axissettings.h"
+#include "datasetsettings.h"
+#include "datavaluesettings.h"
+#include "diagramsettings.h"
+#include "diagramtypedialog.h"
 
 using namespace KDChart;
 
@@ -54,7 +54,8 @@ class MainWindow::Private : public QObject
     Q_PROPERTY(int datasetCount READ datasetCount NOTIFY datasetCountChanged)
 public:
     int datasetCount() const;
-    enum ChartType {
+    enum ChartType
+    {
         Bar,
         Line,
         Plotter,

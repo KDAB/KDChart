@@ -19,8 +19,8 @@
 #define MAINWINDOW_H
 
 #include "ui_mainwindow.h"
-#include <TableModel.h>
 #include <KDChartDataValueAttributes>
+#include <TableModel.h>
 
 namespace KDChart {
 class Chart;

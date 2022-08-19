@@ -17,8 +17,8 @@
 
 #include "kdganttforwardingproxymodel.h"
 
-#include <cassert>
 #include <QStringList>
+#include <cassert>
 
 using namespace KDGantt;
 
@@ -135,7 +135,7 @@ void ForwardingProxyModel::sourceModelAboutToBeReset()
  */
 void ForwardingProxyModel::sourceModelReset()
 {
-    //qDebug() << "ForwardingProxyModel::sourceModelReset()";
+    // qDebug() << "ForwardingProxyModel::sourceModelReset()";
     beginResetModel();
     endResetModel();
 }
@@ -146,7 +146,7 @@ void ForwardingProxyModel::sourceModelReset()
 
 void ForwardingProxyModel::sourceLayoutAboutToBeChanged()
 {
-    //qDebug() << "ForwardingProxyModel::sourceLayoutAboutToBeChanged()";
+    // qDebug() << "ForwardingProxyModel::sourceLayoutAboutToBeChanged()";
     emit layoutAboutToBeChanged();
 }
 
@@ -155,7 +155,7 @@ void ForwardingProxyModel::sourceLayoutAboutToBeChanged()
  */
 void ForwardingProxyModel::sourceLayoutChanged()
 {
-    //qDebug() << "ForwardingProxyModel::sourceLayoutChanged()";
+    // qDebug() << "ForwardingProxyModel::sourceLayoutChanged()";
     beginResetModel();
     endResetModel();
 }
@@ -165,7 +165,7 @@ void ForwardingProxyModel::sourceLayoutChanged()
  */
 void ForwardingProxyModel::sourceDataChanged(const QModelIndex &from, const QModelIndex &to)
 {
-    //qDebug() << "ForwardingProxyModel::sourceDataChanged("<<from<<to<<")";
+    // qDebug() << "ForwardingProxyModel::sourceDataChanged("<<from<<to<<")";
     emit dataChanged(mapFromSource(from), mapFromSource(to));
 }
 
@@ -276,7 +276,7 @@ QModelIndex ForwardingProxyModel::parent(const QModelIndex &idx) const
 /*! \see QAbstractItemModel::setData */
 bool ForwardingProxyModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    //qDebug() << "ForwardingProxyModel::setData( " << index<<value<< role<<")";
+    // qDebug() << "ForwardingProxyModel::setData( " << index<<value<< role<<")";
     return sourceModel()->setData(mapToSource(index), value, role);
 }
 

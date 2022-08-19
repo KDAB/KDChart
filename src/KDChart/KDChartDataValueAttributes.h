@@ -18,11 +18,11 @@
 #ifndef KDCHARTDATAVALUEATTRIBUTES_H
 #define KDCHARTDATAVALUEATTRIBUTES_H
 
-#include <Qt>
-#include <QMetaType>
-#include "KDChartGlobal.h"
 #include "KDChartEnums.h"
+#include "KDChartGlobal.h"
 #include "KDChartRelativePosition.h"
+#include <QMetaType>
+#include <Qt>
 
 /** \file KDChartDataValueAttributes.h
  *  \brief Declaring the class KDChart::DataValueAttributes.
@@ -38,14 +38,14 @@ class FrameAttributes;
 class MarkerAttributes;
 
 /**
-   * \class DataValueAttributes KDChartDataValueAttributes.h KDChartDataValueAttributes
-   * \brief Diagram attributes dealing with data value labels.
-   *
-   * The DataValueAttributes group all properties that can be set
-   * wrt data value labels and if and how they are displayed. This
-   * includes things like the text attributes (font, color), what
-   * markers are used, how many decimal digits are displayed, etc.
-   */
+ * \class DataValueAttributes KDChartDataValueAttributes.h KDChartDataValueAttributes
+ * \brief Diagram attributes dealing with data value labels.
+ *
+ * The DataValueAttributes group all properties that can be set
+ * wrt data value labels and if and how they are displayed. This
+ * includes things like the text attributes (font, color), what
+ * markers are used, how many decimal digits are displayed, etc.
+ */
 class KDCHART_EXPORT DataValueAttributes
 {
 public:
@@ -64,236 +64,236 @@ public:
     static const QVariant &defaultAttributesAsVariant();
 
     /** Set whether data value labels should be displayed.
-   * \param visible Whether data value labels should be displayed.
-   */
+     * \param visible Whether data value labels should be displayed.
+     */
     void setVisible(bool visible);
 
     /**
-   * @return Whether data value labels should be displayed.
-   */
+     * @return Whether data value labels should be displayed.
+     */
     bool isVisible() const;
 
     /**
-   * Set the text attributes to use for the data value labels.
-   * \param a The text attributes to set.
-   * \see TextAttributes
-   */
+     * Set the text attributes to use for the data value labels.
+     * \param a The text attributes to set.
+     * \see TextAttributes
+     */
     void setTextAttributes(const TextAttributes &a);
 
     /**
-   * \return The text attributes used for painting data value labels.
-   */
+     * \return The text attributes used for painting data value labels.
+     */
     TextAttributes textAttributes() const;
 
     /**
-   * If true, rotation of negative value labels is negated, so that negative
-   * values are rotated in opposite direction of textAttributes().rotation(),
-   * and in this sense appear "mirrored" to positive value labels, though the
-   * text itself is *not* mirrored, only its rotation.
-   */
+     * If true, rotation of negative value labels is negated, so that negative
+     * values are rotated in opposite direction of textAttributes().rotation(),
+     * and in this sense appear "mirrored" to positive value labels, though the
+     * text itself is *not* mirrored, only its rotation.
+     */
     bool mirrorNegativeValueTextRotation() const;
 
     /**
-   * \see mirrorNegativeValueTextRotation()
-   */
+     * \see mirrorNegativeValueTextRotation()
+     */
     void setMirrorNegativeValueTextRotation(bool enable);
 
     /**
-   * Set the frame attributes to use for the data value labels area.
-   * \param a The frame attributes to set.
-   * \see FrameAttributes
-   */
+     * Set the frame attributes to use for the data value labels area.
+     * \param a The frame attributes to set.
+     * \see FrameAttributes
+     */
     void setFrameAttributes(const FrameAttributes &a);
 
     /**
-   * \return The frame attributes used for painting the data
-   * value labels area.
-   * \see FrameAttributes
-   */
+     * \return The frame attributes used for painting the data
+     * value labels area.
+     * \see FrameAttributes
+     */
     FrameAttributes frameAttributes() const;
 
     /**
-   * Set the background attributes to use for the data value labels area.
-   * \param a The background attributes to set.
-   * \see BackgroundAttributes
-   */
+     * Set the background attributes to use for the data value labels area.
+     * \param a The background attributes to set.
+     * \see BackgroundAttributes
+     */
     void setBackgroundAttributes(const BackgroundAttributes &a);
 
     /**
-   * \return The background attributes used for painting the data
-   * value labels area.
-   * \see BackgroundAttributes
-   */
+     * \return The background attributes used for painting the data
+     * value labels area.
+     * \see BackgroundAttributes
+     */
     BackgroundAttributes backgroundAttributes() const;
 
     /**
-   * Set the marker attributes to use for the data values. This includes
-   * the marker type.
-   * \param a The marker attributes to set.
-   * \see MarkerAttributes
-   */
+     * Set the marker attributes to use for the data values. This includes
+     * the marker type.
+     * \param a The marker attributes to set.
+     * \see MarkerAttributes
+     */
     void setMarkerAttributes(const MarkerAttributes &a);
 
     /**
-   * \return The marker attributes used for decorating the data
-   * values.
-   * \see MarkerAttributes
-   */
+     * \return The marker attributes used for decorating the data
+     * values.
+     * \see MarkerAttributes
+     */
     MarkerAttributes markerAttributes() const;
 
     /**
-   * Specify whether to use percentages instead of actual data point values when no
-   * specific label is set. In a bar or cartesian diagram, this means that the value
-   * will be shown in % in relation to the sum of all values in the same category, in
-   * a polar diagram in relation to the sum of all values in a data set.
-   *
-   * When this is turned on, the value will \b not automatically have the '%' postfix.
-   * \param enable Whether to enable percentage values
-   */
+     * Specify whether to use percentages instead of actual data point values when no
+     * specific label is set. In a bar or cartesian diagram, this means that the value
+     * will be shown in % in relation to the sum of all values in the same category, in
+     * a polar diagram in relation to the sum of all values in a data set.
+     *
+     * When this is turned on, the value will \b not automatically have the '%' postfix.
+     * \param enable Whether to enable percentage values
+     */
     void setUsePercentage(bool enable);
 
     /**
-   * \return Whether to use percentage values
-   * \see setUsePercentage
-   */
+     * \return Whether to use percentage values
+     * \see setUsePercentage
+     */
     bool usePercentage() const;
 
     /**
-   * Set how  many decimal digits to display when rendering the data value
-   * labels. If there are no decimal digits it will not be displayed.
-   * \param digits The number of decimal digits to use.
-   */
+     * Set how  many decimal digits to display when rendering the data value
+     * labels. If there are no decimal digits it will not be displayed.
+     * \param digits The number of decimal digits to use.
+     */
     void setDecimalDigits(int digits);
 
     /**
-   * \return The number of decimal digits displayed.
-   */
+     * \return The number of decimal digits displayed.
+     */
     int decimalDigits() const;
 
     /**
-   * \brief Prepend a prefix string to the data value label
-   * \sa prefix
-   */
+     * \brief Prepend a prefix string to the data value label
+     * \sa prefix
+     */
     void setPrefix(const QString &prefix);
 
     /**
-   * \brief Returns the string used as a prefix to the data value text.
-   * \sa setPrefix
-   */
+     * \brief Returns the string used as a prefix to the data value text.
+     * \sa setPrefix
+     */
     QString prefix() const;
 
     /**
-   * \brief Append a suffix string to the data value label
-   * \sa suffix
-   */
+     * \brief Append a suffix string to the data value label
+     * \sa suffix
+     */
     void setSuffix(const QString &suffix);
 
     /**
-   * \brief Returns the string used as a suffix to the data value text.
-   * \sa setSuffix
-   */
+     * \brief Returns the string used as a suffix to the data value text.
+     * \sa setSuffix
+     */
     QString suffix() const;
 
     /**
-   * \brief display a string label instead of the original data value label
-   * Supports HTML code.
-   * \sa dataLabel
-   */
+     * \brief display a string label instead of the original data value label
+     * Supports HTML code.
+     * \sa dataLabel
+     */
     void setDataLabel(const QString &label);
 
     /**
-   * \brief Returns the string displayed instead of the data value label
-   * \sa setDataLabel
-   */
+     * \brief Returns the string displayed instead of the data value label
+     * \sa setDataLabel
+     */
     QString dataLabel() const;
 
     /**
-   * \return Whether data values not different from their predecessors are drawn.
-  */
+     * \return Whether data values not different from their predecessors are drawn.
+     */
     bool showRepetitiveDataLabels() const;
 
     /**
-   *
-   * Set whether data value labels not different from their predecessors should be drawn.
-   * \param showRepetitiveDataLabels Whether data value not different from their predecessors are drawn.
-  */
+     *
+     * Set whether data value labels not different from their predecessors should be drawn.
+     * \param showRepetitiveDataLabels Whether data value not different from their predecessors are drawn.
+     */
     void setShowRepetitiveDataLabels(bool showRepetitiveDataLabels);
 
     /**
-   * \return Whether data value texts overlapping other data value texts of the same diagram are drawn.
-  */
+     * \return Whether data value texts overlapping other data value texts of the same diagram are drawn.
+     */
     bool showOverlappingDataLabels() const;
 
     /**
-   *
-   * Set whether data value texts overlapping other data value texts of the same diagram should be drawn.
-   * \param showOverlappingDataLabels Whether data texts overlapping other data value texts of the same diagram are drawn.
-  */
+     *
+     * Set whether data value texts overlapping other data value texts of the same diagram should be drawn.
+     * \param showOverlappingDataLabels Whether data texts overlapping other data value texts of the same diagram are drawn.
+     */
     void setShowOverlappingDataLabels(bool showOverlappingDataLabels);
 
     /**
-    * \cond PLANNED_FOR_FUTURE
-    *
-    * These method are planned for future versions of KD Chart,
-    * so they are not part of the documented API yet.
-    *
-    */
+     * \cond PLANNED_FOR_FUTURE
+     *
+     * These method are planned for future versions of KD Chart,
+     * so they are not part of the documented API yet.
+     *
+     */
     void setPowerOfTenDivisor(int powerOfTenDivisor);
     int powerOfTenDivisor() const;
     /**
-   * \endcond
-   */
+     * \endcond
+     */
 
     /**
-   * \cond PLANNED_FOR_FUTURE
-   *
-   * These method are planned for future versions of KD Chart,
-   * so they are not part of the documented API yet.
-   */
+     * \cond PLANNED_FOR_FUTURE
+     *
+     * These method are planned for future versions of KD Chart,
+     * so they are not part of the documented API yet.
+     */
     void setShowInfinite(bool infinite);
     bool showInfinite() const;
     /**
-   * \endcond
-   */
+     * \endcond
+     */
 
     /**
-   * \brief Defines the relative positioning of the data value labels for negative values.
-    *
-    * The position is specified in relation to the respective data value point, or in
-    * relation to the respective data representation area, that's one area segment in
-    * a LineDiagram showing areas, or one bar in a BarDiagram, one pie slice ...
-    *
-    * See detailed description of \a KDChart::Position for an illustration of the
-    * different possible reference positions.
-    *
-   * \sa negativePosition
-   */
+     * \brief Defines the relative positioning of the data value labels for negative values.
+     *
+     * The position is specified in relation to the respective data value point, or in
+     * relation to the respective data representation area, that's one area segment in
+     * a LineDiagram showing areas, or one bar in a BarDiagram, one pie slice ...
+     *
+     * See detailed description of \a KDChart::Position for an illustration of the
+     * different possible reference positions.
+     *
+     * \sa negativePosition
+     */
     void setNegativePosition(const RelativePosition &relPosition);
 
     /**
-   * \brief Return the relative positioning of the data value labels
-   * \sa setNegativePosition
-   */
+     * \brief Return the relative positioning of the data value labels
+     * \sa setNegativePosition
+     */
     const RelativePosition negativePosition() const;
 
     /**
-   * \brief Defines the relative position of the data value labels for positive values.
-   *
-   * The position is specified in relation to the respective data value point, or in
-   * relation to the respective data representation area, that's one area segment in
-   * a LineDiagram showing areas, or one bar in a BarDiagram, one pie slice ...
-   *
-   * See detailed description of \a KDChart::Position for an illustration of the
-   * different possible reference positions.
-   *
-   * \sa positivePosition
-   */
+     * \brief Defines the relative position of the data value labels for positive values.
+     *
+     * The position is specified in relation to the respective data value point, or in
+     * relation to the respective data representation area, that's one area segment in
+     * a LineDiagram showing areas, or one bar in a BarDiagram, one pie slice ...
+     *
+     * See detailed description of \a KDChart::Position for an illustration of the
+     * different possible reference positions.
+     *
+     * \sa positivePosition
+     */
     void setPositivePosition(const RelativePosition &relPosition);
 
     /**
-   * \brief Return the relative positioning of the data value labels
-   * \sa setPositivePosition
-   */
+     * \brief Return the relative positioning of the data value labels
+     * \sa setPositivePosition
+     */
     const RelativePosition positivePosition() const;
 
     const RelativePosition position(bool positive) const

@@ -47,7 +47,7 @@ private:
     KDChart::BarDiagram *m_bars;
     KDChart::CartesianCoordinatePlane *plane;
     // mutable KDChart::CartesianAxis xAxis;
-    //mutable KDChart::CartesianAxis yAxis;
+    // mutable KDChart::CartesianAxis yAxis;
 };
 
 #endif /* MAINWINDOW_H */

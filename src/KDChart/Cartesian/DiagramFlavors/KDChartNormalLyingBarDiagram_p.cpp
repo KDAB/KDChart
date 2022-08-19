@@ -19,10 +19,10 @@
 
 #include <QModelIndex>
 
+#include "KDChartAbstractCartesianDiagram.h"
+#include "KDChartAttributesModel.h"
 #include "KDChartBarDiagram.h"
 #include "KDChartTextAttributes.h"
-#include "KDChartAttributesModel.h"
-#include "KDChartAbstractCartesianDiagram.h"
 
 using namespace KDChart;
 using namespace std;
@@ -122,7 +122,7 @@ void NormalLyingBarDiagram::paint(PaintContext *ctx)
     // is covered by the groups.
     qreal maxLimit = rowCount * (groupWidth + (colCount - 1) * ba.fixedDataValueGap());
 
-    //Pending Michel: FixMe
+    // Pending Michel: FixMe
     if (ba.useFixedDataValueGap()) {
         if (width > maxLimit)
             spaceBetweenBars += ba.fixedDataValueGap();

@@ -15,8 +15,8 @@
 **
 ****************************************************************************/
 
-#include "KDChartLineDiagram.h"
 #include "KDChartDataValueAttributes.h"
+#include "KDChartLineDiagram.h"
 
 #include "KDChartLineDiagram_p.h"
 #include "KDChartPainterSaver_p.h"

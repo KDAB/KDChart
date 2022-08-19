@@ -21,18 +21,18 @@
 #include "gradientdialog.h"
 
 #include <QColorDialog>
-#include <QStyleFactory>
 #include <QFileDialog>
+#include <QStyleFactory>
 
 #include <KDChart/KDChartThreeDBarAttributes>
 #include <KDChart/KDChartThreeDLineAttributes>
 #include <KDChart/KDChartThreeDPieAttributes>
 
-#include <KDChart/KDChartChart>
 #include <KDChart/KDChartBarDiagram>
+#include <KDChart/KDChartCartesianCoordinatePlane>
+#include <KDChart/KDChartChart>
 #include <KDChart/KDChartLineDiagram>
 #include <KDChart/KDChartPieDiagram>
-#include <KDChart/KDChartCartesianCoordinatePlane>
 
 #include <KDChart/KDChartBackgroundAttributes>
 
@@ -123,7 +123,7 @@ void DiagramSettings::Private::changeBackgroundColor()
             palette.setBrush(QPalette::Button, color);
             ui->diagramBackground->setPalette(palette);
         } else if (ui->textureBtn->isChecked()) {
-            //QBrush setBrush = m_chart->coordinatePlane()->diagram()->brush( index );
+            // QBrush setBrush = m_chart->coordinatePlane()->diagram()->brush( index );
             QImage texture;
 
             const QString filename = QFileDialog::getOpenFileName(qq, tr("Choose Texture"), QString(), tr("Images (*.png *.xpm *.jpg)"));

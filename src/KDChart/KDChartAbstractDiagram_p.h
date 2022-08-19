@@ -29,26 +29,26 @@
 // We mean it.
 //
 
-#include "KDChartAbstractDiagram.h"
 #include "KDChartAbstractCoordinatePlane.h"
-#include "KDChartDataValueAttributes.h"
+#include "KDChartAbstractDiagram.h"
 #include "KDChartBackgroundAttributes.h"
-#include "KDChartRelativePosition.h"
-#include "KDChartPosition.h"
-#include "KDChartPaintContext.h"
-#include "KDChartPrintingParameters.h"
 #include "KDChartChart.h"
-#include <KDChartCartesianDiagramDataCompressor_p.h>
+#include "KDChartDataValueAttributes.h"
+#include "KDChartPaintContext.h"
+#include "KDChartPosition.h"
+#include "KDChartPrintingParameters.h"
+#include "KDChartRelativePosition.h"
 #include "ReverseMapper.h"
+#include <KDChartCartesianDiagramDataCompressor_p.h>
 
-#include <QMap>
-#include <QPoint>
-#include <QPointer>
 #include <QFont>
 #include <QFontMetrics>
-#include <QPaintDevice>
+#include <QMap>
 #include <QModelIndex>
+#include <QPaintDevice>
 #include <QPainterPath>
+#include <QPoint>
+#include <QPointer>
 
 namespace KDChart {
 class LabelPaintInfo
@@ -166,24 +166,24 @@ public:
         const CartesianDiagramDataCompressor::CachePosition *position) const;
 
     /**
-         * Sets arbitrary attributes of a data set.
-         */
+     * Sets arbitrary attributes of a data set.
+     */
     void setDatasetAttrs(int dataset, const QVariant &data, int role);
 
     /**
-         * Retrieves arbitrary attributes of a data set.
-         */
+     * Retrieves arbitrary attributes of a data set.
+     */
     QVariant datasetAttrs(int dataset, int role) const;
 
     /**
-         * Resets an attribute of a dataset back to its default.
-         */
+     * Resets an attribute of a dataset back to its default.
+     */
     void resetDatasetAttrs(int dataset, int role);
 
     /**
-         * Whether the diagram is transposed (X and Y swapped), which has the same effect as rotating
-         * the diagram 90° clockwise and inverting the (then vertical) X coordinate.
-         */
+     * Whether the diagram is transposed (X and Y swapped), which has the same effect as rotating
+     * the diagram 90° clockwise and inverting the (then vertical) X coordinate.
+     */
     bool isTransposed() const;
 
     static Private *get(AbstractDiagram *diagram)

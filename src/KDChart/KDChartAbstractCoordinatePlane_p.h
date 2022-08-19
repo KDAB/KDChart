@@ -31,8 +31,8 @@
 
 #include "KDChartAbstractArea_p.h"
 #include <KDChartAbstractCoordinatePlane.h>
-#include <KDChartGridAttributes.h>
 #include <KDChartAbstractGrid.h>
+#include <KDChartGridAttributes.h>
 #include <KDChartZoomParameters.h>
 
 #include <KDABLibFakes>

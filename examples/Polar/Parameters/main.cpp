@@ -15,11 +15,11 @@
 **
 ****************************************************************************/
 
-#include <QtGui>
-#include <KDChartChart>
-#include <KDChartPolarDiagram>
-#include <KDChartDataValueAttributes>
 #include <KDChartBackgroundAttributes>
+#include <KDChartChart>
+#include <KDChartDataValueAttributes>
+#include <KDChartPolarDiagram>
+#include <QtGui>
 
 #include <QApplication>
 

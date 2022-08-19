@@ -18,15 +18,15 @@
 #ifndef KDCHARTTHREEDBARATTRIBUTES_H
 #define KDCHARTTHREEDBARATTRIBUTES_H
 
-#include <QMetaType>
 #include "KDChartAbstractThreeDAttributes.h"
 #include "KDChartGlobal.h"
+#include <QMetaType>
 
 namespace KDChart {
 
 /**
-    * @brief A set of 3D bar attributes
-    */
+ * @brief A set of 3D bar attributes
+ */
 class KDCHART_EXPORT ThreeDBarAttributes : public AbstractThreeDAttributes
 {
 public:
@@ -40,7 +40,7 @@ public:
     void setUseShadowColors(bool useShadowColors);
     bool useShadowColors() const;
 
-    //Pending Michel I am not sure this will be used
+    // Pending Michel I am not sure this will be used
     void setAngle(uint threeDAngle);
     uint angle() const;
 

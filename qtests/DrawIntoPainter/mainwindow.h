@@ -46,8 +46,8 @@ public:
 
 protected:
     /**
-         * Adjusts the two small charts when the window is resized.
-         */
+     * Adjusts the two small charts when the window is resized.
+     */
     /* reimp */ void resizeEvent(QResizeEvent *) override;
 
 private slots:
@@ -76,7 +76,7 @@ private:
     QLabel *m_smallChart1;
     QLabel *m_smallChart2;
     // mutable KDChart::CartesianAxis xAxis;
-    //mutable KDChart::CartesianAxis yAxis;
+    // mutable KDChart::CartesianAxis yAxis;
 };
 
 #endif /* MAINWINDOW_H */

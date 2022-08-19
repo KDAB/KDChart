@@ -18,9 +18,9 @@
 #ifndef KDGANTTABSTRACTGRID_P_H
 #define KDGANTTABSTRACTGRID_P_H
 
-#include <QPointer>
 #include <QAbstractItemModel>
 #include <QPersistentModelIndex>
+#include <QPointer>
 
 #include "kdganttabstractgrid.h"
 

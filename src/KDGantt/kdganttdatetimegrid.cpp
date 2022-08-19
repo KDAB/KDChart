@@ -22,14 +22,14 @@
 
 #include <QApplication>
 #include <QDateTime>
+#include <QDebug>
+#include <QList>
 #include <QPainter>
+#include <QPainterPath>
+#include <QString>
 #include <QStyle>
 #include <QStyleOptionHeader>
 #include <QWidget>
-#include <QString>
-#include <QDebug>
-#include <QList>
-#include <QPainterPath>
 
 #include <cassert>
 
@@ -239,9 +239,9 @@ QDateTime DateTimeScaleFormatter::nextRangeBegin(const QDateTime &datetime) cons
         result.setDate(QDate(result.date().year(), 1, 1).addYears(1));
         break;
     }
-    //result = result.toLocalTime();
+    // result = result.toLocalTime();
     assert(result != datetime);
-    //qDebug() << "DateTimeScaleFormatter::nextRangeBegin("<<datetime<<")="<<d->range<<result;
+    // qDebug() << "DateTimeScaleFormatter::nextRangeBegin("<<datetime<<")="<<d->range<<result;
     return result;
 }
 
@@ -464,7 +464,7 @@ QSet<Qt::DayOfWeek> DateTimeGrid::freeDays() const
 }
 
 /*! Sets the brush to use to paint free days.
-*/
+ */
 void DateTimeGrid::setFreeDaysBrush(const QBrush brush)
 {
     d->freeDaysBrush = brush;
@@ -544,7 +544,7 @@ Span DateTimeGrid::mapToChart(const QModelIndex &idx) const
         if (et.isValid() && st.isValid()) {
             qreal sx = d->dateTimeToChartX(st);
             qreal ex = d->dateTimeToChartX(et) - sx;
-            //qDebug() << "DateTimeGrid::mapToChart("<<st<<et<<") => "<< Span( sx, ex );
+            // qDebug() << "DateTimeGrid::mapToChart("<<st<<et<<") => "<< Span( sx, ex );
             return Span(sx, ex);
         }
     }
@@ -596,18 +596,18 @@ bool DateTimeGrid::mapFromChart(const Span &span, const QModelIndex &idx,
 
     QDateTime st = d->chartXtoDateTime(span.start());
     QDateTime et = d->chartXtoDateTime(span.start() + span.length());
-    //qDebug() << "DateTimeGrid::mapFromChart("<<span<<") => "<< st << et;
+    // qDebug() << "DateTimeGrid::mapFromChart("<<span<<") => "<< st << et;
     Q_FOREACH (const Constraint &c, constraints) {
         if (c.type() != Constraint::TypeHard || !isSatisfiedConstraint(c))
             continue;
         if (c.startIndex() == idx) {
             QDateTime tmpst = model()->data(c.endIndex(), StartTimeRole).toDateTime();
-            //qDebug() << tmpst << "<" << et <<"?";
+            // qDebug() << tmpst << "<" << et <<"?";
             if (tmpst < et)
                 return false;
         } else if (c.endIndex() == idx) {
             QDateTime tmpet = model()->data(c.startIndex(), EndTimeRole).toDateTime();
-            //qDebug() << tmpet << ">" << st <<"?";
+            // qDebug() << tmpet << ">" << st <<"?";
             if (tmpet > st)
                 return false;
         }
@@ -701,9 +701,9 @@ void DateTimeGrid::Private::paintVerticalLines(QPainter *painter,
 
     for (qreal x = dateTimeToChartX(dt); x < exposedRect.right();
          dt = dt.addSecs(offsetSeconds), dt = dt.addDays(offsetDays), x = dateTimeToChartX(dt)) {
-        //TODO not the best solution as it might be one paint too much, but i don't know what
-        //causes the test to fail yet, i think it might be a rounding error
-        //if ( x >= exposedRect.left() ) {
+        // TODO not the best solution as it might be one paint too much, but i don't know what
+        // causes the test to fail yet, i think it might be a rounding error
+        // if ( x >= exposedRect.left() ) {
         QPen pen = painter->pen();
         pen.setBrush(QApplication::palette().dark());
         pen.setStyle(gridLinePenStyle(dt, headerType));
@@ -748,10 +748,10 @@ void DateTimeGrid::Private::paintVerticalUserDefinedLines(QPainter *painter,
             painter->fillRect(QRectF(x, exposedRect.top(), dayWidth, exposedRect.height()), painter->brush());
             painter->setBrush(oldBrush);
         }
-        //TODO not the best solution as it might be one paint too much, but i don't know what
-        //causes the test to fail yet, i think it might be a rounding error
-        //if ( x >= exposedRect.left() ) {
-        // FIXME: Also fill area between this and the next vertical line to indicate free days? (Johannes)
+        // TODO not the best solution as it might be one paint too much, but i don't know what
+        // causes the test to fail yet, i think it might be a rounding error
+        // if ( x >= exposedRect.left() ) {
+        //  FIXME: Also fill area between this and the next vertical line to indicate free days? (Johannes)
         painter->drawLine(QPointF(x, sceneRect.top()), QPointF(x, sceneRect.bottom()));
         //}
     }
@@ -834,7 +834,7 @@ void DateTimeGrid::paintGrid(QPainter *painter,
                 painter->fillRect(QRectF(exposedRect.left(), s.start(), exposedRect.width(), s.length()), d->noInformationBrush);
             }
             // Is alternating background better?
-            //if ( idx.row()%2 ) painter->fillRect( QRectF( exposedRect.x(), s.start(), exposedRect.width(), s.length() ), QApplication::palette().alternateBase() );
+            // if ( idx.row()%2 ) painter->fillRect( QRectF( exposedRect.x(), s.start(), exposedRect.width(), s.length() ), QApplication::palette().alternateBase() );
             idx = rowController->indexBelow(idx);
         }
     }
@@ -1216,7 +1216,7 @@ void DateTimeGrid::paintMonthScaleHeader(QPainter *painter, const QRectF &header
 }
 
 /*! Draw the background for a day.
-*/
+ */
 void DateTimeGrid::drawDayBackground(QPainter *painter, const QRectF &rect, const QDate &date)
 {
     Q_UNUSED(painter);
@@ -1225,7 +1225,7 @@ void DateTimeGrid::drawDayBackground(QPainter *painter, const QRectF &rect, cons
 }
 
 /*! Draw the foreground for a day.
-*/
+ */
 void DateTimeGrid::drawDayForeground(QPainter *painter, const QRectF &rect, const QDate &date)
 {
     Q_UNUSED(painter);
@@ -1234,7 +1234,7 @@ void DateTimeGrid::drawDayForeground(QPainter *painter, const QRectF &rect, cons
 }
 
 /** Return the rectangle that represents the date-range.
-*/
+ */
 QRectF DateTimeGrid::computeRect(const QDateTime &from, const QDateTime &to, const QRectF &rect) const
 {
     qreal topLeft = d->dateTimeToChartX(from);
@@ -1244,7 +1244,7 @@ QRectF DateTimeGrid::computeRect(const QDateTime &from, const QDateTime &to, con
 }
 
 /** Return a date-range represented by the rectangle.
-*/
+ */
 QPair<QDateTime, QDateTime> DateTimeGrid::dateTimeRange(const QRectF &rect) const
 {
     QDateTime start;
@@ -1258,7 +1258,7 @@ QPair<QDateTime, QDateTime> DateTimeGrid::dateTimeRange(const QRectF &rect) cons
 
 void DateTimeGrid::drawBackground(QPainter *paint, const QRectF &rect)
 {
-    int offset = (int)dayWidth();
+    int offset = ( int )dayWidth();
 
     // Figure out the date at the extreme left
     QDate date = d->chartXtoDateTime(rect.left()).date();
@@ -1298,7 +1298,7 @@ void DateTimeGrid::drawBackground(QPainter *paint, const QRectF &rect)
 
 void DateTimeGrid::drawForeground(QPainter *paint, const QRectF &rect)
 {
-    int offset = (int)dayWidth();
+    int offset = ( int )dayWidth();
 
     // Figure out the date at the extreme left
     QDate date = d->chartXtoDateTime(rect.left()).date();
@@ -1340,8 +1340,8 @@ void DateTimeGrid::drawForeground(QPainter *paint, const QRectF &rect)
 
 #ifndef KDAB_NO_UNIT_TESTS
 
-#include <QStandardItemModel>
 #include "unittest/test.h"
+#include <QStandardItemModel>
 
 static std::ostream &operator<<(std::ostream &os, const QDateTime &dt)
 {
@@ -1369,7 +1369,7 @@ KDAB_SCOPED_UNITTEST_SIMPLE(KDGantt, DateTimeGrid, "test")
     model.setData(model.index(2, 0), dt.addDays(19), EndTimeRole);
 
     Span s = grid.mapToChart(model.index(0, 0));
-    //qDebug() << "span="<<s;
+    // qDebug() << "span="<<s;
 
     assertTrue(s.start() > 0);
     assertTrue(s.length() > 0);

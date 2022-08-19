@@ -25,8 +25,8 @@ class PieAttributes;
 class ThreeDPieAttributes;
 
 /**
-  * @brief Base class for any diagram type
-  */
+ * @brief Base class for any diagram type
+ */
 class KDCHART_EXPORT AbstractPieDiagram : public AbstractPolarDiagram
 {
     Q_OBJECT

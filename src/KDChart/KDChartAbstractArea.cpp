@@ -134,7 +134,7 @@ void AbstractArea::paintAll(QPainter &painter)
         setGeometry(oldGeometry);
         blockSignals(prevSignalBlocked);
     }
-    //qDebug() << "AbstractAreaWidget::paintAll() done.";
+    // qDebug() << "AbstractAreaWidget::paintAll() done.";
 }
 
 QRect AbstractArea::areaGeometry() const

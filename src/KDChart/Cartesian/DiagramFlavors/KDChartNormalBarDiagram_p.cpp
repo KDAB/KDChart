@@ -19,10 +19,10 @@
 
 #include <QModelIndex>
 
+#include "KDChartAbstractCartesianDiagram.h"
+#include "KDChartAttributesModel.h"
 #include "KDChartBarDiagram.h"
 #include "KDChartTextAttributes.h"
-#include "KDChartAttributesModel.h"
-#include "KDChartAbstractCartesianDiagram.h"
 
 using namespace KDChart;
 using namespace std;
@@ -105,7 +105,7 @@ void NormalBarDiagram::paint(PaintContext *ctx)
     BarAttributes ba = diagram()->barAttributes();
     ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes();
 
-    //we need some margin (hence the 2.5) for the three dimensional depth
+    // we need some margin (hence the 2.5) for the three dimensional depth
     const qreal threeDepthMargin = (threeDAttrs.isEnabled()) ? 2.5 * threeDAttrs.depth() : 0;
 
     qreal barWidth = 0;
@@ -133,7 +133,7 @@ void NormalBarDiagram::paint(PaintContext *ctx)
     // is covered by the groups.
     qreal maxLimit = rowCount * (groupWidth + ((colCount - 1) * ba.fixedDataValueGap()));
 
-    //Pending Michel: FixMe
+    // Pending Michel: FixMe
     if (ba.useFixedDataValueGap()) {
         if (width > maxLimit) {
             spaceBetweenBars += ba.fixedDataValueGap();
@@ -171,7 +171,7 @@ void NormalBarDiagram::paint(PaintContext *ctx)
             const CartesianDiagramDataCompressor::CachePosition position(row, column);
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data(position);
             const QModelIndex sourceIndex = attributesModel()->mapToSource(point.index);
-            const qreal value = point.value; //attributesModel()->data( sourceIndex ).toReal();
+            const qreal value = point.value; // attributesModel()->data( sourceIndex ).toReal();
             if (!point.hidden && !ISNAN(value)) {
                 QPointF topPoint = ctx->coordinatePlane()->translate(QPointF(point.key + 0.5, value));
                 QPointF bottomPoint = ctx->coordinatePlane()->translate(QPointF(point.key, 0));

@@ -18,20 +18,20 @@
 #include "KDChartAbstractDiagram.h"
 #include "KDChartAbstractDiagram_p.h"
 
-#include <QPainter>
-#include <QDebug>
-#include <QApplication>
 #include <QAbstractProxyModel>
+#include <QApplication>
+#include <QDebug>
+#include <QPainter>
 #include <QSizeF>
 
 #include "KDChartAbstractCoordinatePlane.h"
+#include "KDChartAbstractThreeDAttributes.h"
 #include "KDChartChart.h"
 #include "KDChartDataValueAttributes.h"
-#include "KDChartTextAttributes.h"
 #include "KDChartMarkerAttributes.h"
-#include "KDChartAbstractThreeDAttributes.h"
-#include "KDChartThreeDLineAttributes.h"
 #include "KDChartPainterSaver_p.h"
+#include "KDChartTextAttributes.h"
+#include "KDChartThreeDLineAttributes.h"
 
 #include <KDABLibFakes>
 
@@ -681,54 +681,54 @@ QBrush AbstractDiagram::brush(const QModelIndex &index) const
 }
 
 /**
-  * Sets the unit prefix for one value
-  * @param prefix the prefix to be set
-  * @param column the value using that prefix
-  * @param orientation the orientantion of the axis to set
-  */
+ * Sets the unit prefix for one value
+ * @param prefix the prefix to be set
+ * @param column the value using that prefix
+ * @param orientation the orientantion of the axis to set
+ */
 void AbstractDiagram::setUnitPrefix(const QString &prefix, int column, Qt::Orientation orientation)
 {
     d->unitPrefixMap[column][orientation] = prefix;
 }
 
 /**
-  * Sets the unit prefix for all values
-  * @param prefix the prefix to be set
-  * @param orientation the orientantion of the axis to set
-  */
+ * Sets the unit prefix for all values
+ * @param prefix the prefix to be set
+ * @param orientation the orientantion of the axis to set
+ */
 void AbstractDiagram::setUnitPrefix(const QString &prefix, Qt::Orientation orientation)
 {
     d->unitPrefix[orientation] = prefix;
 }
 
 /**
-  * Sets the unit suffix for one value
-  * @param suffix the suffix to be set
-  * @param column the value using that suffix
-  * @param orientation the orientantion of the axis to set
-  */
+ * Sets the unit suffix for one value
+ * @param suffix the suffix to be set
+ * @param column the value using that suffix
+ * @param orientation the orientantion of the axis to set
+ */
 void AbstractDiagram::setUnitSuffix(const QString &suffix, int column, Qt::Orientation orientation)
 {
     d->unitSuffixMap[column][orientation] = suffix;
 }
 
 /**
-  * Sets the unit suffix for all values
-  * @param suffix the suffix to be set
-  * @param orientation the orientantion of the axis to set
-  */
+ * Sets the unit suffix for all values
+ * @param suffix the suffix to be set
+ * @param orientation the orientantion of the axis to set
+ */
 void AbstractDiagram::setUnitSuffix(const QString &suffix, Qt::Orientation orientation)
 {
     d->unitSuffix[orientation] = suffix;
 }
 
 /**
-  * Returns the unit prefix for a special value
-  * @param column the value which's prefix is requested
-  * @param orientation the orientation of the axis
-  * @param fallback if true, the global prefix is return when no specific one is set for that value
-  * @return the unit prefix
-  */
+ * Returns the unit prefix for a special value
+ * @param column the value which's prefix is requested
+ * @param orientation the orientation of the axis
+ * @param fallback if true, the global prefix is return when no specific one is set for that value
+ * @return the unit prefix
+ */
 QString AbstractDiagram::unitPrefix(int column, Qt::Orientation orientation, bool fallback) const
 {
     if (!fallback || d->unitPrefixMap[column].contains(orientation))
@@ -737,21 +737,21 @@ QString AbstractDiagram::unitPrefix(int column, Qt::Orientation orientation, boo
 }
 
 /** Returns the global unit prefix
-  * @param orientation the orientation of the axis
-  * @return the unit prefix
-  */
+ * @param orientation the orientation of the axis
+ * @return the unit prefix
+ */
 QString AbstractDiagram::unitPrefix(Qt::Orientation orientation) const
 {
     return d->unitPrefix[orientation];
 }
 
 /**
-  * Returns the unit suffix for a special value
-  * @param column the value which's suffix is requested
-  * @param orientation the orientation of the axis
-  * @param fallback if true, the global suffix is return when no specific one is set for that value
-  * @return the unit suffix
-  */
+ * Returns the unit suffix for a special value
+ * @param column the value which's suffix is requested
+ * @param orientation the orientation of the axis
+ * @param fallback if true, the global suffix is return when no specific one is set for that value
+ * @return the unit suffix
+ */
 QString AbstractDiagram::unitSuffix(int column, Qt::Orientation orientation, bool fallback) const
 {
     if (!fallback || d->unitSuffixMap[column].contains(orientation))
@@ -760,9 +760,9 @@ QString AbstractDiagram::unitSuffix(int column, Qt::Orientation orientation, boo
 }
 
 /** Returns the global unit suffix
-  * @param orientation the orientation of the axis
-  * @return the unit suffix
-  */
+ * @param orientation the orientation of the axis
+ * @return the unit suffix
+ */
 QString AbstractDiagram::unitSuffix(Qt::Orientation orientation) const
 {
     return d->unitSuffix[orientation];
@@ -844,10 +844,10 @@ QStringList AbstractDiagram::itemRowLabels() const
 {
     QStringList ret;
     if (model()) {
-        //qDebug() << "AbstractDiagram::itemRowLabels(): " << attributesModel()->rowCount(attributesModelRootIndex()) << "entries";
+        // qDebug() << "AbstractDiagram::itemRowLabels(): " << attributesModel()->rowCount(attributesModelRootIndex()) << "entries";
         const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
         for (int i = 0; i < rowCount; ++i) {
-            //qDebug() << "item row label: " << attributesModel()->headerData( i, Qt::Vertical, Qt::DisplayRole ).toString();
+            // qDebug() << "item row label: " << attributesModel()->headerData( i, Qt::Vertical, Qt::DisplayRole ).toString();
             ret << unitPrefix(i, Qt::Horizontal, true) + attributesModel()->headerData(i, Qt::Vertical, Qt::DisplayRole).toString() + unitSuffix(i, Qt::Horizontal, true);
         }
     }

@@ -19,11 +19,11 @@
 
 #include <QAbstractItemModel>
 
+#include "KDChartAbstractCartesianDiagram.h"
+#include "KDChartAttributesModel.h"
 #include "KDChartBarDiagram.h"
 #include "KDChartLineDiagram.h"
 #include "KDChartTextAttributes.h"
-#include "KDChartAttributesModel.h"
-#include "KDChartAbstractCartesianDiagram.h"
 #include "PaintingHelpers_p.h"
 
 using namespace KDChart;
@@ -110,7 +110,7 @@ void StackedLineDiagram::paintWithLines(PaintContext *ctx)
     //            if ( ! diagram()->isHidden( iColumn ) )
     //                maxFound = iColumn;
     //    }
-    //maxFound = columnCount;
+    // maxFound = columnCount;
     // ^^^ temp
 
     LabelPaintCache lpc;
@@ -124,7 +124,7 @@ void StackedLineDiagram::paintWithLines(PaintContext *ctx)
     for (int column = 0; column < columnCount; ++column) {
         CartesianDiagramDataCompressor::CachePosition previousCellPosition;
 
-        //display area can be set by dataset ( == column) and/or by cell
+        // display area can be set by dataset ( == column) and/or by cell
         LineAttributes laPreviousCell; // by default no area is drawn
         QModelIndex indexPreviousCell;
         QList<QPolygonF> areas;
@@ -155,7 +155,7 @@ void StackedLineDiagram::paintWithLines(PaintContext *ctx)
                         stackedValues += interpolation;
                 }
 
-                //qDebug() << valueForCell( iRow, iColumn2 );
+                // qDebug() << valueForCell( iRow, iColumn2 );
                 if (row + 1 < rowCount) {
                     const CartesianDiagramDataCompressor::CachePosition position(row + 1, column2);
                     const CartesianDiagramDataCompressor::DataPoint point = compressor().data(position);
@@ -169,7 +169,7 @@ void StackedLineDiagram::paintWithLines(PaintContext *ctx)
                     nextKey = point.key;
                 }
             }
-            //qDebug() << stackedValues << endl;
+            // qDebug() << stackedValues << endl;
             const QPointF nextPoint = ctx->coordinatePlane()->translate(QPointF(diagram()->centerDataPoints() ? point.key + 0.5 : point.key, stackedValues));
             points << nextPoint;
 
@@ -204,7 +204,7 @@ void StackedLineDiagram::paintWithLines(PaintContext *ctx)
                     laPreviousCell = laCell;
                     indexPreviousCell = sourceIndex;
                 } else {
-                    //qDebug() << "no area shown for row"<<iRow<<"  column"<<iColumn;
+                    // qDebug() << "no area shown for row"<<iRow<<"  column"<<iColumn;
                 }
             } else {
                 ptNorthEast = ptNorthWest;
@@ -247,7 +247,7 @@ void StackedLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
     //            if ( ! diagram()->isHidden( iColumn ) )
     //                maxFound = iColumn;
     //    }
-    //maxFound = columnCount;
+    // maxFound = columnCount;
     // ^^^ temp
 
     LabelPaintCache lpc;
@@ -258,7 +258,7 @@ void StackedLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
     for (int column = 0; column < columnCount; ++column) {
         CartesianDiagramDataCompressor::CachePosition previousCellPosition;
 
-        //display area can be set by dataset ( == column) and/or by cell
+        // display area can be set by dataset ( == column) and/or by cell
         LineAttributes laPreviousCell; // by default no area is drawn
         QModelIndex indexPreviousCell;
         QList<QPainterPath> areas;
@@ -418,7 +418,7 @@ void StackedLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
                     laPreviousCell = laCell;
                     indexPreviousCell = sourceIndex;
                 } else {
-                    //qDebug() << "no area shown for row"<<iRow<<"  column"<<iColumn;
+                    // qDebug() << "no area shown for row"<<iRow<<"  column"<<iColumn;
                 }
             } else {
                 ptNorthEast = ptNorthWest;

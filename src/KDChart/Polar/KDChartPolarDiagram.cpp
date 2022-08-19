@@ -18,9 +18,9 @@
 #include "KDChartPolarDiagram.h"
 #include "KDChartPolarDiagram_p.h"
 
-#include <QPainter>
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
+#include <QPainter>
 
 #include <KDABLibFakes>
 
@@ -39,7 +39,7 @@ PolarDiagram::Private::~Private()
 PolarDiagram::PolarDiagram(QWidget *parent, PolarCoordinatePlane *plane)
     : AbstractPolarDiagram(new Private(), parent, plane)
 {
-    //init();
+    // init();
 }
 
 PolarDiagram::~PolarDiagram()
@@ -74,8 +74,8 @@ void PolarDiagram::init()
 }
 
 /**
-  * Creates an exact copy of this diagram.
-  */
+ * Creates an exact copy of this diagram.
+ */
 PolarDiagram *PolarDiagram::clone() const
 {
     auto *newDiagram = new PolarDiagram(new Private(*d));
@@ -159,7 +159,7 @@ void PolarDiagram::paint(PaintContext *ctx,
                 QPointF point = coordinatePlane()->translate(
                                     QPointF(value, iRow))
                     + ctx->rectangle().topLeft();
-                //qDebug() << point;
+                // qDebug() << point;
                 d->addLabel(&d->labelPaintCache, index, nullptr, PositionPoints(point),
                             Position::Center, Position::Center, value);
             }
@@ -189,10 +189,10 @@ void PolarDiagram::paint(PaintContext *ctx,
     } else {
         // Paint the data sets
         for (int iCol = 0; iCol < colCount; ++iCol) {
-            //TODO(khz): As of yet PolarDiagram can not show per-segment line attributes
-            //           but it draws every polyline in one go - using one color.
-            //           This needs to be enhanced to allow for cell-specific settings
-            //           in the same way as LineDiagram does it.
+            // TODO(khz): As of yet PolarDiagram can not show per-segment line attributes
+            //            but it draws every polyline in one go - using one color.
+            //            This needs to be enhanced to allow for cell-specific settings
+            //            in the same way as LineDiagram does it.
             QBrush brush = d->datasetAttrs(iCol, KDChart::DatasetBrushRole).value<QBrush>();
             QPolygonF polygon;
             for (int iRow = 0; iRow < rowCount; ++iRow) {
@@ -201,7 +201,7 @@ void PolarDiagram::paint(PaintContext *ctx,
                 QPointF point = coordinatePlane()->translate(QPointF(value, iRow))
                     + ctx->rectangle().topLeft();
                 polygon.append(point);
-                //qDebug() << point;
+                // qDebug() << point;
             }
             if (closeDatasets() && !polygon.isEmpty()) {
                 // close the circle by connecting the last data point to the first

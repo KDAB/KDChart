@@ -34,9 +34,9 @@
  */
 
 #include "KDChartAbstractAreaBase.h"
-#include "KDChartTextAttributes.h"
-#include "KDChartFrameAttributes.h"
 #include "KDChartBackgroundAttributes.h"
+#include "KDChartFrameAttributes.h"
+#include "KDChartTextAttributes.h"
 
 #include <KDABLibFakes>
 

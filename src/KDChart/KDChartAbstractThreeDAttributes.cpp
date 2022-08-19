@@ -18,9 +18,9 @@
 #include "KDChartAbstractThreeDAttributes.h"
 #include "KDChartAbstractThreeDAttributes_p.h"
 
-#include <QDebug>
-#include <QBrush>
 #include <KDABLibFakes>
+#include <QBrush>
+#include <QDebug>
 
 #define d d_func()
 

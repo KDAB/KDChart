@@ -19,11 +19,11 @@
 
 #include <cmath>
 
-#include <QtDebug>
-#include <QImage>
-#include <QPixmap>
-#include <QPainter>
 #include <QApplication>
+#include <QImage>
+#include <QPainter>
+#include <QPixmap>
+#include <QtDebug>
 
 #ifndef NDEBUG
 int HitCount = 0;
@@ -88,16 +88,16 @@ PrerenderedLabel::~PrerenderedLabel()
 }
 
 /**
-  * Invalidates the preredendered data, forces re-rendering.
-  */
+ * Invalidates the preredendered data, forces re-rendering.
+ */
 void PrerenderedLabel::invalidate() const
 {
     m_dirty = true;
 }
 
 /**
-  * Sets the label's font to \a font.
-  */
+ * Sets the label's font to \a font.
+ */
 void PrerenderedLabel::setFont(const QFont &font)
 {
     m_font = font;
@@ -105,16 +105,16 @@ void PrerenderedLabel::setFont(const QFont &font)
 }
 
 /**
-  * @return the label's font.
-  */
+ * @return the label's font.
+ */
 const QFont &PrerenderedLabel::font() const
 {
     return m_font;
 }
 
 /**
-  * Sets the label's text to \a text
-  */
+ * Sets the label's text to \a text
+ */
 void PrerenderedLabel::setText(const QString &text)
 {
     m_text = text;
@@ -122,16 +122,16 @@ void PrerenderedLabel::setText(const QString &text)
 }
 
 /**
-  * @return the label's text
-  */
+ * @return the label's text
+ */
 const QString &PrerenderedLabel::text() const
 {
     return m_text;
 }
 
 /**
-  * Sets the label's brush to \a brush
-  */
+ * Sets the label's brush to \a brush
+ */
 void PrerenderedLabel::setBrush(const QBrush &brush)
 {
     m_brush = brush;
@@ -139,16 +139,16 @@ void PrerenderedLabel::setBrush(const QBrush &brush)
 }
 
 /**
-  * @return the label's brush
-  */
+ * @return the label's brush
+ */
 const QBrush &PrerenderedLabel::brush() const
 {
     return m_brush;
 }
 
 /**
-  * Sets the angle of the label to \a angle degrees
-  */
+ * Sets the angle of the label to \a angle degrees
+ */
 void PrerenderedLabel::setAngle(qreal angle)
 {
     m_angle = angle;
@@ -156,8 +156,8 @@ void PrerenderedLabel::setAngle(qreal angle)
 }
 
 /**
-  * @return the label's angle in degrees
-  */
+ * @return the label's angle in degrees
+ */
 qreal PrerenderedLabel::angle() const
 {
     return m_angle;
@@ -262,7 +262,7 @@ void PrerenderedLabel::paint() const
                   << KDChartEnums::PositionSouth
                   << KDChartEnums::PositionSouthWest
                   << KDChartEnums::PositionWest;
-        Q_FOREACH (KDChartEnums::PositionValue position, positions) { //krazy:exclude=foreach
+        Q_FOREACH (KDChartEnums::PositionValue position, positions) { // krazy:exclude=foreach
             static const double Radius = 0.5;
             static const double Diameter = 2 * Radius;
 

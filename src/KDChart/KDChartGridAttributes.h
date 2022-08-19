@@ -18,9 +18,9 @@
 #ifndef KDCHARTGRIDATTRIBUTES_H
 #define KDCHARTGRIDATTRIBUTES_H
 
-#include <QMetaType>
-#include "KDChartGlobal.h"
 #include "KDChartEnums.h"
+#include "KDChartGlobal.h"
+#include <QMetaType>
 
 QT_BEGIN_NAMESPACE
 class QPen;
@@ -29,8 +29,8 @@ QT_END_NAMESPACE
 namespace KDChart {
 
 /**
-  * @brief A set of attributes controlling the appearance of grids
-  */
+ * @brief A set of attributes controlling the appearance of grids
+ */
 class KDCHART_EXPORT GridAttributes
 {
 public:

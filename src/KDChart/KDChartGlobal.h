@@ -27,13 +27,13 @@ Contains KDChart macros.  */
 #include "kdchart_export.h"
 
 #ifndef KDAB_SET_OBJECT_NAME
-template <typename T>
+template<typename T>
 inline T &__kdab__dereference_for_methodcall(T &o)
 {
     return o;
 }
 
-template <typename T>
+template<typename T>
 inline T &__kdab__dereference_for_methodcall(T *o)
 {
     return *o;
@@ -198,23 +198,23 @@ private:                                              \
 #include <algorithm>
 #define KDCHART_DECLARE_SWAP_SPECIALISATION(X) \
     QT_BEGIN_NAMESPACE                         \
-    template <>                                \
+    template<>                                 \
     inline void qSwap<X>(X & lhs, X & rhs)     \
     {                                          \
         lhs.swap(rhs);                         \
     }                                          \
     QT_END_NAMESPACE                           \
     namespace std {                            \
-        template <>                            \
-        inline void swap<X>(X & lhs, X &rhs)   \
-        {                                      \
-            lhs.swap(rhs);                     \
-        }                                      \
+    template<>                                 \
+    inline void swap<X>(X & lhs, X &rhs)       \
+    {                                          \
+        lhs.swap(rhs);                         \
+    }                                          \
     }
 #else
 #define KDCHART_DECLARE_SWAP_SPECIALISATION(X) \
     QT_BEGIN_NAMESPACE                         \
-    template <>                                \
+    template<>                                 \
     inline void qSwap<X>(X & lhs, X & rhs)     \
     {                                          \
         lhs.swap(rhs);                         \
@@ -251,7 +251,8 @@ template class Q_DECL_IMPORT QVector<QPointF>;
 
 namespace KDChart {
 
-enum DisplayRoles {
+enum DisplayRoles
+{
     DatasetPenRole = 0x0A79EF95,
     DatasetBrushRole,
     DataValueLabelAttributesRole,

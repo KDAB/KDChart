@@ -18,8 +18,8 @@
 #ifndef KDCHARTHEADERFOOTER_H
 #define KDCHARTHEADERFOOTER_H
 
-#include "KDChartTextArea.h"
 #include "KDChartPosition.h"
+#include "KDChartTextArea.h"
 
 namespace KDChart {
 
@@ -27,8 +27,8 @@ class Chart;
 class TextAttributes;
 
 /**
-  * @brief A header or footer displaying text above or below charts
-  */
+ * @brief A header or footer displaying text above or below charts
+ */
 class KDCHART_EXPORT HeaderFooter : public TextArea
 {
     Q_OBJECT
@@ -43,7 +43,8 @@ public:
 
     bool compare(const HeaderFooter &other) const;
 
-    enum HeaderFooterType {
+    enum HeaderFooterType
+    {
         Header,
         Footer
     };

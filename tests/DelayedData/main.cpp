@@ -15,14 +15,14 @@
 **
 ****************************************************************************/
 
-#include <QtGui>
-#include <QPushButton>
-#include <QApplication>
-#include <KDChartChart>
 #include <KDChartBarDiagram>
 #include <KDChartCartesianAxis>
 #include <KDChartCartesianCoordinatePlane>
+#include <KDChartChart>
 #include <KDChartLegend>
+#include <QApplication>
+#include <QPushButton>
+#include <QtGui>
 
 class ChartWidget : public QWidget
 {

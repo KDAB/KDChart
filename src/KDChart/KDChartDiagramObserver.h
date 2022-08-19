@@ -20,9 +20,9 @@
 
 #include "KDChartGlobal.h"
 
+#include <QModelIndex>
 #include <QObject>
 #include <QPointer>
-#include <QModelIndex>
 
 QT_BEGIN_NAMESPACE
 class QAbstractItemModel;
@@ -33,16 +33,16 @@ namespace KDChart {
 class AbstractDiagram;
 
 /**
-     * \brief A DiagramObserver watches the associated diagram for
-     * changes and deletion and emits corresponding signals.
-     */
+ * \brief A DiagramObserver watches the associated diagram for
+ * changes and deletion and emits corresponding signals.
+ */
 class KDCHART_EXPORT DiagramObserver : public QObject
 {
     Q_OBJECT
 public:
     /**
-         * Constructs a new observer observing the given diagram.
-         */
+     * Constructs a new observer observing the given diagram.
+     */
     explicit DiagramObserver(AbstractDiagram *diagram, QObject *parent = nullptr);
     ~DiagramObserver() override;
 
@@ -51,7 +51,7 @@ public:
 
 Q_SIGNALS:
     /** This signal is emitted immediately before the diagram is
-          * being destroyed. */
+     * being destroyed. */
     void diagramDestroyed(AbstractDiagram *diagram);
     /** Emitted when a diagram is being destroyed, but before its data is invalidated **/
     void diagramAboutToBeDestroyed(AbstractDiagram *diagram);

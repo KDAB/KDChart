@@ -19,13 +19,13 @@
 
 #include <KDChartChart>
 #include <KDChartLeveyJenningsAxis>
-#include <KDChartLeveyJenningsDiagram>
 #include <KDChartLeveyJenningsCoordinatePlane>
+#include <KDChartLeveyJenningsDiagram>
 #include <KDChartLeveyJenningsGridAttributes>
 
 #include <QDateTime>
-#include <QStandardItemModel>
 #include <QSplitter>
+#include <QStandardItemModel>
 #include <QTableView>
 #include <QTimer>
 
@@ -158,9 +158,9 @@ int main(int argc, char **argv)
     diagram->setSensorChangedSymbolPosition( Qt::AlignTop );
     diagram->setFluidicsPackChangedSymbolPosition( Qt::AlignTop );*/
 
-    //diagram->setScanLinePen( QPen( Qt::green ) );
-    //diagram->setSymbol( KDChart::LeveyJenningsDiagram::NotOkDataPoint,
-    //                    diagram->symbol( KDChart::LeveyJenningsDiagram::OkDataPoint ) );
+    // diagram->setScanLinePen( QPen( Qt::green ) );
+    // diagram->setSymbol( KDChart::LeveyJenningsDiagram::NotOkDataPoint,
+    //                     diagram->symbol( KDChart::LeveyJenningsDiagram::OkDataPoint ) );
 
     diagram->setFluidicsPackChanges(QVector<QDateTime>() << QDateTime::fromString("2007-07-11T15:00:00", Qt::ISODate));
     diagram->setSensorChanges(QVector<QDateTime>() << QDateTime::fromString("2007-07-10T11:00:00", Qt::ISODate));
@@ -188,7 +188,7 @@ int main(int argc, char **argv)
 
     splitter->show();
 
-    new SelectionAnimator(tv); //diagram );
+    new SelectionAnimator(tv); // diagram );
 
     return app.exec();
 }

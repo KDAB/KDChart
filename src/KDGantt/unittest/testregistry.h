@@ -22,47 +22,47 @@
 
 #include "../kdganttglobal.h"
 
-#include <string>
-#include <map>
-#include <vector>
 #include <cassert>
+#include <map>
+#include <string>
+#include <vector>
 
 namespace KDAB {
 namespace UnitTest {
 
-    class Test;
-    class TestFactory;
+class Test;
+class TestFactory;
 
-    class KDGANTT_EXPORT TestRegistry
-    {
-        friend class ::KDAB::UnitTest::TestFactory;
-        static TestRegistry *mSelf;
-        TestRegistry();
-        ~TestRegistry();
+class KDGANTT_EXPORT TestRegistry
+{
+    friend class ::KDAB::UnitTest::TestFactory;
+    static TestRegistry *mSelf;
+    TestRegistry();
+    ~TestRegistry();
 
-    public:
-        static TestRegistry *instance();
-        static void deleteInstance();
+public:
+    static TestRegistry *instance();
+    static void deleteInstance();
 
-        void registerTestFactory(const TestFactory *tf, const char *group);
+    void registerTestFactory(const TestFactory *tf, const char *group);
 
-        /*! runs all tests in all groups.
-           @return the number of failed tests (if any) */
-        unsigned int run() const;
-        /*! runs only tests in group \a group
-            @return the number of failed tests (if any) */
-        unsigned int run(const char *group) const;
+    /*! runs all tests in all groups.
+       @return the number of failed tests (if any) */
+    unsigned int run() const;
+    /*! runs only tests in group \a group
+        @return the number of failed tests (if any) */
+    unsigned int run(const char *group) const;
 
-    private:
-        std::map<std::string, std::vector<const TestFactory *>> mTests;
-    };
+private:
+    std::map<std::string, std::vector<const TestFactory *>> mTests;
+};
 
-    class KDGANTT_EXPORT Runner
-    {
-    public:
-        ~Runner();
-        unsigned int run(const char *group = nullptr) const;
-    };
+class KDGANTT_EXPORT Runner
+{
+public:
+    ~Runner();
+    unsigned int run(const char *group = nullptr) const;
+};
 }
 }
 

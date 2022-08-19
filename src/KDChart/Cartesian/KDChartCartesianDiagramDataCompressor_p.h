@@ -31,11 +31,11 @@
 
 #include <limits>
 
-#include <QPair>
-#include <QVector>
-#include <QObject>
-#include <QPointer>
 #include <QModelIndex>
+#include <QObject>
+#include <QPair>
+#include <QPointer>
+#include <QVector>
 
 #include "KDChartDataValueAttributes.h"
 #include "KDChartModelDataCache_p.h"
@@ -116,7 +116,8 @@ public:
     typedef QMap<QModelIndex, DataValueAttributes> AggregatedDataValueAttributes;
     typedef QMap<CartesianDiagramDataCompressor::CachePosition, AggregatedDataValueAttributes> DataValueAttributesCache;
 
-    enum ApproximationMode {
+    enum ApproximationMode
+    {
         // do not approximate, interpolate by averaging all
         // datapoints for a pixel
         Precise,

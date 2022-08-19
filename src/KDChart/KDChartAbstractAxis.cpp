@@ -17,8 +17,8 @@
 
 #include "KDChartAbstractAxis.h"
 #include "KDChartAbstractAxis_p.h"
-#include "KDChartAbstractDiagram.h"
 #include "KDChartAbstractCartesianDiagram.h"
+#include "KDChartAbstractDiagram.h"
 #include "KDChartEnums.h"
 #include "KDChartMeasure.h"
 

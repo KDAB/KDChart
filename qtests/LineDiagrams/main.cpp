@@ -15,12 +15,12 @@
 **
 ****************************************************************************/
 
-#include <QtTest/QtTest>
+#include <KDChartCartesianCoordinatePlane>
 #include <KDChartChart>
 #include <KDChartGlobal>
 #include <KDChartLineDiagram>
 #include <KDChartThreeDLineAttributes>
-#include <KDChartCartesianCoordinatePlane>
+#include <QtTest/QtTest>
 
 #include <TableModel.h>
 
@@ -48,13 +48,13 @@ private slots:
         QCOMPARE(m_lines->type(), LineDiagram::Stacked);
         m_lines->setType(LineDiagram::Percent);
         QCOMPARE(m_lines->type(), LineDiagram::Percent);
-        //reset to normal
+        // reset to normal
         m_lines->setType(LineDiagram::Normal);
     }
 
     void testLineAttributesLevelSettings()
     {
-        //check segments
+        // check segments
         const int rows = m_lines->model()->rowCount();
         QCOMPARE(m_lines->numberOfAbscissaSegments(), rows);
         const int cols = m_lines->model()->columnCount();
@@ -92,7 +92,7 @@ private slots:
         QVERIFY(la.missingValuesPolicy() == LineAttributes::MissingValuesAreBridged);
         QVERIFY(la.displayArea() == false);
         QVERIFY(la.transparency() == 255);
-        //change settings
+        // change settings
         la.setMissingValuesPolicy(LineAttributes::MissingValuesShownAsZero);
         la.setDisplayArea(true);
         la.setTransparency(100);
@@ -105,7 +105,7 @@ private slots:
 
     void testThreeDLineAttributesLevelSettings()
     {
-        //check segments
+        // check segments
         const int rows = m_lines->model()->rowCount();
         QCOMPARE(m_lines->numberOfAbscissaSegments(), rows);
         const int cols = m_lines->model()->columnCount();
@@ -138,23 +138,23 @@ private slots:
     {
         ThreeDLineAttributes td(m_lines->threeDLineAttributes());
 
-        //check default values
-        //generics == AbstractThreeD
+        // check default values
+        // generics == AbstractThreeD
         QVERIFY(td.isEnabled() == false);
         QVERIFY(td.depth() == 20);
         QVERIFY(td.validDepth() == 0.0);
-        //bars specifics
+        // bars specifics
         QVERIFY(td.lineXRotation() == 15);
         QVERIFY(td.lineYRotation() == 15);
 
-        //set new values
+        // set new values
         td.setEnabled(true);
         td.setDepth(40);
         td.setLineXRotation(20);
         td.setLineYRotation(25);
         m_lines->setThreeDLineAttributes(td);
 
-        //get new values
+        // get new values
         QVERIFY(m_lines->threeDLineAttributes().isEnabled() == true);
         QVERIFY(m_lines->threeDLineAttributes().depth() == 40);
         QVERIFY(m_lines->threeDLineAttributes().validDepth() == 40);

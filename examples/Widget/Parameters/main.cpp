@@ -15,11 +15,11 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
-#include <KDChartWidget>
 #include <KDChartBarDiagram>
-#include <QPen>
 #include <KDChartThreeDBarAttributes>
+#include <KDChartWidget>
+#include <QApplication>
+#include <QPen>
 
 using namespace KDChart;
 
@@ -41,16 +41,16 @@ int main(int argc, char **argv)
     widget.setDataset(1, vec1, "vec1");
     widget.setType(Widget::Bar, Widget::Stacked);
 
-    //Configure a pen and draw a line
-    //surrounding the bars
+    // Configure a pen and draw a line
+    // surrounding the bars
     QPen pen;
     pen.setWidth(2);
     pen.setColor(Qt::darkGray);
     // call your diagram and set the new pen
     widget.barDiagram()->setPen(pen);
 
-    //Set up your ThreeDAttributes
-    //display in ThreeD mode
+    // Set up your ThreeDAttributes
+    // display in ThreeD mode
     ThreeDBarAttributes td(widget.barDiagram()->threeDBarAttributes());
     td.setDepth(15);
     td.setEnabled(true);

@@ -18,21 +18,21 @@
 #include "mainwindow.h"
 #include "framewidget.h"
 
-#include <KDChartChart>
 #include <KDChartAbstractCoordinatePlane>
-#include <KDChartLineDiagram>
-#include <KDChartLineAttributes>
-#include <KDChartTextAttributes>
-#include <KDChartDataValueAttributes>
-#include <KDChartThreeDLineAttributes>
-#include <KDChartMarkerAttributes>
-#include <KDChartFrameAttributes>
 #include <KDChartBackgroundAttributes>
+#include <KDChartChart>
+#include <KDChartDataValueAttributes>
+#include <KDChartFrameAttributes>
 #include <KDChartLegend>
+#include <KDChartLineAttributes>
+#include <KDChartLineDiagram>
+#include <KDChartMarkerAttributes>
+#include <KDChartTextAttributes>
+#include <KDChartThreeDLineAttributes>
 
 #include <QDebug>
-#include <QPainter>
 #include <QFileDialog>
+#include <QPainter>
 #include <QPrinter>
 
 using namespace KDChart;
@@ -84,7 +84,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_lines->addAxis(axisRight);
 
     m_chart = new Chart();
-    //m_chart->setGlobalLeading(10,10,10,10); // by default there is no leading
+    // m_chart->setGlobalLeading(10,10,10,10); // by default there is no leading
 
 #ifdef USE_FRAME_WIDGET
     chartFrameWidget->setChart(m_chart);

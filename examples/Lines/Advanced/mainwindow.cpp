@@ -18,13 +18,13 @@
 #include "mainwindow.h"
 
 #include <KDChartChart>
+#include <KDChartDataValueAttributes>
 #include <KDChartLineDiagram>
 #include <KDChartTextAttributes>
-#include <KDChartDataValueAttributes>
 #include <KDChartThreeDLineAttributes>
 
-#include <QTimer>
 #include <QMouseEvent>
+#include <QTimer>
 
 using namespace KDChart;
 
@@ -60,10 +60,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(timer, SIGNAL(timeout()), this, SLOT(slot_timerFired()));
     timer->start(30);
 
-    //Change the cursor to IBeamCursor inside Chart widget.
+    // Change the cursor to IBeamCursor inside Chart widget.
     m_chart->setCursor(Qt::IBeamCursor);
 
-    //Install event filter on Chart to get the mouse position
+    // Install event filter on Chart to get the mouse position
     m_chart->installEventFilter(this);
 }
 

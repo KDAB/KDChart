@@ -15,14 +15,14 @@
 **
 ****************************************************************************/
 
-#include <QtTest/QtTest>
-#include <TableModel.h>
-#include <KDChartGlobal>
 #include <KDChartAttributesModel>
 #include <KDChartBarDiagram>
-#include <KDChartLineDiagram>
 #include <KDChartCartesianCoordinatePlane>
 #include <KDChartDataValueAttributes>
+#include <KDChartGlobal>
+#include <KDChartLineDiagram>
+#include <QtTest/QtTest>
+#include <TableModel.h>
 
 using namespace KDChart;
 
@@ -58,7 +58,7 @@ private slots:
     void testKDChartAttributesModelTestPrivateModel()
     {
         // Private is now default
-        //m_lines->usePrivateAttributes( true );
+        // m_lines->usePrivateAttributes( true );
         // now we should be getting defaults again
         QModelIndex idx = m_bars->model()->index(0, 2, QModelIndex());
         DataValueAttributes a = m_lines->dataValueAttributes(idx);

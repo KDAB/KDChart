@@ -29,13 +29,13 @@ namespace KDChart {
 class LeveyJenningsDiagram;
 
 /**
-      * The class for levey jennings axes.
-      *
-      * For being useful, axes need to be assigned to a diagram, see
-      * LeveyJenningsDiagram::addAxis and LeveyJenningsDiagram::takeAxis.
-      *
-      * \sa PolarAxis, AbstractCartesianDiagram
-      */
+ * The class for levey jennings axes.
+ *
+ * For being useful, axes need to be assigned to a diagram, see
+ * LeveyJenningsDiagram::addAxis and LeveyJenningsDiagram::takeAxis.
+ *
+ * \sa PolarAxis, AbstractCartesianDiagram
+ */
 class KDCHART_EXPORT LeveyJenningsAxis : public CartesianAxis
 {
     Q_OBJECT
@@ -45,15 +45,15 @@ class KDCHART_EXPORT LeveyJenningsAxis : public CartesianAxis
 
 public:
     /**
-          * C'tor of the class for levey jennings axes.
-          *
-          * \note If using a zero parent for the constructor, you need to call
-          * your diagram's addAxis function to add your axis to the diagram.
-          * Otherwise, there is no need to call addAxis, since the constructor
-          * does that automatically for you, if you pass a diagram as parameter.
-          *
-          * \sa AbstractCartesianDiagram::addAxis
-          */
+     * C'tor of the class for levey jennings axes.
+     *
+     * \note If using a zero parent for the constructor, you need to call
+     * your diagram's addAxis function to add your axis to the diagram.
+     * Otherwise, there is no need to call addAxis, since the constructor
+     * does that automatically for you, if you pass a diagram as parameter.
+     *
+     * \sa AbstractCartesianDiagram::addAxis
+     */
     explicit LeveyJenningsAxis(LeveyJenningsDiagram *diagram = nullptr);
     ~LeveyJenningsAxis() override;
 
@@ -64,8 +64,8 @@ public:
     void setDateFormat(Qt::DateFormat format);
 
     /**
-         * Returns true if both axes have the same settings.
-         */
+     * Returns true if both axes have the same settings.
+     */
     bool compare(const LeveyJenningsAxis *other) const;
 
     /** reimp */

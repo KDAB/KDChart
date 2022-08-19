@@ -18,8 +18,8 @@
 #ifndef KDGANTTABSTRACTGRID_H
 #define KDGANTTABSTRACTGRID_H
 
-#include "kdganttglobal.h"
 #include "kdganttconstraint.h"
+#include "kdganttglobal.h"
 
 QT_BEGIN_NAMESPACE
 class QPainter;

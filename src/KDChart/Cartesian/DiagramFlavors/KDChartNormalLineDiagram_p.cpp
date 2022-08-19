@@ -19,12 +19,12 @@
 
 #include <QAbstractItemModel>
 
+#include "KDChartAbstractCartesianDiagram.h"
+#include "KDChartAttributesModel.h"
 #include "KDChartBarDiagram.h"
 #include "KDChartLineDiagram.h"
-#include "KDChartTextAttributes.h"
-#include "KDChartAttributesModel.h"
-#include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartNormalLineDiagram_p.h"
+#include "KDChartTextAttributes.h"
 #include "PaintingHelpers_p.h"
 
 using namespace KDChart;

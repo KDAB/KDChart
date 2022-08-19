@@ -18,21 +18,21 @@
 #include "mainwindow.h"
 #include "framewidget.h"
 
-#include <KDChartChart>
 #include <KDChartAbstractCoordinatePlane>
-#include <KDChartLineDiagram>
-#include <KDChartLineAttributes>
-#include <KDChartTextAttributes>
-#include <KDChartDataValueAttributes>
-#include <KDChartThreeDLineAttributes>
-#include <KDChartMarkerAttributes>
-#include <KDChartFrameAttributes>
 #include <KDChartBackgroundAttributes>
+#include <KDChartChart>
+#include <KDChartDataValueAttributes>
+#include <KDChartFrameAttributes>
 #include <KDChartLegend>
+#include <KDChartLineAttributes>
+#include <KDChartLineDiagram>
+#include <KDChartMarkerAttributes>
+#include <KDChartTextAttributes>
+#include <KDChartThreeDLineAttributes>
 
 #include <QDebug>
-#include <QPainter>
 #include <QElapsedTimer>
+#include <QPainter>
 
 using namespace KDChart;
 
@@ -83,7 +83,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_lines->addAxis(axisRight);
 
     m_chart = new Chart();
-    //m_chart->setGlobalLeading(10,10,10,10); // by default there is no leading
+    // m_chart->setGlobalLeading(10,10,10,10); // by default there is no leading
 
 #ifdef USE_FRAME_WIDGET
     chartFrameWidget->setChart(m_chart);
@@ -132,7 +132,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_chart->addLegend(m_legend);
 
-    //m_chart->setGeometry(10,10,50,50);
+    // m_chart->setGeometry(10,10,50,50);
 
     // for illustration we paint the same chart at different sizes:
     QSize size1 = QSize(200, 200);
@@ -214,7 +214,7 @@ void MainWindow::on_paintLegendCB_toggled(bool checked)
 
 void MainWindow::on_paintValuesCB_toggled(bool checked)
 {
-    //testing
+    // testing
     const int colCount = m_lines->model()->columnCount();
     for (int iColumn = 0; iColumn < colCount; ++iColumn) {
         QBrush brush = m_lines->model()->headerData(iColumn, Qt::Vertical, DatasetBrushRole).value<QBrush>();
@@ -241,7 +241,7 @@ void MainWindow::on_paintValuesCB_toggled(bool checked)
 
 void MainWindow::on_paintMarkersCB_toggled(bool checked)
 {
-    //testing
+    // testing
     DataValueAttributes a(m_lines->dataValueAttributes());
     // don't paint the values
     if (!paintValuesCB->isChecked()) {

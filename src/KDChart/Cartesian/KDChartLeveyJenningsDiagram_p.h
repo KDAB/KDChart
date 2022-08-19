@@ -31,8 +31,8 @@
 
 #include <QDateTime>
 
-#include "KDChartThreeDLineAttributes.h"
 #include "KDChartLineDiagram_p.h"
+#include "KDChartThreeDLineAttributes.h"
 
 #include <KDABLibFakes>
 

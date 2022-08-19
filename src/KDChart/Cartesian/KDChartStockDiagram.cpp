@@ -36,8 +36,8 @@ StockDiagram::~StockDiagram()
 }
 
 /**
-  * Initializes the diagram
-  */
+ * Initializes the diagram
+ */
 void StockDiagram::init()
 {
     d->diagram = this;
@@ -52,15 +52,15 @@ void StockDiagram::init()
 
     d->lowHighLinePen = QPen(Qt::black);
     setDatasetDimensionInternal(3);
-    //setDatasetDimension( 3 );
+    // setDatasetDimension( 3 );
 
     setPen(QPen(Qt::black));
 }
 
 /**
-  * Switches between the supported types of stock charts,
-  * depending on \a type
-  */
+ * Switches between the supported types of stock charts,
+ * depending on \a type
+ */
 void StockDiagram::setType(Type type)
 {
     d->type = type;
@@ -68,8 +68,8 @@ void StockDiagram::setType(Type type)
 }
 
 /**
-  * @return the type of this diagram
-  */
+ * @return the type of this diagram
+ */
 StockDiagram::Type StockDiagram::type() const
 {
     return d->type;
@@ -348,14 +348,14 @@ void StockDiagram::resize(const QSizeF &size)
 qreal StockDiagram::threeDItemDepth(int column) const
 {
     Q_UNUSED(column);
-    //FIXME: Implement threeD functionality
+    // FIXME: Implement threeD functionality
     return 1.0;
 }
 
 qreal StockDiagram::threeDItemDepth(const QModelIndex &index) const
 {
     Q_UNUSED(index);
-    //FIXME: Implement threeD functionality
+    // FIXME: Implement threeD functionality
     return 1.0;
 }
 

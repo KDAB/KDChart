@@ -18,8 +18,8 @@
 #ifndef KDCHARTDATASETPROXYMODEL_H
 #define KDCHARTDATASETPROXYMODEL_H
 
-#include <QVector>
 #include <QSortFilterProxyModel>
+#include <QVector>
 
 #include "kdchart_export.h"
 
@@ -84,7 +84,7 @@ public:
     void setSourceModel(QAbstractItemModel *sourceModel) override;
 
     /** Set the root index of the table in
-	    the source model */
+            the source model */
     void setSourceRootIndex(const QModelIndex &rootIdx);
 
 public Q_SLOTS:

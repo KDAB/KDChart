@@ -27,11 +27,11 @@ namespace KDChart {
 class LeveyJenningsGrid;
 
 /**
-      * @brief Levey Jennings coordinate plane
-      * This is actually nothing real more than a plain cartesian
-      * coordinate plane. The difference is, that only Levey Jennings
-      * Diagrams can be added to it.
-      */
+ * @brief Levey Jennings coordinate plane
+ * This is actually nothing real more than a plain cartesian
+ * coordinate plane. The difference is, that only Levey Jennings
+ * Diagrams can be added to it.
+ */
 class KDCHART_EXPORT LeveyJenningsCoordinatePlane
     : public CartesianCoordinatePlane
 {

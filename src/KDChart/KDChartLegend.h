@@ -19,8 +19,8 @@
 #define KDCHARTLEGEND_H
 
 #include "KDChartAbstractAreaWidget.h"
-#include "KDChartPosition.h"
 #include "KDChartMarkerAttributes.h"
+#include "KDChartPosition.h"
 
 class QTextTable;
 
@@ -31,22 +31,22 @@ typedef QList<AbstractDiagram *> DiagramList;
 typedef QList<const AbstractDiagram *> ConstDiagramList;
 
 /**
-  * @brief Legend defines the interface for the legend drawing class.
-  *
-  * Legend is the class for drawing legends for all kinds of diagrams ("chart types").
-  *
-  * Legend is drawn on chart level, not per diagram, but you can have more than one
-  * legend per chart, using KDChart::Chart::addLegend().
-  *
-  * \note Legend is different from all other classes ofd KD Chart, since it can be
-  * displayed outside of the Chart's area.  If you want to, you can embed the legend
-  * into your own widget, or into another part of a bigger layout, into which you might
-  * have inserted the Chart.
-  *
-  * On the other hand, please note that you MUST call Chart::addLegend to get your
-  * legend positioned into the correct place of your chart - if you want to have
-  * the legend shown inside of the chart (that's probably true for most cases).
-  */
+ * @brief Legend defines the interface for the legend drawing class.
+ *
+ * Legend is the class for drawing legends for all kinds of diagrams ("chart types").
+ *
+ * Legend is drawn on chart level, not per diagram, but you can have more than one
+ * legend per chart, using KDChart::Chart::addLegend().
+ *
+ * \note Legend is different from all other classes ofd KD Chart, since it can be
+ * displayed outside of the Chart's area.  If you want to, you can embed the legend
+ * into your own widget, or into another part of a bigger layout, into which you might
+ * have inserted the Chart.
+ *
+ * On the other hand, please note that you MUST call Chart::addLegend to get your
+ * legend positioned into the correct place of your chart - if you want to have
+ * the legend shown inside of the chart (that's probably true for most cases).
+ */
 class KDCHART_EXPORT Legend : public AbstractAreaWidget
 {
     Q_OBJECT
@@ -59,7 +59,8 @@ public:
     explicit Legend(KDChart::AbstractDiagram *diagram, QWidget *parent = nullptr);
     ~Legend() override;
 
-    enum LegendStyle {
+    enum LegendStyle
+    {
         MarkersOnly = 0,
         LinesOnly = 1,
         MarkersAndLines = 2
@@ -106,19 +107,19 @@ public:
     const QWidget *referenceArea() const;
 
     /**
-      * The first diagram of the legend or 0 if there was none added to the legend.
-      * @return The first diagram of the legend or 0.
-      *
-      * \sa diagrams, addDiagram, removeDiagram, removeDiagrams, replaceDiagram, setDiagram
-      */
+     * The first diagram of the legend or 0 if there was none added to the legend.
+     * @return The first diagram of the legend or 0.
+     *
+     * \sa diagrams, addDiagram, removeDiagram, removeDiagrams, replaceDiagram, setDiagram
+     */
     KDChart::AbstractDiagram *diagram() const;
 
     /**
-      * The list of all diagrams associated with the legend.
-      * @return The list of all diagrams associated with the legend.
-      *
-      * \sa diagram, addDiagram, removeDiagram, removeDiagrams, replaceDiagram, setDiagram
-      */
+     * The list of all diagrams associated with the legend.
+     * @return The list of all diagrams associated with the legend.
+     *
+     * \sa diagram, addDiagram, removeDiagram, removeDiagrams, replaceDiagram, setDiagram
+     */
     DiagramList diagrams() const;
 
     /**
@@ -127,58 +128,58 @@ public:
     ConstDiagramList constDiagrams() const;
 
     /**
-      * Add the given diagram to the legend.
-      * @param newDiagram The diagram to add.
-      *
-      * \sa diagram, diagrams, removeDiagram, removeDiagrams, replaceDiagram, setDiagram
-      */
+     * Add the given diagram to the legend.
+     * @param newDiagram The diagram to add.
+     *
+     * \sa diagram, diagrams, removeDiagram, removeDiagrams, replaceDiagram, setDiagram
+     */
     void addDiagram(KDChart::AbstractDiagram *newDiagram);
 
     /**
-      * Removes the diagram from the legend's list of diagrams.
-      *
-      * \sa diagram, diagrams, addDiagram, removeDiagrams, replaceDiagram, setDiagram
-      */
+     * Removes the diagram from the legend's list of diagrams.
+     *
+     * \sa diagram, diagrams, addDiagram, removeDiagrams, replaceDiagram, setDiagram
+     */
     void removeDiagram(KDChart::AbstractDiagram *oldDiagram);
 
     /**
-      * Removes all diagrams from the legend's list of diagrams.
-      *
-      * \sa diagram, diagrams, addDiagram, removeDiagram, replaceDiagram, setDiagram
-      */
+     * Removes all diagrams from the legend's list of diagrams.
+     *
+     * \sa diagram, diagrams, addDiagram, removeDiagram, replaceDiagram, setDiagram
+     */
     void removeDiagrams();
 
     /**
-      * Replaces the old diagram, or appends the
-      * new diagram, it there is none yet.
-      *
-      * @param newDiagram The diagram to be used instead of the old one.
-      * If this parameter is zero, the first diagram will just be removed.
-      *
-      * @param oldDiagram The diagram to be removed by the new one. This
-      * diagram will be deleted automatically. If the parameter is omitted,
-      * the very first diagram will be replaced. In case, there was no
-      * diagram yet, the new diagram will just be added.
-      *
-      * \sa diagram, diagrams, addDiagram, removeDiagram, removeDiagrams, setDiagram
-      */
+     * Replaces the old diagram, or appends the
+     * new diagram, it there is none yet.
+     *
+     * @param newDiagram The diagram to be used instead of the old one.
+     * If this parameter is zero, the first diagram will just be removed.
+     *
+     * @param oldDiagram The diagram to be removed by the new one. This
+     * diagram will be deleted automatically. If the parameter is omitted,
+     * the very first diagram will be replaced. In case, there was no
+     * diagram yet, the new diagram will just be added.
+     *
+     * \sa diagram, diagrams, addDiagram, removeDiagram, removeDiagrams, setDiagram
+     */
     void replaceDiagram(KDChart::AbstractDiagram *newDiagram,
                         KDChart::AbstractDiagram *oldDiagram = nullptr);
 
     /**
-      * Returns the offset of the first dataset of \c diagram.
-      *
-      */
+     * Returns the offset of the first dataset of \c diagram.
+     *
+     */
     uint dataSetOffset(KDChart::AbstractDiagram *diagram);
 
     /**
-      * @brief A convenience method doing the same as replaceDiagram( newDiagram, 0 );
-      *
-      * Replaces the first diagram by the given diagram.
-      * If the legend's list of diagram is empty the given diagram is added to the list.
-      *
-      * \sa diagram, diagrams, addDiagram, removeDiagram, removeDiagrams, replaceDiagram
-      */
+     * @brief A convenience method doing the same as replaceDiagram( newDiagram, 0 );
+     *
+     * Replaces the first diagram by the given diagram.
+     * If the legend's list of diagram is empty the given diagram is added to the list.
+     *
+     * \sa diagram, diagrams, addDiagram, removeDiagram, removeDiagrams, replaceDiagram
+     */
     void setDiagram(KDChart::AbstractDiagram *newDiagram);
 
     /**
@@ -228,19 +229,19 @@ public:
     Qt::Alignment textAlignment() const;
 
     /**
-      * \brief Specify the alignment of the legend symbol( alignment of Legend::LinesOnly)
-      *  within the legend
-      *
-      * \sa legendSymbolAlignment()
-      */
+     * \brief Specify the alignment of the legend symbol( alignment of Legend::LinesOnly)
+     *  within the legend
+     *
+     * \sa legendSymbolAlignment()
+     */
     void setLegendSymbolAlignment(Qt::Alignment);
 
     /**
-      * \brief Returns the alignment used while drawing legend symbol(alignment of Legend::LinesOnly)
-      * within the legend.
-      *
-      * \sa setLegendSymbolAlignment()
-      */
+     * \brief Returns the alignment used while drawing legend symbol(alignment of Legend::LinesOnly)
+     * within the legend.
+     *
+     * \sa setLegendSymbolAlignment()
+     */
     Qt::Alignment legendSymbolAlignment() const;
 
     /**

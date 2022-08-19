@@ -21,9 +21,9 @@
 
 #include <KDChartChart>
 #include <KDChartTernaryAxis>
+#include <KDChartTernaryCoordinatePlane>
 #include <KDChartTernaryLineDiagram>
 #include <KDChartTernaryPointDiagram>
-#include <KDChartTernaryCoordinatePlane>
 
 #include "mainwindow.h"
 

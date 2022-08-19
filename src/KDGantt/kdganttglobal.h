@@ -22,10 +22,10 @@ Contains KDGantt macros.  */
 #ifndef KDGANTTGLOBAL_H
 #define KDGANTTGLOBAL_H
 
-#include <Qt>
 #include <QDateTime>
 #include <QDebug>
 #include <QMetaType>
+#include <Qt>
 
 #include "kdchart_export.h"
 
@@ -36,13 +36,13 @@ int vswprintf(wchar_t *, const wchar_t *, va_list);
 #endif
 
 #ifndef KDAB_SET_OBJECT_NAME
-template <typename T>
+template<typename T>
 inline T &__kdab__dereference_for_methodcall(T &o)
 {
     return o;
 }
 
-template <typename T>
+template<typename T>
 inline T &__kdab__dereference_for_methodcall(T *o)
 {
     return *o;
@@ -218,23 +218,23 @@ private:                                                    \
 #include <algorithm>
 #define KDGANTT_DECLARE_SWAP_SPECIALISATION(X) \
     QT_BEGIN_NAMESPACE                         \
-    template <>                                \
+    template<>                                 \
     inline void qSwap<X>(X & lhs, X & rhs)     \
     {                                          \
         lhs.swap(rhs);                         \
     }                                          \
     QT_END_NAMESPACE                           \
     namespace std {                            \
-        template <>                            \
-        inline void swap<X>(X & lhs, X &rhs)   \
-        {                                      \
-            lhs.swap(rhs);                     \
-        }                                      \
+    template<>                                 \
+    inline void swap<X>(X & lhs, X &rhs)       \
+    {                                          \
+        lhs.swap(rhs);                         \
+    }                                          \
     }
 #else
 #define KDGANTT_DECLARE_SWAP_SPECIALISATION(X) \
     QT_BEGIN_NAMESPACE                         \
-    template <>                                \
+    template<>                                 \
     inline void qSwap<X>(X & lhs, X & rhs)     \
     {                                          \
         lhs.swap(rhs);                         \
@@ -268,7 +268,8 @@ template class Q_DECL_IMPORT QVector<QPointF>;
 #endif
 
 namespace KDGantt {
-enum ItemDataRole {
+enum ItemDataRole
+{
     KDGanttRoleBase = Qt::UserRole + 1174,
     StartTimeRole = KDGanttRoleBase + 1,
     EndTimeRole = KDGanttRoleBase + 2,
@@ -277,7 +278,8 @@ enum ItemDataRole {
     LegendRole = KDGanttRoleBase + 5,
     TextPositionRole = KDGanttRoleBase + 6
 };
-enum ItemType {
+enum ItemType
+{
     TypeNone = 0,
     TypeEvent = 1,
     TypeTask = 2,

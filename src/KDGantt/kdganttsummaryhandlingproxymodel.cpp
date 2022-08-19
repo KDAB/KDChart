@@ -45,7 +45,7 @@ typedef ForwardingProxyModel BASE;
 bool SummaryHandlingProxyModel::Private::cacheLookup(const QModelIndex &idx,
                                                      QPair<QDateTime, QDateTime> *result) const
 {
-    //qDebug() << "cacheLookup("<<idx<<"), cache has " << cached_summary_items.count() << "items";
+    // qDebug() << "cacheLookup("<<idx<<"), cache has " << cached_summary_items.count() << "items";
     QHash<QModelIndex, QPair<QDateTime, QDateTime>>::const_iterator it =
         cached_summary_items.constFind(idx);
     if (it != cached_summary_items.constEnd()) {
@@ -176,7 +176,7 @@ void SummaryHandlingProxyModel::sourceDataChanged(const QModelIndex &from, const
     do {
         const QModelIndex &dataIdx = parentIdx;
         if (model->data(dataIdx, ItemTypeRole) == TypeSummary) {
-            //qDebug() << "removing " << parentIdx << "from cache";
+            // qDebug() << "removing " << parentIdx << "from cache";
             d->removeFromCache(dataIdx);
             QModelIndex proxyDataIdx = mapFromSource(dataIdx);
             emit dataChanged(proxyDataIdx, proxyDataIdx);
@@ -229,14 +229,14 @@ Qt::ItemFlags SummaryHandlingProxyModel::flags(const QModelIndex &idx) const
 /*! \see QAbstractItemModel::data */
 QVariant SummaryHandlingProxyModel::data(const QModelIndex &proxyIndex, int role) const
 {
-    //qDebug() << "SummaryHandlingProxyModel::data("<<proxyIndex<<role<<")";
+    // qDebug() << "SummaryHandlingProxyModel::data("<<proxyIndex<<role<<")";
     const QModelIndex sidx = mapToSource(proxyIndex);
     const QAbstractItemModel *model = sourceModel();
     if (d->isSummary(sidx) && (role == StartTimeRole || role == EndTimeRole)) {
-        //qDebug() << "requested summary";
+        // qDebug() << "requested summary";
         QPair<QDateTime, QDateTime> result;
         if (d->cacheLookup(sidx, &result)) {
-            //qDebug() << "SummaryHandlingProxyModel::data(): Looking up summary for " << proxyIndex << role;
+            // qDebug() << "SummaryHandlingProxyModel::data(): Looking up summary for " << proxyIndex << role;
             switch (role) {
             case StartTimeRole:
                 return result.first;
@@ -260,7 +260,7 @@ bool SummaryHandlingProxyModel::setData(const QModelIndex &index, const QVariant
         QModelIndex parentIdx = mapToSource(index);
         do {
             if (d->isSummary(parentIdx)) {
-                //qDebug() << "removing " << parentIdx << "from cache";
+                // qDebug() << "removing " << parentIdx << "from cache";
                 d->removeFromCache(parentIdx);
                 QModelIndex proxyParentIdx = mapFromSource(parentIdx);
                 emit dataChanged(proxyParentIdx, proxyParentIdx);

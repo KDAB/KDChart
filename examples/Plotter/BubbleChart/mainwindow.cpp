@@ -18,10 +18,10 @@
 #include "mainwindow.h"
 
 #include <KDChartChart>
-#include <KDChartPlotter>
 #include <KDChartDataValueAttributes>
-#include <KDChartTextAttributes>
 #include <KDChartMarkerAttributes>
+#include <KDChartPlotter>
+#include <KDChartTextAttributes>
 
 #include <QStandardItemModel>
 #include <QTimer>

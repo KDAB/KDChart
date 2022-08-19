@@ -15,18 +15,18 @@
 **
 ****************************************************************************/
 
-#include <QtGui>
-#include <KDChartChart>
-#include <KDChartBarDiagram>
-#include <KDChartHeaderFooter>
-#include <KDChartPosition>
+#include <KDChartAbstractCartesianDiagram>
+#include <KDChartAbstractCoordinatePlane>
 #include <KDChartBackgroundAttributes>
+#include <KDChartBarDiagram>
+#include <KDChartCartesianCoordinatePlane>
+#include <KDChartChart>
+#include <KDChartDataValueAttributes>
 #include <KDChartFrameAttributes>
 #include <KDChartGridAttributes>
-#include <KDChartAbstractCoordinatePlane>
-#include <KDChartCartesianCoordinatePlane>
-#include <KDChartAbstractCartesianDiagram>
-#include <KDChartDataValueAttributes>
+#include <KDChartHeaderFooter>
+#include <KDChartPosition>
+#include <QtGui>
 
 #include <QApplication>
 
@@ -52,8 +52,8 @@ public:
         diagram->setModel(&m_model);
 
         /*
-     * AXIS
-     */
+         * AXIS
+         */
 
         auto *xAxis = new CartesianAxis(diagram);
         auto *yAxis = new CartesianAxis(diagram);
@@ -63,8 +63,8 @@ public:
         diagram->addAxis(yAxis);
 
         /*
-     * AXIS LABELS
-     */
+         * AXIS LABELS
+         */
 
         // set the following to 0, to see the default Abscissa labels
         // (== X headers, as read from the data file)
@@ -80,12 +80,12 @@ public:
 #endif
 
         /*
-     * DATA VALUES SETTINGS
-     */
+         * DATA VALUES SETTINGS
+         */
 
         // We set the DataValueAttributes on a per-column basis here,
         // because we want the texts to be printed in different
-        //colours - according to their respective dataset's colour.
+        // colours - according to their respective dataset's colour.
         const QFont font(QFont("Comic", 10));
         const int colCount = diagram->model()->columnCount();
         for (int iColumn = 0; iColumn < colCount; ++iColumn) {
@@ -103,8 +103,8 @@ public:
         }
 
         /*
-     *  VERTICAL RANGE SETTINGS
-     */
+         *  VERTICAL RANGE SETTINGS
+         */
 
         // m_chart.coordinatePlane() returns an abstract plane.
         // We need to cast in order to be able set our own boundaries.
@@ -115,8 +115,8 @@ public:
         plane1->replaceDiagram(diagram);
 
         /*
-     * HEADER SETTINGS
-     */
+         * HEADER SETTINGS
+         */
 
         // Add at one Header and set it up
         auto *header = new HeaderFooter(&m_chart);
@@ -155,8 +155,8 @@ public:
         header->setFrameAttributes(hfa);
 
         /*
-     * GRIDS SETTINGS
-     */
+         * GRIDS SETTINGS
+         */
 
         // retrieve your grid attributes
         // display grid and sub-grid

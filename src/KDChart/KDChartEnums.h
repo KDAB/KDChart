@@ -20,8 +20,8 @@
 
 #include "KDChartGlobal.h"
 
-#include <QRectF>
 #include <QObject>
+#include <QRectF>
 #include <QVector>
 
 /** \file KDChartEnums.h
@@ -87,7 +87,8 @@ public:
       \li for having it divided by two GranularitySequence_10_50 is your choice.
 
       */
-    enum GranularitySequence {
+    enum GranularitySequence
+    {
         GranularitySequence_10_20,
         GranularitySequence_10_50,
         GranularitySequence_25_50,
@@ -154,7 +155,8 @@ public:
 
       \sa KDChartParams::setPrintDataValues
       */
-    enum TextLayoutPolicy {
+    enum TextLayoutPolicy
+    {
         LayoutJustOverwrite,
         LayoutPolicyRotate,
         LayoutPolicyShiftVertically,
@@ -185,7 +187,8 @@ public:
 
         \sa Position
     */
-    enum PositionValue {
+    enum PositionValue
+    {
         PositionUnknown = 0,
         PositionCenter = 1,
         PositionNorthWest = 2,
@@ -214,7 +217,8 @@ public:
 
       \sa KDChart::Measure::setCalculationMode
       */
-    enum MeasureCalculationMode {
+    enum MeasureCalculationMode
+    {
         MeasureCalculationModeAbsolute,
         MeasureCalculationModeRelative,
         MeasureCalculationModeAuto,
@@ -285,7 +289,8 @@ public:
 
       \sa KDChart::Measure::setOrientationMode
       */
-    enum MeasureOrientation {
+    enum MeasureOrientation
+    {
         MeasureOrientationAuto,
         MeasureOrientationHorizontal,
         MeasureOrientationVertical,

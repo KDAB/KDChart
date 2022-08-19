@@ -15,19 +15,19 @@
 **
 ****************************************************************************/
 
-#include <QtGui>
-#include <KDChartChart>
-#include <KDChartLineDiagram>
-#include <KDChartHeaderFooter>
-#include <KDChartPosition>
+#include <KDChartAbstractCartesianDiagram>
+#include <KDChartAbstractCoordinatePlane>
 #include <KDChartBackgroundAttributes>
+#include <KDChartCartesianCoordinatePlane>
+#include <KDChartChart>
+#include <KDChartDataValueAttributes>
 #include <KDChartFrameAttributes>
 #include <KDChartGridAttributes>
-#include <KDChartAbstractCoordinatePlane>
-#include <KDChartCartesianCoordinatePlane>
-#include <KDChartAbstractCartesianDiagram>
-#include <KDChartDataValueAttributes>
+#include <KDChartHeaderFooter>
+#include <KDChartLineDiagram>
+#include <KDChartPosition>
 #include <QApplication>
+#include <QtGui>
 
 using namespace KDChart;
 

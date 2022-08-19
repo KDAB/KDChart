@@ -27,8 +27,8 @@
 
 #include <QtGui/QImage>
 
-#include <QtCore/QObject>
 #include <QtCore/QDebug>
+#include <QtCore/QObject>
 
 #include "gradientdialog.h"
 
@@ -79,7 +79,7 @@ void DatasetSettings::Private::changeColor()
         palette.setBrush(QPalette::Button, color);
         ui->colorDisplay->setPalette(palette);
     } else if (ui->textureBtn->isChecked()) {
-        //QBrush setBrush = m_chart->coordinatePlane()->diagram()->brush( index );
+        // QBrush setBrush = m_chart->coordinatePlane()->diagram()->brush( index );
         QImage texture;
 
         const QString filename = QFileDialog::getOpenFileName(qq, tr("Choose Texture"), QString(), tr("Images (*.png *.xpm *.jpg)"));

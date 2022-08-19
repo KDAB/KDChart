@@ -17,8 +17,8 @@
 
 #include "zoomwidget.h"
 #include <KDChartAbstractCoordinatePlane>
-#include <QWheelEvent>
 #include <QDebug>
+#include <QWheelEvent>
 
 ZoomWidget::ZoomWidget(QWidget *parent)
     : KDChart::Widget(parent)

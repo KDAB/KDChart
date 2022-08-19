@@ -18,8 +18,8 @@
 #include "mainwindow.h"
 
 #include <KDChartChart>
-#include <KDChartPieDiagram>
 #include <KDChartPieAttributes>
+#include <KDChartPieDiagram>
 #include <KDChartThreeDPieAttributes>
 
 #include <QDebug>

@@ -18,17 +18,17 @@
 #include "kdganttview.h"
 #include "kdganttview_p.h"
 
-#include "kdganttitemdelegate.h"
 #include "kdganttgraphicsitem.h"
+#include "kdganttitemdelegate.h"
 #include "kdganttsummaryhandlingproxymodel.h"
 
 #include <QAbstractItemModel>
-#include <QHeaderView>
-#include <QVBoxLayout>
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
-#include <QScrollBar>
+#include <QHeaderView>
 #include <QPaintEvent>
+#include <QScrollBar>
+#include <QVBoxLayout>
 
 #include <QDebug>
 
@@ -100,7 +100,7 @@ View::Private::Private(View *v)
     , gfxview(new GraphicsView(&splitter))
     , model(nullptr)
 {
-    //init();
+    // init();
 }
 
 View::Private::~Private()
@@ -117,7 +117,7 @@ void View::Private::init()
     q->setLeftView(tw);
     q->setRowController(tw->rowController());
 
-    //gfxview.setRenderHints( QPainter::Antialiasing );
+    // gfxview.setRenderHints( QPainter::Antialiasing );
 
     tw->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
@@ -190,7 +190,7 @@ void View::Private::slotCollapsed(const QModelIndex &_idx)
     } else {
         gfxview->updateRow(pidx);
     }
-    //qDebug() << "Looking to update from " << idx;
+    // qDebug() << "Looking to update from " << idx;
     while ((idx = tw->indexBelow(idx)) != QModelIndex() && gfxview->rowController()->isRowVisible(ganttProxyModel.mapFromSource(idx))) {
         const QModelIndex proxyidx(ganttProxyModel.mapFromSource(idx));
         gfxview->updateRow(proxyidx);
@@ -203,7 +203,7 @@ void View::Private::slotExpanded(const QModelIndex &_idx)
 {
     QModelIndex idx(ganttProxyModel.mapFromSource(_idx));
     do {
-        //qDebug() << "Updating row" << idx << idx.data( Qt::DisplayRole ).toString();
+        // qDebug() << "Updating row" << idx << idx.data( Qt::DisplayRole ).toString();
         gfxview->updateRow(idx);
     } while ((idx = gfxview->rowController()->indexBelow(idx)) != QModelIndex()
              && gfxview->rowController()->isRowVisible(idx));
@@ -221,14 +221,14 @@ void View::Private::slotVerticalScrollValueChanged(int val)
 
 void View::Private::slotLeftWidgetVerticalRangeChanged(int min, int max)
 {
-    //qDebug() << "View::Private::slotLeftWidgetVerticalRangeChanged("<<min<<max<<")";
+    // qDebug() << "View::Private::slotLeftWidgetVerticalRangeChanged("<<min<<max<<")";
     gfxview->verticalScrollBar()->setRange(min, max);
     gfxview->updateSceneRect();
 }
 
 void View::Private::slotGfxViewVerticalRangeChanged(int min, int max)
 {
-    //qDebug() << "View::Private::slotGfxViewVerticalRangeChanged("<<min<<max<<")";
+    // qDebug() << "View::Private::slotGfxViewVerticalRangeChanged("<<min<<max<<")";
     if (!leftWidget.isNull() && !gfxview.isNull()) {
         int leftMin = leftWidget->verticalScrollBar()->minimum();
         int leftMax = leftWidget->verticalScrollBar()->maximum();
@@ -480,7 +480,7 @@ void View::setRootIndex(const QModelIndex &idx)
 }
 
 /*! \returns the ItemDelegate used by this view to render items
-*/
+ */
 ItemDelegate *View::itemDelegate() const
 {
     return d->gfxview->itemDelegate();
@@ -624,9 +624,9 @@ void View::print(QPainter *painter, qreal start, qreal end, const QRectF &target
 
 #include "kdganttlistviewrowcontroller.h"
 #include <QApplication>
-#include <QTimer>
-#include <QPixmap>
 #include <QListView>
+#include <QPixmap>
+#include <QTimer>
 
 KDAB_SCOPED_UNITTEST_SIMPLE(KDGantt, View, "test")
 {

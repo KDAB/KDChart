@@ -18,28 +18,28 @@
 #ifndef __KDCHART_PALETTE_H__
 #define __KDCHART_PALETTE_H__
 
-#include <QObject>
-#include <QBrush>
 #include "KDChartGlobal.h"
+#include <QBrush>
+#include <QObject>
 
 namespace KDChart {
 
 /**
-   * \brief A Palette is a set of brushes (or colors) to be used
-   * for painting data sets.
-   *
-   * The palette class encapsulates a collection of brushes, which in
-   * the simplest case are colors, to be used for painting a series of
-   * data sets. When asked for the m-th color, a palette of size n will
-   * wrap around and thus cycle through the available colors.
-   *
-   * Three builtin palettes are provided for convenience, one with a default
-   * set of colors, one with a subdued color selection, one with rainbow
-   * colors.
-   *
-   * When a palette changes, it emits a changed() signal. Hook up to it, if
-   * you want to repaint when the color selection changes.
-   */
+ * \brief A Palette is a set of brushes (or colors) to be used
+ * for painting data sets.
+ *
+ * The palette class encapsulates a collection of brushes, which in
+ * the simplest case are colors, to be used for painting a series of
+ * data sets. When asked for the m-th color, a palette of size n will
+ * wrap around and thus cycle through the available colors.
+ *
+ * Three builtin palettes are provided for convenience, one with a default
+ * set of colors, one with a subdued color selection, one with rainbow
+ * colors.
+ *
+ * When a palette changes, it emits a changed() signal. Hook up to it, if
+ * you want to repaint when the color selection changes.
+ */
 
 class KDCHART_EXPORT Palette : public QObject
 {

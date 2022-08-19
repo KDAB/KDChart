@@ -16,12 +16,12 @@
 ****************************************************************************/
 
 #include <QApplication>
-#include <QStandardItemModel>
-#include <QTreeView>
-#include <QTimer>
-#include <QWidget>
-#include <QSplitter>
 #include <QPushButton>
+#include <QSplitter>
+#include <QStandardItemModel>
+#include <QTimer>
+#include <QTreeView>
+#include <QWidget>
 
 #include <math.h>
 

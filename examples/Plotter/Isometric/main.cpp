@@ -17,15 +17,15 @@
 
 #include <QtGui>
 
+#include <KDChartBackgroundAttributes>
 #include <KDChartChart>
-#include <KDChartGridAttributes>
-#include <KDChartFrameAttributes>
-#include <KDChartTextAttributes>
 #include <KDChartDataValueAttributes>
+#include <KDChartFrameAttributes>
+#include <KDChartGridAttributes>
+#include <KDChartLegend>
 #include <KDChartMarkerAttributes>
 #include <KDChartPlotter>
-#include <KDChartLegend>
-#include <KDChartBackgroundAttributes>
+#include <KDChartTextAttributes>
 
 #include <QApplication>
 

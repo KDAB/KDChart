@@ -27,23 +27,24 @@
 namespace KDChart {
 
 /**
-  * @brief A proxy model used for decorating data with attributes.
-  *
-  *        An AttributesModel forwards data from and to the source model and adds attributes,
-  *        data that influences the graphical rendering of the source model data.
-  *        The attributes are distinguished from the source model's data by their @p role values.
-  *        Therefore this class does not need to, and does not, change the data layout from the
-  *        source model's; indexes that refer to the same data have the same row and column
-  *        values in both models.
-  *        Attribute changes, that is changes to data with the attribute role, via the interface
-  *        of this class (including setData()) are stored internally and not forwarded to the source model.
-  */
+ * @brief A proxy model used for decorating data with attributes.
+ *
+ *        An AttributesModel forwards data from and to the source model and adds attributes,
+ *        data that influences the graphical rendering of the source model data.
+ *        The attributes are distinguished from the source model's data by their @p role values.
+ *        Therefore this class does not need to, and does not, change the data layout from the
+ *        source model's; indexes that refer to the same data have the same row and column
+ *        values in both models.
+ *        Attribute changes, that is changes to data with the attribute role, via the interface
+ *        of this class (including setData()) are stored internally and not forwarded to the source model.
+ */
 class KDCHART_EXPORT AttributesModel : public AbstractProxyModel
 {
     Q_OBJECT
     KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC(AttributesModel)
 public:
-    enum PaletteType {
+    enum PaletteType
+    {
         PaletteTypeDefault = 0,
         PaletteTypeRainbow = 1,
         PaletteTypeSubdued = 2
@@ -77,13 +78,13 @@ public:
     PaletteType paletteType() const;
 
     /** Returns the data that were specified at global level,
-      * or the default data, or QVariant().
-      */
+     * or the default data, or QVariant().
+     */
     QVariant data(int role) const;
 
     /** Returns the data that were specified at per column level,
-      * or the globally set data, or the default data, or QVariant().
-      */
+     * or the globally set data, or the default data, or QVariant().
+     */
     QVariant data(int column, int role) const;
 
     /** \reimp */

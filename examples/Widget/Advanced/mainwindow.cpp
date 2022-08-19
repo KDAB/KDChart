@@ -17,8 +17,8 @@
 
 #include "mainwindow.h"
 
-#include <KDChartWidget>
 #include <KDChartAbstractDiagram>
+#include <KDChartWidget>
 #include <QDebug>
 #include <QMessageBox>
 

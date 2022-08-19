@@ -17,11 +17,11 @@
 
 #include "KDChartMarkerAttributes.h"
 #include <QColor>
-#include <QMap>
-#include <QPen>
-#include <QPainterPath>
-#include <QSizeF>
 #include <QDebug>
+#include <QMap>
+#include <QPainterPath>
+#include <QPen>
+#include <QSizeF>
 #include <qglobal.h>
 
 #include <KDABLibFakes>

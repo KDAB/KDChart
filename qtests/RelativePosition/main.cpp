@@ -20,8 +20,8 @@
 #include <QLabel>
 
 #include <KDChartGlobal>
-#include <KDChartPosition>
 #include <KDChartMeasure>
+#include <KDChartPosition>
 #include <KDChartRelativePosition>
 
 using namespace KDChart;

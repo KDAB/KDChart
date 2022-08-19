@@ -17,12 +17,12 @@
 
 #include "TableModel.h"
 
-#include <QtGlobal>
-#include <QtDebug>
-#include <QFile>
 #include <QByteArray>
+#include <QFile>
 #include <QString>
 #include <QStringList>
+#include <QtDebug>
+#include <QtGlobal>
 
 TableModel::TableModel(QObject *parent)
     : QAbstractTableModel(parent)

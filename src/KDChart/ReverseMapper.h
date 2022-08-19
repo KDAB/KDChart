@@ -18,8 +18,8 @@
 #ifndef REVERSEMAPPER_H
 #define REVERSEMAPPER_H
 
-#include <QModelIndex>
 #include <QHash>
+#include <QModelIndex>
 
 QT_BEGIN_NAMESPACE
 class QRectF;
@@ -33,9 +33,9 @@ class AbstractDiagram;
 class ChartGraphicsItem;
 
 /**
-      * @brief The ReverseMapper stores information about objects on a chart and their respective model indexes
-      * \internal
-      */
+ * @brief The ReverseMapper stores information about objects on a chart and their respective model indexes
+ * \internal
+ */
 class ReverseMapper
 {
 public:

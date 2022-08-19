@@ -16,19 +16,19 @@
 ****************************************************************************/
 
 #include "kdganttgraphicsview.h"
-#include "kdganttgraphicsview_p.h"
 #include "kdganttabstractrowcontroller.h"
-#include "kdganttgraphicsitem.h"
 #include "kdganttconstraintmodel.h"
+#include "kdganttgraphicsitem.h"
+#include "kdganttgraphicsview_p.h"
 
+#include <QAbstractProxyModel>
 #include <QActionGroup>
 #include <QMenu>
-#include <QPainter>
 #include <QPaintEvent>
+#include <QPainter>
+#include <QPrinter>
 #include <QResizeEvent>
 #include <QScrollBar>
-#include <QAbstractProxyModel>
-#include <QPrinter>
 
 #include <cassert>
 
@@ -57,7 +57,7 @@ void HeaderWidget::scrollTo(int v)
 {
     m_offset = v;
     // QWidget::scroll() won't work properly for me on Mac
-    //scroll( static_cast<int>( old-v ), 0 );
+    // scroll( static_cast<int>( old-v ), 0 );
     update();
 }
 
@@ -224,7 +224,7 @@ void GraphicsView::Private::slotColumnsRemoved(const QModelIndex &parent, int st
 
 void GraphicsView::Private::slotDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-    //qDebug() << "GraphicsView::slotDataChanged("<<topLeft<<bottomRight<<")";
+    // qDebug() << "GraphicsView::slotDataChanged("<<topLeft<<bottomRight<<")";
     const QModelIndex parent = topLeft.parent();
     for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
         scene.updateRow(scene.summaryHandlingModel()->index(row, 0, parent));
@@ -233,13 +233,13 @@ void GraphicsView::Private::slotDataChanged(const QModelIndex &topLeft, const QM
 
 void GraphicsView::Private::slotLayoutChanged()
 {
-    //qDebug() << "slotLayoutChanged()";
+    // qDebug() << "slotLayoutChanged()";
     q->updateScene();
 }
 
 void GraphicsView::Private::slotModelReset()
 {
-    //qDebug() << "slotModelReset()";
+    // qDebug() << "slotModelReset()";
     q->updateScene();
 }
 
@@ -253,10 +253,10 @@ void GraphicsView::Private::slotRowsInserted(const QModelIndex &parent, int star
 
 void GraphicsView::Private::slotRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
-    //qDebug() << "GraphicsView::Private::slotRowsAboutToBeRemoved("<<parent<<start<<end<<")";
+    // qDebug() << "GraphicsView::Private::slotRowsAboutToBeRemoved("<<parent<<start<<end<<")";
     for (int row = start; row <= end; ++row) {
         for (int col = 0; col < scene.summaryHandlingModel()->columnCount(parent); ++col) {
-            //qDebug() << "removing "<<scene.summaryHandlingModel()->index( row, col, parent );
+            // qDebug() << "removing "<<scene.summaryHandlingModel()->index( row, col, parent );
             scene.removeItem(scene.summaryHandlingModel()->index(row, col, parent));
         }
     }
@@ -264,8 +264,8 @@ void GraphicsView::Private::slotRowsAboutToBeRemoved(const QModelIndex &parent, 
 
 void GraphicsView::Private::slotRowsRemoved(const QModelIndex &parent, int start, int end)
 {
-    //qDebug() << "GraphicsView::Private::slotRowsRemoved("<<parent<<start<<end<<")";
-    // TODO
+    // qDebug() << "GraphicsView::Private::slotRowsRemoved("<<parent<<start<<end<<")";
+    //  TODO
     Q_UNUSED(parent);
     Q_UNUSED(start);
     Q_UNUSED(end);
@@ -275,7 +275,7 @@ void GraphicsView::Private::slotRowsRemoved(const QModelIndex &parent, int start
 
 void GraphicsView::Private::slotItemClicked(const QModelIndex &idx)
 {
-    QModelIndex sidx = idx; //scene.summaryHandlingModel()->mapToSource( idx );
+    QModelIndex sidx = idx; // scene.summaryHandlingModel()->mapToSource( idx );
     emit q->clicked(sidx);
     if (q->style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, nullptr, q))
         emit q->activated(sidx);
@@ -283,7 +283,7 @@ void GraphicsView::Private::slotItemClicked(const QModelIndex &idx)
 
 void GraphicsView::Private::slotItemDoubleClicked(const QModelIndex &idx)
 {
-    QModelIndex sidx = idx; //scene.summaryHandlingModel()->mapToSource( idx );
+    QModelIndex sidx = idx; // scene.summaryHandlingModel()->mapToSource( idx );
     emit q->qrealClicked(sidx);
     if (!q->style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, nullptr, q))
         emit q->activated(sidx);
@@ -347,7 +347,7 @@ GraphicsView::GraphicsView(QWidget *parent)
     // works properly
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
-    //setCacheMode( CacheBackground );
+    // setCacheMode( CacheBackground );
 }
 
 /*! Destroys this view. */
@@ -479,7 +479,7 @@ void GraphicsView::setItemDelegate(ItemDelegate *delegate)
 }
 
 /*! \returns the ItemDelegate used by this view to render items
-*/
+ */
 ItemDelegate *GraphicsView::itemDelegate() const
 {
     return d->scene.itemDelegate();
@@ -591,7 +591,7 @@ void GraphicsView::resizeEvent(QResizeEvent *ev)
     // TODO: take scrollbars into account (if not always on)
     // The scene should be at least the size of the viewport
     QSizeF size = viewport()->size();
-    //TODO: why -2 below? size should be ex. frames etc?
+    // TODO: why -2 below? size should be ex. frames etc?
     if (size.width() > r.width()) {
         r.setWidth(size.width() - 2);
     }
@@ -682,8 +682,8 @@ void GraphicsView::updateScene()
     do {
         updateRow(idx);
     } while ((idx = rowController()->indexBelow(idx)) != QModelIndex() && rowController()->isRowVisible(idx));
-    //constraintModel()->cleanup();
-    //qDebug() << constraintModel();
+    // constraintModel()->cleanup();
+    // qDebug() << constraintModel();
     updateSceneRect();
     if (scene())
         scene()->invalidate(QRectF(), QGraphicsScene::BackgroundLayer);

@@ -17,15 +17,15 @@
 
 #include "mainwindow.h"
 
-#include <KDChartChart>
 #include <KDChartAbstractCoordinatePlane>
-#include <KDChartLineDiagram>
-#include <KDChartLineAttributes>
-#include <KDChartTextAttributes>
+#include <KDChartChart>
 #include <KDChartDataValueAttributes>
-#include <KDChartThreeDLineAttributes>
-#include <KDChartMarkerAttributes>
 #include <KDChartLegend>
+#include <KDChartLineAttributes>
+#include <KDChartLineDiagram>
+#include <KDChartMarkerAttributes>
+#include <KDChartTextAttributes>
+#include <KDChartThreeDLineAttributes>
 
 #include <QDebug>
 #include <QPainter>
@@ -49,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Set up the diagram
     m_lines = new LineDiagram();
     m_lines->setModel(&m_model);
-    //CartesianAxisList List = m_lines->axesList();
+    // CartesianAxisList List = m_lines->axesList();
     auto *xAxis = new CartesianAxis(m_lines);
     auto *yAxis = new CartesianAxis(m_lines);
     auto *axisTop = new CartesianAxis(m_lines);
@@ -210,7 +210,7 @@ void MainWindow::on_paintMarkersCB_toggled(bool checked)
                 yellowMarker.setVisible(checked);
                 yellowAttributes.setMarkerAttributes(yellowMarker);
                 yellowAttributes.setVisible(checked);
-                //cell specific attributes:
+                // cell specific attributes:
                 m_lines->setDataValueAttributes(index, yellowAttributes);
             }
         }

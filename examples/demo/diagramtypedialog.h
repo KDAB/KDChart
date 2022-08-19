@@ -33,14 +33,16 @@ class DiagramTypeDialog : public QDialog
 {
     Q_OBJECT
 public:
-    enum DiagramType {
+    enum DiagramType
+    {
         Bar,
         LyingBar,
         Line,
         Plotter,
         Pie
     };
-    enum Subtype {
+    enum Subtype
+    {
         Normal,
         Percent,
         Stacked

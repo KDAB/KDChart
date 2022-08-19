@@ -29,17 +29,17 @@
 // We mean it.
 //
 
+#include "KDChartCartesianAxis_p.h"
 #include "KDChartLeveyJenningsAxis.h"
 #include "KDChartLeveyJenningsDiagram.h"
-#include "KDChartCartesianAxis_p.h"
 
 #include <KDABLibFakes>
 
 namespace KDChart {
 
 /**
-  * \internal
-  */
+ * \internal
+ */
 class LeveyJenningsAxis::Private : public CartesianAxis::Private
 {
     friend class LeveyJenningsAxis;

@@ -18,16 +18,16 @@
 #ifndef KDCHARTFRAMEATTRIBUTES_H
 #define KDCHARTFRAMEATTRIBUTES_H
 
+#include "KDChartGlobal.h"
 #include <QDebug>
 #include <QMetaType>
 #include <QPen>
-#include "KDChartGlobal.h"
 
 namespace KDChart {
 
 /**
-  * @brief A set of attributes for frames around items
-  */
+ * @brief A set of attributes for frames around items
+ */
 class KDCHART_EXPORT FrameAttributes
 {
 public:

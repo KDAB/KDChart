@@ -19,20 +19,20 @@
 
 #include <QtGui>
 
-#include <KDChartChart>
-#include <KDChartHeaderFooter>
-#include <KDChartDatasetProxyModel>
 #include <KDChartAbstractCoordinatePlane>
 #include <KDChartBarDiagram>
-#include <KDChartTextAttributes>
+#include <KDChartChart>
 #include <KDChartDataValueAttributes>
-#include <QMenuBar>
-#include <QMenu>
-#include <QTableView>
-#include <QSplitter>
-#include <QFileDialog>
-#include <QStatusBar>
+#include <KDChartDatasetProxyModel>
+#include <KDChartHeaderFooter>
+#include <KDChartTextAttributes>
 #include <QApplication>
+#include <QFileDialog>
+#include <QMenu>
+#include <QMenuBar>
+#include <QSplitter>
+#include <QStatusBar>
+#include <QTableView>
 
 using namespace KDChart;
 

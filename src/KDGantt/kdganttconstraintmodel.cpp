@@ -20,8 +20,8 @@
 
 #include <QDebug>
 
-#include <cassert>
 #include <algorithm>
+#include <cassert>
 #include <functional>
 
 using namespace KDGantt;
@@ -114,7 +114,7 @@ struct compare_constraint_indexes_to
  */
 void ConstraintModel::addConstraint(const Constraint &c)
 {
-    //qDebug() << "ConstraintModel::addConstraint("<<c<<") (this="<<this<<") items=" << d->constraints.size();
+    // qDebug() << "ConstraintModel::addConstraint("<<c<<") (this="<<this<<") items=" << d->constraints.size();
     QList<Constraint>::iterator it = std::find_if(d->constraints.begin(),
                                                   d->constraints.end(),
                                                   compare_constraint_indexes_to(c));
@@ -191,7 +191,7 @@ void ConstraintModel::cleanup()
  */
 QList<Constraint> ConstraintModel::constraints() const
 {
-    //return d->constraints.toList();
+    // return d->constraints.toList();
     return d->constraints;
 }
 
@@ -219,7 +219,7 @@ QList<Constraint> ConstraintModel::constraintsForIndex(const QModelIndex &idx) c
         return result;
     }
 
-    //return d->indexMap.values( idx );
+    // return d->indexMap.values( idx );
 }
 
 /*! Returns true if a Constraint with start \a s and end \a e

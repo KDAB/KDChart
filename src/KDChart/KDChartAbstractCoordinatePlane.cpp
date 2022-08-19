@@ -24,8 +24,8 @@
 #include <KDABLibFakes>
 
 #include <QGridLayout>
-#include <QRubberBand>
 #include <QMouseEvent>
+#include <QRubberBand>
 #include <QtCore/qmath.h>
 
 using namespace KDChart;
@@ -238,19 +238,19 @@ QRect KDChart::AbstractCoordinatePlane::geometry() const
 
 void KDChart::AbstractCoordinatePlane::update()
 {
-    //qDebug("KDChart::AbstractCoordinatePlane::update() called");
+    // qDebug("KDChart::AbstractCoordinatePlane::update() called");
     emit needUpdate();
 }
 
 void KDChart::AbstractCoordinatePlane::relayout()
 {
-    //qDebug("KDChart::AbstractCoordinatePlane::relayout() called");
+    // qDebug("KDChart::AbstractCoordinatePlane::relayout() called");
     emit needRelayout();
 }
 
 void KDChart::AbstractCoordinatePlane::layoutPlanes()
 {
-    //qDebug("KDChart::AbstractCoordinatePlane::relayout() called");
+    // qDebug("KDChart::AbstractCoordinatePlane::relayout() called");
     emit needLayoutPlanes();
 }
 

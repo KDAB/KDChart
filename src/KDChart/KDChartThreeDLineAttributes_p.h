@@ -46,7 +46,7 @@ public:
     Private();
 
 private:
-    //ThreeDLines
+    // ThreeDLines
     uint lineXRotation = 15;
     uint lineYRotation = 15;
 };

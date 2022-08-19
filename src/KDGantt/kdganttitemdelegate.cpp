@@ -15,17 +15,17 @@
 **
 ****************************************************************************/
 
-#include "kdganttitemdelegate_p.h"
-#include "kdganttglobal.h"
-#include "kdganttstyleoptionganttitem.h"
 #include "kdganttconstraint.h"
+#include "kdganttglobal.h"
+#include "kdganttitemdelegate_p.h"
+#include "kdganttstyleoptionganttitem.h"
 
+#include <QAbstractItemModel>
+#include <QApplication>
+#include <QModelIndex>
 #include <QPainter>
 #include <QPainterPath>
 #include <QPen>
-#include <QModelIndex>
-#include <QAbstractItemModel>
-#include <QApplication>
 
 #ifndef QT_NO_DEBUG_STREAM
 
@@ -291,8 +291,8 @@ void ItemDelegate::paintGanttItem(QPainter *painter,
     boundingRect.setY(itemRect.y());
     boundingRect.setHeight(itemRect.height());
 
-    //qDebug() << "itemRect="<<itemRect<<", boundingRect="<<boundingRect;
-    //qDebug() << painter->font() << opt.fontMetrics.height() << painter->device()->width() << painter->device()->height();
+    // qDebug() << "itemRect="<<itemRect<<", boundingRect="<<boundingRect;
+    // qDebug() << painter->font() << opt.fontMetrics.height() << painter->device()->width() << painter->device()->height();
 
     painter->save();
 
@@ -338,13 +338,13 @@ void ItemDelegate::paintGanttItem(QPainter *painter,
             QPainterPath path;
             const qreal deltaY = r.height() / 2.;
             const qreal deltaXBezierControl = .25 * qMin(r.width(), r.height());
-            const qreal deltaX = qMin(r.width() / (qreal)2., r.height());
+            const qreal deltaX = qMin(r.width() / ( qreal )2., r.height());
             path.moveTo(r.topLeft());
             path.lineTo(r.topRight());
             path.lineTo(QPointF(r.right(), r.top() + 2. * deltaY));
-            //path.lineTo( QPointF( r.right()-3./2.*delta, r.top() + delta ) );
+            // path.lineTo( QPointF( r.right()-3./2.*delta, r.top() + delta ) );
             path.quadTo(QPointF(r.right() - deltaXBezierControl, r.top() + deltaY), QPointF(r.right() - deltaX, r.top() + deltaY));
-            //path.lineTo( QPointF( r.left()+3./2.*delta, r.top() + delta ) );
+            // path.lineTo( QPointF( r.left()+3./2.*delta, r.top() + delta ) );
             path.lineTo(QPointF(r.left() + deltaX, r.top() + deltaY));
             path.quadTo(QPointF(r.left() + deltaXBezierControl, r.top() + deltaY), QPointF(r.left(), r.top() + 2. * deltaY));
             path.closeSubpath();
@@ -356,7 +356,7 @@ void ItemDelegate::paintGanttItem(QPainter *painter,
         }
         break;
     case TypeEvent: /* TODO */
-        //qDebug() << opt.boundingRect << opt.itemRect;
+        // qDebug() << opt.boundingRect << opt.itemRect;
         if (opt.boundingRect.isValid()) {
             const qreal pw = painter->pen().width() / 2. - 1;
             const QRectF r = QRectF(opt.itemRect).adjusted(-pw, -pw, pw, pw).translated(-opt.itemRect.height() / 2, 0);
@@ -443,7 +443,7 @@ QRectF ItemDelegate::constraintBoundingRect(const QPointF &start, const QPointF 
 void ItemDelegate::paintConstraintItem(QPainter *painter, const QStyleOptionGraphicsItem &opt,
                                        const QPointF &start, const QPointF &end, const Constraint &constraint)
 {
-    //qDebug()<<"ItemDelegate::paintConstraintItem"<<start<<end<<constraint;
+    // qDebug()<<"ItemDelegate::paintConstraintItem"<<start<<end<<constraint;
     switch (constraint.relationType()) {
     case Constraint::FinishStart:
         paintFinishStartConstraint(painter, opt, start, end, constraint);

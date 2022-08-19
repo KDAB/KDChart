@@ -52,11 +52,12 @@ public:
 
     virtual BarDiagram *clone() const;
     /**
-    * Returns true if both diagrams have the same settings.
-    */
+     * Returns true if both diagrams have the same settings.
+     */
     bool compare(const BarDiagram *other) const;
 
-    enum BarType {
+    enum BarType
+    {
         Normal,
         Stacked,
         Percent,

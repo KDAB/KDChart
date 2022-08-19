@@ -43,11 +43,11 @@ class Legend;
 class Position;
 
 /**
-     * \class Widget KDChartWidget.h
-     * \brief The KD Chart widget for usage without Model/View.
-     *
-     * If you want to use KD Chart with Model/View, use KDChart::Chart instead.
-     */
+ * \class Widget KDChartWidget.h
+ * \brief The KD Chart widget for usage without Model/View.
+ *
+ * If you want to use KD Chart with Model/View, use KDChart::Chart instead.
+ */
 class KDCHART_EXPORT Widget : public QWidget
 {
     Q_OBJECT
@@ -57,12 +57,12 @@ class KDCHART_EXPORT Widget : public QWidget
 
 public:
     /**
-         * Standard Qt-style Constructor
-         *
-         * Creates a new widget with all data initialized empty.
-         *
-         * \param parent the widget parent; passed on to QWidget
-         */
+     * Standard Qt-style Constructor
+     *
+     * Creates a new widget with all data initialized empty.
+     *
+     * \param parent the widget parent; passed on to QWidget
+     */
     explicit Widget(QWidget *parent = nullptr);
 
     /** Destructor. */
@@ -70,7 +70,7 @@ public:
     /** Sets the data in the given column using a QVector of qreal for the Y values. */
     void setDataset(int column, const QVector<qreal> &data, const QString &title = QString());
     /** Sets the data in the given column using a QVector of QPairs
-         *  of qreal for the (X, Y) values. */
+     *  of qreal for the (X, Y) values. */
     void setDataset(int column, const QVector<QPair<qreal, qreal>> &data, const QString &title = QString());
     /** Sets the Y value data for a given cell. */
     void setDataCell(int row, int column, qreal data);
@@ -112,38 +112,38 @@ public:
                          Position position);
 
     /**
-          * Adds the existing header / footer object \a header.
-          * \sa replaceHeaderFooter, takeHeaderFooter
-        */
+     * Adds the existing header / footer object \a header.
+     * \sa replaceHeaderFooter, takeHeaderFooter
+     */
     void addHeaderFooter(HeaderFooter *header);
 
     /**
-         * Replaces the old header (or footer, resp.), or appends the
-         * new header or footer, it there is none yet.
-         *
-         * @param header The header or footer to be used instead of the old one.
-         * This parameter must not be zero, or the method will do nothing.
-         *
-         * @param oldHeader The header or footer to be removed by the new one. This
-         * header or footer will be deleted automatically. If the parameter is omitted,
-         * the very first header or footer will be replaced. In case, there was no
-         * header and no footer yet, the new header or footer will just be added.
-         *
-         * \note If you want to re-use the old header or footer, call takeHeaderFooter and
-         * addHeaderFooter, instead of using replaceHeaderFooter.
-         *
-         * \sa addHeaderFooter, takeHeaderFooter
-         */
+     * Replaces the old header (or footer, resp.), or appends the
+     * new header or footer, it there is none yet.
+     *
+     * @param header The header or footer to be used instead of the old one.
+     * This parameter must not be zero, or the method will do nothing.
+     *
+     * @param oldHeader The header or footer to be removed by the new one. This
+     * header or footer will be deleted automatically. If the parameter is omitted,
+     * the very first header or footer will be replaced. In case, there was no
+     * header and no footer yet, the new header or footer will just be added.
+     *
+     * \note If you want to re-use the old header or footer, call takeHeaderFooter and
+     * addHeaderFooter, instead of using replaceHeaderFooter.
+     *
+     * \sa addHeaderFooter, takeHeaderFooter
+     */
     void replaceHeaderFooter(HeaderFooter *header,
                              HeaderFooter *oldHeader = nullptr);
 
     /** Remove the header (or footer, resp.) from the widget,
-         * without deleting it.
-         * The chart no longer owns the header or footer, so it is
-         * the caller's responsibility to delete the header or footer.
-         *
-         * \sa addHeaderFooter, replaceHeaderFooter
-         */
+     * without deleting it.
+     * The chart no longer owns the header or footer, so it is
+     * the caller's responsibility to delete the header or footer.
+     *
+     * \sa addHeaderFooter, replaceHeaderFooter
+     */
     void takeHeaderFooter(HeaderFooter *header);
 
     /** Returns the first of all legends. */
@@ -163,38 +163,39 @@ public:
     AbstractDiagram *diagram();
 
     /** If the current diagram is a BarDiagram, it is returned; otherwise 0 is returned.
-          * This function provides type-safe casting.
-          */
+     * This function provides type-safe casting.
+     */
     BarDiagram *barDiagram();
     /** If the current diagram is a LineDiagram, it is returned; otherwise 0 is returned.
-         * This function provides type-safe casting.
-         */
+     * This function provides type-safe casting.
+     */
     LineDiagram *lineDiagram();
     /** If the current diagram is a LineDiagram, it is returned; otherwise 0 is returned.
-         * This function provides type-safe casting.
-         *
-         * \note Do not use lineDiagram for multi-dimensional diagrams, but use plotter instead
-         *
-         * \sa plotter
-         */
+     * This function provides type-safe casting.
+     *
+     * \note Do not use lineDiagram for multi-dimensional diagrams, but use plotter instead
+     *
+     * \sa plotter
+     */
     Plotter *plotter();
     /** If the current diagram is a Plotter, it is returned; otherwise 0 is returned.
-          * This function provides type-safe casting.
-          */
+     * This function provides type-safe casting.
+     */
     PieDiagram *pieDiagram();
     /** If the current diagram is a RingDiagram, it is returned; otherwise 0 is returned.
-          * This function provides type-safe casting.
-          */
+     * This function provides type-safe casting.
+     */
     RingDiagram *ringDiagram();
     /** If the current diagram is a PolarDiagram, it is returned; otherwise 0 is returned.
-          * This function provides type-safe casting.
-          */
+     * This function provides type-safe casting.
+     */
     PolarDiagram *polarDiagram();
 
     /** Returns a pointer to the current coordinate plane. */
     AbstractCoordinatePlane *coordinatePlane();
 
-    enum ChartType {
+    enum ChartType
+    {
         NoType,
         Bar,
         Line,
@@ -208,7 +209,8 @@ public:
     ChartType type() const;
 
     /** Sub type values, matching the values defines for the respective Diagram classes. */
-    enum SubType {
+    enum SubType
+    {
         Normal,
         Stacked,
         Percent,
@@ -222,15 +224,15 @@ public Q_SLOTS:
     /** Sets the type of the chart. */
     void setType(ChartType chartType, SubType subType = Normal);
     /** \brief Sets the type of the chart without changing the main type.
-          *
-          * Make sure to use a sub-type that matches the main type,
-          * so e.g. setting sub-type Rows makes sense for Bar charts only,
-          * and it will be ignored for all other chart types.
-          *
-          * \sa KDChartBarDiagram::BarType, KDChartLineDiagram::LineType
-          * \sa KDChartPieDiagram::PieType, KDChartRingDiagram::RingType
-          * \sa KDChartPolarDiagram::PolarType
-          */
+     *
+     * Make sure to use a sub-type that matches the main type,
+     * so e.g. setting sub-type Rows makes sense for Bar charts only,
+     * and it will be ignored for all other chart types.
+     *
+     * \sa KDChartBarDiagram::BarType, KDChartLineDiagram::LineType
+     * \sa KDChartPieDiagram::PieType, KDChartRingDiagram::RingType
+     * \sa KDChartPolarDiagram::PolarType
+     */
     void setSubType(SubType subType);
 
 private:

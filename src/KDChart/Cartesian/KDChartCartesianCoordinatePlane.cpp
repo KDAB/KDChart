@@ -18,24 +18,24 @@
 #include "KDChartCartesianCoordinatePlane.h"
 #include "KDChartCartesianCoordinatePlane_p.h"
 
+#include "CartesianCoordinateTransformation.h"
+#include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartAbstractDiagram.h"
 #include "KDChartAbstractDiagram_p.h"
-#include "KDChartAbstractCartesianDiagram.h"
-#include "CartesianCoordinateTransformation.h"
+#include "KDChartBarDiagram.h"
 #include "KDChartGridAttributes.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
-#include "KDChartBarDiagram.h"
 #include "KDChartStockDiagram.h"
 
 #include <KDABLibFakes>
 
 #include <QApplication>
+#include <QElapsedTimer>
 #include <QFont>
 #include <QList>
-#include <QtDebug>
 #include <QPainter>
-#include <QElapsedTimer>
+#include <QtDebug>
 
 using namespace KDChart;
 
@@ -136,7 +136,7 @@ QRectF CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams() const
     bool bStarting = true;
     Q_FOREACH (const AbstractDiagram *diagram, diagrams()) {
         QPair<QPointF, QPointF> dataBoundariesPair = diagram->dataBoundaries();
-        //qDebug() << "CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams()\ngets diagram->dataBoundaries: " << dataBoundariesPair.first << dataBoundariesPair.second;
+        // qDebug() << "CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams()\ngets diagram->dataBoundaries: " << dataBoundariesPair.first << dataBoundariesPair.second;
         if (bStarting || dataBoundariesPair.first.x() < minX)
             minX = dataBoundariesPair.first.x();
         if (bStarting || dataBoundariesPair.first.y() < minY)
@@ -147,7 +147,7 @@ QRectF CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams() const
             maxY = dataBoundariesPair.second.y();
         bStarting = false;
     }
-    //qDebug() << "CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams()\nreturns data boundaries: " << QRectF( QPointF(minX, minY), QSizeF(maxX - minX, maxY - minY) );
+    // qDebug() << "CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams()\nreturns data boundaries: " << QRectF( QPointF(minX, minY), QSizeF(maxX - minX, maxY - minY) );
     QRectF dataBoundingRect;
     dataBoundingRect.setBottomLeft(QPointF(minX, minY));
     dataBoundingRect.setTopRight(QPointF(maxX, maxY));

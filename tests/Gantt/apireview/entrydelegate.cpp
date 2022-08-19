@@ -23,8 +23,8 @@
 #include <KDGanttGlobal>
 #include <QEvent>
 #include <QModelIndex>
-#include <QStandardItemModel>
 #include <QPointer>
+#include <QStandardItemModel>
 
 EntryDelegate::EntryDelegate(KDGantt::ConstraintModel *constraintModel, QObject *parent)
     : QItemDelegate(parent)

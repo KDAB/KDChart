@@ -17,14 +17,14 @@
 
 #include "mainwindow.h"
 
-#include <KDChartChart>
-#include <KDChartDatasetProxyModel>
 #include <KDChartAbstractCoordinatePlane>
-#include <KDChartBarDiagram>
-#include <KDChartTextAttributes>
-#include <KDChartDataValueAttributes>
-#include <KDChartThreeDBarAttributes>
 #include <KDChartBackgroundAttributes>
+#include <KDChartBarDiagram>
+#include <KDChartChart>
+#include <KDChartDataValueAttributes>
+#include <KDChartDatasetProxyModel>
+#include <KDChartTextAttributes>
+#include <KDChartThreeDBarAttributes>
 
 #include <QDebug>
 #include <QPainter>
@@ -65,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Configure the plane's Background
     BackgroundAttributes pba;
-    //pba.setBrush( QBrush(QColor(0x20,0x20,0x60)) );
+    // pba.setBrush( QBrush(QColor(0x20,0x20,0x60)) );
     pba.setVisible(true);
     m_chart->coordinatePlane()->setBackgroundAttributes(pba);
 

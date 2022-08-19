@@ -17,10 +17,10 @@
 
 #include "mainwindow.h"
 
-#include <KDChartChart>
 #include <KDChartAbstractCoordinatePlane>
-#include <KDChartLineDiagram>
 #include <KDChartBarDiagram>
+#include <KDChartChart>
+#include <KDChartLineDiagram>
 
 #include <QDebug>
 #include <QPainter>
@@ -52,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     for (int i = 0; i < 5; ++i) {
         for (int j = 0; j < 5; ++j) {
-            m_model.setData(m_model.index(i, j, idx1), (qreal)i * j);
+            m_model.setData(m_model.index(i, j, idx1), ( qreal )i * j);
         }
     }
 
@@ -71,7 +71,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     for (int i = 0; i < 5; ++i) {
         for (int j = 0; j < 5; ++j) {
-            m_model.setData(m_model.index(i, j, idx1), (qreal)i * j);
+            m_model.setData(m_model.index(i, j, idx1), ( qreal )i * j);
         }
     }
     QModelIndex idx2 = idx1;

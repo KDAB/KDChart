@@ -15,11 +15,11 @@
 **
 ****************************************************************************/
 
-#include <QtTest/QtTest>
 #include <KDChartChart>
 #include <KDChartGlobal>
-#include <KDChartPolarDiagram>
 #include <KDChartPolarCoordinatePlane>
+#include <KDChartPolarDiagram>
+#include <QtTest/QtTest>
 
 #include <TableModel.h>
 

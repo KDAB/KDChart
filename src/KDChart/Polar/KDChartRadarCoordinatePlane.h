@@ -25,8 +25,8 @@ namespace KDChart {
 class Chart;
 
 /**
-      * @brief Radar coordinate plane
-      */
+ * @brief Radar coordinate plane
+ */
 class KDCHART_EXPORT RadarCoordinatePlane : public PolarCoordinatePlane
 {
     Q_OBJECT
@@ -39,26 +39,26 @@ public:
     ~RadarCoordinatePlane() override;
 
     /**
-         * Set the attributes to be used for axis captions.
-         *
-         * To disable axis captions, for example, your code should like this:
-         * \code
-         * TextAttributes ta = plane->textAttributes();
-         * ta.setVisible( false );
-         * plane-setTextAttributes( ta );
-         * \endcode
-         */
+     * Set the attributes to be used for axis captions.
+     *
+     * To disable axis captions, for example, your code should like this:
+     * \code
+     * TextAttributes ta = plane->textAttributes();
+     * ta.setVisible( false );
+     * plane-setTextAttributes( ta );
+     * \endcode
+     */
     void setTextAttributes(const TextAttributes &attr);
 
     /**
-         * \return The attributes used for axis.
-         *
-         * \note This function always returns a valid set of text attributes:
-         * If no special text attributes was set a default one is
-         * returned.
-         *
-         * \sa setTextAttributes
-         */
+     * \return The attributes used for axis.
+     *
+     * \note This function always returns a valid set of text attributes:
+     * If no special text attributes was set a default one is
+     * returned.
+     *
+     * \sa setTextAttributes
+     */
     const TextAttributes textAttributes() const;
 };
 }

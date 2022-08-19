@@ -18,14 +18,14 @@
 #ifndef KDCHARTABSTRACTTHREEDATTRIBUTES_H
 #define KDCHARTABSTRACTTHREEDATTRIBUTES_H
 
-#include <QMetaType>
 #include "KDChartGlobal.h"
+#include <QMetaType>
 
 namespace KDChart {
 
 /**
-  * @brief Base class for 3D attributes
-  */
+ * @brief Base class for 3D attributes
+ */
 class KDCHART_EXPORT AbstractThreeDAttributes
 {
 public:

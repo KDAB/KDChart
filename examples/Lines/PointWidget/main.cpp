@@ -15,10 +15,10 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
-#include <KDChartWidget>
-#include <KDChartLineDiagram>
 #include <KDChartDataValueAttributes>
+#include <KDChartLineDiagram>
+#include <KDChartWidget>
+#include <QApplication>
 
 using namespace KDChart;
 

@@ -18,9 +18,9 @@
 #ifndef KDCHARTRULERATTRIBUTES_H
 #define KDCHARTRULERATTRIBUTES_H
 
-#include <QMetaType>
-#include "KDChartGlobal.h"
 #include "KDChartEnums.h"
+#include "KDChartGlobal.h"
+#include <QMetaType>
 
 QT_BEGIN_NAMESPACE
 class QPen;
@@ -29,8 +29,8 @@ QT_END_NAMESPACE
 namespace KDChart {
 
 /**
-  * @brief A set of attributes controlling the appearance of axis rulers
-  */
+ * @brief A set of attributes controlling the appearance of axis rulers
+ */
 class KDCHART_EXPORT RulerAttributes
 {
 public:
@@ -41,31 +41,31 @@ public:
     ~RulerAttributes();
 
     /**
-      * Sets the pen used to draw the tick marks
-      */
+     * Sets the pen used to draw the tick marks
+     */
     void setTickMarkPen(const QPen &pen);
     QPen tickMarkPen() const;
 
     /**
-      * Sets the pen used to draw major tick marks
-      */
+     * Sets the pen used to draw major tick marks
+     */
     void setMajorTickMarkPen(const QPen &pen);
     bool majorTickMarkPenIsSet() const;
     QPen majorTickMarkPen() const;
 
     /**
-      * Sets the pen used to draw minor tick marks
-      */
+     * Sets the pen used to draw minor tick marks
+     */
     void setMinorTickMarkPen(const QPen &pen);
     bool minorTickMarkPenIsSet() const;
     QPen minorTickMarkPen() const;
 
     /**
-      * Sets the pen used to draw the tick mark at a specific value
-      *
-      * Note: This will not paint a tick mark at the specified value
-      * if it wasn't already drawn before.
-      */
+     * Sets the pen used to draw the tick mark at a specific value
+     *
+     * Note: This will not paint a tick mark at the specified value
+     * if it wasn't already drawn before.
+     */
     void setTickMarkPen(qreal value, const QPen &pen);
     QPen tickMarkPen(qreal value) const;
     typedef QMap<qreal, QPen> TickMarkerPensMap;
@@ -74,14 +74,14 @@ public:
     bool hasTickMarkPenAt(qreal value) const;
 
     /**
-      * Color setter method provided for convenience
-      */
+     * Color setter method provided for convenience
+     */
     void setTickMarkColor(const QColor &color);
     QColor tickMarkColor() const;
 
     /**
-      * Shows or hides minor tick marks
-      */
+     * Shows or hides minor tick marks
+     */
     void setShowMinorTickMarks(bool show);
     bool showMinorTickMarks() const;
 
@@ -89,8 +89,8 @@ public:
     bool showRulerLine() const;
 
     /**
-      * Shows or hides major tick marks
-      */
+     * Shows or hides major tick marks
+     */
     void setShowMajorTickMarks(bool show);
     bool showMajorTickMarks() const;
 

@@ -18,23 +18,23 @@
 #include "KDChartLineDiagram.h"
 #include "KDChartLineDiagram_p.h"
 
-#include "KDChartBarDiagram.h"
-#include "KDChartPalette.h"
-#include "KDChartAttributesModel.h"
 #include "KDChartAbstractGrid.h"
+#include "KDChartAttributesModel.h"
+#include "KDChartBarDiagram.h"
 #include "KDChartPainterSaver_p.h"
+#include "KDChartPalette.h"
 
 #include <KDABLibFakes>
 
 #include "KDChartNormalLineDiagram_p.h"
-#include "KDChartStackedLineDiagram_p.h"
 #include "KDChartPercentLineDiagram_p.h"
+#include "KDChartStackedLineDiagram_p.h"
 
 #include <QDebug>
 #include <QPainter>
-#include <QString>
 #include <QPainterPath>
 #include <QPen>
+#include <QString>
 #include <QVector>
 
 using namespace KDChart;
@@ -73,8 +73,8 @@ LineDiagram::~LineDiagram()
 }
 
 /**
-  * Creates an exact copy of this diagram.
-  */
+ * Creates an exact copy of this diagram.
+ */
 LineDiagram *LineDiagram::clone() const
 {
     auto *newDiagram = new LineDiagram(new Private(*d));
@@ -96,9 +96,9 @@ bool LineDiagram::compare(const LineDiagram *other) const
 }
 
 /**
-  * Sets the line diagram's type to \a type
-  * \sa LineDiagram::LineType
-  */
+ * Sets the line diagram's type to \a type
+ * \sa LineDiagram::LineType
+ */
 void LineDiagram::setType(const LineType type)
 {
     if (d->implementor->type() == type)
@@ -133,8 +133,8 @@ void LineDiagram::setType(const LineType type)
 }
 
 /**
-  * @return the type of the line diagram
-  */
+ * @return the type of the line diagram
+ */
 LineDiagram::LineType LineDiagram::type() const
 {
     return d->implementor->type();
@@ -171,8 +171,8 @@ bool LineDiagram::reverseDatasetOrder() const
 }
 
 /**
-  * Sets the global line attributes to \a la
-  */
+ * Sets the global line attributes to \a la
+ */
 void LineDiagram::setLineAttributes(const LineAttributes &la)
 {
     d->attributesModel->setModelData(
@@ -182,8 +182,8 @@ void LineDiagram::setLineAttributes(const LineAttributes &la)
 }
 
 /**
-  * Sets the line attributes of data set \a column to \a la
-  */
+ * Sets the line attributes of data set \a column to \a la
+ */
 void LineDiagram::setLineAttributes(
     int column,
     const LineAttributes &la)
@@ -193,8 +193,8 @@ void LineDiagram::setLineAttributes(
 }
 
 /**
-  * Resets the line attributes of data set \a column
-  */
+ * Resets the line attributes of data set \a column
+ */
 void LineDiagram::resetLineAttributes(int column)
 {
     d->resetDatasetAttrs(column, LineAttributesRole);
@@ -202,8 +202,8 @@ void LineDiagram::resetLineAttributes(int column)
 }
 
 /**
-  * Sets the line attributes for the model index \a index to \a la
-  */
+ * Sets the line attributes for the model index \a index to \a la
+ */
 void LineDiagram::setLineAttributes(
     const QModelIndex &index,
     const LineAttributes &la)
@@ -226,16 +226,16 @@ void LineDiagram::resetLineAttributes(const QModelIndex &index)
 }
 
 /**
-  * @return the global line attribute set
-  */
+ * @return the global line attribute set
+ */
 LineAttributes LineDiagram::lineAttributes() const
 {
     return d->attributesModel->data(KDChart::LineAttributesRole).value<LineAttributes>();
 }
 
 /**
-  * @return the line attribute set of data set \a column
-  */
+ * @return the line attribute set of data set \a column
+ */
 LineAttributes LineDiagram::lineAttributes(int column) const
 {
     const QVariant attrs(d->datasetAttrs(column, LineAttributesRole));
@@ -245,8 +245,8 @@ LineAttributes LineDiagram::lineAttributes(int column) const
 }
 
 /**
-  * @return the line attribute set of the model index \a index
-  */
+ * @return the line attribute set of the model index \a index
+ */
 LineAttributes LineDiagram::lineAttributes(
     const QModelIndex &index) const
 {
@@ -257,8 +257,8 @@ LineAttributes LineDiagram::lineAttributes(
 }
 
 /**
-  * Sets the global 3D line attributes to \a la
-  */
+ * Sets the global 3D line attributes to \a la
+ */
 void LineDiagram::setThreeDLineAttributes(
     const ThreeDLineAttributes &la)
 {
@@ -270,8 +270,8 @@ void LineDiagram::setThreeDLineAttributes(
 }
 
 /**
-  * Sets the 3D line attributes of data set \a column to \a ta
-  */
+ * Sets the 3D line attributes of data set \a column to \a ta
+ */
 void LineDiagram::setThreeDLineAttributes(
     int column,
     const ThreeDLineAttributes &la)
@@ -282,8 +282,8 @@ void LineDiagram::setThreeDLineAttributes(
 }
 
 /**
-  * Sets the 3D line attributes of model index \a index to \a la
-  */
+ * Sets the 3D line attributes of model index \a index to \a la
+ */
 void LineDiagram::setThreeDLineAttributes(
     const QModelIndex &index,
     const ThreeDLineAttributes &la)
@@ -297,16 +297,16 @@ void LineDiagram::setThreeDLineAttributes(
 }
 
 /**
-  * @return the global 3D line attributes
-  */
+ * @return the global 3D line attributes
+ */
 ThreeDLineAttributes LineDiagram::threeDLineAttributes() const
 {
     return d->attributesModel->data(KDChart::ThreeDLineAttributesRole).value<ThreeDLineAttributes>();
 }
 
 /**
-  * @return the 3D line attributes of data set \a column
-  */
+ * @return the 3D line attributes of data set \a column
+ */
 ThreeDLineAttributes LineDiagram::threeDLineAttributes(int column) const
 {
     const QVariant attrs(d->datasetAttrs(column, ThreeDLineAttributesRole));
@@ -316,8 +316,8 @@ ThreeDLineAttributes LineDiagram::threeDLineAttributes(int column) const
 }
 
 /**
-  * @return the 3D line attributes of the model index \a index
-  */
+ * @return the 3D line attributes of the model index \a index
+ */
 ThreeDLineAttributes LineDiagram::threeDLineAttributes(const QModelIndex &index) const
 {
     return d->attributesModel->data(
@@ -337,8 +337,8 @@ qreal LineDiagram::threeDItemDepth(int column) const
 }
 
 /**
-  * Sets the value tracker attributes of the model index \a index to \a va
-  */
+ * Sets the value tracker attributes of the model index \a index to \a va
+ */
 void LineDiagram::setValueTrackerAttributes(const QModelIndex &index,
                                             const ValueTrackerAttributes &va)
 {
@@ -349,8 +349,8 @@ void LineDiagram::setValueTrackerAttributes(const QModelIndex &index,
 }
 
 /**
-  * Returns the value tracker attributes of the model index \a index
-  */
+ * Returns the value tracker attributes of the model index \a index
+ */
 ValueTrackerAttributes LineDiagram::valueTrackerAttributes(
     const QModelIndex &index) const
 {

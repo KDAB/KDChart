@@ -17,23 +17,23 @@
 
 #include <QApplication>
 #include <QDateTime>
-#include <QStandardItemModel>
 #include <QDebug>
-#include <QSlider>
-#include <QVBoxLayout>
-#include <QPixmap>
 #include <QLabel>
-#include <QPainter>
-#include <QPixmapCache>
-#include <QPushButton>
-#include <QPrinter>
-#include <QPrintDialog>
 #include <QMenu>
+#include <QPainter>
+#include <QPixmap>
+#include <QPixmapCache>
+#include <QPrintDialog>
+#include <QPrinter>
+#include <QPushButton>
+#include <QSlider>
+#include <QStandardItemModel>
+#include <QVBoxLayout>
 
-#include <KDGanttView>
-#include <KDGanttGraphicsView>
 #include <KDGanttConstraintModel>
 #include <KDGanttDateTimeGrid>
+#include <KDGanttGraphicsView>
+#include <KDGanttView>
 
 class MyStandardItem : public QStandardItem
 {
@@ -42,13 +42,13 @@ public:
         : QStandardItem()
     {
         setData(v, Qt::DisplayRole);
-        //setFlags( flags() & ~Qt::ItemIsEditable );
+        // setFlags( flags() & ~Qt::ItemIsEditable );
     }
     MyStandardItem(const QString &v)
         : QStandardItem()
     {
         setData(v, Qt::DisplayRole);
-        //setFlags( flags() & ~Qt::ItemIsEditable );
+        // setFlags( flags() & ~Qt::ItemIsEditable );
     }
     MyStandardItem(const QDateTime &dt, int role)
         : QStandardItem()
@@ -65,7 +65,7 @@ public:
         : QWidget(0)
     {
         qDebug() << "Building data";
-        //proxyModel.setSourceModel( &model );
+        // proxyModel.setSourceModel( &model );
         for (int h = 0; h < 20; ++h) {
             QStandardItem *topitem = new MyStandardItem(QString::fromLatin1("Top Item %1").arg(h));
             for (int i = 0; i < 20; ++i) {
@@ -102,8 +102,8 @@ public:
         model.appendRow(QList<QStandardItem *>()
                         << new MyStandardItem(QString::fromLatin1("No data")));
 
-        //cmodel.addConstraint( KDGantt::Constraint( proxyModel.index( 0, 3 ), proxyModel.index( 10, 3 ) ) );
-        //cmodel.addConstraint( KDGantt::Constraint( proxyModel.index( 10, 3 ), proxyModel.index( 5, 3 ) ) );
+        // cmodel.addConstraint( KDGantt::Constraint( proxyModel.index( 0, 3 ), proxyModel.index( 10, 3 ) ) );
+        // cmodel.addConstraint( KDGantt::Constraint( proxyModel.index( 10, 3 ), proxyModel.index( 5, 3 ) ) );
         QModelIndex pidx = model.index(0, 0);
         pidx = model.index(0, 0, pidx);
         cmodel.addConstraint(KDGantt::Constraint(model.index(0, 0, pidx), model.index(1, 0, pidx)));
@@ -121,10 +121,10 @@ public:
         l->addWidget(&slider);
         grid.setStartDateTime(QDateTime::currentDateTime().addDays(-3));
         grid.setDayWidth(100);
-        //grid.setNoInformationBrush( Qt::NoBrush );
+        // grid.setNoInformationBrush( Qt::NoBrush );
         view.setGrid(&grid);
         view.setModel(&model);
-        //view.setConstraintModel( &cmodel );
+        // view.setConstraintModel( &cmodel );
         connect(&slider, SIGNAL(valueChanged(int)),
                 this, SLOT(slotZoom(int)));
 

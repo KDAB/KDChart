@@ -17,9 +17,9 @@
 
 #include "KDChartRadarGrid.h"
 #include "KDChartPaintContext.h"
-#include "KDChartRadarDiagram.h"
 #include "KDChartPieDiagram.h"
 #include "KDChartPrintingParameters.h"
+#include "KDChartRadarDiagram.h"
 
 #include <QPainter>
 
@@ -33,7 +33,7 @@ DataDimensionsList RadarGrid::calculateGrid(
     qDebug("Calling PolarGrid::calculateGrid()");
     DataDimensionsList l;
 
-    //FIXME(khz): do the real calculation
+    // FIXME(khz): do the real calculation
 
     l = rawDataDimensions;
 
@@ -99,10 +99,10 @@ void RadarGrid::drawGrid(PaintContext *context)
     const GridAttributes gridAttrsCircular(plane->gridAttributes(true));
     const GridAttributes gridAttrsSagittal(plane->gridAttributes(false));
 
-    //qDebug() << "OK:";
+    // qDebug() << "OK:";
     if (!gridAttrsCircular.isGridVisible() && !gridAttrsSagittal.isGridVisible())
         return;
-    //qDebug() << "A";
+    // qDebug() << "A";
 
     // FIXME: we paint the rulers to the settings of the first diagram for now:
     AbstractPolarDiagram *dgr = dynamic_cast<AbstractPolarDiagram *>(plane->diagrams().first());
@@ -115,7 +115,7 @@ void RadarGrid::drawGrid(PaintContext *context)
     context->painter()->setPen(PrintingParameters::scalePen(QColor(Qt::lightGray)));
     const qreal min = dgr->dataBoundaries().first.y();
     QPointF origin = plane->translate(QPointF(min, 0)) + context->rectangle().topLeft();
-    //qDebug() << "origin" << origin;
+    // qDebug() << "origin" << origin;
 
     const qreal r = qAbs(min) + dgr->dataBoundaries().second.y(); // use the full extents
 
@@ -126,7 +126,7 @@ void RadarGrid::drawGrid(PaintContext *context)
     QPointF topLeft = context->rectangle().topLeft();
     Q_ASSERT(plane->diagram()->model());
     TextAttributes ta = plane->textAttributes();
-    const int numberOfSpokes = (int)(360 / plane->angleUnit());
+    const int numberOfSpokes = ( int )(360 / plane->angleUnit());
     const qreal stepWidth = boundaries.second.y() / (dgr->numberOfGridRings());
     QRectF destRect = context->rectangle();
     if (ta.isVisible()) {
@@ -152,7 +152,7 @@ void RadarGrid::drawGrid(PaintContext *context)
         const QLineF startLine(origin, scaleToRealPosition(QPointF(r - qAbs(min), 0), context->rectangle(), destRect, *plane));
         for (int i = 0; i < model->rowCount(); ++i) {
             const QLineF currentLine(origin, scaleToRealPosition(QPointF(r - qAbs(min), i), context->rectangle(), destRect, *plane));
-            const int angle = (int)startLine.angleTo(currentLine) % 360;
+            const int angle = ( int )startLine.angleTo(currentLine) % 360;
             const qreal angleTest = qAbs(angle - 180);
             const QString data = model->headerData(i, Qt::Vertical).toString();
             const qreal xOffset = metric.horizontalAdvance(data) / 2.0;

@@ -60,35 +60,35 @@ StockBarAttributes::~StockBarAttributes()
 }
 
 /**
-  * Sets the width of a candlestick
-  *
-  * @param width The width of a candlestick
-  */
+ * Sets the width of a candlestick
+ *
+ * @param width The width of a candlestick
+ */
 void StockBarAttributes::setCandlestickWidth(qreal width)
 {
     d->candlestickWidth = width;
 }
 /**
-  * @return the width of a candlestick
-  */
+ * @return the width of a candlestick
+ */
 qreal StockBarAttributes::candlestickWidth() const
 {
     return d->candlestickWidth;
 }
 
 /**
-  * Sets the tick length of both the open and close marker
-  *
-  * @param length the tick length
-  */
+ * Sets the tick length of both the open and close marker
+ *
+ * @param length the tick length
+ */
 void StockBarAttributes::setTickLength(qreal length)
 {
     d->tickLength = length;
 }
 
 /**
-  * @return the tick length used for both the open and close marker
-  */
+ * @return the tick length used for both the open and close marker
+ */
 qreal StockBarAttributes::tickLength() const
 {
     return d->tickLength;

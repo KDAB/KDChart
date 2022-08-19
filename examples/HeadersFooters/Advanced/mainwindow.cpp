@@ -17,13 +17,13 @@
 
 #include "mainwindow.h"
 
-#include <KDChartChart>
-#include <KDChartHeaderFooter>
-#include <KDChartPosition>
 #include <KDChartCartesianCoordinatePlane>
-#include <KDChartLineDiagram>
-#include <KDChartTextAttributes>
+#include <KDChartChart>
 #include <KDChartDatasetProxyModel>
+#include <KDChartHeaderFooter>
+#include <KDChartLineDiagram>
+#include <KDChartPosition>
+#include <KDChartTextAttributes>
 #include <QComboBox>
 #include <QLineEdit>
 #include <QPen>

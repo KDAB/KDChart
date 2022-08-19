@@ -15,8 +15,8 @@
 **
 ****************************************************************************/
 
-#include "KDChartBarDiagram.h"
 #include "KDChartBarDiagram_p.h"
+#include "KDChartBarDiagram.h"
 
 #include "KDChartDataValueAttributes.h"
 #include "KDChartPainterSaver_p.h"
@@ -32,7 +32,7 @@ void BarDiagram::BarDiagramType::paintBars(PaintContext *ctx, const QModelIndex 
 {
     PainterSaver painterSaver(ctx->painter());
 
-    //Pending Michel: configure threeDBrush settings - shadowColor etc...
+    // Pending Michel: configure threeDBrush settings - shadowColor etc...
     QBrush indexBrush(diagram()->brush(index));
     QPen indexPen(diagram()->pen(index));
 
@@ -48,7 +48,7 @@ void BarDiagram::BarDiagramType::paintBars(PaintContext *ctx, const QModelIndex 
         if (maxDepth) {
             threeDAttrs.setDepth(-maxDepth);
         }
-        //fixme adjust the painting to reasonable depth value
+        // fixme adjust the painting to reasonable depth value
         const qreal usedDepth = threeDAttrs.depth() * (type() == BarDiagram::Normal ? 0.25 : 1.0);
 
         const QRectF isoRect = bar.translated(usedDepth, -usedDepth);
@@ -166,7 +166,7 @@ void BarDiagram::BarDiagramType::calculateValueAndGapWidths(int rowCount, int co
     // sebsauer; in the case e.g. CartesianCoordinatePlane::setHorizontalRangeReversed(true) was
     // used to reverse the values, we deal with negative outSpaceBetweenBars and unitWidth here
     // and since that's correct we don't like to lose e.g. the spacing here.
-    //if ( outSpaceBetweenBars < 0 )
+    // if ( outSpaceBetweenBars < 0 )
     //    outSpaceBetweenBars = 0;
 
     outSpaceBetweenGroups += unitWidth * ba.groupGapFactor();

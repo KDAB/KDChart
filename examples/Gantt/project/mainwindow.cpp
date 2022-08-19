@@ -20,35 +20,35 @@
 
 #include <QAction>
 #include <QApplication>
-#include <QComboBox>
-#include <QMenuBar>
-#include <QMenu>
-#include <QModelIndex>
-#include <QItemSelectionModel>
-#include <QTreeView>
-#include <QDebug>
 #include <QBrush>
-#include <QPainter>
-#include <QPrinter>
-#include <QPrintDialog>
-#include <QFileDialog>
-#include <QLabel>
-#include <QGridLayout>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QFileInfo>
-#include <QLineEdit>
 #include <QCheckBox>
-#include <QPushButton>
+#include <QComboBox>
+#include <QDebug>
 #include <QDialogButtonBox>
+#include <QFileDialog>
+#include <QFileInfo>
+#include <QGridLayout>
+#include <QHBoxLayout>
+#include <QItemSelectionModel>
+#include <QLabel>
+#include <QLineEdit>
+#include <QMenu>
+#include <QMenuBar>
+#include <QModelIndex>
+#include <QPainter>
+#include <QPrintDialog>
+#include <QPrinter>
+#include <QPushButton>
+#include <QTreeView>
+#include <QVBoxLayout>
 
-#include <KDGanttGlobal>
-#include <KDGanttView>
-#include <KDGanttItemDelegate>
-#include <KDGanttDateTimeGrid>
-#include <KDGanttStyleOptionGanttItem>
 #include <KDGanttConstraintModel>
+#include <KDGanttDateTimeGrid>
+#include <KDGanttGlobal>
 #include <KDGanttGraphicsView>
+#include <KDGanttItemDelegate>
+#include <KDGanttStyleOptionGanttItem>
+#include <KDGanttView>
 
 class ItemTypeComboBox : public QComboBox
 {
@@ -136,7 +136,7 @@ void MyItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
 void MyItemDelegate::drawDisplay(QPainter *painter, const QStyleOptionViewItem &option,
                                  const QRect &rect, const QString &text) const
 {
-    //qDebug() << "MyItemDelegate::drawDisplay(" <<painter<<rect<<text<<")";
+    // qDebug() << "MyItemDelegate::drawDisplay(" <<painter<<rect<<text<<")";
     auto typ = static_cast<KDGantt::ItemType>(text.toInt());
     QString str;
     switch (typ) {
@@ -173,7 +173,7 @@ public:
     {
     }
 
-    //virtual void paintUserDefinedHeader(QPainter* painter, const QRectF& headerRect, const QRectF& exposedRect, qreal offset, const KDGantt::DateTimeScaleFormatter* formatter, QWidget* widget = 0);
+    // virtual void paintUserDefinedHeader(QPainter* painter, const QRectF& headerRect, const QRectF& exposedRect, qreal offset, const KDGantt::DateTimeScaleFormatter* formatter, QWidget* widget = 0);
     void drawBackground(QPainter *painter, const QRectF &rect) override;
     void drawForeground(QPainter *painter, const QRectF &rect) override;
 };
@@ -194,7 +194,7 @@ void DateTimeGrid::drawBackground(QPainter *painter, const QRectF &rect)
         grad.setColorAt(i, currentColor);
     }
     QBrush brush(grad);
-    //brush.setColor(Qt::lightGray);
+    // brush.setColor(Qt::lightGray);
 
     QRectF r = computeRect(QDateTime::currentDateTime(),
                            QDateTime::currentDateTime().addDays(2),
@@ -270,10 +270,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_view->setGrid(new DateTimeGrid(this));
 
-    //QItemEditorCreatorBase *creator = new QItemEditorCreator<ItemTypeComboBox>("itemType");
-    //QItemEditorFactory* factory = new QItemEditorFactory;
-    //factory->registerEditor( QVariant( KDGantt::TypeTask ).type(), creator );
-    //m_view->itemDelegate()->setItemEditorFactory( factory );
+    // QItemEditorCreatorBase *creator = new QItemEditorCreator<ItemTypeComboBox>("itemType");
+    // QItemEditorFactory* factory = new QItemEditorFactory;
+    // factory->registerEditor( QVariant( KDGantt::TypeTask ).type(), creator );
+    // m_view->itemDelegate()->setItemEditorFactory( factory );
 
     setCentralWidget(m_view);
 
@@ -434,8 +434,8 @@ void MainWindow::slotCollapseAll()
 {
     // don't use the treeview's collapseAll/expandAll methods but use the one provided by the
     // view cause that one will take care to update everyt6hing as needed.
-    //QTreeView* view = qobject_cast<QTreeView*>( m_view->leftView() );
-    //view->collapseAll();
+    // QTreeView* view = qobject_cast<QTreeView*>( m_view->leftView() );
+    // view->collapseAll();
 
     QModelIndex idx = m_view->selectionModel()->currentIndex();
     if (idx.isValid())
@@ -446,8 +446,8 @@ void MainWindow::slotExpandAll()
 {
     // don't use the treeview's collapseAll/expandAll methods but use the one provided by the
     // view cause that one will take care to update everyt6hing as needed.
-    //QTreeView* view = qobject_cast<QTreeView*>( m_view->leftView() );
-    //view->expandAll();
+    // QTreeView* view = qobject_cast<QTreeView*>( m_view->leftView() );
+    // view->expandAll();
 
     QModelIndex idx = m_view->selectionModel()->currentIndex();
     if (idx.isValid())

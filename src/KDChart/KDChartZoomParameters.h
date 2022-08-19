@@ -33,9 +33,9 @@
 
 namespace KDChart {
 /**
-      * ZoomParameters stores the center and the factor of zooming internally
-      * \internal
-      */
+ * ZoomParameters stores the center and the factor of zooming internally
+ * \internal
+ */
 class ZoomParameters
 {
 public:

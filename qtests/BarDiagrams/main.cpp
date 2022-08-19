@@ -15,12 +15,12 @@
 **
 ****************************************************************************/
 
-#include <QtTest/QtTest>
+#include <KDChartBarDiagram>
+#include <KDChartCartesianCoordinatePlane>
 #include <KDChartChart>
 #include <KDChartGlobal>
-#include <KDChartBarDiagram>
 #include <KDChartThreeDBarAttributes>
-#include <KDChartCartesianCoordinatePlane>
+#include <QtTest/QtTest>
 
 #include <TableModel.h>
 
@@ -52,13 +52,13 @@ private slots:
         m_bars->setType(BarDiagram::Rows);
         QCOMPARE(m_bars->type(), BarDiagram::Rows);
 #endif
-        //reset to normal
+        // reset to normal
         m_bars->setType(BarDiagram::Normal);
     }
 
     void testBarAttributesLevelSettings()
     {
-        //check segments
+        // check segments
         const int rows = m_bars->model()->rowCount();
         QCOMPARE(m_bars->numberOfAbscissaSegments(), rows);
         const int cols = m_bars->model()->columnCount();
@@ -101,14 +101,14 @@ private slots:
         QVERIFY(ba.drawSolidExcessArrows() == false);
         QVERIFY(ba.groupGapFactor() == 2.0);
         QVERIFY(ba.barGapFactor() == 0.4);
-        //change settings
+        // change settings
         ba.setFixedDataValueGap(7);
         ba.setUseFixedDataValueGap(true);
         ba.setFixedValueBlockGap(25);
         ba.setUseFixedValueBlockGap(true);
         ba.setFixedBarWidth(1);
         ba.setUseFixedBarWidth(true);
-        ba.setDrawSolidExcessArrows(true); //not implemented yet
+        ba.setDrawSolidExcessArrows(true); // not implemented yet
         ba.setGroupGapFactor(2);
         ba.setBarGapFactor(1);
         m_bars->setBarAttributes(ba);
@@ -126,7 +126,7 @@ private slots:
 
     void testThreeDBarAttributesLevelSettings()
     {
-        //check segments
+        // check segments
         const int rows = m_bars->model()->rowCount();
         QCOMPARE(m_bars->numberOfAbscissaSegments(), rows);
         const int cols = m_bars->model()->columnCount();
@@ -159,23 +159,23 @@ private slots:
     {
         ThreeDBarAttributes td(m_bars->threeDBarAttributes());
 
-        //check default values
-        //generics == AbstractThreeD
+        // check default values
+        // generics == AbstractThreeD
         QVERIFY(td.isEnabled() == false);
         QVERIFY(td.depth() == 20);
         QVERIFY(td.validDepth() == 0.0);
-        //bars specifics
+        // bars specifics
         QVERIFY(td.useShadowColors() == true); // Not implemented
         QVERIFY(td.angle() == 45); // Not implemented
 
-        //set new values
+        // set new values
         td.setEnabled(true);
         td.setDepth(40);
         td.setUseShadowColors(false);
         td.setAngle(75);
         m_bars->setThreeDBarAttributes(td);
 
-        //get new values
+        // get new values
         QVERIFY(m_bars->threeDBarAttributes().isEnabled() == true);
         QVERIFY(m_bars->threeDBarAttributes().depth() == 40);
         QVERIFY(m_bars->threeDBarAttributes().validDepth() == 40);

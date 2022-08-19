@@ -22,11 +22,11 @@
 // #include <QRectF>
 // #include <QWidget>
 
-#include "kdchart_export.h"
-#include "KDChartGlobal.h"
 #include "KDChartAbstractArea.h"
-#include "KDChartTextAttributes.h"
+#include "KDChartGlobal.h"
 #include "KDChartRulerAttributes.h"
+#include "KDChartTextAttributes.h"
+#include "kdchart_export.h"
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -41,13 +41,13 @@ class PaintContext;
 class AbstractDiagram;
 
 /**
-      * The base class for axes.
-      *
-      * For being useful, axes need to be assigned to a diagram, see
-      * AbstractCartesianDiagram::addAxis and AbstractCartesianDiagram::takeAxis.
-      *
-      * \sa PolarAxis, AbstractCartesianDiagram
-      */
+ * The base class for axes.
+ *
+ * For being useful, axes need to be assigned to a diagram, see
+ * AbstractCartesianDiagram::addAxis and AbstractCartesianDiagram::takeAxis.
+ *
+ * \sa PolarAxis, AbstractCartesianDiagram
+ */
 class KDCHART_EXPORT AbstractAxis : public AbstractArea
 {
     Q_OBJECT
@@ -67,76 +67,76 @@ public:
 
     /*    virtual void paint( PaintContext* ) const = 0;
               virtual QSize sizeHint() const = 0;*/
-    //virtual void paintEvent( QPaintEvent* event) = 0;
+    // virtual void paintEvent( QPaintEvent* event) = 0;
 
     /**
-         * \brief Reimplement this method if you want to adjust axis labels
-         * before they are printed.
-         *
-         * KD Chart is calling this method immediately before drawing the
-         * text, this  means: What you return here will be drawn without
-         * further modifications.
-         *
-         * \param label The text of the label as KD Chart has calculated it
-         * automatically (or as it was taken from a QStringList provided
-         * by you, resp.)
-         *
-         * \note If you reimplement this method in a subclass of KDChartCartesianAxis,
-         * and your reimplementation's return value depends on data other than @p label
-         * (so KDChart will not know when it changes), you must manually ensure that
-         * layouts are adapted to any changed sizes of the axis labels. To do that,
-         * call KDChartCartesianAxis::layoutPlanes() from your reimplementation when
-         * you know that the external data changed and it will change label sizes -
-         * or when you cannot exclude that.
-         *
-         * \return The text to be drawn. By default this is the same as \c label.
-         */
+     * \brief Reimplement this method if you want to adjust axis labels
+     * before they are printed.
+     *
+     * KD Chart is calling this method immediately before drawing the
+     * text, this  means: What you return here will be drawn without
+     * further modifications.
+     *
+     * \param label The text of the label as KD Chart has calculated it
+     * automatically (or as it was taken from a QStringList provided
+     * by you, resp.)
+     *
+     * \note If you reimplement this method in a subclass of KDChartCartesianAxis,
+     * and your reimplementation's return value depends on data other than @p label
+     * (so KDChart will not know when it changes), you must manually ensure that
+     * layouts are adapted to any changed sizes of the axis labels. To do that,
+     * call KDChartCartesianAxis::layoutPlanes() from your reimplementation when
+     * you know that the external data changed and it will change label sizes -
+     * or when you cannot exclude that.
+     *
+     * \return The text to be drawn. By default this is the same as \c label.
+     */
     virtual const QString customizedLabel(const QString &label) const;
 
     /**
-         * Returns true if both axes have the same settings.
-         */
+     * Returns true if both axes have the same settings.
+     */
     bool compare(const AbstractAxis *other) const;
 
     /**
-          * \internal
-          *
-          * Method invoked by AbstractCartesianDiagram::addAxis().
-          *
-          * You should not call this function, unless you know exactly,
-          * what you are doing.
-          *
-          * \sa connectSignals(), AbstractCartesianDiagram::addAxis()
-          */
+     * \internal
+     *
+     * Method invoked by AbstractCartesianDiagram::addAxis().
+     *
+     * You should not call this function, unless you know exactly,
+     * what you are doing.
+     *
+     * \sa connectSignals(), AbstractCartesianDiagram::addAxis()
+     */
     void createObserver(AbstractDiagram *diagram);
 
     /**
-          * \internal
-          *
-          * Method invoked by AbstractCartesianDiagram::takeAxis().
-          *
-          * You should not call this function, unless you know exactly,
-          * what you are doing.
-          *
-          * \sa AbstractCartesianDiagram::takeAxis()
-          */
+     * \internal
+     *
+     * Method invoked by AbstractCartesianDiagram::takeAxis().
+     *
+     * You should not call this function, unless you know exactly,
+     * what you are doing.
+     *
+     * \sa AbstractCartesianDiagram::takeAxis()
+     */
     void deleteObserver(AbstractDiagram *diagram);
     const AbstractDiagram *diagram() const;
     bool observedBy(AbstractDiagram *diagram) const;
 
     /**
-          * Wireing the signal/slot connections.
-          *
-          * This method gets called automatically, each time, when you assign
-          * the axis to a diagram, either by passing a diagram* to the c'tor,
-          * or by calling the diagram's setAxis method, resp.
-          *
-          * If overwriting this method in derived classes, make sure to call
-          * this base method AbstractAxis::connectSignals(), so your axis
-          * gets connected to the diagram's built-in signals.
-          *
-          * \sa AbstractCartesianDiagram::addAxis()
-          */
+     * Wireing the signal/slot connections.
+     *
+     * This method gets called automatically, each time, when you assign
+     * the axis to a diagram, either by passing a diagram* to the c'tor,
+     * or by calling the diagram's setAxis method, resp.
+     *
+     * If overwriting this method in derived classes, make sure to call
+     * this base method AbstractAxis::connectSignals(), so your axis
+     * gets connected to the diagram's built-in signals.
+     *
+     * \sa AbstractCartesianDiagram::addAxis()
+     */
     virtual void connectSignals();
 
     /**

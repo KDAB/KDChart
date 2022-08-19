@@ -29,13 +29,13 @@
 // We mean it.
 //
 
-#include <QTextDocument>
 #include <QSize>
+#include <QTextDocument>
 
 /**
-  * KDTextDocument is an internally used enhanced QTextDocument
-  * \internal
-  */
+ * KDTextDocument is an internally used enhanced QTextDocument
+ * \internal
+ */
 class KDTextDocument : public QTextDocument
 {
     Q_OBJECT

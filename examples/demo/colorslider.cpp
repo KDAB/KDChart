@@ -17,9 +17,9 @@
 
 #include "colorslider.h"
 
+#include <QtGui/QMouseEvent>
 #include <QtGui/QPaintEvent>
 #include <QtGui/QPainter>
-#include <QtGui/QMouseEvent>
 
 #include <QDebug>
 
@@ -91,7 +91,7 @@ void ColorSlider::setEndColor(const QColor &color)
 void ColorSlider::paintEvent(QPaintEvent *event)
 {
     QAbstractSlider::paintEvent(event);
-    const double percentage = value() / (double)(maximum() - minimum());
+    const double percentage = value() / ( double )(maximum() - minimum());
     QPainter painter(this);
     QLinearGradient gradient;
     gradient.setStart(0, 0);
@@ -127,7 +127,7 @@ void ColorSlider::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         d->m_dragging = true;
-        const qreal relPos = qMin((qreal)1.0, qMax((qreal)0.0, event->localPos().x() / rect().width()));
+        const qreal relPos = qMin(( qreal )1.0, qMax(( qreal )0.0, event->localPos().x() / rect().width()));
         setValue((maximum() - minimum()) * relPos);
     }
 }
@@ -136,7 +136,7 @@ void ColorSlider::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() != Qt::LeftButton) {
         d->m_dragging = false;
-        const qreal relPos = qMin((qreal)1.0, qMax((qreal)0.0, event->localPos().x() / rect().width()));
+        const qreal relPos = qMin(( qreal )1.0, qMax(( qreal )0.0, event->localPos().x() / rect().width()));
         setValue((maximum() - minimum()) * relPos);
     }
 }
@@ -144,7 +144,7 @@ void ColorSlider::mouseReleaseEvent(QMouseEvent *event)
 void ColorSlider::mouseMoveEvent(QMouseEvent *event)
 {
     if (d->m_dragging) {
-        const qreal relPos = qMin((qreal)1.0, qMax((qreal)0.0, event->localPos().x() / rect().width()));
+        const qreal relPos = qMin(( qreal )1.0, qMax(( qreal )0.0, event->localPos().x() / rect().width()));
         setValue((maximum() - minimum()) * relPos);
     }
 }

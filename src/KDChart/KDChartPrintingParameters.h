@@ -18,8 +18,8 @@
 #ifndef PRINTINGPARAMETERS_H
 #define PRINTINGPARAMETERS_H
 
-#include <QPen>
 #include <QDebug>
+#include <QPen>
 
 //
 //  W A R N I N G
@@ -34,10 +34,10 @@
 
 namespace KDChart {
 /**
-     * PrintingParameters stores the scale factor which lines has to been scaled with when printing.
-     * It's essentially printer's logical DPI / widget's logical DPI
-     * \internal
-     */
+ * PrintingParameters stores the scale factor which lines has to been scaled with when printing.
+ * It's essentially printer's logical DPI / widget's logical DPI
+ * \internal
+ */
 class PrintingParameters
 {
 public:

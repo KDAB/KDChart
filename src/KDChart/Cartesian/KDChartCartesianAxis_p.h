@@ -29,9 +29,9 @@
 // We mean it.
 //
 
-#include "KDChartCartesianAxis.h"
-#include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartAbstractAxis_p.h"
+#include "KDChartAbstractCartesianDiagram.h"
+#include "KDChartCartesianAxis.h"
 
 #include <KDABLibFakes>
 
@@ -40,8 +40,8 @@
 namespace KDChart {
 
 /**
-  * \internal
-  */
+ * \internal
+ */
 class CartesianAxis::Private : public AbstractAxis::Private
 {
     friend class CartesianAxis;
@@ -119,14 +119,14 @@ public:
     }
 
     // for rvalues
-    template <class T>
+    template<class T>
     T operator()(T x, T y) const
     {
         return isY ? y : x;
     }
 
     // lvalues
-    template <class T>
+    template<class T>
     T &lvalue(T &x, T &y) const
     {
         return isY ? y : x;
@@ -138,7 +138,8 @@ public:
 class TickIterator
 {
 public:
-    enum TickType {
+    enum TickType
+    {
         NoTick = 0,
         MajorTick,
         MajorTickHeaderDataLabel,

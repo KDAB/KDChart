@@ -15,11 +15,11 @@
 **
 ****************************************************************************/
 
+#include <KDChartBarDiagram>
+#include <KDChartChart>
+#include <QApplication>
 #include <QtGui>
 #include <QtSvg/QSvgGenerator>
-#include <KDChartChart>
-#include <KDChartBarDiagram>
-#include <QApplication>
 
 class ChartWidget : public QWidget
 {

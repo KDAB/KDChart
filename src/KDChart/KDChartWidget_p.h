@@ -29,10 +29,10 @@
 // We mean it.
 //
 
-#include <KDChartWidget.h>
-#include <KDChartChart.h>
 #include <KDChartCartesianCoordinatePlane.h>
+#include <KDChartChart.h>
 #include <KDChartPolarCoordinatePlane.h>
+#include <KDChartWidget.h>
 
 #include <KDABLibFakes>
 

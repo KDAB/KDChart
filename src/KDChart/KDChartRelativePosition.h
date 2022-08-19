@@ -18,12 +18,12 @@
 #ifndef KDCHARTRELATIVEPOSITION_H
 #define KDCHARTRELATIVEPOSITION_H
 
+#include "KDChartGlobal.h"
 #include <QDebug>
 #include <QMetaType>
-#include <Qt>
 #include <QPointF>
 #include <QSizeF>
-#include "KDChartGlobal.h"
+#include <Qt>
 
 namespace KDChart {
 

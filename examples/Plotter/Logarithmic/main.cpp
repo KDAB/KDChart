@@ -15,16 +15,16 @@
 **
 ****************************************************************************/
 
-#include <QtGui>
 #include <KDChartChart>
-#include <KDChartLineDiagram>
 #include <KDChartDataValueAttributes>
 #include <KDChartFrameAttributes>
+#include <KDChartLineDiagram>
+#include <QtGui>
 
-#include <KDChartPlotter>
 #include <KDChartCartesianAxis>
 #include <KDChartCartesianCoordinatePlane>
 #include <KDChartLegend>
+#include <KDChartPlotter>
 #include <QStandardItemModel>
 
 #include <QApplication>
@@ -93,7 +93,7 @@ int main(int argc, char **argv)
     cart_plane->setAxesCalcModeY(KDChart::AbstractCoordinatePlane::Logarithmic);
 
     // Set the vertical range from 15 to 75 - with a logarithmic axis I actually get 1 to 100
-    //cart_plane->setVerticalRange(QPair<qreal,qreal>( 0.005, 1000 ) );
+    // cart_plane->setVerticalRange(QPair<qreal,qreal>( 0.005, 1000 ) );
 
     // Set the horizontal range from 1 to 9 - with a linear axis this works OK
     cart_plane->setHorizontalRange(QPair<qreal, qreal>(0.001, 100));

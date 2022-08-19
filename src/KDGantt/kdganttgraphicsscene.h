@@ -19,8 +19,8 @@
 #define KDGANTTGRAPHICSSCENE_H
 
 #include <QDateTime>
-#include <QList>
 #include <QGraphicsScene>
+#include <QList>
 #include <QModelIndex>
 
 #include "kdganttglobal.h"
@@ -48,8 +48,8 @@ public:
     explicit GraphicsScene(QObject *parent = nullptr);
     ~GraphicsScene() override;
 
-    //qreal dateTimeToSceneX( const QDateTime& dt ) const;
-    //QDateTime sceneXtoDateTime( qreal x ) const;
+    // qreal dateTimeToSceneX( const QDateTime& dt ) const;
+    // QDateTime sceneXtoDateTime( qreal x ) const;
 
     static QModelIndex mainIndex(const QModelIndex &idx);
     static QModelIndex dataIndex(const QModelIndex &idx);

@@ -18,9 +18,9 @@
 #ifndef KDGANTTCONSTRAINT_P_H
 #define KDGANTTCONSTRAINT_P_H
 
-#include <QSharedData>
-#include <QPersistentModelIndex>
 #include <QMap>
+#include <QPersistentModelIndex>
+#include <QSharedData>
 
 #include "kdganttconstraint.h"
 

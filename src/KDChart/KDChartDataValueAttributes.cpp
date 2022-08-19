@@ -17,14 +17,14 @@
 
 #include "KDChartDataValueAttributes.h"
 
-#include <QVariant>
-#include <QDebug>
-#include "KDChartRelativePosition.h"
 #include "KDChartPosition.h"
-#include <KDChartTextAttributes.h>
-#include <KDChartFrameAttributes.h>
+#include "KDChartRelativePosition.h"
 #include <KDChartBackgroundAttributes.h>
+#include <KDChartFrameAttributes.h>
 #include <KDChartMarkerAttributes.h>
+#include <KDChartTextAttributes.h>
+#include <QDebug>
+#include <QVariant>
 
 #include <KDABLibFakes>
 

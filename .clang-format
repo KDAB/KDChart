@@ -1,62 +1,74 @@
-# Copyright (C) 2016 Olivier Goffart <ogoffart@woboq.com>
-#
-# You may use this file under the terms of the 3-clause BSD license.
-# See the file LICENSE from this package for details.
-
-# This is the clang-format configuration style to be used by Qt,
-# based on the rules from https://wiki.qt.io/Qt_Coding_Style and
-# https://wiki.qt.io/Coding_Conventions
-
 ---
-# Webkit style was loosely based on the Qt style
+Language: Json
+DisableFormat: true
+---
 BasedOnStyle: WebKit
-
+Language: Cpp
 Standard: Cpp11
-ColumnLimit: 0
 
-# Disable reflow of qdoc comments: indentation rules are different.
-# Translation comments are also excluded
-CommentPragmas: "^!|^:"
-
-# We want a space between the type and the star for pointer types
-PointerBindsToType: false
-
-# We want to break before the operators, but not before a '='
+IndentWidth: 4
+SpacesBeforeTrailingComments: 1
+TabWidth: 8
+UseTab: Never
+ContinuationIndentWidth: 4
+MaxEmptyLinesToKeep: 3
 BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeTernaryOperators: true
+BreakConstructorInitializers: BeforeColon
+BreakConstructorInitializersBeforeComma: true
 
-# Braces are usually attached, but not after functions or classes declaration
 BreakBeforeBraces: Custom
 BraceWrapping:
-    AfterClass: true
-    AfterControlStatement: false
-    AfterEnum: false
-    AfterFunction: true
-    AfterNamespace: false
-    AfterObjCDeclaration: false
-    AfterStruct: true
-    AfterUnion: false
-    BeforeCatch: false
-    BeforeElse: false
-    IndentBraces: false
-Cpp11BracedListStyle: true
-SpaceBeforeCpp11BracedList: false
+  AfterClass: true
+  AfterControlStatement: false
+  AfterEnum: false
+  AfterFunction: true
+  AfterNamespace: false
+  AfterObjCDeclaration: false
+  AfterStruct: true
+  AfterUnion: false
+  BeforeCatch: false
+  BeforeElse: false
+  IndentBraces: false
 
-# The coding style does not specify the following, but this is what gives
-# results closest to the existing code.
+ForEachMacros:
+  - forever # avoids { wrapped to next line
+  - foreach
+  - Q_FOREACH
+
+AccessModifierOffset: -4
+ConstructorInitializerIndentWidth: 4
+AlignEscapedNewlinesLeft: false
+AlignTrailingComments: false
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: false
+AllowShortEnumsOnASingleLine: false # requires clang-format 11
 AlignAfterOpenBracket: true
+AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: true
-
-# Ideally we should also allow less short function in a single line, but
-# clang-format does not handle that
-AllowShortFunctionsOnASingleLine: Inline
-
-# The coding style specifies some include order categories:
-# #include "header_include.h"
-# #include "module_includes.h"
-# #include <dir/project_includes.h>
-# #include <QIncludes>
-# #include <cpp_includes>
-SortIncludes: false
-
-# macros for which the opening brace stays attached
-ForEachMacros:   [ foreach, Q_FOREACH, BOOST_FOREACH, forever, Q_FOREVER, QBENCHMARK, QBENCHMARK_ONCE ]
+BinPackParameters: true
+ColumnLimit: 0
+Cpp11BracedListStyle: true
+DerivePointerBinding: false
+ExperimentalAutoDetectBinPacking: false
+IndentCaseLabels: false
+NamespaceIndentation: None
+ObjCSpaceBeforeProtocolList: true
+PenaltyBreakBeforeFirstCallParameter: 19
+PenaltyBreakComment: 60
+PenaltyBreakFirstLessLess: 120
+PenaltyBreakString: 1000
+PenaltyExcessCharacter: 1000000
+PenaltyReturnTypeOnItsOwnLine: 60
+PointerBindsToType: false
+SpaceAfterTemplateKeyword: false
+IndentFunctionDeclarationAfterType: false
+SpaceAfterControlStatementKeyword: true
+SpaceBeforeAssignmentOperators: true
+SpaceInEmptyParentheses: false
+SpacesInAngles: false
+SpacesInCStyleCastParentheses: true
+SpacesInParentheses: false
+...

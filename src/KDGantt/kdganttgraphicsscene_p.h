@@ -18,15 +18,15 @@
 #ifndef KDGANTTGRAPHICSSCENE_P_H
 #define KDGANTTGRAPHICSSCENE_P_H
 
-#include <QPersistentModelIndex>
-#include <QHash>
-#include <QPointer>
-#include <QItemSelectionModel>
 #include <QAbstractProxyModel>
+#include <QHash>
+#include <QItemSelectionModel>
+#include <QPersistentModelIndex>
+#include <QPointer>
 
-#include "kdganttgraphicsscene.h"
 #include "kdganttconstraintmodel.h"
 #include "kdganttdatetimegrid.h"
+#include "kdganttgraphicsscene.h"
 
 namespace KDGantt {
 class GraphicsScene::Private

@@ -17,8 +17,8 @@
 
 #include "KDChartGridAttributes.h"
 
-#include <QPen>
 #include <QDebug>
+#include <QPen>
 
 #include <KDABLibFakes>
 
@@ -111,52 +111,52 @@ bool GridAttributes::linesOnAnnotations() const
 }
 
 /**
-  * Specifies the step width to be used for calculating
-  * the grid lines.
-  *
-  * \note Step with can be set for Linear axis calculation mode only,
-  * there is no way to specify a step width for Logarithmic axes.
-  *
-  * By default the GridAttributes class does not use a fixed step width,
-  * but it uses KDChartEnums::GranularitySequence_10_20.
-  *
-  * \param stepWidth the step width to be used.
-  * If this parameter is omitted (or set to Zero, resp.)
-  * the automatic step width calculation will be done,
-  * using the granularity sequence specified.
-  * This is the default.
-  *
-  * \sa gridStepWidth, setGranularitySequence
-  */
+ * Specifies the step width to be used for calculating
+ * the grid lines.
+ *
+ * \note Step with can be set for Linear axis calculation mode only,
+ * there is no way to specify a step width for Logarithmic axes.
+ *
+ * By default the GridAttributes class does not use a fixed step width,
+ * but it uses KDChartEnums::GranularitySequence_10_20.
+ *
+ * \param stepWidth the step width to be used.
+ * If this parameter is omitted (or set to Zero, resp.)
+ * the automatic step width calculation will be done,
+ * using the granularity sequence specified.
+ * This is the default.
+ *
+ * \sa gridStepWidth, setGranularitySequence
+ */
 void GridAttributes::setGridStepWidth(qreal stepWidth)
 {
     d->stepWidth = stepWidth;
 }
 
 /**
-  * Returns the step width to be used for calculating
-  * the grid lines.
-  *
-  * \sa setGridStepWidth
-  */
+ * Returns the step width to be used for calculating
+ * the grid lines.
+ *
+ * \sa setGridStepWidth
+ */
 qreal GridAttributes::gridStepWidth() const
 {
     return d->stepWidth;
 }
 
 /**
-  * Specifies the sub-step width to be used for calculating
-  * the grid sub-lines.
-  *
-  *
-  * \param subStepWidth the sub-step width to be used.
-  * If this parameter is omitted (or set to Zero, resp.)
-  * the automatic calculation will be done, using the
-  * granularity sequence specified.
-  * This is the default.
-  *
-  * \sa gridSubStepWidth
-  */
+ * Specifies the sub-step width to be used for calculating
+ * the grid sub-lines.
+ *
+ *
+ * \param subStepWidth the sub-step width to be used.
+ * If this parameter is omitted (or set to Zero, resp.)
+ * the automatic calculation will be done, using the
+ * granularity sequence specified.
+ * This is the default.
+ *
+ * \sa gridSubStepWidth
+ */
 
 void GridAttributes::setGridSubStepWidth(qreal subStepWidth)
 {
@@ -164,44 +164,44 @@ void GridAttributes::setGridSubStepWidth(qreal subStepWidth)
 }
 
 /**
-  * Returns the sub-step width to be used for calculating
-  * the sub-grid lines.
-  *
-  * \sa setGridStepWidth
-  */
+ * Returns the sub-step width to be used for calculating
+ * the sub-grid lines.
+ *
+ * \sa setGridStepWidth
+ */
 qreal GridAttributes::gridSubStepWidth() const
 {
     return d->subStepWidth;
 }
 
 /**
-  * Specifies the granularity sequence to be used for calculating
-  * the grid lines.
-  *
-  * By default the GridAttributes class uses KDChartEnums::GranularitySequence_10_20.
-  *
-  * \note Granularity can be set for Linear axis calculation mode only,
-  * there is no way to specify a step width for Logarithmic axes.
-  *
-  * \note The sequence specified by this method is ignored, if
-  * a fixed step width was specified via setStepWidth.
-  *
-  * \param sequence one of the sequences declared in
-  * KDChartEnums::GranularitySequence.
-  *
-  * \sa gridGranularitySequence, setStepWidth
-  */
+ * Specifies the granularity sequence to be used for calculating
+ * the grid lines.
+ *
+ * By default the GridAttributes class uses KDChartEnums::GranularitySequence_10_20.
+ *
+ * \note Granularity can be set for Linear axis calculation mode only,
+ * there is no way to specify a step width for Logarithmic axes.
+ *
+ * \note The sequence specified by this method is ignored, if
+ * a fixed step width was specified via setStepWidth.
+ *
+ * \param sequence one of the sequences declared in
+ * KDChartEnums::GranularitySequence.
+ *
+ * \sa gridGranularitySequence, setStepWidth
+ */
 void GridAttributes::setGridGranularitySequence(KDChartEnums::GranularitySequence sequence)
 {
     d->sequence = sequence;
 }
 
 /**
-  * Returns the granularity sequence to be used for calculating
-  * the grid lines.
-  *
-  * \sa setGridGranularitySequence
-  */
+ * Returns the granularity sequence to be used for calculating
+ * the grid lines.
+ *
+ * \sa setGridGranularitySequence
+ */
 KDChartEnums::GranularitySequence GridAttributes::gridGranularitySequence() const
 {
     return d->sequence;

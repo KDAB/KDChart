@@ -21,8 +21,8 @@
 #include <QDialog>
 #include <QMap>
 
-#include "ui_mainwindow.h"
 #include "ui_addheaderdialog.h"
+#include "ui_mainwindow.h"
 #include <TableModel.h>
 
 namespace KDChart {

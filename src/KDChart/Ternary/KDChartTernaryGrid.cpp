@@ -22,15 +22,15 @@
 #include <algorithm>
 #include <limits>
 
-#include <QtDebug>
 #include <QApplication>
+#include <QtDebug>
 
-#include "TernaryPoint.h"
-#include "TernaryConstants.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
-#include "KDChartTernaryCoordinatePlane.h"
 #include "KDChartPrintingParameters.h"
+#include "KDChartTernaryCoordinatePlane.h"
+#include "TernaryConstants.h"
+#include "TernaryPoint.h"
 
 using namespace KDChart;
 

@@ -25,8 +25,8 @@
 #include <QLayoutItem>
 #include <QPen>
 
-#include "KDChartTextAttributes.h"
 #include "KDChartMarkerAttributes.h"
+#include "KDChartTextAttributes.h"
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -40,9 +40,9 @@ class AbstractDiagram;
 class PaintContext;
 
 /**
-     * Base class for all layout items of KD Chart
-     * \internal
-     */
+ * Base class for all layout items of KD Chart
+ * \internal
+ */
 class KDCHART_EXPORT AbstractLayoutItem : public QLayoutItem
 {
 public:
@@ -52,11 +52,11 @@ public:
     }
 
     /**
-         * Default impl: just call paint.
-         *
-         * Derived classes like KDChart::AbstractArea are providing
-         * additional action here.
-         */
+     * Default impl: just call paint.
+     *
+     * Derived classes like KDChart::AbstractArea are providing
+     * additional action here.
+     */
     virtual void paintAll(QPainter &painter);
 
     virtual void paint(QPainter *) = 0;
@@ -89,9 +89,9 @@ protected:
 };
 
 /**
-     * Layout item showing a text
-     *\internal
-     */
+ * Layout item showing a text
+ *\internal
+ */
 class KDCHART_EXPORT TextLayoutItem : public AbstractLayoutItem
 {
 public:
@@ -210,9 +210,9 @@ private:
 };
 
 /**
-     * Layout item showing a data point marker
-     * \internal
-     */
+ * Layout item showing a data point marker
+ * \internal
+ */
 class KDCHART_EXPORT MarkerLayoutItem : public AbstractLayoutItem
 {
 public:
@@ -249,9 +249,9 @@ private:
 };
 
 /**
-     * Layout item showing a coloured line
-     * \internal
-     */
+ * Layout item showing a coloured line
+ * \internal
+ */
 class KDCHART_EXPORT LineLayoutItem : public AbstractLayoutItem
 {
 public:
@@ -281,7 +281,7 @@ public:
         Qt::Alignment lineAlignment);
 
 private:
-    AbstractDiagram *mDiagram; //TODO: not used. remove it
+    AbstractDiagram *mDiagram; // TODO: not used. remove it
     int mLength;
     QPen mPen;
     QRect mRect;
@@ -289,9 +289,9 @@ private:
 };
 
 /**
-     * Layout item showing a coloured line and a data point marker
-     * \internal
-     */
+ * Layout item showing a coloured line and a data point marker
+ * \internal
+ */
 class KDCHART_EXPORT LineWithMarkerLayoutItem : public AbstractLayoutItem
 {
 public:
@@ -326,9 +326,9 @@ private:
 };
 
 /**
-     * Layout item showing a horizontal line
-     * \internal
-     */
+ * Layout item showing a horizontal line
+ * \internal
+ */
 class KDCHART_EXPORT HorizontalLineLayoutItem : public AbstractLayoutItem
 {
 public:
@@ -349,9 +349,9 @@ private:
 };
 
 /**
-     * Layout item showing a vertical line
-     * \internal
-     */
+ * Layout item showing a vertical line
+ * \internal
+ */
 class KDCHART_EXPORT VerticalLineLayoutItem : public AbstractLayoutItem
 {
 public:

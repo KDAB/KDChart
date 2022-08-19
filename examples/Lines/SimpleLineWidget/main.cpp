@@ -15,10 +15,10 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
-#include <KDChartWidget>
-#include <KDChartLineDiagram>
 #include <KDChartLegend>
+#include <KDChartLineDiagram>
+#include <KDChartWidget>
+#include <QApplication>
 
 using namespace KDChart;
 
@@ -40,8 +40,8 @@ int main(int argc, char **argv)
     widget.setDataset(2, vec2, "vec2");
     widget.setSubType(Widget::Percent);
 
-    //Configure a pen and draw a line
-    //a dot line for column 1
+    // Configure a pen and draw a line
+    // a dot line for column 1
     QPen pen;
     QBrush brush;
     pen.setWidth(3);
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
     widget.lineDiagram()->setPen(1, pen);
     widget.lineDiagram()->setBrush(1, brush);
 
-    //set up a legend
+    // set up a legend
     auto *legend = new Legend(&widget);
     legend->setPosition(Position::East);
     legend->setAlignment(Qt::AlignCenter);
@@ -61,8 +61,8 @@ int main(int argc, char **argv)
     legend->setLegendStyle(Legend::LinesOnly);
     legend->setShowLines(true);
     widget.addLegend(legend);
-    //Set up your Attributes
-    //display areas
+    // Set up your Attributes
+    // display areas
     LineAttributes la(widget.lineDiagram()->lineAttributes());
     la.setDisplayArea(true);
     la.setTransparency(25);

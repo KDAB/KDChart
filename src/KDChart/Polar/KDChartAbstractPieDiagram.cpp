@@ -55,7 +55,7 @@ bool AbstractPieDiagram::compare(const AbstractPieDiagram *other) const
     if (other == this)
         return true;
     if (!other) {
-        //qDebug() << "AbstractPieDiagram::compare() cannot compare to Null pointer";
+        // qDebug() << "AbstractPieDiagram::compare() cannot compare to Null pointer";
         return false;
     }
     /*

@@ -19,11 +19,11 @@
 
 #include <QModelIndex>
 
+#include "KDChartAbstractCartesianDiagram.h"
+#include "KDChartAttributesModel.h"
 #include "KDChartBarDiagram.h"
 #include "KDChartLineDiagram.h"
 #include "KDChartTextAttributes.h"
-#include "KDChartAttributesModel.h"
-#include "KDChartAbstractCartesianDiagram.h"
 #include "PaintingHelpers_p.h"
 
 using namespace KDChart;
@@ -86,13 +86,13 @@ void PercentLineDiagram::paintWithLines(PaintContext *ctx)
     LabelPaintCache lpc;
     LineAttributesInfoList lineList;
 
-    //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked and ::Percent
+    // FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked and ::Percent
 
     qreal maxValue = 100; // always 100%
     qreal sumValues = 0;
     QVector<qreal> percentSumValues;
 
-    //calculate sum of values for each column and store
+    // calculate sum of values for each column and store
     for (int row = 0; row < rowCount; ++row) {
         for (int col = 0; col < columnCount; ++col) {
             const CartesianDiagramDataCompressor::CachePosition position(row, col);
@@ -115,7 +115,7 @@ void PercentLineDiagram::paintWithLines(PaintContext *ctx)
     bool bFirstDataset = true;
 
     for (int column = 0; column < columnCount; ++column) {
-        //display area can be set by dataset ( == column) and/or by cell
+        // display area can be set by dataset ( == column) and/or by cell
         LineAttributes laPreviousCell; // by default no area is drawn
         QModelIndex indexPreviousCell;
         QList<QPolygonF> areas;
@@ -130,8 +130,8 @@ void PercentLineDiagram::paintWithLines(PaintContext *ctx)
 
             qreal stackedValues = 0, nextValues = 0, nextKey = 0;
             for (int column2 = column;
-                 column2 >= 0; //datasetDimension() - 1;
-                 column2 -= 1) //datasetDimension() )
+                 column2 >= 0; // datasetDimension() - 1;
+                 column2 -= 1) // datasetDimension() )
             {
                 const CartesianDiagramDataCompressor::CachePosition position(row, column2);
                 CartesianDiagramDataCompressor::DataPoint point = compressor().data(position);
@@ -143,7 +143,7 @@ void PercentLineDiagram::paintWithLines(PaintContext *ctx)
                 const qreal val = point.value;
                 if (val > 0)
                     stackedValues += val;
-                //qDebug() << valueForCell( iRow, iColumn2 );
+                // qDebug() << valueForCell( iRow, iColumn2 );
                 if (row + 1 < rowCount) {
                     const CartesianDiagramDataCompressor::CachePosition position(row + 1, column2);
                     CartesianDiagramDataCompressor::DataPoint point = compressor().data(position);
@@ -162,7 +162,7 @@ void PercentLineDiagram::paintWithLines(PaintContext *ctx)
                 stackedValues = stackedValues / percentSumValues.at(row) * maxValue;
             else
                 stackedValues = 0.0;
-            //qDebug() << stackedValues << endl;
+            // qDebug() << stackedValues << endl;
             QPointF nextPoint = ctx->coordinatePlane()->translate(QPointF(diagram()->centerDataPoints() ? point.key + 0.5 : point.key, stackedValues));
             points << nextPoint;
 
@@ -201,7 +201,7 @@ void PercentLineDiagram::paintWithLines(PaintContext *ctx)
                     laPreviousCell = laCell;
                     indexPreviousCell = sourceIndex;
                 } else {
-                    //qDebug() << "no area shown for row"<<iRow<<"  column"<<iColumn;
+                    // qDebug() << "no area shown for row"<<iRow<<"  column"<<iColumn;
                 }
             } else {
                 ptNorthEast = ptNorthWest;
@@ -252,13 +252,13 @@ void PercentLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
     LabelPaintCache lpc;
     LineAttributesInfoList lineList;
 
-    //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked and ::Percent
+    // FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked and ::Percent
 
     qreal maxValue = 100; // always 100%
     qreal sumValues = 0;
     QVector<qreal> percentSumValues;
 
-    //calculate sum of values for each column and store
+    // calculate sum of values for each column and store
     for (int row = 0; row < rowCount; ++row) {
         for (int col = 0; col < columnCount; ++col) {
             const CartesianDiagramDataCompressor::CachePosition position(row, col);
@@ -280,7 +280,7 @@ void PercentLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
     for (int column = 0; column < columnCount; ++column) {
         CartesianDiagramDataCompressor::CachePosition previousCellPosition;
 
-        //display area can be set by dataset ( == column) and/or by cell
+        // display area can be set by dataset ( == column) and/or by cell
         LineAttributes laPreviousCell; // by default no area is drawn
         QModelIndex indexPreviousCell;
         QList<QPainterPath> areas;
@@ -425,7 +425,7 @@ void PercentLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
                     laPreviousCell = laCell;
                     indexPreviousCell = sourceIndex;
                 } else {
-                    //qDebug() << "no area shown for row"<<iRow<<"  column"<<iColumn;
+                    // qDebug() << "no area shown for row"<<iRow<<"  column"<<iColumn;
                 }
             } else {
                 ptNorthEast = ptNorthWest;

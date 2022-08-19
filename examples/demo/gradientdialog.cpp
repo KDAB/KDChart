@@ -21,8 +21,8 @@
 #include "colorslider.h"
 
 #include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <QSpinBox>
+#include <QVBoxLayout>
 
 #include <QLabel>
 
@@ -54,8 +54,8 @@ GradientDialog::Private::Private(GradientDialog *qq)
     , ui(new Ui::GradientDialog)
     , q(qq)
 {
-    m_gradient << qMakePair((qreal)0.0, QColor(Qt::red));
-    m_gradient << qMakePair((qreal)1.0, QColor(Qt::blue));
+    m_gradient << qMakePair(( qreal )0.0, QColor(Qt::red));
+    m_gradient << qMakePair(( qreal )1.0, QColor(Qt::blue));
 }
 
 GradientDialog::Private::~Private()

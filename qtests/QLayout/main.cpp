@@ -15,14 +15,14 @@
 **
 ****************************************************************************/
 
-#include <qapplication.h>
-#include <QWidget>
-#include <QDebug>
 #include <QBoxLayout>
-#include <QStyle>
-#include <QtTest/QtTest>
+#include <QDebug>
 #include <QGridLayout>
 #include <QLineEdit>
+#include <QStyle>
+#include <QWidget>
+#include <QtTest/QtTest>
+#include <qapplication.h>
 
 #define KDAB_REIMP
 
@@ -40,8 +40,8 @@ public:
     {
         setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed); // like Legend
         setFixedSize(50, 50); // hmm Legend has a layout instead.
-        //QGridLayout* layout = new QGridLayout( this );
-        // ...
+        // QGridLayout* layout = new QGridLayout( this );
+        //  ...
     }
 
 protected:
@@ -81,14 +81,14 @@ private slots:
 
         // Adding a hidden widget doesn't work, the layout ignores it
         // This is why we created MyWidgetItem above, then the layout works
-        //vLayout->addWidget( widget1 );
+        // vLayout->addWidget( widget1 );
         auto *widgetItem = new MyWidgetItem(widget1);
         vLayout->addItem(widgetItem);
 
         QRect geom(100, 100, 800, 800);
         vLayout->setGeometry(geom);
 
-        //vLayout->activate(); // not needed
+        // vLayout->activate(); // not needed
 
         QCOMPARE(vLayout->geometry(), geom);
         qDebug() << "widget1: " << widget1->geometry();
@@ -106,7 +106,7 @@ private slots:
         auto *widget1 = new MyLegendWidget(topLevelWidget);
         auto *widgetItem = new MyWidgetItem(widget1);
         vLayout->addItem(widgetItem);
-        //vLayout->activate();
+        // vLayout->activate();
 
         QRect geom(100, 100, 800, 800);
         vLayout->setGeometry(geom);
@@ -128,7 +128,7 @@ private slots:
         QRect expected = geom.adjusted(marg, marg, -marg, -marg);
         qDebug() << "widget1: " << widget1->frameGeometry() << "expecting" << expected;
         // this test is quite useless...
-        //QCOMPARE( widget1->frameGeometry(), expected );
+        // QCOMPARE( widget1->frameGeometry(), expected );
         QVERIFY(widget1->isVisible());
 
         delete topLevelWidget;

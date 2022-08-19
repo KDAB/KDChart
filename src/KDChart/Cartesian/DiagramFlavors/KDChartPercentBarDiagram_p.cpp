@@ -19,10 +19,10 @@
 
 #include <QModelIndex>
 
+#include "KDChartAbstractCartesianDiagram.h"
+#include "KDChartAttributesModel.h"
 #include "KDChartBarDiagram.h"
 #include "KDChartTextAttributes.h"
-#include "KDChartAttributesModel.h"
-#include "KDChartAbstractCartesianDiagram.h"
 
 using namespace KDChart;
 
@@ -101,7 +101,7 @@ void PercentBarDiagram::paint(PaintContext *ctx)
     // is covered by the groups.
     qreal maxLimit = rowCount * (groupWidth + ((colCount - 1) * ba.fixedDataValueGap()));
 
-    //Pending Michel: FixMe
+    // Pending Michel: FixMe
     if (ba.useFixedDataValueGap()) {
         if (width > maxLimit)
             spaceBetweenBars += ba.fixedDataValueGap();
@@ -120,12 +120,12 @@ void PercentBarDiagram::paint(PaintContext *ctx)
     qreal sumValues = 0;
     QVector<qreal> sumValuesVector;
 
-    //calculate sum of values for each column and store
+    // calculate sum of values for each column and store
     for (int row = 0; row < rowCount; ++row) {
         for (int col = 0; col < colCount; ++col) {
             const CartesianDiagramDataCompressor::CachePosition position(row, col);
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data(position);
-            //if ( point.value > 0 )
+            // if ( point.value > 0 )
             sumValues += qMax(point.value, -point.value);
             if (col == colCount - 1) {
                 sumValuesVector << sumValues;

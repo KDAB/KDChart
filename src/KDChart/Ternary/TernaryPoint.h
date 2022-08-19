@@ -18,13 +18,13 @@
 #ifndef TERNARYPOINT_H
 #define TERNARYPOINT_H
 
-#include <QtDebug>
 #include <QPointF>
+#include <QtDebug>
 
 /**
-  * @brief TernaryPoint defines a point within a ternary coordinate plane
-  * \internal
-  */
+ * @brief TernaryPoint defines a point within a ternary coordinate plane
+ * \internal
+ */
 class TernaryPoint
 {
 public:

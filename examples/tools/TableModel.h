@@ -18,11 +18,11 @@
 #ifndef TABLEMODEL_H
 #define TABLEMODEL_H
 
+#include "tools_export.h"
+#include <QAbstractTableModel>
+#include <QStringList>
 #include <QVariant>
 #include <QVector>
-#include <QAbstractTableModel>
-#include "tools_export.h"
-#include <QStringList>
 
 /** TableModel uses a simple rectangular vector of vectors to represent a data
     table that can be displayed in regular Qt Interview views.

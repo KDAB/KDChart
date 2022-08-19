@@ -18,8 +18,8 @@
 #ifndef KDCHARTRADARDIAGRAM_H
 #define KDCHARTRADARDIAGRAM_H
 
-#include "KDChartPosition.h"
 #include "KDChartPolarDiagram.h"
+#include "KDChartPosition.h"
 #include "KDChartRadarCoordinatePlane.h"
 
 QT_BEGIN_NAMESPACE
@@ -29,8 +29,8 @@ QT_END_NAMESPACE
 namespace KDChart {
 
 /**
-  * @brief RadarDiagram defines a common radar diagram
-  */
+ * @brief RadarDiagram defines a common radar diagram
+ */
 class KDCHART_EXPORT RadarDiagram : public AbstractPolarDiagram
 {
     Q_OBJECT

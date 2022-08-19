@@ -59,7 +59,8 @@ public:
      */
     bool compare(const LineDiagram *other) const;
 
-    enum LineType {
+    enum LineType
+    {
         Normal = 0,
         Stacked = 1,
         Percent = 2

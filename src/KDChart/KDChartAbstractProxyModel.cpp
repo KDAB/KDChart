@@ -53,8 +53,8 @@ QModelIndex AbstractProxyModel::mapFromSource(const QModelIndex &sourceIndex) co
 {
     if (!sourceIndex.isValid())
         return QModelIndex();
-    //qDebug() << "sourceIndex.model()="<<sourceIndex.model();
-    //qDebug() << "model()="<<sourceModel();
+    // qDebug() << "sourceIndex.model()="<<sourceIndex.model();
+    // qDebug() << "model()="<<sourceModel();
     Q_ASSERT(sourceIndex.model() == sourceModel());
 
     // Create an index that preserves the internal pointer from the source;

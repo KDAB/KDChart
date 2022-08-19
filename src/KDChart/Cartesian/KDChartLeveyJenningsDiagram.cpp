@@ -18,10 +18,10 @@
 #include "KDChartLeveyJenningsDiagram.h"
 #include "KDChartLeveyJenningsDiagram_p.h"
 
-#include "KDChartChart.h"
-#include "KDChartTextAttributes.h"
 #include "KDChartAbstractGrid.h"
+#include "KDChartChart.h"
 #include "KDChartPainterSaver_p.h"
+#include "KDChartTextAttributes.h"
 
 #include <QDateTime>
 #include <QFontMetrics>
@@ -78,8 +78,8 @@ LeveyJenningsDiagram::~LeveyJenningsDiagram()
 }
 
 /**
-  * Creates an exact copy of this diagram.
-  */
+ * Creates an exact copy of this diagram.
+ */
 LineDiagram *LeveyJenningsDiagram::clone() const
 {
     auto *newDiagram = new LeveyJenningsDiagram(new Private(*d));

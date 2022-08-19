@@ -17,14 +17,14 @@
 
 #include "mainwindow.h"
 
-#include <KDChartChart>
 #include <KDChartAbstractCoordinatePlane>
-#include <KDChartCartesianAxis>
 #include <KDChartBarDiagram>
+#include <KDChartCartesianAxis>
+#include <KDChartChart>
 
 #include <QDebug>
-#include <QPen>
 #include <QHBoxLayout>
+#include <QPen>
 
 using namespace KDChart;
 

@@ -59,7 +59,7 @@ private:
     KDChart::LineDiagram *m_lines;
     KDChart::Legend *m_legend;
     // mutable KDChart::CartesianAxis xAxis;
-    //mutable KDChart::CartesianAxis yAxis;
+    // mutable KDChart::CartesianAxis yAxis;
 };
 
 #endif /* MAINWINDOW_H */

@@ -15,9 +15,9 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
-#include <KDChartWidget>
 #include <KDChartPolarDiagram>
+#include <KDChartWidget>
+#include <QApplication>
 
 using namespace KDChart;
 

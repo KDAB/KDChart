@@ -33,8 +33,8 @@
 #include "KDChartPainterSaver_p.h"
 
 #include <QAbstractTextDocumentLayout>
-#include <QTextBlock>
 #include <QApplication>
+#include <QTextBlock>
 
 #include <KDABLibFakes>
 
@@ -240,39 +240,39 @@ void AbstractDiagram::Private::addLabel(
         const QRectF plainRect = doc.documentLayout()->frameBoundingRect(doc.rootFrame());
 
         /**
-        * A few hints on how the positioning of the text frame is done:
-        *
-        * Let's assume we have a bar chart, a text for a positive value
-        * to be drawn, and "North" as attrs.positivePosition().
-        *
-        * The reference point (pos) is then set to the top center point
-        * of a bar. The offset now depends on the alignment:
-        *
-        *    Top: text is centered horizontally to the bar, bottom of
-        *         text frame starts at top of bar
-        *
-        *    Bottom: text is centered horizontally to the bar, top of
-        *            text frame starts at top of bar
-        *
-        *    Center: text is centered horizontally to the bar, center
-        *            line of text frame is same as top of bar
-        *
-        *    TopLeft: right edge of text frame is horizontal center of
-        *             bar, bottom of text frame is top of bar.
-        *
-        *    ...
-        *
-        * Positive and negative value labels are treated equally, "North"
-        * also refers to the top of a negative bar, and *not* to the bottom.
-        *
-        *
-        * "NorthEast" likewise refers to the top right edge of the bar,
-        * "NorthWest" to the top left edge of the bar, and so on.
-        *
-        * In other words, attrs.positivePosition() always refers to a
-        * position of the *bar*, and relPos.alignment() always refers
-        * to an alignment of the text frame relative to this position.
-        */
+         * A few hints on how the positioning of the text frame is done:
+         *
+         * Let's assume we have a bar chart, a text for a positive value
+         * to be drawn, and "North" as attrs.positivePosition().
+         *
+         * The reference point (pos) is then set to the top center point
+         * of a bar. The offset now depends on the alignment:
+         *
+         *    Top: text is centered horizontally to the bar, bottom of
+         *         text frame starts at top of bar
+         *
+         *    Bottom: text is centered horizontally to the bar, top of
+         *            text frame starts at top of bar
+         *
+         *    Center: text is centered horizontally to the bar, center
+         *            line of text frame is same as top of bar
+         *
+         *    TopLeft: right edge of text frame is horizontal center of
+         *             bar, bottom of text frame is top of bar.
+         *
+         *    ...
+         *
+         * Positive and negative value labels are treated equally, "North"
+         * also refers to the top of a negative bar, and *not* to the bottom.
+         *
+         *
+         * "NorthEast" likewise refers to the top right edge of the bar,
+         * "NorthWest" to the top left edge of the bar, and so on.
+         *
+         * In other words, attrs.positivePosition() always refers to a
+         * position of the *bar*, and relPos.alignment() always refers
+         * to an alignment of the text frame relative to this position.
+         */
 
         QTransform transform;
         {
@@ -307,12 +307,12 @@ void AbstractDiagram::Private::addLabel(
         }
 
         QPainterPath labelArea;
-        //labelArea.addPolygon( transform.mapToPolygon( plainRect.toRect() ) );
-        //labelArea.closeSubpath();
-        // Not doing that because QTransform has a special case for 180° that gives a different than
-        // usual ordering of the points in the polygon returned by mapToPolygon( const QRect & ).
-        // We expect a particular ordering in paintDataValueTextsAndMarkers() by using elementAt( 0 ),
-        // and similar things might happen elsewhere.
+        // labelArea.addPolygon( transform.mapToPolygon( plainRect.toRect() ) );
+        // labelArea.closeSubpath();
+        //  Not doing that because QTransform has a special case for 180° that gives a different than
+        //  usual ordering of the points in the polygon returned by mapToPolygon( const QRect & ).
+        //  We expect a particular ordering in paintDataValueTextsAndMarkers() by using elementAt( 0 ),
+        //  and similar things might happen elsewhere.
         labelArea.addPolygon(transform.map(QPolygon(plainRect.toRect(), true)));
 
         // store the label geometry and auxiliary data

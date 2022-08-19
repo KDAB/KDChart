@@ -15,17 +15,17 @@
 **
 ****************************************************************************/
 
-#include <QtGui/QtGui>
-#include <QApplication>
-#include <KDChart/KDChartChart>
 #include <KDChart/KDChartBarDiagram>
+#include <KDChart/KDChartChart>
+#include <QApplication>
+#include <QtGui/QtGui>
 
-//class ChartWidget : public QWidget {
-//  Q_OBJECT
-//public:
-//  explicit ChartWidget(QWidget* parent=0)
-//    : QWidget(parent)
-//  {
+// class ChartWidget : public QWidget {
+//   Q_OBJECT
+// public:
+//   explicit ChartWidget(QWidget* parent=0)
+//     : QWidget(parent)
+//   {
 
 //    m_model.insertRows( 0, 2, QModelIndex() );
 //    m_model.insertColumns(  0,  3,  QModelIndex() );
@@ -50,18 +50,18 @@
 //    m_timer->start( 200 );
 //  }
 
-//private slots:
-//      void slotTimeout() {
-//          QModelIndex index = m_model.index( 0, 1, QModelIndex());
-//          qreal value = ( m_model.data( index ).toInt() % 24 ) +1;
-//          m_model.setData( index, value );
-//      }
+// private slots:
+//       void slotTimeout() {
+//           QModelIndex index = m_model.index( 0, 1, QModelIndex());
+//           qreal value = ( m_model.data( index ).toInt() % 24 ) +1;
+//           m_model.setData( index, value );
+//       }
 
-//private:
-//  KDChart::Chart m_chart;
-//  QStandardItemModel m_model;
-//  QTimer *m_timer;
-//};
+// private:
+//   KDChart::Chart m_chart;
+//   QStandardItemModel m_model;
+//   QTimer *m_timer;
+// };
 
 #include "mainwindow.h"
 
@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
-    //ChartWidget w;
+    // ChartWidget w;
     MainWindow w;
     w.show();
 

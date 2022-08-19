@@ -21,8 +21,8 @@
 #include "kdganttglobal.h"
 #include "kdganttstyleoptionganttitem.h"
 
-#include <QGraphicsItem>
 #include <QDateTime>
+#include <QGraphicsItem>
 #include <QPersistentModelIndex>
 
 QT_BEGIN_NAMESPACE
@@ -37,7 +37,8 @@ class ConstraintGraphicsItem;
 class GraphicsItem : public QGraphicsItem
 {
 public:
-    enum {
+    enum
+    {
         Type = UserType + 42
     };
 
@@ -50,10 +51,10 @@ public:
 
     void updateItem(const Span &rowgeometry, const QPersistentModelIndex &idx);
 
-    //virtual ItemType itemType() const = 0;
+    // virtual ItemType itemType() const = 0;
 
-    //qreal dateTimeToSceneX( const QDateTime& dt ) const;
-    //QDateTime sceneXtoDateTime( qreal x ) const;
+    // qreal dateTimeToSceneX( const QDateTime& dt ) const;
+    // QDateTime sceneXtoDateTime( qreal x ) const;
 
     QRectF rect() const
     {
@@ -123,7 +124,7 @@ private:
     QPointF m_presspos;
     QPointF m_pressscenepos;
     QGraphicsLineItem *m_dragline;
-    GraphicsItem *m_dragtarget; //TODO: not used. remove it
+    GraphicsItem *m_dragtarget; // TODO: not used. remove it
     QList<ConstraintGraphicsItem *> m_startConstraints;
     QList<ConstraintGraphicsItem *> m_endConstraints;
 };

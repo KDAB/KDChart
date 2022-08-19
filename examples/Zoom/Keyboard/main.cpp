@@ -15,8 +15,8 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
 #include <KDChartWidget>
+#include <QApplication>
 
 #include <QDebug>
 #include <QVector>
@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 
     window.widget->addLegend(Position::East);
 
-    //window.widget->setType( Widget::Polar );
+    // window.widget->setType( Widget::Polar );
 
     window.show();
 

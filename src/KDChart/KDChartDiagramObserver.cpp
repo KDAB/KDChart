@@ -15,9 +15,9 @@
 **
 ****************************************************************************/
 
-#include <KDChartDiagramObserver.h>
 #include <KDChartAbstractDiagram.h>
 #include <KDChartAttributesModel.h>
+#include <KDChartDiagramObserver.h>
 
 #include <KDABLibFakes>
 
@@ -93,8 +93,8 @@ void DiagramObserver::init()
 
 void DiagramObserver::slotDestroyed(QObject *)
 {
-    //qDebug() << this << "emits signal\n"
-    //        "    emit diagramDestroyed(" <<  m_diagram << ")";
+    // qDebug() << this << "emits signal\n"
+    //         "    emit diagramDestroyed(" <<  m_diagram << ")";
     AbstractDiagram *diag = m_diagram;
     disconnect(m_diagram, nullptr, this, nullptr);
     m_diagram = nullptr;
@@ -115,7 +115,7 @@ void DiagramObserver::slotModelsChanged()
 
 void DiagramObserver::slotHeaderDataChanged(Qt::Orientation, int, int)
 {
-    //qDebug() << "DiagramObserver::slotHeaderDataChanged()";
+    // qDebug() << "DiagramObserver::slotHeaderDataChanged()";
     emit diagramDataChanged(m_diagram);
 }
 
@@ -126,13 +126,13 @@ void DiagramObserver::slotDataChanged(QModelIndex, QModelIndex)
 
 void DiagramObserver::slotDataChanged()
 {
-    //qDebug() << "DiagramObserver::slotDataChanged()";
+    // qDebug() << "DiagramObserver::slotDataChanged()";
     emit diagramDataChanged(m_diagram);
 }
 
 void DiagramObserver::slotDataHidden()
 {
-    //qDebug() << "DiagramObserver::slotDataHidden()";
+    // qDebug() << "DiagramObserver::slotDataHidden()";
     emit diagramDataHidden(m_diagram);
 }
 
@@ -143,6 +143,6 @@ void DiagramObserver::slotAttributesChanged(QModelIndex, QModelIndex)
 
 void DiagramObserver::slotAttributesChanged()
 {
-    //qDebug() << "DiagramObserver::slotAttributesChanged()";
+    // qDebug() << "DiagramObserver::slotAttributesChanged()";
     emit diagramAttributesChanged(m_diagram);
 }

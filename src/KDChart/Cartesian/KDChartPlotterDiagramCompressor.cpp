@@ -20,8 +20,8 @@
 #include "KDChartPlotterDiagramCompressor_p.h"
 #include <QtCore/QPointF>
 
-#include <limits>
 #include <KDABLibFakes>
+#include <limits>
 
 using namespace KDChart;
 
@@ -83,9 +83,9 @@ bool PlotterDiagramCompressor::Iterator::isValid() const
     return m_dataset >= 0 && m_index >= 0 && m_parent.data()->rowCount() > m_index;
 }
 
-//PlotterDiagramCompressor::Iterator& PlotterDiagramCompressor::Iterator::operator++()
+// PlotterDiagramCompressor::Iterator& PlotterDiagramCompressor::Iterator::operator++()
 //{
-//    ++m_index;
+//     ++m_index;
 
 //    ++m_bufferIndex;
 //    // the version that checks dataBoundaries is separated here, this is to avoid the runtime cost
@@ -256,8 +256,8 @@ void PlotterDiagramCompressor::Iterator::handleSlopeForward(const DataPoint &dp)
     PlotterDiagramCompressor::DataPoint newdp = dp;
     PlotterDiagramCompressor::DataPoint olddp = PlotterDiagramCompressor::DataPoint();
     if (m_bufferIndex > 1) {
-        //oldSlope = calculateSlope( m_buffer[ m_bufferIndex - 2 ], m_buffer[ m_bufferIndex - 1 ] );
-        //newSlope = calculateSlope( m_buffer[ m_bufferIndex - 1 ], newdp );
+        // oldSlope = calculateSlope( m_buffer[ m_bufferIndex - 2 ], m_buffer[ m_bufferIndex - 1 ] );
+        // newSlope = calculateSlope( m_buffer[ m_bufferIndex - 1 ], newdp );
         oldSlope = calculateSlope(parent->data(CachePosition(m_index - 2, m_dataset)), parent->data(CachePosition(m_index - 1, m_dataset)));
         newSlope = calculateSlope(parent->data(CachePosition(m_index - 1, m_dataset)), newdp);
         qreal accumulatedDist = qAbs(newSlope - oldSlope);
@@ -296,12 +296,12 @@ PlotterDiagramCompressor::Iterator &PlotterDiagramCompressor::Iterator::operator
     PlotterDiagramCompressor *parent = m_parent.data();
     Q_ASSERT(parent);
     const int count = parent->rowCount();
-    //increment the indexes
+    // increment the indexes
     ++m_index;
     ++m_bufferIndex;
-    //if the index reached the end of the datamodel make this iterator an enditerator
-    //and make sure the buffer was not already build, if that's the case its not necessary
-    //to rebuild it and it would be hard to extend it as we had to know where m_index was
+    // if the index reached the end of the datamodel make this iterator an enditerator
+    // and make sure the buffer was not already build, if that's the case its not necessary
+    // to rebuild it and it would be hard to extend it as we had to know where m_index was
     if (m_index >= count || (!m_rebuffer && m_bufferIndex == m_buffer.count())) {
         if (m_bufferIndex == m_buffer.count()) {
             if (m_buffer.last() != parent->data(CachePosition(parent->rowCount() - 1, m_dataset)))
@@ -312,7 +312,7 @@ PlotterDiagramCompressor::Iterator &PlotterDiagramCompressor::Iterator::operator
         } else
             m_index = -1;
     }
-    //if we reached the end of the buffer continue filling the buffer
+    // if we reached the end of the buffer continue filling the buffer
     if (m_bufferIndex == m_buffer.count() && m_index >= 0 && m_rebuffer) {
         PlotterDiagramCompressor::DataPoint dp = parent->data(CachePosition(m_index, m_dataset));
         if (parent->d->inBoundaries(Qt::Vertical, dp) && parent->d->inBoundaries(Qt::Horizontal, dp)) {
@@ -417,7 +417,7 @@ bool PlotterDiagramCompressor::Private::inBoundaries(Qt::Orientation orient, con
 
 //// TODO this is not threadsafe do never try to invoke the painting in a different thread than this
 //// method
-//void PlotterDiagramCompressor::Private::rowsInserted( const QModelIndex& /*parent*/, int start, int end )
+// void PlotterDiagramCompressor::Private::rowsInserted( const QModelIndex& /*parent*/, int start, int end )
 //{
 
 //    if ( m_bufferlist.count() > 0 && !m_bufferlist[ 0 ].isEmpty() && start < m_bufferlist[ 0 ].count() )
@@ -537,9 +537,9 @@ bool PlotterDiagramCompressor::Private::inBoundaries(Qt::Orientation orient, con
 // method
 void PlotterDiagramCompressor::Private::rowsInserted(const QModelIndex & /*parent*/, int start, int end)
 {
-    //Q_ASSERT( std::numeric_limits<qreal>::quiet_NaN() < 5 || std::numeric_limits<qreal>::quiet_NaN() > 5 );
-    //Q_ASSERT( 5 == qMin( std::numeric_limits<qreal>::quiet_NaN(),  5.0 ) );
-    //Q_ASSERT( 5 == qMax( 5.0, std::numeric_limits<qreal>::quiet_NaN() ) );
+    // Q_ASSERT( std::numeric_limits<qreal>::quiet_NaN() < 5 || std::numeric_limits<qreal>::quiet_NaN() > 5 );
+    // Q_ASSERT( 5 == qMin( std::numeric_limits<qreal>::quiet_NaN(),  5.0 ) );
+    // Q_ASSERT( 5 == qMax( 5.0, std::numeric_limits<qreal>::quiet_NaN() ) );
     if (m_bufferlist.count() > 0 && !m_bufferlist[0].isEmpty() && start < m_bufferlist[0].count()) {
         calculateDataBoundaries();
         clearBuffer();
@@ -712,9 +712,9 @@ bool PlotterDiagramCompressor::Private::forcedBoundaries(Qt::Orientation orient)
 
 void PlotterDiagramCompressor::Private::clearBuffer()
 {
-    //TODO all iterator have to be invalid after this operation
-    //TODO make sure there are no regressions, the timeOfLastInvalidation should stop iterators from
-    // corrupting the cache
+    // TODO all iterator have to be invalid after this operation
+    // TODO make sure there are no regressions, the timeOfLastInvalidation should stop iterators from
+    //  corrupting the cache
     m_bufferlist.clear();
     m_bufferlist.resize(m_parent->datasetCount());
     m_accumulatedDistances.clear();

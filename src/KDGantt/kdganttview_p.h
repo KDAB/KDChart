@@ -18,22 +18,22 @@
 #ifndef KDGANTTVIEW_P_H
 #define KDGANTTVIEW_P_H
 
-#include "kdganttview.h"
-#include "kdganttgraphicsscene.h"
-#include "kdgantttreeviewrowcontroller.h"
 #include "kdganttconstraintmodel.h"
 #include "kdganttconstraintproxy.h"
+#include "kdganttgraphicsscene.h"
+#include "kdgantttreeviewrowcontroller.h"
+#include "kdganttview.h"
 
-#include "kdganttgraphicsview.h"
 #include "kdganttdatetimegrid.h"
+#include "kdganttgraphicsview.h"
 
 #include "kdganttproxymodel.h"
 
-#include <QSplitter>
-#include <QTreeView>
 #include <QGraphicsView>
 #include <QModelIndex>
 #include <QPointer>
+#include <QSplitter>
+#include <QTreeView>
 
 QT_BEGIN_NAMESPACE
 class QAbstractProxyModel;
@@ -94,15 +94,15 @@ public:
     QSplitter splitter;
 
     /* TODO: Refine/subclass */
-    //KDGanttTreeView treeview;
+    // KDGanttTreeView treeview;
     QPointer<QAbstractItemView> leftWidget;
     AbstractRowController *rowController;
     QPointer<GraphicsView> gfxview;
-    //KDGanttHeaderWidget headerwidget;
+    // KDGanttHeaderWidget headerwidget;
 
     QPointer<QAbstractItemModel> model;
     ProxyModel ganttProxyModel;
-    //KDGanttTreeViewRowController rowController;
+    // KDGanttTreeViewRowController rowController;
     ConstraintModel mappedConstraintModel;
     ConstraintProxy constraintProxy;
 };

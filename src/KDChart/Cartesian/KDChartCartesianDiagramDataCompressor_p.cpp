@@ -17,8 +17,8 @@
 
 #include "KDChartCartesianDiagramDataCompressor_p.h"
 
-#include <QtDebug>
 #include <QAbstractItemModel>
+#include <QtDebug>
 
 #include "KDChartAbstractCartesianDiagram.h"
 

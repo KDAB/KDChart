@@ -23,10 +23,10 @@
 #include "KDChartPieDiagram_p.h"
 
 #include "KDChartPaintContext.h"
+#include "KDChartPainterSaver_p.h"
 #include "KDChartPieAttributes.h"
 #include "KDChartPolarCoordinatePlane_p.h"
 #include "KDChartThreeDPieAttributes.h"
-#include "KDChartPainterSaver_p.h"
 
 #include <KDABLibFakes>
 
@@ -58,8 +58,8 @@ void PieDiagram::init()
 }
 
 /**
-  * Creates an exact copy of this diagram.
-  */
+ * Creates an exact copy of this diagram.
+ */
 PieDiagram *PieDiagram::clone() const
 {
     return new PieDiagram(new Private(*d));
@@ -278,7 +278,7 @@ void PieDiagram::placeLabels(PaintContext *paintContext)
             if (maxOverhang > 0.0) {
                 // subtract 2x as much because every side only gets half of the total diameter reduction
                 // and we have to make up for the overhang on one particular side.
-                d->size -= qMin(d->size, maxOverhang * (qreal)2.0);
+                d->size -= qMin(d->size, maxOverhang * ( qreal )2.0);
                 tryAgain = true;
             }
         }
@@ -518,7 +518,7 @@ void PieDiagram::paintInternal(PaintContext *paintContext)
 }
 
 #if defined(Q_OS_WIN)
-#define trunc(x) ((int)(x))
+#define trunc(x) (( int )(x))
 #endif
 
 QRectF PieDiagram::explodedDrawPosition(const QRectF &drawPosition, uint slice) const
@@ -592,7 +592,7 @@ void PieDiagram::drawSliceSurface(QPainter *painter, const QRectF &drawPosition,
         // full circle, avoid nasty line in the middle
         painter->drawEllipse(drawPosition);
 
-        //Add polygon to Reverse mapper for showing tool tips.
+        // Add polygon to Reverse mapper for showing tool tips.
         QPolygonF poly(drawPosition);
         d->reverseMapper.addPolygon(index.row(), index.column(), poly);
     } else {
@@ -606,7 +606,7 @@ void PieDiagram::drawSliceSurface(QPainter *painter, const QRectF &drawPosition,
 
         while (degree <= angleLen) {
             poly[iPoint] = pointOnEllipse(drawPosition, startAngle + degree);
-            //qDebug() << degree << angleLen << poly[ iPoint ];
+            // qDebug() << degree << angleLen << poly[ iPoint ];
             perfectMatch = (degree == angleLen);
             degree += granularity();
             ++iPoint;
@@ -620,8 +620,8 @@ void PieDiagram::drawSliceSurface(QPainter *painter, const QRectF &drawPosition,
         } else {
             poly[iPoint] = drawPosition.center();
         }
-        //find the value and paint it
-        //fix value position
+        // find the value and paint it
+        // fix value position
         d->reverseMapper.addPolygon(index.row(), index.column(), poly);
 
         painter->drawPolygon(poly);
@@ -916,9 +916,9 @@ uint PieDiagram::findRightSlice(uint slice, int colCount)
 }
 
 /**
-  * Auxiliary method returning a point to a given boundary
-  * rectangle of the enclosed ellipse and an angle.
-  */
+ * Auxiliary method returning a point to a given boundary
+ * rectangle of the enclosed ellipse and an angle.
+ */
 QPointF PieDiagram::pointOnEllipse(const QRectF &boundingBox, qreal angle)
 {
     qreal angleRad = DEGTORAD(angle);

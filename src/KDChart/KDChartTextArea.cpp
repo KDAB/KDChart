@@ -87,7 +87,7 @@ void TextArea::paintAll(QPainter &painter)
     paint(&painter);
     if (needAdjustGeometry)
         setGeometry(oldGeometry);
-    //qDebug() << "TextAreaWidget::paintAll() done.";
+    // qDebug() << "TextAreaWidget::paintAll() done.";
 }
 
 QRect TextArea::areaGeometry() const

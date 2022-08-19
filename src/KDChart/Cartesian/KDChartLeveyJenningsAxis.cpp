@@ -21,12 +21,12 @@
 #include <QDateTime>
 #include <QPainter>
 
-#include "KDChartPaintContext.h"
-#include "KDChartChart.h"
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartAbstractGrid.h"
-#include "KDChartPainterSaver_p.h"
+#include "KDChartChart.h"
 #include "KDChartLayoutItems.h"
+#include "KDChartPaintContext.h"
+#include "KDChartPainterSaver_p.h"
 #include "KDChartPrintingParameters.h"
 
 #include <KDABLibFakes>
@@ -68,22 +68,22 @@ void LeveyJenningsAxis::init()
 }
 
 /**
-  * @return The axis' type.
-  */
+ * @return The axis' type.
+ */
 LeveyJenningsGridAttributes::GridType LeveyJenningsAxis::type() const
 {
     return d->type;
 }
 
 /**
-  * Sets the type of the axis to \a type.
-  * This method colors the label to the default color of the
-  * respective type.
-  * Please make sure to re-set the colors after calling this,
-  * if you want them different.
-  * Setting the type is only valid for axes located right or left
-  * from the diagram. An axis on the bottom always shows the timeline.
-  */
+ * Sets the type of the axis to \a type.
+ * This method colors the label to the default color of the
+ * respective type.
+ * Please make sure to re-set the colors after calling this,
+ * if you want them different.
+ * Setting the type is only valid for axes located right or left
+ * from the diagram. An axis on the bottom always shows the timeline.
+ */
 void LeveyJenningsAxis::setType(LeveyJenningsGridAttributes::GridType type)
 {
     if (type != d->type) {
@@ -115,7 +115,7 @@ bool LeveyJenningsAxis::compare(const LeveyJenningsAxis *other) const
     if (other == this)
         return true;
     if (!other) {
-        //qDebug() << "CartesianAxis::compare() cannot compare to Null pointer";
+        // qDebug() << "CartesianAxis::compare() cannot compare to Null pointer";
         return false;
     }
     return (static_cast<const CartesianAxis *>(this)->compare(other)) && (type() == other->type());

@@ -15,17 +15,17 @@
 **
 ****************************************************************************/
 
-#include <QtTest/QtTest>
 #include <QStandardItemModel>
+#include <QtTest/QtTest>
 
+#include <KDChartAbstractCoordinatePlane>
 #include <KDChartChart>
 #include <KDChartGlobal>
-#include <KDChartPieDiagram>
-#include <KDChartPolarDiagram>
-#include <KDChartPolarCoordinatePlane>
-#include <KDChartAbstractCoordinatePlane>
-#include <KDChartLegend>
 #include <KDChartGridAttributes>
+#include <KDChartLegend>
+#include <KDChartPieDiagram>
+#include <KDChartPolarCoordinatePlane>
+#include <KDChartPolarDiagram>
 
 #include <TableModel.h>
 
@@ -56,7 +56,7 @@ private slots:
         QCOMPARE(m_plane->referenceCoordinatePlane(), m_chart->coordinatePlane());
         m_chart->takeCoordinatePlane(0);
         delete plane;
-        QCOMPARE(m_plane->referenceCoordinatePlane(), (AbstractCoordinatePlane *)0);
+        QCOMPARE(m_plane->referenceCoordinatePlane(), ( AbstractCoordinatePlane * )0);
     }
 
     void testStartPositionSettings()
@@ -109,7 +109,7 @@ private slots:
         ga.setGridVisible(false);
         m_plane->setGlobalGridAttributes(ga);
         QVERIFY(m_plane->globalGridAttributes().isGridVisible() == false);
-        //reset to normal
+        // reset to normal
         ga.setGridVisible(true);
         QVERIFY(m_plane->globalGridAttributes().isGridVisible() == false);
         m_plane->setGlobalGridAttributes(ga);

@@ -18,8 +18,8 @@
 #ifndef PAINTCONTEXT_H
 #define PAINTCONTEXT_H
 
-#include <QRectF>
 #include "KDChartGlobal.h"
+#include <QRectF>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -30,9 +30,9 @@ namespace KDChart {
 class AbstractCoordinatePlane;
 
 /**
-      * @brief Stores information about painting diagrams
-      * \internal
-      */
+ * @brief Stores information about painting diagrams
+ * \internal
+ */
 class KDCHART_EXPORT PaintContext
 {
 public:

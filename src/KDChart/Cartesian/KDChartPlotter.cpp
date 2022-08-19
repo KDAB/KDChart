@@ -68,8 +68,8 @@ Plotter::~Plotter()
 }
 
 /**
-  * Creates an exact copy of this diagram.
-  */
+ * Creates an exact copy of this diagram.
+ */
 Plotter *Plotter::clone() const
 {
     auto *newDiagram = new Plotter(new Private(*d));
@@ -150,14 +150,14 @@ void Plotter::setMergeRadiusPercentage(qreal value)
 {
     if (d->mergeRadiusPercentage != value) {
         d->mergeRadiusPercentage = value;
-        //d->plotterCompressor.setMergeRadiusPercentage( value );
-        //update();
+        // d->plotterCompressor.setMergeRadiusPercentage( value );
+        // update();
     }
 }
 
 /**
-  * Sets the plotter's type to \a type
-  */
+ * Sets the plotter's type to \a type
+ */
 void Plotter::setType(const PlotType type)
 {
     if (d->implementor->type() == type) {
@@ -192,16 +192,16 @@ void Plotter::setType(const PlotType type)
 }
 
 /**
-  * @return the type of the plotter
-  */
+ * @return the type of the plotter
+ */
 Plotter::PlotType Plotter::type() const
 {
     return d->implementor->type();
 }
 
 /**
-  * Sets the global line attributes to \a la
-  */
+ * Sets the global line attributes to \a la
+ */
 void Plotter::setLineAttributes(const LineAttributes &la)
 {
     d->attributesModel->setModelData(QVariant::fromValue(la), LineAttributesRole);
@@ -209,8 +209,8 @@ void Plotter::setLineAttributes(const LineAttributes &la)
 }
 
 /**
-  * Sets the line attributes of data set \a column to \a la
-  */
+ * Sets the line attributes of data set \a column to \a la
+ */
 void Plotter::setLineAttributes(int column, const LineAttributes &la)
 {
     d->setDatasetAttrs(column, QVariant::fromValue(la), LineAttributesRole);
@@ -218,8 +218,8 @@ void Plotter::setLineAttributes(int column, const LineAttributes &la)
 }
 
 /**
-  * Resets the line attributes of data set \a column
-  */
+ * Resets the line attributes of data set \a column
+ */
 void Plotter::resetLineAttributes(int column)
 {
     d->resetDatasetAttrs(column, LineAttributesRole);
@@ -227,8 +227,8 @@ void Plotter::resetLineAttributes(int column)
 }
 
 /**
-  * Sets the line attributes for the model index \a index to \a la
-  */
+ * Sets the line attributes for the model index \a index to \a la
+ */
 void Plotter::setLineAttributes(const QModelIndex &index, const LineAttributes &la)
 {
     d->attributesModel->setData(d->attributesModel->mapFromSource(index),
@@ -247,16 +247,16 @@ void Plotter::resetLineAttributes(const QModelIndex &index)
 }
 
 /**
-  * @return the global line attribute set
-  */
+ * @return the global line attribute set
+ */
 LineAttributes Plotter::lineAttributes() const
 {
     return d->attributesModel->data(KDChart::LineAttributesRole).value<LineAttributes>();
 }
 
 /**
-  * @return the line attribute set of data set \a column
-  */
+ * @return the line attribute set of data set \a column
+ */
 LineAttributes Plotter::lineAttributes(int column) const
 {
     const QVariant attrs(d->datasetAttrs(column, LineAttributesRole));
@@ -266,8 +266,8 @@ LineAttributes Plotter::lineAttributes(int column) const
 }
 
 /**
-  * @return the line attribute set of the model index \a index
-  */
+ * @return the line attribute set of the model index \a index
+ */
 LineAttributes Plotter::lineAttributes(const QModelIndex &index) const
 {
     return d->attributesModel->data(
@@ -276,8 +276,8 @@ LineAttributes Plotter::lineAttributes(const QModelIndex &index) const
 }
 
 /**
-  * Sets the global 3D line attributes to \a la
-  */
+ * Sets the global 3D line attributes to \a la
+ */
 void Plotter::setThreeDLineAttributes(const ThreeDLineAttributes &la)
 {
     setDataBoundariesDirty();
@@ -286,8 +286,8 @@ void Plotter::setThreeDLineAttributes(const ThreeDLineAttributes &la)
 }
 
 /**
-  * Sets the 3D line attributes of data set \a column to \a la
-  */
+ * Sets the 3D line attributes of data set \a column to \a la
+ */
 void Plotter::setThreeDLineAttributes(int column, const ThreeDLineAttributes &la)
 {
     setDataBoundariesDirty();
@@ -296,8 +296,8 @@ void Plotter::setThreeDLineAttributes(int column, const ThreeDLineAttributes &la
 }
 
 /**
-  * Sets the 3D line attributes of model index \a index to \a la
-  */
+ * Sets the 3D line attributes of model index \a index to \a la
+ */
 void Plotter::setThreeDLineAttributes(const QModelIndex &index, const ThreeDLineAttributes &la)
 {
     setDataBoundariesDirty();
@@ -307,16 +307,16 @@ void Plotter::setThreeDLineAttributes(const QModelIndex &index, const ThreeDLine
 }
 
 /**
-  * @return the global 3D line attributes
-  */
+ * @return the global 3D line attributes
+ */
 ThreeDLineAttributes Plotter::threeDLineAttributes() const
 {
     return d->attributesModel->data(KDChart::ThreeDLineAttributesRole).value<ThreeDLineAttributes>();
 }
 
 /**
-  * @return the 3D line attributes of data set \a column
-  */
+ * @return the 3D line attributes of data set \a column
+ */
 ThreeDLineAttributes Plotter::threeDLineAttributes(int column) const
 {
     const QVariant attrs(d->datasetAttrs(column, ThreeDLineAttributesRole));
@@ -327,8 +327,8 @@ ThreeDLineAttributes Plotter::threeDLineAttributes(int column) const
 }
 
 /**
-  * @return the 3D line attributes of the model index \a index
-  */
+ * @return the 3D line attributes of the model index \a index
+ */
 ThreeDLineAttributes Plotter::threeDLineAttributes(const QModelIndex &index) const
 {
     return d->attributesModel->data(
@@ -347,8 +347,8 @@ qreal Plotter::threeDItemDepth(int column) const
 }
 
 /**
-  * Sets the value tracker attributes of the model index \a index to \a va
-  */
+ * Sets the value tracker attributes of the model index \a index to \a va
+ */
 void Plotter::setValueTrackerAttributes(const QModelIndex &index, const ValueTrackerAttributes &va)
 {
     d->attributesModel->setData(d->attributesModel->mapFromSource(index),
@@ -357,8 +357,8 @@ void Plotter::setValueTrackerAttributes(const QModelIndex &index, const ValueTra
 }
 
 /**
-  * Returns the value tracker attributes of the model index \a index
-  */
+ * Returns the value tracker attributes of the model index \a index
+ */
 ValueTrackerAttributes Plotter::valueTrackerAttributes(const QModelIndex &index) const
 {
     return d->attributesModel->data(
@@ -435,7 +435,7 @@ void Plotter::setDataBoundariesDirty()
     AbstractCartesianDiagram::setDataBoundariesDirty();
     if (useDataCompression() == Plotter::DISTANCE || useDataCompression() == Plotter::BOTH) {
         calcMergeRadius();
-        //d->plotterCompressor.setMergeRadiusPercentage( d->mergeRadiusPercentage );
+        // d->plotterCompressor.setMergeRadiusPercentage( d->mergeRadiusPercentage );
     }
 }
 
@@ -443,13 +443,13 @@ void Plotter::calcMergeRadius()
 {
     auto *plane = dynamic_cast<CartesianCoordinatePlane *>(coordinatePlane());
     Q_ASSERT(plane);
-    //Q_ASSERT( plane->translate( plane->translateBack( plane->visibleDiagramArea().topLeft() ) ) == plane->visibleDiagramArea().topLeft() );
+    // Q_ASSERT( plane->translate( plane->translateBack( plane->visibleDiagramArea().topLeft() ) ) == plane->visibleDiagramArea().topLeft() );
     QRectF range = plane->visibleDataRange();
-    //qDebug() << range;
+    // qDebug() << range;
     const qreal radius = std::sqrt((range.x() + range.width()) * (range.y() + range.height()));
-    //qDebug() << radius;
-    //qDebug() << radius * d->mergeRadiusPercentage;
-    //qDebug() << d->mergeRadiusPercentage;
+    // qDebug() << radius;
+    // qDebug() << radius * d->mergeRadiusPercentage;
+    // qDebug() << d->mergeRadiusPercentage;
     d->plotterCompressor.setMergeRadius(radius * d->mergeRadiusPercentage);
 }
 

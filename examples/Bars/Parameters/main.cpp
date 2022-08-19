@@ -15,11 +15,11 @@
 **
 ****************************************************************************/
 
-#include <QtGui>
-#include <QApplication>
-#include <KDChartChart>
 #include <KDChartBarDiagram>
+#include <KDChartChart>
 #include <KDChartDataValueAttributes>
+#include <QApplication>
+#include <QtGui>
 
 using namespace KDChart;
 
@@ -50,22 +50,22 @@ ChartWidget::ChartWidget(QWidget *parent)
     diagram->setModel(&m_model);
 
     BarAttributes ba(diagram->barAttributes());
-    //set the bar width and enable it
+    // set the bar width and enable it
     ba.setFixedBarWidth(140);
     ba.setUseFixedBarWidth(true);
-    //configure gap between values
-    //and blocks
+    // configure gap between values
+    // and blocks
     ba.setGroupGapFactor(0.50);
     ba.setBarGapFactor(0.125);
 
-    //assign to the diagram
+    // assign to the diagram
     diagram->setBarAttributes(ba);
 
     // display the values
     DataValueAttributes dva(diagram->dataValueAttributes());
     TextAttributes ta(dva.textAttributes());
-    //rotate if you wish
-    //ta.setRotation( 0 );
+    // rotate if you wish
+    // ta.setRotation( 0 );
     ta.setFont(QFont("Comic", 9));
     ta.setPen(QPen(QColor(Qt::darkGreen)));
     ta.setVisible(true);
@@ -73,14 +73,14 @@ ChartWidget::ChartWidget(QWidget *parent)
     dva.setVisible(true);
     diagram->setDataValueAttributes(dva);
 
-    //draw a surrounding line around bars
+    // draw a surrounding line around bars
     QPen linePen;
     linePen.setColor(Qt::magenta);
     linePen.setWidth(4);
     linePen.setStyle(Qt::DotLine);
-    //draw only around a dataset
-    //to draw around all the bars
-    // call setPen( myPen );
+    // draw only around a dataset
+    // to draw around all the bars
+    //  call setPen( myPen );
     diagram->setPen(1, linePen);
 
     m_chart.coordinatePlane()->replaceDiagram(diagram);

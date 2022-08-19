@@ -17,8 +17,8 @@
 
 #include "mainwindow.h"
 
-#include <QtTest/QtTest>
 #include <QElapsedTimer>
+#include <QtTest/QtTest>
 
 class TestParamVsParam : public QObject
 {

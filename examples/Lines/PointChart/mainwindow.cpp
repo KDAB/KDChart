@@ -18,10 +18,10 @@
 #include "mainwindow.h"
 
 #include <KDChartChart>
-#include <KDChartLineDiagram>
-#include <KDChartTextAttributes>
 #include <KDChartDataValueAttributes>
+#include <KDChartLineDiagram>
 #include <KDChartMarkerAttributes>
+#include <KDChartTextAttributes>
 
 #include <QtGui/QPainterPath>
 

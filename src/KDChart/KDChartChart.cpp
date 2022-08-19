@@ -18,29 +18,29 @@
 #include "KDChartChart.h"
 #include "KDChartChart_p.h"
 
-#include <QList>
-#include <QtDebug>
-#include <QGridLayout>
-#include <QLabel>
-#include <QHash>
-#include <QToolTip>
-#include <QPainter>
-#include <QPaintEvent>
-#include <QLayoutItem>
-#include <QPushButton>
 #include <QApplication>
 #include <QEvent>
+#include <QGridLayout>
+#include <QHash>
+#include <QLabel>
+#include <QLayoutItem>
+#include <QList>
+#include <QPaintEvent>
+#include <QPainter>
+#include <QPushButton>
+#include <QToolTip>
+#include <QtDebug>
 
-#include "KDChartCartesianCoordinatePlane.h"
 #include "KDChartAbstractCartesianDiagram.h"
-#include "KDChartHeaderFooter.h"
+#include "KDChartCartesianCoordinatePlane.h"
 #include "KDChartEnums.h"
-#include "KDChartLegend.h"
+#include "KDChartHeaderFooter.h"
 #include "KDChartLayoutItems.h"
-#include <KDChartTextAttributes.h>
-#include <KDChartMarkerAttributes.h>
+#include "KDChartLegend.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartPrintingParameters.h"
+#include <KDChartMarkerAttributes.h>
+#include <KDChartTextAttributes.h>
 
 #include <algorithm>
 
@@ -318,7 +318,8 @@ Chart::Private::~Private()
 {
 }
 
-enum VisitorState {
+enum VisitorState
+{
     Visited,
     Unknown
 };
@@ -462,11 +463,11 @@ static CoordinatePlaneList findSharingAxisDiagrams(AbstractCoordinatePlane *plan
 }
 
 /**
-  * this method determines the needed layout of the graph
-  * taking care of the sharing problematic
-  * its NOT allowed to have a diagram that shares
-  * more than one axis in the same direction
-  */
+ * this method determines the needed layout of the graph
+ * taking care of the sharing problematic
+ * its NOT allowed to have a diagram that shares
+ * more than one axis in the same direction
+ */
 QVector<LayoutGraphNode *> Chart::Private::buildPlaneLayoutGraph()
 {
     QHash<AbstractCoordinatePlane *, LayoutGraphNode *> planeNodeMapping;
@@ -488,8 +489,8 @@ QVector<LayoutGraphNode *> Chart::Private::buildPlaneLayoutGraph()
         Q_ASSERT(sharedAxes.size() < 2);
         // TODO duplicated code make a method out of it
         if (sharedAxes.size() == 1 && xSharedPlanes.size() > 1) {
-            //xSharedPlanes.removeAll( sharedAxes.first()->diagram()->coordinatePlane() );
-            //std::sort( xSharedPlanes.begin(), xSharedPlanes.end(), PriorityComparator( planeNodeMapping ) );
+            // xSharedPlanes.removeAll( sharedAxes.first()->diagram()->coordinatePlane() );
+            // std::sort( xSharedPlanes.begin(), xSharedPlanes.end(), PriorityComparator( planeNodeMapping ) );
             for (int i = 0; i < xSharedPlanes.size() - 1; ++i) {
                 LayoutGraphNode *tmpNode = planeNodeMapping[xSharedPlanes[i]];
                 Q_ASSERT(tmpNode);
@@ -506,7 +507,7 @@ QVector<LayoutGraphNode *> Chart::Private::buildPlaneLayoutGraph()
             //                Q_ASSERT( ownerNode );
             //                lastNode->bottomSuccesor = ownerNode;
             //            }
-            //merge AxisInformation, needs a two pass run
+            // merge AxisInformation, needs a two pass run
             LayoutGraphNode axisInfoNode;
             for (int count = 0; count < 2; ++count) {
                 for (int i = 0; i < xSharedPlanes.size(); ++i) {
@@ -518,8 +519,8 @@ QVector<LayoutGraphNode *> Chart::Private::buildPlaneLayoutGraph()
         CoordinatePlaneList ySharedPlanes = findSharingAxisDiagrams(curNode->diagramPlane, coordinatePlanes, Ordinate, &sharedAxes);
         Q_ASSERT(sharedAxes.size() < 2);
         if (sharedAxes.size() == 1 && ySharedPlanes.size() > 1) {
-            //ySharedPlanes.removeAll( sharedAxes.first()->diagram()->coordinatePlane() );
-            //std::sort( ySharedPlanes.begin(), ySharedPlanes.end(), PriorityComparator( planeNodeMapping ) );
+            // ySharedPlanes.removeAll( sharedAxes.first()->diagram()->coordinatePlane() );
+            // std::sort( ySharedPlanes.begin(), ySharedPlanes.end(), PriorityComparator( planeNodeMapping ) );
             for (int i = 0; i < ySharedPlanes.size() - 1; ++i) {
                 LayoutGraphNode *tmpNode = planeNodeMapping[ySharedPlanes[i]];
                 Q_ASSERT(tmpNode);
@@ -536,7 +537,7 @@ QVector<LayoutGraphNode *> Chart::Private::buildPlaneLayoutGraph()
             //                Q_ASSERT( ownerNode );
             //                lastNode->bottomSuccesor = ownerNode;
             //            }
-            //merge AxisInformation, needs a two pass run
+            // merge AxisInformation, needs a two pass run
             LayoutGraphNode axisInfoNode;
             for (int count = 0; count < 2; ++count) {
                 for (int i = 0; i < ySharedPlanes.size(); ++i) {
@@ -646,7 +647,7 @@ void Chart::Private::slotLayoutPlanes()
     Q_FOREACH (AbstractLayoutItem *plane, planeLayoutItems) {
         plane->removeFromParentLayout();
     }
-    //TODO they should get a correct parent, but for now it works
+    // TODO they should get a correct parent, but for now it works
     Q_FOREACH (AbstractLayoutItem *plane, planeLayoutItems) {
         if (dynamic_cast<AutoSpacerLayoutItem *>(plane))
             delete plane;
@@ -654,8 +655,8 @@ void Chart::Private::slotLayoutPlanes()
 
     planeLayoutItems.clear();
     delete planesLayout;
-    //hint: The direction is configurable by the user now, as
-    //      we are using a QBoxLayout rather than a QVBoxLayout.  (khz, 2007/04/25)
+    // hint: The direction is configurable by the user now, as
+    //       we are using a QBoxLayout rather than a QVBoxLayout.  (khz, 2007/04/25)
     planesLayout = new QBoxLayout(oldPlanesDirection);
 
     isPlanesLayoutDirty = true; // here we create the layouts; we need to "run" them before painting
@@ -673,9 +674,9 @@ void Chart::Private::slotLayoutPlanes()
          * get their own. See buildPlaneLayoutInfos() for more details. */
 
         QVector<LayoutGraphNode *> vals = buildPlaneLayoutGraph();
-        //qDebug() << Q_FUNC_INFO << "GraphNodes" << vals.size();
+        // qDebug() << Q_FUNC_INFO << "GraphNodes" << vals.size();
         QVector<LayoutGraphNode *> connectedComponents = getPrioritySortedConnectedComponents(vals);
-        //qDebug() << Q_FUNC_INFO << "SubGraphs" << connectedComponents.size();
+        // qDebug() << Q_FUNC_INFO << "SubGraphs" << connectedComponents.size();
         int row = 0;
         int col = 0;
         QSet<CartesianAxis *> laidOutAxes;
@@ -686,11 +687,11 @@ void Chart::Private::slotLayoutPlanes()
                 for (LayoutGraphNode *curColComponent = curRowComponent; curColComponent; curColComponent = curColComponent->leftSuccesor) {
                     Q_ASSERT(curColComponent->diagramPlane->diagrams().size() == 1);
                     Q_FOREACH (AbstractDiagram *diagram, curColComponent->diagramPlane->diagrams()) {
-                        const int planeRowOffset = 1; //curColComponent->topAxesLayout ? 1 : 0;
-                        const int planeColOffset = 1; //curColComponent->leftAxesLayout ? 1 : 0;
-                        //qDebug() << Q_FUNC_INFO << row << col << planeRowOffset << planeColOffset;
+                        const int planeRowOffset = 1; // curColComponent->topAxesLayout ? 1 : 0;
+                        const int planeColOffset = 1; // curColComponent->leftAxesLayout ? 1 : 0;
+                        // qDebug() << Q_FUNC_INFO << row << col << planeRowOffset << planeColOffset;
 
-                        //qDebug() << Q_FUNC_INFO << row + planeRowOffset << col + planeColOffset;
+                        // qDebug() << Q_FUNC_INFO << row + planeRowOffset << col + planeColOffset;
                         planeLayoutItems << curColComponent->diagramPlane;
                         auto *cartDiag = qobject_cast<AbstractCartesianDiagram *>(diagram);
                         if (cartDiag) {
@@ -763,8 +764,8 @@ void Chart::Private::slotLayoutPlanes()
                         col += planeColOffset + 2 + (1);
                     }
                 }
-                int axisOffset = 2; //curRowComponent->topAxesLayout ? 1 : 0;
-                //axisOffset += curRowComponent->bottomAxesLayout ? 1 : 0;
+                int axisOffset = 2; // curRowComponent->topAxesLayout ? 1 : 0;
+                // axisOffset += curRowComponent->bottomAxesLayout ? 1 : 0;
                 const int rowOffset = axisOffset + 2;
                 row += rowOffset;
             }
@@ -792,7 +793,7 @@ void Chart::Private::slotLayoutPlanes()
                     qDebug() << Q_FUNC_INFO << "item at" << i << j << "no item present";
             }
         }
-        //qDebug() << Q_FUNC_INFO << "Relayout ended";
+        // qDebug() << Q_FUNC_INFO << "Relayout ended";
 #endif
     } else {
         if (hadPlanesLayout) {
@@ -813,7 +814,7 @@ void Chart::Private::slotLayoutPlanes()
             PlaneInfo &pi = planeInfos[plane];
             const int column = pi.horizontalOffset;
             const int row = pi.verticalOffset;
-            //qDebug() << "processing plane at column" << column << "and row" << row;
+            // qDebug() << "processing plane at column" << column << "and row" << row;
             QGridLayout *planeLayout = pi.gridLayout;
 
             if (!planeLayout) {
@@ -837,7 +838,7 @@ void Chart::Private::slotLayoutPlanes()
             planeLayoutItems << plane;
             plane->setParentLayout(planeLayout);
             planeLayout->addItem(plane, row, column, 1, 1, {});
-            //qDebug() << "Chart slotLayoutPlanes() calls planeLayout->addItem("<< row << column << ")";
+            // qDebug() << "Chart slotLayoutPlanes() calls planeLayout->addItem("<< row << column << ")";
             planeLayout->setRowStretch(row, 2);
             planeLayout->setColumnStretch(column, 2);
             Q_FOREACH (AbstractDiagram *abstractDiagram, plane->diagrams()) {
@@ -883,14 +884,14 @@ void Chart::Private::slotLayoutPlanes()
                     planeInfos[pi.referencePlane].rightAxesLayout = pi.rightAxesLayout;
                 }
 
-                //pi.leftAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
+                // pi.leftAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
                 Q_FOREACH (CartesianAxis *axis, diagram->axes()) {
                     if (axisInfos.contains(axis)) {
                         continue; // already laid out this one
                     }
                     Q_ASSERT(axis);
                     axis->setCachedSizeDirty();
-                    //qDebug() << "--------------- axis added to planeLayoutItems  -----------------";
+                    // qDebug() << "--------------- axis added to planeLayoutItems  -----------------";
                     planeLayoutItems << axis;
 
                     switch (axis->position()) {
@@ -1080,7 +1081,7 @@ void Chart::Private::paintAll(QPainter *painter)
 
     QRect rect(QPoint(0, 0), overrideSize.isValid() ? overrideSize : chart->size());
 
-    //qDebug() << this<<"::paintAll() uses layout size" << currentLayoutSize;
+    // qDebug() << this<<"::paintAll() uses layout size" << currentLayoutSize;
 
     // Paint the background (if any)
     AbstractAreaBase::paintBackgroundAttributes(*painter, rect, backgroundAttributes);
@@ -1098,7 +1099,7 @@ void Chart::Private::paintAll(QPainter *painter)
     Q_FOREACH (Legend *legend, legends) {
         const bool hidden = legend->isHidden() && legend->testAttribute(Qt::WA_WState_ExplicitShowHide);
         if (!hidden) {
-            //qDebug() << "painting legend at " << legend->geometry();
+            // qDebug() << "painting legend at " << legend->geometry();
             legend->paintIntoRect(*painter, legend->geometry());
         }
     }
@@ -1153,7 +1154,7 @@ BackgroundAttributes Chart::backgroundAttributes() const
     return d->backgroundAttributes;
 }
 
-//TODO KDChart 3.0; change QLayout into QBoxLayout::Direction
+// TODO KDChart 3.0; change QLayout into QBoxLayout::Direction
 void Chart::setCoordinatePlaneLayout(QLayout *layout)
 {
     if (layout == d->planesLayout)
@@ -1384,8 +1385,8 @@ void Chart::reLayoutFloatingLegends()
             // find the legends corner point (reference point plus any paddings)
             const RelativePosition relPos(legend->floatingPosition());
             QPointF pt(relPos.calculatedPoint(size()));
-            //qDebug() << pt;
-            // calculate the legend's top left point
+            // qDebug() << pt;
+            //  calculate the legend's top left point
             const Qt::Alignment alignTopLeft = Qt::AlignTop | Qt::AlignLeft;
             if ((relPos.alignment() & alignTopLeft) != alignTopLeft) {
                 if (relPos.alignment() & Qt::AlignRight)
@@ -1398,7 +1399,7 @@ void Chart::reLayoutFloatingLegends()
                 else if (relPos.alignment() & Qt::AlignVCenter)
                     pt.ry() -= 0.5 * legendSize.height();
             }
-            //qDebug() << pt << endl;
+            // qDebug() << pt << endl;
             legend->move(static_cast<int>(pt.x()), static_cast<int>(pt.y()));
         }
     }

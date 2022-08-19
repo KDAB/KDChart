@@ -16,28 +16,28 @@
 ****************************************************************************/
 
 #include "kdganttgraphicsscene.h"
-#include "kdganttgraphicsscene_p.h"
-#include "kdganttgraphicsitem.h"
+#include "kdganttabstractrowcontroller.h"
 #include "kdganttconstraint.h"
 #include "kdganttconstraintgraphicsitem.h"
-#include "kdganttitemdelegate.h"
-#include "kdganttabstractrowcontroller.h"
 #include "kdganttdatetimegrid.h"
+#include "kdganttgraphicsitem.h"
+#include "kdganttgraphicsscene_p.h"
+#include "kdganttitemdelegate.h"
 #include "kdganttsummaryhandlingproxymodel.h"
 
 #include <QApplication>
 #include <QGraphicsSceneHelpEvent>
 #include <QPainter>
 #include <QPrinter>
+#include <QSet>
 #include <QTextDocument>
 #include <QToolTip>
-#include <QSet>
 
 #include <QDebug>
 
-#include <functional>
 #include <algorithm>
 #include <cassert>
+#include <functional>
 
 // defines HAVE_PRINTER if support for printing should be included
 #ifdef _WIN32_WCE
@@ -94,13 +94,13 @@ void GraphicsScene::Private::createConstraintItem(const Constraint &c)
         q->addItem(citem);
     }
 
-    //q->insertConstraintItem( c, citem );
+    // q->insertConstraintItem( c, citem );
 }
 
 // Delete the constraint item, and clean up pointers in the start- and end item
 void GraphicsScene::Private::deleteConstraintItem(ConstraintGraphicsItem *citem)
 {
-    //qDebug()<<"GraphicsScene::Private::deleteConstraintItem citem="<<citem;
+    // qDebug()<<"GraphicsScene::Private::deleteConstraintItem citem="<<citem;
     if (citem == nullptr) {
         return;
     }
@@ -345,14 +345,14 @@ GraphicsItem *GraphicsScene::createItem(ItemType type) const
     default:          return 0;
     }
 #endif
-    //qDebug() << "GraphicsScene::createItem("<<type<<")";
+    // qDebug() << "GraphicsScene::createItem("<<type<<")";
     Q_UNUSED(type);
     return new GraphicsItem;
 }
 
 void GraphicsScene::Private::recursiveUpdateMultiItem(const Span &span, const QModelIndex &idx)
 {
-    //qDebug() << "recursiveUpdateMultiItem("<<span<<idx<<")";
+    // qDebug() << "recursiveUpdateMultiItem("<<span<<idx<<")";
     GraphicsItem *item = q->findItem(idx);
     const int itemtype = summaryHandlingModel->data(idx, ItemTypeRole).toInt();
     if (!item) {
@@ -371,7 +371,7 @@ void GraphicsScene::Private::recursiveUpdateMultiItem(const Span &span, const QM
 
 void GraphicsScene::updateRow(const QModelIndex &rowidx)
 {
-    //qDebug() << "GraphicsScene::updateRow("<<rowidx<<")" << rowidx.data( Qt::DisplayRole );
+    // qDebug() << "GraphicsScene::updateRow("<<rowidx<<")" << rowidx.data( Qt::DisplayRole );
     if (!rowidx.isValid())
         return;
 #if !defined(NDEBUG)
@@ -404,7 +404,7 @@ void GraphicsScene::updateRow(const QModelIndex &rowidx)
             d->recursiveUpdateMultiItem(rg, idx);
         } else {
             if (summaryHandlingModel()->data(rowidx.parent(), ItemTypeRole).toInt() == TypeMulti && !isExpanded) {
-                //continue;
+                // continue;
             }
 
             GraphicsItem *item = findItem(idx);
@@ -457,7 +457,7 @@ void GraphicsScene::insertItem(const QPersistentModelIndex &idx, GraphicsItem *i
 
 void GraphicsScene::removeItem(const QModelIndex &idx)
 {
-    //qDebug() << "GraphicsScene::removeItem("<<idx<<")";
+    // qDebug() << "GraphicsScene::removeItem("<<idx<<")";
     QHash<QPersistentModelIndex, GraphicsItem *>::iterator it = d->items.find(idx);
     if (it != d->items.end()) {
         GraphicsItem *item = *it;

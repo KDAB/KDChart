@@ -18,16 +18,16 @@
 #include <KDChartWidget.h>
 #include <KDChartWidget_p.h>
 
+#include <KDChartAbstractCoordinatePlane.h>
 #include <KDChartAbstractDiagram.h>
 #include <KDChartBarDiagram.h>
 #include <KDChartChart.h>
-#include <KDChartAbstractCoordinatePlane.h>
+#include <KDChartLegend.h>
 #include <KDChartLineDiagram.h>
-#include <KDChartPlotter.h>
 #include <KDChartPieDiagram.h>
+#include <KDChartPlotter.h>
 #include <KDChartPolarDiagram.h>
 #include <KDChartRingDiagram.h>
-#include <KDChartLegend.h>
 
 #include <QDebug>
 
@@ -58,11 +58,11 @@ Widget::Private::~Private()
 }
 
 /**
-* \class Widget KDChartWidget.h
-* \brief The KDChart widget for usage without Interwiev.
-*
-* If you want to use KDChart with Interview, use KDChart::Chart instead.
-*/
+ * \class Widget KDChartWidget.h
+ * \brief The KDChart widget for usage without Interwiev.
+ *
+ * If you want to use KDChart with Interview, use KDChart::Chart instead.
+ */
 
 /**
  * Constructor. Creates a new widget with all data initialized empty.
@@ -451,9 +451,9 @@ void Widget::setType(ChartType chartType, SubType chartSubType)
             diag->setModel(&d->m_model);
             coordinatePlane()->replaceDiagram(diag);
 
-            //checkDatasetWidth( d->usedDatasetWidth );
+            // checkDatasetWidth( d->usedDatasetWidth );
         }
-        //coordinatePlane()->setGridNeedsRecalculate();
+        // coordinatePlane()->setGridNeedsRecalculate();
     }
 
     if (chartType != NoType) {
@@ -463,7 +463,7 @@ void Widget::setType(ChartType chartType, SubType chartSubType)
     }
 }
 
-template <class DiagramType, class Subtype>
+template<class DiagramType, class Subtype>
 void setSubtype(AbstractDiagram *_dia, Subtype st)
 {
     if (auto *dia = qobject_cast<DiagramType *>(_dia)) {
@@ -534,10 +534,10 @@ Widget::SubType Widget::subType() const
     auto *lineDia = qobject_cast<LineDiagram *>(dia);
     auto *plotterDia = qobject_cast<Plotter *>(dia);
 
-    //FIXME(khz): Add the impl for these chart types - or remove them from here:
-    //    PieDiagram*   pieDia   = qobject_cast< PieDiagram* >( diagram() );
-    //    PolarDiagram* polarDia = qobject_cast< PolarDiagram* >( diagram() );
-    //    RingDiagram*  ringDia  = qobject_cast< RingDiagram* >( diagram() );
+    // FIXME(khz): Add the impl for these chart types - or remove them from here:
+    //     PieDiagram*   pieDia   = qobject_cast< PieDiagram* >( diagram() );
+    //     PolarDiagram* polarDia = qobject_cast< PolarDiagram* >( diagram() );
+    //     RingDiagram*  ringDia  = qobject_cast< RingDiagram* >( diagram() );
 
 #define TEST_SUB_TYPE(DIAGRAM, INTERNALSUBTYPE, SUBTYPE)   \
     {                                                      \

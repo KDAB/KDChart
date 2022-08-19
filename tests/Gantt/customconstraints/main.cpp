@@ -17,20 +17,20 @@
 
 #include <QApplication>
 #include <QDateTime>
-#include <QStandardItemModel>
 #include <QDebug>
-#include <QSlider>
-#include <QVBoxLayout>
-#include <QPixmap>
 #include <QLabel>
-#include <QPainter>
-#include <QPixmapCache>
 #include <QMenu>
+#include <QPainter>
+#include <QPixmap>
+#include <QPixmapCache>
+#include <QSlider>
+#include <QStandardItemModel>
+#include <QVBoxLayout>
 
-#include <KDGanttView>
-#include <KDGanttGraphicsView>
 #include <KDGanttConstraintModel>
 #include <KDGanttDateTimeGrid>
+#include <KDGanttGraphicsView>
+#include <KDGanttView>
 
 class MyGraphicsView : public KDGantt::GraphicsView
 {
@@ -89,7 +89,7 @@ public:
         view.setGraphicsView(new MyGraphicsView);
 
         qDebug() << "Building data";
-        //proxyModel.setSourceModel( &model );
+        // proxyModel.setSourceModel( &model );
         for (int h = 0; h < 2; ++h) {
             QList<QStandardItem *> items;
             items
@@ -110,7 +110,7 @@ public:
         l->addWidget(&slider);
         grid.setStartDateTime(QDateTime::currentDateTime().addDays(-3));
         grid.setDayWidth(100);
-        //grid.setNoInformationBrush( Qt::NoBrush );
+        // grid.setNoInformationBrush( Qt::NoBrush );
         view.setGrid(&grid);
         view.setModel(&model);
 
@@ -134,7 +134,7 @@ private:
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
-    //QPixmapCache::setCacheLimit( 30*1024 );
+    // QPixmapCache::setCacheLimit( 30*1024 );
 
     MyWidget w;
     w.show();

@@ -19,8 +19,8 @@
 
 #include <limits>
 
-#include <QPen>
 #include <QDebug>
+#include <QPen>
 
 #include <KDABLibFakes>
 

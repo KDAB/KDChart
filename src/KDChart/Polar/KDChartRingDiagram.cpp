@@ -19,12 +19,12 @@
 #include "KDChartRingDiagram_p.h"
 
 #include "KDChartAttributesModel.h"
+#include "KDChartDataValueAttributes.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartPieAttributes.h"
 #include "KDChartPolarCoordinatePlane_p.h"
 #include "KDChartThreeDPieAttributes.h"
-#include "KDChartDataValueAttributes.h"
 
 #include <QPainter>
 
@@ -57,8 +57,8 @@ void RingDiagram::init()
 }
 
 /**
-  * Creates an exact copy of this diagram.
-  */
+ * Creates an exact copy of this diagram.
+ */
 RingDiagram *RingDiagram::clone() const
 {
     return new RingDiagram(new Private(*d));
@@ -160,7 +160,7 @@ void RingDiagram::paint(PaintContext *ctx)
     const int rCount = rowCount();
     const int colCount = columnCount();
 
-    //QRectF contentsRect = PolarCoordinatePlane::Private::contentsRect( polarCoordinatePlane() );
+    // QRectF contentsRect = PolarCoordinatePlane::Private::contentsRect( polarCoordinatePlane() );
     QRectF contentsRect = ctx->rectangle();
     if (contentsRect.isEmpty())
         return;
@@ -178,16 +178,16 @@ void RingDiagram::paint(PaintContext *ctx)
         qreal maxOffsetInThisRow = 0.0;
         for (int j = 0; j < colCount; ++j) {
             const PieAttributes cellAttrs(pieAttributes(model()->index(i, j, rootIndex()))); // checked
-            //qDebug() << cellAttrs.explodeFactor();
+            // qDebug() << cellAttrs.explodeFactor();
             const qreal explode = cellAttrs.explode() ? cellAttrs.explodeFactor() : 0.0;
             maxOffsetInThisRow = qMax(maxOffsetInThisRow, cellAttrs.gapFactor(false) + explode);
         }
         if (!d->expandWhenExploded) {
             maxOffsetInThisRow -= qreal(i);
         }
-        totalOffset += qMax(maxOffsetInThisRow, (qreal)0.0);
+        totalOffset += qMax(maxOffsetInThisRow, ( qreal )0.0);
         // FIXME: What if explode factor of inner ring is > 1.0 ?
-        //if ( !d->expandWhenExploded )
+        // if ( !d->expandWhenExploded )
         //      break;
     }
 
@@ -208,7 +208,7 @@ void RingDiagram::paint(PaintContext *ctx)
     d->forgetAlreadyPaintedDataValues();
     for (int iRow = 0; iRow < rCount; ++iRow) {
         const qreal sum = valueTotals(iRow);
-        if (sum == 0.0) //nothing to draw
+        if (sum == 0.0) // nothing to draw
             continue;
         qreal currentValue = plane ? plane->startPosition() : 0.0;
         const qreal sectorsPerValue = 360.0 / sum;
@@ -239,7 +239,7 @@ void RingDiagram::paint(PaintContext *ctx)
 }
 
 #if defined(Q_WS_WIN)
-#define trunc(x) ((int)(x))
+#define trunc(x) (( int )(x))
 #endif
 
 /**
@@ -298,7 +298,7 @@ void RingDiagram::drawPieSurface(QPainter *painter, uint dataset, uint slice, qr
         if (angleLen == 360) {
             // full circle, avoid nasty line in the middle
             // FIXME: Draw a complete ring here
-            //painter->drawEllipse( drawPosition );
+            // painter->drawEllipse( drawPosition );
         } else {
             bool perfectMatch = false;
 
@@ -339,7 +339,7 @@ void RingDiagram::drawPieSurface(QPainter *painter, uint dataset, uint slice, qr
                 maxRadialGap += maxRadialGapInThisRow;
 
                 // FIXME: What if explode factor of inner ring is > 1.0 ?
-                //if ( !d->expandWhenExploded )
+                // if ( !d->expandWhenExploded )
                 //    break;
             }
             totalRadialGap = maxRadialGap + attrs.gapFactor(false);
@@ -383,9 +383,9 @@ void RingDiagram::drawPieSurface(QPainter *painter, uint dataset, uint slice, qr
 
             // The center point of the outer brink
             const QPointF outerCenterPoint(poly[lastInnerBrinkPoint + int((iPoint - lastInnerBrinkPoint) / 2)]);
-            //qDebug() << poly;
-            //find the value and paint it
-            //fix value position
+            // qDebug() << poly;
+            // find the value and paint it
+            // fix value position
             const qreal sum = valueTotals(dataset);
             painter->drawPolygon(poly);
 
@@ -412,9 +412,9 @@ void RingDiagram::drawPieSurface(QPainter *painter, uint dataset, uint slice, qr
 }
 
 /**
-  * Auxiliary method returning a point to a given boundary
-  * rectangle of the enclosed ellipse and an angle.
-  */
+ * Auxiliary method returning a point to a given boundary
+ * rectangle of the enclosed ellipse and an angle.
+ */
 QPointF RingDiagram::pointOnEllipse(const QRectF &rect, int dataset, int slice, bool outer, qreal angle,
                                     qreal totalGapFactor, qreal totalExplodeFactor)
 {

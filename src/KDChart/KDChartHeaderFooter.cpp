@@ -19,15 +19,15 @@
 #include "KDChartHeaderFooter_p.h"
 
 #include "KDChartChart.h"
-#include <KDChartTextAttributes.h>
-#include <QFont>
-#include <QPainter>
-#include <QAbstractTextDocumentLayout>
-#include <QTextDocumentFragment>
-#include <QTextBlock>
-#include <QtDebug>
-#include <QLabel>
 #include "KDTextDocument.h"
+#include <KDChartTextAttributes.h>
+#include <QAbstractTextDocumentLayout>
+#include <QFont>
+#include <QLabel>
+#include <QPainter>
+#include <QTextBlock>
+#include <QTextDocumentFragment>
+#include <QtDebug>
 
 #include <KDABLibFakes>
 
@@ -82,8 +82,8 @@ void HeaderFooter::init()
 }
 
 /**
-  * Creates an exact copy of this header/footer.
-  */
+ * Creates an exact copy of this header/footer.
+ */
 HeaderFooter *HeaderFooter::clone() const
 {
     auto *headerFooter = new HeaderFooter(new Private(*d), nullptr);

@@ -15,10 +15,10 @@
 **
 ****************************************************************************/
 
-#include <QtGui>
 #include <KDChartChart>
 #include <KDChartLineDiagram>
 #include <QApplication>
+#include <QtGui>
 
 using namespace KDChart;
 

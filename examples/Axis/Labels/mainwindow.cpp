@@ -64,9 +64,9 @@ MainWindow::MainWindow(QWidget *parent)
                << "Sunday";
     m_xAxis->setLabels(daysOfWeek);
 
-    //QStringList shortDays;
-    //shortDays << "Mon" << "Tue" << "Wed" << "Thu" << "Fri" << "Sat" << "Sun";
-    //m_xAxis->setShortLabels( shortDays );
+    // QStringList shortDays;
+    // shortDays << "Mon" << "Tue" << "Wed" << "Thu" << "Fri" << "Sat" << "Sun";
+    // m_xAxis->setShortLabels( shortDays );
 #endif
 
 // Use HTML for drawing the text in the axis labels.

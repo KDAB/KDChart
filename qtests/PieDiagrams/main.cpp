@@ -15,13 +15,13 @@
 **
 ****************************************************************************/
 
-#include <QtTest/QtTest>
 #include <KDChartChart>
 #include <KDChartGlobal>
-#include <KDChartPieDiagram>
 #include <KDChartPieAttributes>
-#include <KDChartThreeDPieAttributes>
+#include <KDChartPieDiagram>
 #include <KDChartPolarCoordinatePlane>
+#include <KDChartThreeDPieAttributes>
+#include <QtTest/QtTest>
 
 #include <TableModel.h>
 
@@ -53,7 +53,7 @@ private slots:
 
     void testPieAttributesLevelSettings()
     {
-        //check segments
+        // check segments
         const int cols = m_pie->model()->columnCount();
         QCOMPARE(m_pie->columnCount(), cols);
         // create attribute
@@ -83,7 +83,7 @@ private slots:
         // check default values
         QVERIFY(pa.explode() == false);
         QVERIFY(pa.explodeFactor() == 0.0);
-        //change settings
+        // change settings
         pa.setExplode(true);
         pa.setExplodeFactor(0.2);
         m_pie->setPieAttributes(pa);
@@ -94,7 +94,7 @@ private slots:
 
     void testThreeDPieAttributesLevelSettings()
     {
-        //check segments
+        // check segments
         const int cols = m_pie->model()->columnCount();
         QCOMPARE(m_pie->columnCount(), cols);
 
@@ -117,20 +117,20 @@ private slots:
     void testThreeDPieAttributesValueSettings()
     {
         ThreeDPieAttributes td(m_pie->threeDPieAttributes());
-        //check default values
+        // check default values
         QVERIFY(td.isEnabled() == false);
         QVERIFY(td.depth() == -10);
         QVERIFY(td.validDepth() == 0.0);
-        //pie specifics
+        // pie specifics
         QVERIFY(td.useShadowColors() == true);
 
-        //set new values
+        // set new values
         td.setEnabled(true);
         td.setDepth(40);
         td.setUseShadowColors(false); // not implemented yet
         m_pie->setThreeDPieAttributes(td);
 
-        //get new values
+        // get new values
         QVERIFY(m_pie->threeDPieAttributes().isEnabled() == true);
         QVERIFY(m_pie->threeDPieAttributes().depth() == 40);
         QVERIFY(m_pie->threeDPieAttributes().validDepth() == 40);

@@ -15,16 +15,16 @@
 **
 ****************************************************************************/
 
-#include <QtTest/QtTest>
-#include <QStandardItemModel>
-#include <QPointF>
-#include <QPair>
-#include <QString>
-#include <KDChartChart>
-#include <KDChartCartesianCoordinatePlane>
 #include <KDChartBarDiagram>
-#include <KDChartPlotter>
+#include <KDChartCartesianCoordinatePlane>
+#include <KDChartChart>
 #include <KDChartGridAttributes>
+#include <KDChartPlotter>
+#include <QPair>
+#include <QPointF>
+#include <QStandardItemModel>
+#include <QString>
+#include <QtTest/QtTest>
 
 using namespace KDChart;
 
@@ -123,7 +123,7 @@ void TestCartesianPlanes::testIntialOwnership()
     QCOMPARE(m_plane->referenceCoordinatePlane(), m_chart->coordinatePlane());
     m_chart->takeCoordinatePlane(0);
     delete plane;
-    QCOMPARE(m_plane->referenceCoordinatePlane(), (AbstractCoordinatePlane *)0);
+    QCOMPARE(m_plane->referenceCoordinatePlane(), ( AbstractCoordinatePlane * )0);
 }
 
 void TestCartesianPlanes::testDiagramOwnership()
@@ -237,7 +237,7 @@ void TestCartesianPlanes::testGlobalGridAttributesSettings()
     ga.setGridVisible(false);
     m_plane->setGlobalGridAttributes(ga);
     QVERIFY(m_plane->globalGridAttributes().isGridVisible() == false);
-    //reset to normal
+    // reset to normal
     ga.setGridVisible(true);
     QVERIFY(m_plane->globalGridAttributes().isGridVisible() == false);
     m_plane->setGlobalGridAttributes(ga);

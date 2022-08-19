@@ -32,7 +32,8 @@ class KDGANTT_EXPORT DateTimeGrid : public AbstractGrid
     Q_OBJECT
     KDGANTT_DECLARE_PRIVATE_DERIVED(DateTimeGrid)
 public:
-    enum Scale {
+    enum Scale
+    {
         ScaleAuto,
         ScaleHour,
         ScaleDay,
@@ -122,7 +123,8 @@ class KDGANTT_EXPORT DateTimeScaleFormatter
 {
     KDGANTT_DECLARE_PRIVATE_BASE_POLYMORPHIC(DateTimeScaleFormatter)
 public:
-    enum Range {
+    enum Range
+    {
         Second,
         Minute,
         Hour,

@@ -32,7 +32,7 @@ public:
     };
 
     ThreeDPainter(QPainter *p)
-        : painter(p){};
+        : painter(p) {};
 
     QPolygonF drawTwoDLine(const QLineF &line, const QPen &pen,
                            const ThreeDProperties &props);
@@ -326,12 +326,12 @@ void StockDiagram::Private::drawOHLCBar(int dataset, const CartesianDiagramDataC
 }
 
 /**
-  * Draws a line connecting the low and the high value of an OHLC chart
-  *
-  * @param low The low data point
-  * @param high The high data point
-  * @param context The context to draw the candlestick in
-  */
+ * Draws a line connecting the low and the high value of an OHLC chart
+ *
+ * @param low The low data point
+ * @param high The high data point
+ * @param context The context to draw the candlestick in
+ */
 void StockDiagram::Private::drawCandlestick(int /*dataset*/, const CartesianDiagramDataCompressor::DataPoint &open,
                                             const CartesianDiagramDataCompressor::DataPoint &high,
                                             const CartesianDiagramDataCompressor::DataPoint &low,
@@ -451,13 +451,13 @@ void StockDiagram::Private::drawCandlestick(int /*dataset*/, const CartesianDiag
 }
 
 /**
-  * Draws a line connecting two points
-  *
-  * @param col The column of the diagram to paint the line in
-  * @param point1 The first point
-  * @param point2 The second point
-  * @param context The context to draw the low-high line in
-  */
+ * Draws a line connecting two points
+ *
+ * @param col The column of the diagram to paint the line in
+ * @param point1 The first point
+ * @param point2 The second point
+ * @param context The context to draw the low-high line in
+ */
 void StockDiagram::Private::drawLine(int dataset, int col, const QPointF &point1, const QPointF &point2, PaintContext *context)
 {
     PainterSaver painterSaver(context->painter());
@@ -484,7 +484,7 @@ void StockDiagram::Private::drawLine(int dataset, int col, const QPointF &point1
         reverseMapper.addPolygon(modelCol, modelRow, painter.drawThreeDLine(line, brush, pen, threeDProps));
     } else {
         context->painter()->setPen(pen);
-        //context->painter()->setBrush( brush );
+        // context->painter()->setBrush( brush );
         reverseMapper.addLine(modelCol, modelRow, transP1, transP2);
         context->painter()->drawLine(line);
     }

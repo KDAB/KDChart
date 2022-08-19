@@ -25,15 +25,15 @@ namespace KDChart {
 class PaintContext;
 
 /**
-     * \internal
-     *
-     * \brief Class for the grid in a Levey Jennings plane.
-     *
-     * The LeveyJenningsGrid interface is used
-     * for calculating and for drawing
-     * the horizontal grid lines, and the vertical grid lines
-     * of a Levey Jennings coordinate plane.
-     */
+ * \internal
+ *
+ * \brief Class for the grid in a Levey Jennings plane.
+ *
+ * The LeveyJenningsGrid interface is used
+ * for calculating and for drawing
+ * the horizontal grid lines, and the vertical grid lines
+ * of a Levey Jennings coordinate plane.
+ */
 class LeveyJenningsGrid : public CartesianGrid
 {
 public:

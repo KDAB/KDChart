@@ -18,8 +18,8 @@
 #ifndef KDCHARTPOLARDIAGRAM_H
 #define KDCHARTPOLARDIAGRAM_H
 
-#include "KDChartPosition.h"
 #include "KDChartAbstractPolarDiagram.h"
+#include "KDChartPosition.h"
 
 QT_BEGIN_NAMESPACE
 class QPolygonF;
@@ -28,8 +28,8 @@ QT_END_NAMESPACE
 namespace KDChart {
 
 /**
-  * @brief PolarDiagram defines a common polar diagram
-  */
+ * @brief PolarDiagram defines a common polar diagram
+ */
 class KDCHART_EXPORT PolarDiagram : public AbstractPolarDiagram
 {
     Q_OBJECT

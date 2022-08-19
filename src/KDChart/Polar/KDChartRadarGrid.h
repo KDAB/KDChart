@@ -27,15 +27,15 @@ class PaintContext;
 class RadarCoordinatePlane;
 
 /**
-     * \internal
-     *
-     * \brief Class for the grid in a radar plane.
-     *
-     * The RadarGrid interface is used
-     * for calculating and for drawing
-     * the grid lines of a radar charts including "axis"
-     * labels.
-     */
+ * \internal
+ *
+ * \brief Class for the grid in a radar plane.
+ *
+ * The RadarGrid interface is used
+ * for calculating and for drawing
+ * the grid lines of a radar charts including "axis"
+ * labels.
+ */
 class RadarGrid : public AbstractGrid
 {
 public:

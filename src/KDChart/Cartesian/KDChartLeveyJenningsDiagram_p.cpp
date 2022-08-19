@@ -15,8 +15,8 @@
 **
 ****************************************************************************/
 
-#include "KDChartLeveyJenningsDiagram.h"
 #include "KDChartDataValueAttributes.h"
+#include "KDChartLeveyJenningsDiagram.h"
 
 #include "KDChartLeveyJenningsDiagram_p.h"
 

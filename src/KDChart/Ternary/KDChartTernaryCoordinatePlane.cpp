@@ -18,13 +18,13 @@
 #include "KDChartTernaryCoordinatePlane.h"
 #include "KDChartTernaryCoordinatePlane_p.h"
 
-#include <QtDebug>
 #include <QPainter>
+#include <QtDebug>
 
+#include "KDChartAbstractTernaryDiagram.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartTernaryAxis.h"
-#include "KDChartAbstractTernaryDiagram.h"
 
 #include "TernaryConstants.h"
 

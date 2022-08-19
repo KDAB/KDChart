@@ -17,14 +17,14 @@
 
 #include <QtTest/QtTest>
 
+#include <KDChartBarDiagram>
+#include <KDChartCartesianCoordinatePlane>
 #include <KDChartChart>
 #include <KDChartGlobal>
-#include <KDChartBarDiagram>
-#include <KDChartLineDiagram>
-#include <KDChartCartesianCoordinatePlane>
-#include <KDChartPolarCoordinatePlane>
-#include <KDChartLegend>
 #include <KDChartHeaderFooter>
+#include <KDChartLegend>
+#include <KDChartLineDiagram>
+#include <KDChartPolarCoordinatePlane>
 
 using namespace KDChart;
 

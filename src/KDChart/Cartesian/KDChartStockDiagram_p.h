@@ -18,10 +18,10 @@
 #ifndef KDCHART_STOCK_DIAGRAM_P_H
 #define KDCHART_STOCK_DIAGRAM_P_H
 
-#include "KDChartStockDiagram.h"
 #include "KDChartAbstractCartesianDiagram_p.h"
 #include "KDChartCartesianDiagramDataCompressor_p.h"
 #include "KDChartPaintContext.h"
+#include "KDChartStockDiagram.h"
 
 namespace KDChart {
 

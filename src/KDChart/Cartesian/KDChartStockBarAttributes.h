@@ -18,14 +18,14 @@
 #ifndef KDCHARTSTOCKBARATTRIBUTES_H
 #define KDCHARTSTOCKBARATTRIBUTES_H
 
-#include <QMetaType>
 #include "KDChartGlobal.h"
+#include <QMetaType>
 
 namespace KDChart {
 
 /**
-  * @brief Attributes to customize the appearance of a column in a stock chart
-  */
+ * @brief Attributes to customize the appearance of a column in a stock chart
+ */
 class KDCHART_EXPORT StockBarAttributes
 {
 public:

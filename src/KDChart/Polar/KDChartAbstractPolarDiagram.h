@@ -18,16 +18,16 @@
 #ifndef KDCHARTABSTRACTPOLARDIAGRAM_H
 #define KDCHARTABSTRACTPOLARDIAGRAM_H
 
-#include "KDChartPolarCoordinatePlane.h"
 #include "KDChartAbstractDiagram.h"
+#include "KDChartPolarCoordinatePlane.h"
 
 namespace KDChart {
 
 class GridAttributes;
 
 /**
-      * @brief Base class for diagrams based on a polar coordinate system.
-      */
+ * @brief Base class for diagrams based on a polar coordinate system.
+ */
 class KDCHART_EXPORT AbstractPolarDiagram : public AbstractDiagram
 {
     Q_OBJECT

@@ -27,8 +27,8 @@ class TernaryCoordinatePlane;
 class TernaryAxis;
 
 /**
-      * @brief Base class for diagrams based on a ternary coordinate plane.
-      */
+ * @brief Base class for diagrams based on a ternary coordinate plane.
+ */
 class KDCHART_EXPORT AbstractTernaryDiagram : public AbstractDiagram
 {
     Q_OBJECT

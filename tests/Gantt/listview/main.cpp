@@ -17,16 +17,16 @@
 
 #include <QApplication>
 #include <QDateTime>
-#include <QStandardItemModel>
 #include <QDebug>
-#include <QSlider>
-#include <QVBoxLayout>
 #include <QListView>
+#include <QSlider>
+#include <QStandardItemModel>
+#include <QVBoxLayout>
 
-#include <KDGanttView>
 #include <KDGanttConstraintModel>
 #include <KDGanttDateTimeGrid>
 #include <KDGanttListViewRowController>
+#include <KDGanttView>
 
 class MyStandardItem : public QStandardItem
 {
@@ -64,7 +64,7 @@ public:
         : QWidget(0)
     {
         qDebug() << "Building data";
-        //proxyModel.setSourceModel( &model );
+        // proxyModel.setSourceModel( &model );
         for (int i = 0; i < 10; ++i) {
             QStandardItem *item = new MyStandardItem(QString::fromLatin1("Multi Item %1").arg(i));
             for (int j = 0; j < 20; j += 3) {
@@ -90,8 +90,8 @@ public:
                             << new MyStandardItem(QString()));
         }
 
-        //cmodel.addConstraint( KDGantt::Constraint( proxyModel.index( 0, 3 ), proxyModel.index( 10, 3 ) ) );
-        //cmodel.addConstraint( KDGantt::Constraint( proxyModel.index( 10, 3 ), proxyModel.index( 5, 3 ) ) );
+        // cmodel.addConstraint( KDGantt::Constraint( proxyModel.index( 0, 3 ), proxyModel.index( 10, 3 ) ) );
+        // cmodel.addConstraint( KDGantt::Constraint( proxyModel.index( 10, 3 ), proxyModel.index( 5, 3 ) ) );
         QModelIndex pidx = model.index(0, 0);
         pidx = model.index(0, 0, pidx);
         cmodel.addConstraint(KDGantt::Constraint(model.index(0, 0, pidx), model.index(1, 0, pidx)));
@@ -116,7 +116,7 @@ public:
         view.setRowController(new KDGantt::ListViewRowController(lv, view.ganttProxyModel()));
         view.setGrid(&grid);
         view.setModel(&model);
-        //view.setConstraintModel( &cmodel );
+        // view.setConstraintModel( &cmodel );
         connect(&slider, SIGNAL(valueChanged(int)),
                 this, SLOT(slotZoom(int)));
     }

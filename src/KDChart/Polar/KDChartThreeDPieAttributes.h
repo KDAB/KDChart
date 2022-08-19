@@ -18,15 +18,15 @@
 #ifndef KDCHARTTHREEDPIEATTRIBUTES_H
 #define KDCHARTTHREEDPIEATTRIBUTES_H
 
-#include <QMetaType>
 #include "KDChartAbstractThreeDAttributes.h"
 #include "KDChartGlobal.h"
+#include <QMetaType>
 
 namespace KDChart {
 
 /**
-    * @brief A set of 3D pie attributes
-    */
+ * @brief A set of 3D pie attributes
+ */
 class KDCHART_EXPORT ThreeDPieAttributes : public AbstractThreeDAttributes
 {
 public:

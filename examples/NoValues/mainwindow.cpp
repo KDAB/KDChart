@@ -17,15 +17,15 @@
 
 #include "mainwindow.h"
 
-#include <KDChartChart>
 #include <KDChartAbstractCoordinatePlane>
 #include <KDChartCartesianAxis>
-#include <KDChartLineDiagram>
+#include <KDChartChart>
 #include <KDChartLegend>
+#include <KDChartLineDiagram>
 
 #include <QDebug>
-#include <QPen>
 #include <QHBoxLayout>
+#include <QPen>
 #include <QStandardItemModel>
 
 using namespace KDChart;
@@ -36,25 +36,25 @@ public:
     EmptyModel(QObject *parent = nullptr)
         : QAbstractItemModel(parent)
     {
-        //qDebug() << "EmptyModel::EmptyModel()";
+        // qDebug() << "EmptyModel::EmptyModel()";
     }
 
     ~EmptyModel() override
     {
-        //qDebug() << "EmptyModel::~EmptyModel()";
+        // qDebug() << "EmptyModel::~EmptyModel()";
     }
 
     int columnCount(const QModelIndex &parent = QModelIndex()) const override
     {
         Q_UNUSED(parent);
-        //qDebug() << "EmptyModel::columnCount(...)";
+        // qDebug() << "EmptyModel::columnCount(...)";
         return 0;
     }
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override
     {
         Q_UNUSED(parent);
-        //qDebug() << "EmptyModel::rowCount(...)";
+        // qDebug() << "EmptyModel::rowCount(...)";
         return 0;
     }
 
@@ -73,14 +73,14 @@ public:
         Q_UNUSED(row);
         Q_UNUSED(column);
         Q_UNUSED(parent);
-        //qDebug() << "EmptyModel::index(" << row << column << ")";
+        // qDebug() << "EmptyModel::index(" << row << column << ")";
         return QModelIndex();
     }
 
     QModelIndex parent(const QModelIndex &parent) const override
     {
         Q_UNUSED(parent);
-        //qDebug() << "EmptyModel::parent(...)";
+        // qDebug() << "EmptyModel::parent(...)";
         return QModelIndex();
     }
 };

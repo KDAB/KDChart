@@ -15,13 +15,13 @@
 **
 ****************************************************************************/
 
-#include <KDChartPosition.h>
 #include <KDChartEnums.h>
+#include <KDChartPosition.h>
 
+#include <QByteArray>
+#include <QList>
 #include <QString>
 #include <QStringList>
-#include <QList>
-#include <QByteArray>
 
 #include <KDABLibFakes>
 

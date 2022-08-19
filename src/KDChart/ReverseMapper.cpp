@@ -19,14 +19,14 @@
 
 #include <math.h>
 
+#include <QGraphicsScene>
+#include <QPainterPath>
+#include <QPolygonF>
 #include <QRect>
 #include <QtDebug>
-#include <QPolygonF>
-#include <QPainterPath>
-#include <QGraphicsScene>
 
-#include "KDChartAbstractDiagram.h"
 #include "ChartGraphicsItem.h"
+#include "KDChartAbstractDiagram.h"
 
 using namespace KDChart;
 

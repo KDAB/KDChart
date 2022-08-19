@@ -24,8 +24,8 @@
 
 #include <KDChartPaintContext.h>
 
-#include "TernaryPoint.h"
 #include "TernaryConstants.h"
+#include "TernaryPoint.h"
 
 using namespace KDChart;
 
@@ -94,11 +94,11 @@ void TernaryPointDiagram::paint(PaintContext *paintContext)
 
                 // retrieve data
                 x = qMax(model()->data(model()->index(row, column + 0, rootIndex())).toReal(), // checked
-                         (qreal)0.0);
+                         ( qreal )0.0);
                 y = qMax(model()->data(model()->index(row, column + 1, rootIndex())).toReal(), // checked
-                         (qreal)0.0);
+                         ( qreal )0.0);
                 z = qMax(model()->data(model()->index(row, column + 2, rootIndex())).toReal(), // checked
-                         (qreal)0.0);
+                         ( qreal )0.0);
 
                 // fix messed up data values (paint as much as possible)
                 qreal total = x + y + z;

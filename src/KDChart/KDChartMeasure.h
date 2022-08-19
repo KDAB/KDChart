@@ -18,11 +18,11 @@
 #ifndef KDCHARTMEASURE_H
 #define KDCHARTMEASURE_H
 
-#include <QDebug>
-#include <Qt>
-#include <QStack>
-#include "KDChartGlobal.h"
 #include "KDChartEnums.h"
+#include "KDChartGlobal.h"
+#include <QDebug>
+#include <QStack>
+#include <Qt>
 
 /** \file KDChartMeasure.h
  *  \brief Declaring the class KDChart::Measure.
@@ -38,10 +38,10 @@ QT_END_NAMESPACE
 namespace KDChart {
 
 /**
-  * \class Measure KDChartMeasure.h KDChartMeasure
-  * \brief Measure is used to specify relative and absolute sizes in KDChart, e.g. font sizes.
-  *
-  */
+ * \class Measure KDChartMeasure.h KDChartMeasure
+ * \brief Measure is used to specify relative and absolute sizes in KDChart, e.g. font sizes.
+ *
+ */
 
 class KDCHART_EXPORT Measure
 {
@@ -72,9 +72,9 @@ public:
     }
 
     /**
-      * The reference area must either be derived from AbstractArea
-      * or from QWidget, so it can also be derived from AbstractAreaWidget.
-      */
+     * The reference area must either be derived from AbstractArea
+     * or from QWidget, so it can also be derived from AbstractAreaWidget.
+     */
     void setRelativeMode(const QObject *area,
                          KDChartEnums::MeasureOrientation orientation)
     {
@@ -100,17 +100,17 @@ public:
     }
 
     /**
-      * The reference area must either be derived from AbstractArea
-      * or from QWidget, so it can also be derived from AbstractAreaWidget.
-      */
+     * The reference area must either be derived from AbstractArea
+     * or from QWidget, so it can also be derived from AbstractAreaWidget.
+     */
     void setReferenceArea(const QObject *area)
     {
         mArea = area;
     }
     /**
-      * The returned reference area will be derived from AbstractArea
-      * or QWidget or both.
-      */
+     * The returned reference area will be derived from AbstractArea
+     * or QWidget or both.
+     */
     const QObject *referenceArea() const
     {
         return mArea;
@@ -126,9 +126,9 @@ public:
     }
 
     /**
-      * The reference area must either be derived from AbstractArea
-      * or from QWidget, so it can also be derived from AbstractAreaWidget.
-      */
+     * The reference area must either be derived from AbstractArea
+     * or from QWidget, so it can also be derived from AbstractAreaWidget.
+     */
     qreal calculatedValue(const QObject *autoArea, KDChartEnums::MeasureOrientation autoOrientation) const;
     qreal calculatedValue(const QSizeF &autoSize, KDChartEnums::MeasureOrientation autoOrientation) const;
     const QSizeF sizeOfArea(const QObject *area) const;

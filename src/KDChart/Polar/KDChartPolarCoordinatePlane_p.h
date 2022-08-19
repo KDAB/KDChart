@@ -30,8 +30,8 @@
 //
 
 #include "KDChartAbstractCoordinatePlane_p.h"
-#include "KDChartZoomParameters.h"
 #include "KDChartPolarGrid.h"
+#include "KDChartZoomParameters.h"
 
 #include <KDABLibFakes>
 
@@ -63,7 +63,7 @@ struct PolarCoordinatePlane::CoordinateTransformation
         // ### de-inline me
         // calculate the polar coordinates
         const qreal x = (diagramPoint.x() * radiusUnit) - (minValue * radiusUnit);
-        //qDebug() << x << "=" << diagramPoint.x() << "*" << radiusUnit << "  startPosition: " << startPosition;
+        // qDebug() << x << "=" << diagramPoint.x() << "*" << radiusUnit << "  startPosition: " << startPosition;
         const qreal y = (diagramPoint.y() * -angleUnit) - 90.0 - startPosition;
         // convert to cartesian coordinates
         QPointF cartesianPoint = polarToCartesian(x, y);

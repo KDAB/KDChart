@@ -18,9 +18,9 @@
 #ifndef KDCHARTLEVEYJENNINGSGRIDATTRIBUTES_H
 #define KDCHARTLEVEYJENNINGSGRIDATTRIBUTES_H
 
-#include <QMetaType>
-#include "KDChartGlobal.h"
 #include "KDChartEnums.h"
+#include "KDChartGlobal.h"
+#include <QMetaType>
 
 QT_BEGIN_NAMESPACE
 class QPen;
@@ -29,8 +29,8 @@ QT_END_NAMESPACE
 namespace KDChart {
 
 /**
-  * @brief A set of attributes controlling the appearance of grids
-  */
+ * @brief A set of attributes controlling the appearance of grids
+ */
 class KDCHART_EXPORT LeveyJenningsGridAttributes
 {
 public:
@@ -40,12 +40,14 @@ public:
 
     ~LeveyJenningsGridAttributes();
 
-    enum GridType {
+    enum GridType
+    {
         Expected,
         Calculated
     };
 
-    enum Range {
+    enum Range
+    {
         NormalRange,
         CriticalRange,
         OutOfRange

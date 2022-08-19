@@ -33,8 +33,8 @@
  *  \internal
  */
 
-#include "KDChartTextArea.h"
 #include "KDChartAbstractAreaBase_p.h"
+#include "KDChartTextArea.h"
 
 #include <KDABLibFakes>
 

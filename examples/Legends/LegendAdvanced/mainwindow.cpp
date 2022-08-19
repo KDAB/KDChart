@@ -19,8 +19,8 @@
 
 #include <KDChartChart>
 #include <KDChartLegend>
-#include <KDChartPosition>
 #include <KDChartLineDiagram>
+#include <KDChartPosition>
 #include <KDChartTextAttributes>
 #include <QComboBox>
 #include <QLineEdit>
@@ -192,7 +192,7 @@ void MainWindow::on_editLegendPB_clicked()
     conf.styleCO->setCurrentIndex(legend->legendStyle());
 
     if (conf.exec() == QDialog::Accepted) {
-        //legend->setPosition( (KDChart::Legend::LegendPosition)conf.positionCO->currentIndex() );
+        // legend->setPosition( (KDChart::Legend::LegendPosition)conf.positionCO->currentIndex() );
         legend->setPosition(
             KDChart::Position::fromName(conf.positionCO->itemData(conf.positionCO->currentIndex()).toByteArray()));
         // get the alignment

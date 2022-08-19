@@ -17,11 +17,11 @@
 
 #include "mainwindow.h"
 
-#include <KDChartChart>
 #include <KDChartBarDiagram>
-#include <KDChartTextAttributes>
-#include <KDChartRulerAttributes>
+#include <KDChartChart>
 #include <KDChartFrameAttributes>
+#include <KDChartRulerAttributes>
+#include <KDChartTextAttributes>
 
 using namespace KDChart;
 
@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent)
     rulerAttr.setTickMarkPen(2.0, QPen(Qt::green));
     rulerAttr.setTickMarkPen(3.0, QPen(Qt::blue));
     rulerAttr.setShowMinorTickMarks(true);
-    //rulerAttr.setShowMajorTickMarks(false);
+    // rulerAttr.setShowMajorTickMarks(false);
     topAxis->setRulerAttributes(rulerAttr);
     auto *rightAxis = new CartesianAxis(m_lines);
     auto *bottomAxis = new CartesianAxis(m_lines);

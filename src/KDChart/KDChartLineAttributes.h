@@ -18,14 +18,14 @@
 #ifndef KDCHARTLINEATTRIBUTES_H
 #define KDCHARTLINEATTRIBUTES_H
 
-#include <QMetaType>
 #include "KDChartGlobal.h"
+#include <QMetaType>
 
 namespace KDChart {
 
 /**
-  * @brief Set of attributes for changing the appearance of line charts
-  */
+ * @brief Set of attributes for changing the appearance of line charts
+ */
 class KDCHART_EXPORT LineAttributes
 {
 public:
@@ -47,7 +47,8 @@ public:
       \li \c MissingValuesPolicyIgnored (internal value, do not use)
 
       */
-    enum MissingValuesPolicy {
+    enum MissingValuesPolicy
+    {
         MissingValuesAreBridged,
         MissingValuesHideSegments,
         MissingValuesShownAsZero,

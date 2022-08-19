@@ -17,9 +17,9 @@
 
 #include "mainwindow.h"
 
-#include "ui_mainwindow.h"
 #include "entrydelegate.h"
 #include "entrydialog.h"
+#include "ui_mainwindow.h"
 
 #include <KDGanttConstraintModel>
 #include <KDGanttDateTimeGrid>
@@ -28,11 +28,11 @@
 #include <QAbstractItemView>
 #include <QDebug>
 #include <QHeaderView>
-#include <QStandardItemModel>
-#include <QStandardItem>
-#include <QTreeView>
 #include <QLabel>
 #include <QPointer>
+#include <QStandardItem>
+#include <QStandardItemModel>
+#include <QTreeView>
 
 MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
@@ -354,12 +354,12 @@ void MainWindow::slotClicked(const QModelIndex &index)
     statusBar()->showMessage(tr("(%1,%2,_,%4) clicked")
                                  .arg(index.row())
                                  .arg(index.column())
-                                 .arg((quint64)index.model()));
+                                 .arg(( quint64 )index.model()));
 }
 void MainWindow::slotDoubleClicked(const QModelIndex &index)
 {
     statusBar()->showMessage(tr("(%1,%2,_,%4) qreal clicked")
                                  .arg(index.row())
                                  .arg(index.column())
-                                 .arg((quint64)index.model()));
+                                 .arg(( quint64 )index.model()));
 }

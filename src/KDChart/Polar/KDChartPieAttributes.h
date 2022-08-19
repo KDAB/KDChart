@@ -18,15 +18,15 @@
 #ifndef KDCHART_PIE_ATTRIBUTES_H
 #define KDCHART_PIE_ATTRIBUTES_H
 
-#include <QMetaType>
 #include "KDChartAbstractThreeDAttributes.h"
 #include "KDChartGlobal.h"
+#include <QMetaType>
 
 namespace KDChart {
 
 /**
-  * @brief A set of attributes controlling the appearance of pie charts
-  */
+ * @brief A set of attributes controlling the appearance of pie charts
+ */
 class KDCHART_EXPORT PieAttributes
 {
 public:

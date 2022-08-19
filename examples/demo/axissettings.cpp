@@ -24,10 +24,10 @@
 
 #include <QComboBox>
 
-#include <KDChart/KDChartChart>
+#include <KDChart/KDChartAbstractCartesianDiagram>
 #include <KDChart/KDChartCartesianAxis>
 #include <KDChart/KDChartCartesianCoordinatePlane>
-#include <KDChart/KDChartAbstractCartesianDiagram>
+#include <KDChart/KDChartChart>
 #include <KDChart/KDChartRulerAttributes>
 
 #include <QDebug>
@@ -77,7 +77,7 @@ void AxisSettings::Private::init()
 void AxisSettings::Private::currentIndexChanged(int index)
 {
     m_currentAxis = nullptr;
-    const CartesianAxis::Position pos = (CartesianAxis::Position)ui.axisSelection->itemData(index).toInt();
+    const CartesianAxis::Position pos = ( CartesianAxis::Position )ui.axisSelection->itemData(index).toInt();
     auto *plane = qobject_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane());
     auto *diag = qobject_cast<AbstractCartesianDiagram *>(m_chart->coordinatePlane()->diagram());
     if (plane && diag) {
@@ -112,7 +112,7 @@ void AxisSettings::Private::updateUiForCurrentAxis()
 
 void AxisSettings::Private::setVisible(bool value)
 {
-    const CartesianAxis::Position pos = (CartesianAxis::Position)ui.axisSelection->itemData(ui.axisSelection->currentIndex()).toInt();
+    const CartesianAxis::Position pos = ( CartesianAxis::Position )ui.axisSelection->itemData(ui.axisSelection->currentIndex()).toInt();
     auto *plane = qobject_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane());
     auto *diag = qobject_cast<AbstractCartesianDiagram *>(m_chart->coordinatePlane()->diagram());
     if (plane && diag) {

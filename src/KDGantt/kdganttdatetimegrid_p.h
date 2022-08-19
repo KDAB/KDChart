@@ -18,11 +18,11 @@
 #ifndef KDGANTTDATETIMEGRID_P_H
 #define KDGANTTDATETIMEGRID_P_H
 
-#include "kdganttdatetimegrid.h"
 #include "kdganttabstractgrid_p.h"
+#include "kdganttdatetimegrid.h"
 
-#include <QDateTime>
 #include <QBrush>
+#include <QDateTime>
 
 namespace KDGantt {
 class DateTimeScaleFormatter::Private
@@ -92,9 +92,10 @@ public:
     };
 
     /*!
-          * We need this because we have a header type for a year, but no such scale.
-          */
-    enum HeaderType {
+     * We need this because we have a header type for a year, but no such scale.
+     */
+    enum HeaderType
+    {
         HeaderHour,
         HeaderDay,
         HeaderWeek,

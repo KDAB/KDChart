@@ -15,8 +15,8 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
 #include <KDChartWidget>
+#include <QApplication>
 
 #include <QDebug>
 #include <QVector>

@@ -18,11 +18,11 @@
 #ifndef PLOTTERDIAGRAMCOMPRESSOR_H
 #define PLOTTERDIAGRAMCOMPRESSOR_H
 
-#include <QtCore/QObject>
 #include <QtCore/QAbstractItemModel>
+#include <QtCore/QDateTime>
+#include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtCore/QVector>
-#include <QtCore/QDateTime>
 
 #include <cmath>
 #include <limits>
@@ -34,7 +34,8 @@ class PlotterDiagramCompressor : public QObject
     Q_OBJECT
     Q_ENUMS(CompressionMode)
 public:
-    enum CompressionMode {
+    enum CompressionMode
+    {
         SLOPE = 0,
         DISTANCE,
         BOTH

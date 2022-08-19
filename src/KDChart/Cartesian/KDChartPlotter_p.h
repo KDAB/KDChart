@@ -33,10 +33,10 @@
 
 #include <QPainterPath>
 
-#include "KDChartThreeDLineAttributes.h"
 #include "KDChartAbstractCartesianDiagram_p.h"
 #include "KDChartCartesianDiagramDataCompressor_p.h"
 #include "KDChartPlotterDiagramCompressor.h"
+#include "KDChartThreeDLineAttributes.h"
 
 #include <KDABLibFakes>
 

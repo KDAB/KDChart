@@ -18,9 +18,9 @@
 #include "diagramtypedialog.h"
 #include "ui_diagramtypedialog.h"
 
-#include <KDChart/KDChartChart>
 #include <KDChart/KDChartAbstractCoordinatePlane>
 #include <KDChart/KDChartCartesianCoordinatePlane>
+#include <KDChart/KDChartChart>
 #include <KDChart/KDChartPolarCoordinatePlane>
 
 #include <KDChart/KDChartBarDiagram>

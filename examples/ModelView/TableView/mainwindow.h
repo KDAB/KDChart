@@ -18,8 +18,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include <QItemSelection>
+#include <QMainWindow>
 #include <TableModel.h>
 
 namespace KDChart {

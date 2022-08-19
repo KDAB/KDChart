@@ -29,16 +29,16 @@
 // We mean it.
 //
 
-#include <QObject>
 #include <QHBoxLayout>
+#include <QObject>
 #include <QVBoxLayout>
 
-#include "KDChartChart.h"
 #include "KDChartAbstractArea.h"
-#include "KDChartTextArea.h"
-#include "KDChartFrameAttributes.h"
 #include "KDChartBackgroundAttributes.h"
+#include "KDChartChart.h"
+#include "KDChartFrameAttributes.h"
 #include "KDChartLayoutItems.h"
+#include "KDChartTextArea.h"
 
 #include <KDABLibFakes>
 
@@ -104,7 +104,8 @@ class Chart::Private : public QObject
 public:
     Chart *chart;
 
-    enum AxisType {
+    enum AxisType
+    {
         Abscissa,
         Ordinate
     };

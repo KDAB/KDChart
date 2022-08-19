@@ -17,8 +17,8 @@
 
 #include "KDChartPolarGrid.h"
 #include "KDChartPaintContext.h"
-#include "KDChartPolarDiagram.h"
 #include "KDChartPieDiagram.h"
+#include "KDChartPolarDiagram.h"
 #include "KDChartPrintingParameters.h"
 
 #include <QPainter>
@@ -38,7 +38,7 @@ DataDimensionsList PolarGrid::calculateGrid(
 
     DataDimensionsList l;
 
-    //FIXME(khz): do the real calculation
+    // FIXME(khz): do the real calculation
 
     l = rawDataDimensions;
 
@@ -58,10 +58,10 @@ void PolarGrid::drawGrid(PaintContext *context)
     const GridAttributes gridAttrsCircular(plane->gridAttributes(true));
     const GridAttributes gridAttrsSagittal(plane->gridAttributes(false));
 
-    //qDebug() << "OK:";
+    // qDebug() << "OK:";
     if (!gridAttrsCircular.isGridVisible() && !gridAttrsSagittal.isGridVisible())
         return;
-    //qDebug() << "A";
+    // qDebug() << "A";
 
     // FIXME: we paint the rulers to the settings of the first diagram for now:
     AbstractPolarDiagram *dgr = dynamic_cast<AbstractPolarDiagram *>(plane->diagrams().first());
@@ -74,12 +74,12 @@ void PolarGrid::drawGrid(PaintContext *context)
     context->painter()->setPen(PrintingParameters::scalePen(QColor(Qt::lightGray)));
     const qreal min = dgr->dataBoundaries().first.y();
     QPointF origin = plane->translate(QPointF(min, 0)) + context->rectangle().topLeft();
-    //qDebug() << "origin" << origin;
+    // qDebug() << "origin" << origin;
 
     const qreal r = qAbs(min) + dgr->dataBoundaries().second.y(); // use the full extents
 
     if (gridAttrsSagittal.isGridVisible()) {
-        const int numberOfSpokes = (int)(360 / plane->angleUnit());
+        const int numberOfSpokes = ( int )(360 / plane->angleUnit());
         for (int i = 0; i < numberOfSpokes; ++i) {
             context->painter()->drawLine(origin, plane->translate(QPointF(r - qAbs(min), i)) + context->rectangle().topLeft());
         }
@@ -88,7 +88,7 @@ void PolarGrid::drawGrid(PaintContext *context)
     if (gridAttrsCircular.isGridVisible()) {
         const qreal startPos = plane->startPosition();
         plane->setStartPosition(0.0);
-        const int numberOfGridRings = (int)dgr->numberOfGridRings();
+        const int numberOfGridRings = ( int )dgr->numberOfGridRings();
         for (int j = 0; j < numberOfGridRings; ++j) {
             const qreal rad = min - ((j + 1) * r / numberOfGridRings);
 

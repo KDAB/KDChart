@@ -18,14 +18,14 @@
 #ifndef KDCHARTBARATTRIBUTES_H
 #define KDCHARTBARATTRIBUTES_H
 
-#include <QMetaType>
 #include "KDChartGlobal.h"
+#include <QMetaType>
 
 namespace KDChart {
 
 /**
-  * @brief Set of attributes for changing the appearance of bar charts
-  */
+ * @brief Set of attributes for changing the appearance of bar charts
+ */
 class KDCHART_EXPORT BarAttributes
 {
 public:

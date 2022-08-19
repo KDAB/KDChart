@@ -49,7 +49,7 @@ TreeViewRowController::~TreeViewRowController()
 
 int TreeViewRowController::headerHeight() const
 {
-    //return d->treeview->header()->sizeHint().height();
+    // return d->treeview->header()->sizeHint().height();
     return d->treeview->viewport()->y() - d->treeview->frameWidth();
 }
 
@@ -65,7 +65,7 @@ int TreeViewRowController::totalHeight() const
 
 bool TreeViewRowController::isRowVisible(const QModelIndex &_idx) const
 {
-    //qDebug() << _idx.model()<<d->proxy << d->treeview->model();
+    // qDebug() << _idx.model()<<d->proxy << d->treeview->model();
     const QModelIndex idx = d->proxy->mapToSource(_idx);
     assert(idx.isValid() ? (idx.model() == d->treeview->model()) : (true));
     return d->treeview->visualRect(idx).isValid();
@@ -89,12 +89,12 @@ Span TreeViewRowController::rowGeometry(const QModelIndex &_idx) const
 QModelIndex TreeViewRowController::indexAt(int height) const
 {
     /* using indexAt( QPoint ) won't work here, since it does hit detection
-   *   against the actual item text/icon, so we would return wrong values
-   *   for items with no text etc.
-   *
-   *   The code below could cache for performance, but currently it doesn't
-   *   seem to be the performance bottleneck at all.
-   */
+     *   against the actual item text/icon, so we would return wrong values
+     *   for items with no text etc.
+     *
+     *   The code below could cache for performance, but currently it doesn't
+     *   seem to be the performance bottleneck at all.
+     */
     if (!d->treeview->model())
         return QModelIndex();
     int y = d->treeview->verticalOffset();

@@ -18,9 +18,9 @@
 #ifndef KDGANTTVIEW_H
 #define KDGANTTVIEW_H
 
-#include <QWidget>
-#include <QModelIndex>
 #include "kdganttglobal.h"
+#include <QModelIndex>
+#include <QWidget>
 
 QT_BEGIN_NAMESPACE
 class QAbstractItemModel;

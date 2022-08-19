@@ -16,26 +16,26 @@
 ****************************************************************************/
 
 #include "KDChartLegend.h"
+#include "KDChartLayoutItems.h"
 #include "KDChartLegend_p.h"
-#include <KDChartTextAttributes.h>
+#include "KDTextDocument.h"
+#include <KDChartAbstractDiagram.h>
+#include <KDChartDiagramObserver.h>
 #include <KDChartMarkerAttributes.h>
 #include <KDChartPalette.h>
-#include <KDChartAbstractDiagram.h>
-#include "KDTextDocument.h"
-#include <KDChartDiagramObserver.h>
-#include "KDChartLayoutItems.h"
+#include <KDChartTextAttributes.h>
 
+#include <QAbstractTextDocumentLayout>
 #include <QFont>
 #include <QGridLayout>
-#include <QPainter>
-#include <QTextTableCell>
-#include <QTextCursor>
-#include <QTextCharFormat>
-#include <QTextDocumentFragment>
-#include <QTimer>
-#include <QAbstractTextDocumentLayout>
-#include <QtDebug>
 #include <QLabel>
+#include <QPainter>
+#include <QTextCharFormat>
+#include <QTextCursor>
+#include <QTextDocumentFragment>
+#include <QTextTableCell>
+#include <QTimer>
+#include <QtDebug>
 
 #include <KDABLibFakes>
 
@@ -180,8 +180,8 @@ Legend::LegendStyle Legend::legendStyle() const
 }
 
 /**
-  * Creates an exact copy of this legend.
-  */
+ * Creates an exact copy of this legend.
+ */
 Legend *Legend::clone() const
 {
     auto *legend = new Legend(new Private(*d), nullptr);

@@ -31,8 +31,8 @@
 
 #include <QRectF>
 
-#include "KDChartTernaryGrid.h"
 #include "KDChartAbstractCoordinatePlane_p.h"
+#include "KDChartTernaryGrid.h"
 
 #include <KDABLibFakes>
 
@@ -41,8 +41,8 @@ namespace KDChart {
 class TernaryAxis;
 
 /**
-     * \internal
-     */
+ * \internal
+ */
 
 class TernaryCoordinatePlane::Private : public AbstractCoordinatePlane::Private
 {

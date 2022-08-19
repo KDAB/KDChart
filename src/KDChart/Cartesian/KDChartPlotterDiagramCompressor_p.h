@@ -20,8 +20,8 @@
 
 #include "KDChartPlotterDiagramCompressor.h"
 
-#include <QtCore/QPointF>
 #include <QtCore/QDateTime>
+#include <QtCore/QPointF>
 
 typedef QPair<QPointF, QPointF> Boundaries;
 
@@ -48,7 +48,7 @@ public:
     QDateTime m_timeOfLastInvalidation;
     PlotterDiagramCompressor::CompressionMode m_mode;
     QVector<qreal> m_accumulatedDistances;
-    //QVector< PlotterDiagramCompressor::Iterator > exisitingIterators;
+    // QVector< PlotterDiagramCompressor::Iterator > exisitingIterators;
 public Q_SLOTS:
     void rowsInserted(const QModelIndex &parent, int start, int end);
     void clearBuffer();

@@ -15,12 +15,12 @@
 **
 ****************************************************************************/
 
-#include <QtTest/QtTest>
-#include <KDChartChart>
-#include <KDChartGlobal>
 #include <KDChartBarDiagram>
 #include <KDChartCartesianCoordinatePlane>
+#include <KDChartChart>
+#include <KDChartGlobal>
 #include <KDChartMeasure>
+#include <QtTest/QtTest>
 
 #include <TableModel.h>
 

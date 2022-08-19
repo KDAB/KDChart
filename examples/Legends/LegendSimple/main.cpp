@@ -15,11 +15,11 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
-#include <KDChartWidget>
 #include <KDChartBarDiagram>
-#include <KDChartPosition>
 #include <KDChartLegend>
+#include <KDChartPosition>
+#include <KDChartWidget>
+#include <QApplication>
 
 using namespace KDChart;
 

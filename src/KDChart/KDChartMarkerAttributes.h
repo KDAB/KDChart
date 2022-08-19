@@ -18,8 +18,8 @@
 #ifndef KDCHARTMARKERATTRIBUTES_H
 #define KDCHARTMARKERATTRIBUTES_H
 
-#include <QMetaType>
 #include "KDChartGlobal.h"
+#include <QMetaType>
 
 QT_BEGIN_NAMESPACE
 class QColor;
@@ -27,15 +27,15 @@ class QSizeF;
 class QPen;
 class QPainterPath;
 class QDebug;
-template <typename T, typename K>
+template<typename T, typename K>
 class QMap;
 QT_END_NAMESPACE
 
 namespace KDChart {
 
 /**
-      * @brief A set of attributes controlling the appearance of data set markers
-      */
+ * @brief A set of attributes controlling the appearance of data set markers
+ */
 class KDCHART_EXPORT MarkerAttributes
 {
 public:
@@ -45,7 +45,8 @@ public:
 
     ~MarkerAttributes();
 
-    enum MarkerStyle {
+    enum MarkerStyle
+    {
         MarkerCircle = 0,
         MarkerSquare = 1,
         MarkerDiamond = 2,
@@ -70,24 +71,24 @@ public:
     bool threeD() const;
 
     /**
-         * Set the marker-style to use. This could be either one of the
-         * predefined \a MarkerStyle or a custom one that has a value
-         * bigger or equal to StartCustomMarkers.
-         *
-         * Such a custom marker does then allow to fetch a custom pixmap
-         * for each point (value pair) from the model using the
-         * Qt::DecorationRole .
-         */
+     * Set the marker-style to use. This could be either one of the
+     * predefined \a MarkerStyle or a custom one that has a value
+     * bigger or equal to StartCustomMarkers.
+     *
+     * Such a custom marker does then allow to fetch a custom pixmap
+     * for each point (value pair) from the model using the
+     * Qt::DecorationRole .
+     */
     void setMarkerStyle(uint style);
     uint markerStyle() const;
 
     /**
-         * Normally you need to specify a valid QSizeF here, but for Legends you can
-         * use the invalid size QSizeF(), to enable automatic marker size calculation:
-         *
-         * For Markers shown in a Legend this means the marker size will be equal to
-         * the font height used for the labels that are shown next to the markers.
-         */
+     * Normally you need to specify a valid QSizeF here, but for Legends you can
+     * use the invalid size QSizeF(), to enable automatic marker size calculation:
+     *
+     * For Markers shown in a Legend this means the marker size will be equal to
+     * the font height used for the labels that are shown next to the markers.
+     */
     void setMarkerSize(const QSizeF &size);
     QSizeF markerSize() const;
 

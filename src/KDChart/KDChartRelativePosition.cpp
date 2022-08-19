@@ -17,13 +17,13 @@
 
 #include "KDChartRelativePosition.h"
 
+#include "KDChartAbstractArea.h"
 #include "KDChartEnums.h"
 #include "KDChartMeasure.h"
 #include "KDChartPosition.h"
-#include "KDChartAbstractArea.h"
 
-#include <QWidget>
 #include <QLayout>
+#include <QWidget>
 
 #include <KDABLibFakes>
 

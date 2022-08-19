@@ -18,8 +18,8 @@
 #ifndef KDCHARTLEVEYJENNINGSDIAGRAM_H
 #define KDCHARTLEVEYJENNINGSDIAGRAM_H
 
-#include "KDChartLineDiagram.h"
 #include "KDChartLeveyJenningsCoordinatePlane.h"
+#include "KDChartLineDiagram.h"
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -51,7 +51,8 @@ public:
 
     LineDiagram *clone() const override;
 
-    enum Symbol {
+    enum Symbol
+    {
         OkDataPoint,
         NotOkDataPoint,
         LotChanged,

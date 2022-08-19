@@ -26,8 +26,8 @@
 #include <cmath>
 
 #ifdef Q_OS_SOLARIS
-#include <sunmath.h>
 #include <math.h>
+#include <sunmath.h>
 #endif
 
 #include <qglobal.h>
@@ -45,7 +45,7 @@
 
 // Smybian's math.h doesn't define a trunc function
 #if defined(Q_OS_SYMBIAN) || defined(QT_SIMULATOR)
-#define trunc(x) (qreal)((int)(x + (x >= 0.0 ? -0.5 : 0.5)))
+#define trunc(x) (qreal)(( int )(x + (x >= 0.0 ? -0.5 : 0.5)))
 #endif
 
 // We use our own ISNAN / ISINF in the code to detect

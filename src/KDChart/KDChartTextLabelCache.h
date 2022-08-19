@@ -18,16 +18,16 @@
 #ifndef KDCHARTTEXTLABELCACHE_H
 #define KDCHARTTEXTLABELCACHE_H
 
-#include <QPixmap>
-#include <QFont>
 #include <QBrush>
+#include <QFont>
 #include <QPen>
+#include <QPixmap>
 
 #include "KDChartEnums.h"
 
 /**
-  * @brief  base class for prerendered elements like labels, pixmaps, markers, etc.
-  */
+ * @brief  base class for prerendered elements like labels, pixmaps, markers, etc.
+ */
 class PrerenderedElement
 {
 public:

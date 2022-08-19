@@ -18,9 +18,9 @@
 #include "KDChartValueTrackerAttributes.h"
 
 #include <KDABLibFakes>
+#include <QBrush>
 #include <QPen>
 #include <QSizeF>
-#include <QBrush>
 
 #define d d_func()
 

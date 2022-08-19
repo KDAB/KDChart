@@ -16,13 +16,13 @@
 ****************************************************************************/
 
 #include <QApplication>
-#include <QStandardItemModel>
-#include <QPainter>
 #include <QHeaderView>
+#include <QPainter>
+#include <QStandardItemModel>
 #include <QTreeView>
 
-#include <KDGanttView>
 #include <KDGanttDateTimeGrid>
+#include <KDGanttView>
 
 using namespace KDGantt;
 

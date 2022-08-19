@@ -22,8 +22,8 @@
 
 #include <cassert>
 
-#include <KDGanttView>
 #include <KDGanttConstraintModel>
+#include <KDGanttView>
 
 /* Test model that uses beginMoveRows() */
 class MyTaskModel : public QAbstractTableModel
@@ -76,7 +76,7 @@ public:
                     : QVariant();
             case 1:
                 return (role == Qt::DisplayRole)
-                    ? QVariant::fromValue((int)KDGantt::TypeTask)
+                    ? QVariant::fromValue(( int )KDGantt::TypeTask)
                     : QVariant();
             case 2:
                 return (role == KDGantt::StartTimeRole || role == Qt::DisplayRole)
@@ -150,7 +150,7 @@ public:
         showContraints("After:");
 
         // Hack until KDGantt supports this:
-        //m_view->setConstraintModel( m_constraints );
+        // m_view->setConstraintModel( m_constraints );
     }
 
 private:

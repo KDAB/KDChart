@@ -19,10 +19,10 @@
 
 #include <QModelIndex>
 
+#include "KDChartAbstractCartesianDiagram.h"
+#include "KDChartAttributesModel.h"
 #include "KDChartBarDiagram.h"
 #include "KDChartTextAttributes.h"
-#include "KDChartAttributesModel.h"
-#include "KDChartAbstractCartesianDiagram.h"
 
 using namespace KDChart;
 
@@ -38,8 +38,8 @@ BarDiagram::BarType PercentLyingBarDiagram::type() const
 
 const QPair<QPointF, QPointF> PercentLyingBarDiagram::calculateDataBoundaries() const
 {
-    //const int rowCount = compressor().modelDataRows();
-    //const int colCount = compressor().modelDataColumns();
+    // const int rowCount = compressor().modelDataRows();
+    // const int colCount = compressor().modelDataColumns();
 
     const qreal xMin = 0;
     const qreal xMax = diagram()->model() ? diagram()->model()->rowCount(diagram()->rootIndex()) : 0;
@@ -59,14 +59,14 @@ const QPair<QPointF, QPointF> PercentLyingBarDiagram::calculateDataBoundaries() 
     // special cases
     if (yMax == yMin) {
         if (yMin == 0.0)
-            yMax = 0.1; //we need at least a range
+            yMax = 0.1; // we need at least a range
         else
             yMax = 0.0; // they are the same but negative
     }
     const QPointF bottomLeft(QPointF(yMin, xMin));
     const QPointF topRight(QPointF(yMax, xMax));
 
-    //qDebug() << "BarDiagram::calculateDataBoundaries () returns ( " << bottomLeft << topRight <<")";
+    // qDebug() << "BarDiagram::calculateDataBoundaries () returns ( " << bottomLeft << topRight <<")";
     return QPair<QPointF, QPointF>(bottomLeft, topRight);
 }
 
@@ -107,7 +107,7 @@ void PercentLyingBarDiagram::paint(PaintContext *ctx)
     // is covered by the groups.
     qreal maxLimit = rowCount * (groupWidth + ((colCount - 1) * ba.fixedDataValueGap()));
 
-    //Pending Michel: FixMe
+    // Pending Michel: FixMe
     if (ba.useFixedDataValueGap()) {
         if (width > maxLimit)
             spaceBetweenBars += ba.fixedDataValueGap();
@@ -126,12 +126,12 @@ void PercentLyingBarDiagram::paint(PaintContext *ctx)
     qreal sumValues = 0;
     QVector<qreal> sumValuesVector;
 
-    //calculate sum of values for each column and store
+    // calculate sum of values for each column and store
     for (int row = 0; row < rowCount; ++row) {
         for (int col = 0; col < colCount; ++col) {
             const CartesianDiagramDataCompressor::CachePosition position(row, col);
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data(position);
-            //if ( point.value > 0 )
+            // if ( point.value > 0 )
             sumValues += qMax(point.value, -point.value);
             if (col == colCount - 1) {
                 sumValuesVector << sumValues;

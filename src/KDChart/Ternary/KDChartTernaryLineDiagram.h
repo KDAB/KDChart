@@ -18,14 +18,14 @@
 #ifndef KDCHARTTERNARYLINEDIAGRAM_H
 #define KDCHARTTERNARYLINEDIAGRAM_H
 
-#include "KDChartTernaryCoordinatePlane.h"
 #include "KDChartAbstractTernaryDiagram.h"
+#include "KDChartTernaryCoordinatePlane.h"
 
 namespace KDChart {
 
 /**
-      * @brief A TernaryLineDiagram is a line diagram with a ternary coordinate plane
-      */
+ * @brief A TernaryLineDiagram is a line diagram with a ternary coordinate plane
+ */
 class KDCHART_EXPORT TernaryLineDiagram : public AbstractTernaryDiagram
 {
     Q_OBJECT

@@ -20,16 +20,17 @@
 
 #include "kdganttglobal.h"
 
-#include <QStyleOptionViewItem>
-#include <QRectF>
 #include <QDebug>
+#include <QRectF>
+#include <QStyleOptionViewItem>
 
 namespace KDGantt {
 class AbstractGrid;
 class KDGANTT_EXPORT StyleOptionGanttItem : public QStyleOptionViewItem
 {
 public:
-    enum Position {
+    enum Position
+    {
         Left,
         Right,
         Center,

@@ -20,10 +20,10 @@
 #include <QWidget>
 
 #include <KDChartAbstractArea.h>
-#include <KDChartCartesianCoordinatePlane.h>
-#include <KDChartTextAttributes.h>
-#include <KDChartFrameAttributes.h>
 #include <KDChartBackgroundAttributes.h>
+#include <KDChartCartesianCoordinatePlane.h>
+#include <KDChartFrameAttributes.h>
+#include <KDChartTextAttributes.h>
 
 #include <KDABLibFakes>
 
@@ -98,7 +98,7 @@ qreal Measure::calculatedValue(const QSizeF &autoSize,
                 size = autoSize;
             else
                 size = sizeOfArea(area);
-            //qDebug() << ( area == autoArea ) << "size" << size;
+            // qDebug() << ( area == autoArea ) << "size" << size;
             qreal referenceValue = 0;
             switch (orientation) {
             case KDChartEnums::MeasureOrientationAuto: // fall through intended
@@ -137,7 +137,7 @@ const QSizeF Measure::sizeOfArea(const QObject *area) const
         const auto *kdcArea = dynamic_cast<const AbstractArea *>(area);
         if (kdcArea) {
             size = kdcArea->geometry().size();
-            //qDebug() << "Measure::sizeOfArea() found kdcArea with size" << size;
+            // qDebug() << "Measure::sizeOfArea() found kdcArea with size" << size;
         } else {
             const auto *widget = dynamic_cast<const QWidget *>(area);
             if (widget) {
@@ -149,11 +149,11 @@ const QSizeF Measure::sizeOfArea(const QObject *area) const
                 } else*/
                 {
                     size = widget->geometry().size();
-                    //qDebug() << "Measure::sizeOfArea() found widget with size" << size;
+                    // qDebug() << "Measure::sizeOfArea() found widget with size" << size;
                 }
             } else if (mMode != KDChartEnums::MeasureCalculationModeAbsolute) {
                 size = QSizeF(1.0, 1.0);
-                //qDebug("Measure::sizeOfArea() got no valid area.");
+                // qDebug("Measure::sizeOfArea() got no valid area.");
             }
         }
     }

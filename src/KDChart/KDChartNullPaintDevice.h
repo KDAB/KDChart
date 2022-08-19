@@ -111,7 +111,7 @@ public:
         case QPaintDevice::PdmHeightMM:
             return 1;
         case QPaintDevice::PdmNumColors:
-            return int((uint)(-1));
+            return int(( uint )(-1));
         case QPaintDevice::PdmDepth:
             return 1;
         case QPaintDevice::PdmDpiX:

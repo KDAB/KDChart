@@ -19,8 +19,8 @@
 #define CARTESIANCOORDINATETRANSFORMATION_H
 
 #include <QList>
-#include <QRectF>
 #include <QPointF>
+#include <QRectF>
 
 #include "KDChartZoomParameters.h"
 
@@ -33,8 +33,8 @@ namespace KDChart {
 // with proper accessor methods:
 
 /**
-      * \internal
-      */
+ * \internal
+ */
 struct CoordinateTransformation
 {
     CoordinateTransformation()

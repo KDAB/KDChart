@@ -16,26 +16,26 @@
 ****************************************************************************/
 
 #include "kdganttgraphicsitem.h"
+#include "kdganttabstractgrid.h"
+#include "kdganttabstractrowcontroller.h"
+#include "kdganttconstraint.h"
+#include "kdganttconstraintgraphicsitem.h"
+#include "kdganttconstraintmodel.h"
 #include "kdganttgraphicsscene.h"
 #include "kdganttgraphicsview.h"
 #include "kdganttitemdelegate.h"
-#include "kdganttconstraintgraphicsitem.h"
-#include "kdganttconstraintmodel.h"
-#include "kdganttconstraint.h"
-#include "kdganttabstractgrid.h"
-#include "kdganttabstractrowcontroller.h"
 
+#include <algorithm>
 #include <cassert>
 #include <cmath>
-#include <algorithm>
 #include <iterator>
 
-#include <QPainter>
 #include <QAbstractItemModel>
 #include <QAbstractProxyModel>
-#include <QItemSelectionModel>
-#include <QGraphicsSceneMouseEvent>
 #include <QGraphicsLineItem>
+#include <QGraphicsSceneMouseEvent>
+#include <QItemSelectionModel>
+#include <QPainter>
 
 #include <QDebug>
 
@@ -188,7 +188,7 @@ void GraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     if (boundingRect().isValid() && scene()) {
         StyleOptionGanttItem opt = getStyleOption();
         *static_cast<QStyleOption *>(&opt) = *static_cast<const QStyleOption *>(option);
-        //opt.fontMetrics = painter->fontMetrics();
+        // opt.fontMetrics = painter->fontMetrics();
         scene()->itemDelegate()->paintGanttItem(painter, opt, index());
     }
 }
@@ -275,7 +275,7 @@ void GraphicsItem::removeEndConstraint(ConstraintGraphicsItem *item)
 void GraphicsItem::updateConstraintItems()
 {
     {// Workaround for multiple definition error with MSVC6
-     Q_FOREACH (ConstraintGraphicsItem *item, m_startConstraints){
+     Q_FOREACH (ConstraintGraphicsItem *item, m_startConstraints) {
          QPointF s = startConnector(item->constraint().relationType());
     item->setStart(s);
 }
@@ -290,7 +290,7 @@ void GraphicsItem::updateConstraintItems()
 
 void GraphicsItem::updateItem(const Span &rowGeometry, const QPersistentModelIndex &idx)
 {
-    //qDebug() << "GraphicsItem::updateItem("<<rowGeometry<<idx<<")";
+    // qDebug() << "GraphicsItem::updateItem("<<rowGeometry<<idx<<")";
     Updater updater(&m_isupdating);
     if (!idx.isValid() || idx.data(ItemTypeRole) == TypeMulti) {
         setRect(QRectF());
@@ -304,7 +304,7 @@ void GraphicsItem::updateItem(const Span &rowGeometry, const QPersistentModelInd
     setRect(QRectF(0., 0., s.length(), rowGeometry.length()));
     setIndex(idx);
     const Span bs = scene()->itemDelegate()->itemBoundingSpan(getStyleOption(), index());
-    //qDebug() << "boundingSpan for" << getStyleOption().text << rect() << "is" << bs;
+    // qDebug() << "boundingSpan for" << getStyleOption().text << rect() << "is" << bs;
     setBoundingRect(QRectF(bs.start(), 0., bs.length(), rowGeometry.length()));
     const int maxh = scene()->rowController()->maximumItemHeight();
     if (maxh < rowGeometry.length()) {
@@ -322,8 +322,8 @@ void GraphicsItem::updateItem(const Span &rowGeometry, const QPersistentModelInd
         setRect(r);
     }
 
-    //scene()->setSceneRect( scene()->sceneRect().united( mapToScene( boundingRect() ).boundingRect() ) );
-    //updateConstraintItems();
+    // scene()->setSceneRect( scene()->sceneRect().united( mapToScene( boundingRect() ).boundingRect() ) );
+    // updateConstraintItems();
 }
 
 QVariant GraphicsItem::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -360,7 +360,7 @@ void GraphicsItem::focusInEvent(QFocusEvent *event)
 
 void GraphicsItem::updateModel()
 {
-    //qDebug() << "GraphicsItem::updateModel()";
+    // qDebug() << "GraphicsItem::updateModel()";
     if (isEditable()) {
         auto *model = const_cast<QAbstractItemModel *>(index().model());
 #if !defined(NDEBUG)
@@ -369,8 +369,8 @@ void GraphicsItem::updateModel()
         assert(model);
         assert(cmodel);
         if (model) {
-            //ItemType typ = static_cast<ItemType>( model->data( index(),
-            //                                                   ItemTypeRole ).toInt() );
+            // ItemType typ = static_cast<ItemType>( model->data( index(),
+            //                                                    ItemTypeRole ).toInt() );
             QList<Constraint> constraints;
             for (QList<ConstraintGraphicsItem *>::iterator it1 = m_startConstraints.begin();
                  it1 != m_startConstraints.end();
@@ -431,7 +431,7 @@ void GraphicsItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *)
 
 void GraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    //qDebug() << "GraphicsItem::mousePressEvent("<<event<<")";
+    // qDebug() << "GraphicsItem::mousePressEvent("<<event<<")";
     StyleOptionGanttItem opt = getStyleOption();
     int istate = scene()->itemDelegate()->interactionStateFor(event->pos(), opt, index());
     // If State_None is returned by interactionStateFor(), we ignore this event so that
@@ -457,7 +457,7 @@ void GraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void GraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    //qDebug() << "GraphicsItem::mouseReleaseEvent("<<event << ")";
+    // qDebug() << "GraphicsItem::mouseReleaseEvent("<<event << ")";
     if (!m_presspos.isNull()) {
         scene()->itemClicked(index());
     }
@@ -489,7 +489,7 @@ void GraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         }
 
         scene()->setDragSource(nullptr);
-        //scene()->update();
+        // scene()->update();
     } else {
         if (isEditable()) {
             updateItemFromMouse(event->scenePos());
@@ -523,7 +523,7 @@ void GraphicsItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 void GraphicsItem::updateItemFromMouse(const QPointF &scenepos)
 {
-    //qDebug() << "GraphicsItem::updateItemFromMouse("<<scenepos<<")";
+    // qDebug() << "GraphicsItem::updateItemFromMouse("<<scenepos<<")";
     const QPointF p = scenepos - m_presspos;
     QRectF r = rect();
     QRectF br = boundingRect();
@@ -560,7 +560,7 @@ void GraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if (m_presspos.isNull())
         return;
 
-    //qDebug() << "GraphicsItem::mouseMoveEvent("<<event<<"), m_istate="<< static_cast<ItemDelegate::InteractionState>( m_istate );
+    // qDebug() << "GraphicsItem::mouseMoveEvent("<<event<<"), m_istate="<< static_cast<ItemDelegate::InteractionState>( m_istate );
     switch (m_istate) {
     case ItemDelegate::State_ExtendLeft:
     case ItemDelegate::State_ExtendRight:
@@ -578,12 +578,12 @@ void GraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
         scene()->selectionModel()->setCurrentIndex(index(), QItemSelectionModel::Current);
         updateItemFromMouse(event->scenePos());
-        //BASE::mouseMoveEvent(event);
+        // BASE::mouseMoveEvent(event);
         break;
     case ItemDelegate::State_DragConstraint: {
         QLineF line = m_dragline->line();
         m_dragline->setLine(QLineF(line.p1(), event->pos()));
-        //QGraphicsItem* item = scene()->itemAt( event->scenePos() );
+        // QGraphicsItem* item = scene()->itemAt( event->scenePos() );
         break;
     }
     }

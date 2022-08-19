@@ -46,7 +46,7 @@ private:
     KDChart::LineDiagram *m_lines2;
     KDChart::CartesianCoordinatePlane *plane2;
     // mutable KDChart::CartesianAxis xAxis;
-    //mutable KDChart::CartesianAxis yAxis;
+    // mutable KDChart::CartesianAxis yAxis;
 };
 
 #endif /* MAINWINDOW_H */

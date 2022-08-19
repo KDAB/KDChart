@@ -29,8 +29,8 @@
 // We mean it.
 //
 
-#include "KDChartAbstractCoordinatePlane_p.h"
 #include "CartesianCoordinateTransformation.h"
+#include "KDChartAbstractCoordinatePlane_p.h"
 #include "KDChartCartesianGrid.h"
 #include "KDChartZoomParameters.h"
 

@@ -17,14 +17,14 @@
 
 #include "mainwindow.h"
 
-#include <KDChartChart>
 #include <KDChartAbstractCoordinatePlane>
-#include <KDChartPolarDiagram>
-#include <KDChartTextAttributes>
+#include <KDChartChart>
 #include <KDChartDataValueAttributes>
 #include <KDChartGridAttributes>
-#include <KDChartMarkerAttributes>
 #include <KDChartLegend>
+#include <KDChartMarkerAttributes>
+#include <KDChartPolarDiagram>
+#include <KDChartTextAttributes>
 
 #include <QDebug>
 #include <QPainter>
@@ -63,8 +63,8 @@ void MainWindow::initKDChartClasses()
 void MainWindow::wireUpKDChartClasses()
 {
     m_chart->replaceCoordinatePlane(m_polarPlane);
-    //note: We need to set a valid item model to the diagram,
-    //      before we can add it to the coordinate plane.
+    // note: We need to set a valid item model to the diagram,
+    //       before we can add it to the coordinate plane.
     m_diagram->setModel(&m_model);
     m_chart->coordinatePlane()->replaceDiagram(m_diagram);
 }

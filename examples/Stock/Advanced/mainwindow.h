@@ -19,10 +19,10 @@
 #define MAINWINDOW_H
 
 #include "ui_mainwindow.h"
-#include <TableModel.h>
 #include <KDChartChart>
 #include <KDChartStockDiagram>
 #include <KDChartThreeDBarAttributes>
+#include <TableModel.h>
 
 class MainWindow : public QWidget, private Ui::MainWindow
 {

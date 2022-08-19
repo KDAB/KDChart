@@ -18,9 +18,9 @@
 #include "KDChartRadarDiagram.h"
 #include "KDChartRadarDiagram_p.h"
 
-#include <QPainter>
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
+#include <QPainter>
 
 #include <KDABLibFakes>
 
@@ -39,7 +39,7 @@ RadarDiagram::Private::~Private()
 RadarDiagram::RadarDiagram(QWidget *parent, RadarCoordinatePlane *plane)
     : AbstractPolarDiagram(new Private(), parent, plane)
 {
-    //init();
+    // init();
 }
 
 RadarDiagram::~RadarDiagram()
@@ -51,8 +51,8 @@ void RadarDiagram::init()
 }
 
 /**
-  * Creates an exact copy of this diagram.
-  */
+ * Creates an exact copy of this diagram.
+ */
 RadarDiagram *RadarDiagram::clone() const
 {
     auto *newDiagram = new RadarDiagram(new Private(*d));
@@ -232,10 +232,10 @@ void RadarDiagram::paint(PaintContext *ctx,
         // Iterate through data sets and create a list of polygons out of them.
         QList<Polygon> polygons;
         for (iCol = 0; iCol < colCount; ++iCol) {
-            //TODO(khz): As of yet RadarDiagram can not show per-segment line attributes
-            //           but it draws every polyline in one go - using one color.
-            //           This needs to be enhanced to allow for cell-specific settings
-            //           in the same way as LineDiagram does it.
+            // TODO(khz): As of yet RadarDiagram can not show per-segment line attributes
+            //            but it draws every polyline in one go - using one color.
+            //            This needs to be enhanced to allow for cell-specific settings
+            //            in the same way as LineDiagram does it.
             QPolygonF polygon;
             QPointF point0;
             for (iRow = 0; iRow < rowCount; ++iRow) {

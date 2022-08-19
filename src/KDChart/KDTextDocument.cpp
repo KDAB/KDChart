@@ -16,10 +16,10 @@
 ****************************************************************************/
 
 #include "KDTextDocument.h"
-#include <QRect>
 #include <QAbstractTextDocumentLayout>
-#include <QtDebug>
+#include <QRect>
 #include <QTextBlock>
+#include <QtDebug>
 
 #include <KDABLibFakes>
 
@@ -49,7 +49,7 @@ KDTextDocument::~KDTextDocument()
 QSize KDTextDocument::sizeHint()
 {
     if (!mHintValid)
-        (void)minimumSizeHint();
+        ( void )minimumSizeHint();
     return mSizeHint;
 }
 

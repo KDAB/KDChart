@@ -18,13 +18,13 @@
 #include "KDChartLeveyJenningsCoordinatePlane.h"
 #include "KDChartLeveyJenningsCoordinatePlane_p.h"
 
-#include <QtDebug>
 #include <QPainter>
+#include <QtDebug>
 
-#include "KDChartPaintContext.h"
-#include "KDChartPainterSaver_p.h"
 #include "KDChartCartesianAxis.h"
 #include "KDChartLeveyJenningsDiagram.h"
+#include "KDChartPaintContext.h"
+#include "KDChartPainterSaver_p.h"
 
 using namespace KDChart;
 

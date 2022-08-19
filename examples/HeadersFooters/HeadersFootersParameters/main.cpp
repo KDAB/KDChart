@@ -15,14 +15,14 @@
 **
 ****************************************************************************/
 
-#include <QtGui>
-#include <KDChartChart>
+#include <KDChartBackgroundAttributes>
 #include <KDChartBarDiagram>
+#include <KDChartChart>
+#include <KDChartFrameAttributes>
 #include <KDChartHeaderFooter>
 #include <KDChartPosition>
-#include <KDChartBackgroundAttributes>
-#include <KDChartFrameAttributes>
 #include <QApplication>
+#include <QtGui>
 
 using namespace KDChart;
 

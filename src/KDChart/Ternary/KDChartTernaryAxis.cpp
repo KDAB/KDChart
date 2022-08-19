@@ -22,9 +22,9 @@
 #include <KDChartChart.h>
 #include <KDChartPaintContext.h>
 
-#include "TernaryConstants.h"
-#include "KDChartTernaryCoordinatePlane.h"
 #include "KDChartAbstractTernaryDiagram.h"
+#include "KDChartTernaryCoordinatePlane.h"
+#include "TernaryConstants.h"
 
 #include "KDChartLayoutItems.h"
 #include "KDChartTextLabelCache.h"
@@ -69,7 +69,7 @@ void TernaryAxis::paintCtx(PaintContext *paintContext)
 {
     QPainter *p = paintContext->painter();
     auto *plane =
-        (TernaryCoordinatePlane *)paintContext->coordinatePlane();
+        ( TernaryCoordinatePlane * )paintContext->coordinatePlane();
     // QObject* refArea = plane->parent();
     QRectF titleArea;
 

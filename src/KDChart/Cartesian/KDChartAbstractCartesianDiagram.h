@@ -18,21 +18,21 @@
 #ifndef KDCHARTABSTRACTCARTESIANDIAGRAM_H
 #define KDCHARTABSTRACTCARTESIANDIAGRAM_H
 
-#include "KDChartCartesianCoordinatePlane.h"
 #include "KDChartAbstractDiagram.h"
 #include "KDChartCartesianAxis.h"
+#include "KDChartCartesianCoordinatePlane.h"
 
 namespace KDChart {
 
 class GridAttributes;
 
 /**
-     * @brief Base class for diagrams based on a cartesian coordianate system.
-     *
-     * The AbstractCartesianDiagram interface adds those elements that are
-     * specific to diagrams based on a cartesian coordinate system to the
-     * basic AbstractDiagram interface.
-     */
+ * @brief Base class for diagrams based on a cartesian coordianate system.
+ *
+ * The AbstractCartesianDiagram interface adds those elements that are
+ * specific to diagrams based on a cartesian coordinate system to the
+ * basic AbstractDiagram interface.
+ */
 class KDCHART_EXPORT AbstractCartesianDiagram : public AbstractDiagram
 {
     Q_OBJECT
@@ -44,8 +44,8 @@ public:
     ~AbstractCartesianDiagram() override;
 
     /**
-         * Returns true if both diagrams have the same settings.
-         */
+     * Returns true if both diagrams have the same settings.
+     */
     bool compare(const AbstractCartesianDiagram *other) const;
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && defined(Q_COMPILER_MANGLES_RETURN_TYPE)
@@ -56,54 +56,54 @@ public:
     virtual int numberOfOrdinateSegments() const = 0;
 #endif
     /**
-         * Add the axis to the diagram. The diagram takes ownership of the axis
-         * and will delete it.
-         *
-         * To gain back ownership (e.g. for assigning the axis to another diagram)
-         * use the takeAxis method, before calling addAxis on the other diagram.
-         *
-         * \sa takeAxis
-        */
+     * Add the axis to the diagram. The diagram takes ownership of the axis
+     * and will delete it.
+     *
+     * To gain back ownership (e.g. for assigning the axis to another diagram)
+     * use the takeAxis method, before calling addAxis on the other diagram.
+     *
+     * \sa takeAxis
+     */
     virtual void addAxis(CartesianAxis *axis);
     /**
-         * Removes the axis from the diagram, without deleting it.
-         *
-         * The diagram no longer owns the axis, so it is
-         * the caller's responsibility to delete the axis.
-         *
-         * \sa addAxis
-        */
+     * Removes the axis from the diagram, without deleting it.
+     *
+     * The diagram no longer owns the axis, so it is
+     * the caller's responsibility to delete the axis.
+     *
+     * \sa addAxis
+     */
     virtual void takeAxis(CartesianAxis *axis);
     /**
-         * @return a list of all axes added to the diagram
-        */
+     * @return a list of all axes added to the diagram
+     */
     virtual KDChart::CartesianAxisList axes() const;
 
     /**
-          * Triggers layouting of all coordinate planes on the current chart.
-          * Normally you don't need to call this method. It's handled automatically for you.
-         */
+     * Triggers layouting of all coordinate planes on the current chart.
+     * Normally you don't need to call this method. It's handled automatically for you.
+     */
     virtual void layoutPlanes();
     /** \reimp */
     void setCoordinatePlane(AbstractCoordinatePlane *plane) override;
 
     /**
-          * Makes this diagram use another diagram \a diagram as reference diagram with relative offset
-          * \a offset.
-          * To share cartesian axes between different diagrams there might be cases when you need that.
-          * Normally you don't.
-          * \sa examples/SharedAbscissa
-          */
+     * Makes this diagram use another diagram \a diagram as reference diagram with relative offset
+     * \a offset.
+     * To share cartesian axes between different diagrams there might be cases when you need that.
+     * Normally you don't.
+     * \sa examples/SharedAbscissa
+     */
     virtual void setReferenceDiagram(AbstractCartesianDiagram *diagram, const QPointF &offset = QPointF());
     /**
-          * @return this diagram's reference diagram
-          *  \sa setReferenceDiagram
-          */
+     * @return this diagram's reference diagram
+     *  \sa setReferenceDiagram
+     */
     virtual AbstractCartesianDiagram *referenceDiagram() const;
     /**
-          * @return the relative offset of this diagram's reference diagram
-          * \sa setReferenceDiagram
-          */
+     * @return the relative offset of this diagram's reference diagram
+     * \sa setReferenceDiagram
+     */
     virtual QPointF referenceDiagramOffset() const;
 
     /* reimp */

@@ -18,11 +18,11 @@
 #ifndef KDGANTTCONSTRAINTMODEL_H
 #define KDGANTTCONSTRAINTMODEL_H
 
-#include <QModelIndex>
 #include <QDebug>
+#include <QModelIndex>
 
-#include "kdganttglobal.h"
 #include "kdganttconstraint.h"
+#include "kdganttglobal.h"
 
 namespace KDGantt {
 class KDGANTT_EXPORT ConstraintModel : public QObject
@@ -34,10 +34,10 @@ public:
     ~ConstraintModel() override;
 
     /**
-        * Subclassing ConstraintModel and overriding addConstraint() and removeConstraint() can provide
-        * re-entrancy issues in the ConstraintModel<->ConstraintProxy interaction. Therefore it is recommended
-        * to better subclass GraphicsView and override addConstraint() there.
-        */
+     * Subclassing ConstraintModel and overriding addConstraint() and removeConstraint() can provide
+     * re-entrancy issues in the ConstraintModel<->ConstraintProxy interaction. Therefore it is recommended
+     * to better subclass GraphicsView and override addConstraint() there.
+     */
     virtual void addConstraint(const Constraint &c);
     virtual bool removeConstraint(const Constraint &c);
 

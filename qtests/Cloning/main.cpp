@@ -18,15 +18,15 @@
 #include <QtTest/QtTest>
 
 #include <KDChartBarDiagram>
-#include <KDChartLineDiagram>
-#include <KDChartPieDiagram>
-#include <KDChartPieAttributes>
-#include <KDChartThreeDPieAttributes>
-#include <KDChartThreeDBarAttributes>
-#include <KDChartPolarDiagram>
-#include <KDChartRingDiagram>
 #include <KDChartHeaderFooter>
 #include <KDChartLegend>
+#include <KDChartLineDiagram>
+#include <KDChartPieAttributes>
+#include <KDChartPieDiagram>
+#include <KDChartPolarDiagram>
+#include <KDChartRingDiagram>
+#include <KDChartThreeDBarAttributes>
+#include <KDChartThreeDPieAttributes>
 
 using namespace KDChart;
 
@@ -62,10 +62,10 @@ private slots:
         // We do not clone the axes.
         QCOMPARE(clone->axes().count(), 0);
         // And neither the reference diagram.
-        QCOMPARE(clone->referenceDiagram(), (AbstractCartesianDiagram *)0);
+        QCOMPARE(clone->referenceDiagram(), ( AbstractCartesianDiagram * )0);
         QCOMPARE(clone->referenceDiagramOffset(), QPointF());
         // And neither the plane.
-        QCOMPARE(clone->coordinatePlane(), (AbstractCoordinatePlane *)0);
+        QCOMPARE(clone->coordinatePlane(), ( AbstractCoordinatePlane * )0);
         QCOMPARE(diagram->allowOverlappingDataValueTexts(), clone->allowOverlappingDataValueTexts());
         QCOMPARE(diagram->antiAliasing(), clone->antiAliasing());
         QCOMPARE(diagram->percentMode(), clone->percentMode());
@@ -97,7 +97,7 @@ private slots:
         // do we want the warning ?
         // if yes - we just need to un-comment
         auto *diagram = new PieDiagram();
-        //diagram->coordinatePlane()->setStartPosition( 15.0 );
+        // diagram->coordinatePlane()->setStartPosition( 15.0 );
         diagram->setGranularity(1.5);
         PieAttributes attrs;
         attrs.setExplode(true);
@@ -105,7 +105,7 @@ private slots:
         ThreeDPieAttributes threeDAttrs;
         threeDAttrs.setUseShadowColors(false);
         PieDiagram *clone = diagram->clone();
-        //QCOMPARE( diagram->startPosition(), clone->startPosition() );
+        // QCOMPARE( diagram->startPosition(), clone->startPosition() );
         QCOMPARE(diagram->granularity(), clone->granularity());
         QCOMPARE(diagram->pieAttributes(), clone->pieAttributes());
         QCOMPARE(diagram->threeDPieAttributes(), clone->threeDPieAttributes());
@@ -120,14 +120,14 @@ private slots:
         // do we want the warning ?
         // if yes - we just need to un-comment
         auto *diagram = new PolarDiagram();
-        //diagram->setZeroDegreePosition( 5 );
+        // diagram->setZeroDegreePosition( 5 );
         diagram->setRotateCircularLabels(true);
         diagram->setShowDelimitersAtPosition(Position::North, false);
         diagram->setShowDelimitersAtPosition(Position::South, true);
         diagram->setShowLabelsAtPosition(Position::North, true);
         diagram->setShowLabelsAtPosition(Position::South, false);
         PolarDiagram *clone = diagram->clone();
-        //QCOMPARE( diagram->zeroDegreePosition(), clone->zeroDegreePosition() );
+        // QCOMPARE( diagram->zeroDegreePosition(), clone->zeroDegreePosition() );
         QCOMPARE(diagram->rotateCircularLabels(), clone->rotateCircularLabels());
         QCOMPARE(diagram->showDelimitersAtPosition(Position::North),
                  clone->showDelimitersAtPosition(Position::North));

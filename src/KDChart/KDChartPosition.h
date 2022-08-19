@@ -18,13 +18,13 @@
 #ifndef KDCHARTPOSITION_H
 #define KDCHARTPOSITION_H
 
+#include "KDChartEnums.h"
+#include "KDChartGlobal.h"
+#include <QCoreApplication>
 #include <QDebug>
+#include <QMetaType>
 #include <Qt>
 #include <QtContainerFwd>
-#include <QMetaType>
-#include <QCoreApplication>
-#include "KDChartGlobal.h"
-#include "KDChartEnums.h"
 
 QT_BEGIN_NAMESPACE
 class QByteArray;
@@ -106,7 +106,8 @@ public:
     static const Position &Floating;
 
     // boolean flags: 1, 2, 4, 8, ...
-    enum Option {
+    enum Option
+    {
         IncludeCenter = 0x1,
         IncludeFloating = 0x2
     };
@@ -141,9 +142,9 @@ inline bool Position::operator!=(int other) const
 }
 
 /**
-  * @brief Stores the absolute target points of a Position
-  * \internal
-  */
+ * @brief Stores the absolute target points of a Position
+ * \internal
+ */
 class KDCHART_EXPORT PositionPoints
 {
 public:
@@ -238,7 +239,7 @@ public:
     QPointF point(Position position) const
 #endif
     {
-        //qDebug() << "point( " << position.name() << " )";
+        // qDebug() << "point( " << position.name() << " )";
         if (position == Position::Center)
             return mPositionCenter;
         if (position == Position::NorthWest)

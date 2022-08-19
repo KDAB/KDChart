@@ -15,13 +15,13 @@
 **
 ****************************************************************************/
 
-#include <QtGui>
-#include <KDChartChart>
-#include <KDChartPieDiagram>
-#include <KDChartDataValueAttributes>
 #include <KDChartBackgroundAttributes>
+#include <KDChartChart>
+#include <KDChartDataValueAttributes>
 #include <KDChartPieAttributes>
+#include <KDChartPieDiagram>
 #include <KDChartPosition>
+#include <QtGui>
 
 #include <QApplication>
 

@@ -18,9 +18,9 @@
 #ifndef KDGANTTGRAPHICSVIEW_P_H
 #define KDGANTTGRAPHICSVIEW_P_H
 
-#include "kdganttgraphicsview.h"
-#include "kdganttgraphicsscene.h"
 #include "kdganttdatetimegrid.h"
+#include "kdganttgraphicsscene.h"
+#include "kdganttgraphicsview.h"
 
 #include <QPointer>
 

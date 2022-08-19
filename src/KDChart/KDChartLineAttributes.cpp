@@ -32,7 +32,7 @@ public:
     Private();
 
 private:
-    //Areas
+    // Areas
     MissingValuesPolicy missingValuesPolicy = MissingValuesAreBridged;
     bool displayArea = false;
     uint transparency = 255;

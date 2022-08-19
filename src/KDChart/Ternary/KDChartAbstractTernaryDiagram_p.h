@@ -31,14 +31,14 @@
 
 #include "KDChartAbstractTernaryDiagram.h"
 
+#include "KDChartPainterSaver_p.h"
 #include "KDChartTernaryCoordinatePlane.h"
 #include <KDChartAbstractDiagram_p.h>
 #include <KDChartAbstractThreeDAttributes.h>
 #include <KDChartGridAttributes.h>
-#include "KDChartPainterSaver_p.h"
 
-#include "ReverseMapper.h"
 #include "ChartGraphicsItem.h"
+#include "ReverseMapper.h"
 #include <KDABLibFakes>
 
 namespace KDChart {

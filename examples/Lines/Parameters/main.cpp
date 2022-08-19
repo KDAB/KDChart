@@ -15,11 +15,11 @@
 **
 ****************************************************************************/
 
-#include <QtGui>
 #include <KDChartChart>
-#include <KDChartLineDiagram>
 #include <KDChartDataValueAttributes>
+#include <KDChartLineDiagram>
 #include <QApplication>
+#include <QtGui>
 
 using namespace KDChart;
 
@@ -56,12 +56,12 @@ public:
         // Append a prefix/suffix to the
         // data value labels being displayed
         //
-        //dva.setPrefix( "* " );
+        // dva.setPrefix( "* " );
         dva.setSuffix(" Ohm");
 
-        //rotate if you wish
-        //ta.setRotation( 0 );
-        // 3 - Set up your text attributes
+        // rotate if you wish
+        // ta.setRotation( 0 );
+        //  3 - Set up your text attributes
         ta.setFont(QFont("Comic"));
         ta.setPen(QPen(QColor(Qt::darkGreen)));
         ta.setVisible(true);

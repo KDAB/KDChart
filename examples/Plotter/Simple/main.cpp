@@ -15,17 +15,17 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
-#include <KDChartChart>
-#include <KDChartPlotter>
-#include <KDChartLineDiagram>
 #include <KDChartCartesianAxis>
 #include <KDChartCartesianCoordinatePlane>
-#include <KDChartLegend>
-#include <QStandardItemModel>
+#include <KDChartChart>
 #include <KDChartDataValueAttributes>
-#include <KDChartTextAttributes>
+#include <KDChartLegend>
+#include <KDChartLineDiagram>
 #include <KDChartMarkerAttributes>
+#include <KDChartPlotter>
+#include <KDChartTextAttributes>
+#include <QApplication>
+#include <QStandardItemModel>
 
 #include <cmath>
 

@@ -17,8 +17,8 @@
 
 #include <QtTest/QtTest>
 
-#include <KDChartWidget>
 #include <KDChartGlobal>
+#include <KDChartWidget>
 //#include <KDChartBarDiagram>
 //#include <KDChartLineDiagram>
 //#include <KDChartCartesianCoordinatePlane>
@@ -132,7 +132,7 @@ private slots:
 
     void testRetrieveDiagram()
     {
-        //set Cartesian type
+        // set Cartesian type
         m_widget->setType(Widget::Line);
         QCOMPARE(m_widget->type(), Widget::Line);
         QVERIFY(!m_widget->barDiagram());
@@ -152,7 +152,7 @@ private slots:
 
     void testTypeChangeWithLegend()
     {
-        //set Cartesian type
+        // set Cartesian type
         m_widget->addLegend(Position::North);
         QCOMPARE(m_widget->allLegends().size(), 1);
         m_widget->setType(Widget::Bar, Widget::Stacked);
@@ -169,15 +169,15 @@ private slots:
         m_widget->setType(Widget::Line);
         QCOMPARE(m_widget->type(), Widget::Line);
         QCOMPARE(m_widget->subType(), Widget::Normal);
-        //check type subtype = default
+        // check type subtype = default
         m_widget->setType(Widget::Bar);
         QCOMPARE(m_widget->type(), Widget::Bar);
         QCOMPARE(m_widget->subType(), Widget::Normal);
-        //check type subtype
+        // check type subtype
         m_widget->setType(Widget::Line, Widget::Stacked);
         QCOMPARE(m_widget->type(), Widget::Line);
         QCOMPARE(m_widget->subType(), Widget::Stacked);
-        //check subtype
+        // check subtype
         m_widget->setSubType(Widget::Percent);
         QCOMPARE(m_widget->subType(), Widget::Percent);
     }

@@ -18,8 +18,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include <QDialog>
+#include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
 class QLineEdit;

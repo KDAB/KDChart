@@ -15,9 +15,9 @@
 **
 ****************************************************************************/
 
-#include <QtGui>
-#include <KDChartChart>
 #include <KDChartBarDiagram>
+#include <KDChartChart>
+#include <QtGui>
 
 #include <QApplication>
 

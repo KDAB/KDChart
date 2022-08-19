@@ -18,14 +18,14 @@
 #ifndef KDCHARTTERNARYPOINTDIAGRAM_H
 #define KDCHARTTERNARYPOINTDIAGRAM_H
 
-#include "KDChartTernaryCoordinatePlane.h"
 #include "KDChartAbstractTernaryDiagram.h"
+#include "KDChartTernaryCoordinatePlane.h"
 
 namespace KDChart {
 
 /**
-      * @brief A TernaryPointDiagram is a point diagram within a ternary coordinate plane
-      */
+ * @brief A TernaryPointDiagram is a point diagram within a ternary coordinate plane
+ */
 class KDCHART_EXPORT TernaryPointDiagram : public AbstractTernaryDiagram
 {
     Q_OBJECT

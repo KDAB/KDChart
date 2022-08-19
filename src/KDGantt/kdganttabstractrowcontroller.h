@@ -18,8 +18,8 @@
 #ifndef KDGANTTABSTRACTROWCONTROLLER_H
 #define KDGANTTABSTRACTROWCONTROLLER_H
 
-#include <QPair>
 #include "kdganttglobal.h"
+#include <QPair>
 
 QT_BEGIN_NAMESPACE
 class QModelIndex;

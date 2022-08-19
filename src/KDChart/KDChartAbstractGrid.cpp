@@ -32,12 +32,12 @@ static qreal _trunc(qreal v)
 
 AbstractGrid::AbstractGrid()
 {
-    //this block left empty intentionally
+    // this block left empty intentionally
 }
 
 AbstractGrid::~AbstractGrid()
 {
-    //this block left empty intentionally
+    // this block left empty intentionally
 }
 
 void AbstractGrid::setNeedRecalculate()
