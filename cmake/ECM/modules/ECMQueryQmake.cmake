@@ -1,4 +1,9 @@
-find_package(Qt5Core QUIET)
+if (${ECM_GLOBAL_FIND_VERSION} VERSION_GREATER_EQUAL 5.93)
+    message(DEPRECATION "ECMQueryQmake.cmake is deprecated since 5.93, please use ECMQueryQt.cmake instead.")
+endif()
+
+include(${CMAKE_CURRENT_LIST_DIR}/QtVersionOption.cmake)
+find_package(Qt${QT_MAJOR_VERSION}Core QUIET)
 
 if (Qt5Core_FOUND)
     set(_qmake_executable_default "qmake-qt5")
