@@ -12,5 +12,10 @@
 ## clear to you.
 ##
 
-add_executable(ModelViewTableView-example ModelView.qrc main.cpp mainwindow.cpp)
-target_link_libraries(ModelViewTableView-example ${QT_LIBRARIES} kdchart testtools)
+add_executable(
+    ModelViewTableView-example
+    main.cpp mainwindow.cpp ModelView.qrc
+)
+target_link_libraries(
+    ModelViewTableView-example ${QT_LIBRARIES} kdchart testtools
+)

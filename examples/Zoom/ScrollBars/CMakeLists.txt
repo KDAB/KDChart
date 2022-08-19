@@ -12,5 +12,10 @@
 ## clear to you.
 ##
 
-add_executable(ZoomScrollBars-example ZoomScrollBars.qrc main.cpp mainwindow.cpp mainwindow.ui)
-target_link_libraries(ZoomScrollBars-example ${QT_LIBRARIES} kdchart testtools)
+add_executable(
+    ZoomScrollBars-example
+    main.cpp mainwindow.cpp mainwindow.ui ZoomScrollBars.qrc
+)
+target_link_libraries(
+    ZoomScrollBars-example ${QT_LIBRARIES} kdchart testtools
+)

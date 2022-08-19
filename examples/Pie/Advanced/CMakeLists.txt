@@ -12,5 +12,10 @@
 ## clear to you.
 ##
 
-add_executable(PieAdvanced-example Pie.qrc main.cpp mainwindow.cpp mainwindow.ui)
-target_link_libraries(PieAdvanced-example ${QT_LIBRARIES} kdchart testtools)
+add_executable(
+    PieAdvanced-example
+    main.cpp mainwindow.cpp mainwindow.ui Pie.qrc
+)
+target_link_libraries(
+    PieAdvanced-example ${QT_LIBRARIES} kdchart testtools
+)

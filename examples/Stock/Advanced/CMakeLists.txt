@@ -12,5 +12,10 @@
 ## clear to you.
 ##
 
-add_executable(StockAdvanced-example Resources.qrc main.cpp mainwindow.cpp mainwindow.ui)
-target_link_libraries(StockAdvanced-example ${QT_LIBRARIES} kdchart testtools)
+add_executable(
+    StockAdvanced-example
+    main.cpp mainwindow.cpp mainwindow.ui Resources.qrc
+)
+target_link_libraries(
+    StockAdvanced-example ${QT_LIBRARIES} kdchart testtools
+)

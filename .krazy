@@ -15,12 +15,10 @@ SKIP /scripts/
 SKIP /examples/
 #if you have a build subdir, skip it
 SKIP /build-
-#skip cmake files
-SKIP python/cmake/
 #skip generated cmake
 SKIP KDChartConfig\.cmake\.in
-
-#skip other cmake
+#skip other cmake files
 SKIP Doxyfile.cmake
+SKIP \.cmake-format\.py
 #skip the borrowed code in the cmake subdir
 SKIP /cmake/InstallLocation.cmake|/cmake/ECM/|/cmake/KDAB/

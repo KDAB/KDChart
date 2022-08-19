@@ -12,5 +12,10 @@
 ## clear to you.
 ##
 
-add_executable(HeadersFootersHeadersFootersSimple-example main.cpp)
-target_link_libraries(HeadersFootersHeadersFootersSimple-example ${QT_LIBRARIES} kdchart testtools)
+add_executable(
+    HeadersFootersHeadersFootersSimple-example
+    main.cpp
+)
+target_link_libraries(
+    HeadersFootersHeadersFootersSimple-example ${QT_LIBRARIES} kdchart testtools
+)

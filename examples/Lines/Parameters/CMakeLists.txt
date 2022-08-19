@@ -12,5 +12,10 @@
 ## clear to you.
 ##
 
-add_executable(LinesParameters-example main.cpp)
-target_link_libraries(LinesParameters-example ${QT_LIBRARIES} kdchart testtools)
+add_executable(
+    LinesParameters-example
+    main.cpp
+)
+target_link_libraries(
+    LinesParameters-example ${QT_LIBRARIES} kdchart testtools
+)

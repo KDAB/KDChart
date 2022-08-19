@@ -12,6 +12,11 @@
 ## clear to you.
 ##
 
-add_executable(CartesianDiagramDataCompressor-test CartesianDiagramDataCompressorTests.cpp)
-target_link_libraries(CartesianDiagramDataCompressor-test ${QT_LIBRARIES} kdchart testtools)
+add_executable(
+    CartesianDiagramDataCompressor-test
+    CartesianDiagramDataCompressorTests.cpp
+)
+target_link_libraries(
+    CartesianDiagramDataCompressor-test ${QT_LIBRARIES} kdchart testtools
+)
 add_test(NAME CartesianDiagramDataCompressor-test COMMAND CartesianDiagramDataCompressor-test)

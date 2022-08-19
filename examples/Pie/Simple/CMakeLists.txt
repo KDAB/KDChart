@@ -12,5 +12,10 @@
 ## clear to you.
 ##
 
-add_executable(PieSimple-example main.cpp)
-target_link_libraries(PieSimple-example ${QT_LIBRARIES} kdchart testtools)
+add_executable(
+    PieSimple-example
+    main.cpp
+)
+target_link_libraries(
+    PieSimple-example ${QT_LIBRARIES} kdchart testtools
+)

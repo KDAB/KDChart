@@ -12,5 +12,10 @@
 ## clear to you.
 ##
 
-add_executable(AxisWidget-example main.cpp)
-target_link_libraries(AxisWidget-example ${QT_LIBRARIES} kdchart testtools)
+add_executable(
+    AxisWidget-example
+    main.cpp
+)
+target_link_libraries(
+    AxisWidget-example ${QT_LIBRARIES} kdchart testtools
+)

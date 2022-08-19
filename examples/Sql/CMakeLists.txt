@@ -12,5 +12,14 @@
 ## clear to you.
 ##
 
-add_executable(Sql-example main.cpp)
-target_link_libraries(Sql-example ${QT_LIBRARIES} Qt${Qt_VERSION_MAJOR}::Sql kdchart testtools)
+add_executable(
+    Sql-example
+    main.cpp
+)
+target_link_libraries(
+    Sql-example
+    ${QT_LIBRARIES}
+    Qt${Qt_VERSION_MAJOR}::Sql
+    kdchart
+    testtools
+)
