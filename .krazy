@@ -21,4 +21,4 @@ SKIP KDChartConfig\.cmake\.in
 SKIP Doxyfile.cmake
 SKIP \.cmake-format\.py
 #skip the borrowed code in the cmake subdir
-SKIP /cmake/InstallLocation.cmake|/cmake/ECM/|/cmake/KDAB/
+SKIP /cmake/ECM/|/cmake/KDAB/
