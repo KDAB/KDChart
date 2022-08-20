@@ -18,7 +18,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -Woverloaded-virtual -Winit-self")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wmissing-include-dirs -Wunused -Wundef -Wpointer-arith")
-    set(CMAKE_CXX_FLAGS "${CMAKE-CXX_FLAGS} -Wmissing-noreturn -Werror=return-type -Wswitch")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wmissing-noreturn -Werror=return-type -Wswitch")
     if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         # -Wgnu-zero-variadic-macro-arguments (part of -pedantic) is triggered by every qCDebug() call
         # and therefore results in a lot of noise. This warning is only notifying us that clang is
