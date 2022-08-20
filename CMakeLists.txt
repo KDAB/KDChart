@@ -241,20 +241,19 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
     add_subdirectory(features)
 
     # Generate .pri file for qmake users
-    #TODO: ECM does not support Qt6 yet
-    if(Qt_VERSION_MAJOR EQUAL 5
-       AND CMAKE_VERSION VERSION_GREATER "3.11.99"
-       AND NOT CMAKE_CONFIGURATION_TYPES
-    ) # Not working with VS generator or older cmake versions
+    #(except for older cmake versions and when using the VS generator)
+    if(CMAKE_VERSION VERSION_GREATER "3.11.99" AND NOT CMAKE_CONFIGURATION_TYPES)
         include(ECMGeneratePriFile)
         set(PROJECT_VERSION_STRING ${${PROJECT_NAME}_VERSION})
         ecm_generate_pri_file(
             BASE_NAME
             ${PROJECT_NAME}
             LIB_NAME
-            kdchart
+            kdchart${${PROJECT_NAME}_LIBRARY_QTID}
             FILENAME_VAR
             pri_filename
+            INCLUDE_INSTALL_DIR
+            ${INSTALL_INCLUDE_DIR}
         )
         install(FILES ${pri_filename} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
     endif()
