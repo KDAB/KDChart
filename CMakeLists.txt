@@ -48,7 +48,7 @@
 #  Default=CMAKE_INSTALL_PREFIX
 #
 
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.12)
 
 # Allow using a non-KDAB install location.
 set(KDAB_INSTALL
@@ -64,16 +64,12 @@ if(DEFINED CMAKE_INSTALL_PREFIX)
     endif()
 endif()
 
-if(${CMAKE_VERSION} VERSION_LESS "3.12.0")
-    project(KDChart LANGUAGES CXX)
-else()
-    project(
-        KDChart
-        DESCRIPTION "A Qt-based library for creating business and scientific charts"
-        HOMEPAGE_URL "https://github.com/KDAB/KDChart"
-        LANGUAGES CXX
-    )
-endif()
+project(
+    KDChart
+    DESCRIPTION "A Qt-based library for creating business and scientific charts"
+    HOMEPAGE_URL "https://github.com/KDAB/KDChart"
+    LANGUAGES CXX
+)
 
 set(${PROJECT_NAME}_VERSION_MAJOR 3)
 set(${PROJECT_NAME}_VERSION_MINOR 0)
@@ -239,9 +235,8 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
     #Install the kdchart features file for qmake users
     add_subdirectory(features)
 
-    # Generate .pri file for qmake users
-    #(except for older cmake versions and when using the VS generator)
-    if(CMAKE_VERSION VERSION_GREATER "3.11.99" AND NOT CMAKE_CONFIGURATION_TYPES)
+    # Generate .pri file for qmake users (except when using the VS generator)
+    if(NOT CMAKE_CONFIGURATION_TYPES)
         include(ECMGeneratePriFile)
         set(PROJECT_VERSION_STRING ${${PROJECT_NAME}_VERSION})
         ecm_generate_pri_file(
