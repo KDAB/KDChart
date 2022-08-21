@@ -141,6 +141,7 @@ else()
     )
     set(${PROJECT_NAME}_LIBRARY_QTID "")
 endif()
+set(QT_MAJOR_VERSION ${Qt_VERSION_MAJOR}) #ECM uses QT_MAJOR_VERSION
 include(KDQtInstallPaths) #to set QT_INSTALL_FOO variables
 
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
