@@ -7,6 +7,8 @@ EXTRA kdabcopyright-reuse,fosslicense-reuse
 EXCLUDE includes,strings,explicit,normalize,passbyvalue,operators,nullstrcompare,nullstrassign,doublequote_chars,qobject,sigsandslots,staticobjects,cpp
 #exclude more checks
 EXCLUDE qminmax,captruefalse,dpointer,inline,constref
+#exclude spelling as codespell is much, much better tool
+EXCLUDE spelling
 EXCLUDE style
 
 #skip scripts
