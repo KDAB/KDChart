@@ -1,7 +1,7 @@
 CHECKSETS qt5,c++,foss
 
 #KDAB-specific checks
-EXTRA kdabcopyright-reuse,kdabcommercial-reuse,kdabcontactus,fosslicense-reuse
+EXTRA kdabcopyright-reuse,fosslicense-reuse
 
 #exclude checks now being done by clazy or clang-tools
 EXCLUDE includes,strings,explicit,normalize,passbyvalue,operators,nullstrcompare,nullstrassign,doublequote_chars,qobject,sigsandslots,staticobjects,cpp

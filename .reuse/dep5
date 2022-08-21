@@ -3,21 +3,27 @@ Upstream-Name: KDChart
 Upstream-Contact:  <info@kdab.com>
 Source: https://www.github.com/KDAB/KDChart
 
+#misc source code
 Files: *.qrc *.ui *.xml *.kdx *.kxs *.conf *.csv *.cht *.map *.bat
 Copyright: 2001-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
-License: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDAB-KDChart OR LicenseRef-KDAB-KDChart-US
+License: MIT
 
 #artwork
 Files: images/*.png docs/api/*.png examples/*/*.png images/*.svg src/KDChart/resources/*.svg
 Copyright: 2001-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
-License: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDAB-KDChart OR LicenseRef-KDAB-KDChart-US
+License: MIT
 
-#documents
-Files: *.txt *.html docs/manual/*.pdf
+#misc documentation
+Files: *md *.txt CHANGES src/TODO *.html docs/manual/*.pdf
 Copyright: 2001-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
-License: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDAB-KDChart OR LicenseRef-KDAB-KDChart-US
+License: MIT
+
+#misc config files
+Files: .pre-commit-config.yaml .codespellrc .krazy .cmake-format.py .clang-format .clazy .gitignore .mdlrc .mdlrc.rb .pep8 .pylintrc appveyor.yml docs/api/Doxyfile.cmake distro/*
+Copyright: 2011-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+License: BSD-3-Clause
 
 #3rdparty
 Files: cmake/ECM/modules/*
-Copyright:
+Copyright: The KDE Project
 License: BSD-3-Clause

@@ -7,7 +7,7 @@ Source1:        %{name}-rpmlintrc
 Source2:        %{name}-%{version}.tar.gz.asc
 URL:            https://github.com/KDAB/KDChart
 Group:          System/Libraries
-License:        GPL-2.0-only OR GPL-3.0-only
+License:        MIT
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Vendor:         Klaralvdalens Datakonsult AB (KDAB)
 Packager:       Klaralvdalens Datakonsult AB (KDAB) <info@kdab.com>

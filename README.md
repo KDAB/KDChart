@@ -41,28 +41,17 @@ Stay up-to-date with KDAB product announcements:
 
 ## Get Involved
 
-KDAB will happily accept external contributions, but substantial contributions require
-a signed [Copyright Assignment Agreement](docs/KDChart-CopyrightAssignmentForm.pdf).
+KDAB will happily accept external contributions.
 
-Contact info@kdab.com for more information about the Copyright Assignment Agreement.
-
-Please submit your contributions or issue reports from our GitHub space at
+Please submit your contributions or issue reports to our GitHub space at
 <https://github.com/KDAB/KDChart>
 
 ## License
 
 The KD Chart Software is Copyright 2001-2022 Klarälvdalens Datakonsult AB (KDAB),
-and is available under the terms of:
+and is available under the terms of the [MIT](LICENSES/MIT.txt) license.
 
-* [GPL-2.0](LICENSES/GPL-2.0-only.txt) or [GPL-3.0](LICENSES/GPL-3.0-only.txt)
-* the KDAB commercial license, provided that you buy a license.
-  please contact info@kdab.com if you are interested in buying commercial licenses.
-
-Commercial licensing terms are available in
-[LicenseRef-KDAB-KDChart.txt](LICENSES/LicenseRef-KDAB-KDChart.txt),
-[LicenseRef-KDAB-KDChart-US.txt](LICENSES/LicenseRef-KDAB-KDChart-US.txt).
-
-See [README-commercial.txt](README-commercial.txt) for more details.
+Contact KDAB at <info@kdab.com> to inquire about commercial licensing.
 
 ## About KDAB
 

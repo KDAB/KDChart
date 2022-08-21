@@ -1,16 +1,10 @@
-## This file is part of the KD Chart library.
 ##
-## SPDX-FileCopyrightText: 2021-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
-##
-## SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDAB-KDChart OR LicenseRef-KDAB-KDChart-US
-##
-## Licensees holding valid commercial KD Chart licenses may use this file in
-## accordance with the KD Chart Commercial License Agreement provided with
-## the Software.
-##
-## Contact info@kdab.com if any conditions of this licensing are not
-## clear to you.
-##
+# This file is part of the KD Chart library.
+#
+# SPDX-FileCopyrightText: 2021-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+#
+# SPDX-License-Identifier: MIT
+#
 
 # dot should come with Doxygen find_package(Doxygen)
 if(DOXYGEN_DOT_EXECUTABLE)
@@ -51,12 +45,9 @@ add_custom_command(
     COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
     #copy some files by-hand that are referred to by the markdown README
     COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/INSTALL.txt ${DOXYGEN_OUTPUT_DIR}/html
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/README-commercial.txt ${DOXYGEN_OUTPUT_DIR}/html
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/LICENSES ${DOXYGEN_OUTPUT_DIR}/html/LICENSES
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/examples ${DOXYGEN_OUTPUT_DIR}/html/examples
     COMMAND ${CMAKE_COMMAND} -E make_directory ${DOXYGEN_OUTPUT_DIR}/html/docs
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/docs/KDChart-CopyrightAssignmentForm.pdf
-            ${DOXYGEN_OUTPUT_DIR}/html/docs
     COMMAND ${CMAKE_COMMAND} -E make_directory ${DOXYGEN_OUTPUT_DIR}/html/docs/manual
     COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/docs/manual/kdchart.pdf
             ${DOXYGEN_OUTPUT_DIR}/html/docs/manual

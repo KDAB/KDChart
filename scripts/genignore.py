@@ -1,21 +1,16 @@
-# This file is part of the KD Chart library.
+#!/usr/bin/env python
 
+# This file is part of the KD Chart library.
 #
 # SPDX-FileCopyrightText: 2021-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
 #
-# SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDAB-KDChart OR LicenseRef-KDAB-KDChart-US
+# SPDX-License-Identifier: MIT
 #
-# Licensees holding valid commercial KD Chart licenses may use this file in
-# accordance with the KD Chart Commercial License Agreement provided with
-# the Software.
-#
-# Contact info@kdab.com if any conditions of this licensing are not clear to you
-
-#!/usr/bin/env python
-import os
-import stat
 
 # Run this on Linux.
+
+import os
+import stat
 
 # This script, when run in KD Chart's source and build directory containing the results of a full
 # build, writes a list of files to be excluded from packaging to CPackIgnores.txt.
