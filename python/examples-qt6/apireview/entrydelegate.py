@@ -18,11 +18,11 @@
 
 # pylint: disable=missing-class-docstring,missing-function-docstring
 
-from entrydialog import EntryDialog
 from PySide6.QtCore import Qt, QEvent
 from PySide6.QtWidgets import QItemDelegate
 from PyKDChartQt6.KDGantt import ConstraintModel
 from PyKDChartQt6 import KDGantt
+from entrydialog import EntryDialog
 
 
 class EntryDelegate(QItemDelegate):

@@ -51,7 +51,7 @@ class MyTaskModel(QAbstractTableModel):
             return 0
         return len(self.tasks)
 
-    def columnCount(self, index=QModelIndex()): # pylint: disable=no-self-use
+    def columnCount(self, index=QModelIndex()):  # pylint: disable=no-self-use
         if index.isValid():
             return 0
         return 4
