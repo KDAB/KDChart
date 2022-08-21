@@ -1,4 +1,4 @@
-Name:           qt5-kdchart
+Name:           qt6-kdchart
 Version:        3.0.0
 Release:        1
 Summary:        A Qt tool for creating business and scientific charts
@@ -14,15 +14,15 @@ Packager:       Klaralvdalens Datakonsult AB (KDAB) <info@kdab.com>
 
 BuildRequires: cmake
 %if %{defined suse_version}
-BuildRequires:  libqt5-qtbase-devel libqt5-qtsvg-devel
+BuildRequires:  libqt6-qtbase-devel libqt6-qtsvg-devel
 %endif
 
 %if %{defined fedora}
-BuildRequires:  gcc-c++ qt5-qtbase-devel qt5-qtsvg-devel desktop-file-utils
+BuildRequires:  gcc-c++ qt6-qtbase-devel qt6-qtsvg-devel desktop-file-utils
 %endif
 
 %if %{defined rhel}
-BuildRequires:  gcc-c++ qt5-qtbase-devel qt5-qtsvg-devel desktop-file-utils
+BuildRequires:  gcc-c++ qt6-qtbase-devel qt6-qtsvg-devel desktop-file-utils
 %endif
 
 %description

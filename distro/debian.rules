@@ -1,9 +1,0 @@
-#!/usr/bin/make -f
-
-include /usr/share/cdbs/1/rules/debhelper.mk
-
-common-configure::
-	./configure.sh -shared -release -no-unittests
-
-makebuilddir/Qt5-KDChart::
-	touch .license.accepted
