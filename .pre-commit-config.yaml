@@ -20,7 +20,7 @@ repos:
   rev: v2.12.2
   hooks:
   - id: pylint
-    exclude: ^(.cmake-format.py|conan/conanfile.py)
+    exclude: ^(.cmake-format.py|conan/conanfile.py|scripts/genignore.py)
 - repo: https://github.com/pre-commit/mirrors-autopep8
   rev: v1.6.0
   hooks:

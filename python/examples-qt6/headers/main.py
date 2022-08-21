@@ -45,7 +45,7 @@ class MyDateTimeScaleFormatter(DateTimeScaleFormatter):
 # so we can fit more lines into it on the graphicsview
 # side.
 
-
+# pylint: disable=too-few-public-methods
 class MyHeaderView(QHeaderView):
     def __init__(self, parent=None):
         super().__init__(Qt.Horizontal, parent)

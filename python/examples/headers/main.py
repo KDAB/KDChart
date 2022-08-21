@@ -46,6 +46,7 @@ class MyDateTimeScaleFormatter(DateTimeScaleFormatter):
 # side.
 
 
+# pylint: disable=too-few-public-methods
 class MyHeaderView(QHeaderView):
     def __init__(self, parent=None):
         super().__init__(Qt.Horizontal, parent)

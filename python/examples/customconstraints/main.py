@@ -52,6 +52,7 @@ class MyGraphicsView(GraphicsView):  # pylint: disable=too-few-public-methods
             cmodel.addConstraint(c)
 
 
+# pylint: disable=too-few-public-methods
 class MyStandardItem(QStandardItem):
     def __init__(self, v, role=Qt.DisplayRole):
         super().__init__()

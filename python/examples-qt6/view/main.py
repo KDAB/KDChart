@@ -27,6 +27,7 @@ from PyKDChartQt6.KDGantt import Constraint, ConstraintModel, DateTimeGrid, View
 from PyKDChartQt6 import KDGantt
 
 
+# pylint: disable=too-few-public-methods
 class MyStandardItem(QStandardItem):
     def __init__(self, v, role=None):
         super().__init__(None)

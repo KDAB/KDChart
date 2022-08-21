@@ -26,12 +26,14 @@ from PyKDChart.KDGantt import View, DateTimeGrid, Constraint, ConstraintModel, L
 from PyKDChart import KDGantt
 
 
+# pylint: disable=too-few-public-methods
 class MyStandardItem(QStandardItem):
     def __init__(self, v, role=Qt.DisplayRole):
         super().__init__()
         self.setData(v, role)
 
 
+# pylint: disable=too-few-public-methods
 class MyListView(QListView):
     def __init__(self, parent=None):
         super().__init__(parent)

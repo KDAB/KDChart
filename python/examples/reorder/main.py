@@ -16,7 +16,7 @@
 
 ''' Test model that allows reoordering the rows '''
 
-# pylint: disable=missing-class-docstring
+# pylint: disable=missing-class-docstring,missing-function-docstring
 
 import sys
 
@@ -51,7 +51,7 @@ class MyTaskModel(QAbstractTableModel):
             return 0
         return len(self.tasks)
 
-    def columnCount(self, index=QModelIndex()):
+    def columnCount(self, index=QModelIndex()): # pylint: disable=no-self-use
         if index.isValid():
             return 0
         return 4
