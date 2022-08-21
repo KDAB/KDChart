@@ -141,7 +141,6 @@ else()
     )
     set(${PROJECT_NAME}_LIBRARY_QTID "")
 endif()
-set(QT_MAJOR_VERSION ${Qt_VERSION_MAJOR}) #ECM uses QT_MAJOR_VERSION
 include(KDQtInstallPaths) #to set QT_INSTALL_FOO variables
 
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
@@ -238,19 +237,21 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
 
     # Generate .pri file for qmake users (except when using the VS generator)
     if(NOT CMAKE_CONFIGURATION_TYPES)
-        include(ECMGeneratePriFile)
-        set(PROJECT_VERSION_STRING ${${PROJECT_NAME}_VERSION})
-        ecm_generate_pri_file(
-            BASE_NAME
-            ${PROJECT_NAME}
-            LIB_NAME
-            kdchart${${PROJECT_NAME}_LIBRARY_QTID}
-            FILENAME_VAR
-            pri_filename
-            INCLUDE_INSTALL_DIR
-            ${INSTALL_INCLUDE_DIR}
-        )
-        install(FILES ${pri_filename} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
+        if(Qt_VERSION_MAJOR EQUAL 5 OR (Qt_VERSION_MAJOR EQUAL 6 AND Qt6Core_VERSION VERSION_GREATER "6.2"))
+            include(ECMGeneratePriFile) #not available for Qt6.2 or lower
+            set(PROJECT_VERSION_STRING ${${PROJECT_NAME}_VERSION})
+            ecm_generate_pri_file(
+                BASE_NAME
+                ${PROJECT_NAME}
+                LIB_NAME
+                kdchart${${PROJECT_NAME}_LIBRARY_QTID}
+                FILENAME_VAR
+                pri_filename
+                INCLUDE_INSTALL_DIR
+                ${INSTALL_INCLUDE_DIR}
+            )
+            install(FILES ${pri_filename} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
+        endif()
     endif()
 else()
     #Always disable tests, examples, docs when used as a submodule
