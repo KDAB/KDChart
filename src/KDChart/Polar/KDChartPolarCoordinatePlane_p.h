@@ -117,7 +117,8 @@ public:
     GridAttributes gridAttributesCircular;
     GridAttributes gridAttributesSagittal;
 
-    qreal newZoomX, newZoomY;
+    qreal newZoomX = 0.0;
+    qreal newZoomY = 0.0;
 };
 
 KDCHART_IMPL_DERIVED_PLANE(PolarCoordinatePlane, AbstractCoordinatePlane)

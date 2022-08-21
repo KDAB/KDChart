@@ -162,8 +162,8 @@ private:
     DatasetDescriptionVector mRowSrcToProxyMap;
     DatasetDescriptionVector mRowProxyToSrcMap;
 
-    int mProxyRowCount;
-    int mProxyColumnCount;
+    int mProxyRowCount = 0;
+    int mProxyColumnCount = 0;
     QModelIndex mRootIndex;
 };
 }

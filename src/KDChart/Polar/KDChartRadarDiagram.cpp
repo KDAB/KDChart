@@ -178,7 +178,6 @@ void RadarDiagram::paint(PaintContext *ctx,
     labelFont.setPointSizeF(labelFontSize);
     const QFontMetricsF metric(labelFont);
     const qreal labelHeight = metric.height();
-    QPointF offset;
     QRectF destRect = ctx->rectangle();
     if (ta.isVisible()) {
         destRect.setY(destRect.y() + 2 * labelHeight);

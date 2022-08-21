@@ -7,7 +7,7 @@
 ** SPDX-License-Identifier: MIT
 **
 ****************************************************************************/
-/** \file KDGanttGlobal.h
+/** \file kdganttglobal.h
 \brief Contains KDGantt macros.
 
 Contains KDGantt macros.  */

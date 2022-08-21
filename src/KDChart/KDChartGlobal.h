@@ -7,7 +7,7 @@
 ** SPDX-License-Identifier: MIT
 **
 ****************************************************************************/
-/** \file KDChartGlobal
+/** \file KDChartGlobal.h
 \brief Contains KDChart macros.
 
 Contains KDChart macros.  */
