@@ -51,12 +51,7 @@ develop programs using kdchart.
 %autosetup
 
 %build
-touch .license.accepted
-%if "%{_lib}"=="lib64"
-QMAKE_ARGS="LIB_SUFFIX=64" ./configure.sh -shared -release -no-unittests -prefix %{buildroot}/usr
-%else
-./configure.sh -shared -release -prefix %{buildroot}/usr
-%endif
+cmake . -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
 %__make %{?_smp_mflags}
 
 %post -p /sbin/ldconfig
@@ -75,14 +70,18 @@ QMAKE_ARGS="LIB_SUFFIX=64" ./configure.sh -shared -release -no-unittests -prefix
 
 %files devel
 %defattr(-,root,root,-)
+%{_libdir}/qt5/mkspecs/modules/*
+%dir %{_prefix}/share/mkspecs
+%dir %{_prefix}/share/mkspecs/features
+%{_prefix}/share/mkspecs/features/kdchart.prf
 %dir %{_includedir}/KDChart
 %{_includedir}/KDChart/*
-%dir %{_includedir}/KDGantt
-%{_includedir}/KDGantt/*
+%dir %{_libdir}/cmake/KDChart
+%{_libdir}/cmake/KDChart/*
 %{_libdir}/libkdchart.so
 
 %changelog
-* Sun Aug 21 2022 Allen Winter <allen.winter@kdab.com> 3.0.0
+* Sat Aug 27 2022 Allen Winter <allen.winter@kdab.com> 3.0.0
   3.0.0
 * Fri Oct 16 2020 Allen Winter <allen.winter@kdab.com> 2.7.2
   2.7.2

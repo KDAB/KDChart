@@ -1,8 +1,8 @@
 Release Highlights
 ==================
 
-Version 3.0.0 (unreleased):
----------------------------
+Version 3.0.0 (27 August 2022):
+-------------------------------
 ** NOTE: Version 3.0 is not! binary compatible with Version 2.x **
  * Supports Qt6 in addition to Qt5 (co-installable)
  * Re-license project to MIT and remove the commercial offering

@@ -51,13 +51,9 @@ develop programs using kdchart.
 %autosetup
 
 %build
-touch .license.accepted
-%if "%{_lib}"=="lib64"
-QMAKE_ARGS="LIB_SUFFIX=64" ./configure.sh -shared -release -no-unittests -prefix %{buildroot}/usr
-%else
-./configure.sh -shared -release -prefix %{buildroot}/usr
-%endif
+cmake . -DCMAKE_INSTALL_PREFIX=/usr -DKDChart_QT6=True -DCMAKE_BUILD_TYPE=Release
 %__make %{?_smp_mflags}
+
 
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
@@ -70,19 +66,25 @@ QMAKE_ARGS="LIB_SUFFIX=64" ./configure.sh -shared -release -no-unittests -prefix
 
 %files
 %defattr(-,root,root)
-%{_prefix}/share/doc/KDChart
-%{_libdir}/libkdchart.so.*
+%{_prefix}/share/doc/KDChart-qt6
+%{_libdir}/libkdchart-qt6.so.*
 
 %files devel
 %defattr(-,root,root,-)
-%dir %{_includedir}/KDChart
-%{_includedir}/KDChart/*
-%dir %{_includedir}/KDGantt
-%{_includedir}/KDGantt/*
-%{_libdir}/libkdchart.so
+%if 0%{?fedora} > 35
+%{_libdir}/qt6/mkspecs/modules/*
+%endif
+#%dir %{_prefix}/share/mkspecs
+#%dir %{_prefix}/share/mkspecs/features
+#%{_prefix}/share/mkspecs/features/kdchart.prf
+%dir %{_includedir}/KDChart-qt6
+%{_includedir}/KDChart-qt6/*
+%dir %{_libdir}/cmake/KDChart-qt6
+%{_libdir}/cmake/KDChart-qt6/*
+%{_libdir}/libkdchart-qt6.so
 
 %changelog
-* Sun Aug 21 2022 Allen Winter <allen.winter@kdab.com> 3.0.0
+* Sat Aug 27 2022 Allen Winter <allen.winter@kdab.com> 3.0.0
   3.0.0
 * Fri Oct 16 2020 Allen Winter <allen.winter@kdab.com> 2.7.2
   2.7.2
