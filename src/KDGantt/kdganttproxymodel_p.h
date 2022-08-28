@@ -19,7 +19,9 @@ public:
 
     QHash<int, int> columnMap;
     QHash<int, int> roleMap;
+#if 0
     bool calendarMode;
+#endif
 };
 }
 

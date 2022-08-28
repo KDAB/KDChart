@@ -104,7 +104,7 @@ public:
     /* reimp */
     void setRootIndex(const QModelIndex &index) override;
     /* reimp */
-    void setAttributesModel(AttributesModel *model) override;
+    void setAttributesModel(AttributesModel *amodel) override;
 
 protected Q_SLOTS:
     void connectAttributesModel(AttributesModel *);

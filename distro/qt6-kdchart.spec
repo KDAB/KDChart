@@ -1,4 +1,4 @@
-Name:           qt5-kdchart
+Name:           qt6-kdchart
 Version:        3.0.0
 Release:        1
 Summary:        A Qt tool for creating business and scientific charts
@@ -14,15 +14,15 @@ Packager:       Klaralvdalens Datakonsult AB (KDAB) <info@kdab.com>
 
 BuildRequires: cmake
 %if %{defined suse_version}
-BuildRequires:  libqt5-qtbase-devel libqt5-qtsvg-devel
+BuildRequires:  libqt6-qtbase-devel libqt6-qtsvg-devel
 %endif
 
 %if %{defined fedora}
-BuildRequires:  gcc-c++ qt5-qtbase-devel qt5-qtsvg-devel desktop-file-utils
+BuildRequires:  gcc-c++ qt6-qtbase-devel qt6-qtsvg-devel desktop-file-utils
 %endif
 
 %if %{defined rhel}
-BuildRequires:  gcc-c++ qt5-qtbase-devel qt5-qtsvg-devel desktop-file-utils
+BuildRequires:  gcc-c++ qt6-qtbase-devel qt6-qtsvg-devel desktop-file-utils
 %endif
 
 %description
@@ -51,8 +51,9 @@ develop programs using kdchart.
 %autosetup
 
 %build
-cmake . -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
+cmake . -DCMAKE_INSTALL_PREFIX=/usr -DKDChart_QT6=True -DCMAKE_BUILD_TYPE=Release
 %__make %{?_smp_mflags}
+
 
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
@@ -65,20 +66,22 @@ cmake . -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
 
 %files
 %defattr(-,root,root)
-%{_prefix}/share/doc/KDChart
-%{_libdir}/libkdchart.so.*
+%{_prefix}/share/doc/KDChart-qt6
+%{_libdir}/libkdchart-qt6.so.*
 
 %files devel
 %defattr(-,root,root,-)
-%{_libdir}/qt5/mkspecs/modules/*
-%dir %{_prefix}/share/mkspecs
-%dir %{_prefix}/share/mkspecs/features
-%{_prefix}/share/mkspecs/features/kdchart.prf
-%dir %{_includedir}/KDChart
-%{_includedir}/KDChart/*
-%dir %{_libdir}/cmake/KDChart
-%{_libdir}/cmake/KDChart/*
-%{_libdir}/libkdchart.so
+%if 0%{?fedora} > 35
+%{_libdir}/qt6/mkspecs/modules/*
+%endif
+#%dir %{_prefix}/share/mkspecs
+#%dir %{_prefix}/share/mkspecs/features
+#%{_prefix}/share/mkspecs/features/kdchart.prf
+%dir %{_includedir}/KDChart-qt6
+%{_includedir}/KDChart-qt6/*
+%dir %{_libdir}/cmake/KDChart-qt6
+%{_libdir}/cmake/KDChart-qt6/*
+%{_libdir}/libkdchart-qt6.so
 
 %changelog
 * Sat Aug 27 2022 Allen Winter <allen.winter@kdab.com> 3.0.0
