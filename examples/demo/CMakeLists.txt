@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: MIT
 #
 
-add_executable(
+qt_add_executable(
     demo-example
     axissettings.cpp
     axissettings.ui
@@ -25,6 +25,16 @@ add_executable(
     main.cpp
     mainwindow.cpp
 )
+if(EMSCRIPTEN)
+    # Output wasm file to same location as .html
+    # file created by qt_add_executable
+    set_target_properties(demo-example PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG ""
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE ""
+        RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ""
+        RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ""
+    )
+endif()
 target_link_libraries(
-    demo-example ${QT_LIBRARIES} kdchart testtools
+    demo-example PUBLIC ${QT_LIBRARIES} kdchart testtools
 )
