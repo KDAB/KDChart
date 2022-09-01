@@ -15,4 +15,3 @@ find_dependency(Qt@Qt_VERSION_MAJOR@Svg)
 find_dependency(Qt@Qt_VERSION_MAJOR@Network)
 
 include("${CMAKE_CURRENT_LIST_DIR}/KDChartTargets.cmake")
-

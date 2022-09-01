@@ -208,4 +208,3 @@ examples/Zoom/ - mouse handling and zooming
  - Set up the legends
  - Show some zooming functionalities using mouse press event,
    mouse wheel event, and key press event
-
