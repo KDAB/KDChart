@@ -1,6 +1,10 @@
 Release Highlights
 ==================
 
+Version 3.0.1 (unreleased):
+---------------------------
+ * Add WebAssembly demo-example
+
 Version 3.0.0 (27 August 2022):
 -------------------------------
 ** NOTE: Version 3.0 is not! binary compatible with Version 2.x **
