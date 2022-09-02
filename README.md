@@ -44,7 +44,7 @@ Stay up-to-date with KDAB product announcements:
 KDAB will happily accept external contributions.
 
 Please submit your contributions or issue reports to our GitHub space at
-<https://github.com/KDAB/KDChart>
+<https://github.com/KDAB/KDChart>.
 
 ## License
 

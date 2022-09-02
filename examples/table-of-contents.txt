@@ -31,7 +31,7 @@ examples/Axis/Parameters/ - fine-tuning the axis parameters
  - Shift line chart types ( Normal / Stacked / Percent )
  - Paint markers and change their style
  - Display area charts with transparency
- - Demonstrate zooming 
+ - Demonstrate zooming
  - Set up a legend and display it or hide it
 
 examples/Axis/Widget/ - ChartWidget together with axis
@@ -39,7 +39,7 @@ examples/Axis/Widget/ - ChartWidget together with axis
    featuring:
 
  - Set the data using a QVector of QPairs
- - Configure the Axis and its labels 
+ - Configure the Axis and its labels
  - Configure the DataValueAttributes
 
 examples/Bars/Advanced - sub types of the bar diagram class
@@ -49,7 +49,7 @@ examples/Bars/Advanced - sub types of the bar diagram class
  - Use of KDChart::Chart together with a TableModel
    (QAbstractTableModel)
  - Set up a Bar diagram
- - Display or hide data values 
+ - Display or hide data values
  - Shift Bar chart types ( Normal / Stacked / Percent )
  - Demonstrate Pen settings
  - Display ThreeD Bars and set the depth
@@ -73,13 +73,13 @@ examples/DrawIntoPainter - Demonstrate KDChart::paint method
 
    featuring:
 
- - Display or hide data values 
+ - Display or hide data values
  - Shift Line chart types ( Normal / Stacked / Percent )
- - Set up and display Markers 
+ - Set up and display Markers
  - Display areas of a chart and set up transparency
  - Demonstrate zooming
  - Display or hide legend
- - Paint your chart into a png 
+ - Paint your chart into a png
 
 examples/EmptyValues/ - having zero values in all cells
 
@@ -131,7 +131,7 @@ examples/Lines/ - sub types of the lines diagram class
  - Use of KDChart::Chart together with a TableModel
    (QAbstractTableModel)
  - Display or hide data values
- - Show the use of DataValueAttributes and TextAttributes 
+ - Show the use of DataValueAttributes and TextAttributes
  - Shift line chart types ( Normal / Stacked / Percent )
  - Highlight areas
  - Animate highlighting of areas
@@ -144,7 +144,7 @@ examples/ModelView - using Qt Interview with KD Chart 2
  - Use of KDChart::Chart together with a QStandardItemModel,
    QItemSelectionModel, and a QTableView
  - Load and save your data
- - Select and change the values interactively 
+ - Select and change the values interactively
  - Pen settings
 
 
@@ -190,8 +190,8 @@ examples/Widget/ - the convenience widget class
 
    featuring:
 
- - Use of KDChart::Widget  
- - Add values and set datasets using a QVector 
+ - Use of KDChart::Widget
+ - Add values and set datasets using a QVector
  - Headers and footers set up and configuration
  - Set up the legends
  - Specify the chart type
@@ -202,10 +202,9 @@ examples/Zoom/ - mouse handling and zooming
    featuring:
 
  - Use of KDChart::Widget
- - Use of KDChart::Widget  
- - Add values and set datasets using a QVector 
+ - Use of KDChart::Widget
+ - Add values and set datasets using a QVector
  - Headers and footers set up and configuration
  - Set up the legends
  - Show some zooming functionalities using mouse press event,
    mouse wheel event, and key press event
-

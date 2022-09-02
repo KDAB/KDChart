@@ -58,7 +58,7 @@ add_custom_command(
 add_custom_target(
     kdchart-api.qch ALL
     DEPENDS ${DOXYGEN_OUTPUT_DIR}/qch/kdchart-api.qch
-    COMMENT "Target generate the .qch file"
+    COMMENT "Target to generate the .qch file"
 )
 add_custom_target(
     docs

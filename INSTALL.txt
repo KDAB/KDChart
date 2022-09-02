@@ -100,4 +100,3 @@ That's all you need to do (the imported target also brings in the include direct
 
 You may also need to point the CMAKE_PREFIX_PATH environment variable depending
 on where you installed KDChart.
-
