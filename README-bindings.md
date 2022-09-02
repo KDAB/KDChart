@@ -7,6 +7,7 @@ Starting with version 2.7.0 KD Chart can build Python3 bindings.
 Currently unsupported:
 
 - debug builds
+- builds against Qt debug libraries
 - static builds
 - python2 bindings
 - only some 32-bit platforms are supported.  see <https://wiki.qt.io/Qt_for_Python>
@@ -17,9 +18,10 @@ Also, there are no plans to support the qmake buildsystem.
 
 You will need:
 
-- a compiler with C++14 support
+- a compiler with C++14 support (C++17 for Qt6 builds)
 - Python3.6 or higher
-- Qt 5.15 or higher
+- Qt5 version 5.15 or higher
+- Qt6 version 6.2 or higher
 - QtForPython provided by the Qt project.
 
 ## Install PySide2 for Qt5

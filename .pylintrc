@@ -180,7 +180,7 @@ score=yes
 [REFACTORING]
 
 # Maximum number of nested blocks for function / method body
-max-nested-blocks=6
+max-nested-blocks=8
 
 # Complete name of functions that never returns. When checking for
 # inconsistent-return-statements if a never returning function is called then
@@ -350,9 +350,7 @@ logging-modules=logging
 [MISCELLANEOUS]
 
 # List of note tags to take in consideration, separated by a comma.
-notes=FIXME,
-      XXX,
-      TODO
+notes=
 
 # Regular expression of note tags to take in consideration.
 #notes-rgx=
@@ -529,10 +527,10 @@ max-attributes=7
 max-bool-expr=6
 
 # Maximum number of branch for function / method body.
-max-branches=15
+max-branches=20
 
 # Maximum number of locals for function / method body.
-max-locals=20
+max-locals=25
 
 # Maximum number of parents for a class (see R0901).
 max-parents=7
@@ -544,7 +542,7 @@ max-public-methods=20
 max-returns=6
 
 # Maximum number of statements in function / method body.
-max-statements=50
+max-statements=100
 
 # Minimum number of public methods for a class (see R0903).
 min-public-methods=2
