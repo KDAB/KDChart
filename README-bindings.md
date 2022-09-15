@@ -37,8 +37,6 @@ To use the wheels do this:
     shiboken2 pyside2 shiboken2_generator
 ```
 
-For QtForPython you must use the exact same Qt version used when building KD Chart.
-
 For more info visit <https://doc.qt.io/qtforpython/shiboken2/gettingstarted.html>
 
 afterwards run:
@@ -72,10 +70,18 @@ Alternatively, configure the bindings install location by passing (for example)
 `-DKDChart_BINDINGS_INSTALL_PREFIX=/usr/lib/python3.8/site-packages` to CMake
 and adjust to the PYTHONPATH accordingly, as necessary.
 
+To run the KDChart python examples:
+
+```bash
+   export PYTHONPATH=/usr/local/KDAB/KDChart-3.0.0/lib64/python3.10/site-packages # adapt as needed
+   cd python/examples/view
+   python3 main.py
+```
+
 ### Build Issues
 
 - If you see errors like "Unable to locate Clang's built-in include directory"
-  then first mROUBLESHOOTINGake sure you have llvm installed.  If you still have problems try
+  then first make sure you have llvm installed.  If you still have problems try
   setting the environment variable `LLVM_INSTALL_DIR` to point to your llvm installation.
 
   Examples:
