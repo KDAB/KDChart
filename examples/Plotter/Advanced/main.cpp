@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     model.setRowCount(100);
     model.setColumnCount(6); // 3 data sets
     for (int i = 0; i < 100; ++i) {
-        // dateset 1
+        // dataset 1
         qreal t = i;
         qreal v = qreal(i) * i;
         QModelIndex index = model.index(i, 0);
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
         index = model.index(i, 1);
         model.setData(index, QVariant(v));
 
-        // dateset 2
+        // dataset 2
         t = i * 2;
         v = qreal(i) * i - i;
         index = model.index(i, 2);
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
         index = model.index(i, 3);
         model.setData(index, QVariant(v));
 
-        // dateset 3
+        // dataset 3
         t = qreal(i) / 2;
         v = qreal(i) * i + i;
         index = model.index(i, 4);

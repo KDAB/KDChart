@@ -288,7 +288,7 @@ bool GraphicsScene::isReadOnly() const
     return d->readOnly;
 }
 
-/* Returns the index with column=0 fromt the
+/* Returns the index with column=0 from the
  * same row as idx and with the same parent.
  * This is used to traverse the tree-structure
  * of the model

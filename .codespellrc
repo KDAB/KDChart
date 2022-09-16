@@ -1,4 +1,4 @@
 [codespell]
 skip = ./build-*,.git,*.kdx
 interactive = 3
-ignore-words-list = ba,currect
+ignore-words-list = ba,currect,ro
