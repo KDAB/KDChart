@@ -143,7 +143,9 @@ disable=print-statement,
         exception-escape,
         comprehension-escape,
         consider-using-f-string,
-        R0801,I1101,E0401
+        unknown-option-value,
+        useless-option-value,
+        R0801,E0401,E0611
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
