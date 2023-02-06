@@ -1,4 +1,8 @@
-![KDChart logo](https://github.com/KDAB/KDChart/blob/kdchart-3.0/images/kdchart.png?raw=true)
+<div>
+<img src="images/kdchart.png" witdh="50%" align="center"/>
+<img src="images/kdChart-trademark.png" width="50%" align="center"/>
+</div>
+
 
 # Introduction
 
