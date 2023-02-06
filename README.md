@@ -1,3 +1,5 @@
+![KDChart logo](https://github.com/KDAB/KDChart/blob/kdchart-3.0/images/kdchart.png?raw=true)
+
 # Introduction
 
 KD Chart is a tool for creating business and scientific charts.
