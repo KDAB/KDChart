@@ -1,3 +1,8 @@
+<div>
+<img src="images/kdchart.png" width="50%" align="center"/>
+<img src="images/kdChart-trademark.png" width="50%" align="center"/>
+</div>
+
 # Introduction
 
 KD Chart is a tool for creating business and scientific charts.
