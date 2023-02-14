@@ -1,8 +1,7 @@
 <div>
-<img src="images/kdchart.png" witdh="50%" align="center"/>
+<img src="images/kdchart.png" width="50%" align="center"/>
 <img src="images/kdChart-trademark.png" width="50%" align="center"/>
 </div>
-
 
 # Introduction
 
