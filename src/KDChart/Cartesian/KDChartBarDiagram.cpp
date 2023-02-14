@@ -395,4 +395,4 @@ const
     return d->attributesModel->columnCount(attributesModelRootIndex());
 }
 
-//#undef d
+// #undef d

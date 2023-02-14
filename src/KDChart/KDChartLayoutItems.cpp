@@ -33,7 +33,7 @@
 
 #include <math.h>
 
-//#define DEBUG_ITEMS_PAINT
+// #define DEBUG_ITEMS_PAINT
 
 /**
     Inform the item about its widget: This enables the item,

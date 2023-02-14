@@ -11,7 +11,7 @@
 #ifndef KDCHARTRADARGrid_H
 #define KDCHARTRADARGrid_H
 
-//#include "KDChartRadarCoordinatePlane.h"
+// #include "KDChartRadarCoordinatePlane.h"
 #include "KDChartAbstractGrid.h"
 
 namespace KDChart {

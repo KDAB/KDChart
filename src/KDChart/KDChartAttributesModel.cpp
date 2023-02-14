@@ -660,7 +660,7 @@ void AttributesModel::setDefaultForRole(int role, const QVariant &value)
 
 void AttributesModel::setDatasetDimension(int dimension)
 {
-    //### need to "reformat" or throw away internal data?
+    // ### need to "reformat" or throw away internal data?
     d->dataDimension = dimension;
 }
 

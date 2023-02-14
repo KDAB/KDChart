@@ -12,12 +12,12 @@
 
 #include <KDChartGlobal>
 #include <KDChartWidget>
-//#include <KDChartBarDiagram>
-//#include <KDChartLineDiagram>
-//#include <KDChartCartesianCoordinatePlane>
-//#include <KDChartPolarCoordinatePlane>
+// #include <KDChartBarDiagram>
+// #include <KDChartLineDiagram>
+// #include <KDChartCartesianCoordinatePlane>
+// #include <KDChartPolarCoordinatePlane>
 #include <KDChartLegend>
-//#include <KDChartHeaderFooter>
+// #include <KDChartHeaderFooter>
 
 using namespace KDChart;
 
