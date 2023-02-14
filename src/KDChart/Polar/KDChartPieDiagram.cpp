@@ -289,7 +289,7 @@ static int wraparound(int i, int size)
     return i;
 }
 
-//#define SHUFFLE_DEBUG
+// #define SHUFFLE_DEBUG
 
 void PieDiagram::shuffleLabels(QRectF *textBoundingRect)
 {

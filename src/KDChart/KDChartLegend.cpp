@@ -118,7 +118,7 @@ QSize Legend::minimumSizeHint() const
     return sizeHint();
 }
 
-//#define DEBUG_LEGEND_PAINT
+// #define DEBUG_LEGEND_PAINT
 
 QSize Legend::sizeHint() const
 {
