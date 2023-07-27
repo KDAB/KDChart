@@ -503,10 +503,10 @@ void GraphicsScene::clearItems()
         delete *it;
     }
     d->items.clear();
-    
+
     // Clear constraints
-    QList<QGraphicsItem*> items = d->q->items();
-    for(QGraphicsItem * item: items) {
+    QList<QGraphicsItem *> items = d->q->items();
+    for (QGraphicsItem *item : items) {
         d->q->removeItem(item);
         delete item;
     }
