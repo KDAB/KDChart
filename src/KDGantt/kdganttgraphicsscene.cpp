@@ -498,12 +498,15 @@ GraphicsItem *GraphicsScene::findItem(const QPersistentModelIndex &idx) const
 
 void GraphicsScene::clearItems()
 {
-    // TODO constraints
     QHash<QPersistentModelIndex, GraphicsItem *>::const_iterator it = d->items.constBegin();
     for (; it != d->items.constEnd(); ++it) {
         delete *it;
     }
     d->items.clear();
+
+    // Clear constraints
+    QList<QGraphicsItem *> items = d->q->items();
+    qDeleteAll(items);
 }
 
 void GraphicsScene::updateItems()
