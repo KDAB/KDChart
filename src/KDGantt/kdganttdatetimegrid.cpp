@@ -1065,13 +1065,16 @@ void DateTimeGrid::paintDayScaleHeader(QPainter *painter, const QRectF &headerRe
     class DayFormatter : public Private::DateTextFormatter
     {
     public:
+        DayFormatter() : Private::DateTextFormatter(), m_formatter(DateTimeScaleFormatter::Range::Day, QString::fromLatin1("ddd"))
+        {
+        }
         ~DayFormatter() override
         {
         }
 
         QString format(const QDateTime &dt) override
         {
-            return dt.toString(QString::fromLatin1("ddd")).left(1);
+            return m_formatter.format(dt);
         }
         QRect textRect(qreal x, qreal offset, qreal dayWidth, const QRectF &headerRect, const QDateTime &dt) override
         {
@@ -1081,6 +1084,7 @@ void DateTimeGrid::paintDayScaleHeader(QPainter *painter, const QRectF &headerRe
                           QSizeF(dayWidth, headerRect.height() / 2.0))
                 .toAlignedRect();
         }
+        DateTimeScaleFormatter m_formatter;
     };
     d->paintHeader(painter, headerRect, exposedRect, offset, widget, // General parameters
                    Private::HeaderDay, new DayFormatter); // Custom parameters
