@@ -1065,7 +1065,9 @@ void DateTimeGrid::paintDayScaleHeader(QPainter *painter, const QRectF &headerRe
     class DayFormatter : public Private::DateTextFormatter
     {
     public:
-        DayFormatter() : Private::DateTextFormatter(), m_formatter(DateTimeScaleFormatter::Range::Day, QString::fromLatin1("ddd"))
+        DayFormatter()
+            : Private::DateTextFormatter()
+            , m_formatter(DateTimeScaleFormatter::Range::Day, QString::fromLatin1("ddd"))
         {
         }
         ~DayFormatter() override
