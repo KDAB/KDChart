@@ -108,6 +108,12 @@ void AbstractDiagram::setModel(QAbstractItemModel *newModel)
 
     QAbstractItemView::setModel(newModel);
 
+    QAbstractItemModel *oldModel = QAbstractItemView::model();
+    if (oldModel != nullptr) {
+        disconnect(oldModel, &QAbstractItemModel::modelReset, this, &AbstractDiagram::doItemsLayout);
+    }
+    connect(newModel, &QAbstractItemModel::modelReset, this, &AbstractDiagram::doItemsLayout);
+
     scheduleDelayedItemsLayout();
     setDataBoundariesDirty();
     emit modelsChanged();
