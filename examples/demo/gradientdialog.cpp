@@ -128,8 +128,8 @@ void GradientDialog::Private::init()
     redSpin->setMaximum(255);
     redSpin->setAccelerated(true);
     redSpin->setValue(redSlider->value());
-    connect(redSpin, SIGNAL(valueChanged(int)), redSlider, SLOT(setValue(int)));
-    connect(redSlider, SIGNAL(valueChanged(int)), redSpin, SLOT(setValue(int)));
+    connect(redSpin, &QSpinBox::valueChanged, redSlider, &ColorSlider::setValue);
+    connect(redSlider, &ColorSlider::valueChanged, redSpin, &QSpinBox::setValue);
     redLayout->addWidget(redSlider);
     redLayout->addWidget(redSpin);
 
@@ -148,8 +148,8 @@ void GradientDialog::Private::init()
     greenSpin->setMaximum(255);
     greenSpin->setAccelerated(true);
     greenSpin->setValue(greenSlider->value());
-    connect(greenSpin, SIGNAL(valueChanged(int)), greenSlider, SLOT(setValue(int)));
-    connect(greenSlider, SIGNAL(valueChanged(int)), greenSpin, SLOT(setValue(int)));
+    connect(greenSpin, &QSpinBox::valueChanged, greenSlider, &ColorSlider::setValue);
+    connect(greenSlider, &ColorSlider::valueChanged, greenSpin, &QSpinBox::setValue);
     greenLayout->addWidget(greenSlider);
     greenLayout->addWidget(greenSpin);
 
@@ -168,22 +168,22 @@ void GradientDialog::Private::init()
     blueSpin->setMaximum(255);
     blueSpin->setAccelerated(true);
     blueSpin->setValue(blueSlider->value());
-    connect(blueSpin, SIGNAL(valueChanged(int)), blueSlider, SLOT(setValue(int)));
-    connect(blueSlider, SIGNAL(valueChanged(int)), blueSpin, SLOT(setValue(int)));
+    connect(blueSpin, &QSpinBox::valueChanged, blueSlider, &ColorSlider::setValue);
+    connect(blueSlider, &ColorSlider::valueChanged, blueSpin, &QSpinBox::setValue);
     blueLayout->addWidget(blueSlider);
     blueLayout->addWidget(blueSpin);
 
     updateGradientDisplay();
 
-    connect(redSlider, SIGNAL(valueChanged(int)), this, SLOT(resetColors()));
-    connect(greenSlider, SIGNAL(valueChanged(int)), this, SLOT(resetColors()));
-    connect(blueSlider, SIGNAL(valueChanged(int)), this, SLOT(resetColors()));
+    connect(redSlider, &ColorSlider::valueChanged, this, &Private::resetColors);
+    connect(greenSlider, &ColorSlider::valueChanged, this, &Private::resetColors);
+    connect(blueSlider, &ColorSlider::valueChanged, this, &Private::resetColors);
 
-    connect(ui->newStop, SIGNAL(clicked()), this, SLOT(insertItem()));
-    connect(ui->deleteStop, SIGNAL(clicked()), this, SLOT(deleteItem()));
-    connect(ui->stopSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(changedIndex(int)));
+    connect(ui->newStop, &QPushButton::clicked, this, &Private::insertItem);
+    connect(ui->deleteStop, &QPushButton::clicked, this, &Private::deleteItem);
+    connect(ui->stopSelector, &QComboBox::currentIndexChanged, this, &Private::changedIndex);
 
-    connect(ui->stopPosition, SIGNAL(valueChanged(double)), this, SLOT(changeStopPosition(double)));
+    connect(ui->stopPosition, &QDoubleSpinBox::valueChanged, this, &Private::changeStopPosition);
 }
 
 GradientDialog::GradientDialog(QWidget *parent)

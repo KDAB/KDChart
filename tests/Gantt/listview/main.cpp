@@ -110,8 +110,8 @@ public:
         view.setGrid(&grid);
         view.setModel(&model);
         // view.setConstraintModel( &cmodel );
-        connect(&slider, SIGNAL(valueChanged(int)),
-                this, SLOT(slotZoom(int)));
+        connect(&slider, &QSlider::valueChanged,
+                this, &MyWidget::slotZoom);
     }
 
 public slots:

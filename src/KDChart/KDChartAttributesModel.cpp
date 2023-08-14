@@ -479,56 +479,57 @@ int AttributesModel::columnCount(const QModelIndex &index) const
     }
 }
 
-void AttributesModel::setSourceModel(QAbstractItemModel *sourceModel)
+void AttributesModel::setSourceModel(QAbstractItemModel *newModel)
 {
-    if (this->sourceModel() != nullptr) {
-        disconnect(this->sourceModel(), SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
-                   this, SLOT(slotDataChanged(const QModelIndex &, const QModelIndex &)));
-        disconnect(this->sourceModel(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-                   this, SLOT(slotRowsInserted(const QModelIndex &, int, int)));
-        disconnect(this->sourceModel(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-                   this, SLOT(slotRowsRemoved(const QModelIndex &, int, int)));
-        disconnect(this->sourceModel(), SIGNAL(rowsAboutToBeInserted(const QModelIndex &, int, int)),
-                   this, SLOT(slotRowsAboutToBeInserted(const QModelIndex &, int, int)));
-        disconnect(this->sourceModel(), SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-                   this, SLOT(slotRowsAboutToBeRemoved(const QModelIndex &, int, int)));
-        disconnect(this->sourceModel(), SIGNAL(columnsInserted(const QModelIndex &, int, int)),
-                   this, SLOT(slotColumnsInserted(const QModelIndex &, int, int)));
-        disconnect(this->sourceModel(), SIGNAL(columnsRemoved(const QModelIndex &, int, int)),
-                   this, SLOT(slotColumnsRemoved(const QModelIndex &, int, int)));
-        disconnect(this->sourceModel(), SIGNAL(columnsAboutToBeInserted(const QModelIndex &, int, int)),
-                   this, SLOT(slotColumnsAboutToBeInserted(const QModelIndex &, int, int)));
-        disconnect(this->sourceModel(), SIGNAL(columnsAboutToBeRemoved(const QModelIndex &, int, int)),
-                   this, SLOT(slotColumnsAboutToBeRemoved(const QModelIndex &, int, int)));
-        disconnect(this->sourceModel(), SIGNAL(modelReset()),
-                   this, SIGNAL(modelReset()));
-        disconnect(this->sourceModel(), SIGNAL(layoutChanged()),
-                   this, SIGNAL(layoutChanged()));
+    QAbstractItemModel *oldModel = sourceModel();
+    if (oldModel != nullptr) {
+        disconnect(oldModel, &QAbstractItemModel::dataChanged,
+                   this, &AttributesModel::slotDataChanged);
+        disconnect(oldModel, &QAbstractItemModel::rowsInserted,
+                   this, &AttributesModel::slotRowsInserted);
+        disconnect(oldModel, &QAbstractItemModel::rowsRemoved,
+                   this, &AttributesModel::slotRowsRemoved);
+        disconnect(oldModel, &QAbstractItemModel::rowsAboutToBeInserted,
+                   this, &AttributesModel::slotRowsAboutToBeInserted);
+        disconnect(oldModel, &QAbstractItemModel::rowsAboutToBeRemoved,
+                   this, &AttributesModel::slotRowsAboutToBeRemoved);
+        disconnect(oldModel, &QAbstractItemModel::columnsInserted,
+                   this, &AttributesModel::slotColumnsInserted);
+        disconnect(oldModel, &QAbstractItemModel::columnsRemoved,
+                   this, &AttributesModel::slotColumnsRemoved);
+        disconnect(oldModel, &QAbstractItemModel::columnsAboutToBeInserted,
+                   this, &AttributesModel::slotColumnsAboutToBeInserted);
+        disconnect(oldModel, &QAbstractItemModel::columnsAboutToBeRemoved,
+                   this, &AttributesModel::slotColumnsAboutToBeRemoved);
+        disconnect(oldModel, &QAbstractItemModel::modelReset,
+                   this, &AttributesModel::modelReset);
+        disconnect(oldModel, &QAbstractItemModel::layoutChanged,
+                   this, &AttributesModel::layoutChanged);
     }
-    QAbstractProxyModel::setSourceModel(sourceModel);
-    if (this->sourceModel() != nullptr) {
-        connect(this->sourceModel(), SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
-                this, SLOT(slotDataChanged(const QModelIndex &, const QModelIndex &)));
-        connect(this->sourceModel(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-                this, SLOT(slotRowsInserted(const QModelIndex &, int, int)));
-        connect(this->sourceModel(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-                this, SLOT(slotRowsRemoved(const QModelIndex &, int, int)));
-        connect(this->sourceModel(), SIGNAL(rowsAboutToBeInserted(const QModelIndex &, int, int)),
-                this, SLOT(slotRowsAboutToBeInserted(const QModelIndex &, int, int)));
-        connect(this->sourceModel(), SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-                this, SLOT(slotRowsAboutToBeRemoved(const QModelIndex &, int, int)));
-        connect(this->sourceModel(), SIGNAL(columnsInserted(const QModelIndex &, int, int)),
-                this, SLOT(slotColumnsInserted(const QModelIndex &, int, int)));
-        connect(this->sourceModel(), SIGNAL(columnsRemoved(const QModelIndex &, int, int)),
-                this, SLOT(slotColumnsRemoved(const QModelIndex &, int, int)));
-        connect(this->sourceModel(), SIGNAL(columnsAboutToBeInserted(const QModelIndex &, int, int)),
-                this, SLOT(slotColumnsAboutToBeInserted(const QModelIndex &, int, int)));
-        connect(this->sourceModel(), SIGNAL(columnsAboutToBeRemoved(const QModelIndex &, int, int)),
-                this, SLOT(slotColumnsAboutToBeRemoved(const QModelIndex &, int, int)));
-        connect(this->sourceModel(), SIGNAL(modelReset()),
-                this, SIGNAL(modelReset()));
-        connect(this->sourceModel(), SIGNAL(layoutChanged()),
-                this, SIGNAL(layoutChanged()));
+    QAbstractProxyModel::setSourceModel(newModel);
+    if (newModel != nullptr) {
+        connect(newModel, &QAbstractItemModel::dataChanged,
+                this, &AttributesModel::slotDataChanged);
+        connect(newModel, &QAbstractItemModel::rowsInserted,
+                this, &AttributesModel::slotRowsInserted);
+        connect(newModel, &QAbstractItemModel::rowsRemoved,
+                this, &AttributesModel::slotRowsRemoved);
+        connect(newModel, &QAbstractItemModel::rowsAboutToBeInserted,
+                this, &AttributesModel::slotRowsAboutToBeInserted);
+        connect(newModel, &QAbstractItemModel::rowsAboutToBeRemoved,
+                this, &AttributesModel::slotRowsAboutToBeRemoved);
+        connect(newModel, &QAbstractItemModel::columnsInserted,
+                this, &AttributesModel::slotColumnsInserted);
+        connect(newModel, &QAbstractItemModel::columnsRemoved,
+                this, &AttributesModel::slotColumnsRemoved);
+        connect(newModel, &QAbstractItemModel::columnsAboutToBeInserted,
+                this, &AttributesModel::slotColumnsAboutToBeInserted);
+        connect(newModel, &QAbstractItemModel::columnsAboutToBeRemoved,
+                this, &AttributesModel::slotColumnsAboutToBeRemoved);
+        connect(newModel, &QAbstractItemModel::modelReset,
+                this, &AttributesModel::modelReset);
+        connect(newModel, &QAbstractItemModel::layoutChanged,
+                this, &AttributesModel::layoutChanged);
     }
 }
 

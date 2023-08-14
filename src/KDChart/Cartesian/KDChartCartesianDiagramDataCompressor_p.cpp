@@ -283,30 +283,30 @@ void CartesianDiagramDataCompressor::setModel(QAbstractItemModel *model)
     }
 
     if (m_model != nullptr) {
-        disconnect(m_model, SIGNAL(headerDataChanged(Qt::Orientation, int, int)),
-                   this, SLOT(slotModelHeaderDataChanged(Qt::Orientation, int, int)));
-        disconnect(m_model, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
-                   this, SLOT(slotModelDataChanged(QModelIndex, QModelIndex)));
-        disconnect(m_model, SIGNAL(layoutChanged()),
-                   this, SLOT(slotModelLayoutChanged()));
-        disconnect(m_model, SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)),
-                   this, SLOT(slotRowsAboutToBeInserted(QModelIndex, int, int)));
-        disconnect(m_model, SIGNAL(rowsInserted(QModelIndex, int, int)),
-                   this, SLOT(slotRowsInserted(QModelIndex, int, int)));
-        disconnect(m_model, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)),
-                   this, SLOT(slotRowsAboutToBeRemoved(QModelIndex, int, int)));
-        disconnect(m_model, SIGNAL(rowsRemoved(QModelIndex, int, int)),
-                   this, SLOT(slotRowsRemoved(QModelIndex, int, int)));
-        disconnect(m_model, SIGNAL(columnsAboutToBeInserted(QModelIndex, int, int)),
-                   this, SLOT(slotColumnsAboutToBeInserted(QModelIndex, int, int)));
-        disconnect(m_model, SIGNAL(columnsInserted(QModelIndex, int, int)),
-                   this, SLOT(slotColumnsInserted(QModelIndex, int, int)));
-        disconnect(m_model, SIGNAL(columnsRemoved(QModelIndex, int, int)),
-                   this, SLOT(slotColumnsRemoved(QModelIndex, int, int)));
-        disconnect(m_model, SIGNAL(columnsAboutToBeRemoved(QModelIndex, int, int)),
-                   this, SLOT(slotColumnsAboutToBeRemoved(QModelIndex, int, int)));
-        disconnect(m_model, SIGNAL(modelReset()),
-                   this, SLOT(rebuildCache()));
+        disconnect(m_model, &QAbstractItemModel::headerDataChanged,
+                   this, &CartesianDiagramDataCompressor::slotModelHeaderDataChanged);
+        disconnect(m_model, &QAbstractItemModel::dataChanged,
+                   this, &CartesianDiagramDataCompressor::slotModelDataChanged);
+        disconnect(m_model, &QAbstractItemModel::layoutChanged,
+                   this, &CartesianDiagramDataCompressor::slotModelLayoutChanged);
+        disconnect(m_model, &QAbstractItemModel::rowsAboutToBeInserted,
+                   this, &CartesianDiagramDataCompressor::slotRowsAboutToBeInserted);
+        disconnect(m_model, &QAbstractItemModel::rowsInserted,
+                   this, &CartesianDiagramDataCompressor::slotRowsInserted);
+        disconnect(m_model, &QAbstractItemModel::rowsAboutToBeRemoved,
+                   this, &CartesianDiagramDataCompressor::slotRowsAboutToBeRemoved);
+        disconnect(m_model, &QAbstractItemModel::rowsRemoved,
+                   this, &CartesianDiagramDataCompressor::slotRowsRemoved);
+        disconnect(m_model, &QAbstractItemModel::columnsAboutToBeInserted,
+                   this, &CartesianDiagramDataCompressor::slotColumnsAboutToBeInserted);
+        disconnect(m_model, &QAbstractItemModel::columnsInserted,
+                   this, &CartesianDiagramDataCompressor::slotColumnsInserted);
+        disconnect(m_model, &QAbstractItemModel::columnsRemoved,
+                   this, &CartesianDiagramDataCompressor::slotColumnsRemoved);
+        disconnect(m_model, &QAbstractItemModel::columnsAboutToBeRemoved,
+                   this, &CartesianDiagramDataCompressor::slotColumnsAboutToBeRemoved);
+        disconnect(m_model, &QAbstractItemModel::modelReset,
+                   this, &CartesianDiagramDataCompressor::rebuildCache);
         m_model = nullptr;
     }
 
@@ -314,29 +314,30 @@ void CartesianDiagramDataCompressor::setModel(QAbstractItemModel *model)
 
     if (model != nullptr) {
         m_model = model;
-        connect(m_model, SIGNAL(headerDataChanged(Qt::Orientation, int, int)),
-                SLOT(slotModelHeaderDataChanged(Qt::Orientation, int, int)));
-        connect(m_model, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
-                SLOT(slotModelDataChanged(QModelIndex, QModelIndex)));
-        connect(m_model, SIGNAL(layoutChanged()),
-                SLOT(slotModelLayoutChanged()));
-        connect(m_model, SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)),
-                SLOT(slotRowsAboutToBeInserted(QModelIndex, int, int)));
-        connect(m_model, SIGNAL(rowsInserted(QModelIndex, int, int)),
-                SLOT(slotRowsInserted(QModelIndex, int, int)));
-        connect(m_model, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)),
-                SLOT(slotRowsAboutToBeRemoved(QModelIndex, int, int)));
-        connect(m_model, SIGNAL(rowsRemoved(QModelIndex, int, int)),
-                SLOT(slotRowsRemoved(QModelIndex, int, int)));
-        connect(m_model, SIGNAL(columnsAboutToBeInserted(QModelIndex, int, int)),
-                SLOT(slotColumnsAboutToBeInserted(QModelIndex, int, int)));
-        connect(m_model, SIGNAL(columnsInserted(QModelIndex, int, int)),
-                SLOT(slotColumnsInserted(QModelIndex, int, int)));
-        connect(m_model, SIGNAL(columnsRemoved(QModelIndex, int, int)),
-                SLOT(slotColumnsRemoved(QModelIndex, int, int)));
-        connect(m_model, SIGNAL(columnsAboutToBeRemoved(QModelIndex, int, int)),
-                SLOT(slotColumnsAboutToBeRemoved(QModelIndex, int, int)));
-        connect(m_model, SIGNAL(modelReset()), SLOT(rebuildCache()));
+        connect(m_model, &QAbstractItemModel::headerDataChanged,
+                this, &CartesianDiagramDataCompressor::slotModelHeaderDataChanged);
+        connect(m_model, &QAbstractItemModel::dataChanged,
+                this, &CartesianDiagramDataCompressor::slotModelDataChanged);
+        connect(m_model, &QAbstractItemModel::layoutChanged,
+                this, &CartesianDiagramDataCompressor::slotModelLayoutChanged);
+        connect(m_model, &QAbstractItemModel::rowsAboutToBeInserted,
+                this, &CartesianDiagramDataCompressor::slotRowsAboutToBeInserted);
+        connect(m_model, &QAbstractItemModel::rowsInserted,
+                this, &CartesianDiagramDataCompressor::slotRowsInserted);
+        connect(m_model, &QAbstractItemModel::rowsAboutToBeRemoved,
+                this, &CartesianDiagramDataCompressor::slotRowsAboutToBeRemoved);
+        connect(m_model, &QAbstractItemModel::rowsRemoved,
+                this, &CartesianDiagramDataCompressor::slotRowsRemoved);
+        connect(m_model, &QAbstractItemModel::columnsAboutToBeInserted,
+                this, &CartesianDiagramDataCompressor::slotColumnsAboutToBeInserted);
+        connect(m_model, &QAbstractItemModel::columnsInserted,
+                this, &CartesianDiagramDataCompressor::slotColumnsInserted);
+        connect(m_model, &QAbstractItemModel::columnsRemoved,
+                this, &CartesianDiagramDataCompressor::slotColumnsRemoved);
+        connect(m_model, &QAbstractItemModel::columnsAboutToBeRemoved,
+                this, &CartesianDiagramDataCompressor::slotColumnsAboutToBeRemoved);
+        connect(m_model, &QAbstractItemModel::modelReset,
+                this, &CartesianDiagramDataCompressor::rebuildCache);
     }
     rebuildCache();
     calculateSampleStepWidth();

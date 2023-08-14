@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_lines->addAxis(yAxis);
     m_chart->coordinatePlane()->replaceDiagram(m_lines);
 
-    connect(m_chart, SIGNAL(propertiesChanged()), SLOT(applyNewZoomParameters()));
+    connect(m_chart, &Chart::propertiesChanged, this, &MainWindow::applyNewZoomParameters);
 
     // Set up the legend
     m_legend = new Legend(m_lines, m_chart);

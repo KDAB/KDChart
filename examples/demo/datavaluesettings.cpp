@@ -93,28 +93,28 @@ void DataValueSettings::Private::init()
 
 void DataValueSettings::Private::connectWidgets()
 {
-    connect(ui->scopeBarDatasetSB, SIGNAL(valueChanged(int)), this, SLOT(on_scopeBarDatasetSB_valueChanged(int)));
-    connect(ui->scopeBarItemSB, SIGNAL(valueChanged(int)), this, SLOT(on_scopeBarItemSB_valueChanged(int)));
-    connect(ui->scopeDatasetSB, SIGNAL(valueChanged(int)), this, SLOT(on_scopeDatasetSB_valueChanged(int)));
-    connect(ui->scopeOneBarRB, SIGNAL(toggled(bool)), this, SLOT(on_scopeOneBarRB_toggled(bool)));
-    connect(ui->scopeDatasetRB, SIGNAL(toggled(bool)), this, SLOT(on_scopeDatasetRB_toggled(bool)));
-    connect(ui->scopeCommonRB, SIGNAL(toggled(bool)), this, SLOT(on_scopeCommonRB_toggled(bool)));
-    connect(ui->paintValuesCB, SIGNAL(toggled(bool)), this, SLOT(on_paintValuesCB_toggled(bool)));
-    connect(ui->fontCombo, SIGNAL(currentIndexChanged(QString)), this, SLOT(on_fontCombo_currentIndexChanged(QString)));
-    connect(ui->relativeSizeSB, SIGNAL(valueChanged(int)), this, SLOT(on_relativeSizeSB_valueChanged(int)));
-    connect(ui->minimumSizeSB, SIGNAL(valueChanged(int)), this, SLOT(on_minimumSizeSB_valueChanged(int)));
-    connect(ui->rotationSB, SIGNAL(valueChanged(int)), this, SLOT(on_rotationSB_valueChanged(int)));
-    connect(ui->posPosCombo, SIGNAL(currentIndexChanged(QString)), this, SLOT(on_posPosCombo_currentIndexChanged(QString)));
-    connect(ui->posAlignCombo, SIGNAL(currentIndexChanged(QString)), this, SLOT(on_posAlignCombo_currentIndexChanged(QString)));
-    connect(ui->posPadHoriSB, SIGNAL(valueChanged(int)), this, SLOT(on_posPadHoriSB_valueChanged(int)));
-    connect(ui->posPadVertSB, SIGNAL(valueChanged(int)), this, SLOT(on_posPadVertSB_valueChanged(int)));
-    connect(ui->negPosCombo, SIGNAL(currentIndexChanged(QString)), this, SLOT(on_negPosCombo_currentIndexChanged(QString)));
-    connect(ui->negAlignCombo, SIGNAL(currentIndexChanged(QString)), this, SLOT(on_negAlignCombo_currentIndexChanged(QString)));
-    connect(ui->negPadHoriSB, SIGNAL(valueChanged(int)), this, SLOT(on_negPadHoriSB_valueChanged(int)));
-    connect(ui->negPadVertSB, SIGNAL(valueChanged(int)), this, SLOT(on_negPadVertSB_valueChanged(int)));
-    connect(ui->labelLE, SIGNAL(textEdited(QString)), this, SLOT(on_labelLE_textEdited(QString)));
-    connect(ui->prefixLE, SIGNAL(textEdited(QString)), this, SLOT(on_prefixLE_textEdited(QString)));
-    connect(ui->suffixLE, SIGNAL(textEdited(QString)), this, SLOT(on_suffixLE_textEdited(QString)));
+    connect(ui->scopeBarDatasetSB, &QSpinBox::valueChanged, this, &Private::on_scopeBarDatasetSB_valueChanged);
+    connect(ui->scopeBarItemSB, &QSpinBox::valueChanged, this,  &Private::on_scopeBarItemSB_valueChanged);
+    connect(ui->scopeDatasetSB, &QSpinBox::valueChanged, this,  &Private::on_scopeDatasetSB_valueChanged);
+    connect(ui->scopeOneBarRB, &QRadioButton::toggled, this,  &Private::on_scopeOneBarRB_toggled);
+    connect(ui->scopeDatasetRB, &QRadioButton::toggled, this,  &Private::on_scopeDatasetRB_toggled);
+    connect(ui->scopeCommonRB, &QRadioButton::toggled, this,  &Private::on_scopeCommonRB_toggled);
+    connect(ui->paintValuesCB, &QCheckBox::toggled, this,  &Private::on_paintValuesCB_toggled);
+    connect(ui->fontCombo, &QFontComboBox::currentIndexChanged, this,  &Private::on_fontCombo_currentIndexChanged);
+    connect(ui->relativeSizeSB, &QSpinBox::valueChanged, this,  &Private::on_relativeSizeSB_valueChanged);
+    connect(ui->minimumSizeSB, &QSpinBox::valueChanged, this,  &Private::on_minimumSizeSB_valueChanged);
+    connect(ui->rotationSB, &QSpinBox::valueChanged, this,  &Private::on_rotationSB_valueChanged);
+    connect(ui->posPosCombo, &QComboBox::currentIndexChanged, this,  &Private::on_posPosCombo_currentIndexChanged);
+    connect(ui->posAlignCombo, &QComboBox::currentIndexChanged, this,  &Private::on_posAlignCombo_currentIndexChanged);
+    connect(ui->posPadHoriSB, &QSpinBox::valueChanged, this,  &Private::on_posPadHoriSB_valueChanged);
+    connect(ui->posPadVertSB, &QSpinBox::valueChanged, this,  &Private::on_posPadVertSB_valueChanged);
+    connect(ui->negPosCombo, &QComboBox::currentIndexChanged, this,  &Private::on_negPosCombo_currentIndexChanged);
+    connect(ui->negAlignCombo, &QComboBox::currentIndexChanged, this,  &Private::on_negAlignCombo_currentIndexChanged);
+    connect(ui->negPadHoriSB, &QSpinBox::valueChanged, this,  &Private::on_negPadHoriSB_valueChanged);
+    connect(ui->negPadVertSB, &QSpinBox::valueChanged, this,  &Private::on_negPadVertSB_valueChanged);
+    connect(ui->labelLE, &QLineEdit::textEdited, this,  &Private::on_labelLE_textEdited);
+    connect(ui->prefixLE, &QLineEdit::textEdited, this,  &Private::on_prefixLE_textEdited);
+    connect(ui->suffixLE, &QLineEdit::textEdited, this,  &Private::on_suffixLE_textEdited);
 }
 
 DataValueSettings::DataValueSettings(KDChart::Chart *chart, QWidget *parent)

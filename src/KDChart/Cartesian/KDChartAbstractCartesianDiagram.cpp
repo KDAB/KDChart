@@ -55,14 +55,14 @@ KDChart::AbstractCartesianDiagram::~AbstractCartesianDiagram()
 void AbstractCartesianDiagram::init()
 {
     d->compressor.setModel(attributesModel());
-    connect(this, SIGNAL(layoutChanged(AbstractDiagram *)),
-            &d->compressor, SLOT(slotDiagramLayoutChanged(AbstractDiagram *)));
-    connect(this, SIGNAL(attributesModelAboutToChange(AttributesModel *, AttributesModel *)),
-            this, SLOT(connectAttributesModel(AttributesModel *)));
+    connect(this, &AbstractCartesianDiagram::layoutChanged,
+            &d->compressor, &CartesianDiagramDataCompressor::slotDiagramLayoutChanged);
+    connect(this, &AbstractCartesianDiagram::attributesModelAboutToChange,
+            this, &AbstractCartesianDiagram::connectAttributesModel);
 
     if (d->plane) {
-        connect(d->plane, SIGNAL(viewportCoordinateSystemChanged()),
-                this, SIGNAL(viewportCoordinateSystemChanged()));
+        connect(d->plane, &AbstractCoordinatePlane::viewportCoordinateSystemChanged,
+                this, &AbstractCartesianDiagram::viewportCoordinateSystemChanged);
     }
 }
 
@@ -101,31 +101,32 @@ void KDChart::AbstractCartesianDiagram::layoutPlanes()
 void KDChart::AbstractCartesianDiagram::setCoordinatePlane(AbstractCoordinatePlane *plane)
 {
     if (coordinatePlane()) {
-        disconnect(attributesModel(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-                   coordinatePlane(), SLOT(relayout()));
-        disconnect(attributesModel(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-                   coordinatePlane(), SLOT(relayout()));
-        disconnect(attributesModel(), SIGNAL(columnsRemoved(const QModelIndex &, int, int)),
-                   coordinatePlane(), SLOT(relayout()));
-        disconnect(attributesModel(), SIGNAL(columnsInserted(const QModelIndex &, int, int)),
-                   coordinatePlane(), SLOT(relayout()));
+        disconnect(attributesModel(), &AttributesModel::rowsRemoved,
+                   coordinatePlane(), &AbstractCoordinatePlane::relayout);
+        disconnect(attributesModel(), &AttributesModel::rowsInserted,
+                   coordinatePlane(), &AbstractCoordinatePlane::relayout);
+        disconnect(attributesModel(), &AttributesModel::columnsRemoved,
+                   coordinatePlane(), &AbstractCoordinatePlane::relayout);
+        disconnect(attributesModel(), &AttributesModel::columnsInserted,
+                   coordinatePlane(), &AbstractCoordinatePlane::relayout);
         disconnect(coordinatePlane());
     }
 
     AbstractDiagram::setCoordinatePlane(plane);
     if (plane) {
         // Readjust the layout when the dataset count changes
-        connect(attributesModel(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-                plane, SLOT(relayout()));
-        connect(attributesModel(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-                plane, SLOT(relayout()));
-        connect(attributesModel(), SIGNAL(columnsRemoved(const QModelIndex &, int, int)),
-                plane, SLOT(relayout()));
-        connect(attributesModel(), SIGNAL(columnsInserted(const QModelIndex &, int, int)),
-                plane, SLOT(relayout()));
-        connect(plane, SIGNAL(viewportCoordinateSystemChanged()),
-                this, SIGNAL(viewportCoordinateSystemChanged()));
-        connect(plane, SIGNAL(viewportCoordinateSystemChanged()), this, SLOT(update()));
+        connect(attributesModel(), &AttributesModel::rowsRemoved,
+                plane, &AbstractCoordinatePlane::relayout);
+        connect(attributesModel(), &AttributesModel::rowsInserted,
+                plane, &AbstractCoordinatePlane::relayout);
+        connect(attributesModel(), &AttributesModel::columnsRemoved,
+                plane, &AbstractCoordinatePlane::relayout);
+        connect(attributesModel(), &AttributesModel::columnsInserted,
+                plane, &AbstractCoordinatePlane::relayout);
+        connect(plane, &AbstractCoordinatePlane::viewportCoordinateSystemChanged,
+                this, &AbstractCartesianDiagram::viewportCoordinateSystemChanged);
+        connect(plane, &AbstractCoordinatePlane::viewportCoordinateSystemChanged,
+                this, &AbstractCartesianDiagram::update);
     }
 }
 

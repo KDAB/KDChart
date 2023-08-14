@@ -36,22 +36,6 @@ class KDGANTT_EXPORT GraphicsView : public QGraphicsView
     KDGANTT_DECLARE_PRIVATE_BASE_POLYMORPHIC(GraphicsView)
 
     Q_PROPERTY(bool readOnly READ isReadOnly WRITE setReadOnly)
-
-    Q_PRIVATE_SLOT(d, void slotGridChanged())
-    Q_PRIVATE_SLOT(d, void slotHorizontalScrollValueChanged(int))
-    Q_PRIVATE_SLOT(d, void slotHeaderContextMenuRequested(const QPoint &))
-    /* slots for QAbstractItemModel signals */
-    Q_PRIVATE_SLOT(d, void slotColumnsInserted(const QModelIndex &parent, int start, int end))
-    Q_PRIVATE_SLOT(d, void slotColumnsRemoved(const QModelIndex &parent, int start, int end))
-    Q_PRIVATE_SLOT(d, void slotDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight))
-    Q_PRIVATE_SLOT(d, void slotLayoutChanged())
-    Q_PRIVATE_SLOT(d, void slotModelReset())
-    Q_PRIVATE_SLOT(d, void slotRowsInserted(const QModelIndex &parent, int start, int end))
-    Q_PRIVATE_SLOT(d, void slotRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end))
-    Q_PRIVATE_SLOT(d, void slotRowsRemoved(const QModelIndex &parent, int start, int end))
-
-    Q_PRIVATE_SLOT(d, void slotItemClicked(const QModelIndex &idx))
-    Q_PRIVATE_SLOT(d, void slotItemDoubleClicked(const QModelIndex &idx))
 public:
     explicit GraphicsView(QWidget *parent = nullptr);
     ~GraphicsView() override;

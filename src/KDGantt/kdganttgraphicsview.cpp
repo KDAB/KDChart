@@ -315,22 +315,32 @@ GraphicsView::GraphicsView(QWidget *parent)
 #if defined KDAB_EVAL
     EvalDialog::checkEvalLicense("KD Gantt");
 #endif
-    connect(horizontalScrollBar(), SIGNAL(valueChanged(int)),
-            this, SLOT(slotHorizontalScrollValueChanged(int)));
-    connect(&_d->scene, SIGNAL(gridChanged()),
-            this, SLOT(slotGridChanged()));
-    connect(&_d->scene, SIGNAL(entered(const QModelIndex &)),
-            this, SIGNAL(entered(const QModelIndex &)));
-    connect(&_d->scene, SIGNAL(pressed(const QModelIndex &)),
-            this, SIGNAL(pressed(const QModelIndex &)));
-    connect(&_d->scene, SIGNAL(clicked(const QModelIndex &)),
-            this, SLOT(slotItemClicked(const QModelIndex &)));
-    connect(&_d->scene, SIGNAL(qrealClicked(const QModelIndex &)),
-            this, SLOT(slotItemDoubleClicked(const QModelIndex &)));
-    connect(&_d->scene, SIGNAL(sceneRectChanged(const QRectF &)),
-            this, SLOT(updateSceneRect()));
-    connect(&_d->headerwidget, SIGNAL(customContextMenuRequested(const QPoint &)),
-            this, SLOT(slotHeaderContextMenuRequested(const QPoint &)));
+    connect(horizontalScrollBar(), &QScrollBar::valueChanged,
+            this, [this](int value) {
+                _d->slotHorizontalScrollValueChanged(value);
+            });
+    connect(&_d->scene, &GraphicsScene::gridChanged,
+            this, [this] {
+                _d->slotGridChanged();
+            });
+    connect(&_d->scene, &GraphicsScene::entered,
+            this, &GraphicsView::entered);
+    connect(&_d->scene, &GraphicsScene::pressed,
+            this, &GraphicsView::pressed);
+    connect(&_d->scene, &GraphicsScene::clicked,
+            this, [this](const QModelIndex &index) {
+                _d->slotItemClicked(index);
+            });
+    connect(&_d->scene, &GraphicsScene::qrealClicked,
+            this, [this](const QModelIndex &index) {
+                _d->slotItemDoubleClicked(index);
+            });
+    connect(&_d->scene, &GraphicsScene::sceneRectChanged,
+            this, &GraphicsView::updateSceneRect);
+    connect(&_d->headerwidget, &HeaderWidget::customContextMenuRequested,
+            this, [this](const QPoint &point) {
+                _d->slotHeaderContextMenuRequested(point);
+            });
     setScene(&_d->scene);
 
     // HACK!
@@ -371,8 +381,7 @@ void GraphicsView::setModel(QAbstractItemModel *model)
     }
 
     d->scene.setModel(model);
-    connect(model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
-            this, SLOT(updateSceneRect()));
+    connect(model, &QAbstractItemModel::dataChanged, this, &GraphicsView::updateSceneRect);
     updateScene();
 }
 
@@ -391,22 +400,38 @@ void GraphicsView::setSummaryHandlingModel(QAbstractProxyModel *proxyModel)
     /* Connections. We have to rely on the treeview
      * to receive the signals before we do(!)
      */
-    connect(proxyModel, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
-            this, SLOT(slotColumnsInserted(const QModelIndex &, int, int)));
-    connect(proxyModel, SIGNAL(columnsRemoved(const QModelIndex &, int, int)),
-            this, SLOT(slotColumnsRemoved(const QModelIndex &, int, int)));
-    connect(proxyModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
-            this, SLOT(slotDataChanged(const QModelIndex &, const QModelIndex &)));
-    connect(proxyModel, SIGNAL(layoutChanged()),
-            this, SLOT(slotLayoutChanged()));
-    connect(proxyModel, SIGNAL(modelReset()),
-            this, SLOT(slotModelReset()));
-    connect(proxyModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-            this, SLOT(slotRowsInserted(const QModelIndex &, int, int)));
-    connect(proxyModel, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-            this, SLOT(slotRowsAboutToBeRemoved(const QModelIndex &, int, int)));
-    connect(proxyModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-            this, SLOT(slotRowsRemoved(const QModelIndex &, int, int)));
+    connect(proxyModel, &QAbstractProxyModel::columnsInserted,
+            this, [this](const QModelIndex &parent, int first, int last) {
+                d->slotColumnsInserted(parent, first, last);
+            });
+    connect(proxyModel, &QAbstractProxyModel::columnsRemoved,
+            this, [this](const QModelIndex &parent, int first, int last) {
+                d->slotColumnsRemoved(parent, first, last);
+            });
+    connect(proxyModel, &QAbstractProxyModel::dataChanged,
+            this, [this](const QModelIndex &topLeft, const QModelIndex &bottomRight) {
+                d->slotDataChanged(topLeft, bottomRight);
+            });
+    connect(proxyModel, &QAbstractProxyModel::layoutChanged,
+            this, [this]{
+                d->slotLayoutChanged();
+            });
+    connect(proxyModel, &QAbstractProxyModel::modelReset,
+            this, [this]{
+                d->slotModelReset();
+            });
+    connect(proxyModel, &QAbstractProxyModel::rowsInserted,
+            this, [this](const QModelIndex &parent, int first, int last) {
+                d->slotRowsInserted(parent, first, last);
+            });
+    connect(proxyModel, &QAbstractProxyModel::rowsAboutToBeRemoved,
+            this, [this](const QModelIndex &parent, int first, int last) {
+                d->slotRowsAboutToBeRemoved(parent, first, last);
+            });
+    connect(proxyModel, &QAbstractProxyModel::rowsRemoved,
+            this, [this](const QModelIndex &parent, int first, int last) {
+                d->slotRowsRemoved(parent, first, last);
+            });
 
     updateScene();
 }

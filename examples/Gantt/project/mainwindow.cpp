@@ -275,28 +275,28 @@ MainWindow::MainWindow(QWidget *parent)
     auto *fileMenu = new QMenu(tr("&File"));
 
 #ifndef QT_NO_PRINTER
-    fileMenu->addAction(tr("&Save as PDF..."), this, SLOT(slotFileSavePdf()));
-    fileMenu->addAction(tr("&Print..."), this, SLOT(slotFilePrint()));
+    fileMenu->addAction(tr("&Save as PDF..."), this, &MainWindow::slotFileSavePdf);
+    fileMenu->addAction(tr("&Print..."), this, &MainWindow::slotFilePrint);
 #endif
 
     fileMenu->addSeparator();
-    fileMenu->addAction(tr("&Quit"), this, SLOT(slotFileQuit()));
+    fileMenu->addAction(tr("&Quit"), this, &MainWindow::slotFileQuit);
 
     mb->addMenu(fileMenu);
 
     auto *toolsMenu = new QMenu(tr("&Tools"));
 
-    toolsMenu->addAction(tr("&New Item"), this, SLOT(slotToolsNewItem()));
-    toolsMenu->addAction(tr("&Add Item"), this, SLOT(slotToolsAppendItem()));
+    toolsMenu->addAction(tr("&New Item"), this, &MainWindow::slotToolsNewItem);
+    toolsMenu->addAction(tr("&Add Item"), this, &MainWindow::slotToolsAppendItem);
     toolsMenu->addSeparator();
     QMenu *alignMenu = toolsMenu->addMenu(tr("Ali&gn"));
-    alignMenu->addAction(tr("&Left"), this, SLOT(slotAlignLeft()));
-    alignMenu->addAction(tr("&Center"), this, SLOT(slotAlignCenter()));
-    alignMenu->addAction(tr("&Right"), this, SLOT(slotAlignRight()));
-    alignMenu->addAction(tr("&Hidden"), this, SLOT(slotAlignHidden()));
+    alignMenu->addAction(tr("&Left"), this, &MainWindow::slotAlignLeft);
+    alignMenu->addAction(tr("&Center"), this, &MainWindow::slotAlignCenter);
+    alignMenu->addAction(tr("&Right"), this, &MainWindow::slotAlignRight);
+    alignMenu->addAction(tr("&Hidden"), this, &MainWindow::slotAlignHidden);
     toolsMenu->addSeparator();
-    toolsMenu->addAction(tr("&Collapse All"), this, SLOT(slotCollapseAll()));
-    toolsMenu->addAction(tr("&Expand All"), this, SLOT(slotExpandAll()));
+    toolsMenu->addAction(tr("&Collapse All"), this, &MainWindow::slotCollapseAll);
+    toolsMenu->addAction(tr("&Expand All"), this, &MainWindow::slotExpandAll);
 
     mb->addMenu(toolsMenu);
 
@@ -331,7 +331,7 @@ SavePdfDialog::SavePdfDialog(QWidget *parent)
     m_fileEdit->setText(QFileInfo(QDir::homePath(), "gantt.pdf").absoluteFilePath());
     fileLayout->addWidget(m_fileEdit);
     auto *m_fileButton = new QPushButton("...", this);
-    connect(m_fileButton, SIGNAL(clicked()), this, SLOT(fileButtonClicked()));
+    connect(m_fileButton, &QPushButton::clicked, this, &SavePdfDialog::fileButtonClicked);
     fileLayout->addWidget(m_fileButton);
 
     m_rowLabels = new QCheckBox(tr("Row Header"), this);
@@ -344,8 +344,8 @@ SavePdfDialog::SavePdfDialog(QWidget *parent)
 
     auto *btnBox = new QDialogButtonBox(this);
     btnBox->setStandardButtons(QDialogButtonBox::Save | QDialogButtonBox::Cancel);
-    connect(btnBox, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(btnBox, SIGNAL(rejected()), this, SLOT(reject()));
+    connect(btnBox, &QDialogButtonBox::accepted, this, &SavePdfDialog::accept);
+    connect(btnBox, &QDialogButtonBox::rejected, this, &SavePdfDialog::reject);
     l->addWidget(btnBox);
 
     resize(QSize(400, 100).expandedTo(minimumSizeHint()));
