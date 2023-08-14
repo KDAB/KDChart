@@ -1237,9 +1237,9 @@ void Chart::takeCoordinatePlane(AbstractCoordinatePlane *plane)
         d->mouseClickedPlanes.removeAll(plane);
     }
     d->slotLayoutPlanes();
-    // Need to emit the signal: In case somebody has connected the signal
+    // Need to Q_EMIT the signal: In case somebody has connected the signal
     // to her own slot for e.g. calling update() on a widget containing the chart.
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 void Chart::setGlobalLeading(int left, int top, int right, int bottom)
@@ -1402,7 +1402,7 @@ void Chart::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     d->paintAll(&painter);
-    emit finishedDrawing();
+    Q_EMIT finishedDrawing();
 }
 
 void Chart::addHeaderFooter(HeaderFooter *hf)
@@ -1511,7 +1511,7 @@ void Chart::addLegend(Legend *legend)
 {
     legend->show();
     addLegendInternal(legend, true);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 void Chart::addLegendInternal(Legend *legend, bool setMeasures)
@@ -1640,7 +1640,7 @@ void Chart::takeLegend(Legend *legend)
     legend->setParent(nullptr);
 
     d->slotResizePlanes();
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 Legend *Chart::legend()

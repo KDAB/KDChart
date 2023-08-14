@@ -169,5 +169,5 @@ QRect AbstractAreaWidget::areaGeometry() const
 
 void AbstractAreaWidget::positionHasChanged()
 {
-    emit positionChanged(this);
+    Q_EMIT positionChanged(this);
 }

@@ -88,16 +88,16 @@ void DiagramObserver::init()
 void DiagramObserver::slotDestroyed(QObject *)
 {
     // qDebug() << this << "emits signal\n"
-    //         "    emit diagramDestroyed(" <<  m_diagram << ")";
+    //         "    Q_EMIT diagramDestroyed(" <<  m_diagram << ")";
     AbstractDiagram *diag = m_diagram;
     disconnect(m_diagram, nullptr, this, nullptr);
     m_diagram = nullptr;
-    emit diagramDestroyed(diag);
+    Q_EMIT diagramDestroyed(diag);
 }
 
 void DiagramObserver::slotAboutToBeDestroyed()
 {
-    emit diagramAboutToBeDestroyed(m_diagram);
+    Q_EMIT diagramAboutToBeDestroyed(m_diagram);
 }
 
 void DiagramObserver::slotModelsChanged()
@@ -110,7 +110,7 @@ void DiagramObserver::slotModelsChanged()
 void DiagramObserver::slotHeaderDataChanged(Qt::Orientation, int, int)
 {
     // qDebug() << "DiagramObserver::slotHeaderDataChanged()";
-    emit diagramDataChanged(m_diagram);
+    Q_EMIT diagramDataChanged(m_diagram);
 }
 
 void DiagramObserver::slotDataChanged(QModelIndex, QModelIndex)
@@ -121,13 +121,13 @@ void DiagramObserver::slotDataChanged(QModelIndex, QModelIndex)
 void DiagramObserver::slotDataChanged()
 {
     // qDebug() << "DiagramObserver::slotDataChanged()";
-    emit diagramDataChanged(m_diagram);
+    Q_EMIT diagramDataChanged(m_diagram);
 }
 
 void DiagramObserver::slotDataHidden()
 {
     // qDebug() << "DiagramObserver::slotDataHidden()";
-    emit diagramDataHidden(m_diagram);
+    Q_EMIT diagramDataHidden(m_diagram);
 }
 
 void DiagramObserver::slotAttributesChanged(QModelIndex, QModelIndex)
@@ -138,5 +138,5 @@ void DiagramObserver::slotAttributesChanged(QModelIndex, QModelIndex)
 void DiagramObserver::slotAttributesChanged()
 {
     // qDebug() << "DiagramObserver::slotAttributesChanged()";
-    emit diagramAttributesChanged(m_diagram);
+    Q_EMIT diagramAttributesChanged(m_diagram);
 }

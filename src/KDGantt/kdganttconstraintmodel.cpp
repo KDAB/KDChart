@@ -116,14 +116,14 @@ void ConstraintModel::addConstraint(const Constraint &c)
         d->constraints.push_back(c);
         d->addConstraintToIndex(c.startIndex(), c);
         d->addConstraintToIndex(c.endIndex(), c);
-        emit constraintAdded(c);
+        Q_EMIT constraintAdded(c);
     } else if ((*it).dataMap() != c.dataMap()) {
         Constraint tmp(*it); // save to avoid re-entrancy issues
         removeConstraint(tmp);
         d->constraints.push_back(c);
         d->addConstraintToIndex(c.startIndex(), c);
         d->addConstraintToIndex(c.endIndex(), c);
-        emit constraintAdded(c);
+        Q_EMIT constraintAdded(c);
     }
 }
 
@@ -148,7 +148,7 @@ bool ConstraintModel::removeConstraint(const Constraint &c)
     if (rc) {
         d->removeConstraintFromIndex(c.startIndex(), c);
         d->removeConstraintFromIndex(c.endIndex(), c);
-        emit constraintRemoved(c);
+        Q_EMIT constraintRemoved(c);
     }
 
     return rc;

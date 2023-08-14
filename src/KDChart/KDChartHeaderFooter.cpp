@@ -46,7 +46,7 @@ HeaderFooter::HeaderFooter(Chart *parent)
 
 HeaderFooter::~HeaderFooter()
 {
-    emit destroyedHeaderFooter(this);
+    Q_EMIT destroyedHeaderFooter(this);
 }
 
 void HeaderFooter::setParent(QObject *parent)
@@ -98,7 +98,7 @@ void HeaderFooter::setType(HeaderFooterType type)
 {
     if (d->type != type) {
         d->type = type;
-        emit positionChanged(this);
+        Q_EMIT positionChanged(this);
     }
 }
 
@@ -111,7 +111,7 @@ void HeaderFooter::setPosition(Position position)
 {
     if (d->position != position) {
         d->position = position;
-        emit positionChanged(this);
+        Q_EMIT positionChanged(this);
     }
 }
 
