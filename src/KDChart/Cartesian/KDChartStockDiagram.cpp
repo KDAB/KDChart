@@ -57,7 +57,7 @@ void StockDiagram::init()
 void StockDiagram::setType(Type type)
 {
     d->type = type;
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 /**
@@ -73,7 +73,7 @@ void StockDiagram::setStockBarAttributes(const StockBarAttributes &attr)
     attributesModel()->setModelData(
         QVariant::fromValue(attr),
         StockBarAttributesRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 StockBarAttributes StockDiagram::stockBarAttributes() const
@@ -84,7 +84,7 @@ StockBarAttributes StockDiagram::stockBarAttributes() const
 void StockDiagram::setStockBarAttributes(int column, const StockBarAttributes &attr)
 {
     d->setDatasetAttrs(column, QVariant::fromValue(attr), StockBarAttributesRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 StockBarAttributes StockDiagram::stockBarAttributes(int column) const
@@ -105,7 +105,7 @@ void StockDiagram::setThreeDBarAttributes(const ThreeDBarAttributes &attr)
     attributesModel()->setModelData(
         QVariant::fromValue(attr),
         ThreeDBarAttributesRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 /**
@@ -130,7 +130,7 @@ ThreeDBarAttributes StockDiagram::threeDBarAttributes() const
 void StockDiagram::setThreeDBarAttributes(int column, const ThreeDBarAttributes &attr)
 {
     d->setDatasetAttrs(column, QVariant::fromValue(attr), StockBarAttributesRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 /**

@@ -74,7 +74,7 @@ Legend::Legend(AbstractDiagram *diagram, QWidget *parent)
 
 Legend::~Legend()
 {
-    emit destroyedLegend(this);
+    Q_EMIT destroyedLegend(this);
 }
 
 void Legend::init()
@@ -404,8 +404,8 @@ void Legend::setPosition(Position position)
 
 void Legend::emitPositionChanged()
 {
-    emit positionChanged(this);
-    emit propertiesChanged();
+    Q_EMIT positionChanged(this);
+    Q_EMIT propertiesChanged();
 }
 
 Position Legend::position() const
@@ -998,7 +998,7 @@ void Legend::buildLegend()
 
     updateToplevelLayout(this);
 
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "leaving Legend::buildLegend()";
 #endif

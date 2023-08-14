@@ -366,7 +366,7 @@ bool AttributesModel::setData(const QModelIndex &index, const QVariant &value, i
         QMap<int, QMap<int, QVariant>> &colDataMap = d->dataMap[index.column()];
         QMap<int, QVariant> &dataMap = colDataMap[index.row()];
         dataMap.insert(role, value);
-        emit attributesChanged(index, index);
+        Q_EMIT attributesChanged(index, index);
         return true;
     }
 }
@@ -394,17 +394,17 @@ bool AttributesModel::setHeaderData(int section, Qt::Orientation orientation,
             int numRows = rowCount(QModelIndex());
             int numCols = columnCount(QModelIndex());
             if (orientation == Qt::Horizontal && numRows > 0)
-                emit attributesChanged(index(0, section, QModelIndex()),
+                Q_EMIT attributesChanged(index(0, section, QModelIndex()),
                                        index(numRows - 1, section, QModelIndex()));
             else if (orientation == Qt::Vertical && numCols > 0)
-                emit attributesChanged(index(section, 0, QModelIndex()),
+                Q_EMIT attributesChanged(index(section, 0, QModelIndex()),
                                        index(section, numCols - 1, QModelIndex()));
-            emit headerDataChanged(orientation, section, section);
+            Q_EMIT headerDataChanged(orientation, section, section);
 
             // FIXME: This only makes sense for orientation == Qt::Horizontal,
             // but what if orientation == Qt::Vertical?
             if (section != -1 && numRows > 0)
-                emit dataChanged(index(0, section, QModelIndex()),
+                Q_EMIT dataChanged(index(0, section, QModelIndex()),
                                  index(numRows - 1, section, QModelIndex()));
         }
         return true;
@@ -448,7 +448,7 @@ bool KDChart::AttributesModel::setModelData(const QVariant value, int role)
     int numRows = rowCount(QModelIndex());
     int numCols = columnCount(QModelIndex());
     if (sourceModel() && numRows > 0 && numCols > 0) {
-        emit attributesChanged(index(0, 0, QModelIndex()),
+        Q_EMIT attributesChanged(index(0, 0, QModelIndex()),
                                index(numRows - 1, numCols - 1, QModelIndex()));
         beginResetModel();
         endResetModel();
@@ -641,7 +641,7 @@ void AttributesModel::slotColumnsRemoved(const QModelIndex &parent, int start, i
 
 void AttributesModel::slotDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-    emit dataChanged(mapFromSource(topLeft), mapFromSource(bottomRight));
+    Q_EMIT dataChanged(mapFromSource(topLeft), mapFromSource(bottomRight));
 }
 
 void AttributesModel::setDefaultForRole(int role, const QVariant &value)

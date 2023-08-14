@@ -172,7 +172,7 @@ void SummaryHandlingProxyModel::sourceDataChanged(const QModelIndex &from, const
             // qDebug() << "removing " << parentIdx << "from cache";
             d->removeFromCache(dataIdx);
             QModelIndex proxyDataIdx = mapFromSource(dataIdx);
-            emit dataChanged(proxyDataIdx, proxyDataIdx);
+            Q_EMIT dataChanged(proxyDataIdx, proxyDataIdx);
         }
     } while ((parentIdx = model->parent(parentIdx)) != QModelIndex());
 
@@ -256,7 +256,7 @@ bool SummaryHandlingProxyModel::setData(const QModelIndex &index, const QVariant
                 // qDebug() << "removing " << parentIdx << "from cache";
                 d->removeFromCache(parentIdx);
                 QModelIndex proxyParentIdx = mapFromSource(parentIdx);
-                emit dataChanged(proxyParentIdx, proxyParentIdx);
+                Q_EMIT dataChanged(proxyParentIdx, proxyParentIdx);
             }
         } while ((parentIdx = model->parent(parentIdx)) != QModelIndex());
     }

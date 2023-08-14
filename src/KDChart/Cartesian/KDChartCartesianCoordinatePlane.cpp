@@ -413,7 +413,7 @@ void CartesianCoordinatePlane::handleFixedDataCoordinateSpaceRelation(const QRec
         if (doneSetZoomCenter(newCenter))
             changed = true;
         if (changed)
-            emit propertiesChanged();
+            Q_EMIT propertiesChanged();
     }
 }
 
@@ -436,7 +436,7 @@ void CartesianCoordinatePlane::setIsometricScaling(bool isOn)
     if (d->isometricScaling != isOn) {
         d->isometricScaling = isOn;
         layoutDiagrams();
-        emit propertiesChanged();
+        Q_EMIT propertiesChanged();
     }
 }
 
@@ -485,7 +485,7 @@ void CartesianCoordinatePlane::setZoomFactors(qreal factorX, qreal factorY)
 {
     if (doneSetZoomFactorX(factorX) || doneSetZoomFactorY(factorY)) {
         d->coordinateTransformation.updateTransform(logicalArea(), drawingArea());
-        emit propertiesChanged();
+        Q_EMIT propertiesChanged();
     }
 }
 
@@ -493,7 +493,7 @@ void CartesianCoordinatePlane::setZoomFactorX(qreal factor)
 {
     if (doneSetZoomFactorX(factor)) {
         d->coordinateTransformation.updateTransform(logicalArea(), drawingArea());
-        emit propertiesChanged();
+        Q_EMIT propertiesChanged();
     }
 }
 
@@ -501,7 +501,7 @@ void CartesianCoordinatePlane::setZoomFactorY(qreal factor)
 {
     if (doneSetZoomFactorY(factor)) {
         d->coordinateTransformation.updateTransform(logicalArea(), drawingArea());
-        emit propertiesChanged();
+        Q_EMIT propertiesChanged();
     }
 }
 
@@ -509,7 +509,7 @@ void CartesianCoordinatePlane::setZoomCenter(const QPointF &point)
 {
     if (doneSetZoomCenter(point)) {
         d->coordinateTransformation.updateTransform(logicalArea(), drawingArea());
-        emit propertiesChanged();
+        Q_EMIT propertiesChanged();
     }
 }
 
@@ -543,8 +543,8 @@ void CartesianCoordinatePlane::setAxesCalcModes(AxesCalcMode mode)
     if (d->coordinateTransformation.axesCalcModeY != mode || d->coordinateTransformation.axesCalcModeX != mode) {
         d->coordinateTransformation.axesCalcModeY = mode;
         d->coordinateTransformation.axesCalcModeX = mode;
-        emit propertiesChanged();
-        emit viewportCoordinateSystemChanged();
+        Q_EMIT propertiesChanged();
+        Q_EMIT viewportCoordinateSystemChanged();
         Q_FOREACH (AbstractDiagram *diag, diagrams())
             slotLayoutChanged(diag);
     }
@@ -554,9 +554,9 @@ void CartesianCoordinatePlane::setAxesCalcModeY(AxesCalcMode mode)
 {
     if (d->coordinateTransformation.axesCalcModeY != mode) {
         d->coordinateTransformation.axesCalcModeY = mode;
-        emit propertiesChanged();
+        Q_EMIT propertiesChanged();
         setGridNeedsRecalculate();
-        emit viewportCoordinateSystemChanged();
+        Q_EMIT viewportCoordinateSystemChanged();
     }
 }
 
@@ -564,8 +564,8 @@ void CartesianCoordinatePlane::setAxesCalcModeX(AxesCalcMode mode)
 {
     if (d->coordinateTransformation.axesCalcModeX != mode) {
         d->coordinateTransformation.axesCalcModeX = mode;
-        emit propertiesChanged();
-        emit viewportCoordinateSystemChanged();
+        Q_EMIT propertiesChanged();
+        Q_EMIT viewportCoordinateSystemChanged();
     }
 }
 
@@ -588,8 +588,8 @@ void CartesianCoordinatePlane::setHorizontalRange(const QPair<qreal, qreal> &ran
         d->horizontalMin = range.first;
         d->horizontalMax = range.second;
         layoutDiagrams();
-        emit propertiesChanged();
-        emit boundariesChanged();
+        Q_EMIT propertiesChanged();
+        Q_EMIT boundariesChanged();
     }
 }
 
@@ -601,8 +601,8 @@ void CartesianCoordinatePlane::setVerticalRange(const QPair<qreal, qreal> &range
         d->verticalMin = range.first;
         d->verticalMax = range.second;
         layoutDiagrams();
-        emit propertiesChanged();
-        emit boundariesChanged();
+        Q_EMIT propertiesChanged();
+        Q_EMIT boundariesChanged();
     }
 }
 
@@ -624,7 +624,7 @@ void CartesianCoordinatePlane::adjustRangesToData()
     d->verticalMin = dataBoundingRect.top();
     d->verticalMax = dataBoundingRect.bottom();
     layoutDiagrams();
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 void CartesianCoordinatePlane::adjustHorizontalRangeToData()
@@ -633,7 +633,7 @@ void CartesianCoordinatePlane::adjustHorizontalRangeToData()
     d->horizontalMin = dataBoundingRect.left();
     d->horizontalMax = dataBoundingRect.right();
     layoutDiagrams();
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 void CartesianCoordinatePlane::adjustVerticalRangeToData()
@@ -642,7 +642,7 @@ void CartesianCoordinatePlane::adjustVerticalRangeToData()
     d->verticalMin = dataBoundingRect.bottom();
     d->verticalMax = dataBoundingRect.top();
     layoutDiagrams();
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 void CartesianCoordinatePlane::setAutoAdjustHorizontalRangeToData(unsigned int percentEmpty)
@@ -652,7 +652,7 @@ void CartesianCoordinatePlane::setAutoAdjustHorizontalRangeToData(unsigned int p
         d->horizontalMin = 0.0;
         d->horizontalMax = 0.0;
         layoutDiagrams();
-        emit propertiesChanged();
+        Q_EMIT propertiesChanged();
     }
 }
 
@@ -663,7 +663,7 @@ void CartesianCoordinatePlane::setAutoAdjustVerticalRangeToData(unsigned int per
         d->verticalMin = 0.0;
         d->verticalMax = 0.0;
         layoutDiagrams();
-        emit propertiesChanged();
+        Q_EMIT propertiesChanged();
     }
 }
 
@@ -687,7 +687,7 @@ void CartesianCoordinatePlane::setGridAttributes(
         d->gridAttributesVertical = a;
     setHasOwnGridAttributes(orientation, true);
     update();
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 void CartesianCoordinatePlane::resetGridAttributes(Qt::Orientation orientation)
@@ -714,7 +714,7 @@ void CartesianCoordinatePlane::setHasOwnGridAttributes(Qt::Orientation orientati
         d->hasOwnGridAttributesHorizontal = on;
     else
         d->hasOwnGridAttributesVertical = on;
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 bool CartesianCoordinatePlane::hasOwnGridAttributes(Qt::Orientation orientation) const
@@ -728,7 +728,7 @@ void CartesianCoordinatePlane::setAutoAdjustGridToZoom(bool autoAdjust)
     if (d->autoAdjustGridToZoom != autoAdjust) {
         d->autoAdjustGridToZoom = autoAdjust;
         d->grid->setNeedRecalculate();
-        emit propertiesChanged();
+        Q_EMIT propertiesChanged();
     }
 }
 
@@ -788,7 +788,7 @@ void CartesianCoordinatePlane::setHorizontalRangeReversed(bool reverse)
 
     d->reverseHorizontalPlane = reverse;
     layoutDiagrams();
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 bool CartesianCoordinatePlane::isHorizontalRangeReversed() const
@@ -803,7 +803,7 @@ void CartesianCoordinatePlane::setVerticalRangeReversed(bool reverse)
 
     d->reverseVerticalPlane = reverse;
     layoutDiagrams();
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 bool CartesianCoordinatePlane::isVerticalRangeReversed() const

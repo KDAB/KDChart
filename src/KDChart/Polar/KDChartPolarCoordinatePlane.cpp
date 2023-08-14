@@ -306,7 +306,7 @@ void KDChart::PolarCoordinatePlane::setGridAttributes(
         d->gridAttributesSagittal = a;
     setHasOwnGridAttributes(circular, true);
     update();
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 void KDChart::PolarCoordinatePlane::resetGridAttributes(
@@ -348,7 +348,7 @@ void KDChart::PolarCoordinatePlane::setHasOwnGridAttributes(
         d->hasOwnGridAttributesCircular = on;
     else
         d->hasOwnGridAttributesSagittal = on;
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 bool KDChart::PolarCoordinatePlane::hasOwnGridAttributes(
