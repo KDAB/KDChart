@@ -26,26 +26,26 @@ ModelSignalMapperConnector::~ModelSignalMapperConnector()
 
 void ModelSignalMapperConnector::connectSignals(QAbstractItemModel *model)
 {
-    connect(model, SIGNAL(destroyed()), this, SLOT(resetModel()));
-    connect(model, SIGNAL(columnsInserted(QModelIndex, int, int)), this, SLOT(columnsInserted(QModelIndex, int, int)));
-    connect(model, SIGNAL(columnsRemoved(QModelIndex, int, int)), this, SLOT(columnsRemoved(QModelIndex, int, int)));
-    connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(dataChanged(QModelIndex, QModelIndex)));
-    connect(model, SIGNAL(layoutChanged()), this, SLOT(layoutChanged()));
-    connect(model, SIGNAL(modelReset()), this, SLOT(modelReset()));
-    connect(model, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(rowsInserted(QModelIndex, int, int)));
-    connect(model, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(rowsRemoved(QModelIndex, int, int)));
+    connect(model, &QAbstractItemModel::destroyed, this, &ModelSignalMapperConnector::resetModel);
+    connect(model, &QAbstractItemModel::columnsInserted, this, &ModelSignalMapperConnector::columnsInserted);
+    connect(model, &QAbstractItemModel::columnsRemoved, this, &ModelSignalMapperConnector::columnsRemoved);
+    connect(model, &QAbstractItemModel::dataChanged, this, &ModelSignalMapperConnector::dataChanged);
+    connect(model, &QAbstractItemModel::layoutChanged, this, &ModelSignalMapperConnector::layoutChanged);
+    connect(model, &QAbstractItemModel::modelReset, this, &ModelSignalMapperConnector::modelReset);
+    connect(model, &QAbstractItemModel::rowsInserted, this, &ModelSignalMapperConnector::rowsInserted);
+    connect(model, &QAbstractItemModel::rowsRemoved, this, &ModelSignalMapperConnector::rowsRemoved);
 }
 
 void ModelSignalMapperConnector::disconnectSignals(QAbstractItemModel *model)
 {
-    disconnect(model, SIGNAL(destroyed()), this, SLOT(resetModel()));
-    disconnect(model, SIGNAL(columnsInserted(QModelIndex, int, int)), this, SLOT(columnsInserted(QModelIndex, int, int)));
-    disconnect(model, SIGNAL(columnsRemoved(QModelIndex, int, int)), this, SLOT(columnsRemoved(QModelIndex, int, int)));
-    disconnect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(dataChanged(QModelIndex, QModelIndex)));
-    disconnect(model, SIGNAL(layoutChanged()), this, SLOT(layoutChanged()));
-    disconnect(model, SIGNAL(modelReset()), this, SLOT(modelReset()));
-    disconnect(model, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(rowsInserted(QModelIndex, int, int)));
-    disconnect(model, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(rowsRemoved(QModelIndex, int, int)));
+    disconnect(model, &QAbstractItemModel::destroyed, this, &ModelSignalMapperConnector::resetModel);
+    disconnect(model, &QAbstractItemModel::columnsInserted, this, &ModelSignalMapperConnector::columnsInserted);
+    disconnect(model, &QAbstractItemModel::columnsRemoved, this, &ModelSignalMapperConnector::columnsRemoved);
+    disconnect(model, &QAbstractItemModel::dataChanged, this, &ModelSignalMapperConnector::dataChanged);
+    disconnect(model, &QAbstractItemModel::layoutChanged, this, &ModelSignalMapperConnector::layoutChanged);
+    disconnect(model, &QAbstractItemModel::modelReset, this, &ModelSignalMapperConnector::modelReset);
+    disconnect(model, &QAbstractItemModel::rowsInserted, this, &ModelSignalMapperConnector::rowsInserted);
+    disconnect(model, &QAbstractItemModel::rowsRemoved, this, &ModelSignalMapperConnector::rowsRemoved);
 }
 
 void ModelSignalMapperConnector::resetModel()

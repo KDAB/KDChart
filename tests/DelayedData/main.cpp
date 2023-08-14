@@ -54,10 +54,10 @@ public:
 
         m_rowbutton.setText(tr("Add rows"));
         m_colbutton.setText(tr("Add columns"));
-        connect(&m_rowbutton, SIGNAL(clicked()),
-                this, SLOT(addRows()));
-        connect(&m_colbutton, SIGNAL(clicked()),
-                this, SLOT(addCols()));
+        connect(&m_rowbutton, &QPushButton::clicked,
+                this, &ChartWidget::addRows);
+        connect(&m_colbutton, &QPushButton::clicked,
+                this, &ChartWidget::addCols);
 
         auto *l = new QVBoxLayout(this);
         l->addWidget(&m_chart);

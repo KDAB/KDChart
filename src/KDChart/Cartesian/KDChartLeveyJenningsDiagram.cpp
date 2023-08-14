@@ -300,40 +300,41 @@ float LeveyJenningsDiagram::calculatedStandardDeviation() const
     return d->calculatedStandardDeviation;
 }
 
-void LeveyJenningsDiagram::setModel(QAbstractItemModel *model)
+void LeveyJenningsDiagram::setModel(QAbstractItemModel *newModel)
 {
-    if (this->model() != nullptr) {
-        disconnect(this->model(), SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
-                   this, SLOT(calculateMeanAndStandardDeviation()));
-        disconnect(this->model(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-                   this, SLOT(calculateMeanAndStandardDeviation()));
-        disconnect(this->model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-                   this, SLOT(calculateMeanAndStandardDeviation()));
-        disconnect(this->model(), SIGNAL(columnsInserted(const QModelIndex &, int, int)),
-                   this, SLOT(calculateMeanAndStandardDeviation()));
-        disconnect(this->model(), SIGNAL(columnsRemoved(const QModelIndex &, int, int)),
-                   this, SLOT(calculateMeanAndStandardDeviation()));
-        disconnect(this->model(), SIGNAL(modelReset()),
-                   this, SLOT(calculateMeanAndStandardDeviation()));
-        disconnect(this->model(), SIGNAL(layoutChanged()),
-                   this, SLOT(calculateMeanAndStandardDeviation()));
+    QAbstractItemModel *oldModel = model();
+    if (oldModel != nullptr) {
+        disconnect(oldModel, &QAbstractItemModel::dataChanged,
+                   this, &LeveyJenningsDiagram::calculateMeanAndStandardDeviation);
+        disconnect(oldModel, &QAbstractItemModel::rowsInserted,
+                   this, &LeveyJenningsDiagram::calculateMeanAndStandardDeviation);
+        disconnect(oldModel, &QAbstractItemModel::rowsRemoved,
+                   this, &LeveyJenningsDiagram::calculateMeanAndStandardDeviation);
+        disconnect(oldModel, &QAbstractItemModel::columnsInserted,
+                   this, &LeveyJenningsDiagram::calculateMeanAndStandardDeviation);
+        disconnect(oldModel, &QAbstractItemModel::columnsRemoved,
+                   this, &LeveyJenningsDiagram::calculateMeanAndStandardDeviation);
+        disconnect(oldModel, &QAbstractItemModel::modelReset,
+                   this, &LeveyJenningsDiagram::calculateMeanAndStandardDeviation);
+        disconnect(oldModel, &QAbstractItemModel::layoutChanged,
+                   this, &LeveyJenningsDiagram::calculateMeanAndStandardDeviation);
     }
-    LineDiagram::setModel(model);
-    if (this->model() != nullptr) {
-        connect(this->model(), SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
-                this, SLOT(calculateMeanAndStandardDeviation()));
-        connect(this->model(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-                this, SLOT(calculateMeanAndStandardDeviation()));
-        connect(this->model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-                this, SLOT(calculateMeanAndStandardDeviation()));
-        connect(this->model(), SIGNAL(columnsInserted(const QModelIndex &, int, int)),
-                this, SLOT(calculateMeanAndStandardDeviation()));
-        connect(this->model(), SIGNAL(columnsRemoved(const QModelIndex &, int, int)),
-                this, SLOT(calculateMeanAndStandardDeviation()));
-        connect(this->model(), SIGNAL(modelReset()),
-                this, SLOT(calculateMeanAndStandardDeviation()));
-        connect(this->model(), SIGNAL(layoutChanged()),
-                this, SLOT(calculateMeanAndStandardDeviation()));
+    LineDiagram::setModel(newModel);
+    if (newModel != nullptr) {
+        connect(newModel, &QAbstractItemModel::dataChanged,
+                this, &LeveyJenningsDiagram::calculateMeanAndStandardDeviation);
+        connect(newModel, &QAbstractItemModel::rowsInserted,
+                this, &LeveyJenningsDiagram::calculateMeanAndStandardDeviation);
+        connect(newModel, &QAbstractItemModel::rowsRemoved,
+                this, &LeveyJenningsDiagram::calculateMeanAndStandardDeviation);
+        connect(newModel, &QAbstractItemModel::columnsInserted,
+                this, &LeveyJenningsDiagram::calculateMeanAndStandardDeviation);
+        connect(newModel, &QAbstractItemModel::columnsRemoved,
+                this, &LeveyJenningsDiagram::calculateMeanAndStandardDeviation);
+        connect(newModel, &QAbstractItemModel::modelReset,
+                this, &LeveyJenningsDiagram::calculateMeanAndStandardDeviation);
+        connect(newModel, &QAbstractItemModel::layoutChanged,
+                this, &LeveyJenningsDiagram::calculateMeanAndStandardDeviation);
 
         calculateMeanAndStandardDeviation();
     }

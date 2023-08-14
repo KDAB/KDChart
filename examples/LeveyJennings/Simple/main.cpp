@@ -31,7 +31,7 @@ public:
         , view(view)
     {
         auto *const t = new QTimer(this);
-        connect(t, SIGNAL(timeout()), this, SLOT(animate()));
+        connect(t, &QTimer::timeout, this, &SelectionAnimator::animate);
         t->start(1000);
     }
 

@@ -284,14 +284,10 @@ void Legend::addDiagram(AbstractDiagram *newDiagram)
         } else {
             d->observers.append(observer);
         }
-        connect(observer, SIGNAL(diagramAboutToBeDestroyed(AbstractDiagram *)),
-                SLOT(resetDiagram(AbstractDiagram *)));
-        connect(observer, SIGNAL(diagramDataChanged(AbstractDiagram *)),
-                SLOT(setNeedRebuild()));
-        connect(observer, SIGNAL(diagramDataHidden(AbstractDiagram *)),
-                SLOT(setNeedRebuild()));
-        connect(observer, SIGNAL(diagramAttributesChanged(AbstractDiagram *)),
-                SLOT(setNeedRebuild()));
+        connect(observer, &DiagramObserver::diagramAboutToBeDestroyed, this, &Legend::resetDiagram);
+        connect(observer, &DiagramObserver::diagramDataChanged, this, &Legend::setNeedRebuild);
+        connect(observer, &DiagramObserver::diagramDataHidden, this, &Legend::setNeedRebuild);
+        connect(observer, &DiagramObserver::diagramAttributesChanged, this, &Legend::setNeedRebuild);
         setNeedRebuild();
     }
 }
@@ -776,7 +772,7 @@ void Legend::resizeEvent(QResizeEvent *event)
 #endif
     forceRebuild();
     sizeHint();
-    QTimer::singleShot(0, this, SLOT(emitPositionChanged()));
+    QTimer::singleShot(0, this, &Legend::emitPositionChanged);
 }
 
 void Legend::Private::fetchPaintOptions(Legend *q)

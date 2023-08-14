@@ -43,14 +43,16 @@ MainWindow::MainWindow()
     initializeData();
     setupViews();
 
-    connect(openAction, SIGNAL(triggered()), this, SLOT(openFile()));
-    connect(saveAction, SIGNAL(triggered()), this, SLOT(saveFile()));
-    connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+    connect(openAction, &QAction::triggered, this, [this] {
+        openFile();
+    });
+    connect(saveAction, &QAction::triggered, this, &MainWindow::saveFile);
+    connect(quitAction, &QAction::triggered, qApp, &QApplication::quit);
 
-    connect(m_selectionModel, SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
-            this, SLOT(selectionChanged(const QItemSelection &, const QItemSelection &)));
+    connect(m_selectionModel, &QItemSelectionModel::selectionChanged,
+            this, &MainWindow::selectionChanged);
 
-    connect(m_diagramView, SIGNAL(clicked(const QModelIndex &)), SLOT(itemClicked(const QModelIndex &)));
+    connect(m_diagramView, &BarDiagram::clicked, this, &MainWindow::itemClicked);
 
     menuBar()->addMenu(fileMenu);
     statusBar();

@@ -26,7 +26,7 @@ static const qreal s_stepWidth = 0.1;
 Model::Model()
 {
     m_appendTimer.setInterval(3);
-    connect(&m_appendTimer, SIGNAL(timeout()), SLOT(appendPoint()));
+    connect(&m_appendTimer, &QTimer::timeout, this, &Model::appendPoint);
     // pre-fill some values
     appendPoints(100);
 }

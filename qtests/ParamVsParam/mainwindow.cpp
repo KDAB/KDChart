@@ -31,9 +31,9 @@ MainWindow::MainWindow(
     , m_nrOfSamplesLineEdit(new QLineEdit("4"))
     , m_paramVsParamGridLayout(new QGridLayout)
 {
-    connect(m_timeoutLineEdit, SIGNAL(editingFinished()), SLOT(timeoutEditingFinished()));
-    connect(m_nrOfParametersLineEdit, SIGNAL(editingFinished()), SLOT(editingFinished()));
-    connect(m_nrOfSamplesLineEdit, SIGNAL(editingFinished()), SLOT(editingFinished()));
+    connect(m_timeoutLineEdit, &QLineEdit::editingFinished, this, &MainWindow::timeoutEditingFinished);
+    connect(m_nrOfParametersLineEdit, &QLineEdit::editingFinished, this, &MainWindow::editingFinished);
+    connect(m_nrOfSamplesLineEdit, &QLineEdit::editingFinished, this, &MainWindow::editingFinished);
 
     auto *vBoxLayout = new QVBoxLayout;
     setLayout(vBoxLayout);

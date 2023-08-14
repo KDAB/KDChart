@@ -61,10 +61,10 @@ void CartesianCoordinatePlane::addDiagram(AbstractDiagram *diagram)
                "CartesianCoordinatePlane::addDiagram", "Only cartesian "
                                                        "diagrams can be added to a cartesian coordinate plane!");
     AbstractCoordinatePlane::addDiagram(diagram);
-    connect(diagram, SIGNAL(layoutChanged(AbstractDiagram *)),
-            SLOT(slotLayoutChanged(AbstractDiagram *)));
+    connect(diagram, &AbstractDiagram::layoutChanged, this,
+            &CartesianCoordinatePlane::slotLayoutChanged);
 
-    connect(diagram, SIGNAL(propertiesChanged()), this, SIGNAL(propertiesChanged()));
+    connect(diagram, &AbstractDiagram::propertiesChanged, this, &CartesianCoordinatePlane::propertiesChanged);
 }
 
 void CartesianCoordinatePlane::paint(QPainter *painter)

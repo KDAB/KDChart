@@ -36,10 +36,10 @@ void ConstraintProxy::setSourceModel(ConstraintModel *src)
 
     copyFromSource();
 
-    connect(m_source, SIGNAL(constraintAdded(const KDGantt::Constraint &)),
-            this, SLOT(slotSourceConstraintAdded(const KDGantt::Constraint &)));
-    connect(m_source, SIGNAL(constraintRemoved(const KDGantt::Constraint &)),
-            this, SLOT(slotSourceConstraintRemoved(const KDGantt::Constraint &)));
+    connect(m_source, &ConstraintModel::constraintAdded,
+            this, &ConstraintProxy::slotSourceConstraintAdded);
+    connect(m_source, &ConstraintModel::constraintRemoved,
+            this, &ConstraintProxy::slotSourceConstraintRemoved);
 }
 
 void ConstraintProxy::setDestinationModel(ConstraintModel *dest)
@@ -50,10 +50,10 @@ void ConstraintProxy::setDestinationModel(ConstraintModel *dest)
 
     copyFromSource();
 
-    connect(m_destination, SIGNAL(constraintAdded(const KDGantt::Constraint &)),
-            this, SLOT(slotDestinationConstraintAdded(const KDGantt::Constraint &)));
-    connect(m_destination, SIGNAL(constraintRemoved(const KDGantt::Constraint &)),
-            this, SLOT(slotDestinationConstraintRemoved(const KDGantt::Constraint &)));
+    connect(m_destination, &ConstraintModel::constraintAdded,
+            this, &ConstraintProxy::slotDestinationConstraintAdded);
+    connect(m_destination, &ConstraintModel::constraintRemoved,
+            this, &ConstraintProxy::slotDestinationConstraintRemoved);
 }
 
 void ConstraintProxy::setProxyModel(QAbstractProxyModel *proxy)
@@ -64,8 +64,8 @@ void ConstraintProxy::setProxyModel(QAbstractProxyModel *proxy)
         m_proxy->disconnect(this);
     m_proxy = proxy;
     if (m_proxy) {
-        connect(m_proxy, SIGNAL(layoutChanged()), this, SLOT(slotLayoutChanged()));
-        connect(m_proxy, SIGNAL(modelReset()), this, SLOT(slotLayoutChanged()));
+        connect(m_proxy, &QAbstractProxyModel::layoutChanged, this, &ConstraintProxy::slotLayoutChanged);
+        connect(m_proxy, &QAbstractProxyModel::modelReset, this, &ConstraintProxy::slotLayoutChanged);
     }
 }
 

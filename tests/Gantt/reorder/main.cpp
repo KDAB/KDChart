@@ -100,61 +100,6 @@ public:
     }
 };
 
-/* Test class to see the effect of moving rows */
-class MoveHelper : public QObject
-{
-public:
-    MoveHelper(MyTaskModel *model,
-               KDGantt::ConstraintModel *,
-               KDGantt::View *,
-#if 0
-                KDGantt::ConstraintModel* constraints,
-                KDGantt::View* view,
-#endif
-               int row1, int row2)
-        : QObject(model)
-        , m_model(model)
-        ,
-#if 0
-          m_constraints( constraints ),
-          m_view( view ),
-#endif
-        m_row1(row1)
-        , m_row2(row2)
-    {
-    }
-
-    void showContraints(const QString & /*pfx*/)
-    {
-#if 0
-        qDebug() << pfx << *m_constraints;
-        qDebug() << "0:" << m_constraints->constraintsForIndex( m_model->index( 0, 0 ) );
-        qDebug() << "1:"<< m_constraints->constraintsForIndex( m_model->index( 1, 0 ) );
-        qDebug() << "2:"<< m_constraints->constraintsForIndex( m_model->index( 2, 0 ) );
-        qDebug() << "3:"<< m_constraints->constraintsForIndex( m_model->index( 3, 0 ) );
-#endif
-    }
-
-    ~MoveHelper() override
-    {
-        qDebug() << "Moving row" << m_row1 << "to" << m_row2;
-        showContraints("Before:");
-        m_model->moveRow(m_row1, m_row2);
-        showContraints("After:");
-
-        // Hack until KDGantt supports this:
-        // m_view->setConstraintModel( m_constraints );
-    }
-
-private:
-    MyTaskModel *m_model;
-#if 0
-    KDGantt::ConstraintModel* m_constraints;
-    KDGantt::View* m_view;
-#endif
-    int m_row1, m_row2;
-};
-
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
@@ -172,8 +117,11 @@ int main(int argc, char **argv)
     view->setConstraintModel(&constraints);
     view->show();
 
-    /* After 5 seconds, move row 1 to pos 0: */
-    QTimer::singleShot(5000, new MoveHelper(&model, &constraints, view, 1, 0), SLOT(deleteLater()));
+    QTimer::singleShot(5000, &app, [&model] {
+        /* After 5 seconds, move row 1 to pos 0: */
+        qDebug() << "Moving row" << 1 << "to" << 0;
+        model.moveRow(1, 0);
+    });
 
     return app.exec();
 }

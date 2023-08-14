@@ -756,9 +756,9 @@ void PlotterDiagramCompressor::setModel(QAbstractItemModel *model)
         d->m_bufferlist.resize(datasetCount());
         d->m_accumulatedDistances.resize(datasetCount());
         d->calculateDataBoundaries();
-        connect(d->m_model, SIGNAL(rowsInserted(QModelIndex, int, int)), d, SLOT(rowsInserted(QModelIndex, int, int)));
-        connect(d->m_model, SIGNAL(modelReset()), d, SLOT(clearBuffer()));
-        connect(d->m_model, SIGNAL(destroyed(QObject *)), d, SLOT(setModelToZero()));
+        connect(d->m_model, &QAbstractItemModel::rowsInserted, d, &Private::rowsInserted);
+        connect(d->m_model, &QAbstractItemModel::modelReset, d, &Private::clearBuffer);
+        connect(d->m_model, &QAbstractItemModel::destroyed, d, &Private::setModelToZero);
     }
 }
 

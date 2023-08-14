@@ -68,21 +68,22 @@ QSize Legend::minimumSizeHint() const
     return measureItem(rootIndex());
 }
 
-void Legend::setModel(QAbstractItemModel *model)
+void Legend::setModel(QAbstractItemModel *newModel)
 {
-    if (this->model() != nullptr) {
-        disconnect(this->model(), SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(modelDataChanged()));
-        disconnect(this->model(), SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(modelDataChanged()));
-        disconnect(this->model(), SIGNAL(columnsRemoved(QModelIndex, int, int)), this, SLOT(modelDataChanged()));
+    QAbstractItemModel *oldModel = model();
+    if (oldModel != nullptr) {
+        disconnect(oldModel, &QAbstractItemModel::dataChanged, this, &Legend::modelDataChanged);
+        disconnect(oldModel, &QAbstractItemModel::rowsRemoved, this, &Legend::modelDataChanged);
+        disconnect(oldModel, &QAbstractItemModel::columnsRemoved, this, &Legend::modelDataChanged);
     }
 
-    QAbstractItemView::setModel(model);
-    d->proxyModel.setSourceModel(model);
+    QAbstractItemView::setModel(newModel);
+    d->proxyModel.setSourceModel(newModel);
 
-    if (this->model() != nullptr) {
-        connect(this->model(), SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(modelDataChanged()));
-        connect(this->model(), SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(modelDataChanged()));
-        connect(this->model(), SIGNAL(columnsRemoved(QModelIndex, int, int)), this, SLOT(modelDataChanged()));
+    if (newModel != nullptr) {
+        connect(newModel, &QAbstractItemModel::dataChanged, this, &Legend::modelDataChanged);
+        connect(newModel, &QAbstractItemModel::rowsRemoved, this, &Legend::modelDataChanged);
+        connect(newModel, &QAbstractItemModel::columnsRemoved, this, &Legend::modelDataChanged);
     }
 }
 

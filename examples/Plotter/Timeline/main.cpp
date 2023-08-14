@@ -43,7 +43,7 @@ public:
         auto *button = new QPushButton("Animate", leftWidget);
         leftLayout->addWidget(button);
         button->setCheckable(true);
-        connect(button, SIGNAL(toggled(bool)), this, SLOT(buttonToggled(bool)));
+        connect(button, &QPushButton::toggled, this, &ChartWidget::buttonToggled);
 
         auto *tv = new QTreeView(leftWidget);
         leftLayout->addWidget(tv);
@@ -74,17 +74,19 @@ public:
 
         plotter->setModel(proxy);
 
-        connect(proxy, SIGNAL(rowsInserted(QModelIndex, int, int)),
-                m_chart->coordinatePlane(), SLOT(adjustRangesToData()));
-        connect(proxy, SIGNAL(rowsRemoved(QModelIndex, int, int)),
-                m_chart->coordinatePlane(), SLOT(adjustRangesToData()));
+        auto coordinatePlane = qobject_cast<KDChart::CartesianCoordinatePlane *>(m_chart->coordinatePlane());
+        connect(proxy, &TimeChartModel::rowsInserted,
+                coordinatePlane, &KDChart::CartesianCoordinatePlane::adjustRangesToData);
+        connect(proxy, &TimeChartModel::rowsRemoved,
+                coordinatePlane, &KDChart::CartesianCoordinatePlane::adjustRangesToData);
 
         proxy->setVisibleRange(QDateTime(QDate(2010, 3, 15), QTime()),
                                QDateTime(QDate(2010, 5, 18), QTime()));
-        qobject_cast<KDChart::CartesianCoordinatePlane *>(m_chart->coordinatePlane())->adjustRangesToData();
+        coordinatePlane->adjustRangesToData();
+
 
         m_timer = new QTimer(this);
-        connect(m_timer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
+        connect(m_timer, &QTimer::timeout, this, &ChartWidget::slotTimeout);
     }
 private slots:
     void slotTimeout()

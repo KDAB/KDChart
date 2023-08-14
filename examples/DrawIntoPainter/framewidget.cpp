@@ -26,7 +26,7 @@ void FrameWidget::setChart(KDChart::Chart *chart)
     mChart = chart;
     // This is necessary because Chart can't automatically schedule somebody else (this object) to
     // call its custom paint method.
-    connect(mChart, SIGNAL(propertiesChanged()), SLOT(update()));
+    connect(mChart, &KDChart::Chart::propertiesChanged, this, qOverload<>(&FrameWidget::update));
 }
 
 void FrameWidget::paintEvent(QPaintEvent *e)

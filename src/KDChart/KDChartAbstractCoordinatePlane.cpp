@@ -46,8 +46,8 @@ AbstractCoordinatePlane::~AbstractCoordinatePlane()
 void AbstractCoordinatePlane::init()
 {
     d->initialize(); // virtual method to init the correct grid: cartesian, polar, ...
-    connect(this, SIGNAL(internal_geometryChanged(QRect, QRect)),
-            this, SIGNAL(geometryChanged(QRect, QRect)),
+    connect(this, &AbstractCoordinatePlane::internal_geometryChanged,
+            this, &AbstractCoordinatePlane::geometryChanged,
             Qt::QueuedConnection);
 }
 
@@ -61,10 +61,10 @@ void AbstractCoordinatePlane::addDiagram(AbstractDiagram *diagram)
     diagram->setCoordinatePlane(this);
     layoutDiagrams();
     layoutPlanes(); // there might be new axes, etc
-    connect(diagram, SIGNAL(modelsChanged()), this, SLOT(layoutPlanes()));
-    connect(diagram, SIGNAL(modelDataChanged()), this, SLOT(update()));
-    connect(diagram, SIGNAL(modelDataChanged()), this, SLOT(relayout()));
-    connect(this, SIGNAL(boundariesChanged()), diagram, SIGNAL(boundariesChanged()));
+    connect(diagram, &AbstractDiagram::modelsChanged, this, &AbstractCoordinatePlane::layoutPlanes);
+    connect(diagram, &AbstractDiagram::modelDataChanged, this, &AbstractCoordinatePlane::update);
+    connect(diagram, &AbstractDiagram::modelDataChanged, this, &AbstractCoordinatePlane::relayout);
+    connect(this, &AbstractCoordinatePlane::boundariesChanged, diagram, &AbstractDiagram::boundariesChanged);
 
     update();
     emit boundariesChanged();
@@ -99,9 +99,9 @@ void AbstractCoordinatePlane::takeDiagram(AbstractDiagram *diagram)
         d->diagrams.removeAt(idx);
         diagram->setParent(nullptr);
         diagram->setCoordinatePlane(nullptr);
-        disconnect(diagram, SIGNAL(modelsChanged()), this, SLOT(layoutPlanes()));
-        disconnect(diagram, SIGNAL(modelDataChanged()), this, SLOT(update()));
-        disconnect(diagram, SIGNAL(modelDataChanged()), this, SLOT(relayout()));
+        disconnect(diagram, &AbstractDiagram::modelsChanged, this, &AbstractCoordinatePlane::layoutPlanes);
+        disconnect(diagram, &AbstractDiagram::modelDataChanged, this, &AbstractCoordinatePlane::update);
+        disconnect(diagram, &AbstractDiagram::modelDataChanged, this, &AbstractCoordinatePlane::relayout);
         layoutDiagrams();
         update();
     }
