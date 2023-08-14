@@ -60,7 +60,7 @@ void AxisSettings::Private::init()
     ui.axisSelection->addItem(QIcon(), tr("Right Y-Axis"), CartesianAxis::Right);
     ui.axisSelection->addItem(QIcon(), tr("Bottom X-Axis"), CartesianAxis::Bottom);
     ui.axisSelection->addItem(QIcon(), tr("Top X-Axis"), CartesianAxis::Top);
-    connect(ui.axisSelection, &QComboBox::currentIndexChanged, this, &Private::currentIndexChanged);
+    connect(ui.axisSelection, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Private::currentIndexChanged);
     connect(ui.axisVisibility, &QCheckBox::toggled, this, &Private::setVisible);
     connect(ui.majorTicks, &QCheckBox::toggled, this, &Private::setShowMajorTickMarks);
     connect(ui.minorTicks, &QCheckBox::toggled, this, &Private::setShowMinorTickMarks);

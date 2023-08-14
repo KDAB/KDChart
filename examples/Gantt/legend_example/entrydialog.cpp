@@ -43,7 +43,7 @@ void EntryDialog::init()
     connect(ui->startDate, &QDateTimeEdit::dateTimeChanged,
             this, &EntryDialog::updateEndDate);
     connect(ui->readOnly, &QCheckBox::toggled, this, &EntryDialog::disableEditing);
-    connect(ui->type, &QComboBox::currentIndexChanged, this, &EntryDialog::typeChanged);
+    connect(ui->type, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EntryDialog::typeChanged);
 
     ui->startDate->setDateTime(QDateTime::currentDateTime());
     typeChanged(0);

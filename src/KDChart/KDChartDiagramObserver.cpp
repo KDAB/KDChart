@@ -56,31 +56,31 @@ void DiagramObserver::init()
         disconnect(m_attributesmodel);
 
     const bool con = connect(m_diagram, &AbstractDiagram::viewportCoordinateSystemChanged,
-                             this, qOverload<>(&DiagramObserver::slotDataChanged));
+                             this, QOverload<>::of(&DiagramObserver::slotDataChanged));
     Q_ASSERT(con);
     Q_UNUSED(con)
     connect(m_diagram, &AbstractDiagram::dataHidden, this, &DiagramObserver::slotDataHidden);
 
     if (m_diagram->model()) {
         connect(m_diagram->model(), &QAbstractItemModel::dataChanged,
-                this, qOverload<QModelIndex, QModelIndex>(&DiagramObserver::slotDataChanged));
+                this, QOverload<QModelIndex, QModelIndex>::of(&DiagramObserver::slotDataChanged));
         connect(m_diagram->model(), &QAbstractItemModel::rowsInserted,
-                this, qOverload<>(&DiagramObserver::slotDataChanged));
+                this, QOverload<>::of(&DiagramObserver::slotDataChanged));
         connect(m_diagram->model(), &QAbstractItemModel::columnsInserted,
-                this, qOverload<>(&DiagramObserver::slotDataChanged));
+                this, QOverload<>::of(&DiagramObserver::slotDataChanged));
         connect(m_diagram->model(), &QAbstractItemModel::rowsRemoved,
-                this, qOverload<>(&DiagramObserver::slotDataChanged));
+                this, QOverload<>::of(&DiagramObserver::slotDataChanged));
         connect(m_diagram->model(), &QAbstractItemModel::columnsRemoved,
-                this, qOverload<>(&DiagramObserver::slotDataChanged));
+                this, QOverload<>::of(&DiagramObserver::slotDataChanged));
         connect(m_diagram->model(), &QAbstractItemModel::modelReset,
-                this, qOverload<>(&DiagramObserver::slotDataChanged));
+                this, QOverload<>::of(&DiagramObserver::slotDataChanged));
         connect(m_diagram->model(), &QAbstractItemModel::headerDataChanged,
                 this, &DiagramObserver::slotHeaderDataChanged);
     }
 
     if (m_diagram->attributesModel())
         connect(m_diagram->attributesModel(), &AttributesModel::attributesChanged,
-                this, qOverload<QModelIndex, QModelIndex>(&DiagramObserver::slotAttributesChanged));
+                this, QOverload<QModelIndex, QModelIndex>::of(&DiagramObserver::slotAttributesChanged));
     m_model = m_diagram->model();
     m_attributesmodel = m_diagram->attributesModel();
 }

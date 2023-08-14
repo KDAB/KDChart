@@ -82,7 +82,7 @@ MainWindow::MainWindow(QWidget *parent)
     chartFrameWidget->setChart(m_chart);
     // make sure, we re-draw after changing one of the chart's properties
     connect(m_chart, &Chart::propertiesChanged,
-            chartFrameWidget, qOverload<>(&QWidget::update));
+            chartFrameWidget, QOverload<>::of(&QWidget::update));
 #else
     chartLayout->addWidget(m_chart);
 #endif
