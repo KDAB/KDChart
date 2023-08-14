@@ -395,17 +395,17 @@ bool AttributesModel::setHeaderData(int section, Qt::Orientation orientation,
             int numCols = columnCount(QModelIndex());
             if (orientation == Qt::Horizontal && numRows > 0)
                 Q_EMIT attributesChanged(index(0, section, QModelIndex()),
-                                       index(numRows - 1, section, QModelIndex()));
+                                         index(numRows - 1, section, QModelIndex()));
             else if (orientation == Qt::Vertical && numCols > 0)
                 Q_EMIT attributesChanged(index(section, 0, QModelIndex()),
-                                       index(section, numCols - 1, QModelIndex()));
+                                         index(section, numCols - 1, QModelIndex()));
             Q_EMIT headerDataChanged(orientation, section, section);
 
             // FIXME: This only makes sense for orientation == Qt::Horizontal,
             // but what if orientation == Qt::Vertical?
             if (section != -1 && numRows > 0)
                 Q_EMIT dataChanged(index(0, section, QModelIndex()),
-                                 index(numRows - 1, section, QModelIndex()));
+                                   index(numRows - 1, section, QModelIndex()));
         }
         return true;
     }
@@ -449,7 +449,7 @@ bool KDChart::AttributesModel::setModelData(const QVariant value, int role)
     int numCols = columnCount(QModelIndex());
     if (sourceModel() && numRows > 0 && numCols > 0) {
         Q_EMIT attributesChanged(index(0, 0, QModelIndex()),
-                               index(numRows - 1, numCols - 1, QModelIndex()));
+                                 index(numRows - 1, numCols - 1, QModelIndex()));
         beginResetModel();
         endResetModel();
     }
