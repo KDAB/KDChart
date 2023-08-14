@@ -9,6 +9,7 @@ Version 3.0.1 (unreleased):
 ---------------------------
  * Add WebAssembly demo-example
  * Bug fix: drawing duplicate connections in KDGantt graphics view
+ * Bug fix: Update view when model resets its data
 
 Version 3.0.0 (27 August 2022):
 -------------------------------
