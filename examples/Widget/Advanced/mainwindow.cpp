@@ -28,11 +28,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     typeSelector->setCurrentIndex(1); // we start by LineDiagram
 
-    connect(typeSelector, &QComboBox::activated, this, &MainWindow::changeType);
+    connect(typeSelector, QOverload<int>::of(&QComboBox::activated), this, &MainWindow::changeType);
 
     connect(btnAddDataset, &QPushButton::clicked, this, &MainWindow::addDataset);
 
-    connect(leadingSelector, &QSpinBox::valueChanged,
+    connect(leadingSelector, QOverload<int>::of(&QSpinBox::valueChanged),
             this, &MainWindow::changeLeading);
 }
 

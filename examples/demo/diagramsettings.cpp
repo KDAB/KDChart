@@ -169,7 +169,7 @@ void DiagramSettings::Private::init()
     connect(ui->threeDSelector, &QCheckBox::toggled, this, &Private::changeThreeD);
     connect(ui->diagramBackground, &QPushButton::clicked, this, &Private::changeBackgroundColor);
     connect(ui->visibleBtn, &QCheckBox::toggled, this, &Private::changeBackgroundVisibility);
-    connect(ui->barHeightInput, &QSpinBox::valueChanged, this, &Private::changeThreeD);
+    connect(ui->barHeightInput, QOverload<int>::of(&QSpinBox::valueChanged), this, &Private::changeThreeD);
     connect(ui->autoGradient, &QCheckBox::toggled, this, &Private::changeAutoGradient);
 
     qq->refreshSettings();

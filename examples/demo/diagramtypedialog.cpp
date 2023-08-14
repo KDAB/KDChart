@@ -75,8 +75,8 @@ void DiagramTypeDialog::Private::init()
     m_typemap[DiagramTypeDialog::Line] = DiagramTypeDialog::Normal;
     m_typemap[DiagramTypeDialog::Plotter] = DiagramTypeDialog::Normal;
 
-    connect(ui.typeSelector, &QComboBox::currentIndexChanged, this, &Private::typeChanged);
-    connect(ui.subtypeSelector, &QComboBox::currentIndexChanged, this, &Private::subtypeChanged);
+    connect(ui.typeSelector, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Private::typeChanged);
+    connect(ui.subtypeSelector, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Private::subtypeChanged);
 }
 
 void DiagramTypeDialog::Private::createPlanes()

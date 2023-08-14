@@ -1198,7 +1198,7 @@ void Chart::insertCoordinatePlane(int index, AbstractCoordinatePlane *plane)
 
     connect(plane, &AbstractCoordinatePlane::destroyedCoordinatePlane,
             d, &Private::slotUnregisterDestroyedPlane);
-    connect(plane, &AbstractCoordinatePlane::needUpdate, this, qOverload<>(&Chart::update));
+    connect(plane, &AbstractCoordinatePlane::needUpdate, this, QOverload<>::of(&Chart::update));
     connect(plane, &AbstractCoordinatePlane::needRelayout, d, &Private::slotResizePlanes);
     connect(plane, &AbstractCoordinatePlane::needLayoutPlanes, d, &Private::slotLayoutPlanes);
     connect(plane, &AbstractCoordinatePlane::propertiesChanged, this, &Chart::propertiesChanged);
