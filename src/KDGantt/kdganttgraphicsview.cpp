@@ -413,11 +413,11 @@ void GraphicsView::setSummaryHandlingModel(QAbstractProxyModel *proxyModel)
                 d->slotDataChanged(topLeft, bottomRight);
             });
     connect(proxyModel, &QAbstractProxyModel::layoutChanged,
-            this, [this]{
+            this, [this] {
                 d->slotLayoutChanged();
             });
     connect(proxyModel, &QAbstractProxyModel::modelReset,
-            this, [this]{
+            this, [this] {
                 d->slotModelReset();
             });
     connect(proxyModel, &QAbstractProxyModel::rowsInserted,

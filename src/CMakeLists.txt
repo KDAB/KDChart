@@ -6,11 +6,7 @@
 # SPDX-License-Identifier: MIT
 #
 
-add_definitions(
-    -DQT_NO_KEYWORDS
-    -DQT_NO_CAST_FROM_BYTEARRAY
-    -DQT_NO_SIGNALS_SLOTS_KEYWORDS
-)
+add_definitions(-DQT_NO_KEYWORDS -DQT_NO_CAST_FROM_BYTEARRAY -DQT_NO_SIGNALS_SLOTS_KEYWORDS)
 
 set(FORMS KDChart/KDChartDatasetSelector.ui)
 set(RESOURCES KDChart/KDAB_kdchart_LeveyJennings_resources.qrc)
