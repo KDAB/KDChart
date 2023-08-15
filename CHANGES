@@ -4,6 +4,7 @@ Release Highlights
 Version 3.0.1 (unreleased):
 ---------------------------
  * Add WebAssembly demo-example
+ * KDGantt: i18n the day-of-week label (don't hardcode first letter)
  * Bug fix: drawing duplicate connections in KDGantt graphics view
  * Bug fix: Update view when model resets its data
 
