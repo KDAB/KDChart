@@ -160,8 +160,8 @@ bool ConstraintModel::removeConstraint(const Constraint &c)
  */
 void ConstraintModel::clear()
 {
-    QList<Constraint> lst = constraints();
-    Q_FOREACH (const Constraint &c, lst) {
+    const QList<Constraint> lst = constraints();
+    for (const Constraint &c : lst) {
         removeConstraint(c);
     }
 }
@@ -171,7 +171,7 @@ void ConstraintModel::cleanup()
 {
 #if 0
     QSet<Constraint> orphans;
-    Q_FOREACH( const Constraint& c, d->constraints ) {
+    for (const Constraint& c, qAsConst(d->constraints)) {
         if ( !c.startIndex().isValid() || !c.endIndex().isValid() ) orphans.insert( c );
     }
     //qDebug() << "Constraint::cleanup() found" << orphans << "orphans";
@@ -198,14 +198,14 @@ QList<Constraint> ConstraintModel::constraintsForIndex(const QModelIndex &idx) c
     if (!idx.isValid()) {
         // Because of a Qt bug we need to treat this as a special case
         QSet<Constraint> result;
-        Q_FOREACH (const Constraint &c, d->constraints) {
+        for (const Constraint &c : d->constraints) {
             if (!c.startIndex().isValid() || !c.endIndex().isValid())
                 result.insert(c);
         }
         return result.values();
     } else {
         QList<Constraint> result;
-        Q_FOREACH (const Constraint &c, d->constraints) {
+        for (const Constraint &c : d->constraints) {
             if (c.startIndex() == idx || c.endIndex() == idx)
                 result.push_back(c);
         }
@@ -222,7 +222,8 @@ bool ConstraintModel::hasConstraint(const Constraint &c) const
 {
     /*
     // Because of a Qt bug we have to search like this
-    Q_FOREACH( Constraint c2, d->constraints ) {
+    const auto constraints = model.constraints();
+    for ( Constraint c2 : constraints ) {
         if ( c==c2 ) return true;
     }
     return false;
@@ -241,7 +242,8 @@ bool ConstraintModel::hasConstraint(const Constraint &c) const
 QDebug operator<<(QDebug dbg, const KDGantt::ConstraintModel &model)
 {
     dbg << "KDGantt::ConstraintModel[ " << static_cast<const QObject *>(&model) << ": [\n";
-    Q_FOREACH (const Constraint &c, model.constraints()) {
+    const auto constraints = model.constraints();
+    for (const Constraint &c : constraints) {
         dbg << "\t" << c << "\n";
     }
     dbg << "]\n";

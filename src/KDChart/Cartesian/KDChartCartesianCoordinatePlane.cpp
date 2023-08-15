@@ -127,7 +127,8 @@ QRectF CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams() const
     qreal minY = 0;
     qreal maxY = 0;
     bool bStarting = true;
-    Q_FOREACH (const AbstractDiagram *diagram, diagrams()) {
+    const auto constDiagrams = diagrams();
+    for (const AbstractDiagram *diagram : constDiagrams) {
         QPair<QPointF, QPointF> dataBoundariesPair = diagram->dataBoundaries();
         // qDebug() << "CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams()\ngets diagram->dataBoundaries: " << dataBoundariesPair.first << dataBoundariesPair.second;
         if (bStarting || dataBoundariesPair.first.x() < minX)
@@ -545,8 +546,10 @@ void CartesianCoordinatePlane::setAxesCalcModes(AxesCalcMode mode)
         d->coordinateTransformation.axesCalcModeX = mode;
         Q_EMIT propertiesChanged();
         Q_EMIT viewportCoordinateSystemChanged();
-        Q_FOREACH (AbstractDiagram *diag, diagrams())
+        const auto constDiagrams = diagrams();
+        for (AbstractDiagram *diag : constDiagrams) {
             slotLayoutChanged(diag);
+        }
     }
 }
 
@@ -748,7 +751,7 @@ AbstractCoordinatePlane *CartesianCoordinatePlane::sharedAxisMasterPlane(QPainte
     const CartesianAxis *sharedAxis = nullptr;
     if (diag != nullptr) {
         const CartesianAxisList axes = diag->axes();
-        Q_FOREACH (const CartesianAxis *a, axes) {
+        for (const CartesianAxis *a : axes) {
             auto *p = const_cast<CartesianCoordinatePlane *>(
                 dynamic_cast<const CartesianCoordinatePlane *>(a->coordinatePlane()));
             if (p != nullptr && p != this) {
@@ -843,7 +846,8 @@ void CartesianCoordinatePlane::setGeometry(const QRect &rectangle)
 
     AbstractCoordinatePlane::setGeometry(d->geometry);
 
-    Q_FOREACH (AbstractDiagram *diagram, diagrams()) {
+    const auto constDiagrams = diagrams();
+    for (AbstractDiagram *diagram : constDiagrams) {
         diagram->resize(d->geometry.size());
     }
 }

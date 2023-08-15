@@ -46,7 +46,7 @@ AbstractCartesianDiagram::AbstractCartesianDiagram(QWidget *parent, CartesianCoo
 
 KDChart::AbstractCartesianDiagram::~AbstractCartesianDiagram()
 {
-    Q_FOREACH (CartesianAxis *axis, d->axesList) {
+    for (CartesianAxis *axis : qAsConst(d->axesList)) {
         axis->deleteObserver(this);
     }
     d->axesList.clear();

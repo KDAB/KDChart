@@ -271,7 +271,7 @@ public:
      * The list of all legends associated with the chart.
      * @return The list of all legends associated with the chart.
      */
-    LegendList legends();
+    LegendList legends() const;
 
     /**
      * Add the given legend to the chart. The chart takes ownership.

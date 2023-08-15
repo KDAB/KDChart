@@ -55,7 +55,7 @@ MainWidget::MainWidget()
     m_functionSelector << m_controls.sineRadio << m_controls.triangleRadio << m_controls.squareRadio
                        << m_controls.noiseRadio << m_controls.oneDivSineRadio
                        << m_controls.sineOneDivRadio;
-    foreach (QRadioButton *r, m_functionSelector) {
+    for (QRadioButton *r : qAsConst(m_functionSelector)) {
         connect(r, &QRadioButton::toggled, this, &MainWidget::functionToggled);
     }
 
@@ -64,7 +64,7 @@ MainWidget::MainWidget()
 
     // order matters again
     m_addPointsButtons << m_controls.add1kButton << m_controls.add10kButton << m_controls.add100kButton;
-    foreach (QPushButton *b, m_addPointsButtons) {
+    for (QPushButton *b : qAsConst(m_addPointsButtons)) {
         connect(b, &QPushButton::clicked, this, &MainWidget::addPointsButtonClicked);
     }
 }

@@ -74,8 +74,8 @@ void AxisSettings::Private::currentIndexChanged(int index)
     auto *plane = qobject_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane());
     auto *diag = qobject_cast<AbstractCartesianDiagram *>(m_chart->coordinatePlane()->diagram());
     if (plane && diag) {
-        QVector<CartesianAxis *> axes = diag->axes().toVector();
-        Q_FOREACH (CartesianAxis *axis, axes) {
+        const auto axes = diag->axes();
+        for (CartesianAxis *axis : axes) {
             if (axis->position() == pos) {
                 m_currentAxis = axis;
                 break;
@@ -109,9 +109,9 @@ void AxisSettings::Private::setVisible(bool value)
     auto *plane = qobject_cast<CartesianCoordinatePlane *>(m_chart->coordinatePlane());
     auto *diag = qobject_cast<AbstractCartesianDiagram *>(m_chart->coordinatePlane()->diagram());
     if (plane && diag) {
-        QVector<CartesianAxis *> axes = m_axisCache[plane];
+        const QVector<CartesianAxis *> axes = m_axisCache[plane];
         bool foundAxis = false;
-        Q_FOREACH (CartesianAxis *axis, axes) {
+        for (CartesianAxis *axis : axes) {
             if (axis->position() == pos) {
                 foundAxis = true;
                 if (!value) {

@@ -58,10 +58,10 @@ void MainWindow::changeLeading(int leading)
 
 void MainWindow::addDataset()
 {
-    QStringList parts = lineAddDataset->text().split(';');
+    const QStringList parts = lineAddDataset->text().split(';');
     bool ok;
     QVector<qreal> vec;
-    foreach (const QString &str, parts) {
+    for (const QString &str : parts) {
         const qreal val = str.toDouble(&ok);
         if (ok)
             vec.append(val);
