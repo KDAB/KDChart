@@ -361,7 +361,7 @@ void LeveyJenningsDiagram::calculateMeanAndStandardDeviation() const
 
     qreal sum = 0.0;
     qreal sumSquares = 0.0;
-    Q_FOREACH (qreal value, values) {
+    for (qreal value : qAsConst(values)) {
         sum += value;
         sumSquares += value * value;
     }
@@ -478,13 +478,13 @@ void LeveyJenningsDiagram::drawChanges(PaintContext *ctx)
 {
     const unsigned int minTime = timeRange().first.toSecsSinceEpoch();
 
-    Q_FOREACH (const QDateTime &dt, d->fluidicsPackChanges) {
+    for (const QDateTime &dt : qAsConst(d->fluidicsPackChanges)) {
         const qreal xValue = (dt.toSecsSinceEpoch() - minTime) / static_cast<qreal>(24 * 60 * 60);
         const QPointF point(xValue, 0.0);
         drawFluidicsPackChangedSymbol(ctx, point);
     }
 
-    Q_FOREACH (const QDateTime &dt, d->sensorChanges) {
+    for (const QDateTime &dt : qAsConst(d->sensorChanges)) {
         const qreal xValue = (dt.toSecsSinceEpoch() - minTime) / static_cast<qreal>(24 * 60 * 60);
         const QPointF point(xValue, 0.0);
         drawSensorChangedSymbol(ctx, point);

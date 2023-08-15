@@ -245,17 +245,18 @@ void PrerenderedLabel::paint() const
         painter.setPen(QPen(Qt::red, 2));
         painter.setBrush(Qt::red);
         // paint markers for the reference points
-        QList<KDChartEnums::PositionValue> positions;
-        positions << KDChartEnums::PositionCenter
-                  << KDChartEnums::PositionNorthWest
-                  << KDChartEnums::PositionNorth
-                  << KDChartEnums::PositionNorthEast
-                  << KDChartEnums::PositionEast
-                  << KDChartEnums::PositionSouthEast
-                  << KDChartEnums::PositionSouth
-                  << KDChartEnums::PositionSouthWest
-                  << KDChartEnums::PositionWest;
-        Q_FOREACH (KDChartEnums::PositionValue position, positions) { // krazy:exclude=foreach
+        const QList<KDChartEnums::PositionValue> positions = {
+                KDChartEnums::PositionCenter,
+                KDChartEnums::PositionNorthWest,
+                KDChartEnums::PositionNorth,
+                KDChartEnums::PositionNorthEast,
+                KDChartEnums::PositionEast,
+                KDChartEnums::PositionSouthEast,
+                KDChartEnums::PositionSouth,
+                KDChartEnums::PositionSouthWest,
+                KDChartEnums::PositionWest,
+        };
+        for (KDChartEnums::PositionValue position : positions) {
             static const double Radius = 0.5;
             static const double Diameter = 2 * Radius;
 

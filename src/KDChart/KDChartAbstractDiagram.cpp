@@ -803,7 +803,7 @@ void AbstractDiagram::setSelection(const QRect &rect, QItemSelectionModel::Selec
 {
     const QModelIndexList indexes = d->indexesIn(rect);
     QItemSelection selection;
-    Q_FOREACH (const QModelIndex &index, indexes) {
+    for (const QModelIndex &index : indexes) {
         selection.append(QItemSelectionRange(index));
     }
     selectionModel()->select(selection, command);
@@ -812,7 +812,8 @@ void AbstractDiagram::setSelection(const QRect &rect, QItemSelectionModel::Selec
 QRegion AbstractDiagram::visualRegionForSelection(const QItemSelection &selection) const
 {
     QPolygonF polygon;
-    Q_FOREACH (const QModelIndex &index, selection.indexes()) {
+    const auto constIndexes = selection.indexes();
+    for (const QModelIndex &index : constIndexes) {
         polygon << d->reverseMapper.polygon(index.row(), index.column());
     }
     return polygon.isEmpty() ? QRegion() : QRegion(polygon.toPolygon());

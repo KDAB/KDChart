@@ -100,7 +100,7 @@ void GradientDialog::Private::updateGradientDisplay()
     gradient.setStart(0, 0);
     gradient.setStart(1, 0);
     gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
-    Q_FOREACH (const QGradientStop &stop, m_gradient)
+    for (const QGradientStop &stop : qAsConst(m_gradient))
         gradient.setColorAt(stop.first, stop.second);
     QPalette palette = ui->gradientDisplay->palette();
     palette.setBrush(QPalette::Window, gradient);
@@ -230,7 +230,7 @@ QGradient GradientDialog::gradient() const
     gradient.setStart(0, 0);
     gradient.setStart(1, 0);
     gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
-    Q_FOREACH (const QGradientStop &stop, d->m_gradient)
+    for (const QGradientStop &stop : qAsConst(d->m_gradient))
         gradient.setColorAt(stop.first, stop.second);
     return gradient;
 }
@@ -239,7 +239,7 @@ void GradientDialog::setGradient(const QGradient &gradient)
     d->m_gradient.clear();
     d->ui->stopSelector->clear();
     const QGradientStops stops = gradient.stops();
-    Q_FOREACH (const QGradientStop &stop, stops) {
+    for (const QGradientStop &stop : stops) {
         d->m_gradient.append(stop);
     }
     QStringList newEntries;

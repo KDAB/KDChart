@@ -125,7 +125,7 @@ QSize Legend::sizeHint() const
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "Legend::sizeHint() started";
 #endif
-    Q_FOREACH (AbstractLayoutItem *paintItem, d->paintItems) {
+    for (AbstractLayoutItem *paintItem : qAsConst(d->paintItems)) {
         paintItem->sizeHint();
     }
     return AbstractAreaWidget::sizeHint();
@@ -212,7 +212,7 @@ void Legend::paint(QPainter *painter)
 
     activateTheLayout();
 
-    Q_FOREACH (AbstractLayoutItem *paintItem, d->paintItems) {
+    for (AbstractLayoutItem *paintItem : qAsConst(d->paintItems)) {
         paintItem->paint(painter);
     }
 
@@ -224,7 +224,7 @@ void Legend::paint(QPainter *painter)
 uint Legend::datasetCount() const
 {
     int modelLabelsCount = 0;
-    Q_FOREACH (DiagramObserver *observer, d->observers) {
+    for (DiagramObserver *observer : d->observers) {
         AbstractDiagram *diagram = observer->diagram();
         Q_ASSERT(diagram->datasetLabels().count() == diagram->datasetBrushes().count());
         modelLabelsCount += diagram->datasetLabels().count();
@@ -1131,7 +1131,7 @@ int Legend::heightForWidth(int width) const
 
     int currentLineWidth = 0;
     int currentLineHeight = 0;
-    Q_FOREACH (const HDatasetItem &hdsItem, d->hLayoutDatasets) {
+    for (const HDatasetItem &hdsItem : qAsConst(d->hLayoutDatasets)) {
         const int payloadWidth = hdsItem.markerLine->sizeHint().width() + hdsItem.label->sizeHint().width();
         if (!currentLineWidth) {
             // first iteration

@@ -147,7 +147,8 @@ void PolarCoordinatePlane::layoutDiagrams()
     // FIXME distribute space according to options:
     const qreal oldStartPosition = startPosition();
     d->coordinateTransformations.clear();
-    Q_FOREACH (AbstractDiagram *diagram, diagrams()) {
+    const auto constDiagrams = diagrams();
+    for (AbstractDiagram *diagram : constDiagrams) {
         auto *polarDiagram = dynamic_cast<AbstractPolarDiagram *>(diagram);
         Q_ASSERT(polarDiagram);
         QPair<QPointF, QPointF> dataBoundariesPair = polarDiagram->dataBoundaries();

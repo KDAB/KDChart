@@ -314,14 +314,14 @@ void MainWindow::zoomOut()
 
 void MainWindow::zoomFit()
 {
-    QModelIndexList selectedIndexes = ui->ganttView->selectionModel()->selectedIndexes();
+    const QModelIndexList selectedIndexes = ui->ganttView->selectionModel()->selectedIndexes();
 
     if (selectedIndexes.isEmpty()) {
         return;
     }
 
     KDGantt::Span span;
-    Q_FOREACH (QModelIndex idx, selectedIndexes) {
+    for (QModelIndex idx : selectedIndexes) {
         const KDGantt::Span s = grid->mapToChart(grid->model()->index(idx.row(), 0));
         if (span.isValid()) {
             span = span.expandedTo(s);

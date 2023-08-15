@@ -68,8 +68,8 @@ void GraphicsScene::Private::resetConstraintItems()
     q->clearConstraintItems();
     if (constraintModel.isNull())
         return;
-    QList<Constraint> clst = constraintModel->constraints();
-    Q_FOREACH (const Constraint &c, clst) {
+    const QList<Constraint> clst = constraintModel->constraints();
+    for (const Constraint &c : clst) {
         createConstraintItem(c);
     }
     q->updateItems();
@@ -419,7 +419,7 @@ void GraphicsScene::insertItem(const QPersistentModelIndex &idx, GraphicsItem *i
         // Create items for constraints
         const QModelIndex sidx = summaryHandlingModel()->mapToSource(idx);
         const QList<Constraint> clst = d->constraintModel->constraintsForIndex(sidx);
-        Q_FOREACH (const Constraint &c, clst) {
+        for (const Constraint &c : clst) {
             QModelIndex other_idx;
             if (c.startIndex() == sidx) {
                 other_idx = c.endIndex();
@@ -469,7 +469,7 @@ void GraphicsScene::removeItem(const QModelIndex &idx)
                 QSet<ConstraintGraphicsItem *>::fromList(startConstraints) + QSet<ConstraintGraphicsItem *>::fromList(endConstraints);
 #endif
 
-            Q_FOREACH (ConstraintGraphicsItem *citem, clst) {
+            for (ConstraintGraphicsItem *citem : clst) {
                 d->deleteConstraintItem(citem);
             }
         }
@@ -791,7 +791,7 @@ void GraphicsScene::doPrint(QPainter *painter, const QRectF &targetRect,
         } while ((sidx = rowController()->indexBelow(sidx)).isValid());
         // Add a little margin to textWidth
         textWidth += QFontMetricsF(sceneFont).horizontalAdvance(QString::fromLatin1("X"));
-        Q_FOREACH (QGraphicsTextItem *item, textLabels) {
+        for (QGraphicsTextItem *item : qAsConst(textLabels)) {
             item->setPos(scnRect.left() - textWidth, item->y());
             item->show();
         }

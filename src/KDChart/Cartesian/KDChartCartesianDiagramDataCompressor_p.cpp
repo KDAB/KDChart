@@ -52,7 +52,8 @@ CartesianDiagramDataCompressor::AggregatedDataValueAttributes CartesianDiagramDa
 
     // aggregate attributes from all indices in the same CachePosition as index
     CartesianDiagramDataCompressor::AggregatedDataValueAttributes aggregated;
-    Q_FOREACH (const QModelIndex &neighborIndex, mapToModel(position)) {
+    const auto modelList = mapToModel(position);
+    for (const QModelIndex &neighborIndex : modelList) {
         DataValueAttributes attrs = diagram->dataValueAttributes(neighborIndex);
         // only store visible and unique attributes
         if (!attrs.isVisible()) {
@@ -479,7 +480,7 @@ void CartesianDiagramDataCompressor::retrieveModelData(const CachePosition &posi
             }
             result.value = std::numeric_limits<qreal>::quiet_NaN();
             result.key = 0.0;
-            Q_FOREACH (const QModelIndex &index, indexes) {
+            for (const QModelIndex &index : indexes) {
                 const qreal value = m_modelCache.data(index);
                 if (!ISNAN(value)) {
                     result.value = ISNAN(result.value) ? value : result.value + value;
@@ -491,7 +492,7 @@ void CartesianDiagramDataCompressor::retrieveModelData(const CachePosition &posi
             result.value /= indexes.size();
         }
 
-        Q_FOREACH (const QModelIndex &index, indexes) {
+        for (const QModelIndex &index : indexes) {
             // the DataPoint point is visible if any of the underlying, aggregated points is visible
             if (m_model->data(index, DataHiddenRole).value<bool>() == false) {
                 result.hidden = false;

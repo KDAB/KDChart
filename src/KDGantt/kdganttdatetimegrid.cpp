@@ -590,7 +590,7 @@ bool DateTimeGrid::mapFromChart(const Span &span, const QModelIndex &idx,
     QDateTime st = d->chartXtoDateTime(span.start());
     QDateTime et = d->chartXtoDateTime(span.start() + span.length());
     // qDebug() << "DateTimeGrid::mapFromChart("<<span<<") => "<< st << et;
-    Q_FOREACH (const Constraint &c, constraints) {
+    for (const Constraint &c : constraints) {
         if (c.type() != Constraint::TypeHard || !isSatisfiedConstraint(c))
             continue;
         if (c.startIndex() == idx) {
