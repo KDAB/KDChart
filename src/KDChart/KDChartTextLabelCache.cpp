@@ -246,15 +246,15 @@ void PrerenderedLabel::paint() const
         painter.setBrush(Qt::red);
         // paint markers for the reference points
         const QList<KDChartEnums::PositionValue> positions = {
-                KDChartEnums::PositionCenter,
-                KDChartEnums::PositionNorthWest,
-                KDChartEnums::PositionNorth,
-                KDChartEnums::PositionNorthEast,
-                KDChartEnums::PositionEast,
-                KDChartEnums::PositionSouthEast,
-                KDChartEnums::PositionSouth,
-                KDChartEnums::PositionSouthWest,
-                KDChartEnums::PositionWest,
+            KDChartEnums::PositionCenter,
+            KDChartEnums::PositionNorthWest,
+            KDChartEnums::PositionNorth,
+            KDChartEnums::PositionNorthEast,
+            KDChartEnums::PositionEast,
+            KDChartEnums::PositionSouthEast,
+            KDChartEnums::PositionSouth,
+            KDChartEnums::PositionSouthWest,
+            KDChartEnums::PositionWest,
         };
         for (KDChartEnums::PositionValue position : positions) {
             static const double Radius = 0.5;
