@@ -501,6 +501,8 @@ void AttributesModel::setSourceModel(QAbstractItemModel *newModel)
                    this, &AttributesModel::slotColumnsAboutToBeInserted);
         disconnect(oldModel, &QAbstractItemModel::columnsAboutToBeRemoved,
                    this, &AttributesModel::slotColumnsAboutToBeRemoved);
+        disconnect(oldModel, &QAbstractItemModel::modelAboutToBeReset,
+                   this, &AttributesModel::modelAboutToBeReset);
         disconnect(oldModel, &QAbstractItemModel::modelReset,
                    this, &AttributesModel::modelReset);
         disconnect(oldModel, &QAbstractItemModel::layoutChanged,
@@ -526,6 +528,8 @@ void AttributesModel::setSourceModel(QAbstractItemModel *newModel)
                 this, &AttributesModel::slotColumnsAboutToBeInserted);
         connect(newModel, &QAbstractItemModel::columnsAboutToBeRemoved,
                 this, &AttributesModel::slotColumnsAboutToBeRemoved);
+        connect(newModel, &QAbstractItemModel::modelAboutToBeReset,
+                this, &AttributesModel::modelAboutToBeReset);
         connect(newModel, &QAbstractItemModel::modelReset,
                 this, &AttributesModel::modelReset);
         connect(newModel, &QAbstractItemModel::layoutChanged,
