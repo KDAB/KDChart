@@ -313,10 +313,13 @@ void Legend::removeDiagram(AbstractDiagram *oldDiagram)
     if (oldDiagram) {
         DiagramObserver *oldObs = d->findObserverForDiagram(oldDiagram);
         if (oldObs) {
+            d->observers.removeOne(oldObs);
             delete oldObs;
-            d->observers.removeAt(d->observers.indexOf(oldObs));
         }
-        setNeedRebuild();
+
+        // We might be in the middle of a KDChart dctor and hit the assertObjectType
+        // the so queue the rebuid
+        QMetaObject::invokeMethod(this, &Legend::setNeedRebuild, Qt::QueuedConnection);
     }
 }
 
