@@ -390,7 +390,7 @@ void CartesianAxis::init()
     d->customTickLength = 3;
     d->position = Bottom;
     setCachedSizeDirty();
-    connect(this, &CartesianAxis::coordinateSystemChanged, this, &CartesianAxis::coordinateSystemChanged);
+    connect(this, &AbstractAxis::coordinateSystemChanged, this, &CartesianAxis::coordinateSystemChanged);
 }
 
 bool CartesianAxis::compare(const CartesianAxis *other) const
