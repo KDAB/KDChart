@@ -318,7 +318,7 @@ void Legend::removeDiagram(AbstractDiagram *oldDiagram)
         }
 
         // We might be in the middle of a KDChart dctor and hit the assertObjectType
-        // the so queue the rebuid
+        // so queue the rebuid
         QMetaObject::invokeMethod(this, &Legend::setNeedRebuild, Qt::QueuedConnection);
     }
 }
