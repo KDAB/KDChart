@@ -1,0 +1,59 @@
+# SPDX-FileCopyrightText: 2023 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+#
+# SPDX-License-Identifier: MIT
+
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os:
+          - ubuntu-22.04
+          - ubuntu-20.04
+          - windows-2022
+          - windows-2019
+          - macos-11
+          - macos-12
+        build_type: [Debug, Release]
+        aqtversion:
+          - null  # use whatever the default is
+        qt_target: [desktop]
+        qt:
+          - version: "5.15.2"
+            requested: "5.15"
+          - version: "6.3.2"  # Qt 6.3 is not an LTS version, so '6.3.*' always resolves to '6.3.2'
+            requested: "6.3.*"
+        cache:
+          - cached
+
+    steps:
+      - name: Install Qt with options and default aqtversion
+        if: ${{ !matrix.aqtversion && matrix.qt.version }}
+        uses: jurplel/install-qt-action@v3
+        with:
+          modules: ${{ matrix.qt.modules }}
+          version: ${{ matrix.qt.requested }}
+          cache: ${{ matrix.cache == 'cached' }}
+
+      - name: Install Qt with options and specified aqtversion
+        if: ${{ matrix.aqtversion && matrix.qt.version }}
+        uses: jurplel/install-qt-action@v3
+        with:
+          aqtversion: ${{ matrix.aqtversion }}
+          modules: ${{ matrix.qt.modules }}
+          version: ${{ matrix.qt.requested }}
+          cache: ${{ matrix.cache == 'cached' }}
+
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Build Project
+        run: |
+          mkdir build
+          cmake -S . -B ./build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DKDChart_QT6=${{ startsWith(matrix.qt.version, '6.') }}
+          cmake --build ./build
