@@ -17,43 +17,62 @@ jobs:
           - ubuntu-20.04
           - windows-2022
           - windows-2019
-          - macos-11
           - macos-12
-        build_type: [Debug, Release]
-        aqtversion:
-          - null  # use whatever the default is
-        qt_target: [desktop]
+          - macos-11
+        build_type:
+          - Debug
+          - Release
         qt:
           - version: "5.15.2"
             requested: "5.15"
           - version: "6.3.2"  # Qt 6.3 is not an LTS version, so '6.3.*' always resolves to '6.3.2'
             requested: "6.3.*"
-        cache:
-          - cached
 
     steps:
       - name: Install Qt with options and default aqtversion
-        if: ${{ !matrix.aqtversion && matrix.qt.version }}
         uses: jurplel/install-qt-action@v3
         with:
+          aqtversion: null # use whatever the default is
           modules: ${{ matrix.qt.modules }}
           version: ${{ matrix.qt.requested }}
-          cache: ${{ matrix.cache == 'cached' }}
-
-      - name: Install Qt with options and specified aqtversion
-        if: ${{ matrix.aqtversion && matrix.qt.version }}
-        uses: jurplel/install-qt-action@v3
-        with:
-          aqtversion: ${{ matrix.aqtversion }}
-          modules: ${{ matrix.qt.modules }}
-          version: ${{ matrix.qt.requested }}
-          cache: ${{ matrix.cache == 'cached' }}
+          cache: true
 
       - name: Checkout sources
         uses: actions/checkout@v4
 
+      - name: Create build directory
+        run: mkdir build
+
+      - name: Install ninja-build tool (must be after Qt due PATH changes)
+        uses: turtlesec-no/get-ninja@main
+
+      - name: Make sure MSVC is found when Ninja generator is in use
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Configure project
+        run: >
+          cmake -S . -B ./build -G Ninja
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -DKDChart_QT6=${{ startsWith(matrix.qt.version, '6.') }}
+          -DKDChart_TESTS=${{ matrix.build_type == 'Debug' }}
+          -DKDChart_EXAMPLES=${{ matrix.build_type == 'Debug' }}
+          -DKDChart_DOCS=${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
+
       - name: Build Project
-        run: |
-          mkdir build
-          cmake -S . -B ./build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DKDChart_QT6=${{ startsWith(matrix.qt.version, '6.') }}
-          cmake --build ./build
+        run: cmake --build ./build
+
+      - name: Run tests on Linux (offscreen)
+        if: ${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
+        run: ctest --test-dir ./build -C ${{ matrix.build_type }} --output-on-failure
+        env:
+          QT_QPA_PLATFORM: offscreen
+
+      - name: Run tests on Windown/macOS
+        if: ${{ matrix.build_type == 'Debug' && runner.os != 'Linux' }}
+        run: ctest --test-dir ./build -C ${{ matrix.build_type }} --output-on-failure
+
+      - name: Read tests log when it fails
+        uses: andstor/file-reader-action@v1
+        if: ${{ failure() && matrix.build_type == 'Debug' }}
+        with:
+          path: "./build/Testing/Temporary/LastTest.log"
