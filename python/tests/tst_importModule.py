@@ -24,8 +24,12 @@ class TestImportModules(unittest.TestCase):
         for t in inspect.getmembers(m):
             moduleSymbols.append(t[0])
 
-        symbols = ['AbstractGrid', 'EndTimeRole',
-                   'Span', 'TreeViewRowController']
+        symbols = ['AbstractGrid', 'AbstractRowController', 'Constraint',
+                   'ConstraintGraphicsItem', 'ConstraintModel', 'ConstraintProxy',
+                   'DateTimeGrid', 'DateTimeScaleFormatter', 'ForwardingProxyModel',
+                   'GraphicsScene', 'GraphicsView', 'ItemDataRole', 'ItemDelegate',
+                   'ItemType', 'Legend', 'ListViewRowController', 'ProxyModel',
+                   'QIntList', 'Span', 'StyleOptionGanttItem', 'View']
         for symbol in symbols:
             self.assertIn(symbol, moduleSymbols)
 
