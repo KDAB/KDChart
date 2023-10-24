@@ -174,7 +174,7 @@ public:
     const QPointF referencePoint(qreal *polarDegrees = nullptr) const;
 
     /**
-     * \brief Calculate a point, accordin to the reference area/position and the padding.
+     * \brief Calculate a point, according to the reference area/position and the padding.
      *
      * This method is called at drawing time: The returned point is used as anchor point.
      * Note that it is the task of the calling code to place the content, taking the alignment

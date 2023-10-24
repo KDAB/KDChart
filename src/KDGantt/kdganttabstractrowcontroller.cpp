@@ -15,7 +15,7 @@ using namespace KDGantt;
 /*!\class KDGantt::AbstractRowController kdganttabstractrowcontroller.h KDGanttAbstractRowController
  * \ingroup KDGantt
  * \brief Abstract baseclass for row controllers. A row controller is used
- * by the GraphicsView to nagivate the model and to determine the
+ * by the GraphicsView to navigate the model and to determine the
  * row geometries
  */
 

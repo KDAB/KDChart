@@ -86,7 +86,7 @@ public:
 
     /**
      * Called by the widget's sizeEvent. Adjust all internal structures,
-     * that are calculated, dependending on the size of the widget.
+     * that are calculated, depending on the size of the widget.
      *
      * @param area Size of the widget
      */
