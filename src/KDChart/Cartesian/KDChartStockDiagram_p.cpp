@@ -92,7 +92,7 @@ QPolygonF StockDiagram::Private::ThreeDPainter::drawTwoDLine(const QLineF &line,
     // The z coordinate to use (i.e., at what depth to draw the line)
     const qreal z = props.depth / 2.0;
 
-    // Projec the 2D points of the line in 3D
+    // Project the 2D points of the line in 3D
     const QPointF deepP1 = projectPoint(line.p1(), z, props.angle);
     const QPointF deepP2 = projectPoint(line.p2(), z, props.angle);
 

@@ -1,3 +1,5 @@
 [codespell]
-skip = ./build-*,.git,*.kdx
+skip = ./build-*,.git,*.kdx,*.pdf
 interactive = 3
+#ignore-words-list = ba,currect,ro,siz
+ignore-regex = \b([a-z]+[A-Z0-9][a-z0-9]*|siz|implementor|re-use)\b

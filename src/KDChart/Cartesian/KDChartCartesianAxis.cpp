@@ -239,7 +239,7 @@ bool TickIterator::areAlmostEqual(qreal r1, qreal r2) const
             // which needs this function to perform a reasonable comparison.
             span = qFuzzyIsNull(m_dimension.start) ? 1 : qAbs(m_dimension.start);
         }
-        return qAbs(r2 - r1) < ( span )*1e-6;
+        return qAbs(r2 - r1) < (span) * 1e-6;
     } else {
         return qAbs(r2 - r1) < qMax(qAbs(r1), qAbs(r2)) * 0.01;
     }
