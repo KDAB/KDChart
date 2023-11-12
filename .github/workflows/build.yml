@@ -4,7 +4,13 @@
 
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   build:
@@ -14,34 +20,32 @@ jobs:
       matrix:
         os:
           - ubuntu-22.04
-          - ubuntu-20.04
           - windows-2022
-          - windows-2019
           - macos-12
-          - macos-11
+
         build_type:
           - Debug
           - Release
-        qt:
-          - version: "5.15.2"
-            requested: "5.15"
-          - version: "6.3.2"  # Qt 6.3 is not an LTS version, so '6.3.*' always resolves to '6.3.2'
-            requested: "6.3.*"
+
+        link_type:
+          - shared
+          - static
+
+        config:
+          - qt_version: "5.15"
+          - qt_version: "6.3.*"
 
     steps:
       - name: Install Qt with options and default aqtversion
         uses: jurplel/install-qt-action@v3
         with:
           aqtversion: null # use whatever the default is
-          modules: ${{ matrix.qt.modules }}
-          version: ${{ matrix.qt.requested }}
+          modules: ${{ matrix.config.qt_modules }}
+          version: ${{ matrix.config.qt_version }}
           cache: true
 
       - name: Checkout sources
         uses: actions/checkout@v4
-
-      - name: Create build directory
-        run: mkdir build
 
       - name: Install ninja-build tool (must be after Qt due PATH changes)
         uses: turtlesec-no/get-ninja@main
@@ -52,11 +56,15 @@ jobs:
       - name: Configure project
         run: >
           cmake -S . -B ./build -G Ninja
+          --warn-uninitialized -Werror=dev
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-          -DKDChart_QT6=${{ startsWith(matrix.qt.version, '6.') }}
+          -DKDChart_QT6=${{ startsWith(matrix.config.qt_version, '6.') }}
+          -DKDChart_STATIC=${{ matrix.link_type == 'static' }}
           -DKDChart_TESTS=${{ matrix.build_type == 'Debug' }}
           -DKDChart_EXAMPLES=${{ matrix.build_type == 'Debug' }}
           -DKDChart_DOCS=${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
+          -DKDChart_PYTHON_BINDINGS=${{ matrix.config.pip_pgks }}
+          -DPython3_FIND_VIRTUALENV=ONLY
 
       - name: Build Project
         run: cmake --build ./build
