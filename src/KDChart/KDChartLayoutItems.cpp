@@ -479,8 +479,7 @@ void KDChart::TextLayoutItem::paint(QPainter *painter)
     }
     painter->setFont(f);
 
-    QSize innerSize = unrotatedTextSize();
-    QRectF rect = QRectF(QPointF(0, 0), innerSize);
+    QRectF rect = mRect;
     rect.translate(-rect.center());
     painter->translate(mRect.center());
     painter->rotate(mAttributes.rotation());
