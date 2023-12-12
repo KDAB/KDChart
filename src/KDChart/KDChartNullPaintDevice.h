@@ -18,65 +18,65 @@ namespace KDChart {
 class NullPaintEngine : public QPaintEngine
 {
 public:
-    virtual bool begin(QPaintDevice * /*pdev*/)
+    bool begin(QPaintDevice * /*pdev*/) override
     {
         return true;
     }
-    virtual void drawEllipse(const QRectF & /*rect*/)
+    void drawEllipse(const QRectF & /*rect*/) override
     {
     }
-    virtual void drawEllipse(const QRect & /*rect*/)
+    void drawEllipse(const QRect & /*rect*/) override
     {
     }
-    virtual void drawImage(const QRectF & /*rectangle*/, const QImage & /*image*/, const QRectF & /*sr*/, Qt::ImageConversionFlags /*flags*/)
+    void drawImage(const QRectF & /*rectangle*/, const QImage & /*image*/, const QRectF & /*sr*/, Qt::ImageConversionFlags /*flags*/) override
     {
     }
-    virtual void drawLines(const QLineF * /*lines*/, int /*lineCount*/)
+    void drawLines(const QLineF * /*lines*/, int /*lineCount*/) override
     {
     }
-    virtual void drawLines(const QLine * /*lines*/, int /*lineCount*/)
+    void drawLines(const QLine * /*lines*/, int /*lineCount*/) override
     {
     }
-    virtual void drawPath(const QPainterPath & /*path*/)
+    void drawPath(const QPainterPath & /*path*/) override
     {
     }
-    virtual void drawPixmap(const QRectF & /*r*/, const QPixmap & /*pm*/, const QRectF & /*sr*/)
+    void drawPixmap(const QRectF & /*r*/, const QPixmap & /*pm*/, const QRectF & /*sr*/) override
     {
     }
-    virtual void drawPoints(const QPointF * /*points*/, int /*pointCount*/)
+    void drawPoints(const QPointF * /*points*/, int /*pointCount*/) override
     {
     }
-    virtual void drawPoints(const QPoint * /*points*/, int /*pointCount*/)
+    void drawPoints(const QPoint * /*points*/, int /*pointCount*/) override
     {
     }
-    virtual void drawPolygon(const QPointF * /*points*/, int /*pointCount*/, PolygonDrawMode /*mode*/)
+    void drawPolygon(const QPointF * /*points*/, int /*pointCount*/, PolygonDrawMode /*mode*/) override
     {
     }
-    virtual void drawPolygon(const QPoint * /*points*/, int /*pointCount*/, PolygonDrawMode /*mode*/)
+    void drawPolygon(const QPoint * /*points*/, int /*pointCount*/, PolygonDrawMode /*mode*/) override
     {
     }
-    virtual void drawRects(const QRectF * /*rects*/, int /*rectCount*/)
+    void drawRects(const QRectF * /*rects*/, int /*rectCount*/) override
     {
     }
-    virtual void drawRects(const QRect * /*rects*/, int /*rectCount*/)
+    void drawRects(const QRect * /*rects*/, int /*rectCount*/) override
     {
     }
-    virtual void drawTextItem(const QPointF & /*p*/, const QTextItem & /*textItem*/)
+    void drawTextItem(const QPointF & /*p*/, const QTextItem & /*textItem*/) override
     {
     }
-    virtual void drawTiledPixmap(const QRectF & /*rect*/, const QPixmap & /*pixmap*/, const QPointF & /*p*/)
+    void drawTiledPixmap(const QRectF & /*rect*/, const QPixmap & /*pixmap*/, const QPointF & /*p*/) override
     {
     }
-    virtual bool end()
+    bool end() override
     {
         return true;
     }
 
-    virtual Type type() const
+    Type type() const override
     {
         return QPaintEngine::User;
     }
-    virtual void updateState(const QPaintEngineState & /*state*/)
+    void updateState(const QPaintEngineState & /*state*/) override
     {
     }
 };
@@ -88,11 +88,11 @@ public:
         : m_size(size)
     {
     }
-    ~NullPaintDevice()
+    ~NullPaintDevice() override
     {
     }
 
-    int metric(PaintDeviceMetric metric) const
+    int metric(PaintDeviceMetric metric) const override
     {
         switch (metric) {
         case QPaintDevice::PdmWidth:
@@ -125,7 +125,7 @@ public:
         return 1;
     }
 
-    QPaintEngine *paintEngine() const
+    QPaintEngine *paintEngine() const override
     {
         static NullPaintEngine nullPaintEngine;
         return &nullPaintEngine;
