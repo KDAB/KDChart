@@ -444,7 +444,7 @@ add_library(
     ${KDChart_LIBRARY_MODE} ${SOURCES} ${FORMS} ${RESOURCES}
 )
 add_library(
-    KDAB::kdchart ALIAS kdchart
+    KDChart::kdchart ALIAS kdchart
 )
 set_target_properties(
     kdchart
