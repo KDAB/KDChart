@@ -247,7 +247,7 @@ QVariant AttributesModel::defaultHeaderData(int section, Qt::Orientation orienta
     switch (role) {
     case Qt::DisplayRole:
         // TODO for KDChart 3.0: return QString::number( dataset + 1 );
-        return QString{QLatin1String(orientation == Qt::Vertical ? "Series " : "Item ") + QString::number(dataset)};
+        return QString {QLatin1String(orientation == Qt::Vertical ? "Series " : "Item ") + QString::number(dataset)};
     case KDChart::DatasetBrushRole:
         return d->palette.getBrush(dataset);
     case KDChart::DatasetPenRole:
