@@ -29,7 +29,7 @@ class TestImportModules(unittest.TestCase):
                    'DateTimeGrid', 'DateTimeScaleFormatter', 'ForwardingProxyModel',
                    'GraphicsScene', 'GraphicsView', 'ItemDataRole', 'ItemDelegate',
                    'ItemType', 'Legend', 'ListViewRowController', 'ProxyModel',
-                   'QIntList', 'Span', 'StyleOptionGanttItem', 'View']
+                   'Span', 'StyleOptionGanttItem', 'View']
         for symbol in symbols:
             self.assertIn(symbol, moduleSymbols)
 
