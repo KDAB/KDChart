@@ -53,8 +53,8 @@ Please submit your contributions or issue reports to our GitHub space at
 
 ## License
 
-The KD Chart Software is Copyright 2001-2023 Klarälvdalens Datakonsult AB (KDAB),
-and is available under the terms of the [MIT](LICENSES/MIT.txt) license.
+The KD Chart Software is © Klarälvdalens Datakonsult AB (KDAB), and is
+available under the terms of the [MIT](LICENSES/MIT.txt) license.
 
 Contact KDAB at <info@kdab.com> for any licensing queries.
 
