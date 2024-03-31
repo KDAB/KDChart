@@ -27,3 +27,8 @@ License: BSD-3-Clause
 Files: cmake/ECM/modules/*
 Copyright: The KDE Project
 License: BSD-3-Clause
+
+# doxygen awesome
+Files: docs/api/doxygen-awesome.css
+Copyright: 2021 - 2023 jothepro
+License: MIT
