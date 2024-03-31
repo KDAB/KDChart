@@ -544,7 +544,7 @@ install(
 if(MSVC AND NOT ${PROJECT_NAME}_STATIC)
     install(
         FILES "$<TARGET_PDB_FILE_DIR:kdchart>/$<TARGET_PDB_FILE_NAME:kdchart>"
-        DESTINATION ${INSTALL_LIBRARY_DIR}
+        DESTINATION ${INSTALL_RUNTIME_DIR}
         CONFIGURATIONS Debug RelWithDebInfo
     )
 endif()
