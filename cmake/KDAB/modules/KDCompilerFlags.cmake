@@ -1,5 +1,5 @@
 #
-# SPDX-FileCopyrightText: 2021-2023 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+# SPDX-FileCopyrightText: 2021 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #
@@ -36,9 +36,10 @@ endif()
 
 # Do not treat the operator name keywords and, bitand, bitor, compl, not, or and xor as synonyms as keywords.
 # They're not supported under Visual Studio out of the box thus using them limits the portability of code
-if(CMAKE_COMPILER_IS_GNUCXX OR
-    CMAKE_C_COMPILER_ID MATCHES "Clang" OR
-    (CMAKE_C_COMPILER_ID STREQUAL "Intel" AND NOT WIN32))
+if(CMAKE_COMPILER_IS_GNUCXX
+   OR CMAKE_C_COMPILER_ID MATCHES "Clang"
+   OR (CMAKE_C_COMPILER_ID STREQUAL "Intel" AND NOT WIN32)
+)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-operator-names")
 endif()
 
@@ -61,9 +62,10 @@ if(CYGWIN)
     add_definitions(-D_GNU_SOURCE)
 endif()
 
-if((CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND NOT APPLE) OR
-    (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND NOT APPLE) OR
-    (CMAKE_CXX_COMPILER_ID STREQUAL "Intel" AND NOT WIN32))
+if((CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND NOT APPLE)
+   OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND NOT APPLE)
+   OR (CMAKE_CXX_COMPILER_ID STREQUAL "Intel" AND NOT WIN32)
+)
     # Linker warnings should be treated as errors
     set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--fatal-warnings ${CMAKE_SHARED_LINKER_FLAGS}")
     set(CMAKE_MODULE_LINKER_FLAGS "-Wl,--fatal-warnings ${CMAKE_MODULE_LINKER_FLAGS}")

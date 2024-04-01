@@ -108,7 +108,7 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 if(${PROJECT_NAME}_QT6)
-    set(Qt_VERSION_MAJOR 6)
+    set(QT_VERSION_MAJOR 6)
     set(QT_MIN_VERSION "6.0.0")
     find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Gui Widgets PrintSupport Svg)
     list(
@@ -121,7 +121,7 @@ if(${PROJECT_NAME}_QT6)
     )
     set(${PROJECT_NAME}_LIBRARY_QTID "-qt6")
 else()
-    set(Qt_VERSION_MAJOR 5)
+    set(QT_VERSION_MAJOR 5)
     set(QT_MIN_VERSION "5.15.0") # at least Qt::endl is needed
     find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Gui Widgets PrintSupport Svg)
     list(
@@ -230,7 +230,7 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
 
     # Generate .pri file for qmake users (except when using the VS generator)
     if(NOT CMAKE_CONFIGURATION_TYPES)
-        if(Qt_VERSION_MAJOR EQUAL 5 OR (Qt_VERSION_MAJOR EQUAL 6 AND Qt6Core_VERSION VERSION_GREATER "6.2"))
+        if(QT_VERSION_MAJOR EQUAL 5 OR (QT_VERSION_MAJOR EQUAL 6 AND Qt6Core_VERSION VERSION_GREATER "6.2"))
             include(ECMGeneratePriFile) #not available for Qt6.2 or lower
             set(PROJECT_VERSION_STRING ${${PROJECT_NAME}_VERSION})
             ecm_generate_pri_file(
@@ -262,7 +262,7 @@ add_subdirectory(src)
 
 # only build python bindings for Qt5.12 or greater
 if(${PROJECT_NAME}_PYTHON_BINDINGS)
-    if(Qt_VERSION_MAJOR EQUAL 5 AND Qt5Core_VERSION VERSION_LESS 5.12)
+    if(QT_VERSION_MAJOR EQUAL 5 AND Qt5Core_VERSION VERSION_LESS 5.12)
         message(WARNING "** Disabling Python Bindings. Qt version is too old and unsupported.")
         set(${PROJECT_NAME}_PYTHON_BINDINGS OFF)
     elseif(CMAKE_BUILD_TYPE MATCHES "^[Dd]eb" OR ${PROJECT_NAME}_STATIC)
@@ -288,8 +288,8 @@ if(${PROJECT_NAME}_TESTS OR ${PROJECT_NAME}_EXAMPLES)
 endif()
 
 if(${PROJECT_NAME}_TESTS)
-    find_package(Qt${Qt_VERSION_MAJOR}Test REQUIRED)
-    list(APPEND QT_LIBRARIES Qt${Qt_VERSION_MAJOR}::Test)
+    find_package(Qt${QT_VERSION_MAJOR}Test REQUIRED)
+    list(APPEND QT_LIBRARIES Qt${QT_VERSION_MAJOR}::Test)
     add_subdirectory(qtests)
     add_subdirectory(tests)
 endif()
