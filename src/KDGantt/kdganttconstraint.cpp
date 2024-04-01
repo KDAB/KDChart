@@ -64,7 +64,7 @@ Constraint::Constraint(const QModelIndex &idx1,
                        const QModelIndex &idx2,
                        Constraint::Type type,
                        Constraint::RelationType relationType,
-                       const Constraint::DataMap &datamap)
+                       const DataMap &datamap)
     : d(new Private)
 {
     d->start = idx1;
