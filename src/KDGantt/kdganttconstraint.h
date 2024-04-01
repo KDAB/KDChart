@@ -23,6 +23,8 @@
 #endif
 
 namespace KDGantt {
+using DataMap = QMap<int, QVariant>;
+
 class KDGANTT_EXPORT Constraint
 {
     class Private;
@@ -46,8 +48,6 @@ public:
         ValidConstraintPen = Qt::UserRole,
         InvalidConstraintPen
     };
-
-    typedef QMap<int, QVariant> DataMap;
 
     Constraint();
     Constraint(const QModelIndex &idx1,
