@@ -1,5 +1,5 @@
 #
-# SPDX-FileCopyrightText: 2021-2023 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+# SPDX-FileCopyrightText: 2021 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #
@@ -21,7 +21,10 @@ endif()
 function(kd_append_if condition value)
     if(${condition})
         foreach(variable ${ARGN})
-            set(${variable} "${${variable}} ${value}" PARENT_SCOPE)
+            set(${variable}
+                "${${variable}} ${value}"
+                PARENT_SCOPE
+            )
         endforeach()
     endif()
 endfunction()
