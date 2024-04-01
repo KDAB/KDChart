@@ -12,7 +12,7 @@ add_executable(
 target_link_libraries(
     Sql-example
     ${QT_LIBRARIES}
-    Qt${Qt_VERSION_MAJOR}::Sql
+    Qt${QT_VERSION_MAJOR}::Sql
     kdchart
     testtools
 )
