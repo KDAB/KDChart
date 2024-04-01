@@ -44,7 +44,7 @@ AbstractDiagram::AbstractDiagram(QWidget *parent, AbstractCoordinatePlane *plane
 
 AbstractDiagram::~AbstractDiagram()
 {
-    emit aboutToBeDestroyed();
+    Q_EMIT aboutToBeDestroyed();
     delete _d;
 }
 
@@ -116,21 +116,21 @@ void AbstractDiagram::setModel(QAbstractItemModel *newModel)
 
     scheduleDelayedItemsLayout();
     setDataBoundariesDirty();
-    emit modelsChanged();
+    Q_EMIT modelsChanged();
 }
 
 void AbstractDiagram::setSelectionModel(QItemSelectionModel *newSelectionModel)
 {
     if (selectionModel()) {
-        disconnect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SIGNAL(modelsChanged()));
-        disconnect(selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SIGNAL(modelsChanged()));
+        disconnect(selectionModel(), &QItemSelectionModel::currentChanged, this, &AbstractDiagram::modelsChanged);
+        disconnect(selectionModel(), &QItemSelectionModel::selectionChanged, this, &AbstractDiagram::modelsChanged);
     }
     QAbstractItemView::setSelectionModel(newSelectionModel);
     if (selectionModel()) {
-        connect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SIGNAL(modelsChanged()));
-        connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SIGNAL(modelsChanged()));
+        connect(selectionModel(), &QItemSelectionModel::currentChanged, this, &AbstractDiagram::modelsChanged);
+        connect(selectionModel(), &QItemSelectionModel::selectionChanged, this, &AbstractDiagram::modelsChanged);
     }
-    emit modelsChanged();
+    Q_EMIT modelsChanged();
 }
 
 /*! Sets an external AttributesModel on this diagram. By default, a diagram has it's
@@ -157,7 +157,7 @@ void AbstractDiagram::setAttributesModel(AttributesModel *amodel)
     d->setAttributesModel(amodel);
     scheduleDelayedItemsLayout();
     setDataBoundariesDirty();
-    emit modelsChanged();
+    Q_EMIT modelsChanged();
 }
 
 bool AbstractDiagram::usesExternalAttributesModel() const
@@ -231,19 +231,19 @@ void AbstractDiagram::setHidden(const QModelIndex &index, bool hidden)
         conditionallyMapFromSource(index),
         QVariant::fromValue(hidden),
         DataHiddenRole);
-    emit dataHidden();
+    Q_EMIT dataHidden();
 }
 
 void AbstractDiagram::setHidden(int dataset, bool hidden)
 {
     d->setDatasetAttrs(dataset, QVariant::fromValue(hidden), DataHiddenRole);
-    emit dataHidden();
+    Q_EMIT dataHidden();
 }
 
 void AbstractDiagram::setHidden(bool hidden)
 {
     d->attributesModel->setModelData(QVariant::fromValue(hidden), DataHiddenRole);
-    emit dataHidden();
+    Q_EMIT dataHidden();
 }
 
 bool AbstractDiagram::isHidden() const
@@ -275,13 +275,13 @@ void AbstractDiagram::setDataValueAttributes(const QModelIndex &index,
 {
     d->attributesModel->setData(conditionallyMapFromSource(index), QVariant::fromValue(a),
                                 DataValueLabelAttributesRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 void AbstractDiagram::setDataValueAttributes(int dataset, const DataValueAttributes &a)
 {
     d->setDatasetAttrs(dataset, QVariant::fromValue(a), DataValueLabelAttributesRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 DataValueAttributes AbstractDiagram::dataValueAttributes() const
@@ -320,7 +320,7 @@ DataValueAttributes AbstractDiagram::dataValueAttributes(const QModelIndex &inde
 void AbstractDiagram::setDataValueAttributes(const DataValueAttributes &a)
 {
     d->attributesModel->setModelData(QVariant::fromValue(a), DataValueLabelAttributesRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 void AbstractDiagram::setAllowOverlappingDataValueTexts(bool allow)
@@ -329,7 +329,7 @@ void AbstractDiagram::setAllowOverlappingDataValueTexts(bool allow)
     attrs.setShowOverlappingDataLabels(allow);
     setDataValueAttributes(attrs);
     d->allowOverlappingDataValueTexts = allow;
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 bool AbstractDiagram::allowOverlappingDataValueTexts() const
@@ -340,7 +340,7 @@ bool AbstractDiagram::allowOverlappingDataValueTexts() const
 void AbstractDiagram::setAntiAliasing(bool enabled)
 {
     d->antiAliasing = enabled;
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 bool AbstractDiagram::antiAliasing() const
@@ -351,7 +351,7 @@ bool AbstractDiagram::antiAliasing() const
 void AbstractDiagram::setPercentMode(bool percent)
 {
     d->percent = percent;
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 bool AbstractDiagram::percentMode() const
@@ -603,20 +603,20 @@ void AbstractDiagram::setPen(const QModelIndex &index, const QPen &pen)
     attributesModel()->setData(
         conditionallyMapFromSource(index),
         QVariant::fromValue(pen), DatasetPenRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 void AbstractDiagram::setPen(const QPen &pen)
 {
     attributesModel()->setModelData(
         QVariant::fromValue(pen), DatasetPenRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 void AbstractDiagram::setPen(int dataset, const QPen &pen)
 {
     d->setDatasetAttrs(dataset, QVariant::fromValue(pen), DatasetPenRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 QPen AbstractDiagram::pen() const
@@ -645,20 +645,20 @@ void AbstractDiagram::setBrush(const QModelIndex &index, const QBrush &brush)
     attributesModel()->setData(
         conditionallyMapFromSource(index),
         QVariant::fromValue(brush), DatasetBrushRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 void AbstractDiagram::setBrush(const QBrush &brush)
 {
     attributesModel()->setModelData(
         QVariant::fromValue(brush), DatasetBrushRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 void AbstractDiagram::setBrush(int dataset, const QBrush &brush)
 {
     d->setDatasetAttrs(dataset, QVariant::fromValue(brush), DatasetBrushRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 QBrush AbstractDiagram::brush() const
@@ -803,7 +803,7 @@ void AbstractDiagram::setSelection(const QRect &rect, QItemSelectionModel::Selec
 {
     const QModelIndexList indexes = d->indexesIn(rect);
     QItemSelection selection;
-    Q_FOREACH (const QModelIndex &index, indexes) {
+    for (const QModelIndex &index : indexes) {
         selection.append(QItemSelectionRange(index));
     }
     selectionModel()->select(selection, command);
@@ -812,7 +812,8 @@ void AbstractDiagram::setSelection(const QRect &rect, QItemSelectionModel::Selec
 QRegion AbstractDiagram::visualRegionForSelection(const QItemSelection &selection) const
 {
     QPolygonF polygon;
-    Q_FOREACH (const QModelIndex &index, selection.indexes()) {
+    const auto constIndexes = selection.indexes();
+    for (const QModelIndex &index : constIndexes) {
         polygon << d->reverseMapper.polygon(index.row(), index.column());
     }
     return polygon.isEmpty() ? QRegion() : QRegion(polygon.toPolygon());
@@ -938,7 +939,7 @@ void AbstractDiagram::setDatasetDimensionInternal(int dimension)
     d->datasetDimension = dimension;
     d->attributesModel->setDatasetDimension(dimension);
     setDataBoundariesDirty();
-    emit layoutChanged(this);
+    Q_EMIT layoutChanged(this);
 }
 
 qreal AbstractDiagram::valueForCell(int row, int column) const

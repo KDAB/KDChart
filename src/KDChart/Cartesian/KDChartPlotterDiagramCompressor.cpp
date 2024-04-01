@@ -523,7 +523,7 @@ bool PlotterDiagramCompressor::Private::inBoundaries(Qt::Orientation orient, con
 //        }
 //    }
 //    setBoundaries( qMakePair( QPointF( minX, minY ), QPointF( maxX, maxY ) ) );
-//    emit m_parent->rowCountChanged();
+//    Q_EMIT m_parent->rowCountChanged();
 //}
 #include <QDebug>
 // TODO this is not threadsafe do never try to invoke the painting in a different thread than this
@@ -629,7 +629,7 @@ void PlotterDiagramCompressor::Private::rowsInserted(const QModelIndex & /*paren
             }
         }
     }
-    emit m_parent->rowCountChanged();
+    Q_EMIT m_parent->rowCountChanged();
 }
 
 void PlotterDiagramCompressor::setCompressionModel(CompressionMode value)
@@ -638,7 +638,7 @@ void PlotterDiagramCompressor::setCompressionModel(CompressionMode value)
     if (d->m_mode != value) {
         d->m_mode = value;
         d->clearBuffer();
-        emit rowCountChanged();
+        Q_EMIT rowCountChanged();
     }
 }
 
@@ -646,7 +646,7 @@ void PlotterDiagramCompressor::Private::setBoundaries(const Boundaries &bound)
 {
     if (bound != m_boundary) {
         m_boundary = bound;
-        emit m_parent->boundariesChanged();
+        Q_EMIT m_parent->boundariesChanged();
     }
 }
 
@@ -735,7 +735,7 @@ void PlotterDiagramCompressor::setForcedDataBoundaries(const QPair<qreal, qreal>
         d->m_forcedXBoundaries = bounds;
     }
     d->clearBuffer();
-    emit boundariesChanged();
+    Q_EMIT boundariesChanged();
 }
 
 QAbstractItemModel *PlotterDiagramCompressor::model() const
@@ -756,9 +756,9 @@ void PlotterDiagramCompressor::setModel(QAbstractItemModel *model)
         d->m_bufferlist.resize(datasetCount());
         d->m_accumulatedDistances.resize(datasetCount());
         d->calculateDataBoundaries();
-        connect(d->m_model, SIGNAL(rowsInserted(QModelIndex, int, int)), d, SLOT(rowsInserted(QModelIndex, int, int)));
-        connect(d->m_model, SIGNAL(modelReset()), d, SLOT(clearBuffer()));
-        connect(d->m_model, SIGNAL(destroyed(QObject *)), d, SLOT(setModelToZero()));
+        connect(d->m_model, &QAbstractItemModel::rowsInserted, d, &Private::rowsInserted);
+        connect(d->m_model, &QAbstractItemModel::modelReset, d, &Private::clearBuffer);
+        connect(d->m_model, &QAbstractItemModel::destroyed, d, &Private::setModelToZero);
     }
 }
 
@@ -786,7 +786,7 @@ void PlotterDiagramCompressor::setMergeRadius(qreal radius)
     if (d->m_mergeRadius != radius) {
         d->m_mergeRadius = radius;
         if (d->m_mode != PlotterDiagramCompressor::SLOPE)
-            emit rowCountChanged();
+            Q_EMIT rowCountChanged();
     }
 }
 
@@ -794,7 +794,7 @@ void PlotterDiagramCompressor::setMaxSlopeChange(qreal value)
 {
     if (d->m_maxSlopeRadius != value) {
         d->m_maxSlopeRadius = value;
-        emit boundariesChanged();
+        Q_EMIT boundariesChanged();
     }
 }
 

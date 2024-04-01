@@ -53,8 +53,8 @@ bool AbstractAxis::Private::setDiagram(AbstractDiagram *diagram_, bool delayedIn
         delete observer;
         if (mDiagram) {
             observer = new DiagramObserver(mDiagram, mAxis);
-            const bool con = connect(observer, SIGNAL(diagramDataChanged(AbstractDiagram *)),
-                                     mAxis, SIGNAL(coordinateSystemChanged()));
+            const bool con = connect(observer, &DiagramObserver::diagramDataChanged,
+                                     mAxis, &AbstractAxis::coordinateSystemChanged);
             Q_UNUSED(con)
             Q_ASSERT(con);
             bNewDiagramStored = true;
@@ -101,7 +101,7 @@ AbstractAxis::AbstractAxis(AbstractDiagram *diagram)
     : AbstractArea(new Private(diagram, this))
 {
     init();
-    QTimer::singleShot(0, this, SLOT(delayedInit()));
+    QTimer::singleShot(0, this, &AbstractAxis::delayedInit);
 }
 
 AbstractAxis::~AbstractAxis()
@@ -159,8 +159,8 @@ void AbstractAxis::deleteObserver(AbstractDiagram *diagram)
 void AbstractAxis::connectSignals()
 {
     if (d->observer) {
-        const bool con = connect(d->observer, SIGNAL(diagramDataChanged(AbstractDiagram *)),
-                                 this, SIGNAL(coordinateSystemChanged()));
+        const bool con = connect(d->observer, &DiagramObserver::diagramDataChanged,
+                                 this, &AbstractAxis::coordinateSystemChanged);
         Q_UNUSED(con);
         Q_ASSERT(con);
     }

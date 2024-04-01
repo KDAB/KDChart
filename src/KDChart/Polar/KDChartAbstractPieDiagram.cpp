@@ -103,19 +103,19 @@ bool AbstractPieDiagram::autoRotateLabels() const
 void AbstractPieDiagram::setPieAttributes(const PieAttributes &attrs)
 {
     d->attributesModel->setModelData(QVariant::fromValue(attrs), PieAttributesRole);
-    emit layoutChanged(this);
+    Q_EMIT layoutChanged(this);
 }
 
 void AbstractPieDiagram::setPieAttributes(int column, const PieAttributes &attrs)
 {
     d->setDatasetAttrs(column, QVariant::fromValue(attrs), PieAttributesRole);
-    emit layoutChanged(this);
+    Q_EMIT layoutChanged(this);
 }
 
 void AbstractPieDiagram::setPieAttributes(const QModelIndex &index, const PieAttributes &attrs)
 {
     d->attributesModel->setData(index, QVariant::fromValue(attrs), PieAttributesRole);
-    emit layoutChanged(this);
+    Q_EMIT layoutChanged(this);
 }
 
 PieAttributes AbstractPieDiagram::pieAttributes() const
@@ -142,19 +142,19 @@ PieAttributes AbstractPieDiagram::pieAttributes(const QModelIndex &index) const
 void AbstractPieDiagram::setThreeDPieAttributes(const ThreeDPieAttributes &tda)
 {
     d->attributesModel->setModelData(QVariant::fromValue(tda), ThreeDPieAttributesRole);
-    emit layoutChanged(this);
+    Q_EMIT layoutChanged(this);
 }
 
 void AbstractPieDiagram::setThreeDPieAttributes(int column, const ThreeDPieAttributes &tda)
 {
     d->setDatasetAttrs(column, QVariant::fromValue(tda), ThreeDPieAttributesRole);
-    emit layoutChanged(this);
+    Q_EMIT layoutChanged(this);
 }
 
 void AbstractPieDiagram::setThreeDPieAttributes(const QModelIndex &index, const ThreeDPieAttributes &tda)
 {
     model()->setData(index, QVariant::fromValue(tda), ThreeDPieAttributesRole);
-    emit layoutChanged(this);
+    Q_EMIT layoutChanged(this);
 }
 
 ThreeDPieAttributes AbstractPieDiagram::threeDPieAttributes() const

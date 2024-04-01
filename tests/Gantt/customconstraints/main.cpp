@@ -107,8 +107,8 @@ public:
         view.setGrid(&grid);
         view.setModel(&model);
 
-        connect(&slider, SIGNAL(valueChanged(int)),
-                this, SLOT(slotZoom(int)));
+        connect(&slider, &QSlider::valueChanged,
+                this, &MyWidget::slotZoom);
     }
 
 public slots:

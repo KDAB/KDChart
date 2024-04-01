@@ -118,19 +118,19 @@ public:
         view.setGrid(&grid);
         view.setModel(&model);
         // view.setConstraintModel( &cmodel );
-        connect(&slider, SIGNAL(valueChanged(int)),
-                this, SLOT(slotZoom(int)));
+        connect(&slider, &QSlider::valueChanged,
+                this, &MyWidget::slotZoom);
 
         auto *pb1 = new QPushButton(tr("Print Preview..."));
         auto *pb2 = new QPushButton(tr("Print..."));
         l->addWidget(pb1);
         l->addWidget(pb2);
-        connect(pb1, SIGNAL(clicked()), this, SLOT(slotPrintPreview()));
-        connect(pb2, SIGNAL(clicked()), this, SLOT(slotPrint()));
+        connect(pb1, &QPushButton::clicked, this, &MyWidget::slotPrintPreview);
+        connect(pb2, &QPushButton::clicked, this, &MyWidget::slotPrint);
 
         view.graphicsView()->setHeaderContextMenuPolicy(Qt::CustomContextMenu);
-        connect(view.graphicsView(), SIGNAL(headerContextMenuRequested(const QPoint &)),
-                this, SLOT(slotHeaderMenu(const QPoint &)));
+        connect(view.graphicsView(), &KDGantt::GraphicsView::headerContextMenuRequested,
+                this, &MyWidget::slotHeaderMenu);
     }
 
 public slots:

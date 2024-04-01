@@ -157,8 +157,8 @@ int main(int argc, char **argv)
     view->setModel(&model);
 #if 0
     QPushButton* pb = new QPushButton( QObject::tr( "Reset" ) );
-    QObject::connect( pb, SIGNAL( clicked() ),
-                      &model, SIGNAL( modelReset() ) );
+    QObject::connect( pb, &QPushButton::clicked,
+                      &model, &MyStandardItemModel::modelReset );
     pb->show();
 #endif
     return app.exec();

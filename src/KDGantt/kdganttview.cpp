@@ -281,21 +281,30 @@ void View::setLeftView(QAbstractItemView *aiv)
     d->leftWidget = aiv;
     d->splitter.insertWidget(0, d->leftWidget);
 
-    if (qobject_cast<QTreeView *>(d->leftWidget)) {
-        connect(d->leftWidget, SIGNAL(collapsed(const QModelIndex &)),
-                this, SLOT(slotCollapsed(const QModelIndex &)));
-        connect(d->leftWidget, SIGNAL(expanded(const QModelIndex &)),
-                this, SLOT(slotExpanded(const QModelIndex &)));
+    auto leftWidgetTreeView = qobject_cast<QTreeView *>(d->leftWidget);
+    if (leftWidgetTreeView) {
+        connect(leftWidgetTreeView, &QTreeView::collapsed,
+                this, [this](const QModelIndex &index) {
+                    d->slotCollapsed(index);
+                });
+        connect(leftWidgetTreeView, &QTreeView::expanded,
+                this, [this](const QModelIndex &index) {
+                    d->slotExpanded(index);
+                });
     }
 
-    connect(d->gfxview->verticalScrollBar(), SIGNAL(valueChanged(int)),
-            d->leftWidget->verticalScrollBar(), SLOT(setValue(int)));
-    connect(d->leftWidget->verticalScrollBar(), SIGNAL(valueChanged(int)),
-            d->gfxview->verticalScrollBar(), SLOT(setValue(int)));
-    connect(d->leftWidget->verticalScrollBar(), SIGNAL(rangeChanged(int, int)),
-            this, SLOT(slotLeftWidgetVerticalRangeChanged(int, int)));
-    connect(d->gfxview->verticalScrollBar(), SIGNAL(rangeChanged(int, int)),
-            this, SLOT(slotGfxViewVerticalRangeChanged(int, int)));
+    connect(d->gfxview->verticalScrollBar(), &QScrollBar::valueChanged,
+            d->leftWidget->verticalScrollBar(), &QScrollBar::setValue);
+    connect(d->leftWidget->verticalScrollBar(), &QScrollBar::valueChanged,
+            d->gfxview->verticalScrollBar(), &QScrollBar::setValue);
+    connect(d->leftWidget->verticalScrollBar(), &QScrollBar::rangeChanged,
+            this, [this](int min, int max) {
+                d->slotLeftWidgetVerticalRangeChanged(min, max);
+            });
+    connect(d->gfxview->verticalScrollBar(), &QScrollBar::rangeChanged,
+            this, [this](int min, int max) {
+                d->slotLeftWidgetVerticalRangeChanged(min, max);
+            });
 }
 
 /*! Sets \a ctrl to be the rowcontroller used by this View.
@@ -625,7 +634,7 @@ KDAB_SCOPED_UNITTEST_SIMPLE(KDGantt, View, "test")
 {
     View view(nullptr);
 #if 0 // GUI tests do not work well on the server
-    QTimer::singleShot( 1000, qApp, SLOT( quit() ) );
+    QTimer::singleShot( 1000, qApp, &QCoreApplication::quit );
     view.show();
 
     qApp->exec();
@@ -635,7 +644,7 @@ KDAB_SCOPED_UNITTEST_SIMPLE(KDGantt, View, "test")
     view.setLeftView( tv );
     view.setRowController( new TreeViewRowController(tv,view.ganttProxyModel()) );
 
-    QTimer::singleShot( 1000, qApp, SLOT( quit() ) );
+    QTimer::singleShot( 1000, qApp, &QCoreApplication::quit );
 
     qApp->exec();
     QPixmap screenshot2 = QPixmap::grabWidget( &view );
@@ -646,7 +655,7 @@ KDAB_SCOPED_UNITTEST_SIMPLE(KDGantt, View, "test")
     view.setLeftView(lv);
     view.setRowController( new ListViewRowController(lv,view.ganttProxyModel()));
     view.show();
-    QTimer::singleShot( 1000, qApp, SLOT( quit() ) );
+    QTimer::singleShot( 1000, qApp, &QCoreApplication::quit );
     qApp->exec();
 #endif
 }

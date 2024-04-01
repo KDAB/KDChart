@@ -1,6 +1,10 @@
 Release Highlights
 ==================
 
+Version 3.1.0 (unreleased):
+--------------------------
+ * Bug fix: Fix model about to be reset
+
 Version 3.0.1 (unreleased):
 ---------------------------
  * Add WebAssembly demo-example

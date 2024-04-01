@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_chart->coordinatePlane()->replaceDiagram(m_pie);
 
     m_timer = new QTimer(this);
-    connect(m_timer, SIGNAL(timeout()), this, SLOT(slotNextFrame()));
+    connect(m_timer, &QTimer::timeout, this, &MainWindow::slotNextFrame);
 }
 
 void MainWindow::on_startPositionSB_valueChanged(double pos)

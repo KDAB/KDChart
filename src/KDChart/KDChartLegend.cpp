@@ -74,7 +74,7 @@ Legend::Legend(AbstractDiagram *diagram, QWidget *parent)
 
 Legend::~Legend()
 {
-    emit destroyedLegend(this);
+    Q_EMIT destroyedLegend(this);
 }
 
 void Legend::init()
@@ -125,7 +125,7 @@ QSize Legend::sizeHint() const
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "Legend::sizeHint() started";
 #endif
-    Q_FOREACH (AbstractLayoutItem *paintItem, d->paintItems) {
+    for (AbstractLayoutItem *paintItem : qAsConst(d->paintItems)) {
         paintItem->sizeHint();
     }
     return AbstractAreaWidget::sizeHint();
@@ -212,7 +212,7 @@ void Legend::paint(QPainter *painter)
 
     activateTheLayout();
 
-    Q_FOREACH (AbstractLayoutItem *paintItem, d->paintItems) {
+    for (AbstractLayoutItem *paintItem : qAsConst(d->paintItems)) {
         paintItem->paint(painter);
     }
 
@@ -224,7 +224,7 @@ void Legend::paint(QPainter *painter)
 uint Legend::datasetCount() const
 {
     int modelLabelsCount = 0;
-    Q_FOREACH (DiagramObserver *observer, d->observers) {
+    for (DiagramObserver *observer : d->observers) {
         AbstractDiagram *diagram = observer->diagram();
         Q_ASSERT(diagram->datasetLabels().count() == diagram->datasetBrushes().count());
         modelLabelsCount += diagram->datasetLabels().count();
@@ -284,14 +284,10 @@ void Legend::addDiagram(AbstractDiagram *newDiagram)
         } else {
             d->observers.append(observer);
         }
-        connect(observer, SIGNAL(diagramAboutToBeDestroyed(AbstractDiagram *)),
-                SLOT(resetDiagram(AbstractDiagram *)));
-        connect(observer, SIGNAL(diagramDataChanged(AbstractDiagram *)),
-                SLOT(setNeedRebuild()));
-        connect(observer, SIGNAL(diagramDataHidden(AbstractDiagram *)),
-                SLOT(setNeedRebuild()));
-        connect(observer, SIGNAL(diagramAttributesChanged(AbstractDiagram *)),
-                SLOT(setNeedRebuild()));
+        connect(observer, &DiagramObserver::diagramAboutToBeDestroyed, this, &Legend::resetDiagram);
+        connect(observer, &DiagramObserver::diagramDataChanged, this, &Legend::setNeedRebuild);
+        connect(observer, &DiagramObserver::diagramDataHidden, this, &Legend::setNeedRebuild);
+        connect(observer, &DiagramObserver::diagramAttributesChanged, this, &Legend::setNeedRebuild);
         setNeedRebuild();
     }
 }
@@ -317,10 +313,13 @@ void Legend::removeDiagram(AbstractDiagram *oldDiagram)
     if (oldDiagram) {
         DiagramObserver *oldObs = d->findObserverForDiagram(oldDiagram);
         if (oldObs) {
+            d->observers.removeOne(oldObs);
             delete oldObs;
-            d->observers.removeAt(d->observers.indexOf(oldObs));
         }
-        setNeedRebuild();
+
+        // We might be in the middle of a KDChart dctor and hit the assertObjectType
+        // so queue the rebuild
+        QMetaObject::invokeMethod(this, &Legend::setNeedRebuild, Qt::QueuedConnection);
     }
 }
 
@@ -408,8 +407,8 @@ void Legend::setPosition(Position position)
 
 void Legend::emitPositionChanged()
 {
-    emit positionChanged(this);
-    emit propertiesChanged();
+    Q_EMIT positionChanged(this);
+    Q_EMIT propertiesChanged();
 }
 
 Position Legend::position() const
@@ -776,7 +775,7 @@ void Legend::resizeEvent(QResizeEvent *event)
 #endif
     forceRebuild();
     sizeHint();
-    QTimer::singleShot(0, this, SLOT(emitPositionChanged()));
+    QTimer::singleShot(0, this, &Legend::emitPositionChanged);
 }
 
 void Legend::Private::fetchPaintOptions(Legend *q)
@@ -1002,7 +1001,7 @@ void Legend::buildLegend()
 
     updateToplevelLayout(this);
 
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "leaving Legend::buildLegend()";
 #endif
@@ -1135,7 +1134,7 @@ int Legend::heightForWidth(int width) const
 
     int currentLineWidth = 0;
     int currentLineHeight = 0;
-    Q_FOREACH (const HDatasetItem &hdsItem, d->hLayoutDatasets) {
+    for (const HDatasetItem &hdsItem : qAsConst(d->hLayoutDatasets)) {
         const int payloadWidth = hdsItem.markerLine->sizeHint().width() + hdsItem.label->sizeHint().width();
         if (!currentLineWidth) {
             // first iteration

@@ -311,7 +311,7 @@ QDateTime DateTimeGrid::startDateTime() const
 void DateTimeGrid::setStartDateTime(const QDateTime &dt)
 {
     d->startDateTime = dt;
-    emit gridChanged();
+    Q_EMIT gridChanged();
 }
 
 /*! \returns The width in pixels for each day in the grid.
@@ -345,7 +345,7 @@ void DateTimeGrid::setDayWidth(qreal w)
 {
     assert(w > 0);
     d->dayWidth = w;
-    emit gridChanged();
+    Q_EMIT gridChanged();
 }
 
 /*! \param s The scale to be used to paint the grid.
@@ -365,7 +365,7 @@ void DateTimeGrid::setDayWidth(qreal w)
 void DateTimeGrid::setScale(Scale s)
 {
     d->scale = s;
-    emit gridChanged();
+    Q_EMIT gridChanged();
 }
 
 /*! \returns The scale used to paint the grid.
@@ -390,7 +390,7 @@ void DateTimeGrid::setUserDefinedLowerScale(DateTimeScaleFormatter *lower)
 {
     delete d->lower;
     d->lower = lower;
-    emit gridChanged();
+    Q_EMIT gridChanged();
 }
 
 /*! Sets the scale formatter for the upper part of the header to the
@@ -404,7 +404,7 @@ void DateTimeGrid::setUserDefinedUpperScale(DateTimeScaleFormatter *upper)
 {
     delete d->upper;
     d->upper = upper;
-    emit gridChanged();
+    Q_EMIT gridChanged();
 }
 
 /*! \return The DateTimeScaleFormatter being used to render the lower scale.
@@ -429,7 +429,7 @@ DateTimeScaleFormatter *DateTimeGrid::userDefinedUpperScale() const
 void DateTimeGrid::setWeekStart(Qt::DayOfWeek ws)
 {
     d->weekStart = ws;
-    emit gridChanged();
+    Q_EMIT gridChanged();
 }
 
 /*! \returns The start day of the week */
@@ -447,7 +447,7 @@ Qt::DayOfWeek DateTimeGrid::weekStart() const
 void DateTimeGrid::setFreeDays(const QSet<Qt::DayOfWeek> &fd)
 {
     d->freeDays = fd;
-    emit gridChanged();
+    Q_EMIT gridChanged();
 }
 
 /*! \returns The days marked as free in the grid. */
@@ -489,7 +489,7 @@ void DateTimeGrid::setRowSeparators(bool enable)
 void DateTimeGrid::setNoInformationBrush(const QBrush &brush)
 {
     d->noInformationBrush = brush;
-    emit gridChanged();
+    Q_EMIT gridChanged();
 }
 
 /*! \returns the brush used to mark rows with no information.
@@ -590,7 +590,7 @@ bool DateTimeGrid::mapFromChart(const Span &span, const QModelIndex &idx,
     QDateTime st = d->chartXtoDateTime(span.start());
     QDateTime et = d->chartXtoDateTime(span.start() + span.length());
     // qDebug() << "DateTimeGrid::mapFromChart("<<span<<") => "<< st << et;
-    Q_FOREACH (const Constraint &c, constraints) {
+    for (const Constraint &c : constraints) {
         if (c.type() != Constraint::TypeHard || !isSatisfiedConstraint(c))
             continue;
         if (c.startIndex() == idx) {

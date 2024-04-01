@@ -68,8 +68,8 @@ void GraphicsScene::Private::resetConstraintItems()
     q->clearConstraintItems();
     if (constraintModel.isNull())
         return;
-    QList<Constraint> clst = constraintModel->constraints();
-    Q_FOREACH (const Constraint &c, clst) {
+    const QList<Constraint> clst = constraintModel->constraints();
+    for (const Constraint &c : clst) {
         createConstraintItem(c);
     }
     q->updateItems();
@@ -163,7 +163,7 @@ void GraphicsScene::init()
 {
     setItemIndexMethod(QGraphicsScene::NoIndex);
     setConstraintModel(new ConstraintModel(this));
-    connect(d->grid, SIGNAL(gridChanged()), this, SLOT(slotGridChanged()));
+    connect(d->grid, &AbstractGrid::gridChanged, this, &GraphicsScene::slotGridChanged);
 }
 
 /* NOTE: The delegate should really be a property
@@ -230,10 +230,10 @@ void GraphicsScene::setConstraintModel(ConstraintModel *cm)
     }
     d->constraintModel = cm;
 
-    connect(cm, SIGNAL(constraintAdded(const KDGantt::Constraint &)),
-            this, SLOT(slotConstraintAdded(const KDGantt::Constraint &)));
-    connect(cm, SIGNAL(constraintRemoved(const KDGantt::Constraint &)),
-            this, SLOT(slotConstraintRemoved(const KDGantt::Constraint &)));
+    connect(cm, &ConstraintModel::constraintAdded,
+            this, &GraphicsScene::slotConstraintAdded);
+    connect(cm, &ConstraintModel::constraintRemoved,
+            this, &GraphicsScene::slotConstraintRemoved);
     d->resetConstraintItems();
 }
 
@@ -268,7 +268,7 @@ void GraphicsScene::setGrid(AbstractGrid *grid)
         model = d->grid->model();
     }
     d->grid = grid;
-    connect(d->grid, SIGNAL(gridChanged()), this, SLOT(slotGridChanged()));
+    connect(d->grid, &AbstractGrid::gridChanged, this, &GraphicsScene::slotGridChanged);
     d->grid->setModel(model);
     slotGridChanged();
 }
@@ -419,7 +419,7 @@ void GraphicsScene::insertItem(const QPersistentModelIndex &idx, GraphicsItem *i
         // Create items for constraints
         const QModelIndex sidx = summaryHandlingModel()->mapToSource(idx);
         const QList<Constraint> clst = d->constraintModel->constraintsForIndex(sidx);
-        Q_FOREACH (const Constraint &c, clst) {
+        for (const Constraint &c : clst) {
             QModelIndex other_idx;
             if (c.startIndex() == sidx) {
                 other_idx = c.endIndex();
@@ -469,7 +469,7 @@ void GraphicsScene::removeItem(const QModelIndex &idx)
                 QSet<ConstraintGraphicsItem *>::fromList(startConstraints) + QSet<ConstraintGraphicsItem *>::fromList(endConstraints);
 #endif
 
-            Q_FOREACH (ConstraintGraphicsItem *citem, clst) {
+            for (ConstraintGraphicsItem *citem : clst) {
                 d->deleteConstraintItem(citem);
             }
         }
@@ -565,7 +565,7 @@ void GraphicsScene::slotGridChanged()
 {
     updateItems();
     update();
-    emit gridChanged();
+    Q_EMIT gridChanged();
 }
 
 void GraphicsScene::helpEvent(QGraphicsSceneHelpEvent *helpEvent)
@@ -621,22 +621,22 @@ void GraphicsScene::drawForeground(QPainter *painter, const QRectF &rect)
 
 void GraphicsScene::itemEntered(const QModelIndex &idx)
 {
-    emit entered(idx);
+    Q_EMIT entered(idx);
 }
 
 void GraphicsScene::itemPressed(const QModelIndex &idx)
 {
-    emit pressed(idx);
+    Q_EMIT pressed(idx);
 }
 
 void GraphicsScene::itemClicked(const QModelIndex &idx)
 {
-    emit clicked(idx);
+    Q_EMIT clicked(idx);
 }
 
 void GraphicsScene::itemDoubleClicked(const QModelIndex &idx)
 {
-    emit qrealClicked(idx);
+    Q_EMIT qrealClicked(idx);
 }
 
 void GraphicsScene::setDragSource(GraphicsItem *item)
@@ -791,7 +791,7 @@ void GraphicsScene::doPrint(QPainter *painter, const QRectF &targetRect,
         } while ((sidx = rowController()->indexBelow(sidx)).isValid());
         // Add a little margin to textWidth
         textWidth += QFontMetricsF(sceneFont).horizontalAdvance(QString::fromLatin1("X"));
-        Q_FOREACH (QGraphicsTextItem *item, textLabels) {
+        for (QGraphicsTextItem *item : qAsConst(textLabels)) {
             item->setPos(scnRect.left() - textWidth, item->y());
             item->show();
         }

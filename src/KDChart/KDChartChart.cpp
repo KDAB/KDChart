@@ -270,7 +270,7 @@ void Chart::Private::slotUnregisterDestroyedHeaderFooter(HeaderFooter *hf)
 void Chart::Private::slotUnregisterDestroyedPlane(AbstractCoordinatePlane *plane)
 {
     coordinatePlanes.removeAll(plane);
-    Q_FOREACH (AbstractCoordinatePlane *p, coordinatePlanes) {
+    for (AbstractCoordinatePlane *p : qAsConst(coordinatePlanes)) {
         if (p->referenceCoordinatePlane() == plane) {
             p->setReferenceCoordinatePlane(nullptr);
         }
@@ -328,8 +328,10 @@ static QVector<LayoutGraphNode *> getPrioritySortedConnectedComponents(QVector<L
 {
     QVector<LayoutGraphNode *> connectedComponents;
     QHash<LayoutGraphNode *, VisitorState> visitedComponents;
-    Q_FOREACH (LayoutGraphNode *node, nodeList)
+    for (LayoutGraphNode *node : qAsConst(nodeList)) {
         visitedComponents[node] = Unknown;
+    }
+
     for (int i = 0; i < nodeList.size(); ++i) {
         LayoutGraphNode *curNode = nodeList[i];
         LayoutGraphNode *representativeNode = curNode;
@@ -380,7 +382,8 @@ void checkExistingAxes(LayoutGraphNode *node)
     if (node && node->diagramPlane && node->diagramPlane->diagram()) {
         auto *diag = qobject_cast<AbstractCartesianDiagram *>(node->diagramPlane->diagram());
         if (diag) {
-            Q_FOREACH (const CartesianAxis *axis, diag->axes()) {
+            const auto constAxes = diag->axes();
+            for (const CartesianAxis *axis : constAxes) {
                 switch (axis->position()) {
                 case (CartesianAxis::Top):
                     node->topAxesLayout = true;
@@ -430,19 +433,24 @@ static CoordinatePlaneList findSharingAxisDiagrams(AbstractCoordinatePlane *plan
         return CoordinatePlaneList();
 
     QList<CartesianAxis *> axes;
-    Q_FOREACH (CartesianAxis *axis, diagram->axes()) {
-        if ((type == Chart::Private::Ordinate && (axis->position() == CartesianAxis::Left || axis->position() == CartesianAxis::Right))
-            || (type == Chart::Private::Abscissa && (axis->position() == CartesianAxis::Top || axis->position() == CartesianAxis::Bottom))) {
-            axes.append(axis);
+    {
+        const auto constAxes = diagram->axes();
+        for (CartesianAxis *axis : constAxes) {
+            if ((type == Chart::Private::Ordinate && (axis->position() == CartesianAxis::Left || axis->position() == CartesianAxis::Right))
+                || (type == Chart::Private::Abscissa && (axis->position() == CartesianAxis::Top || axis->position() == CartesianAxis::Bottom))) {
+                axes.append(axis);
+            }
         }
     }
-    Q_FOREACH (AbstractCoordinatePlane *curPlane, list) {
+
+    for (AbstractCoordinatePlane *curPlane : list) {
         auto *diagram =
             qobject_cast<AbstractCartesianDiagram *>(curPlane->diagram());
         if (!diagram)
             continue;
-        Q_FOREACH (CartesianAxis *curSearchedAxis, axes) {
-            Q_FOREACH (CartesianAxis *curAxis, diagram->axes()) {
+        for (CartesianAxis *curSearchedAxis : axes) {
+            const auto constAxes = diagram->axes();
+            for (CartesianAxis *curAxis : constAxes) {
                 if (curSearchedAxis == curAxis) {
                     result.append(curPlane);
                     if (!sharedAxes->contains(curSearchedAxis))
@@ -466,7 +474,7 @@ QVector<LayoutGraphNode *> Chart::Private::buildPlaneLayoutGraph()
     QHash<AbstractCoordinatePlane *, LayoutGraphNode *> planeNodeMapping;
     QVector<LayoutGraphNode *> allNodes;
     // create all nodes and a mapping between plane and nodes
-    Q_FOREACH (AbstractCoordinatePlane *curPlane, coordinatePlanes) {
+    for (AbstractCoordinatePlane *curPlane : qAsConst(coordinatePlanes)) {
         if (curPlane->diagram()) {
             allNodes.append(new LayoutGraphNode);
             allNodes[allNodes.size() - 1]->diagramPlane = curPlane;
@@ -476,7 +484,7 @@ QVector<LayoutGraphNode *> Chart::Private::buildPlaneLayoutGraph()
         }
     }
     // build the graph connections
-    Q_FOREACH (LayoutGraphNode *curNode, allNodes) {
+    for (LayoutGraphNode *curNode : qAsConst(allNodes)) {
         QVector<CartesianAxis *> sharedAxes;
         CoordinatePlaneList xSharedPlanes = findSharingAxisDiagrams(curNode->diagramPlane, coordinatePlanes, Abscissa, &sharedAxes);
         Q_ASSERT(sharedAxes.size() < 2);
@@ -562,20 +570,22 @@ QHash<AbstractCoordinatePlane *, PlaneInfo> Chart::Private::buildPlaneLayoutInfo
      * laid out vertically or horizontally next to each other. */
     QHash<CartesianAxis *, AxisInfo> axisInfos;
     QHash<AbstractCoordinatePlane *, PlaneInfo> planeInfos;
-    Q_FOREACH (AbstractCoordinatePlane *plane, coordinatePlanes) {
+    for (AbstractCoordinatePlane *plane : qAsConst(coordinatePlanes)) {
         PlaneInfo p;
         // first check if we share space with another plane
         p.referencePlane = plane->referenceCoordinatePlane();
         planeInfos.insert(plane, p);
 
-        Q_FOREACH (AbstractDiagram *abstractDiagram, plane->diagrams()) {
+        const auto constDiagrams = plane->diagrams();
+        for (AbstractDiagram *abstractDiagram : constDiagrams) {
             auto *diagram =
                 qobject_cast<AbstractCartesianDiagram *>(abstractDiagram);
             if (!diagram) {
                 continue;
             }
 
-            Q_FOREACH (CartesianAxis *axis, diagram->axes()) {
+            const auto constAxes = diagram->axes();
+            for (CartesianAxis *axis : constAxes) {
                 if (!axisInfos.contains(axis)) {
                     /* If this is the first time we see this axis, add it, with the
                      * current plane. The first plane added to the chart that has
@@ -637,11 +647,11 @@ void Chart::Private::slotLayoutPlanes()
     if (hadPlanesLayout)
         planesLayout->getContentsMargins(&left, &top, &right, &bottom);
 
-    Q_FOREACH (AbstractLayoutItem *plane, planeLayoutItems) {
+    for (AbstractLayoutItem *plane : qAsConst(planeLayoutItems)) {
         plane->removeFromParentLayout();
     }
     // TODO they should get a correct parent, but for now it works
-    Q_FOREACH (AbstractLayoutItem *plane, planeLayoutItems) {
+    for (AbstractLayoutItem *plane : qAsConst(planeLayoutItems)) {
         if (dynamic_cast<AutoSpacerLayoutItem *>(plane))
             delete plane;
     }
@@ -679,7 +689,8 @@ void Chart::Private::slotLayoutPlanes()
                 col = 0;
                 for (LayoutGraphNode *curColComponent = curRowComponent; curColComponent; curColComponent = curColComponent->leftSuccesor) {
                     Q_ASSERT(curColComponent->diagramPlane->diagrams().size() == 1);
-                    Q_FOREACH (AbstractDiagram *diagram, curColComponent->diagramPlane->diagrams()) {
+                    const auto constDiagrams = curColComponent->diagramPlane->diagrams();
+                    for (AbstractDiagram *diagram : constDiagrams) {
                         const int planeRowOffset = 1; // curColComponent->topAxesLayout ? 1 : 0;
                         const int planeColOffset = 1; // curColComponent->leftAxesLayout ? 1 : 0;
                         // qDebug() << Q_FUNC_INFO << row << col << planeRowOffset << planeColOffset;
@@ -699,7 +710,8 @@ void Chart::Private::slotLayoutPlanes()
                                 curColComponent->sharedSuccesor->diagramPlane->setParentLayout(gridPlaneLayout);
                                 planeLayoutItems << curColComponent->sharedSuccesor->diagramPlane;
                             }
-                            Q_FOREACH (CartesianAxis *axis, cartDiag->axes()) {
+                            const auto constAxes = cartDiag->axes();
+                            for (CartesianAxis *axis : constAxes) {
                                 if (axis->isAbscissa()) {
                                     if (curColComponent->bottomSuccesor)
                                         continue;
@@ -802,7 +814,7 @@ void Chart::Private::slotLayoutPlanes()
          * gets their own. See buildPlaneLayoutInfos() for more details. */
         QHash<AbstractCoordinatePlane *, PlaneInfo> planeInfos = buildPlaneLayoutInfos();
         QHash<AbstractAxis *, AxisInfo> axisInfos;
-        Q_FOREACH (AbstractCoordinatePlane *plane, coordinatePlanes) {
+        for (AbstractCoordinatePlane *plane : qAsConst(coordinatePlanes)) {
             Q_ASSERT(planeInfos.contains(plane));
             PlaneInfo &pi = planeInfos[plane];
             const int column = pi.horizontalOffset;
@@ -834,7 +846,8 @@ void Chart::Private::slotLayoutPlanes()
             // qDebug() << "Chart slotLayoutPlanes() calls planeLayout->addItem("<< row << column << ")";
             planeLayout->setRowStretch(row, 2);
             planeLayout->setColumnStretch(column, 2);
-            Q_FOREACH (AbstractDiagram *abstractDiagram, plane->diagrams()) {
+            const auto constDiagrams = plane->diagrams();
+            for (AbstractDiagram *abstractDiagram : constDiagrams) {
                 auto *diagram =
                     qobject_cast<AbstractCartesianDiagram *>(abstractDiagram);
                 if (!diagram) {
@@ -878,7 +891,8 @@ void Chart::Private::slotLayoutPlanes()
                 }
 
                 // pi.leftAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
-                Q_FOREACH (CartesianAxis *axis, diagram->axes()) {
+                const auto constAxes = diagram->axes();
+                for (CartesianAxis *axis : constAxes) {
                     if (axisInfos.contains(axis)) {
                         continue; // already laid out this one
                     }
@@ -1038,7 +1052,7 @@ void Chart::Private::slotResizePlanes()
         layout->activate();
     }
     // Adapt diagram drawing to the new size
-    Q_FOREACH (AbstractCoordinatePlane *plane, coordinatePlanes) {
+    for (AbstractCoordinatePlane *plane : qAsConst(coordinatePlanes)) {
         plane->layoutDiagrams();
     }
 }
@@ -1046,7 +1060,7 @@ void Chart::Private::slotResizePlanes()
 void Chart::Private::updateDirtyLayouts()
 {
     if (isPlanesLayoutDirty) {
-        Q_FOREACH (AbstractCoordinatePlane *p, coordinatePlanes) {
+        for (AbstractCoordinatePlane *p : qAsConst(coordinatePlanes)) {
             p->setGridNeedsRecalculate();
             p->layoutPlanes();
             p->layoutDiagrams();
@@ -1083,13 +1097,13 @@ void Chart::Private::paintAll(QPainter *painter)
 
     chart->reLayoutFloatingLegends();
 
-    Q_FOREACH (AbstractLayoutItem *planeLayoutItem, planeLayoutItems) {
+    for (AbstractLayoutItem *planeLayoutItem : qAsConst(planeLayoutItems)) {
         planeLayoutItem->paintAll(*painter);
     }
-    Q_FOREACH (TextArea *textLayoutItem, textLayoutItems) {
+    for (TextArea *textLayoutItem : qAsConst(textLayoutItems)) {
         textLayoutItem->paintAll(*painter);
     }
-    Q_FOREACH (Legend *legend, legends) {
+    for (Legend *legend : qAsConst(legends)) {
         const bool hidden = legend->isHidden() && legend->testAttribute(Qt::WA_WState_ExplicitShowHide);
         if (!hidden) {
             // qDebug() << "painting legend at " << legend->geometry();
@@ -1196,12 +1210,12 @@ void Chart::insertCoordinatePlane(int index, AbstractCoordinatePlane *plane)
         return;
     }
 
-    connect(plane, SIGNAL(destroyedCoordinatePlane(AbstractCoordinatePlane *)),
-            d, SLOT(slotUnregisterDestroyedPlane(AbstractCoordinatePlane *)));
-    connect(plane, SIGNAL(needUpdate()), this, SLOT(update()));
-    connect(plane, SIGNAL(needRelayout()), d, SLOT(slotResizePlanes()));
-    connect(plane, SIGNAL(needLayoutPlanes()), d, SLOT(slotLayoutPlanes()));
-    connect(plane, SIGNAL(propertiesChanged()), this, SIGNAL(propertiesChanged()));
+    connect(plane, &AbstractCoordinatePlane::destroyedCoordinatePlane,
+            d, &Private::slotUnregisterDestroyedPlane);
+    connect(plane, &AbstractCoordinatePlane::needUpdate, this, QOverload<>::of(&Chart::update));
+    connect(plane, &AbstractCoordinatePlane::needRelayout, d, &Private::slotResizePlanes);
+    connect(plane, &AbstractCoordinatePlane::needLayoutPlanes, d, &Private::slotLayoutPlanes);
+    connect(plane, &AbstractCoordinatePlane::propertiesChanged, this, &Chart::propertiesChanged);
     d->coordinatePlanes.insert(index, plane);
     plane->setParent(this);
     d->slotLayoutPlanes();
@@ -1237,9 +1251,9 @@ void Chart::takeCoordinatePlane(AbstractCoordinatePlane *plane)
         d->mouseClickedPlanes.removeAll(plane);
     }
     d->slotLayoutPlanes();
-    // Need to emit the signal: In case somebody has connected the signal
+    // Need to Q_EMIT the signal: In case somebody has connected the signal
     // to her own slot for e.g. calling update() on a widget containing the chart.
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 void Chart::setGlobalLeading(int left, int top, int right, int bottom)
@@ -1369,7 +1383,7 @@ void Chart::resizeEvent(QResizeEvent *event)
 
 void Chart::reLayoutFloatingLegends()
 {
-    Q_FOREACH (Legend *legend, d->legends) {
+    for (Legend *legend : qAsConst(d->legends)) {
         const bool hidden = legend->isHidden() && legend->testAttribute(Qt::WA_WState_ExplicitShowHide);
         if (legend->position().isFloating() && !hidden) {
             // resize the legend
@@ -1402,7 +1416,7 @@ void Chart::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     d->paintAll(&painter);
-    emit finishedDrawing();
+    Q_EMIT finishedDrawing();
 }
 
 void Chart::addHeaderFooter(HeaderFooter *hf)
@@ -1418,10 +1432,10 @@ void Chart::addHeaderFooter(HeaderFooter *hf)
 
     d->headerFooters.append(hf);
     d->textLayoutItems.append(hf);
-    connect(hf, SIGNAL(destroyedHeaderFooter(HeaderFooter *)),
-            d, SLOT(slotUnregisterDestroyedHeaderFooter(HeaderFooter *)));
-    connect(hf, SIGNAL(positionChanged(HeaderFooter *)),
-            d, SLOT(slotHeaderFooterPositionChanged(HeaderFooter *)));
+    connect(hf, &HeaderFooter::destroyedHeaderFooter,
+            d, &Private::slotUnregisterDestroyedHeaderFooter);
+    connect(hf, &HeaderFooter::positionChanged,
+            d, &Private::slotHeaderFooterPositionChanged);
 
     // set the text attributes (why?)
 
@@ -1468,8 +1482,8 @@ void Chart::takeHeaderFooter(HeaderFooter *headerFooter)
     if (idx == -1) {
         return;
     }
-    disconnect(headerFooter, SIGNAL(destroyedHeaderFooter(HeaderFooter *)),
-               d, SLOT(slotUnregisterDestroyedHeaderFooter(HeaderFooter *)));
+    disconnect(headerFooter, &HeaderFooter::destroyedHeaderFooter,
+               d, &Private::slotUnregisterDestroyedHeaderFooter);
 
     d->headerFooters.takeAt(idx);
     headerFooter->removeFromParentLayout();
@@ -1511,7 +1525,7 @@ void Chart::addLegend(Legend *legend)
 {
     legend->show();
     addLegendInternal(legend, true);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 void Chart::addLegendInternal(Legend *legend, bool setMeasures)
@@ -1600,11 +1614,11 @@ void Chart::addLegendInternal(Legend *legend, bool setMeasures)
         sameAlignmentLayout->addItem(new MyWidgetItem(legend, legend->alignment()));
     }
 
-    connect(legend, SIGNAL(destroyedLegend(Legend *)),
-            d, SLOT(slotUnregisterDestroyedLegend(Legend *)));
-    connect(legend, SIGNAL(positionChanged(AbstractAreaWidget *)),
-            d, SLOT(slotLegendPositionChanged(AbstractAreaWidget *)));
-    connect(legend, SIGNAL(propertiesChanged()), this, SIGNAL(propertiesChanged()));
+    connect(legend, &Legend::destroyedLegend,
+            d, &Private::slotUnregisterDestroyedLegend);
+    connect(legend, &Legend::positionChanged,
+            d, &Private::slotLegendPositionChanged);
+    connect(legend, &Legend::propertiesChanged, this, &Chart::propertiesChanged);
 
     d->slotResizePlanes();
 }
@@ -1640,7 +1654,7 @@ void Chart::takeLegend(Legend *legend)
     legend->setParent(nullptr);
 
     d->slotResizePlanes();
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 Legend *Chart::legend()
@@ -1648,7 +1662,7 @@ Legend *Chart::legend()
     return d->legends.isEmpty() ? 0 : d->legends.first();
 }
 
-LegendList Chart::legends()
+LegendList Chart::legends() const
 {
     return d->legends;
 }
@@ -1657,7 +1671,7 @@ void Chart::mousePressEvent(QMouseEvent *event)
 {
     const QPoint pos = mapFromGlobal(event->globalPos());
 
-    Q_FOREACH (AbstractCoordinatePlane *plane, d->coordinatePlanes) {
+    for (AbstractCoordinatePlane *plane : qAsConst(d->coordinatePlanes)) {
         if (plane->geometry().contains(event->pos()) && plane->diagrams().size() > 0) {
             QMouseEvent ev(QEvent::MouseButtonPress, pos, event->globalPos(),
                            event->button(), event->buttons(), event->modifiers());
@@ -1671,7 +1685,7 @@ void Chart::mouseDoubleClickEvent(QMouseEvent *event)
 {
     const QPoint pos = mapFromGlobal(event->globalPos());
 
-    Q_FOREACH (AbstractCoordinatePlane *plane, d->coordinatePlanes) {
+    for (AbstractCoordinatePlane *plane : qAsConst(d->coordinatePlanes)) {
         if (plane->geometry().contains(event->pos()) && plane->diagrams().size() > 0) {
             QMouseEvent ev(QEvent::MouseButtonPress, pos, event->globalPos(),
                            event->button(), event->buttons(), event->modifiers());
@@ -1689,7 +1703,7 @@ void Chart::mouseMoveEvent(QMouseEvent *event)
         QSet<AbstractCoordinatePlane *>::fromList(d->mouseClickedPlanes);
 #endif
 
-    Q_FOREACH (AbstractCoordinatePlane *plane, d->coordinatePlanes) {
+    for (AbstractCoordinatePlane *plane : qAsConst(d->coordinatePlanes)) {
         if (plane->geometry().contains(event->pos()) && plane->diagrams().size() > 0) {
             eventReceivers.insert(plane);
         }
@@ -1697,7 +1711,7 @@ void Chart::mouseMoveEvent(QMouseEvent *event)
 
     const QPoint pos = mapFromGlobal(event->globalPos());
 
-    Q_FOREACH (AbstractCoordinatePlane *plane, eventReceivers) {
+    for (AbstractCoordinatePlane *plane : qAsConst(eventReceivers)) {
         QMouseEvent ev(QEvent::MouseMove, pos, event->globalPos(),
                        event->button(), event->buttons(), event->modifiers());
         plane->mouseMoveEvent(&ev);
@@ -1713,7 +1727,7 @@ void Chart::mouseReleaseEvent(QMouseEvent *event)
         QSet<AbstractCoordinatePlane *>::fromList(d->mouseClickedPlanes);
 #endif
 
-    Q_FOREACH (AbstractCoordinatePlane *plane, d->coordinatePlanes) {
+    for (AbstractCoordinatePlane *plane : qAsConst(d->coordinatePlanes)) {
         if (plane->geometry().contains(event->pos()) && plane->diagrams().size() > 0) {
             eventReceivers.insert(plane);
         }
@@ -1721,7 +1735,7 @@ void Chart::mouseReleaseEvent(QMouseEvent *event)
 
     const QPoint pos = mapFromGlobal(event->globalPos());
 
-    Q_FOREACH (AbstractCoordinatePlane *plane, eventReceivers) {
+    for (AbstractCoordinatePlane *plane : qAsConst(eventReceivers)) {
         QMouseEvent ev(QEvent::MouseButtonRelease, pos, event->globalPos(),
                        event->button(), event->buttons(), event->modifiers());
         plane->mouseReleaseEvent(&ev);
@@ -1735,8 +1749,9 @@ bool Chart::event(QEvent *event)
     if (event->type() == QEvent::ToolTip) {
         const QHelpEvent *const helpEvent = static_cast<QHelpEvent *>(event);
         for (int stage = 0; stage < 2; ++stage) {
-            Q_FOREACH (const AbstractCoordinatePlane *const plane, d->coordinatePlanes) {
-                Q_FOREACH (const AbstractDiagram *diagram, plane->diagrams()) {
+            for (const AbstractCoordinatePlane *const plane : qAsConst(d->coordinatePlanes)) {
+                const auto constDiagrams = plane->diagrams();
+                for (const AbstractDiagram *diagram : constDiagrams) {
 
                     QModelIndex index;
                     if (stage == 0) {

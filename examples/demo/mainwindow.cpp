@@ -95,7 +95,7 @@ MainWindow::Private::Private(MainWindow *q)
     auto *diagramTypeSettingsDock = new QDockWidget(tr("DiagramType"), qq);
     diagramTypeSettingsDock->setWidget(diagramTypeSettings);
     diagramTypeSettingsDock->setFloating(false);
-    connect(diagramTypeSettings, SIGNAL(diagramTypeChanged(DiagramType, Subtype)), this, SLOT(changedChartType()));
+    connect(diagramTypeSettings, &DiagramTypeDialog::diagramTypeChanged, this, &Private::changedChartType);
     q->addDockWidget(Qt::LeftDockWidgetArea, diagramTypeSettingsDock);
 
     auto *axisSettings = new AxisSettings(m_chartWin, qq);
@@ -103,15 +103,15 @@ MainWindow::Private::Private(MainWindow *q)
     axisSettingsDock->setWidget(axisSettings);
     axisSettingsDock->setFloating(false);
     q->addDockWidget(Qt::LeftDockWidgetArea, axisSettingsDock);
-    connect(diagramTypeSettings, SIGNAL(diagramTypeChanged(DiagramType, Subtype)), axisSettings, SLOT(diagramTypeChanged()));
+    connect(diagramTypeSettings, &DiagramTypeDialog::diagramTypeChanged, axisSettings, &AxisSettings::diagramTypeChanged);
 
     auto *setSettings = new DatasetSettings(m_chartWin, qq);
     auto *setSettingsDock = new QDockWidget(tr("DatasetSettings"), qq);
     setSettingsDock->setWidget(setSettings);
     setSettingsDock->setFloating(false);
     q->addDockWidget(Qt::LeftDockWidgetArea, setSettingsDock);
-    connect(this, SIGNAL(datasetCountChanged(int)), setSettings, SLOT(setDatasetCount(int)));
-    connect(diagramTypeSettings, SIGNAL(diagramTypeChanged(DiagramType, Subtype)), setSettings, SLOT(diagramTypeChanged()));
+    connect(this, &Private::datasetCountChanged, setSettings, &DatasetSettings::setDatasetCount);
+    connect(diagramTypeSettings, &DiagramTypeDialog::diagramTypeChanged, setSettings, &DatasetSettings::diagramTypeChanged);
     setSettings->setDatasetCount(m_model->columnCount());
 
     auto *diagSettings = new DiagramSettings(m_chartWin, qq);
@@ -119,14 +119,14 @@ MainWindow::Private::Private(MainWindow *q)
     diagSettingsDock->setWidget(diagSettings);
     diagSettingsDock->setFloating(false);
     q->addDockWidget(Qt::LeftDockWidgetArea, diagSettingsDock);
-    connect(diagramTypeSettings, SIGNAL(diagramTypeChanged(DiagramType, Subtype)), diagSettings, SLOT(refreshSettings()));
+    connect(diagramTypeSettings, &DiagramTypeDialog::diagramTypeChanged, diagSettings, &DiagramSettings::refreshSettings);
 
     auto *dataValueSettings = new DataValueSettings(m_chartWin, qq);
     auto *dataValueSettingsDock = new QDockWidget(tr("DataValueSettings"), qq);
     dataValueSettingsDock->setWidget(dataValueSettings);
     dataValueSettingsDock->setFloating(false);
     q->addDockWidget(Qt::RightDockWidgetArea, dataValueSettingsDock);
-    connect(diagramTypeSettings, SIGNAL(diagramTypeChanged(DiagramType, Subtype)), dataValueSettings, SLOT(refresh()));
+    connect(diagramTypeSettings, &DiagramTypeDialog::diagramTypeChanged, dataValueSettings, &DataValueSettings::refresh);
 }
 
 int MainWindow::Private::datasetCount() const

@@ -267,14 +267,16 @@ void GraphicsItem::removeEndConstraint(ConstraintGraphicsItem *item)
 
 void GraphicsItem::updateConstraintItems()
 {
-    { // Workaround for multiple definition error with MSVC6
-        Q_FOREACH (ConstraintGraphicsItem *item, m_startConstraints) {
+    {
+        // Workaround for multiple definition error with MSVC6
+        for (ConstraintGraphicsItem *item : qAsConst(m_startConstraints)) {
             QPointF s = startConnector(item->constraint().relationType());
             item->setStart(s);
         }
     }
-    { // Workaround for multiple definition error with MSVC6
-        Q_FOREACH (ConstraintGraphicsItem *item, m_endConstraints) {
+    {
+        // Workaround for multiple definition error with MSVC6
+        for (ConstraintGraphicsItem *item : qAsConst(m_endConstraints)) {
             QPointF e = endConnector(item->constraint().relationType());
             item->setEnd(e);
         }

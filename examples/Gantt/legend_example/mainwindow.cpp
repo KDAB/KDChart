@@ -64,10 +64,10 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
     leftView->setColumnHidden(5, true);
     leftView->header()->setStretchLastSection(true);
 
-    connect(ui->ganttView->leftView(), SIGNAL(customContextMenuRequested(const QPoint &)),
-            this, SLOT(showContextMenu(const QPoint &)));
-    connect(ui->ganttView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
-            this, SLOT(enableActions(const QItemSelection &)));
+    connect(ui->ganttView->leftView(), &QAbstractItemView::customContextMenuRequested,
+            this, &MainWindow::showContextMenu);
+    connect(ui->ganttView->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, &MainWindow::enableActions);
 }
 
 MainWindow::~MainWindow()
@@ -128,22 +128,22 @@ void MainWindow::initActions()
 {
     newEntryAction = new QAction(tr("New entry"), this);
     newEntryAction->setShortcut(QKeySequence::New);
-    connect(newEntryAction, SIGNAL(triggered()), this, SLOT(addNewEntry()));
+    connect(newEntryAction, &QAction::triggered, this, &MainWindow::addNewEntry);
 
     removeEntryAction = new QAction(tr("Remove entry"), this);
     removeEntryAction->setShortcut(QKeySequence::Delete);
-    connect(removeEntryAction, SIGNAL(triggered()), this, SLOT(removeEntry()));
+    connect(removeEntryAction, &QAction::triggered, this, &MainWindow::removeEntry);
 
     zoomInAction = new QAction(tr("Zoom In"), this);
     zoomInAction->setShortcut(QKeySequence::ZoomIn);
-    connect(zoomInAction, SIGNAL(triggered()), this, SLOT(zoomIn()));
+    connect(zoomInAction, &QAction::triggered, this, &MainWindow::zoomIn);
 
     zoomOutAction = new QAction(tr("Zoom Out"), this);
     zoomOutAction->setShortcut(QKeySequence::ZoomOut);
-    connect(zoomOutAction, SIGNAL(triggered()), this, SLOT(zoomOut()));
+    connect(zoomOutAction, &QAction::triggered, this, &MainWindow::zoomOut);
 
     zoomFitAction = new QAction(tr("Zoom to Fit"), this);
-    connect(zoomFitAction, SIGNAL(triggered()), this, SLOT(zoomFit()));
+    connect(zoomFitAction, &QAction::triggered, this, &MainWindow::zoomFit);
 
     ui->ganttView->leftView()->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->ganttView->leftView()->addAction(newEntryAction);
@@ -160,11 +160,11 @@ void MainWindow::initActions()
 
     QMenu *scaleMenu = menuBar()->addMenu(tr("Scale"));
 
-    scaleMenu->addAction(tr("Auto"), this, SLOT(scaleAuto()));
-    scaleMenu->addAction(tr("Hour"), this, SLOT(scaleHour()));
-    scaleMenu->addAction(tr("Day"), this, SLOT(scaleDay()));
-    scaleMenu->addAction(tr("Week"), this, SLOT(scaleWeek()));
-    scaleMenu->addAction(tr("Month"), this, SLOT(scaleMonth()));
+    scaleMenu->addAction(tr("Auto"), this, &MainWindow::scaleAuto);
+    scaleMenu->addAction(tr("Hour"), this, &MainWindow::scaleHour);
+    scaleMenu->addAction(tr("Day"), this, &MainWindow::scaleDay);
+    scaleMenu->addAction(tr("Week"), this, &MainWindow::scaleWeek);
+    scaleMenu->addAction(tr("Month"), this, &MainWindow::scaleMonth);
 
     enableActions(QItemSelection());
 }
@@ -314,14 +314,14 @@ void MainWindow::zoomOut()
 
 void MainWindow::zoomFit()
 {
-    QModelIndexList selectedIndexes = ui->ganttView->selectionModel()->selectedIndexes();
+    const QModelIndexList selectedIndexes = ui->ganttView->selectionModel()->selectedIndexes();
 
     if (selectedIndexes.isEmpty()) {
         return;
     }
 
     KDGantt::Span span;
-    Q_FOREACH (QModelIndex idx, selectedIndexes) {
+    for (QModelIndex idx : selectedIndexes) {
         const KDGantt::Span s = grid->mapToChart(grid->model()->index(idx.row(), 0));
         if (span.isValid()) {
             span = span.expandedTo(s);

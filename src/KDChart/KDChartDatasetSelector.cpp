@@ -68,7 +68,7 @@ void DatasetSelectorWidget::on_groupBox_toggled(bool state)
     if (state) {
         calculateMapping();
     } else {
-        emit mappingDisabled();
+        Q_EMIT mappingDisabled();
     }
 }
 
@@ -103,19 +103,19 @@ void DatasetSelectorWidget::resetDisplayValues()
     mUi->sbColumnCount->setMaximum(mSourceColumnCount);
     mUi->sbColumnCount->setValue(mSourceColumnCount);
     mUi->groupBox->setChecked(false);
-    emit mappingDisabled();
+    Q_EMIT mappingDisabled();
 }
 
 void DatasetSelectorWidget::calculateMapping()
 {
     if (mSourceColumnCount < 2 && mSourceRowCount < 2) {
         mUi->groupBox->setEnabled(false);
-        emit mappingDisabled();
+        Q_EMIT mappingDisabled();
     } else {
         mUi->groupBox->setEnabled(true);
 
         if (!mUi->groupBox->isChecked()) {
-            emit mappingDisabled();
+            Q_EMIT mappingDisabled();
             return;
         }
 
@@ -161,6 +161,6 @@ void DatasetSelectorWidget::calculateMapping()
         }
 
         // and tell the world:
-        emit configureDatasetProxyModel(rowConfig, columnConfig);
+        Q_EMIT configureDatasetProxyModel(rowConfig, columnConfig);
     }
 }

@@ -28,12 +28,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     typeSelector->setCurrentIndex(1); // we start by LineDiagram
 
-    connect(typeSelector, SIGNAL(activated(int)), SLOT(changeType()));
+    connect(typeSelector, QOverload<int>::of(&QComboBox::activated), this, &MainWindow::changeType);
 
-    connect(btnAddDataset, SIGNAL(clicked()), SLOT(addDataset()));
+    connect(btnAddDataset, &QPushButton::clicked, this, &MainWindow::addDataset);
 
-    connect(leadingSelector, SIGNAL(valueChanged(int)),
-            this, SLOT(changeLeading(int)));
+    connect(leadingSelector, QOverload<int>::of(&QSpinBox::valueChanged),
+            this, &MainWindow::changeLeading);
 }
 
 void MainWindow::changeType()
@@ -58,10 +58,10 @@ void MainWindow::changeLeading(int leading)
 
 void MainWindow::addDataset()
 {
-    QStringList parts = lineAddDataset->text().split(';');
+    const QStringList parts = lineAddDataset->text().split(';');
     bool ok;
     QVector<qreal> vec;
-    foreach (const QString &str, parts) {
+    for (const QString &str : parts) {
         const qreal val = str.toDouble(&ok);
         if (ok)
             vec.append(val);

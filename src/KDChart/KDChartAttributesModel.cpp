@@ -366,7 +366,7 @@ bool AttributesModel::setData(const QModelIndex &index, const QVariant &value, i
         QMap<int, QMap<int, QVariant>> &colDataMap = d->dataMap[index.column()];
         QMap<int, QVariant> &dataMap = colDataMap[index.row()];
         dataMap.insert(role, value);
-        emit attributesChanged(index, index);
+        Q_EMIT attributesChanged(index, index);
         return true;
     }
 }
@@ -394,18 +394,18 @@ bool AttributesModel::setHeaderData(int section, Qt::Orientation orientation,
             int numRows = rowCount(QModelIndex());
             int numCols = columnCount(QModelIndex());
             if (orientation == Qt::Horizontal && numRows > 0)
-                emit attributesChanged(index(0, section, QModelIndex()),
-                                       index(numRows - 1, section, QModelIndex()));
+                Q_EMIT attributesChanged(index(0, section, QModelIndex()),
+                                         index(numRows - 1, section, QModelIndex()));
             else if (orientation == Qt::Vertical && numCols > 0)
-                emit attributesChanged(index(section, 0, QModelIndex()),
-                                       index(section, numCols - 1, QModelIndex()));
-            emit headerDataChanged(orientation, section, section);
+                Q_EMIT attributesChanged(index(section, 0, QModelIndex()),
+                                         index(section, numCols - 1, QModelIndex()));
+            Q_EMIT headerDataChanged(orientation, section, section);
 
             // FIXME: This only makes sense for orientation == Qt::Horizontal,
             // but what if orientation == Qt::Vertical?
             if (section != -1 && numRows > 0)
-                emit dataChanged(index(0, section, QModelIndex()),
-                                 index(numRows - 1, section, QModelIndex()));
+                Q_EMIT dataChanged(index(0, section, QModelIndex()),
+                                   index(numRows - 1, section, QModelIndex()));
         }
         return true;
     }
@@ -448,8 +448,8 @@ bool KDChart::AttributesModel::setModelData(const QVariant value, int role)
     int numRows = rowCount(QModelIndex());
     int numCols = columnCount(QModelIndex());
     if (sourceModel() && numRows > 0 && numCols > 0) {
-        emit attributesChanged(index(0, 0, QModelIndex()),
-                               index(numRows - 1, numCols - 1, QModelIndex()));
+        Q_EMIT attributesChanged(index(0, 0, QModelIndex()),
+                                 index(numRows - 1, numCols - 1, QModelIndex()));
         beginResetModel();
         endResetModel();
     }
@@ -479,56 +479,61 @@ int AttributesModel::columnCount(const QModelIndex &index) const
     }
 }
 
-void AttributesModel::setSourceModel(QAbstractItemModel *sourceModel)
+void AttributesModel::setSourceModel(QAbstractItemModel *newModel)
 {
-    if (this->sourceModel() != nullptr) {
-        disconnect(this->sourceModel(), SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
-                   this, SLOT(slotDataChanged(const QModelIndex &, const QModelIndex &)));
-        disconnect(this->sourceModel(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-                   this, SLOT(slotRowsInserted(const QModelIndex &, int, int)));
-        disconnect(this->sourceModel(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-                   this, SLOT(slotRowsRemoved(const QModelIndex &, int, int)));
-        disconnect(this->sourceModel(), SIGNAL(rowsAboutToBeInserted(const QModelIndex &, int, int)),
-                   this, SLOT(slotRowsAboutToBeInserted(const QModelIndex &, int, int)));
-        disconnect(this->sourceModel(), SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-                   this, SLOT(slotRowsAboutToBeRemoved(const QModelIndex &, int, int)));
-        disconnect(this->sourceModel(), SIGNAL(columnsInserted(const QModelIndex &, int, int)),
-                   this, SLOT(slotColumnsInserted(const QModelIndex &, int, int)));
-        disconnect(this->sourceModel(), SIGNAL(columnsRemoved(const QModelIndex &, int, int)),
-                   this, SLOT(slotColumnsRemoved(const QModelIndex &, int, int)));
-        disconnect(this->sourceModel(), SIGNAL(columnsAboutToBeInserted(const QModelIndex &, int, int)),
-                   this, SLOT(slotColumnsAboutToBeInserted(const QModelIndex &, int, int)));
-        disconnect(this->sourceModel(), SIGNAL(columnsAboutToBeRemoved(const QModelIndex &, int, int)),
-                   this, SLOT(slotColumnsAboutToBeRemoved(const QModelIndex &, int, int)));
-        disconnect(this->sourceModel(), SIGNAL(modelReset()),
-                   this, SIGNAL(modelReset()));
-        disconnect(this->sourceModel(), SIGNAL(layoutChanged()),
-                   this, SIGNAL(layoutChanged()));
+    QAbstractItemModel *oldModel = sourceModel();
+    if (oldModel != nullptr) {
+        disconnect(oldModel, &QAbstractItemModel::dataChanged,
+                   this, &AttributesModel::slotDataChanged);
+        disconnect(oldModel, &QAbstractItemModel::rowsInserted,
+                   this, &AttributesModel::slotRowsInserted);
+        disconnect(oldModel, &QAbstractItemModel::rowsRemoved,
+                   this, &AttributesModel::slotRowsRemoved);
+        disconnect(oldModel, &QAbstractItemModel::rowsAboutToBeInserted,
+                   this, &AttributesModel::slotRowsAboutToBeInserted);
+        disconnect(oldModel, &QAbstractItemModel::rowsAboutToBeRemoved,
+                   this, &AttributesModel::slotRowsAboutToBeRemoved);
+        disconnect(oldModel, &QAbstractItemModel::columnsInserted,
+                   this, &AttributesModel::slotColumnsInserted);
+        disconnect(oldModel, &QAbstractItemModel::columnsRemoved,
+                   this, &AttributesModel::slotColumnsRemoved);
+        disconnect(oldModel, &QAbstractItemModel::columnsAboutToBeInserted,
+                   this, &AttributesModel::slotColumnsAboutToBeInserted);
+        disconnect(oldModel, &QAbstractItemModel::columnsAboutToBeRemoved,
+                   this, &AttributesModel::slotColumnsAboutToBeRemoved);
+        disconnect(oldModel, &QAbstractItemModel::modelAboutToBeReset,
+                   this, &AttributesModel::modelAboutToBeReset);
+        disconnect(oldModel, &QAbstractItemModel::modelReset,
+                   this, &AttributesModel::modelReset);
+        disconnect(oldModel, &QAbstractItemModel::layoutChanged,
+                   this, &AttributesModel::layoutChanged);
     }
-    QAbstractProxyModel::setSourceModel(sourceModel);
-    if (this->sourceModel() != nullptr) {
-        connect(this->sourceModel(), SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
-                this, SLOT(slotDataChanged(const QModelIndex &, const QModelIndex &)));
-        connect(this->sourceModel(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-                this, SLOT(slotRowsInserted(const QModelIndex &, int, int)));
-        connect(this->sourceModel(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-                this, SLOT(slotRowsRemoved(const QModelIndex &, int, int)));
-        connect(this->sourceModel(), SIGNAL(rowsAboutToBeInserted(const QModelIndex &, int, int)),
-                this, SLOT(slotRowsAboutToBeInserted(const QModelIndex &, int, int)));
-        connect(this->sourceModel(), SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-                this, SLOT(slotRowsAboutToBeRemoved(const QModelIndex &, int, int)));
-        connect(this->sourceModel(), SIGNAL(columnsInserted(const QModelIndex &, int, int)),
-                this, SLOT(slotColumnsInserted(const QModelIndex &, int, int)));
-        connect(this->sourceModel(), SIGNAL(columnsRemoved(const QModelIndex &, int, int)),
-                this, SLOT(slotColumnsRemoved(const QModelIndex &, int, int)));
-        connect(this->sourceModel(), SIGNAL(columnsAboutToBeInserted(const QModelIndex &, int, int)),
-                this, SLOT(slotColumnsAboutToBeInserted(const QModelIndex &, int, int)));
-        connect(this->sourceModel(), SIGNAL(columnsAboutToBeRemoved(const QModelIndex &, int, int)),
-                this, SLOT(slotColumnsAboutToBeRemoved(const QModelIndex &, int, int)));
-        connect(this->sourceModel(), SIGNAL(modelReset()),
-                this, SIGNAL(modelReset()));
-        connect(this->sourceModel(), SIGNAL(layoutChanged()),
-                this, SIGNAL(layoutChanged()));
+    QAbstractProxyModel::setSourceModel(newModel);
+    if (newModel != nullptr) {
+        connect(newModel, &QAbstractItemModel::dataChanged,
+                this, &AttributesModel::slotDataChanged);
+        connect(newModel, &QAbstractItemModel::rowsInserted,
+                this, &AttributesModel::slotRowsInserted);
+        connect(newModel, &QAbstractItemModel::rowsRemoved,
+                this, &AttributesModel::slotRowsRemoved);
+        connect(newModel, &QAbstractItemModel::rowsAboutToBeInserted,
+                this, &AttributesModel::slotRowsAboutToBeInserted);
+        connect(newModel, &QAbstractItemModel::rowsAboutToBeRemoved,
+                this, &AttributesModel::slotRowsAboutToBeRemoved);
+        connect(newModel, &QAbstractItemModel::columnsInserted,
+                this, &AttributesModel::slotColumnsInserted);
+        connect(newModel, &QAbstractItemModel::columnsRemoved,
+                this, &AttributesModel::slotColumnsRemoved);
+        connect(newModel, &QAbstractItemModel::columnsAboutToBeInserted,
+                this, &AttributesModel::slotColumnsAboutToBeInserted);
+        connect(newModel, &QAbstractItemModel::columnsAboutToBeRemoved,
+                this, &AttributesModel::slotColumnsAboutToBeRemoved);
+        connect(newModel, &QAbstractItemModel::modelAboutToBeReset,
+                this, &AttributesModel::modelAboutToBeReset);
+        connect(newModel, &QAbstractItemModel::modelReset,
+                this, &AttributesModel::modelReset);
+        connect(newModel, &QAbstractItemModel::layoutChanged,
+                this, &AttributesModel::layoutChanged);
     }
 }
 
@@ -640,7 +645,7 @@ void AttributesModel::slotColumnsRemoved(const QModelIndex &parent, int start, i
 
 void AttributesModel::slotDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-    emit dataChanged(mapFromSource(topLeft), mapFromSource(bottomRight));
+    Q_EMIT dataChanged(mapFromSource(topLeft), mapFromSource(bottomRight));
 }
 
 void AttributesModel::setDefaultForRole(int role, const QVariant &value)

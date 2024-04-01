@@ -133,12 +133,14 @@ TickIterator::TickIterator(CartesianAxis *a, CartesianCoordinatePlane *plane, ui
 static QMultiMap<qreal, QString> allAxisAnnotations(const AbstractCoordinatePlane *plane, bool isY)
 {
     QMultiMap<qreal, QString> annotations;
-    Q_FOREACH (const AbstractDiagram *diagram, plane->diagrams()) {
+    const auto constDiagrams = plane->diagrams();
+    for (const AbstractDiagram *diagram : constDiagrams) {
         const auto *cd = qobject_cast<const AbstractCartesianDiagram *>(diagram);
         if (!cd) {
             continue;
         }
-        Q_FOREACH (const CartesianAxis *axis, cd->axes()) {
+        const auto axes = cd->axes();
+        for (const CartesianAxis *axis : axes) {
             const CartesianAxis::Private *axisPriv = CartesianAxis::Private::get(axis);
             if (axisPriv->isVertical() == isY) {
                 annotations.unite(axisPriv->annotations);
@@ -379,7 +381,7 @@ CartesianAxis::~CartesianAxis()
         auto *cd = qobject_cast<AbstractCartesianDiagram *>(d->mDiagram);
         cd->takeAxis(this);
     }
-    Q_FOREACH (AbstractDiagram *diagram, d->secondaryDiagrams) {
+    for (AbstractDiagram *diagram : qAsConst(d->secondaryDiagrams)) {
         auto *cd = qobject_cast<AbstractCartesianDiagram *>(diagram);
         cd->takeAxis(this);
     }
@@ -390,7 +392,7 @@ void CartesianAxis::init()
     d->customTickLength = 3;
     d->position = Bottom;
     setCachedSizeDirty();
-    connect(this, SIGNAL(coordinateSystemChanged()), SLOT(coordinateSystemChanged()));
+    connect(this, &AbstractAxis::coordinateSystemChanged, this, &CartesianAxis::coordinateSystemChanged);
 }
 
 bool CartesianAxis::compare(const CartesianAxis *other) const

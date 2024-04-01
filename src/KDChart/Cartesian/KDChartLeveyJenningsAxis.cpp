@@ -44,7 +44,7 @@ LeveyJenningsAxis::~LeveyJenningsAxis()
         auto *cd = qobject_cast<LeveyJenningsDiagram *>(d->mDiagram);
         cd->takeAxis(this);
     }
-    Q_FOREACH (AbstractDiagram *diagram, d->secondaryDiagrams) {
+    for (AbstractDiagram *diagram : qAsConst(d->secondaryDiagrams)) {
         auto *cd = qobject_cast<LeveyJenningsDiagram *>(diagram);
         cd->takeAxis(this);
     }

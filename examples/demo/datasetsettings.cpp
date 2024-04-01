@@ -126,9 +126,9 @@ DatasetSettings::DatasetSettings(Chart *chart, QWidget *parent)
     d->ui->colorDisplay->setStyle(QStyleFactory::create(QStringLiteral("cleanlooks")));
     d->ui->outlineBtn->setStyle(QStyleFactory::create(QStringLiteral("cleanlooks")));
 #endif
-    connect(d->ui->datasetSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(indexChanged(int)));
-    connect(d->ui->colorDisplay, SIGNAL(clicked()), d, SLOT(changeColor()));
-    connect(d->ui->outlineBtn, SIGNAL(clicked()), d, SLOT(changeOutline()));
+    connect(d->ui->datasetSelector, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DatasetSettings::indexChanged);
+    connect(d->ui->colorDisplay, &QPushButton::clicked, d, &Private::changeColor);
+    connect(d->ui->outlineBtn, &QPushButton::clicked, d, &Private::changeOutline);
 }
 
 DatasetSettings::~DatasetSettings()

@@ -431,13 +431,15 @@ void Widget::setType(ChartType chartType, SubType chartSubType)
                     qobject_cast<AbstractCartesianDiagram *>(coordinatePlane()->diagram());
                 auto *newDiag =
                     qobject_cast<AbstractCartesianDiagram *>(diag);
-                Q_FOREACH (CartesianAxis *axis, oldDiag->axes()) {
+                const auto constAxes = oldDiag->axes();
+                for (CartesianAxis *axis : constAxes) {
                     oldDiag->takeAxis(axis);
                     newDiag->addAxis(axis);
                 }
             }
 
-            Q_FOREACH (Legend *l, d->m_chart.legends()) {
+            const auto constLegends = d->m_chart.legends();
+            for (Legend *l : constLegends) {
                 l->setDiagram(diag);
             }
 

@@ -54,8 +54,7 @@ void PolarCoordinatePlane::addDiagram(AbstractDiagram *diagram)
                "PolarCoordinatePlane::addDiagram", "Only polar"
                                                    "diagrams can be added to a polar coordinate plane!");
     AbstractCoordinatePlane::addDiagram(diagram);
-    connect(diagram, SIGNAL(layoutChanged(AbstractDiagram *)),
-            SLOT(slotLayoutChanged(AbstractDiagram *)));
+    connect(diagram, &AbstractDiagram::layoutChanged, this, &PolarCoordinatePlane::slotLayoutChanged);
 }
 
 void PolarCoordinatePlane::paint(QPainter *painter)
@@ -148,7 +147,8 @@ void PolarCoordinatePlane::layoutDiagrams()
     // FIXME distribute space according to options:
     const qreal oldStartPosition = startPosition();
     d->coordinateTransformations.clear();
-    Q_FOREACH (AbstractDiagram *diagram, diagrams()) {
+    const auto constDiagrams = diagrams();
+    for (AbstractDiagram *diagram : constDiagrams) {
         auto *polarDiagram = dynamic_cast<AbstractPolarDiagram *>(diagram);
         Q_ASSERT(polarDiagram);
         QPair<QPointF, QPointF> dataBoundariesPair = polarDiagram->dataBoundaries();
@@ -307,7 +307,7 @@ void KDChart::PolarCoordinatePlane::setGridAttributes(
         d->gridAttributesSagittal = a;
     setHasOwnGridAttributes(circular, true);
     update();
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 void KDChart::PolarCoordinatePlane::resetGridAttributes(
@@ -349,7 +349,7 @@ void KDChart::PolarCoordinatePlane::setHasOwnGridAttributes(
         d->hasOwnGridAttributesCircular = on;
     else
         d->hasOwnGridAttributesSagittal = on;
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 bool KDChart::PolarCoordinatePlane::hasOwnGridAttributes(

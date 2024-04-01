@@ -54,9 +54,9 @@ QModelIndexList ReverseMapper::indexesIn(const QRect &rect) const
 {
     Q_ASSERT(m_diagram);
     if (m_scene && m_scene->sceneRect().intersects(rect)) {
-        QList<QGraphicsItem *> items = m_scene->items(rect);
+        const QList<QGraphicsItem *> items = m_scene->items(rect);
         QModelIndexList indexes;
-        Q_FOREACH (QGraphicsItem *item, items) {
+        for (QGraphicsItem *item : items) {
             auto *i = qgraphicsitem_cast<ChartGraphicsItem *>(item);
             if (i) {
                 QModelIndex index(m_diagram->model()->index(i->row(), i->column(), m_diagram->rootIndex())); // checked
@@ -73,9 +73,9 @@ QModelIndexList ReverseMapper::indexesAt(const QPointF &point) const
 {
     Q_ASSERT(m_diagram);
     if (m_scene && m_scene->sceneRect().contains(point)) {
-        QList<QGraphicsItem *> items = m_scene->items(point);
+        const QList<QGraphicsItem *> items = m_scene->items(point);
         QModelIndexList indexes;
-        Q_FOREACH (QGraphicsItem *item, items) {
+        for (QGraphicsItem *item : items) {
             auto *i = qgraphicsitem_cast<ChartGraphicsItem *>(item);
             if (i) {
                 QModelIndex index(m_diagram->model()->index(i->row(), i->column(), m_diagram->rootIndex())); // checked

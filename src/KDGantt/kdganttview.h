@@ -36,11 +36,6 @@ class KDGANTT_EXPORT View : public QWidget
 {
     Q_OBJECT
     KDGANTT_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET(View)
-    Q_PRIVATE_SLOT(d, void slotCollapsed(const QModelIndex &))
-    Q_PRIVATE_SLOT(d, void slotExpanded(const QModelIndex &))
-    Q_PRIVATE_SLOT(d, void slotVerticalScrollValueChanged(int))
-    Q_PRIVATE_SLOT(d, void slotLeftWidgetVerticalRangeChanged(int, int))
-    Q_PRIVATE_SLOT(d, void slotGfxViewVerticalRangeChanged(int, int))
 
 public:
     explicit View(QWidget *parent = nullptr);

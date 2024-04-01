@@ -45,14 +45,14 @@ void Plotter::init()
     d->normalPlotter = new NormalPlotter(this);
     d->percentPlotter = new PercentPlotter(this);
     d->implementor = d->normalPlotter;
-    QObject *test = d->implementor->plotterPrivate();
-    connect(this, SIGNAL(boundariesChanged()), test, SLOT(changedProperties()));
-    // The signal is connected to the superclass's slot at this point because the connection happened
+    Private *test = d->implementor->plotterPrivate();
+    connect(this, &Plotter::boundariesChanged, test, &Private::changedProperties);
+    // The signal is connected to the superclass's AbstractDiagram slot at this point because the connection happened
     // in its constructor when "its type was not Plotter yet".
-    disconnect(this, SIGNAL(attributesModelAboutToChange(AttributesModel *, AttributesModel *)),
-               this, SLOT(connectAttributesModel(AttributesModel *)));
-    connect(this, SIGNAL(attributesModelAboutToChange(AttributesModel *, AttributesModel *)),
-            this, SLOT(connectAttributesModel(AttributesModel *)));
+    disconnect(this, &AbstractDiagram::attributesModelAboutToChange,
+               this, &Plotter::connectAttributesModel);
+    connect(this, &Plotter::attributesModelAboutToChange,
+            this, &Plotter::connectAttributesModel);
     setDatasetDimensionInternal(2);
 }
 
@@ -95,12 +95,12 @@ void Plotter::connectAttributesModel(AttributesModel *newModel)
         d->compressor.setModel(nullptr);
         if (attributesModel() != d->plotterCompressor.model()) {
             d->plotterCompressor.setModel(attributesModel());
-            connect(&d->plotterCompressor, SIGNAL(boundariesChanged()), this, SLOT(setDataBoundariesDirty()));
+            connect(&d->plotterCompressor, &PlotterDiagramCompressor::boundariesChanged, this, &Plotter::setDataBoundariesDirty);
             if (useDataCompression() != Plotter::SLOPE) {
-                connect(coordinatePlane(), SIGNAL(internal_geometryChanged(QRect, QRect)),
-                        this, SLOT(setDataBoundariesDirty()));
-                connect(coordinatePlane(), SIGNAL(geometryChanged(QRect, QRect)),
-                        this, SLOT(setDataBoundariesDirty()));
+                connect(coordinatePlane(), &AbstractCoordinatePlane::internal_geometryChanged,
+                        this, &Plotter::setDataBoundariesDirty);
+                connect(coordinatePlane(), &AbstractCoordinatePlane::geometryChanged,
+                        this, &Plotter::setDataBoundariesDirty);
                 calcMergeRadius();
             }
         }
@@ -171,8 +171,8 @@ void Plotter::setType(const PlotType type)
     default:
         Q_ASSERT_X(false, "Plotter::setType", "unknown plotter subtype");
     }
-    bool connection = connect(this, SIGNAL(boundariesChanged()),
-                              d->implementor->plotterPrivate(), SLOT(changedProperties()));
+    bool connection = connect(this, &Plotter::boundariesChanged,
+                              d->implementor->plotterPrivate(), &KDChart::Plotter::Private::changedProperties);
     Q_ASSERT(connection);
     Q_UNUSED(connection);
 
@@ -180,8 +180,8 @@ void Plotter::setType(const PlotType type)
     Q_ASSERT(d->implementor->type() == type);
 
     setDataBoundariesDirty();
-    emit layoutChanged(this);
-    emit propertiesChanged();
+    Q_EMIT layoutChanged(this);
+    Q_EMIT propertiesChanged();
 }
 
 /**
@@ -198,7 +198,7 @@ Plotter::PlotType Plotter::type() const
 void Plotter::setLineAttributes(const LineAttributes &la)
 {
     d->attributesModel->setModelData(QVariant::fromValue(la), LineAttributesRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 /**
@@ -207,7 +207,7 @@ void Plotter::setLineAttributes(const LineAttributes &la)
 void Plotter::setLineAttributes(int column, const LineAttributes &la)
 {
     d->setDatasetAttrs(column, QVariant::fromValue(la), LineAttributesRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 /**
@@ -216,7 +216,7 @@ void Plotter::setLineAttributes(int column, const LineAttributes &la)
 void Plotter::resetLineAttributes(int column)
 {
     d->resetDatasetAttrs(column, LineAttributesRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 /**
@@ -226,7 +226,7 @@ void Plotter::setLineAttributes(const QModelIndex &index, const LineAttributes &
 {
     d->attributesModel->setData(d->attributesModel->mapFromSource(index),
                                 QVariant::fromValue(la), LineAttributesRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 /**
@@ -236,7 +236,7 @@ void Plotter::resetLineAttributes(const QModelIndex &index)
 {
     d->attributesModel->resetData(
         d->attributesModel->mapFromSource(index), LineAttributesRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 /**
@@ -275,7 +275,7 @@ void Plotter::setThreeDLineAttributes(const ThreeDLineAttributes &la)
 {
     setDataBoundariesDirty();
     d->attributesModel->setModelData(QVariant::fromValue(la), ThreeDLineAttributesRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 /**
@@ -285,7 +285,7 @@ void Plotter::setThreeDLineAttributes(int column, const ThreeDLineAttributes &la
 {
     setDataBoundariesDirty();
     d->setDatasetAttrs(column, QVariant::fromValue(la), ThreeDLineAttributesRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 /**
@@ -296,7 +296,7 @@ void Plotter::setThreeDLineAttributes(const QModelIndex &index, const ThreeDLine
     setDataBoundariesDirty();
     d->attributesModel->setData(d->attributesModel->mapFromSource(index), QVariant::fromValue(la),
                                 ThreeDLineAttributesRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 /**
@@ -346,7 +346,7 @@ void Plotter::setValueTrackerAttributes(const QModelIndex &index, const ValueTra
 {
     d->attributesModel->setData(d->attributesModel->mapFromSource(index),
                                 QVariant::fromValue(va), KDChart::ValueTrackerAttributesRole);
-    emit propertiesChanged();
+    Q_EMIT propertiesChanged();
 }
 
 /**

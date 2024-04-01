@@ -28,7 +28,7 @@ private slots:
         qDebug() << "time constructor:" << t.elapsed() << "ms";
 
         mainWindow.show();
-        QTimer::singleShot(0, qApp, SLOT(quit()));
+        QTimer::singleShot(0, qApp, &QCoreApplication::quit);
 
         qDebug() << "time show():" << t.elapsed() << "ms";
         // uncomment to see it blink:

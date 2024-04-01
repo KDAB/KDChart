@@ -14,7 +14,7 @@ ModelParamVsParam::ModelParamVsParam(
     QObject *p_parent)
     : QStandardItemModel(p_parent)
 {
-    connect(&m_timer, SIGNAL(timeout()), SLOT(timeout()));
+    connect(&m_timer, &QTimer::timeout, this, &ModelParamVsParam::timeout);
     // m_timer.setSingleShot(true);
     m_timer.setInterval(2000);
 } // ModelParamVsParam::ModelParamVsParam()

@@ -67,11 +67,13 @@ void TernaryCoordinatePlane::layoutDiagrams()
     {
         QSizeF topleft(0.0, 0.0);
         QSizeF bottomRight(0.0, 0.0);
-        Q_FOREACH (AbstractDiagram *abstractDiagram, diagrams()) {
+        const auto constDiagrams = diagrams();
+        for (AbstractDiagram *abstractDiagram : constDiagrams) {
             auto *diagram =
                 qobject_cast<AbstractTernaryDiagram *>(abstractDiagram);
             Q_ASSERT(diagram);
-            Q_FOREACH (TernaryAxis *axis, diagram->axes()) {
+            const auto constAxes = diagram->axes();
+            for (TernaryAxis *axis : constAxes) {
                 QPair<QSizeF, QSizeF> margin = axis->requiredMargins();
                 topleft = topleft.expandedTo(margin.first);
                 bottomRight = bottomRight.expandedTo(margin.second);

@@ -61,6 +61,7 @@ class KDCHART_EXPORT CartesianDiagramDataCompressor : public QObject
 {
     Q_OBJECT
     friend class ::CartesianDiagramDataCompressorTests;
+    friend class AbstractCartesianDiagram;
 
 public:
     class DataPoint

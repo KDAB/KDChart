@@ -40,14 +40,14 @@ AbstractCoordinatePlane::AbstractCoordinatePlane(KDChart::Chart *parent)
 
 AbstractCoordinatePlane::~AbstractCoordinatePlane()
 {
-    emit destroyedCoordinatePlane(this);
+    Q_EMIT destroyedCoordinatePlane(this);
 }
 
 void AbstractCoordinatePlane::init()
 {
     d->initialize(); // virtual method to init the correct grid: cartesian, polar, ...
-    connect(this, SIGNAL(internal_geometryChanged(QRect, QRect)),
-            this, SIGNAL(geometryChanged(QRect, QRect)),
+    connect(this, &AbstractCoordinatePlane::internal_geometryChanged,
+            this, &AbstractCoordinatePlane::geometryChanged,
             Qt::QueuedConnection);
 }
 
@@ -61,13 +61,13 @@ void AbstractCoordinatePlane::addDiagram(AbstractDiagram *diagram)
     diagram->setCoordinatePlane(this);
     layoutDiagrams();
     layoutPlanes(); // there might be new axes, etc
-    connect(diagram, SIGNAL(modelsChanged()), this, SLOT(layoutPlanes()));
-    connect(diagram, SIGNAL(modelDataChanged()), this, SLOT(update()));
-    connect(diagram, SIGNAL(modelDataChanged()), this, SLOT(relayout()));
-    connect(this, SIGNAL(boundariesChanged()), diagram, SIGNAL(boundariesChanged()));
+    connect(diagram, &AbstractDiagram::modelsChanged, this, &AbstractCoordinatePlane::layoutPlanes);
+    connect(diagram, &AbstractDiagram::modelDataChanged, this, &AbstractCoordinatePlane::update);
+    connect(diagram, &AbstractDiagram::modelDataChanged, this, &AbstractCoordinatePlane::relayout);
+    connect(this, &AbstractCoordinatePlane::boundariesChanged, diagram, &AbstractDiagram::boundariesChanged);
 
     update();
-    emit boundariesChanged();
+    Q_EMIT boundariesChanged();
 }
 
 /*virtual*/
@@ -99,9 +99,9 @@ void AbstractCoordinatePlane::takeDiagram(AbstractDiagram *diagram)
         d->diagrams.removeAt(idx);
         diagram->setParent(nullptr);
         diagram->setCoordinatePlane(nullptr);
-        disconnect(diagram, SIGNAL(modelsChanged()), this, SLOT(layoutPlanes()));
-        disconnect(diagram, SIGNAL(modelDataChanged()), this, SLOT(update()));
-        disconnect(diagram, SIGNAL(modelDataChanged()), this, SLOT(relayout()));
+        disconnect(diagram, &AbstractDiagram::modelsChanged, this, &AbstractCoordinatePlane::layoutPlanes);
+        disconnect(diagram, &AbstractDiagram::modelDataChanged, this, &AbstractCoordinatePlane::update);
+        disconnect(diagram, &AbstractDiagram::modelDataChanged, this, &AbstractCoordinatePlane::relayout);
         layoutDiagrams();
         update();
     }
@@ -127,7 +127,7 @@ ConstAbstractDiagramList AbstractCoordinatePlane::diagrams() const
 #ifndef QT_NO_STL
     qCopy(d->diagrams.begin(), d->diagrams.end(), std::back_inserter(list));
 #else
-    Q_FOREACH (AbstractDiagram *a, d->diagrams)
+    for (AbstractDiagram *a : d->diagrams)
         list.push_back(a);
 #endif
     return list;
@@ -216,7 +216,7 @@ void KDChart::AbstractCoordinatePlane::setGeometry(const QRect &r)
     if (d->geometry != r) {
         // inform the outside word by Signal geometryChanged()
         // via a queued connection to internal_geometryChanged()
-        emit internal_geometryChanged(d->geometry, r);
+        Q_EMIT internal_geometryChanged(d->geometry, r);
 
         d->geometry = r;
         // Note: We do *not* call update() here
@@ -232,19 +232,19 @@ QRect KDChart::AbstractCoordinatePlane::geometry() const
 void KDChart::AbstractCoordinatePlane::update()
 {
     // qDebug("KDChart::AbstractCoordinatePlane::update() called");
-    emit needUpdate();
+    Q_EMIT needUpdate();
 }
 
 void KDChart::AbstractCoordinatePlane::relayout()
 {
     // qDebug("KDChart::AbstractCoordinatePlane::relayout() called");
-    emit needRelayout();
+    Q_EMIT needRelayout();
 }
 
 void KDChart::AbstractCoordinatePlane::layoutPlanes()
 {
     // qDebug("KDChart::AbstractCoordinatePlane::relayout() called");
-    emit needLayoutPlanes();
+    Q_EMIT needLayoutPlanes();
 }
 
 void KDChart::AbstractCoordinatePlane::setRubberBandZoomingEnabled(bool enable)
@@ -268,7 +268,7 @@ void KDChart::AbstractCoordinatePlane::setCornerSpacersEnabled(bool enable)
         return;
 
     d->enableCornerSpacers = enable;
-    emit needRelayout();
+    Q_EMIT needRelayout();
 }
 
 bool KDChart::AbstractCoordinatePlane::isCornerSpacersEnabled() const
@@ -305,7 +305,7 @@ void KDChart::AbstractCoordinatePlane::mousePressEvent(QMouseEvent *event)
         }
     }
 
-    Q_FOREACH (AbstractDiagram *a, d->diagrams) {
+    for (AbstractDiagram *a : qAsConst(d->diagrams)) {
         a->mousePressEvent(event);
     }
 }
@@ -317,7 +317,7 @@ void KDChart::AbstractCoordinatePlane::mouseDoubleClickEvent(QMouseEvent *event)
         // which is pretty annoying when zooming out fast
         mousePressEvent(event);
     }
-    Q_FOREACH (AbstractDiagram *a, d->diagrams) {
+    for (AbstractDiagram *a : qAsConst(d->diagrams)) {
         a->mouseDoubleClickEvent(event);
     }
 }
@@ -367,7 +367,7 @@ void KDChart::AbstractCoordinatePlane::mouseReleaseEvent(QMouseEvent *event)
         event->accept();
     }
 
-    Q_FOREACH (AbstractDiagram *a, d->diagrams) {
+    for (AbstractDiagram *a : qAsConst(d->diagrams)) {
         a->mouseReleaseEvent(event);
     }
 }
@@ -381,7 +381,7 @@ void KDChart::AbstractCoordinatePlane::mouseMoveEvent(QMouseEvent *event)
         event->accept();
     }
 
-    Q_FOREACH (AbstractDiagram *a, d->diagrams) {
+    for (AbstractDiagram *a : qAsConst(d->diagrams)) {
         a->mouseMoveEvent(event);
     }
 }

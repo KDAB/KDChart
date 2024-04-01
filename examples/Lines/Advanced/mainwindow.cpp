@@ -50,7 +50,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_chart->setGlobalLeading(20, 20, 20, 20);
     // Instantiate the timer
     auto *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(slot_timerFired()));
+    connect(timer, &QTimer::timeout, this, &MainWindow::slot_timerFired);
     timer->start(30);
 
     // Change the cursor to IBeamCursor inside Chart widget.

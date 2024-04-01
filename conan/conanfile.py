@@ -10,7 +10,7 @@ from conans import ConanFile, CMake, tools
 
 class KdchartConan(ConanFile):
     name = "KDChart"
-    version = "3.0.1"
+    version = "3.1.0"
     license = ("https://raw.githubusercontent.com/KDAB/KDChart/master/LICENSES/MIT.txt")
     author = "Klaralvdalens Datakonsult AB (KDAB) info@kdab.com"
     url = "https://github.com/KDAB/KDChart.git"
