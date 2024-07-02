@@ -63,7 +63,7 @@ void PercentLineDiagram::paintWithLines(PaintContext *ctx)
     const int columnCount = compressor().modelDataColumns();
     const int rowCount = compressor().modelDataRows();
 
-    // FIXME integrade column index retrieval to compressor:
+    // FIXME integrate column index retrieval to compressor:
     int maxFound = 0;
     //    {   // find the last column number that is not hidden
     //        for ( int iColumn =  datasetDimension() - 1;
@@ -229,7 +229,7 @@ void PercentLineDiagram::paintWithSplines(PaintContext *ctx, qreal tension)
     const auto mainSplineDirection = plane->isHorizontalRangeReversed() ? ReverseSplineDirection : NormalSplineDirection;
     const auto reverseSplineDirection = plane->isHorizontalRangeReversed() ? NormalSplineDirection : ReverseSplineDirection;
 
-    // FIXME integrade column index retrieval to compressor:
+    // FIXME integrate column index retrieval to compressor:
     int maxFound = 0;
     //    {   // find the last column number that is not hidden
     //        for ( int iColumn =  datasetDimension() - 1;

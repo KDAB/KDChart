@@ -43,7 +43,7 @@ public:
     /** Returns two QSizeF objects specifying the dimension of the
             margins needed between each corner of the diagram and the
             border of the drawing area. Margins are required because
-            the tick marks are placed outside of the trianges
+            the tick marks are placed outside of the triangles
             containing rectangle.
             The margins are returned in <em>diagram coordinates</em>,
             since the grid does not know about widget coordinates.
