@@ -28,7 +28,7 @@ See [INSTALL.txt](INSTALL.txt) for installation instructions using CMake.
 After reading the introductory overview files in docs/
 you will find more information at these places:
 
-* [detailed browsable API reference](https://docs.kdab.com/kdchart)
+* [detailed browsable API reference](https://kdab.github.io/KDChart)
 * [programmers manual with examples](docs/manual/kdchart.pdf)
 * [our sorted example programs](examples/)
 
