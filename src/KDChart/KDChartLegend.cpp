@@ -1051,6 +1051,7 @@ void Legend::Private::flowHDatasetItems(Legend *q)
     const int allowedWidth = q->areaGeometry().width();
 
     auto *currentLine = new QHBoxLayout;
+    currentLine->setSpacing(3);
     int mainLayoutRow = 1;
     layout->addItem(currentLine, mainLayoutRow++, /*column*/ 0,
                     /*rowSpan*/ 1, /*columnSpan*/ 5, Qt::AlignLeft | Qt::AlignVCenter);
@@ -1072,6 +1073,7 @@ void Legend::Private::flowHDatasetItems(Legend *q)
                          << allowedWidth;
 #endif
                 currentLine = new QHBoxLayout;
+                currentLine->setSpacing(3);
                 layout->addItem(currentLine, mainLayoutRow++, /*column*/ 0,
                                 /*rowSpan*/ 1, /*columnSpan*/ 5, Qt::AlignLeft | Qt::AlignVCenter);
             } else {
