@@ -55,7 +55,7 @@ namespace UnitTest {
     } while (false)
 
 #define assertThrowsException(x, E) assertThrowsExceptionWithCode( \
-    x, E, do {} while (0))
+    x, E, do { } while (0))
 
 #define assertDoesNotThrowException(x, E)                                               \
     do {                                                                                \
