@@ -121,6 +121,11 @@ public:
         case QPaintDevice::PdmDevicePixelRatioScaled:
             return 1;
 #endif
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+        case QPaintDevice::PdmDevicePixelRatioF_EncodedA:
+        case QPaintDevice::PdmDevicePixelRatioF_EncodedB:
+            return 0;
+#endif
         }
         return 1;
     }

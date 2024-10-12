@@ -10,10 +10,7 @@
 
 #include "mainwindow.h"
 
-#include <KDChartAbstractCoordinatePlane>
-#include <KDChartBarDiagram>
-#include <KDChartChart>
-#include <KDChartLineDiagram>
+#include <KDChart>
 
 #include <QDebug>
 #include <QPainter>
