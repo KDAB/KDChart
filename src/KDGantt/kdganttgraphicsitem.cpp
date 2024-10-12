@@ -269,14 +269,14 @@ void GraphicsItem::updateConstraintItems()
 {
     {
         // Workaround for multiple definition error with MSVC6
-        for (ConstraintGraphicsItem *item : qAsConst(m_startConstraints)) {
+        for (ConstraintGraphicsItem *item : std::as_const(m_startConstraints)) {
             QPointF s = startConnector(item->constraint().relationType());
             item->setStart(s);
         }
     }
     {
         // Workaround for multiple definition error with MSVC6
-        for (ConstraintGraphicsItem *item : qAsConst(m_endConstraints)) {
+        for (ConstraintGraphicsItem *item : std::as_const(m_endConstraints)) {
             QPointF e = endConnector(item->constraint().relationType());
             item->setEnd(e);
         }

@@ -100,7 +100,7 @@ void GradientDialog::Private::updateGradientDisplay()
     gradient.setStart(0, 0);
     gradient.setStart(1, 0);
     gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
-    for (const QGradientStop &stop : qAsConst(m_gradient))
+    for (const QGradientStop &stop : std::as_const(m_gradient))
         gradient.setColorAt(stop.first, stop.second);
     QPalette palette = ui->gradientDisplay->palette();
     palette.setBrush(QPalette::Window, gradient);
@@ -230,7 +230,7 @@ QGradient GradientDialog::gradient() const
     gradient.setStart(0, 0);
     gradient.setStart(1, 0);
     gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
-    for (const QGradientStop &stop : qAsConst(d->m_gradient))
+    for (const QGradientStop &stop : std::as_const(d->m_gradient))
         gradient.setColorAt(stop.first, stop.second);
     return gradient;
 }

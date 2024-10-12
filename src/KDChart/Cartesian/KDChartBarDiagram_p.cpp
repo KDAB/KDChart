@@ -69,7 +69,7 @@ void BarDiagram::BarDiagramType::paintBars(PaintContext *ctx, const QModelIndex 
             bool drawIt = false;
             bool hasPointOutside = false;
             const QRectF r(ctx->rectangle().adjusted(0, -1, 1, 0));
-            for (QPointF pt : qAsConst(topPoints)) {
+            for (QPointF pt : std::as_const(topPoints)) {
                 if (r.contains(pt)) {
                     drawIt = true;
                 } else {

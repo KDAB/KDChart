@@ -125,7 +125,7 @@ QSize Legend::sizeHint() const
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "Legend::sizeHint() started";
 #endif
-    for (AbstractLayoutItem *paintItem : qAsConst(d->paintItems)) {
+    for (AbstractLayoutItem *paintItem : std::as_const(d->paintItems)) {
         paintItem->sizeHint();
     }
     return AbstractAreaWidget::sizeHint();
@@ -212,7 +212,7 @@ void Legend::paint(QPainter *painter)
 
     activateTheLayout();
 
-    for (AbstractLayoutItem *paintItem : qAsConst(d->paintItems)) {
+    for (AbstractLayoutItem *paintItem : std::as_const(d->paintItems)) {
         paintItem->paint(painter);
     }
 
@@ -1134,7 +1134,7 @@ int Legend::heightForWidth(int width) const
 
     int currentLineWidth = 0;
     int currentLineHeight = 0;
-    for (const HDatasetItem &hdsItem : qAsConst(d->hLayoutDatasets)) {
+    for (const HDatasetItem &hdsItem : std::as_const(d->hLayoutDatasets)) {
         const int payloadWidth = hdsItem.markerLine->sizeHint().width() + hdsItem.label->sizeHint().width();
         if (!currentLineWidth) {
             // first iteration

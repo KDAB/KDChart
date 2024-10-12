@@ -171,7 +171,7 @@ void ConstraintModel::cleanup()
 {
 #if 0
     QSet<Constraint> orphans;
-    for (const Constraint& c, qAsConst(d->constraints)) {
+    for (const Constraint& c, std::as_const(d->constraints)) {
         if ( !c.startIndex().isValid() || !c.endIndex().isValid() ) orphans.insert( c );
     }
     //qDebug() << "Constraint::cleanup() found" << orphans << "orphans";

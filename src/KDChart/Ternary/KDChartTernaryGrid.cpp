@@ -80,7 +80,7 @@ void TernaryGrid::drawGrid(PaintContext *context)
 
     QVector<QLineF> lines[MaxDepth];
     {
-        for (const TickInfo &tick : qAsConst(m_tickInfo)) {
+        for (const TickInfo &tick : std::as_const(m_tickInfo)) {
             const qreal &percent = tick.percentage;
             { // draw parallels to B
                 TernaryPoint ternaryStart(percent, 1.0 - percent);
