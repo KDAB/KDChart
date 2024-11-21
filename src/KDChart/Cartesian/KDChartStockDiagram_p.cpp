@@ -25,7 +25,7 @@ public:
     };
 
     ThreeDPainter(QPainter *p)
-        : painter(p) {};
+        : painter(p) { };
 
     QPolygonF drawTwoDLine(const QLineF &line, const QPen &pen,
                            const ThreeDProperties &props);
