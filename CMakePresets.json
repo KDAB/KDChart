@@ -6,7 +6,8 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build-${presetName}",
       "cacheVariables": {
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "KDChart_QT6": "ON"
       }
     },
     {
@@ -14,7 +15,16 @@
       "inherits": "base",
       "displayName": "Dev build",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug"
+        "CMAKE_BUILD_TYPE": "Debug",
+        "KDChart_TESTS": "ON"
+      }
+    },
+    {
+      "name": "dev-asan",
+      "inherits": "dev",
+      "displayName": "ASAN build",
+      "cacheVariables": {
+        "KDChart_ENABLE_SANITIZERS": "On"
       }
     },
     {
@@ -22,7 +32,8 @@
       "inherits": "base",
       "displayName": "Release build",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
+        "CMAKE_BUILD_TYPE": "Release",
+        "KDChart_TESTS": "OFF"
       }
     }
   ]
