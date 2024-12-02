@@ -40,6 +40,9 @@
 #  Alternative install path for Python bindings.
 #  Default=CMAKE_INSTALL_PREFIX
 #
+# -DKDChart_ENABLE_SANITIZERS=[true|false]
+#  Builds with ASAN and UBSAN support.
+#  Default=false
 
 cmake_minimum_required(VERSION 3.12)
 
@@ -81,6 +84,7 @@ option(${PROJECT_NAME}_TESTS "Build the tests" OFF)
 option(${PROJECT_NAME}_EXAMPLES "Build the examples" ON)
 option(${PROJECT_NAME}_DOCS "Build the API documentation" OFF)
 option(${PROJECT_NAME}_PYTHON_BINDINGS "Build python bindings" OFF)
+option(${PROJECT_NAME}_ENABLE_SANITIZERS "Build with Address Sanitizer" OFF)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/ECM/modules")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/KDAB/modules")
@@ -105,6 +109,11 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
                  "MinSizeRel"
                  "RelWithDebInfo"
     )
+endif()
+
+if (${PROJECT_NAME}_ENABLE_SANITIZERS)
+    add_compile_options(-fsanitize=address)
+    add_link_options(-fsanitize=address)
 endif()
 
 if(${PROJECT_NAME}_QT6)
