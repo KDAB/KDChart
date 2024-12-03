@@ -111,7 +111,7 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     )
 endif()
 
-if (${PROJECT_NAME}_ENABLE_SANITIZERS)
+if(${PROJECT_NAME}_ENABLE_SANITIZERS)
     add_compile_options(-fsanitize=address)
     add_link_options(-fsanitize=address)
 endif()
