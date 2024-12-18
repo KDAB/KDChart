@@ -5,7 +5,7 @@ SPDX-PackageDownloadLocation = "https://www.github.com/KDAB/KDChart"
 
 #misc source code
 [[annotations]]
-path = ["**.qrc", "**.ui", "**.xml", "**.kdx", "**.kxs", "**.conf", "**.csv", "**.cht", "**.map", "**.bat", "CMakePresets.txt"]
+path = ["**.qrc", "**.ui", "**.xml", "**.kdx", "**.kxs", "**.conf", "**.csv", "**.cht", "**.map", "**.bat", "CMakePresets.json"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>"
 SPDX-License-Identifier = "MIT"
