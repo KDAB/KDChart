@@ -76,7 +76,7 @@ const QPair<QPointF, QPointF> NormalBarDiagram::calculateDataBoundaries() const
         } else if (yMax < 0.0) {
             yMax = 0.0; // extend the range to zero
         } else if (yMin > 0.0) {
-            yMin = 0.0; // dito
+            yMin = 0.0; // ditto
         }
     }
 
