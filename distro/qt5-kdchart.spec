@@ -51,7 +51,7 @@ develop programs using kdchart.
 %autosetup
 
 %build
-cmake . -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
+cmake . -DCMAKE_INSTALL_PREFIX=/usr -DKDChart_QT6=False -DCMAKE_BUILD_TYPE=Release
 %__make %{?_smp_mflags}
 
 %post -p /sbin/ldconfig
