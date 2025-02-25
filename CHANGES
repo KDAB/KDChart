@@ -3,6 +3,7 @@ Release Highlights
 
 Version 3.1.0 (unreleased):
 --------------------------
+ * KDChart now looks for Qt6 by default, rather than Qt5. If your Qt5 build broke, pass -DKDChart_QT6=OFF to CMake
  * Bug fix: Fix model about to be reset
 
 Version 3.0.1 (unreleased):
