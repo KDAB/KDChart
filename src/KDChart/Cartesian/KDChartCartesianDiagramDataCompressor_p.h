@@ -158,7 +158,7 @@ private Q_SLOTS:
     void slotModelLayoutChanged();
     // FIXME resolution changes and root index changes should all
     // be catchable with this method:
-    void slotDiagramLayoutChanged(AbstractDiagram *);
+    void slotDiagramLayoutChanged(KDChart::AbstractDiagram *);
 
     // geometry has changed
     void rebuildCache();

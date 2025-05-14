@@ -167,9 +167,9 @@ public:
 public Q_SLOTS:
     void setCachedSizeDirty() const;
 
-    virtual int tickLength(bool subUnitTicks = false) const;
+    virtual int tickLength(bool subUnitTicks = false) const; // clazy:exclude=const-signal-or-slot
 private Q_SLOTS:
-    void coordinateSystemChanged();
+    void coordinateSystemChanged(); // clazy:exclude=overridden-signal
 };
 
 typedef QList<CartesianAxis *> CartesianAxisList;

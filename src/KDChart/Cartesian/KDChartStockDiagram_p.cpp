@@ -239,7 +239,6 @@ QPointF StockDiagram::Private::projectPoint(PaintContext *context, const QPointF
  * Projects a candlestick onto the coordinate plane
  *
  * @param context The context to paint the candlestick in
- * @param low The
  */
 QRectF StockDiagram::Private::projectCandlestick(PaintContext *context, const QPointF &open, const QPointF &close, qreal width) const
 {

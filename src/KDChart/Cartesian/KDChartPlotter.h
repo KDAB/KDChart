@@ -28,7 +28,6 @@ class KDCHART_EXPORT Plotter : public AbstractCartesianDiagram
     Q_OBJECT
 
     Q_DISABLE_COPY(Plotter)
-    Q_ENUMS(CompressionMode)
 
     KDCHART_DECLARE_DERIVED_DIAGRAM(Plotter, CartesianCoordinatePlane)
     Q_PROPERTY(CompressionMode useDataCompression READ useDataCompression WRITE setUseDataCompression)
@@ -44,6 +43,8 @@ public:
         BOTH,
         NONE
     };
+    Q_ENUM(CompressionMode)
+
     class PlotterType;
     friend class PlotterType;
 

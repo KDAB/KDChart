@@ -18,31 +18,35 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         os:
-          - ubuntu-22.04
-          #- windows-2022
-          #- macos-12
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
 
         build_type:
-          #- Debug
-          - Release
+          - Debug
+          # - Release
 
         link_type:
           - shared
           #- static
 
         config:
-          - qt_version: "5.15"
-          - qt_version: "6.3.*"
+          - qt_version: 5.15.2
+            architectures: "x86_64"
+
+          - qt_version: 6.9.0
+            architectures: "x86_64;arm64"
 
         include:
           - os: ubuntu-22.04
             build_type: Release
             link_type: shared
             config:
-              qt_version: "6.6.0"
+              qt_version: 6.6.0
+              architectures: "x86_64"
               apt_pgks:
                 - llvm
               pip_pgks:
@@ -50,7 +54,7 @@ jobs:
 
     steps:
       - name: Install Qt with options and default aqtversion
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           aqtversion: null # use whatever the default is
           version: ${{ matrix.config.qt_version }}
@@ -88,6 +92,7 @@ jobs:
           cmake -S . -B ./build -G Ninja
           --warn-uninitialized -Werror=dev
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -DCMAKE_OSX_ARCHITECTURES="${{ matrix.config.architectures }}"
           -DKDChart_QT6=${{ startsWith(matrix.config.qt_version, '6.') }}
           -DKDChart_STATIC=${{ matrix.link_type == 'static' }}
           -DKDChart_TESTS=${{ matrix.build_type == 'Debug' }}

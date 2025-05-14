@@ -62,7 +62,7 @@ protected:
     void positionHasChanged() override;
 
 Q_SIGNALS:
-    void positionChanged(TextArea *);
+    void positionChanged(KDChart::TextArea *);
 
     // KDCHART_DECLARE_PRIVATE_DERIVED(TextArea)
 }; // End of class TextArea

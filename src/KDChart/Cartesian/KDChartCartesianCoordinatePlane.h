@@ -481,7 +481,7 @@ protected:
     QSize sizeHint() const override;
 
 protected Q_SLOTS:
-    void slotLayoutChanged(AbstractDiagram *);
+    void slotLayoutChanged(KDChart::AbstractDiagram *);
 
 private:
     void setHasOwnGridAttributes(

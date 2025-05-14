@@ -334,7 +334,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     /** Emitted when this coordinate plane is destroyed. */
-    void destroyedCoordinatePlane(AbstractCoordinatePlane *);
+    void destroyedCoordinatePlane(KDChart::AbstractCoordinatePlane *);
 
     /** Emitted when plane needs to update its drawings. */
     void needUpdate();

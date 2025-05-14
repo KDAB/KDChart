@@ -107,7 +107,7 @@ public:
     void setAttributesModel(AttributesModel *amodel) override;
 
 protected Q_SLOTS:
-    void connectAttributesModel(AttributesModel *);
+    void connectAttributesModel(KDChart::AttributesModel *);
 
 protected:
     /** @return the 3D item depth of the model index \a index */

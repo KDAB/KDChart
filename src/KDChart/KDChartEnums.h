@@ -28,9 +28,6 @@
 class KDCHART_EXPORT KDChartEnums : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(TextLayoutPolicy)
-    Q_ENUMS(AreaName)
-    Q_ENUMS(PositionFlag)
 
 public:
     /**
@@ -156,6 +153,8 @@ public:
         LayoutPolicyShiftHorizontally,
         LayoutPolicyShrinkFontSize
     };
+    Q_ENUM(TextLayoutPolicy)
+
 
     /**
       Converts the specified text layout policy enum to a

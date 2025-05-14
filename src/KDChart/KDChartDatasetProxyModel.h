@@ -91,18 +91,18 @@ public Q_SLOTS:
             Every call to this method resets the previous dataset
             description.
         */
-    void setDatasetColumnDescriptionVector(const DatasetDescriptionVector &columnConfig);
+    void setDatasetColumnDescriptionVector(const KDChart::DatasetDescriptionVector &columnConfig);
 
     /** Configure the dataset selection for the rows.
             Every call to this method resets the previous dataset
             description.
         */
-    void setDatasetRowDescriptionVector(const DatasetDescriptionVector &rowConfig);
+    void setDatasetRowDescriptionVector(const KDChart::DatasetDescriptionVector &rowConfig);
 
     /** Convenience method to configure rows and columns in one step. */
     void setDatasetDescriptionVectors(
-        const DatasetDescriptionVector &rowConfig,
-        const DatasetDescriptionVector &columnConfig);
+        const KDChart::DatasetDescriptionVector &rowConfig,
+        const KDChart::DatasetDescriptionVector &columnConfig);
 
     // FIXME: add convenience methods to configure common dataset
     // selections (like rectangular areas etc)

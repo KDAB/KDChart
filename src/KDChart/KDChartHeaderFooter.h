@@ -51,8 +51,8 @@ public:
     void setParent(QObject *parent);
 
 Q_SIGNALS:
-    void destroyedHeaderFooter(HeaderFooter *);
-    void positionChanged(HeaderFooter *);
+    void destroyedHeaderFooter(KDChart::HeaderFooter *);
+    void positionChanged(KDChart::HeaderFooter *); // clazy:exclude=overloaded-signal
 
 }; // End of class HeaderFooter
 }

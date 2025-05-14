@@ -4,7 +4,7 @@
     {
       "name": "base",
       "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build-${presetName}",
+      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
         "KDChart_QT6": "ON"
@@ -35,6 +35,53 @@
         "CMAKE_BUILD_TYPE": "Release",
         "KDChart_TESTS": "OFF"
       }
+    },
+    {
+      "name": "ci-base",
+      "inherits": "dev",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_COMPILE_WARNING_AS_ERROR": "OFF"
+      },
+      "warnings": {
+        "uninitialized": true
+      },
+      "errors": {
+        "dev": false
+      }
+    },
+    {
+      "name": "clazy",
+      "inherits": "ci-base",
+      "environment": {
+        "CXX": "clazy",
+        "CCACHE_DISABLE": "ON"
+      },
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clazy"
+      }
+    },
+    {
+      "name": "clang-tidy",
+      "inherits": "ci-base",
+      "cacheVariables": {
+        "CMAKE_CXX_CLANG_TIDY": "clang-tidy"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "clazy",
+      "configurePreset": "clazy",
+      "environment": {
+        "CLAZY_CHECKS": "level2,no-qstring-allocations,no-qstring-arg,no-qproperty-without-notify,no-connect-by-name,no-fully-qualified-moc-types,no-copyable-polymorphic,no-ctor-missing-parent-argument,no-rule-of-three,no-function-args-by-ref,no-function-args-by-value,no-old-style-connect",
+        "CLAZY_IGNORE_DIRS": "kdstatemachineeditor_.*_autogen",
+        "CCACHE_DISABLE": "ON"
+      }
+    },
+    {
+      "name": "clang-tidy",
+      "configurePreset": "clang-tidy"
     }
   ]
 }

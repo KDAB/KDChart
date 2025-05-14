@@ -29,8 +29,8 @@ public:
     {
         min = QPointF(0, 1e9);
         max = QPointF(values.size() - 1, -1e9);
-        setRowCount(values.size());
         setColumnCount(1);
+        setRowCount(values.size());
         for (int i = 0; i < values.size(); i++) {
             min.setY(qMin(min.y(), values[i]));
             max.setY(qMax(max.y(), values[i]));
@@ -44,8 +44,8 @@ public:
     {
         min = QPointF(1e9, 1e9);
         max = QPointF(-1e9, -1e9);
-        setRowCount(values.size());
         setColumnCount(2);
+        setRowCount(values.size());
         for (int i = 0; i < values.size(); i++) {
             min.setX(qMin(min.x(), values[i].x()));
             max.setX(qMax(max.x(), values[i].x()));

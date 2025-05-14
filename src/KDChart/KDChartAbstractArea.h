@@ -116,7 +116,7 @@ protected:
     void positionHasChanged() override;
 
 Q_SIGNALS:
-    void positionChanged(AbstractArea *);
+    void positionChanged(KDChart::AbstractArea *);
 }; // End of class AbstractArea
 }
 #endif // KDCHARTABSTRACTAREA_H

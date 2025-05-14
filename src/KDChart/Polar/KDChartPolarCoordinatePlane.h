@@ -143,7 +143,7 @@ protected:
 
     void layoutDiagrams() override;
 protected Q_SLOTS:
-    void slotLayoutChanged(AbstractDiagram *diagram);
+    void slotLayoutChanged(KDChart::AbstractDiagram *diagram);
     void adjustZoomAndRepaint();
 
 private:
