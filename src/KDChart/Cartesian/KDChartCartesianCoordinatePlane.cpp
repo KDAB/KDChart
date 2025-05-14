@@ -238,7 +238,7 @@ QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
 
 DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
 {
-    const AbstractCartesianDiagram *dgr = diagrams().isEmpty() ? 0 : qobject_cast<const AbstractCartesianDiagram *>(diagrams().first());
+    const AbstractCartesianDiagram *dgr = diagrams().isEmpty() ? 0 : qobject_cast<const AbstractCartesianDiagram *>(diagrams().constFirst());
     if (dgr && dgr->referenceDiagram()) {
         dgr = dgr->referenceDiagram();
     }

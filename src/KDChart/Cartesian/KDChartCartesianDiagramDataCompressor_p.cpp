@@ -214,9 +214,10 @@ void CartesianDiagramDataCompressor::slotModelHeaderDataChanged(Qt::Orientation 
     if (orientation != Qt::Vertical)
         return;
 
-    if (m_model->rowCount(m_rootIndex) > 0) {
+    const int rowCount = m_model->rowCount(m_rootIndex);
+    if (rowCount > 0) {
         const QModelIndex firstRow = m_model->index(0, first, m_rootIndex); // checked
-        const QModelIndex lastRow = m_model->index(m_model->rowCount(m_rootIndex) - 1, last, m_rootIndex); // checked
+        const QModelIndex lastRow = m_model->index(rowCount - 1, last, m_rootIndex); // checked
 
         slotModelDataChanged(firstRow, lastRow);
     }
@@ -228,6 +229,8 @@ void CartesianDiagramDataCompressor::slotModelDataChanged(
 {
     if (topLeftIndex.parent() != m_rootIndex)
         return;
+    Q_ASSERT(topLeftIndex.isValid());
+    Q_ASSERT(bottomRightIndex.isValid());
     Q_ASSERT(topLeftIndex.parent() == bottomRightIndex.parent());
     Q_ASSERT(topLeftIndex.row() <= bottomRightIndex.row());
     Q_ASSERT(topLeftIndex.column() <= bottomRightIndex.column());

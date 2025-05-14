@@ -25,7 +25,6 @@ namespace KDChart {
 class PlotterDiagramCompressor : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(CompressionMode)
 public:
     enum CompressionMode
     {
@@ -33,6 +32,8 @@ public:
         DISTANCE,
         BOTH
     };
+    Q_ENUM(CompressionMode)
+
     class DataPoint
     {
     public:

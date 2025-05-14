@@ -84,11 +84,11 @@ class KDCHART_EXPORT Chart : public QWidget
 {
     Q_OBJECT
     // KD Chart 3.0: leading is inter-line distance of text. this here is MARGIN or SPACING.
-    Q_PROPERTY(int globalLeadingTop READ globalLeadingTop WRITE setGlobalLeadingTop)
-    Q_PROPERTY(int globalLeadingBottom READ globalLeadingBottom WRITE setGlobalLeadingBottom)
-    Q_PROPERTY(int globalLeadingLeft READ globalLeadingLeft WRITE setGlobalLeadingLeft)
-    Q_PROPERTY(int globalLeadingRight READ globalLeadingRight WRITE setGlobalLeadingRight)
-    Q_PROPERTY(bool useNewLayoutSystem READ useNewLayoutSystem WRITE setUseNewLayoutSystem)
+    Q_PROPERTY(int globalLeadingTop READ globalLeadingTop WRITE setGlobalLeadingTop NOTIFY globalLeadingChanged)
+    Q_PROPERTY(int globalLeadingBottom READ globalLeadingBottom WRITE setGlobalLeadingBottom NOTIFY globalLeadingChanged)
+    Q_PROPERTY(int globalLeadingLeft READ globalLeadingLeft WRITE setGlobalLeadingLeft NOTIFY globalLeadingChanged)
+    Q_PROPERTY(int globalLeadingRight READ globalLeadingRight WRITE setGlobalLeadingRight NOTIFY globalLeadingChanged)
+    Q_PROPERTY(bool useNewLayoutSystem READ useNewLayoutSystem WRITE setUseNewLayoutSystem NOTIFY globalLeadingChanged)
 
     KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET(Chart)
 
@@ -434,6 +434,7 @@ Q_SIGNALS:
     /** Emitted upon change of a property of the Chart or any of its components. */
     void propertiesChanged();
     void finishedDrawing();
+    void globalLeadingChanged();
 
 protected:
     /**

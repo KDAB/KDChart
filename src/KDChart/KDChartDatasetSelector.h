@@ -45,8 +45,8 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void configureDatasetProxyModel(
-        const DatasetDescriptionVector &rowConfig,
-        const DatasetDescriptionVector &columnConfig);
+        const KDChart::DatasetDescriptionVector &rowConfig,
+        const KDChart::DatasetDescriptionVector &columnConfig);
 
     void mappingDisabled();
 

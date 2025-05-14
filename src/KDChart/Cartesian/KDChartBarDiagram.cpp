@@ -87,7 +87,7 @@ void BarDiagram::Private::setOrientationAndType(Qt::Orientation o, BarDiagram::B
     Q_ASSERT(implementor->type() == type);
 
     // AbstractAxis settings - see AbstractDiagram and CartesianAxis
-    barDia->setPercentMode(type == BarDiagram::Percent);
+    barDia->setType(type);
     barDia->setDataBoundariesDirty();
     Q_EMIT barDia->layoutChanged(barDia);
     Q_EMIT barDia->propertiesChanged();

@@ -731,7 +731,7 @@ void AbstractDiagram::setUnitSuffix(const QString &suffix, Qt::Orientation orien
 QString AbstractDiagram::unitPrefix(int column, Qt::Orientation orientation, bool fallback) const
 {
     if (!fallback || d->unitPrefixMap[column].contains(orientation))
-        return d->unitPrefixMap[column][orientation];
+        return d->unitPrefixMap[column].value(orientation);
     return d->unitPrefix[orientation];
 }
 
@@ -754,7 +754,7 @@ QString AbstractDiagram::unitPrefix(Qt::Orientation orientation) const
 QString AbstractDiagram::unitSuffix(int column, Qt::Orientation orientation, bool fallback) const
 {
     if (!fallback || d->unitSuffixMap[column].contains(orientation))
-        return d->unitSuffixMap[column][orientation];
+        return d->unitSuffixMap[column].value(orientation);
     return d->unitSuffix[orientation];
 }
 

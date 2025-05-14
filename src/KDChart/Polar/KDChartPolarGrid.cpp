@@ -57,11 +57,11 @@ void PolarGrid::drawGrid(PaintContext *context)
     // qDebug() << "A";
 
     // FIXME: we paint the rulers to the settings of the first diagram for now:
-    AbstractPolarDiagram *dgr = dynamic_cast<AbstractPolarDiagram *>(plane->diagrams().first());
+    AbstractPolarDiagram *dgr = dynamic_cast<AbstractPolarDiagram *>(plane->diagrams().constFirst());
     Q_ASSERT(dgr); // only polar diagrams are allowed here
 
     // Do not draw a grid for pie diagrams
-    if (dynamic_cast<PieDiagram *>(plane->diagrams().first()))
+    if (dynamic_cast<PieDiagram *>(plane->diagrams().constFirst()))
         return;
 
     context->painter()->setPen(PrintingParameters::scalePen(QColor(Qt::lightGray)));

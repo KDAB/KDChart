@@ -1269,6 +1269,7 @@ void Chart::setGlobalLeadingLeft(int leading)
     d->globalLeadingLeft = leading;
     d->leftOuterSpacer->changeSize(leading, 0, QSizePolicy::Fixed, QSizePolicy::Minimum);
     d->reapplyInternalLayouts();
+    Q_EMIT globalLeadingChanged();
 }
 
 int Chart::globalLeadingLeft() const
@@ -1281,6 +1282,7 @@ void Chart::setGlobalLeadingTop(int leading)
     d->globalLeadingTop = leading;
     d->topOuterSpacer->changeSize(0, leading, QSizePolicy::Minimum, QSizePolicy::Fixed);
     d->reapplyInternalLayouts();
+    Q_EMIT globalLeadingChanged();
 }
 
 int Chart::globalLeadingTop() const
@@ -1293,6 +1295,7 @@ void Chart::setGlobalLeadingRight(int leading)
     d->globalLeadingRight = leading;
     d->rightOuterSpacer->changeSize(leading, 0, QSizePolicy::Fixed, QSizePolicy::Minimum);
     d->reapplyInternalLayouts();
+    Q_EMIT globalLeadingChanged();
 }
 
 int Chart::globalLeadingRight() const
@@ -1305,6 +1308,7 @@ void Chart::setGlobalLeadingBottom(int leading)
     d->globalLeadingBottom = leading;
     d->bottomOuterSpacer->changeSize(0, leading, QSizePolicy::Minimum, QSizePolicy::Fixed);
     d->reapplyInternalLayouts();
+    Q_EMIT globalLeadingChanged();
 }
 
 int Chart::globalLeadingBottom() const
@@ -1669,11 +1673,17 @@ LegendList Chart::legends() const
 
 void Chart::mousePressEvent(QMouseEvent *event)
 {
-    const QPoint pos = mapFromGlobal(event->globalPos());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    const QPoint globalPos = event->globalPosition().toPoint();
+#else
+    const QPoint globalPos = event->globalPos();
+#endif
+
+    const QPoint pos = mapFromGlobal(globalPos);
 
     for (AbstractCoordinatePlane *plane : std::as_const(d->coordinatePlanes)) {
         if (plane->geometry().contains(event->pos()) && plane->diagrams().size() > 0) {
-            QMouseEvent ev(QEvent::MouseButtonPress, pos, event->globalPos(),
+            QMouseEvent ev(QEvent::MouseButtonPress, pos, globalPos,
                            event->button(), event->buttons(), event->modifiers());
             plane->mousePressEvent(&ev);
             d->mouseClickedPlanes.append(plane);
@@ -1683,11 +1693,17 @@ void Chart::mousePressEvent(QMouseEvent *event)
 
 void Chart::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    const QPoint pos = mapFromGlobal(event->globalPos());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    const QPoint globalPos = event->globalPosition().toPoint();
+#else
+    const QPoint globalPos = event->globalPos();
+#endif
+
+    const QPoint pos = mapFromGlobal(globalPos);
 
     for (AbstractCoordinatePlane *plane : std::as_const(d->coordinatePlanes)) {
         if (plane->geometry().contains(event->pos()) && plane->diagrams().size() > 0) {
-            QMouseEvent ev(QEvent::MouseButtonPress, pos, event->globalPos(),
+            QMouseEvent ev(QEvent::MouseButtonPress, pos, globalPos,
                            event->button(), event->buttons(), event->modifiers());
             plane->mouseDoubleClickEvent(&ev);
         }
@@ -1709,10 +1725,16 @@ void Chart::mouseMoveEvent(QMouseEvent *event)
         }
     }
 
-    const QPoint pos = mapFromGlobal(event->globalPos());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    const QPoint globalPos = event->globalPosition().toPoint();
+#else
+    const QPoint globalPos = event->globalPos();
+#endif
+
+    const QPoint pos = mapFromGlobal(globalPos);
 
     for (AbstractCoordinatePlane *plane : std::as_const(eventReceivers)) {
-        QMouseEvent ev(QEvent::MouseMove, pos, event->globalPos(),
+        QMouseEvent ev(QEvent::MouseMove, pos, globalPos,
                        event->button(), event->buttons(), event->modifiers());
         plane->mouseMoveEvent(&ev);
     }
@@ -1733,10 +1755,16 @@ void Chart::mouseReleaseEvent(QMouseEvent *event)
         }
     }
 
-    const QPoint pos = mapFromGlobal(event->globalPos());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    const QPoint globalPos = event->globalPosition().toPoint();
+#else
+    const QPoint globalPos = event->globalPos();
+#endif
+
+    const QPoint pos = mapFromGlobal(globalPos);
 
     for (AbstractCoordinatePlane *plane : std::as_const(eventReceivers)) {
-        QMouseEvent ev(QEvent::MouseButtonRelease, pos, event->globalPos(),
+        QMouseEvent ev(QEvent::MouseButtonRelease, pos, globalPos,
                        event->button(), event->buttons(), event->modifiers());
         plane->mouseReleaseEvent(&ev);
     }
@@ -1783,6 +1811,8 @@ bool Chart::useNewLayoutSystem() const
 }
 void Chart::setUseNewLayoutSystem(bool value)
 {
-    if (d_func()->useNewLayoutSystem != value)
+    if (d_func()->useNewLayoutSystem != value) {
         d_func()->useNewLayoutSystem = value;
+        Q_EMIT globalLeadingChanged();
+    }
 }

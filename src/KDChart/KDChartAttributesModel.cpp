@@ -654,7 +654,7 @@ void AttributesModel::setDefaultForRole(int role, const QVariant &value)
         d->defaultsMap.insert(role, value);
     } else {
         // erase the possibly existing value to not let the map grow:
-        QMap<int, QVariant>::iterator it = d->defaultsMap.find(role);
+        auto it = d->defaultsMap.find(role);
         if (it != d->defaultsMap.end()) {
             d->defaultsMap.erase(it);
         }

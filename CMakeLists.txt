@@ -314,3 +314,16 @@ if(${PROJECT_NAME}_IS_ROOT_PROJECT)
 
     feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 endif()
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # To be used by cppcheck
+add_custom_target(
+    cppcheck
+    COMMENT "Run cppcheck on source files"
+    USES_TERMINAL
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+    COMMAND
+        ${CMAKE_COMMAND} -E env cppcheck --project=${PROJECT_BINARY_DIR}/compile_commands.json --enable=all
+        --error-exitcode=0 # TODO change to 1 once it passes
+        --language=c++ --inline-suppr --quiet --disable=missingInclude,unusedFunction --check-level=exhaustive
+        --library=qt.cfg -i3rdParty/ --suppress=*:*.moc --suppress=*:*moc_*.cpp
+)

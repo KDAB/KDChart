@@ -88,7 +88,7 @@ public:
     virtual void resizeLayout(const QSize &);
 
 Q_SIGNALS:
-    void positionChanged(AbstractAreaWidget *);
+    void positionChanged(KDChart::AbstractAreaWidget *);
 
 protected:
     ~AbstractAreaWidget() override;

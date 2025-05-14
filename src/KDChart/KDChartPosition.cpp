@@ -44,19 +44,19 @@ static const char *staticPositionNames[] = {
  * \internal
  * One value for unknown positions, and nine values for predefined positions.
  */
-static Position staticPositionUnknown = Position(KDChartEnums::PositionUnknown);
-static Position staticPositionCenter = Position(KDChartEnums::PositionCenter);
-static Position staticPositionNorthWest = Position(KDChartEnums::PositionNorthWest);
-static Position staticPositionNorth = Position(KDChartEnums::PositionNorth);
-static Position staticPositionNorthEast = Position(KDChartEnums::PositionNorthEast);
-static Position staticPositionEast = Position(KDChartEnums::PositionEast);
-static Position staticPositionSouthEast = Position(KDChartEnums::PositionSouthEast);
-static Position staticPositionSouth = Position(KDChartEnums::PositionSouth);
-static Position staticPositionSouthWest = Position(KDChartEnums::PositionSouthWest);
-static Position staticPositionWest = Position(KDChartEnums::PositionWest);
-static Position staticPositionFloating = Position(KDChartEnums::PositionFloating);
+Position staticPositionUnknown = Position(KDChartEnums::PositionUnknown);
+Position staticPositionCenter = Position(KDChartEnums::PositionCenter);
+Position staticPositionNorthWest = Position(KDChartEnums::PositionNorthWest);
+Position staticPositionNorth = Position(KDChartEnums::PositionNorth);
+Position staticPositionNorthEast = Position(KDChartEnums::PositionNorthEast);
+Position staticPositionEast = Position(KDChartEnums::PositionEast);
+Position staticPositionSouthEast = Position(KDChartEnums::PositionSouthEast);
+Position staticPositionSouth = Position(KDChartEnums::PositionSouth);
+Position staticPositionSouthWest = Position(KDChartEnums::PositionSouthWest);
+Position staticPositionWest = Position(KDChartEnums::PositionWest);
+Position staticPositionFloating = Position(KDChartEnums::PositionFloating);
 
-static const int maxPositionValue = 10;
+const int maxPositionValue = 10;
 
 } // anon namespace
 

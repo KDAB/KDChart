@@ -670,7 +670,7 @@ Q_SIGNALS:
             Changes in the diagrams coordinate system also result
             in the layoutChanged() signal being emitted.
         */
-    void layoutChanged(AbstractDiagram *);
+    void layoutChanged(KDChart::AbstractDiagram *);
 
     /**
      * This signal is emitted when this diagram is being destroyed, but before all the
@@ -683,7 +683,7 @@ Q_SIGNALS:
 
     /** This signal is emitted just before the new attributes model is connected internally.
             It gives you a chance to connect to its signals first or perform other setup work. */
-    void attributesModelAboutToChange(AttributesModel *newModel, AttributesModel *oldModel);
+    void attributesModelAboutToChange(KDChart::AttributesModel *newModel, KDChart::AttributesModel *oldModel);
 
     /** This signal is emitted, when the model data is changed. */
     void modelDataChanged();
