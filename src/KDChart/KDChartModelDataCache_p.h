@@ -277,11 +277,13 @@ protected:
         if (m_model == nullptr)
             return;
 
-        m_data.fill(QVector<T>(m_model->columnCount(m_rootIndex)), m_model->rowCount(m_rootIndex));
-        m_cacheValid.fill(QVector<bool>(m_model->columnCount(m_rootIndex), false), m_model->rowCount(m_rootIndex));
+        const int columnCount = m_model->columnCount(m_rootIndex);
+        const int rowCount = m_model->rowCount(m_rootIndex);
+        m_data.fill(QVector<T>(columnCount), rowCount);
+        m_cacheValid.fill(QVector<bool>(columnCount, false), rowCount);
 
-        Q_ASSERT(m_data.count() == m_model->rowCount(m_rootIndex));
-        Q_ASSERT(m_cacheValid.count() == m_model->rowCount(m_rootIndex));
+        Q_ASSERT(m_data.count() == rowCount);
+        Q_ASSERT(m_cacheValid.count() == rowCount);
     }
 
     void rowsInserted(const QModelIndex &parent, int start, int end) override
@@ -295,8 +297,9 @@ protected:
         Q_ASSERT(start <= end);
         Q_ASSERT(end - start + 1 <= m_model->rowCount(m_rootIndex));
 
-        m_data.insert(start, end - start + 1, QVector<T>(m_model->columnCount(m_rootIndex)));
-        m_cacheValid.insert(start, end - start + 1, QVector<bool>(m_model->columnCount(m_rootIndex), false));
+        const int columnCount = m_model->columnCount(m_rootIndex);
+        m_data.insert(start, end - start + 1, QVector<T>(columnCount));
+        m_cacheValid.insert(start, end - start + 1, QVector<bool>(columnCount, false));
 
         Q_ASSERT(m_data.count() == m_model->rowCount(m_rootIndex));
         Q_ASSERT(m_cacheValid.count() == m_model->rowCount(m_rootIndex));
