@@ -192,7 +192,6 @@ ecm_generate_headers(
     COMMON_HEADER
     KDGantt
 )
-configure_file("${CMAKE_CURRENT_BINARY_DIR}/KDChart/KDGantt" "${CMAKE_CURRENT_BINARY_DIR}/KDChart/kdgantt.h" COPYONLY)
 list(APPEND kdchart_HEADERS "${CMAKE_CURRENT_BINARY_DIR}/KDChart/kdgantt.h")
 
 install(
