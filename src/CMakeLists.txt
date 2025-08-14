@@ -148,16 +148,24 @@ ecm_generate_headers(
 )
 # Combine required headers into 1 big convenience header
 set(COMMON_HEADER ${CMAKE_CURRENT_BINARY_DIR}/KDChart/KDChart)
-# (use a tmp file and configure_file to avoid touching the header unnecessarily)
-set(COMMON_HEADER_TMP ${COMMON_HEADER}.tmp)
-file(WRITE ${COMMON_HEADER_TMP} "// convenience header\n")
+
+set(GENERATED_CONTENT "// convenience header\n")
 foreach(_header ${kdchart_HEADERS})
     get_filename_component(_base ${_header} NAME)
-    file(APPEND ${COMMON_HEADER_TMP} "#include \"${_base}\"\n")
+    string(APPEND GENERATED_CONTENT "#include \"${_base}\"\n")
 endforeach()
-configure_file("${COMMON_HEADER_TMP}" "${COMMON_HEADER}" COPYONLY)
+
+file(
+    GENERATE
+    OUTPUT "${COMMON_HEADER}"
+    CONTENT "${GENERATED_CONTENT}"
+)
 list(APPEND kdchart_HEADERS "${COMMON_HEADER}")
-configure_file("${COMMON_HEADER}" "${COMMON_HEADER}.h" COPYONLY)
+file(
+    GENERATE
+    OUTPUT "${COMMON_HEADER}.h"
+    CONTENT "${GENERATED_CONTENT}"
+)
 list(APPEND kdchart_HEADERS "${COMMON_HEADER}.h")
 
 ecm_generate_headers(
