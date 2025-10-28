@@ -209,7 +209,7 @@ void MainWindow::on_fixPlaneSizeCB_toggled(bool checked)
     plane->setFixedDataCoordinateSpaceRelation(checked);
     // just a little adjustment:
     // Reset the zoom settings to their initial values
-    // when the releation-adjust checkbox is unchecked:
+    // when the relation-adjust checkbox is unchecked:
     if (!checked) {
         m_chart->coordinatePlane()->setZoomFactorX(1.0);
         m_chart->coordinatePlane()->setZoomFactorY(1.0);
