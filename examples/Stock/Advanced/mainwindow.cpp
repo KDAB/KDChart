@@ -72,6 +72,7 @@ void MainWindow::applyColor(const QColor &color)
         QColor inverse(255 - color.red(), 255 - color.green(), 255 - color.blue());
         m_diagram.setPen(1, QPen(inverse.darker(130)));
         m_diagram.setBrush(1, QBrush(inverse));
+
         QPalette pal = colorChooser->palette();
         pal.setBrush(QPalette::Button, QBrush(color));
         colorChooser->setPalette(pal);
@@ -133,6 +134,7 @@ void MainWindow::on_stockTypeCB_currentIndexChanged(int index)
     } else if (text == "Candlestick") {
         m_diagram.setType(StockDiagram::Candlestick);
         m_diagram.setModel(&m_OHLCModel);
+        m_diagram.setDataContainsMedianValues(true);
     }
 
     m_chart->coordinatePlane()->replaceDiagram(&m_diagram);
