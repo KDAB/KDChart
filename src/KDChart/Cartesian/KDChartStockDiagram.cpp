@@ -294,7 +294,6 @@ void StockDiagram::paint(PaintContext *context)
             return 4;
         case Candlestick:
             return d->dataContainsMedian ? 5 : 4;
-            break;
         }
         Q_UNREACHABLE();
     }();

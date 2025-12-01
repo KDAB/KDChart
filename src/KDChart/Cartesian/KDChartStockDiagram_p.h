@@ -59,7 +59,8 @@ public:
     void drawCandlestick(int dataset, const CartesianDiagramDataCompressor::DataPoint &open,
                          const CartesianDiagramDataCompressor::DataPoint &high,
                          const CartesianDiagramDataCompressor::DataPoint &low,
-                         const CartesianDiagramDataCompressor::DataPoint &close, const CartesianDiagramDataCompressor::DataPoint &median,
+                         const CartesianDiagramDataCompressor::DataPoint &close,
+                         const CartesianDiagramDataCompressor::DataPoint &median,
                          PaintContext *context);
 
 private:

@@ -375,7 +375,7 @@ void StockDiagram::Private::drawCandlestick(int /*dataset*/, const CartesianDiag
             // Fallback to pen color, we could do better by letting the caller provide the pen, but I'm out of attention span for that.
             return pen.color();
         }
-    }();
+    };
 
 
     StockBarAttributes attr = stockDiagram()->stockBarAttributes(col);
@@ -390,8 +390,10 @@ void StockDiagram::Private::drawCandlestick(int /*dataset*/, const CartesianDiag
     QRectF candlestick = projectCandlestick(context, bottomCandlestickPoint,
                                             topCandlestickPoint, attr.candlestickWidth());
 
-    const QPointF medianPoint = projectPoint(context, QPointF(median.key, median.value));
-    const QLineF medianLine = QLineF(candlestick.left(), medianPoint.y(), candlestick.right(), medianPoint.y());
+    const auto medianLine = [&] {
+        const QPointF medianPoint = projectPoint(context, QPointF(median.key, median.value));
+        return QLineF(candlestick.left(), medianPoint.y(), candlestick.right(), medianPoint.y());
+    };
 
     // Remember the drawn polygon to add it to the ReverseMapper later
     QPolygonF drawnPolygon;
@@ -435,8 +437,8 @@ void StockDiagram::Private::drawCandlestick(int /*dataset*/, const CartesianDiag
         if (drawCandlestick)
             painter->drawRect(candlestick);
         if (drawMedian) {
-            painter->setPen(medianColor);
-            painter->drawLine(medianLine);
+            painter->setPen(medianColor());
+            painter->drawLine(medianLine());
             painter->setPen(pen);
         }
 
