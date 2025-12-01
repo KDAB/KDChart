@@ -45,6 +45,7 @@ public:
 
     QPen lowHighLinePen;
     QMap<int, QPen> lowHighLinePens;
+    bool dataContainsMedian = false;
 
     void drawOHLCBar(int dataset, const CartesianDiagramDataCompressor::DataPoint &open,
                      const CartesianDiagramDataCompressor::DataPoint &high,
@@ -59,6 +60,7 @@ public:
                          const CartesianDiagramDataCompressor::DataPoint &high,
                          const CartesianDiagramDataCompressor::DataPoint &low,
                          const CartesianDiagramDataCompressor::DataPoint &close,
+                         const CartesianDiagramDataCompressor::DataPoint &median,
                          PaintContext *context);
 
 private:

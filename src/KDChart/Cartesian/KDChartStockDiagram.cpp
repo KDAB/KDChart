@@ -286,7 +286,18 @@ void StockDiagram::paint(PaintContext *context)
 
     PainterSaver painterSaver(context->painter());
     const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
-    const int divisor = (d->type == OpenHighLowClose || d->type == Candlestick) ? 4 : 3;
+    const int divisor = [&] {
+        switch (d->type) {
+        case HighLowClose:
+            return 3;
+        case OpenHighLowClose:
+            return 4;
+        case Candlestick:
+            return d->dataContainsMedian ? 5 : 4;
+        }
+        Q_UNREACHABLE();
+    }();
+
     const int colCount = attributesModel()->columnCount(attributesModelRootIndex()) / divisor;
     for (int col = 0; col < colCount; ++col) {
         for (int row = 0; row < rowCount; row++) {
@@ -295,6 +306,8 @@ void StockDiagram::paint(PaintContext *context)
             CartesianDiagramDataCompressor::DataPoint open;
             CartesianDiagramDataCompressor::DataPoint close;
             CartesianDiagramDataCompressor::DataPoint volume;
+            CartesianDiagramDataCompressor::DataPoint median;
+
 
             if (d->type == HighLowClose) {
                 const CartesianDiagramDataCompressor::CachePosition highPos(row, col * divisor);
@@ -312,6 +325,10 @@ void StockDiagram::paint(PaintContext *context)
                 low = d->compressor.data(lowPos);
                 high = d->compressor.data(highPos);
                 close = d->compressor.data(closePos);
+                if (d->type == Candlestick) {
+                    const CartesianDiagramDataCompressor::CachePosition medianPos(row, col * divisor + 4);
+                    median = d->compressor.data(medianPos);
+                }
             }
 
             switch (d->type) {
@@ -323,7 +340,8 @@ void StockDiagram::paint(PaintContext *context)
                     d->drawOHLCBar(col, open, high, low, close, context);
                 break;
             case Candlestick:
-                d->drawCandlestick(col, open, high, low, close, context);
+                median.hidden = !d->dataContainsMedian;
+                d->drawCandlestick(col, open, high, low, close, median, context);
                 break;
             }
         }
@@ -350,6 +368,11 @@ qreal StockDiagram::threeDItemDepth(const QModelIndex &index) const
     Q_UNUSED(index);
     // FIXME: Implement threeD functionality
     return 1.0;
+}
+
+void StockDiagram::setDataContainsMedianValues(bool b)
+{
+    d->dataContainsMedian = b;
 }
 
 const QPair<QPointF, QPointF> StockDiagram::calculateDataBoundaries() const

@@ -98,6 +98,8 @@ public:
     qreal threeDItemDepth(int column) const override;
     qreal threeDItemDepth(const QModelIndex &index) const override;
 
+    void setDataContainsMedianValues(bool b = true);
+
 protected:
     const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
 };

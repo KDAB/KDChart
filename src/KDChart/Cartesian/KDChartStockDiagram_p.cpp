@@ -328,6 +328,7 @@ void StockDiagram::Private::drawCandlestick(int /*dataset*/, const CartesianDiag
                                             const CartesianDiagramDataCompressor::DataPoint &high,
                                             const CartesianDiagramDataCompressor::DataPoint &low,
                                             const CartesianDiagramDataCompressor::DataPoint &close,
+                                            const CartesianDiagramDataCompressor::DataPoint &median,
                                             PaintContext *context)
 {
     PainterSaver painterSaver(context->painter());
@@ -342,6 +343,7 @@ void StockDiagram::Private::drawCandlestick(int /*dataset*/, const CartesianDiag
     QPen pen;
     bool drawLowerLine;
     bool drawCandlestick = !open.hidden && !close.hidden;
+    bool drawMedian = !median.hidden;
     bool drawUpperLine;
 
     // Find out if we need to paint a down-trend or up-trend candlestick
@@ -363,6 +365,19 @@ void StockDiagram::Private::drawCandlestick(int /*dataset*/, const CartesianDiag
         drawUpperLine = !low.hidden && !open.hidden;
     }
 
+    auto medianColor = [&] {
+        auto brushColor = brush.color();
+        if (brushColor.isValid()) {
+            return (0.21 * brushColor.red() + 0.72 * brushColor.green() + 0.07 * brushColor.blue()) < 127
+                ? QColor(Qt::white)
+                : QColor(Qt::black);
+        } else {
+            // Fallback to pen color, we could do better by letting the caller provide the pen, but I'm out of attention span for that.
+            return pen.color();
+        }
+    };
+
+
     StockBarAttributes attr = stockDiagram()->stockBarAttributes(col);
     ThreeDBarAttributes threeDAttr = stockDiagram()->threeDBarAttributes(col);
 
@@ -374,6 +389,11 @@ void StockDiagram::Private::drawCandlestick(int /*dataset*/, const CartesianDiag
     // Convert the data point into coordinates on the coordinate plane
     QRectF candlestick = projectCandlestick(context, bottomCandlestickPoint,
                                             topCandlestickPoint, attr.candlestickWidth());
+
+    const auto medianLine = [&] {
+        const QPointF medianPoint = projectPoint(context, QPointF(median.key, median.value));
+        return QLineF(candlestick.left(), medianPoint.y(), candlestick.right(), medianPoint.y());
+    };
 
     // Remember the drawn polygon to add it to the ReverseMapper later
     QPolygonF drawnPolygon;
@@ -396,6 +416,7 @@ void StockDiagram::Private::drawCandlestick(int /*dataset*/, const CartesianDiag
                 drawnPolygon = threeDPainter.drawThreeDRect(candlestick, brush, pen, threeDProps);
             if (drawUpperLine)
                 drawnPolygon = threeDPainter.drawTwoDLine(upperLine, pen, threeDProps);
+            // TODO: Draw median in 3D
         } else {
             if (drawUpperLine)
                 drawnPolygon = threeDPainter.drawTwoDLine(upperLine, pen, threeDProps);
@@ -403,6 +424,7 @@ void StockDiagram::Private::drawCandlestick(int /*dataset*/, const CartesianDiag
                 drawnPolygon = threeDPainter.drawThreeDRect(candlestick, brush, pen, threeDProps);
             if (drawLowerLine)
                 drawnPolygon = threeDPainter.drawTwoDLine(lowerLine, pen, threeDProps);
+            // TODO: Draw median in 3D
         }
     } else {
         QPainter *const painter = context->painter();
@@ -414,6 +436,11 @@ void StockDiagram::Private::drawCandlestick(int /*dataset*/, const CartesianDiag
             painter->drawLine(upperLine);
         if (drawCandlestick)
             painter->drawRect(candlestick);
+        if (drawMedian) {
+            painter->setPen(medianColor());
+            painter->drawLine(medianLine());
+            painter->setPen(pen);
+        }
 
         // The 2D representation is the projected candlestick itself
         drawnPolygon = candlestick;
