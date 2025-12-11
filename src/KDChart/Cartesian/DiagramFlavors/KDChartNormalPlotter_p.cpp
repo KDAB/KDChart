@@ -145,7 +145,7 @@ void NormalPlotter::paint(PaintContext *ctx)
                     m_private->addLabel(&lpc, sourceIndex, nullptr, pts, Position::NorthWest,
                                         Position::NorthWest, point.value);
 
-                    const bool lineValid = a.toPoint() != b.toPoint() && PaintingHelpers::isFinite(a);
+                    const bool lineValid = PaintingHelpers::isFinite(a) && a.toPoint() != b.toPoint();
                     if (lineValid) {
                         // data line
                         lineList.append(LineAttributesInfo(sourceIndex, a, b));
