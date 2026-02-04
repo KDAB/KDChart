@@ -1,0 +1,48 @@
+# SPDX-FileCopyrightText: 2026 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+#
+# SPDX-License-Identifier: MIT
+
+name: CI (Sanitizers)
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os:
+          - ubuntu-24.04
+        preset: ['dev-asan']
+        include:
+          - preset: dev-asan
+            qt-flavor: asan
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Setup Sanitized Qt
+        uses: KDABLabs/sanitized-qt-action@v1
+        with:
+          qt-tag: "v6.11.0-beta2"
+          qt-flavor: ${{ matrix.qt-flavor }}
+
+      - name: Configure
+        run: cmake --preset=${{ matrix.preset }} -DKDChart_STATIC=ON
+
+      - name: Build
+        run: cmake --build ./build/${{ matrix.preset }}
+
+      - name: Run tests
+        run: |
+          ctest --test-dir ./build/${{ matrix.preset }} --output-on-failure --verbose
+        env:
+          LSAN_OPTIONS: "detect_leaks=0" # patches accepted
