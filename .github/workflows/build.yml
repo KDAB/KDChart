@@ -61,7 +61,7 @@ jobs:
           cache: true
 
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install dependencies on Ubuntu (${{ join(matrix.config.apt_pgks, ' ') }})
         if: ${{ runner.os == 'Linux' && matrix.config.apt_pgks }}
