@@ -45,7 +45,7 @@ jobs:
         run: |
           sudo apt update -qq
           echo ${{ join(matrix.config.apt_pgks, ' ') }} | xargs sudo apt install -y
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         #with:
           #ref: '2.0' # schedule.cron do not allow branch setting
 

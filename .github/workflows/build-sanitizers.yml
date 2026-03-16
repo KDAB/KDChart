@@ -27,7 +27,7 @@ jobs:
             qt-flavor: asan
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Sanitized Qt
         uses: KDABLabs/sanitized-qt-action@v1
