@@ -153,6 +153,8 @@ void ReverseMapper::addLine(int row, int column, const QPointF &from, const QPoi
     }
     const QPointF lineVector(right - left);
     const qreal lineVectorLength = sqrt(lineVector.x() * lineVector.x() + lineVector.y() * lineVector.y());
+    if (!qIsFinite(lineVectorLength) || qFuzzyIsNull(lineVectorLength))
+        return;
     const QPointF lineVectorUnit(lineVector / lineVectorLength);
     const QPointF normOfLineVectorUnit(-lineVectorUnit.y(), lineVectorUnit.x());
     // now the four polygon end points:

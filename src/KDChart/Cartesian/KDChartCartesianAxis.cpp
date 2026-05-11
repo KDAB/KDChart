@@ -861,6 +861,8 @@ void CartesianAxis::paintCtx(PaintContext *context)
                 break;
             }
 
+            if (!qIsFinite(labelPos.x()) || !qIsFinite(labelPos.y()))
+                continue;
             tickLabel->setGeometry(QRect(labelPos.toPoint(), size.toSize()));
 
             if (step == Painting) {
