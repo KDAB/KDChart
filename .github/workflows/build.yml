@@ -34,9 +34,6 @@ jobs:
           #- static
 
         config:
-          - qt_version: 5.15.2
-            architectures: "x86_64"
-
           - qt_version: 6.9.0
             architectures: "x86_64;arm64"
 
