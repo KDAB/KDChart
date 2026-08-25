@@ -23,6 +23,7 @@ jobs:
         os:
           - ubuntu-latest
           - windows-latest
+          - windows-2022
           - macos-latest
 
         build_type:
@@ -37,8 +38,20 @@ jobs:
           - qt_version: 5.15.2
             architectures: "x86_64"
 
-          - qt_version: 6.9.0
+          - qt_version: 6.9.3
             architectures: "x86_64;arm64"
+
+        exclude:
+          # Qt 5.15.2 uses stdext::checked_array_iterator, which Visual Studio
+          # 2025 removed, so it only builds on the older image
+          - os: windows-latest
+            config:
+              qt_version: 5.15.2
+              architectures: "x86_64"
+          - os: windows-2022
+            config:
+              qt_version: 6.9.3
+              architectures: "x86_64;arm64"
 
         include:
           - os: ubuntu-22.04
